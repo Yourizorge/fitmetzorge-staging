@@ -14,7 +14,7 @@ const APP_AUTH_REDIRECT_URL = (() => {
 })();`;
 
   let source = await bundleResponse.text();
-  source = source.replace('const APP_AUTH_REDIRECT_URL = "https://appfmz.nl";', stagingRedirectSource);
+  source = source.replace(/const APP_AUTH_REDIRECT_URL = "[^"]+";/, stagingRedirectSource);
   source = source.replace('const FMZ_CONFIG = window.FMZ_CONFIG || {};', "");
 
   (0, eval)(`${source}\n//# sourceURL=app.bundle.js`);
