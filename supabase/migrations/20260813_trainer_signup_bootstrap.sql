@@ -111,8 +111,31 @@ begin
   end if;
 end $$;
 
--- Optional staging-only manual repair for existing test Auth users:
--- Run one statement per known trainer Auth user if they already exist without a profile:
+-- Staging-only repair for existing Auth testusers that were created before this trigger existed.
+-- This does not delete or reset anything. It only creates missing trainer profiles/workspaces
+-- for auth users whose metadata says role = trainer.
+do $$
+declare
+  auth_user record;
+begin
+  for auth_user in
+    select
+      u.id,
+      u.email,
+      coalesce(u.raw_user_meta_data ->> 'name', u.email) as name
+    from auth.users u
+    where coalesce(u.raw_user_meta_data ->> 'role', '') = 'trainer'
+      and not exists (
+        select 1
+        from public.profiles p
+        where p.id = u.id
+      )
+  loop
+    perform public.fmz_bootstrap_trainer_profile(auth_user.id, auth_user.email, auth_user.name);
+  end loop;
+end $$;
+
+-- Optional manual repair if a specific existing testuser lacks role metadata:
 -- select public.fmz_bootstrap_trainer_profile(
 --   'AUTH_USER_UUID_HERE'::uuid,
 --   'trainer-email@example.com',
