@@ -31,7 +31,7 @@
       button.classList.toggle("active", button.dataset.authMode === mode);
     });
     document.querySelectorAll("[data-auth-panel]").forEach((panel) => {
-      panel.classList.toggle("active", panel.datasetAuthPanel === mode || panel.dataset.authPanel === mode);
+      panel.classList.toggle("active", panel.dataset.authPanel === mode);
     });
   });
 })().catch((error) => {
