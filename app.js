@@ -1,12 +1,30 @@
 (async () => {
+  const stagingSupabaseUrl = "https://mokxyyullfhkfalopbzd.supabase.co";
+  const stagingSupabaseAnonKey = "sb_publishable_6OiMLMl946arkI71-ylqkQ_EQWL6kKT";
+
+  window.FMZ_CONFIG = {
+    ...(window.FMZ_CONFIG || {}),
+    SUPABASE_URL: stagingSupabaseUrl,
+    SUPABASE_ANON_KEY: stagingSupabaseAnonKey,
+    INVITE_FUNCTION_NAME: "invite-client"
+  };
+
   const bundleUrl = new URL("app.bundle.js?v=20260810-agenda-wide-final", document.baseURI);
   const bundleResponse = await fetch(bundleUrl, { cache: "no-cache" });
   if (!bundleResponse.ok) {
     throw new Error(`App bundle laden mislukt: ${bundleResponse.status}`);
   }
 
+  const stagingConfigSource = [
+    'const FMZ_CONFIG = {',
+    `  ...(window.FMZ_CONFIG || {}),`,
+    `  SUPABASE_URL: "${stagingSupabaseUrl}",`,
+    `  SUPABASE_ANON_KEY: "${stagingSupabaseAnonKey}",`,
+    '  INVITE_FUNCTION_NAME: "invite-client"',
+    '};'
+  ].join("\n");
+
   const stagingRedirectSource = [
-    'const FMZ_CONFIG = window.FMZ_CONFIG || {};',
     'const APP_AUTH_REDIRECT_URL = (() => {',
     '  const githubStagingPath = "/fitmetzorge-staging/";',
     '  if (window.location.hostname === "yourizorge.github.io") {',
@@ -17,8 +35,8 @@
   ].join("\n");
 
   let source = await bundleResponse.text();
+  source = source.replace('const FMZ_CONFIG = window.FMZ_CONFIG || {};', stagingConfigSource);
   source = source.replace(/const APP_AUTH_REDIRECT_URL = "[^"]+";/, stagingRedirectSource);
-  source = source.replace('const FMZ_CONFIG = window.FMZ_CONFIG || {};', "");
 
   (0, eval)(`${source}\n//# sourceURL=app.bundle.js`);
 
