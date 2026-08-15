@@ -1,4 +1,7 @@
 (function phase1Foundation() {
+  if (window.FMZ_PHASE1_FOUNDATION_LOADED) return;
+  window.FMZ_PHASE1_FOUNDATION_LOADED = true;
+
   const PHASE1_LANGUAGES = ["nl", "en", "de"];
   const PHASE1_GENDERS = ["female", "male", "non_binary", "prefer_not_to_say", "not_relevant"];
   const PHASE1_GOAL_DIRECTIONS = ["lose_weight", "gain_muscle", "recomposition", "fitness", "health", "other"];
@@ -1532,36 +1535,60 @@
     agenda: "clientNavAgenda",
     settings: "settingsNav"
   };
-  const PHASE1_CLIENT_SURFACE_SELECTORS = [
+  const PHASE1_CLIENT_GLOBAL_SELECTORS = [
     "#nav",
     "#logoutButton",
     "#currentUserLabel",
     "#syncStatus",
-    "#onlineStatus",
-    "#client-home",
-    "#training",
-    "#nutrition",
-    "#trackers",
-    "#steps",
-    "#progress",
-    "#wellbeing",
-    "#sleep",
-    "#water",
-    "#agenda",
-    "#settings"
+    "#onlineStatus"
   ];
+  const PHASE1_CLIENT_VIEW_SELECTORS = {
+    "client-home": "#client-home",
+    training: "#training",
+    nutrition: "#nutrition",
+    trackers: "#trackers",
+    steps: "#steps",
+    progress: "#progress",
+    wellbeing: "#wellbeing",
+    sleep: "#sleep",
+    water: "#water",
+    agenda: "#agenda",
+    settings: "#settings"
+  };
   const PHASE1_CLIENT_COPY_KEYS = Object.keys(PHASE1_CLIENT_I18N.nl);
+  const phase1ClientCopyCache = {
+    language: "",
+    exact: new Map(),
+    replacements: []
+  };
+  let phase1ClientCopyPending = false;
+  let phase1ClientCopyScheduled = false;
+  let phase1RenderAllDepth = 0;
 
-  function phase1ClientReplacementEntries() {
-    const entries = [];
+  function phase1ClientCopyMaps() {
+    const language = phase1Settings().language;
+    if (phase1ClientCopyCache.language === language) return phase1ClientCopyCache;
+    const exact = new Map();
+    const replacements = [];
     PHASE1_CLIENT_COPY_KEYS.forEach((key) => {
       const to = phase1Text(key);
       PHASE1_LANGUAGES.forEach((language) => {
         const from = PHASE1_I18N[language]?.[key];
-        if (from && from !== to) entries.push({ from, to });
+        if (from) exact.set(from, key);
+        if (from && from !== to) replacements.push({ from, to });
       });
     });
-    return entries.sort((a, b) => b.from.length - a.from.length);
+    phase1ClientCopyCache.language = language;
+    phase1ClientCopyCache.exact = exact;
+    phase1ClientCopyCache.replacements = replacements.sort((a, b) => b.from.length - a.from.length);
+    return phase1ClientCopyCache;
+  }
+
+  function phase1ActiveClientSurfaceSelectors() {
+    const selectors = PHASE1_CLIENT_GLOBAL_SELECTORS.slice();
+    const activeSelector = PHASE1_CLIENT_VIEW_SELECTORS[currentView];
+    if (activeSelector) selectors.push(activeSelector);
+    return selectors;
   }
 
   function phase1ReplaceEvery(value, from, to) {
@@ -1638,12 +1665,11 @@
     let core = original.trim();
     if (!core) return original;
 
-    const exact = PHASE1_CLIENT_COPY_KEYS.find((key) => {
-      return PHASE1_LANGUAGES.some((language) => PHASE1_I18N[language]?.[key] === core);
-    });
+    const maps = phase1ClientCopyMaps();
+    const exact = maps.exact.get(core);
     if (exact) return `${leading}${phase1Text(exact)}${trailing}`;
 
-    phase1ClientReplacementEntries().forEach(({ from, to }) => {
+    maps.replacements.forEach(({ from, to }) => {
       core = phase1ReplaceEvery(core, from, to);
     });
     core = phase1TranslateClientDynamicText(core);
@@ -1682,7 +1708,7 @@
   }
 
   function phase1ApplyClientAgendaCopy() {
-    if (!isLoggedIn() || state.ui.role !== "client") return;
+    if (!isLoggedIn() || state.ui.role !== "client" || currentView !== "agenda") return;
     phase1SetText("#agenda .view-head .eyebrow", phase1Text("clientPlanning"));
     phase1SetText("#agenda .view-head h1", phase1Text("clientMyAppointments"));
     phase1SetText("#agenda .agenda-settings-button", phase1Text("clientNewAppointmentType"));
@@ -1749,10 +1775,37 @@
     phase1UpdateNavigationLabel();
     if (!isLoggedIn() || state.ui.role !== "client") return;
     phase1SetText("#logoutButton", phase1Text("clientLogout"));
-    PHASE1_CLIENT_SURFACE_SELECTORS.forEach((selector) => {
+    phase1ActiveClientSurfaceSelectors().forEach((selector) => {
       phase1TranslateClientRoot(document.querySelector(selector));
     });
     phase1ApplyClientAgendaCopy();
+  }
+
+  function phase1RunScheduledClientShellCopy() {
+    phase1ClientCopyScheduled = false;
+    if (!phase1ClientCopyPending) return;
+    phase1ClientCopyPending = false;
+    phase1ApplyClientShellCopy();
+  }
+
+  function phase1RequestClientShellCopy({ immediate = false } = {}) {
+    phase1UpdateNavigationLabel();
+    if (!isLoggedIn() || state.ui.role !== "client") return;
+    phase1ClientCopyPending = true;
+    if (phase1RenderAllDepth > 0 && !immediate) return;
+    if (immediate) {
+      phase1ClientCopyScheduled = false;
+      phase1ClientCopyPending = false;
+      phase1ApplyClientShellCopy();
+      return;
+    }
+    if (phase1ClientCopyScheduled) return;
+    phase1ClientCopyScheduled = true;
+    if (typeof window.requestAnimationFrame === "function") {
+      window.requestAnimationFrame(phase1RunScheduledClientShellCopy);
+    } else {
+      window.setTimeout(phase1RunScheduledClientShellCopy, 0);
+    }
   }
 
   const phase1OriginalRenderClientHome = renderClientHome;
@@ -1760,13 +1813,13 @@
     phase1OriginalRenderClientHome();
     const selected = client();
     if (!isLoggedIn() || state.ui.role !== "client" || !hasSelectedClient(selected)) {
-      phase1ApplyClientShellCopy();
+      phase1RequestClientShellCopy();
       return;
     }
     const target = $("#clientSummary");
     if (!target) return;
     target.insertAdjacentHTML("afterbegin", phase1RenderOnboardingPanel(selected));
-    phase1ApplyClientShellCopy();
+    phase1RequestClientShellCopy();
   };
 
   function phase1RenderAccountSettingsPanel() {
@@ -1831,7 +1884,7 @@
   renderNav = function renderNavPhase1() {
     phase1UpdateNavigationLabel();
     phase1OriginalRenderNav();
-    phase1ApplyClientShellCopy();
+    phase1RequestClientShellCopy();
   };
 
   const phase1OriginalRenderAll = renderAll;
@@ -1839,15 +1892,20 @@
     phase1InstallStyles();
     state = phase1NormalizeState(state);
     phase1UpdateNavigationLabel();
-    phase1OriginalRenderAll();
+    phase1RenderAllDepth += 1;
+    try {
+      phase1OriginalRenderAll();
+    } finally {
+      phase1RenderAllDepth -= 1;
+    }
     phase1ApplyAuthCopy();
-    phase1ApplyClientShellCopy();
+    phase1RequestClientShellCopy({ immediate: true });
   };
 
   function phase1WrapClientRenderer(originalRender) {
     return function renderClientSurfacePhase1(...args) {
       const result = originalRender.apply(this, args);
-      phase1ApplyClientShellCopy();
+      phase1RequestClientShellCopy();
       return result;
     };
   }

@@ -38,7 +38,7 @@
   source = source.replace('const FMZ_CONFIG = window.FMZ_CONFIG || {};', stagingConfigSource);
   source = source.replace(/const APP_AUTH_REDIRECT_URL = "[^"]+";/, stagingRedirectSource);
 
-  const phase1PatchUrl = new URL("assets/phase1-foundation.js?v=20260815-phase1-final-i18n1", document.baseURI);
+  const phase1PatchUrl = new URL("assets/phase1-foundation.js?v=20260815-phase1-perf1", document.baseURI);
   const phase1PatchResponse = await fetch(phase1PatchUrl, { cache: "no-cache" });
   if (!phase1PatchResponse.ok) {
     throw new Error(`Phase 1 foundation laden mislukt: ${phase1PatchResponse.status}`);
