@@ -663,6 +663,34 @@
     renderRoleVisibility();
   };
 
+  async function phase1ReturnRecoveryToLogin(message) {
+    try {
+      await supabaseClient.auth.signOut({ scope: "local" });
+    } catch (error) {
+      console.warn("Recovery sessie lokaal afsluiten mislukt", error);
+    }
+    onlineProfile = null;
+    onlineReady = false;
+    onlineErrorMessage = "";
+    state.ui.loggedIn = false;
+    state.ui.authEmail = "";
+    state.ui.authName = "";
+    passwordSetupRequired = false;
+    passwordSetupContext = "";
+    phase1ClearAuthUrl();
+    renderAll();
+    showAuthPanel("login");
+    const loginMessage = $("#loginMessage");
+    if (loginMessage) {
+      loginMessage.className = "login-message ok";
+      loginMessage.textContent = "Wachtwoord gewijzigd. Je kunt nu inloggen.";
+    }
+    if (message && message !== loginMessage) {
+      message.className = "login-message";
+      message.textContent = "";
+    }
+  }
+
   async function phase1CompletePasswordSetup(setupContext, message) {
     const { data: sessionData, error: sessionError } = await supabaseClient.auth.getSession();
     if (sessionError) throw sessionError;
@@ -671,6 +699,11 @@
     if (userError && sessionData?.session) throw userError;
 
     finishPasswordSetup();
+
+    if (setupContext === "recovery") {
+      await phase1ReturnRecoveryToLogin(message);
+      return;
+    }
 
     if (!sessionData?.session || !userData?.user) {
       onlineProfile = null;
