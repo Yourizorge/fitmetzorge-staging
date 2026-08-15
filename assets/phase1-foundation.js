@@ -343,6 +343,7 @@
       clientNavNutrition: "Voeding",
       clientNavTrackers: "Trackers",
       clientNavAgenda: "Agenda",
+      clientLogout: "Uitloggen",
       clientToday: "Vandaag",
       clientMember: "Lid",
       clientGoodMorning: "Goedemorgen",
@@ -497,6 +498,43 @@
       clientNoAppointments: "Er staan nog geen afspraken ingepland.",
       clientNewAppointmentType: "Nieuwe afspraaksoort",
       clientNewAppointment: "Nieuwe afspraak",
+      clientAgendaLibrary: "Agenda bibliotheek",
+      clientAppointmentTypes: "Afspraaksoorten",
+      clientClickToPlan: "Klik om direct in te plannen",
+      clientAppointmentType: "Afspraaksoort",
+      clientDurationMin: "Duur min",
+      clientPrice: "Prijs",
+      clientCategory: "Categorie",
+      clientDefaultLocation: "Standaardlocatie",
+      clientMaxPlaces: "Max plaatsen",
+      clientColor: "Kleur",
+      clientAdd: "Toevoegen",
+      clientWeekPlanning: "Weekplanning",
+      clientWeekAgenda: "Weekagenda",
+      clientPrevious: "Vorige",
+      clientNext: "Volgende",
+      clientPreviousAppointments: "Vorige afspraken",
+      clientNoPreviousAppointments: "Geen vorige afspraken.",
+      clientNewBooking: "Nieuwe boeking",
+      clientPlanAppointment: "Afspraak plannen",
+      clientFourSteps: "4 stappen",
+      clientCloseAppointmentPopup: "Sluit afspraak pop-up",
+      clientBasicDetails: "1. Basisgegevens",
+      clientDate: "Datum",
+      clientTime: "Tijd",
+      clientAppointmentTypeLabel: "Afspraaksoort",
+      clientDescription: "Omschrijving",
+      clientLocation: "Locatie",
+      clientRate: "Tarief",
+      clientManualAmount: "Bedrag handmatig",
+      clientOptional: "Optioneel",
+      clientRepeat: "Herhalen",
+      clientDontRepeat: "Niet herhalen",
+      clientWeekly: "Wekelijks",
+      clientEvery2Weeks: "Elke 2 weken",
+      clientMonthly: "Maandelijks",
+      clientConfirmation: "4. Bevestiging",
+      clientScheduleAppointment: "Afspraak inplannen",
       clientOnlineModeActive: "Online modus actief: accounts en data synchroniseren via Supabase.",
       clientDemoModeActive: "Demo modus: vul config.js met Supabase-gegevens om accounts tussen apparaten te synchroniseren.",
       clientLocalDemo: "Lokale demo",
@@ -540,6 +578,7 @@
       clientNavNutrition: "Nutrition",
       clientNavTrackers: "Trackers",
       clientNavAgenda: "Agenda",
+      clientLogout: "Log out",
       clientToday: "Today",
       clientMember: "Member",
       clientGoodMorning: "Good morning",
@@ -694,6 +733,43 @@
       clientNoAppointments: "No appointments have been scheduled yet.",
       clientNewAppointmentType: "New appointment type",
       clientNewAppointment: "New appointment",
+      clientAgendaLibrary: "Agenda library",
+      clientAppointmentTypes: "Appointment types",
+      clientClickToPlan: "Click to plan directly",
+      clientAppointmentType: "Appointment type",
+      clientDurationMin: "Duration min",
+      clientPrice: "Price",
+      clientCategory: "Category",
+      clientDefaultLocation: "Default location",
+      clientMaxPlaces: "Max places",
+      clientColor: "Color",
+      clientAdd: "Add",
+      clientWeekPlanning: "Week planning",
+      clientWeekAgenda: "Week agenda",
+      clientPrevious: "Previous",
+      clientNext: "Next",
+      clientPreviousAppointments: "Previous appointments",
+      clientNoPreviousAppointments: "No previous appointments.",
+      clientNewBooking: "New booking",
+      clientPlanAppointment: "Plan appointment",
+      clientFourSteps: "4 steps",
+      clientCloseAppointmentPopup: "Close appointment pop-up",
+      clientBasicDetails: "1. Basic details",
+      clientDate: "Date",
+      clientTime: "Time",
+      clientAppointmentTypeLabel: "Appointment type",
+      clientDescription: "Description",
+      clientLocation: "Location",
+      clientRate: "Rate",
+      clientManualAmount: "Manual amount",
+      clientOptional: "Optional",
+      clientRepeat: "Repeat",
+      clientDontRepeat: "Do not repeat",
+      clientWeekly: "Weekly",
+      clientEvery2Weeks: "Every 2 weeks",
+      clientMonthly: "Monthly",
+      clientConfirmation: "4. Confirmation",
+      clientScheduleAppointment: "Schedule appointment",
       clientOnlineModeActive: "Online mode active: accounts and data sync through Supabase.",
       clientDemoModeActive: "Demo mode: fill config.js with Supabase details to sync accounts between devices.",
       clientLocalDemo: "Local demo",
@@ -737,6 +813,7 @@
       clientNavNutrition: "Ernaehrung",
       clientNavTrackers: "Tracker",
       clientNavAgenda: "Agenda",
+      clientLogout: "Abmelden",
       clientToday: "Heute",
       clientMember: "Mitglied",
       clientGoodMorning: "Guten Morgen",
@@ -891,6 +968,43 @@
       clientNoAppointments: "Es sind noch keine Termine geplant.",
       clientNewAppointmentType: "Neue Terminart",
       clientNewAppointment: "Neuer Termin",
+      clientAgendaLibrary: "Agenda-Bibliothek",
+      clientAppointmentTypes: "Terminarten",
+      clientClickToPlan: "Klicken, um direkt zu planen",
+      clientAppointmentType: "Terminart",
+      clientDurationMin: "Dauer Min.",
+      clientPrice: "Preis",
+      clientCategory: "Kategorie",
+      clientDefaultLocation: "Standardort",
+      clientMaxPlaces: "Max. Plaetze",
+      clientColor: "Farbe",
+      clientAdd: "Hinzufuegen",
+      clientWeekPlanning: "Wochenplanung",
+      clientWeekAgenda: "Wochenagenda",
+      clientPrevious: "Vorige",
+      clientNext: "Naechste",
+      clientPreviousAppointments: "Vorige Termine",
+      clientNoPreviousAppointments: "Keine vorigen Termine.",
+      clientNewBooking: "Neue Buchung",
+      clientPlanAppointment: "Termin planen",
+      clientFourSteps: "4 Schritte",
+      clientCloseAppointmentPopup: "Termin-Popup schliessen",
+      clientBasicDetails: "1. Basisdaten",
+      clientDate: "Datum",
+      clientTime: "Zeit",
+      clientAppointmentTypeLabel: "Terminart",
+      clientDescription: "Beschreibung",
+      clientLocation: "Ort",
+      clientRate: "Tarif",
+      clientManualAmount: "Manueller Betrag",
+      clientOptional: "Optional",
+      clientRepeat: "Wiederholen",
+      clientDontRepeat: "Nicht wiederholen",
+      clientWeekly: "Woechentlich",
+      clientEvery2Weeks: "Alle 2 Wochen",
+      clientMonthly: "Monatlich",
+      clientConfirmation: "4. Bestaetigung",
+      clientScheduleAppointment: "Termin einplanen",
       clientOnlineModeActive: "Online-Modus aktiv: Konten und Daten synchronisieren ueber Supabase.",
       clientDemoModeActive: "Demo-Modus: Trage Supabase-Daten in config.js ein, um Konten zwischen Geraeten zu synchronisieren.",
       clientLocalDemo: "Lokale Demo",
@@ -1420,6 +1534,7 @@
   };
   const PHASE1_CLIENT_SURFACE_SELECTORS = [
     "#nav",
+    "#logoutButton",
     "#currentUserLabel",
     "#syncStatus",
     "#onlineStatus",
@@ -1566,12 +1681,78 @@
     });
   }
 
+  function phase1ApplyClientAgendaCopy() {
+    if (!isLoggedIn() || state.ui.role !== "client") return;
+    phase1SetText("#agenda .view-head .eyebrow", phase1Text("clientPlanning"));
+    phase1SetText("#agenda .view-head h1", phase1Text("clientMyAppointments"));
+    phase1SetText("#agenda .agenda-settings-button", phase1Text("clientNewAppointmentType"));
+    phase1SetText("#agenda .agenda-new-button", phase1Text("clientNewAppointment"));
+    phase1SetText("#agendaPanelTitle", phase1Text("clientMyAppointments"));
+    phase1SetText("#previousAppointmentsBlock summary", phase1Text("clientPreviousAppointments"));
+    phase1SetText("#appointmentTypeManager .panel-head .eyebrow", phase1Text("clientAgendaLibrary"));
+    phase1SetText("#appointmentTypeManager .panel-head h2", phase1Text("clientAppointmentTypes"));
+    phase1SetText("#appointmentTypeManager .panel-head .muted", phase1Text("clientClickToPlan"));
+    phase1SetPlaceholder('#appointmentTypeForm [name="name"]', phase1Text("clientAppointmentType"));
+    phase1SetPlaceholder('#appointmentTypeForm [name="duration"]', phase1Text("clientDurationMin"));
+    phase1SetPlaceholder('#appointmentTypeForm [name="price"]', phase1Text("clientPrice"));
+    phase1SetPlaceholder('#appointmentTypeForm [name="category"]', phase1Text("clientCategory"));
+    phase1SetPlaceholder('#appointmentTypeForm [name="location"]', phase1Text("clientDefaultLocation"));
+    phase1SetPlaceholder('#appointmentTypeForm [name="capacity"]', phase1Text("clientMaxPlaces"));
+    const colorInput = document.querySelector('#appointmentTypeForm [name="color"]');
+    if (colorInput) colorInput.title = phase1Text("clientColor");
+    phase1SetText("#appointmentTypeForm button", phase1Text("clientAdd"));
+    phase1SetText("#agenda .agenda-calendar-head .eyebrow", phase1Text("clientWeekPlanning"));
+    phase1SetText("#prevWeek", phase1Text("clientPrevious"));
+    phase1SetText("#todayWeek", phase1Text("clientThisWeek"));
+    phase1SetText("#nextWeek", phase1Text("clientNext"));
+    phase1SetText("#appointmentForm .agenda-form-head .eyebrow", phase1Text("clientNewBooking"));
+    phase1SetText("#appointmentForm .agenda-form-head h2", phase1Text("clientPlanAppointment"));
+    phase1SetText("#appointmentForm .agenda-form-pill", phase1Text("clientFourSteps"));
+    const closeButton = document.querySelector('#appointmentForm [data-action="close-appointment-modal"]');
+    if (closeButton) closeButton.setAttribute("aria-label", phase1Text("clientCloseAppointmentPopup"));
+    const stepLabels = document.querySelectorAll("#appointmentForm .form-step-label");
+    [
+      "clientBasicDetails",
+      "clientPrice",
+      "clientRepeat",
+      "clientConfirmation"
+    ].forEach((key, index) => {
+      if (stepLabels[index]) stepLabels[index].textContent = phase1Text(key);
+    });
+    [
+      ["clientId", "authClient"],
+      ["date", "clientDate"],
+      ["time", "clientTime"],
+      ["appointmentTypeId", "clientAppointmentTypeLabel"],
+      ["type", "clientDescription"],
+      ["location", "clientLocation"],
+      ["rateId", "clientRate"],
+      ["amount", "clientManualAmount"],
+      ["repeat", "clientRepeat"]
+    ].forEach(([fieldName, key]) => phase1SetFieldLabel("#appointmentForm", fieldName, phase1Text(key)));
+    phase1SetPlaceholder('#appointmentForm [name="type"]', phase1Text("clientNote"));
+    phase1SetPlaceholder('#appointmentForm [name="location"]', phase1Text("clientDefaultLocation"));
+    phase1SetPlaceholder('#appointmentForm [name="amount"]', phase1Text("clientOptional"));
+    phase1SetText('#appointmentForm button[type="submit"]', phase1Text("clientScheduleAppointment"));
+    const repeatOptions = document.querySelectorAll('#appointmentForm [name="repeat"] option');
+    [
+      "clientDontRepeat",
+      "clientWeekly",
+      "clientEvery2Weeks",
+      "clientMonthly"
+    ].forEach((key, index) => {
+      if (repeatOptions[index]) repeatOptions[index].textContent = phase1Text(key);
+    });
+  }
+
   function phase1ApplyClientShellCopy() {
     phase1UpdateNavigationLabel();
     if (!isLoggedIn() || state.ui.role !== "client") return;
+    phase1SetText("#logoutButton", phase1Text("clientLogout"));
     PHASE1_CLIENT_SURFACE_SELECTORS.forEach((selector) => {
       phase1TranslateClientRoot(document.querySelector(selector));
     });
+    phase1ApplyClientAgendaCopy();
   }
 
   const phase1OriginalRenderClientHome = renderClientHome;
