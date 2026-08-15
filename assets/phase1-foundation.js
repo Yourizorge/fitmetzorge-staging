@@ -13,7 +13,12 @@
       saved: "Basisprofiel opgeslagen",
       migrationNeeded: "Phase 1 database-migration is nog nodig voor online profielopslag.",
       complete: "Compleet",
-      incomplete: "Nog aanvullen"
+      incomplete: "Nog aanvullen",
+      country: "Land/regio",
+      units: "Eenheden",
+      metric: "Metrisch",
+      saveAccountSettings: "Accountinstellingen opslaan",
+      accountSettingsSaved: "Accountinstellingen opgeslagen"
     },
     en: {
       onboardingTitle: "My base profile",
@@ -24,7 +29,12 @@
       saved: "Base profile saved",
       migrationNeeded: "Phase 1 database migration is still needed for online profile storage.",
       complete: "Complete",
-      incomplete: "Needs input"
+      incomplete: "Needs input",
+      country: "Country/region",
+      units: "Units",
+      metric: "Metric",
+      saveAccountSettings: "Save account settings",
+      accountSettingsSaved: "Account settings saved"
     },
     de: {
       onboardingTitle: "Mein Basisprofil",
@@ -35,7 +45,12 @@
       saved: "Basisprofil gespeichert",
       migrationNeeded: "Phase 1 Datenbankmigration ist noch fuer Online-Profilspeicherung erforderlich.",
       complete: "Vollstaendig",
-      incomplete: "Noch ergaenzen"
+      incomplete: "Noch ergaenzen",
+      country: "Land/Region",
+      units: "Einheiten",
+      metric: "Metrisch",
+      saveAccountSettings: "Kontoeinstellungen speichern",
+      accountSettingsSaved: "Kontoeinstellungen gespeichert"
     }
   };
 
@@ -45,17 +60,29 @@
     keys: Object.keys(PHASE1_I18N.nl)
   };
 
-  function phase1Settings() {
-    state.accountSettings = {
+  function phase1NormalizeLanguage(language) {
+    return PHASE1_LANGUAGES.includes(language) ? language : "nl";
+  }
+
+  function phase1AccountSettingsFrom(source = {}, fallback = {}) {
+    return {
       language: "nl",
       country: "Nederland",
       unitSystem: "metric",
-      ...(state.accountSettings || {})
+      ...(fallback || {}),
+      language: phase1NormalizeLanguage(source.language || fallback.language || "nl"),
+      country: String(source.country || fallback.country || "Nederland").trim() || "Nederland",
+      unitSystem: source.unit_system || source.unitSystem || fallback.unitSystem || "metric"
     };
-    if (!PHASE1_LANGUAGES.includes(state.accountSettings.language)) {
-      state.accountSettings.language = "nl";
-    }
+  }
+
+  function phase1ApplyAccountSettings(source = {}) {
+    state.accountSettings = phase1AccountSettingsFrom(source, state.accountSettings || {});
     return state.accountSettings;
+  }
+
+  function phase1Settings() {
+    return phase1ApplyAccountSettings(state.accountSettings || {});
   }
 
   function phase1Text(key) {
@@ -223,13 +250,7 @@
   }
 
   function phase1NormalizeState(next) {
-    next.accountSettings = {
-      language: "nl",
-      country: "Nederland",
-      unitSystem: "metric",
-      ...(next.accountSettings || {})
-    };
-    if (!PHASE1_LANGUAGES.includes(next.accountSettings.language)) next.accountSettings.language = "nl";
+    next.accountSettings = phase1AccountSettingsFrom(next.accountSettings || {}, next.accountSettings || {});
     next.entitlements = next.entitlements && typeof next.entitlements === "object"
       ? next.entitlements
       : { clients: {}, users: {} };
@@ -442,10 +463,10 @@
         </div>
         <form id="phase1AccountSettingsForm" class="settings-form-grid">
           <label class="field"><span>${escapeHTML(phase1Text("language"))}</span><select name="language">${phase1LanguageOptions(settings.language)}</select></label>
-          <label class="field"><span>Land/regio</span><input name="country" value="${escapeHTML(settings.country || "Nederland")}" /></label>
-          <label class="field"><span>Eenheden</span><select name="unitSystem"><option value="metric" ${settings.unitSystem === "metric" ? "selected" : ""}>Metrisch</option></select></label>
+          <label class="field"><span>${escapeHTML(phase1Text("country"))}</span><input name="country" value="${escapeHTML(settings.country || "Nederland")}" /></label>
+          <label class="field"><span>${escapeHTML(phase1Text("units"))}</span><select name="unitSystem"><option value="metric" ${settings.unitSystem === "metric" ? "selected" : ""}>${escapeHTML(phase1Text("metric"))}</option></select></label>
           <div class="settings-save-row full">
-            <button class="primary-btn" type="submit">Accountinstellingen opslaan</button>
+            <button class="primary-btn" type="submit">${escapeHTML(phase1Text("saveAccountSettings"))}</button>
             <span class="save-feedback" data-save-feedback="phase1-account-settings"></span>
           </div>
         </form>
@@ -551,13 +572,33 @@
       };
     }
     if (data?.profile) onlineProfile = data.profile;
+    if (data?.settings) phase1ApplyAccountSettings(data.settings);
     return { ok: true, data };
+  }
+
+  async function phase1HydrateAccountSettings(profile) {
+    if (!isOnlineMode() || !supabaseClient || !profile?.id) return null;
+    try {
+      const { data, error } = await supabaseClient
+        .from("user_settings")
+        .select("language,country,unit_system")
+        .eq("user_id", profile.id)
+        .maybeSingle();
+      if (error) throw error;
+      if (data) phase1ApplyAccountSettings(data);
+      return data;
+    } catch (error) {
+      console.warn("Phase 1 accountinstellingen laden mislukt", error);
+      return null;
+    }
   }
 
   const phase1OriginalEnsureOnlineProfile = ensureOnlineProfile;
   ensureOnlineProfile = async function ensureOnlineProfilePhase1(roleHint = "", nameHint = "") {
     try {
-      return await phase1OriginalEnsureOnlineProfile(roleHint, nameHint);
+      const profile = await phase1OriginalEnsureOnlineProfile(roleHint, nameHint);
+      await phase1HydrateAccountSettings(profile);
+      return profile;
     } catch (error) {
       const intendedRole = roleHint || "client";
       if (intendedRole !== "client") throw error;
@@ -574,6 +615,7 @@
         throw new Error(`${message} Oorspronkelijke fout: ${error.message}`);
       }
       onlineProfile = result.data?.profile;
+      if (result.data?.settings) phase1ApplyAccountSettings(result.data.settings);
       if (!onlineProfile) throw error;
       return onlineProfile;
     }
@@ -581,6 +623,7 @@
 
   const phase1OriginalLoadOnlineWorkspace = loadOnlineWorkspace;
   loadOnlineWorkspace = async function loadOnlineWorkspacePhase1(profile) {
+    const remoteSettings = await phase1HydrateAccountSettings(profile);
     if (profile?.role === "client" && !profile.trainer_id) {
       const freeClient = createClientProfile({
         name: profile.name || profile.email || "FitMetZorge gebruiker",
@@ -601,6 +644,7 @@
         selectedClientId: freeClient.id,
         theme: state.ui.theme || "dark"
       };
+      freeState.accountSettings = phase1AccountSettingsFrom(remoteSettings || state.accountSettings || {}, state.accountSettings || {});
       state = normalizeState(freeState);
       currentView = "client-home";
       onlineProfile = profile;
@@ -611,7 +655,14 @@
       showView(currentView);
       return;
     }
-    return phase1OriginalLoadOnlineWorkspace(profile);
+    await phase1OriginalLoadOnlineWorkspace(profile);
+    if (remoteSettings) {
+      phase1ApplyAccountSettings(remoteSettings);
+      saveState();
+      renderNav();
+      renderAll();
+      showView(currentView);
+    }
   };
 
   const phase1OriginalSaveStateToCloud = saveStateToCloud;
@@ -917,19 +968,29 @@
       event.preventDefault();
       const data = new FormData(event.target);
       const settings = phase1Settings();
-      settings.language = PHASE1_LANGUAGES.includes(data.get("language")) ? data.get("language") : "nl";
+      settings.language = phase1NormalizeLanguage(data.get("language"));
       settings.country = String(data.get("country") || "Nederland").trim() || "Nederland";
       settings.unitSystem = "metric";
       const syncResult = await phase1SyncAccountFoundation(client());
-      await persistActionFeedback("phase1-account-settings", "Accountinstellingen opgeslagen", renderSettingsPage);
       if (!syncResult.ok) {
+        renderAll();
         setSaveFeedback(
           "phase1-account-settings",
           syncResult.migrationNeeded ? phase1Text("migrationNeeded") : `Online instellingen opslaan mislukt: ${syncResult.error.message}`,
           true
         );
+        return;
       }
+      saveState();
+      renderAll();
+      setSaveFeedback("phase1-account-settings", phase1Text("accountSettingsSaved"));
     }
+  });
+
+  document.addEventListener("change", (event) => {
+    if (!event.target?.matches('#phase1AccountSettingsForm select[name="language"]')) return;
+    phase1Settings().language = phase1NormalizeLanguage(event.target.value);
+    renderSettingsPage();
   });
 
   document.addEventListener("input", (event) => {
