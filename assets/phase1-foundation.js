@@ -336,9 +336,607 @@
     }
   };
 
+  const PHASE1_CLIENT_I18N = {
+    nl: {
+      clientNavDashboard: "Mijn dashboard",
+      clientNavTraining: "Training",
+      clientNavNutrition: "Voeding",
+      clientNavTrackers: "Trackers",
+      clientNavAgenda: "Agenda",
+      clientToday: "Vandaag",
+      clientMember: "Lid",
+      clientGoodMorning: "Goedemorgen",
+      clientDashboardPlanFallback: "Je training staat klaar. Vul vandaag je training, voeding en trackers in.",
+      clientPlanNeedsInput: "Plan nog invullen.",
+      clientPackagePrefix: "Pakket:",
+      clientTrainingStart: "Training starten",
+      clientNutritionFill: "Voeding invullen",
+      clientTrackersFill: "Trackers invullen",
+      clientStepsWater: "Stappen + water",
+      clientStepsWaterIntro: "Samen in een snelle tracker.",
+      clientAllFill: "Alles invullen",
+      clientWellbeingCheckIn: "Welzijn check-in",
+      clientWellbeingIntro: "Kies per onderdeel een score van 1 tot 10.",
+      clientFilled: "Ingevuld",
+      clientNeedsFill: "Nog invullen",
+      clientEnergy: "Energie",
+      clientStress: "Stress",
+      clientMotivation: "Motivatie",
+      clientMood: "Stemming",
+      clientMoodGood: "Goed",
+      clientMoodNeutral: "Neutraal",
+      clientMoodLow: "Laag",
+      clientSaveWellbeing: "Welzijn opslaan",
+      clientSleep: "Slaap",
+      clientSleepTracker: "Slaaptracker",
+      clientSleepScore: "Slaapcijfer",
+      clientDayWeight: "Daggewicht",
+      clientWeeklyAverage: "Weekgemiddelde",
+      clientNextAppointment: "Volgende afspraak",
+      clientAppointment: "Afspraak",
+      clientNotScheduled: "Nog niet ingepland",
+      clientProfileDetails: "Mijn profielgegevens",
+      clientPhone: "Telefoon",
+      clientBirthDate: "Geboortedatum",
+      clientHeight: "Lengte",
+      clientCurrentWeight: "Huidig gewicht",
+      clientAddress: "Adres",
+      clientEmergencyContact: "Noodcontact",
+      clientPackage: "Pakket",
+      clientInjuriesNotes: "Blessures/opmerkingen",
+      clientNoLinkedClient: "Er is nog geen client gekoppeld aan dit account.",
+      clientPreviousWeek: "Vorige week",
+      clientThisWeek: "Deze week",
+      clientNextWeek: "Volgende week",
+      clientTracker: "Tracker",
+      clientSchema: "Schema",
+      clientTrainingSchedule: "Trainingsschema",
+      clientDays: "Dagen",
+      clientPlan: "Plan",
+      clientSteps: "Stappen",
+      clientTrainerAdvice: "Advies van trainer",
+      clientTrainerAdviceFallback: "Focus op techniek, controle en eerlijk invullen wat je echt hebt gedaan.",
+      clientNew: "Nieuw",
+      clientExercise: "Oefening",
+      clientTrainingScheduleLabel: "Trainingsschema",
+      clientTargetKg: "Doel kg",
+      clientRest: "Rust",
+      clientDoneSets: "Gedane sets",
+      clientDoneReps: "Gedane reps",
+      clientDoneWeight: "Gedaan gewicht",
+      clientNotes: "Opmerkingen",
+      clientNotesPlaceholder: "Bijv. zwaar, pijnvrij, techniek voelde goed",
+      clientNoExercisesDay: "Geen oefeningen op deze dag.",
+      clientNoClientTraining: "Voeg eerst een client toe voordat je een trainingsschema beheert.",
+      clientAttended: "Geweest",
+      clientNotAttended: "Niet geweest",
+      clientNotFilled: "Nog niet ingevuld",
+      clientSets: "Sets",
+      clientReps: "Reps",
+      clientTempo: "Tempo",
+      clientNutrition: "Voeding",
+      clientNutritionPlan: "Voedingsplan",
+      clientNutritionPlanClient: "Voedingsplan client",
+      clientWhatClientShouldEat: "Wat de client moet eten",
+      clientNutritionLog: "Voedingslog",
+      clientDailyMealSave: "Per dag en per maaltijd opslaan",
+      clientBasedOnTrainerPlan: "Gebaseerd op het voedingsschema van de trainer",
+      clientKcalSaved: "Kcal opgeslagen",
+      clientProtein: "Eiwit",
+      clientCarbs: "KH",
+      clientFat: "Vet",
+      clientSavedSub: "opgeslagen",
+      clientThisWeekLower: "deze week",
+      clientChoosePlanOption: "Kies optie uit schema",
+      clientAteAsPlanned: "Gegeten zoals plan",
+      clientAteDifferent: "Anders gegeten",
+      clientNotEaten: "Niet gegeten",
+      clientNote: "Opmerking",
+      clientSaved: "Opgeslagen",
+      clientNoFoodLoggedWeek: "In deze week is nog niets gelogd.",
+      clientNoNutritionPlan: "Nog geen voedingsschema.",
+      clientNoNutritionReady: "Je trainer heeft nog geen voedingsschema klaargezet.",
+      clientNoFoodClient: "Voeg eerst een client toe om voeding te loggen.",
+      clientMeal: "Maaltijd",
+      clientBreakfast: "Ontbijt",
+      clientSnack: "Tussendoor",
+      clientLunch: "Middageten",
+      clientDinner: "Avondeten",
+      clientLateSnack: "Late night snack",
+      clientAllByDay: "Alles per dag invullen",
+      clientTrackerIntro: "Kies de week bovenaan. Je trainer ziet dezelfde opgeslagen data terug.",
+      clientChooseTrackerDay: "Kies dag voor tracker invoer",
+      clientStepsToday: "Stappen vandaag",
+      clientStepsSave: "Stappen opslaan",
+      clientWaterToday: "Water vandaag",
+      clientWaterSave: "Water opslaan",
+      clientSleepSave: "Slaap opslaan",
+      clientProgressSave: "Voortgang opslaan",
+      clientProgress: "Voortgang",
+      clientMeasurements: "Metingen",
+      clientWeight: "Gewicht",
+      clientWaist: "Taille",
+      clientChest: "Borst",
+      clientArm: "Arm",
+      clientLeg: "Been",
+      clientDifference: "Verschil",
+      clientArmLeft: "Arm links",
+      clientArmRight: "Arm rechts",
+      clientLegLeft: "Been links",
+      clientLegRight: "Been rechts",
+      clientFront: "Voorkant",
+      clientSide: "Zijkant",
+      clientBack: "Achterkant",
+      clientExtraPhoto: "Extra foto",
+      clientNoPhoto: "Nog geen foto",
+      clientPhotoHint: "Tik om foto uit je galerij of bestanden te kiezen.",
+      clientOneToTen: "1 tot 10",
+      clientHours: "Uren",
+      clientSleepScoreOneToTen: "Slaapcijfer 1-10",
+      clientToBed: "Naar bed",
+      clientAwake: "Wakker",
+      clientQuality: "Kwaliteit",
+      clientRecovery: "Herstel",
+      clientAverageAbbr: "Gem.",
+      clientGoodStatus: "Goed",
+      clientNeedsWorkStatus: "Werk aan",
+      clientLowStatus: "Laag",
+      clientDailyStepGoal: "Dagdoel stappen",
+      clientTargetWeight: "Doelgewicht",
+      clientGoalWellbeing: "Doel welzijn",
+      clientGoalSleep: "Doel slaap",
+      clientDailyWaterGoal: "Dagdoel water",
+      clientWeeklyWaterGoal: "Weekdoel water",
+      clientAverage: "Gemiddelde",
+      clientDailyWeight: "Dagelijks gewicht",
+      clientWeekMeasurement: "Weekmeting",
+      clientSaveMeasurement: "Meting opslaan",
+      clientPlanning: "Planning",
+      clientProfessionalPlanning: "Professionele planning als hart van de app.",
+      clientMyAppointments: "Mijn afspraken",
+      clientNoAppointments: "Er staan nog geen afspraken ingepland.",
+      clientNewAppointmentType: "Nieuwe afspraaksoort",
+      clientNewAppointment: "Nieuwe afspraak",
+      clientOnlineModeActive: "Online modus actief: accounts en data synchroniseren via Supabase.",
+      clientDemoModeActive: "Demo modus: vul config.js met Supabase-gegevens om accounts tussen apparaten te synchroniseren.",
+      clientLocalDemo: "Lokale demo",
+      clientOnlineSaved: "Online opgeslagen",
+      clientOnlineReady: "Online klaar",
+      clientOnlineConnecting: "Online verbinden...",
+      clientOnlineError: "Online fout",
+      clientOnlineSaving: "Online opslaan...",
+      clientSaveFailedStatus: "Opslaan mislukt",
+      clientUserRoleLabel: "(Lid)",
+      clientMonday: "Maandag",
+      clientTuesday: "Dinsdag",
+      clientWednesday: "Woensdag",
+      clientThursday: "Donderdag",
+      clientFriday: "Vrijdag",
+      clientSaturday: "Zaterdag",
+      clientSunday: "Zondag",
+      clientMondayLower: "maandag",
+      clientTuesdayLower: "dinsdag",
+      clientWednesdayLower: "woensdag",
+      clientThursdayLower: "donderdag",
+      clientFridayLower: "vrijdag",
+      clientSaturdayLower: "zaterdag",
+      clientSundayLower: "zondag",
+      clientJanuary: "januari",
+      clientFebruary: "februari",
+      clientMarch: "maart",
+      clientApril: "april",
+      clientMay: "mei",
+      clientJune: "juni",
+      clientJuly: "juli",
+      clientAugust: "augustus",
+      clientSeptember: "september",
+      clientOctober: "oktober",
+      clientNovember: "november",
+      clientDecember: "december"
+    },
+    en: {
+      clientNavDashboard: "My dashboard",
+      clientNavTraining: "Training",
+      clientNavNutrition: "Nutrition",
+      clientNavTrackers: "Trackers",
+      clientNavAgenda: "Agenda",
+      clientToday: "Today",
+      clientMember: "Member",
+      clientGoodMorning: "Good morning",
+      clientDashboardPlanFallback: "Your training is ready. Fill in your training, nutrition and trackers today.",
+      clientPlanNeedsInput: "Plan still needs input.",
+      clientPackagePrefix: "Package:",
+      clientTrainingStart: "Start training",
+      clientNutritionFill: "Fill nutrition",
+      clientTrackersFill: "Fill trackers",
+      clientStepsWater: "Steps + water",
+      clientStepsWaterIntro: "Together in one quick tracker.",
+      clientAllFill: "Fill everything",
+      clientWellbeingCheckIn: "Wellbeing check-in",
+      clientWellbeingIntro: "Choose a score from 1 to 10 for each item.",
+      clientFilled: "Filled in",
+      clientNeedsFill: "Still to fill",
+      clientEnergy: "Energy",
+      clientStress: "Stress",
+      clientMotivation: "Motivation",
+      clientMood: "Mood",
+      clientMoodGood: "Good",
+      clientMoodNeutral: "Neutral",
+      clientMoodLow: "Low",
+      clientSaveWellbeing: "Save wellbeing",
+      clientSleep: "Sleep",
+      clientSleepTracker: "Sleep tracker",
+      clientSleepScore: "Sleep score",
+      clientDayWeight: "Daily weight",
+      clientWeeklyAverage: "Weekly average",
+      clientNextAppointment: "Next appointment",
+      clientAppointment: "Appointment",
+      clientNotScheduled: "Not scheduled yet",
+      clientProfileDetails: "My profile details",
+      clientPhone: "Phone",
+      clientBirthDate: "Date of birth",
+      clientHeight: "Height",
+      clientCurrentWeight: "Current weight",
+      clientAddress: "Address",
+      clientEmergencyContact: "Emergency contact",
+      clientPackage: "Package",
+      clientInjuriesNotes: "Injuries/notes",
+      clientNoLinkedClient: "No member is linked to this account.",
+      clientPreviousWeek: "Previous week",
+      clientThisWeek: "This week",
+      clientNextWeek: "Next week",
+      clientTracker: "Tracker",
+      clientSchema: "Plan",
+      clientTrainingSchedule: "Training schedule",
+      clientDays: "Days",
+      clientPlan: "Plan",
+      clientSteps: "Steps",
+      clientTrainerAdvice: "Trainer advice",
+      clientTrainerAdviceFallback: "Focus on technique, control and honestly logging what you actually did.",
+      clientNew: "New",
+      clientExercise: "Exercise",
+      clientTrainingScheduleLabel: "Training schedule",
+      clientTargetKg: "Target kg",
+      clientRest: "Rest",
+      clientDoneSets: "Completed sets",
+      clientDoneReps: "Completed reps",
+      clientDoneWeight: "Completed weight",
+      clientNotes: "Notes",
+      clientNotesPlaceholder: "E.g. heavy, pain-free, technique felt good",
+      clientNoExercisesDay: "No exercises on this day.",
+      clientNoClientTraining: "Add a member before managing a training schedule.",
+      clientAttended: "Attended",
+      clientNotAttended: "Not attended",
+      clientNotFilled: "Not filled in yet",
+      clientSets: "Sets",
+      clientReps: "Reps",
+      clientTempo: "Tempo",
+      clientNutrition: "Nutrition",
+      clientNutritionPlan: "Nutrition plan",
+      clientNutritionPlanClient: "Member nutrition plan",
+      clientWhatClientShouldEat: "What the member should eat",
+      clientNutritionLog: "Nutrition log",
+      clientDailyMealSave: "Save per day and per meal",
+      clientBasedOnTrainerPlan: "Based on the trainer's nutrition plan",
+      clientKcalSaved: "Kcal saved",
+      clientProtein: "Protein",
+      clientCarbs: "Carbs",
+      clientFat: "Fat",
+      clientSavedSub: "saved",
+      clientThisWeekLower: "this week",
+      clientChoosePlanOption: "Choose option from plan",
+      clientAteAsPlanned: "Ate as planned",
+      clientAteDifferent: "Ate something else",
+      clientNotEaten: "Did not eat",
+      clientNote: "Note",
+      clientSaved: "Saved",
+      clientNoFoodLoggedWeek: "Nothing has been logged this week.",
+      clientNoNutritionPlan: "No nutrition plan yet.",
+      clientNoNutritionReady: "Your trainer has not prepared a nutrition plan yet.",
+      clientNoFoodClient: "Add a member before logging nutrition.",
+      clientMeal: "Meal",
+      clientBreakfast: "Breakfast",
+      clientSnack: "Snack",
+      clientLunch: "Lunch",
+      clientDinner: "Dinner",
+      clientLateSnack: "Late night snack",
+      clientAllByDay: "Fill everything by day",
+      clientTrackerIntro: "Choose the week above. Your trainer sees the same saved data.",
+      clientChooseTrackerDay: "Choose day for tracker input",
+      clientStepsToday: "Steps today",
+      clientStepsSave: "Save steps",
+      clientWaterToday: "Water today",
+      clientWaterSave: "Save water",
+      clientSleepSave: "Save sleep",
+      clientProgressSave: "Save progress",
+      clientProgress: "Progress",
+      clientMeasurements: "Measurements",
+      clientWeight: "Weight",
+      clientWaist: "Waist",
+      clientChest: "Chest",
+      clientArm: "Arm",
+      clientLeg: "Leg",
+      clientDifference: "Difference",
+      clientArmLeft: "Left arm",
+      clientArmRight: "Right arm",
+      clientLegLeft: "Left leg",
+      clientLegRight: "Right leg",
+      clientFront: "Front",
+      clientSide: "Side",
+      clientBack: "Back",
+      clientExtraPhoto: "Extra photo",
+      clientNoPhoto: "No photo yet",
+      clientPhotoHint: "Tap to choose a photo from your gallery or files.",
+      clientOneToTen: "1 to 10",
+      clientHours: "Hours",
+      clientSleepScoreOneToTen: "Sleep score 1-10",
+      clientToBed: "To bed",
+      clientAwake: "Wake",
+      clientQuality: "Quality",
+      clientRecovery: "Recovery",
+      clientAverageAbbr: "Avg.",
+      clientGoodStatus: "Good",
+      clientNeedsWorkStatus: "Needs work",
+      clientLowStatus: "Low",
+      clientDailyStepGoal: "Daily step goal",
+      clientTargetWeight: "Target weight",
+      clientGoalWellbeing: "Wellbeing goal",
+      clientGoalSleep: "Sleep goal",
+      clientDailyWaterGoal: "Daily water goal",
+      clientWeeklyWaterGoal: "Weekly water goal",
+      clientAverage: "Average",
+      clientDailyWeight: "Daily weight",
+      clientWeekMeasurement: "Weekly measurement",
+      clientSaveMeasurement: "Save measurement",
+      clientPlanning: "Planning",
+      clientProfessionalPlanning: "Professional planning at the heart of the app.",
+      clientMyAppointments: "My appointments",
+      clientNoAppointments: "No appointments have been scheduled yet.",
+      clientNewAppointmentType: "New appointment type",
+      clientNewAppointment: "New appointment",
+      clientOnlineModeActive: "Online mode active: accounts and data sync through Supabase.",
+      clientDemoModeActive: "Demo mode: fill config.js with Supabase details to sync accounts between devices.",
+      clientLocalDemo: "Local demo",
+      clientOnlineSaved: "Online saved",
+      clientOnlineReady: "Online ready",
+      clientOnlineConnecting: "Connecting online...",
+      clientOnlineError: "Online error",
+      clientOnlineSaving: "Saving online...",
+      clientSaveFailedStatus: "Save failed",
+      clientUserRoleLabel: "(Member)",
+      clientMonday: "Monday",
+      clientTuesday: "Tuesday",
+      clientWednesday: "Wednesday",
+      clientThursday: "Thursday",
+      clientFriday: "Friday",
+      clientSaturday: "Saturday",
+      clientSunday: "Sunday",
+      clientMondayLower: "monday",
+      clientTuesdayLower: "tuesday",
+      clientWednesdayLower: "wednesday",
+      clientThursdayLower: "thursday",
+      clientFridayLower: "friday",
+      clientSaturdayLower: "saturday",
+      clientSundayLower: "sunday",
+      clientJanuary: "January",
+      clientFebruary: "February",
+      clientMarch: "March",
+      clientApril: "April",
+      clientMay: "May",
+      clientJune: "June",
+      clientJuly: "July",
+      clientAugust: "August",
+      clientSeptember: "September",
+      clientOctober: "October",
+      clientNovember: "November",
+      clientDecember: "December"
+    },
+    de: {
+      clientNavDashboard: "Mein Dashboard",
+      clientNavTraining: "Training",
+      clientNavNutrition: "Ernaehrung",
+      clientNavTrackers: "Tracker",
+      clientNavAgenda: "Agenda",
+      clientToday: "Heute",
+      clientMember: "Mitglied",
+      clientGoodMorning: "Guten Morgen",
+      clientDashboardPlanFallback: "Dein Training ist bereit. Trage heute Training, Ernaehrung und Tracker ein.",
+      clientPlanNeedsInput: "Plan noch ergaenzen.",
+      clientPackagePrefix: "Paket:",
+      clientTrainingStart: "Training starten",
+      clientNutritionFill: "Ernaehrung eintragen",
+      clientTrackersFill: "Tracker ausfuellen",
+      clientStepsWater: "Schritte + Wasser",
+      clientStepsWaterIntro: "Zusammen in einem schnellen Tracker.",
+      clientAllFill: "Alles ausfuellen",
+      clientWellbeingCheckIn: "Wohlbefinden Check-in",
+      clientWellbeingIntro: "Waehle pro Punkt eine Bewertung von 1 bis 10.",
+      clientFilled: "Ausgefuellt",
+      clientNeedsFill: "Noch ausfuellen",
+      clientEnergy: "Energie",
+      clientStress: "Stress",
+      clientMotivation: "Motivation",
+      clientMood: "Stimmung",
+      clientMoodGood: "Gut",
+      clientMoodNeutral: "Neutral",
+      clientMoodLow: "Niedrig",
+      clientSaveWellbeing: "Wohlbefinden speichern",
+      clientSleep: "Schlaf",
+      clientSleepTracker: "Schlaftracker",
+      clientSleepScore: "Schlafbewertung",
+      clientDayWeight: "Tagesgewicht",
+      clientWeeklyAverage: "Wochendurchschnitt",
+      clientNextAppointment: "Naechster Termin",
+      clientAppointment: "Termin",
+      clientNotScheduled: "Noch nicht geplant",
+      clientProfileDetails: "Meine Profildaten",
+      clientPhone: "Telefon",
+      clientBirthDate: "Geburtsdatum",
+      clientHeight: "Groesse",
+      clientCurrentWeight: "Aktuelles Gewicht",
+      clientAddress: "Adresse",
+      clientEmergencyContact: "Notfallkontakt",
+      clientPackage: "Paket",
+      clientInjuriesNotes: "Verletzungen/Notizen",
+      clientNoLinkedClient: "Mit diesem Konto ist noch kein Mitglied verknuepft.",
+      clientPreviousWeek: "Vorige Woche",
+      clientThisWeek: "Diese Woche",
+      clientNextWeek: "Naechste Woche",
+      clientTracker: "Tracker",
+      clientSchema: "Plan",
+      clientTrainingSchedule: "Trainingsplan",
+      clientDays: "Tage",
+      clientPlan: "Plan",
+      clientSteps: "Schritte",
+      clientTrainerAdvice: "Trainerhinweis",
+      clientTrainerAdviceFallback: "Fokus auf Technik, Kontrolle und ehrliches Eintragen dessen, was du wirklich gemacht hast.",
+      clientNew: "Neu",
+      clientExercise: "Uebung",
+      clientTrainingScheduleLabel: "Trainingsplan",
+      clientTargetKg: "Ziel kg",
+      clientRest: "Pause",
+      clientDoneSets: "Gemachte Saetze",
+      clientDoneReps: "Gemachte Wdh.",
+      clientDoneWeight: "Gemachtes Gewicht",
+      clientNotes: "Notizen",
+      clientNotesPlaceholder: "Z.B. schwer, schmerzfrei, Technik fuehlte sich gut an",
+      clientNoExercisesDay: "Keine Uebungen an diesem Tag.",
+      clientNoClientTraining: "Fuege zuerst ein Mitglied hinzu, bevor du einen Trainingsplan verwaltest.",
+      clientAttended: "Teilgenommen",
+      clientNotAttended: "Nicht teilgenommen",
+      clientNotFilled: "Noch nicht ausgefuellt",
+      clientSets: "Saetze",
+      clientReps: "Wdh.",
+      clientTempo: "Tempo",
+      clientNutrition: "Ernaehrung",
+      clientNutritionPlan: "Ernaehrungsplan",
+      clientNutritionPlanClient: "Ernaehrungsplan Mitglied",
+      clientWhatClientShouldEat: "Was das Mitglied essen soll",
+      clientNutritionLog: "Ernaehrungslog",
+      clientDailyMealSave: "Pro Tag und Mahlzeit speichern",
+      clientBasedOnTrainerPlan: "Basierend auf dem Ernaehrungsplan des Trainers",
+      clientKcalSaved: "Kcal gespeichert",
+      clientProtein: "Eiweiss",
+      clientCarbs: "KH",
+      clientFat: "Fett",
+      clientSavedSub: "gespeichert",
+      clientThisWeekLower: "diese Woche",
+      clientChoosePlanOption: "Option aus Plan waehlen",
+      clientAteAsPlanned: "Wie geplant gegessen",
+      clientAteDifferent: "Etwas anderes gegessen",
+      clientNotEaten: "Nicht gegessen",
+      clientNote: "Notiz",
+      clientSaved: "Gespeichert",
+      clientNoFoodLoggedWeek: "In dieser Woche wurde noch nichts geloggt.",
+      clientNoNutritionPlan: "Noch kein Ernaehrungsplan.",
+      clientNoNutritionReady: "Dein Trainer hat noch keinen Ernaehrungsplan vorbereitet.",
+      clientNoFoodClient: "Fuege zuerst ein Mitglied hinzu, bevor du Ernaehrung loggst.",
+      clientMeal: "Mahlzeit",
+      clientBreakfast: "Fruehstueck",
+      clientSnack: "Zwischendurch",
+      clientLunch: "Mittagessen",
+      clientDinner: "Abendessen",
+      clientLateSnack: "Late-Night-Snack",
+      clientAllByDay: "Alles pro Tag ausfuellen",
+      clientTrackerIntro: "Waehle oben die Woche. Dein Trainer sieht dieselben gespeicherten Daten.",
+      clientChooseTrackerDay: "Tag fuer Trackereingabe waehlen",
+      clientStepsToday: "Schritte heute",
+      clientStepsSave: "Schritte speichern",
+      clientWaterToday: "Wasser heute",
+      clientWaterSave: "Wasser speichern",
+      clientSleepSave: "Schlaf speichern",
+      clientProgressSave: "Fortschritt speichern",
+      clientProgress: "Fortschritt",
+      clientMeasurements: "Messungen",
+      clientWeight: "Gewicht",
+      clientWaist: "Taille",
+      clientChest: "Brust",
+      clientArm: "Arm",
+      clientLeg: "Bein",
+      clientDifference: "Unterschied",
+      clientArmLeft: "Linker Arm",
+      clientArmRight: "Rechter Arm",
+      clientLegLeft: "Linkes Bein",
+      clientLegRight: "Rechtes Bein",
+      clientFront: "Vorne",
+      clientSide: "Seite",
+      clientBack: "Hinten",
+      clientExtraPhoto: "Extra Foto",
+      clientNoPhoto: "Noch kein Foto",
+      clientPhotoHint: "Tippe, um ein Foto aus Galerie oder Dateien zu waehlen.",
+      clientOneToTen: "1 bis 10",
+      clientHours: "Stunden",
+      clientSleepScoreOneToTen: "Schlafbewertung 1-10",
+      clientToBed: "Ins Bett",
+      clientAwake: "Wach",
+      clientQuality: "Qualitaet",
+      clientRecovery: "Erholung",
+      clientAverageAbbr: "Durchschn.",
+      clientGoodStatus: "Gut",
+      clientNeedsWorkStatus: "Bearbeiten",
+      clientLowStatus: "Niedrig",
+      clientDailyStepGoal: "Tagesziel Schritte",
+      clientTargetWeight: "Zielgewicht",
+      clientGoalWellbeing: "Ziel Wohlbefinden",
+      clientGoalSleep: "Ziel Schlaf",
+      clientDailyWaterGoal: "Tagesziel Wasser",
+      clientWeeklyWaterGoal: "Wochenziel Wasser",
+      clientAverage: "Durchschnitt",
+      clientDailyWeight: "Taegliches Gewicht",
+      clientWeekMeasurement: "Wochenmessung",
+      clientSaveMeasurement: "Messung speichern",
+      clientPlanning: "Planung",
+      clientProfessionalPlanning: "Professionelle Planung als Herz der App.",
+      clientMyAppointments: "Meine Termine",
+      clientNoAppointments: "Es sind noch keine Termine geplant.",
+      clientNewAppointmentType: "Neue Terminart",
+      clientNewAppointment: "Neuer Termin",
+      clientOnlineModeActive: "Online-Modus aktiv: Konten und Daten synchronisieren ueber Supabase.",
+      clientDemoModeActive: "Demo-Modus: Trage Supabase-Daten in config.js ein, um Konten zwischen Geraeten zu synchronisieren.",
+      clientLocalDemo: "Lokale Demo",
+      clientOnlineSaved: "Online gespeichert",
+      clientOnlineReady: "Online bereit",
+      clientOnlineConnecting: "Online verbinden...",
+      clientOnlineError: "Online-Fehler",
+      clientOnlineSaving: "Online speichern...",
+      clientSaveFailedStatus: "Speichern fehlgeschlagen",
+      clientUserRoleLabel: "(Mitglied)",
+      clientMonday: "Montag",
+      clientTuesday: "Dienstag",
+      clientWednesday: "Mittwoch",
+      clientThursday: "Donnerstag",
+      clientFriday: "Freitag",
+      clientSaturday: "Samstag",
+      clientSunday: "Sonntag",
+      clientMondayLower: "montag",
+      clientTuesdayLower: "dienstag",
+      clientWednesdayLower: "mittwoch",
+      clientThursdayLower: "donnerstag",
+      clientFridayLower: "freitag",
+      clientSaturdayLower: "samstag",
+      clientSundayLower: "sonntag",
+      clientJanuary: "Januar",
+      clientFebruary: "Februar",
+      clientMarch: "Maerz",
+      clientApril: "April",
+      clientMay: "Mai",
+      clientJune: "Juni",
+      clientJuly: "Juli",
+      clientAugust: "August",
+      clientSeptember: "September",
+      clientOctober: "Oktober",
+      clientNovember: "November",
+      clientDecember: "Dezember"
+    }
+  };
+
+  PHASE1_LANGUAGES.forEach((language) => {
+    Object.assign(PHASE1_I18N[language], PHASE1_CLIENT_I18N[language]);
+  });
+
   window.FMZ_PHASE1_TRANSLATION_KEYS = {
     languages: PHASE1_LANGUAGES.slice(),
-    surfaces: ["onboarding", "account_settings", "goal_engine", "entitlements"],
+    surfaces: ["onboarding", "account_settings", "goal_engine", "entitlements", "client_shell", "client_dashboard", "client_training", "client_nutrition", "client_trackers", "client_agenda"],
     keys: Object.keys(PHASE1_I18N.nl)
   };
 
@@ -812,14 +1410,182 @@
     document.head.appendChild(style);
   }
 
+  const PHASE1_CLIENT_NAV_KEYS = {
+    "client-home": "clientNavDashboard",
+    training: "clientNavTraining",
+    nutrition: "clientNavNutrition",
+    trackers: "clientNavTrackers",
+    agenda: "clientNavAgenda",
+    settings: "settingsNav"
+  };
+  const PHASE1_CLIENT_SURFACE_SELECTORS = [
+    "#nav",
+    "#currentUserLabel",
+    "#syncStatus",
+    "#onlineStatus",
+    "#client-home",
+    "#training",
+    "#nutrition",
+    "#trackers",
+    "#steps",
+    "#progress",
+    "#wellbeing",
+    "#sleep",
+    "#water",
+    "#agenda",
+    "#settings"
+  ];
+  const PHASE1_CLIENT_COPY_KEYS = Object.keys(PHASE1_CLIENT_I18N.nl);
+
+  function phase1ClientReplacementEntries() {
+    const entries = [];
+    PHASE1_CLIENT_COPY_KEYS.forEach((key) => {
+      const to = phase1Text(key);
+      PHASE1_LANGUAGES.forEach((language) => {
+        const from = PHASE1_I18N[language]?.[key];
+        if (from && from !== to) entries.push({ from, to });
+      });
+    });
+    return entries.sort((a, b) => b.from.length - a.from.length);
+  }
+
+  function phase1ReplaceEvery(value, from, to) {
+    return from ? value.split(from).join(to) : value;
+  }
+
+  function phase1TranslateClientDynamicText(value) {
+    const language = phase1Settings().language;
+    let next = value;
+    if (language === "nl") return next;
+    if (language === "en") {
+      next = next
+        .replace(/^Goedemorgen\b/, phase1Text("clientGoodMorning"))
+        .replace(/^Pakket:/, phase1Text("clientPackagePrefix"))
+        .replace(/\bvan ([\d.,]+) stappen\b/g, "of $1 steps")
+        .replace(/\bvan ([\d.,]+)L water\b/g, "of $1L water")
+        .replace(/\bSlaapcijfer ([\d.,-]+)/g, "Sleep score $1")
+        .replace(/\bCijfer ([\d.,-]+)/g, "Score $1")
+        .replace(/\bWeekgemiddelde ([\d.,-]+)/g, "Weekly average $1")
+        .replace(/\bdoel ([\d.,-]+)/gi, "goal $1")
+        .replace(/\bdeze week\b/g, phase1Text("clientThisWeekLower"))
+        .replace(/\bopgeslagen\b/g, phase1Text("clientSavedSub"))
+        .replace(/\bei?wit\b/gi, phase1Text("clientProtein").toLowerCase())
+        .replace(/\bkh\b/gi, phase1Text("clientCarbs").toLowerCase())
+        .replace(/\bvet\b/gi, phase1Text("clientFat").toLowerCase())
+        .replace(/\boptie\b/g, "option")
+        .replace(/\bopties\b/g, "options")
+        .replace(/\boefeningen\b/g, "exercises")
+        .replace(/\boefening\b/g, "exercise")
+        .replace(/\bsets\b/g, "sets")
+        .replace(/\bstappen\b/g, "steps")
+        .replace(/\bwater\b/g, "water")
+        .replace(/\bfoto's\b/g, "photos")
+        .replace(/\bfoto\b/g, "photo")
+        .replace(/\bom\b/g, "at")
+        .replace(/\bClient\b/g, "Member")
+        .replace(/\bclient\b/g, "member");
+    }
+    if (language === "de") {
+      next = next
+        .replace(/^Goedemorgen\b/, phase1Text("clientGoodMorning"))
+        .replace(/^Pakket:/, phase1Text("clientPackagePrefix"))
+        .replace(/\bvan ([\d.,]+) stappen\b/g, "von $1 Schritten")
+        .replace(/\bvan ([\d.,]+)L water\b/g, "von $1L Wasser")
+        .replace(/\bSlaapcijfer ([\d.,-]+)/g, "Schlafbewertung $1")
+        .replace(/\bCijfer ([\d.,-]+)/g, "Bewertung $1")
+        .replace(/\bWeekgemiddelde ([\d.,-]+)/g, "Wochendurchschnitt $1")
+        .replace(/\bdoel ([\d.,-]+)/gi, "Ziel $1")
+        .replace(/\bdeze week\b/g, phase1Text("clientThisWeekLower"))
+        .replace(/\bopgeslagen\b/g, phase1Text("clientSavedSub"))
+        .replace(/\bei?wit\b/gi, phase1Text("clientProtein").toLowerCase())
+        .replace(/\bkh\b/gi, phase1Text("clientCarbs").toLowerCase())
+        .replace(/\bvet\b/gi, phase1Text("clientFat").toLowerCase())
+        .replace(/\boptie\b/g, "Option")
+        .replace(/\bopties\b/g, "Optionen")
+        .replace(/\boefeningen\b/g, "Uebungen")
+        .replace(/\boefening\b/g, "Uebung")
+        .replace(/\bsets\b/g, "Saetze")
+        .replace(/\bstappen\b/g, "Schritte")
+        .replace(/\bwater\b/g, "Wasser")
+        .replace(/\bfoto's\b/g, "Fotos")
+        .replace(/\bfoto\b/g, "Foto")
+        .replace(/\bom\b/g, "um")
+        .replace(/\bClient\b/g, "Mitglied")
+        .replace(/\bclient\b/g, "Mitglied");
+    }
+    return next;
+  }
+
+  function phase1TranslateClientText(value) {
+    const original = String(value ?? "");
+    const leading = original.match(/^\s*/)?.[0] || "";
+    const trailing = original.match(/\s*$/)?.[0] || "";
+    let core = original.trim();
+    if (!core) return original;
+
+    const exact = PHASE1_CLIENT_COPY_KEYS.find((key) => {
+      return PHASE1_LANGUAGES.some((language) => PHASE1_I18N[language]?.[key] === core);
+    });
+    if (exact) return `${leading}${phase1Text(exact)}${trailing}`;
+
+    phase1ClientReplacementEntries().forEach(({ from, to }) => {
+      core = phase1ReplaceEvery(core, from, to);
+    });
+    core = phase1TranslateClientDynamicText(core);
+    if (phase1Settings().language === "en") {
+      core = core.replace(/^Bijv\./, "E.g.");
+    } else if (phase1Settings().language === "de") {
+      core = core.replace(/^Bijv\./, "Z.B.");
+    }
+    return `${leading}${core}${trailing}`;
+  }
+
+  function phase1TranslateClientRoot(root) {
+    if (!root) return;
+    const nodeFilter = window.NodeFilter || { SHOW_TEXT: 4, FILTER_ACCEPT: 1, FILTER_REJECT: 2 };
+    const walker = document.createTreeWalker(root, nodeFilter.SHOW_TEXT, {
+      acceptNode(node) {
+        if (!node.nodeValue || !node.nodeValue.trim()) return nodeFilter.FILTER_REJECT;
+        const parent = node.parentElement;
+        if (!parent || parent.closest("script, style, noscript")) return nodeFilter.FILTER_REJECT;
+        return nodeFilter.FILTER_ACCEPT;
+      }
+    });
+    const textNodes = [];
+    while (walker.nextNode()) textNodes.push(walker.currentNode);
+    textNodes.forEach((node) => {
+      const translated = phase1TranslateClientText(node.nodeValue);
+      if (translated !== node.nodeValue) node.nodeValue = translated;
+    });
+    root.querySelectorAll("[placeholder], [aria-label], [title], [data-view-title]").forEach((element) => {
+      ["placeholder", "aria-label", "title", "data-view-title"].forEach((attribute) => {
+        if (!element.hasAttribute(attribute)) return;
+        const translated = phase1TranslateClientText(element.getAttribute(attribute));
+        element.setAttribute(attribute, translated);
+      });
+    });
+  }
+
+  function phase1ApplyClientShellCopy() {
+    phase1UpdateNavigationLabel();
+    if (!isLoggedIn() || state.ui.role !== "client") return;
+    PHASE1_CLIENT_SURFACE_SELECTORS.forEach((selector) => {
+      phase1TranslateClientRoot(document.querySelector(selector));
+    });
+  }
+
   const phase1OriginalRenderClientHome = renderClientHome;
   renderClientHome = function renderClientHomePhase1() {
     phase1OriginalRenderClientHome();
     const selected = client();
-    if (!isLoggedIn() || state.ui.role !== "client" || !hasSelectedClient(selected)) return;
+    if (!isLoggedIn() || state.ui.role !== "client" || !hasSelectedClient(selected)) {
+      phase1ApplyClientShellCopy();
+      return;
+    }
     const target = $("#clientSummary");
     if (!target) return;
     target.insertAdjacentHTML("afterbegin", phase1RenderOnboardingPanel(selected));
+    phase1ApplyClientShellCopy();
   };
 
   function phase1RenderAccountSettingsPanel() {
@@ -869,8 +1635,10 @@
   };
 
   function phase1UpdateNavigationLabel() {
-    const settingsNav = NAV.client.find(([id]) => id === "settings");
-    if (settingsNav) settingsNav[1] = phase1Text("settingsNav");
+    NAV.client.forEach((item) => {
+      const key = PHASE1_CLIENT_NAV_KEYS[item[0]];
+      if (key) item[1] = phase1Text(key);
+    });
   }
 
   if (!NAV.client.some(([id]) => id === "settings")) {
@@ -882,6 +1650,7 @@
   renderNav = function renderNavPhase1() {
     phase1UpdateNavigationLabel();
     phase1OriginalRenderNav();
+    phase1ApplyClientShellCopy();
   };
 
   const phase1OriginalRenderAll = renderAll;
@@ -891,7 +1660,27 @@
     phase1UpdateNavigationLabel();
     phase1OriginalRenderAll();
     phase1ApplyAuthCopy();
+    phase1ApplyClientShellCopy();
   };
+
+  function phase1WrapClientRenderer(originalRender) {
+    return function renderClientSurfacePhase1(...args) {
+      const result = originalRender.apply(this, args);
+      phase1ApplyClientShellCopy();
+      return result;
+    };
+  }
+
+  renderTraining = phase1WrapClientRenderer(renderTraining);
+  renderNutrition = phase1WrapClientRenderer(renderNutrition);
+  renderNutritionLog = phase1WrapClientRenderer(renderNutritionLog);
+  renderTrackersOverview = phase1WrapClientRenderer(renderTrackersOverview);
+  renderSteps = phase1WrapClientRenderer(renderSteps);
+  renderProgress = phase1WrapClientRenderer(renderProgress);
+  renderWellbeing = phase1WrapClientRenderer(renderWellbeing);
+  renderSleep = phase1WrapClientRenderer(renderSleep);
+  renderWater = phase1WrapClientRenderer(renderWater);
+  renderAgenda = phase1WrapClientRenderer(renderAgenda);
 
   function phase1ApplyFormData(selected, data) {
     selected.profile = {
