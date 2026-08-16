@@ -2,9 +2,9 @@
   if (window.FMZ_PHASE3_TRAINING_ENGINE_LOADED) return;
   window.FMZ_PHASE3_TRAINING_ENGINE_LOADED = true;
 
-  const PHASE3_VERSION = "20260816-phase3-step1";
+  const PHASE3_VERSION = "20260816-phase3-workout-builder1";
   const PHASE3_LANGUAGES = ["nl", "en", "de"];
-  const PHASE3_FREE_ACTIVE_PLAN_LIMIT = 4;
+  const PHASE3_FREE_ACTIVE_DAY_LIMIT = 4;
   const PHASE3_NO_AI_CALLS = true;
   const PHASE3_NO_MUTATION_OBSERVER = true;
   const PHASE3_NO_POLLING = true;
@@ -19,11 +19,11 @@
       synced: "Gesynchroniseerd",
       localSafe: "Lokaal veilig",
       freeLimitTitle: "Free limiet",
-      freeLimitText: "Free kan maximaal 4 actieve trainingsschema's gebruiken.",
-      activePlans: "{count}/{limit} actieve schema's",
-      unlimitedPlans: "Onbeperkt via Pro/PT",
-      createPlan: "Schema maken",
-      planTitle: "Naam schema",
+      freeLimitText: "Free kan maximaal 4 actieve workouts gebruiken. Het aantal oefeningen per workout wordt niet door Free beperkt.",
+      activeWorkouts: "{count}/{limit} actieve workouts",
+      unlimitedWorkouts: "Onbeperkte workouts via Pro/PT",
+      createPlan: "Workout maken",
+      planTitle: "Naam workout",
       day: "Trainingsdag",
       exercise: "Oefening",
       muscle: "Spiergroep",
@@ -37,10 +37,29 @@
       rpe: "RPE",
       rest: "Rust",
       notes: "Notities",
-      addPlan: "Actief schema opslaan",
-      limitReached: "Free limiet bereikt. Archiveer eerst een schema of upgrade later naar Pro/PT.",
-      plans: "Schema's",
-      noPlans: "Nog geen normalized schema's. Legacy schema's blijven hieronder beschikbaar als bridge.",
+      addExercise: "Oefening toevoegen",
+      removeExercise: "Verwijderen",
+      editExercise: "Wijzigen",
+      updateExercise: "Oefening bijwerken",
+      cancelEdit: "Bewerken annuleren",
+      moveExerciseUp: "Omhoog",
+      moveExerciseDown: "Omlaag",
+      selectedExercises: "Gekozen oefeningen",
+      noBuilderExercises: "Nog geen oefeningen toegevoegd. Gebruik 'Oefening toevoegen' of sla direct op om de huidige oefening mee te nemen.",
+      exerciseCount: "{count} oefeningen",
+      exerciseFreeNote: "Free beperkt workouts, niet het aantal oefeningen in een workout.",
+      searchLibrary: "Zoek oefening",
+      allCategories: "Alle spiergroepen",
+      allEquipment: "Alle materialen",
+      noLibraryResults: "Geen oefeningen gevonden.",
+      libraryCount: "{count} oefeningen",
+      partialSave: "Workout deels opgeslagen. De opgeslagen oefeningen blijven bewaard; probeer de resterende oefeningen opnieuw te syncen.",
+      retryPartialSave: "Resterende oefeningen opnieuw syncen",
+      partialRetrying: "Opnieuw syncen...",
+      addPlan: "Actieve workout opslaan",
+      limitReached: "Free limiet bereikt. Archiveer eerst een workout of upgrade later naar Pro/PT.",
+      plans: "Workouts",
+      noPlans: "Nog geen normalized workouts. Legacy schema's blijven hieronder beschikbaar als bridge.",
       legacyPlan: "Legacy schema",
       legacyBridge: "Legacy training blijft zichtbaar en wordt niet aangepast door Phase 3.",
       startWorkout: "Workout starten",
@@ -66,7 +85,7 @@
       overloadRepeat: "Vorige prestatie beschikbaar. Herhaal eerst stabiel voordat je verhoogt.",
       overloadPotential: "Alle sets gehaald met ruimte over. Kleine verhoging kan later overwogen worden.",
       exerciseLibrary: "Oefenbibliotheek",
-      archivePlan: "Archiveren",
+      archivePlan: "Workout archiveren",
       saveFailed: "Opslaan mislukt: {message}",
       saved: "Opgeslagen",
       started: "Workout gestart",
@@ -95,11 +114,11 @@
       synced: "Synced",
       localSafe: "Local safe",
       freeLimitTitle: "Free limit",
-      freeLimitText: "Free can use up to 4 active training plans.",
-      activePlans: "{count}/{limit} active plans",
-      unlimitedPlans: "Unlimited through Pro/PT",
-      createPlan: "Create plan",
-      planTitle: "Plan name",
+      freeLimitText: "Free can use up to 4 active workouts. The number of exercises inside a workout is not limited by Free.",
+      activeWorkouts: "{count}/{limit} active workouts",
+      unlimitedWorkouts: "Unlimited workouts through Pro/PT",
+      createPlan: "Create workout",
+      planTitle: "Workout name",
       day: "Training day",
       exercise: "Exercise",
       muscle: "Muscle group",
@@ -113,10 +132,29 @@
       rpe: "RPE",
       rest: "Rest",
       notes: "Notes",
-      addPlan: "Save active plan",
-      limitReached: "Free limit reached. Archive a plan first or upgrade later to Pro/PT.",
-      plans: "Plans",
-      noPlans: "No normalized plans yet. Legacy plans remain available below as a bridge.",
+      addExercise: "Add exercise",
+      removeExercise: "Remove",
+      editExercise: "Edit",
+      updateExercise: "Update exercise",
+      cancelEdit: "Cancel edit",
+      moveExerciseUp: "Move up",
+      moveExerciseDown: "Move down",
+      selectedExercises: "Selected exercises",
+      noBuilderExercises: "No exercises added yet. Use 'Add exercise' or save directly to include the current exercise.",
+      exerciseCount: "{count} exercises",
+      exerciseFreeNote: "Free limits workouts, not exercises inside a workout.",
+      searchLibrary: "Search exercise",
+      allCategories: "All muscle groups",
+      allEquipment: "All equipment",
+      noLibraryResults: "No exercises found.",
+      libraryCount: "{count} exercises",
+      partialSave: "Workout partly saved. The saved exercises remain available; retry syncing the remaining exercises.",
+      retryPartialSave: "Retry remaining exercises",
+      partialRetrying: "Retrying sync...",
+      addPlan: "Save active workout",
+      limitReached: "Free limit reached. Archive a workout first or upgrade later to Pro/PT.",
+      plans: "Workouts",
+      noPlans: "No normalized workouts yet. Legacy plans remain available below as a bridge.",
       legacyPlan: "Legacy plan",
       legacyBridge: "Legacy training stays visible and is not modified by Phase 3.",
       startWorkout: "Start workout",
@@ -142,7 +180,7 @@
       overloadRepeat: "Previous performance available. Repeat it steadily before increasing.",
       overloadPotential: "All sets completed with room left. A small increase can later be considered.",
       exerciseLibrary: "Exercise library",
-      archivePlan: "Archive",
+      archivePlan: "Archive workout",
       saveFailed: "Save failed: {message}",
       saved: "Saved",
       started: "Workout started",
@@ -171,11 +209,11 @@
       synced: "Synchronisiert",
       localSafe: "Lokal sicher",
       freeLimitTitle: "Free Limit",
-      freeLimitText: "Free kann maximal 4 aktive Trainingsplaene nutzen.",
-      activePlans: "{count}/{limit} aktive Plaene",
-      unlimitedPlans: "Unbegrenzt ueber Pro/PT",
-      createPlan: "Plan erstellen",
-      planTitle: "Planname",
+      freeLimitText: "Free kann maximal 4 aktive Workouts nutzen. Die Anzahl der Uebungen in einem Workout ist durch Free nicht begrenzt.",
+      activeWorkouts: "{count}/{limit} aktive Workouts",
+      unlimitedWorkouts: "Unbegrenzte Workouts ueber Pro/PT",
+      createPlan: "Workout erstellen",
+      planTitle: "Workoutname",
       day: "Trainingstag",
       exercise: "Uebung",
       muscle: "Muskelgruppe",
@@ -189,10 +227,29 @@
       rpe: "RPE",
       rest: "Pause",
       notes: "Notizen",
-      addPlan: "Aktiven Plan speichern",
-      limitReached: "Free Limit erreicht. Archiviere zuerst einen Plan oder upgrade spaeter auf Pro/PT.",
-      plans: "Plaene",
-      noPlans: "Noch keine normalisierten Plaene. Legacy-Plaene bleiben unten als Bridge verfuegbar.",
+      addExercise: "Uebung hinzufuegen",
+      removeExercise: "Entfernen",
+      editExercise: "Bearbeiten",
+      updateExercise: "Uebung aktualisieren",
+      cancelEdit: "Bearbeiten abbrechen",
+      moveExerciseUp: "Nach oben",
+      moveExerciseDown: "Nach unten",
+      selectedExercises: "Ausgewaehlte Uebungen",
+      noBuilderExercises: "Noch keine Uebungen hinzugefuegt. Nutze 'Uebung hinzufuegen' oder speichere direkt, um die aktuelle Uebung mitzunehmen.",
+      exerciseCount: "{count} Uebungen",
+      exerciseFreeNote: "Free begrenzt Workouts, nicht Uebungen innerhalb eines Workouts.",
+      searchLibrary: "Uebung suchen",
+      allCategories: "Alle Muskelgruppen",
+      allEquipment: "Alle Geraete",
+      noLibraryResults: "Keine Uebungen gefunden.",
+      libraryCount: "{count} Uebungen",
+      partialSave: "Workout teilweise gespeichert. Gespeicherte Uebungen bleiben erhalten; synchronisiere die restlichen Uebungen erneut.",
+      retryPartialSave: "Restliche Uebungen erneut syncen",
+      partialRetrying: "Sync wird wiederholt...",
+      addPlan: "Aktives Workout speichern",
+      limitReached: "Free Limit erreicht. Archiviere zuerst ein Workout oder upgrade spaeter auf Pro/PT.",
+      plans: "Workouts",
+      noPlans: "Noch keine normalisierten Workouts. Legacy-Plaene bleiben unten als Bridge verfuegbar.",
       legacyPlan: "Legacy-Plan",
       legacyBridge: "Legacy-Training bleibt sichtbar und wird durch Phase 3 nicht angepasst.",
       startWorkout: "Workout starten",
@@ -218,7 +275,7 @@
       overloadRepeat: "Fruehere Leistung verfuegbar. Wiederhole sie stabil, bevor du steigerst.",
       overloadPotential: "Alle Saetze mit Reserve geschafft. Eine kleine Steigerung kann spaeter erwogen werden.",
       exerciseLibrary: "Uebungsbibliothek",
-      archivePlan: "Archivieren",
+      archivePlan: "Workout archivieren",
       saveFailed: "Speichern fehlgeschlagen: {message}",
       saved: "Gespeichert",
       started: "Workout gestartet",
@@ -241,73 +298,95 @@
     }
   };
 
+  function phase3Localized(values) {
+    return { nl: values[0], en: values[1], de: values[2] };
+  }
+
+  function phase3ExerciseDef(slug, names, primary, equipment, instructions, secondary = ["", "", ""]) {
+    return {
+      slug,
+      names: phase3Localized(names),
+      category: phase3Localized(primary),
+      primary: phase3Localized(primary),
+      secondary: phase3Localized(secondary),
+      equipment: phase3Localized(equipment),
+      instructions: phase3Localized(instructions)
+    };
+  }
+
   const PHASE3_EXERCISES = [
-    {
-      slug: "bodyweight-squat",
-      names: { nl: "Squat", en: "Squat", de: "Kniebeuge" },
-      primary: { nl: "Benen", en: "Legs", de: "Beine" },
-      equipment: { nl: "Bodyweight", en: "Bodyweight", de: "Koerpergewicht" },
-      instructions: {
-        nl: "Zak gecontroleerd, houd knieen stabiel en duw via je hele voet omhoog.",
-        en: "Lower with control, keep knees stable and drive through the whole foot.",
-        de: "Kontrolliert absenken, Knie stabil halten und ueber den ganzen Fuss hochdruecken."
-      }
-    },
-    {
-      slug: "bench-press",
-      names: { nl: "Bench press", en: "Bench press", de: "Bankdruecken" },
-      primary: { nl: "Borst", en: "Chest", de: "Brust" },
-      equipment: { nl: "Barbell", en: "Barbell", de: "Langhantel" },
-      instructions: {
-        nl: "Schouderbladen vast, gecontroleerd zakken en krachtig uitstoten.",
-        en: "Set the shoulder blades, lower under control and press strongly.",
-        de: "Schulterblaetter fixieren, kontrolliert absenken und kraftvoll druecken."
-      }
-    },
-    {
-      slug: "deadlift",
-      names: { nl: "Deadlift", en: "Deadlift", de: "Kreuzheben" },
-      primary: { nl: "Rug/benen", en: "Back/legs", de: "Ruecken/Beine" },
-      equipment: { nl: "Barbell", en: "Barbell", de: "Langhantel" },
-      instructions: {
-        nl: "Houd rug neutraal, breng spanning op de stang en strek heupen gecontroleerd.",
-        en: "Keep a neutral back, take tension on the bar and extend the hips with control.",
-        de: "Ruecken neutral halten, Spannung aufbauen und Huefte kontrolliert strecken."
-      }
-    },
-    {
-      slug: "lat-pulldown",
-      names: { nl: "Lat pulldown", en: "Lat pulldown", de: "Latzug" },
-      primary: { nl: "Rug", en: "Back", de: "Ruecken" },
-      equipment: { nl: "Cable", en: "Cable", de: "Kabelzug" },
-      instructions: {
-        nl: "Trek ellebogen omlaag, houd borst hoog en controleer de terugweg.",
-        en: "Pull elbows down, keep the chest tall and control the return.",
-        de: "Ellbogen nach unten ziehen, Brust hoch halten und Rueckweg kontrollieren."
-      }
-    },
-    {
-      slug: "dumbbell-row",
-      names: { nl: "Dumbbell row", en: "Dumbbell row", de: "Kurzhantelrudern" },
-      primary: { nl: "Rug", en: "Back", de: "Ruecken" },
-      equipment: { nl: "Dumbbell", en: "Dumbbell", de: "Kurzhantel" },
-      instructions: {
-        nl: "Trek naar je heup, blijf stabiel en laat het gewicht gecontroleerd zakken.",
-        en: "Row toward the hip, stay stable and lower the weight with control.",
-        de: "Zur Huefte ziehen, stabil bleiben und das Gewicht kontrolliert absenken."
-      }
-    },
-    {
-      slug: "plank",
-      names: { nl: "Plank", en: "Plank", de: "Plank" },
-      primary: { nl: "Core", en: "Core", de: "Core" },
-      equipment: { nl: "Bodyweight", en: "Bodyweight", de: "Koerpergewicht" },
-      instructions: {
-        nl: "Span buik en billen aan, houd je lichaam lang en adem rustig door.",
-        en: "Brace abs and glutes, keep the body long and breathe calmly.",
-        de: "Bauch und Gesäß anspannen, Koerper lang halten und ruhig atmen."
-      }
-    }
+    phase3ExerciseDef("bodyweight-squat", ["Squat", "Squat", "Kniebeuge"], ["Quadriceps", "Quadriceps", "Quadrizeps"], ["Bodyweight", "Bodyweight", "Koerpergewicht"], ["Zak gecontroleerd, houd knieen stabiel en duw via je hele voet omhoog.", "Lower with control, keep knees stable and drive through the whole foot.", "Kontrolliert absenken, Knie stabil halten und ueber den ganzen Fuss hochdruecken."], ["Billen", "Glutes", "Gesaess"]),
+    phase3ExerciseDef("barbell-squat", ["Barbell squat", "Barbell squat", "Langhantel-Kniebeuge"], ["Quadriceps", "Quadriceps", "Quadrizeps"], ["Barbell", "Barbell", "Langhantel"], ["Span je romp aan, houd de stang stabiel en beweeg gecontroleerd door de hele rep.", "Brace the trunk, keep the bar stable and move with control through the whole rep.", "Rumpf anspannen, Stange stabil halten und die Wiederholung kontrolliert ausfuehren."], ["Billen", "Glutes", "Gesaess"]),
+    phase3ExerciseDef("leg-press", ["Leg press", "Leg press", "Beinpresse"], ["Quadriceps", "Quadriceps", "Quadrizeps"], ["Machine", "Machine", "Maschine"], ["Plaats voeten stevig, zak gecontroleerd en strek zonder je knieen hard te blokkeren.", "Plant the feet firmly, lower with control and extend without hard-locking the knees.", "Fuesse stabil platzieren, kontrolliert absenken und ohne hartes Durchdruecken strecken."], ["Billen", "Glutes", "Gesaess"]),
+    phase3ExerciseDef("leg-extension", ["Leg extension", "Leg extension", "Beinstrecker"], ["Quadriceps", "Quadriceps", "Quadrizeps"], ["Machine", "Machine", "Maschine"], ["Strek gecontroleerd, pauzeer kort bovenin en laat rustig zakken.", "Extend with control, pause briefly at the top and lower calmly.", "Kontrolliert strecken, oben kurz halten und ruhig absenken."], ["", "", ""]),
+    phase3ExerciseDef("bulgarian-split-squat", ["Bulgarian split squat", "Bulgarian split squat", "Bulgarian Split Squat"], ["Quadriceps", "Quadriceps", "Quadrizeps"], ["Dumbbells", "Dumbbells", "Kurzhanteln"], ["Houd je voorste voet stabiel en beweeg recht omlaag zonder te draaien.", "Keep the front foot stable and move straight down without rotating.", "Vorderen Fuss stabil halten und gerade nach unten bewegen, ohne zu rotieren."], ["Billen", "Glutes", "Gesaess"]),
+    phase3ExerciseDef("romanian-deadlift", ["Romanian deadlift", "Romanian deadlift", "Rumaenisches Kreuzheben"], ["Hamstrings", "Hamstrings", "Beinbeuger"], ["Barbell", "Barbell", "Langhantel"], ["Scharnier vanuit de heupen, houd rug neutraal en voel spanning in hamstrings.", "Hinge from the hips, keep a neutral back and feel tension in the hamstrings.", "Aus der Huefte beugen, Ruecken neutral halten und Spannung in den Beinbeugern spueren."], ["Billen", "Glutes", "Gesaess"]),
+    phase3ExerciseDef("lying-leg-curl", ["Lying leg curl", "Lying leg curl", "Beinbeuger liegend"], ["Hamstrings", "Hamstrings", "Beinbeuger"], ["Machine", "Machine", "Maschine"], ["Krul gecontroleerd omhoog, houd je heupen op het kussen en rem de terugweg.", "Curl up with control, keep the hips on the pad and resist the return.", "Kontrolliert beugen, Huefte auf dem Polster halten und den Rueckweg bremsen."], ["", "", ""]),
+    phase3ExerciseDef("seated-leg-curl", ["Seated leg curl", "Seated leg curl", "Beinbeuger sitzend"], ["Hamstrings", "Hamstrings", "Beinbeuger"], ["Machine", "Machine", "Maschine"], ["Stel de machine strak in en trek de hakken gecontroleerd naar beneden.", "Set the machine snugly and pull the heels down with control.", "Maschine passend einstellen und die Fersen kontrolliert nach unten ziehen."], ["", "", ""]),
+    phase3ExerciseDef("hip-thrust", ["Hip thrust", "Hip thrust", "Hip Thrust"], ["Billen", "Glutes", "Gesaess"], ["Barbell", "Barbell", "Langhantel"], ["Duw vanuit je hakken, kantel bekken licht en knijp bovenin kort aan.", "Drive through the heels, slightly tuck the pelvis and squeeze briefly at the top.", "Ueber die Fersen druecken, Becken leicht kippen und oben kurz anspannen."], ["Hamstrings", "Hamstrings", "Beinbeuger"]),
+    phase3ExerciseDef("glute-bridge", ["Glute bridge", "Glute bridge", "Glute Bridge"], ["Billen", "Glutes", "Gesaess"], ["Bodyweight", "Bodyweight", "Koerpergewicht"], ["Breng heupen omhoog, houd ribben laag en knijp gecontroleerd aan.", "Lift the hips, keep ribs down and squeeze with control.", "Huefte anheben, Rippen unten halten und kontrolliert anspannen."], ["Core", "Core", "Core"]),
+    phase3ExerciseDef("standing-calf-raise", ["Standing calf raise", "Standing calf raise", "Wadenheben stehend"], ["Kuiten", "Calves", "Waden"], ["Machine", "Machine", "Maschine"], ["Zak volledig uit, duw hoog op je tenen en pauzeer kort bovenin.", "Use a full stretch, rise high onto the toes and pause briefly at the top.", "Voll dehnen, hoch auf die Zehen druecken und oben kurz halten."], ["", "", ""]),
+    phase3ExerciseDef("seated-calf-raise", ["Seated calf raise", "Seated calf raise", "Wadenheben sitzend"], ["Kuiten", "Calves", "Waden"], ["Machine", "Machine", "Maschine"], ["Beweeg gecontroleerd door volledige range en vermijd stuiteren.", "Move through the full range with control and avoid bouncing.", "Kontrolliert durch die volle Bewegung gehen und nicht wippen."], ["", "", ""]),
+    phase3ExerciseDef("bench-press", ["Bench press", "Bench press", "Bankdruecken"], ["Borst", "Chest", "Brust"], ["Barbell", "Barbell", "Langhantel"], ["Schouderbladen vast, gecontroleerd zakken en krachtig uitstoten.", "Set the shoulder blades, lower under control and press strongly.", "Schulterblaetter fixieren, kontrolliert absenken und kraftvoll druecken."], ["Triceps", "Triceps", "Trizeps"]),
+    phase3ExerciseDef("incline-dumbbell-press", ["Incline dumbbell press", "Incline dumbbell press", "Schraegbank-Kurzhanteldruecken"], ["Borst", "Chest", "Brust"], ["Dumbbells", "Dumbbells", "Kurzhanteln"], ["Houd controle onderin, druk schuin omhoog en laat schouders laag.", "Control the bottom, press up on the incline and keep shoulders down.", "Unten kontrollieren, schraeg nach oben druecken und Schultern tief halten."], ["Schouders", "Shoulders", "Schultern"]),
+    phase3ExerciseDef("push-up", ["Push-up", "Push-up", "Liegestuetz"], ["Borst", "Chest", "Brust"], ["Bodyweight", "Bodyweight", "Koerpergewicht"], ["Houd je lichaam in een lijn, zak rustig en duw krachtig terug.", "Keep the body in one line, lower calmly and press back strongly.", "Koerper in einer Linie halten, ruhig absenken und kraftvoll hochdruecken."], ["Triceps", "Triceps", "Trizeps"]),
+    phase3ExerciseDef("cable-fly", ["Cable fly", "Cable fly", "Kabel-Flys"], ["Borst", "Chest", "Brust"], ["Cable", "Cable", "Kabelzug"], ["Beweeg vanuit de borst, houd ellebogen licht gebogen en controleer de rek.", "Move from the chest, keep elbows slightly bent and control the stretch.", "Aus der Brust bewegen, Ellbogen leicht gebeugt halten und die Dehnung kontrollieren."], ["", "", ""]),
+    phase3ExerciseDef("chest-press-machine", ["Chest press machine", "Chest press machine", "Brustpresse"], ["Borst", "Chest", "Brust"], ["Machine", "Machine", "Maschine"], ["Stel de handgrepen op borsthoogte in en druk zonder je schouders op te trekken.", "Set handles at chest height and press without shrugging the shoulders.", "Griffe auf Brusthoehe einstellen und druecken, ohne die Schultern hochzuziehen."], ["Triceps", "Triceps", "Trizeps"]),
+    phase3ExerciseDef("deadlift", ["Deadlift", "Deadlift", "Kreuzheben"], ["Rug/benen", "Back/legs", "Ruecken/Beine"], ["Barbell", "Barbell", "Langhantel"], ["Houd rug neutraal, breng spanning op de stang en strek heupen gecontroleerd.", "Keep a neutral back, take tension on the bar and extend the hips with control.", "Ruecken neutral halten, Spannung aufbauen und Huefte kontrolliert strecken."], ["Hamstrings", "Hamstrings", "Beinbeuger"]),
+    phase3ExerciseDef("lat-pulldown", ["Lat pulldown", "Lat pulldown", "Latzug"], ["Rug", "Back", "Ruecken"], ["Cable", "Cable", "Kabelzug"], ["Trek ellebogen omlaag, houd borst hoog en controleer de terugweg.", "Pull elbows down, keep the chest tall and control the return.", "Ellbogen nach unten ziehen, Brust hoch halten und Rueckweg kontrollieren."], ["Biceps", "Biceps", "Bizeps"]),
+    phase3ExerciseDef("seated-cable-row", ["Seated cable row", "Seated cable row", "Kabelrudern sitzend"], ["Rug", "Back", "Ruecken"], ["Cable", "Cable", "Kabelzug"], ["Trek richting romp, houd borst open en knijp schouderbladen samen.", "Pull toward the torso, keep the chest open and squeeze shoulder blades together.", "Zum Oberkoerper ziehen, Brust offen halten und Schulterblaetter zusammenziehen."], ["Biceps", "Biceps", "Bizeps"]),
+    phase3ExerciseDef("barbell-row", ["Barbell row", "Barbell row", "Langhantelrudern"], ["Rug", "Back", "Ruecken"], ["Barbell", "Barbell", "Langhantel"], ["Houd romp stabiel, trek naar je onderribben en laat gecontroleerd zakken.", "Keep the torso stable, row to the lower ribs and lower with control.", "Oberkoerper stabil halten, zu den unteren Rippen ziehen und kontrolliert absenken."], ["Biceps", "Biceps", "Bizeps"]),
+    phase3ExerciseDef("dumbbell-row", ["Dumbbell row", "Dumbbell row", "Kurzhantelrudern"], ["Rug", "Back", "Ruecken"], ["Dumbbell", "Dumbbell", "Kurzhantel"], ["Trek naar je heup, blijf stabiel en laat het gewicht gecontroleerd zakken.", "Row toward the hip, stay stable and lower the weight with control.", "Zur Huefte ziehen, stabil bleiben und das Gewicht kontrolliert absenken."], ["Biceps", "Biceps", "Bizeps"]),
+    phase3ExerciseDef("pull-up", ["Pull-up", "Pull-up", "Klimmzug"], ["Rug", "Back", "Ruecken"], ["Bodyweight", "Bodyweight", "Koerpergewicht"], ["Start vanuit controle, trek borst richting stang en laat rustig zakken.", "Start with control, pull the chest toward the bar and lower calmly.", "Kontrolliert starten, Brust zur Stange ziehen und ruhig absenken."], ["Biceps", "Biceps", "Bizeps"]),
+    phase3ExerciseDef("overhead-press", ["Overhead press", "Overhead press", "Schulterdruecken"], ["Schouders", "Shoulders", "Schultern"], ["Barbell", "Barbell", "Langhantel"], ["Span romp en billen aan, druk recht omhoog en houd ribben laag.", "Brace trunk and glutes, press straight up and keep ribs down.", "Rumpf und Gesaess anspannen, gerade nach oben druecken und Rippen unten halten."], ["Triceps", "Triceps", "Trizeps"]),
+    phase3ExerciseDef("dumbbell-shoulder-press", ["Dumbbell shoulder press", "Dumbbell shoulder press", "Kurzhantel-Schulterdruecken"], ["Schouders", "Shoulders", "Schultern"], ["Dumbbells", "Dumbbells", "Kurzhanteln"], ["Druk gecontroleerd boven je hoofd en houd polsen boven ellebogen.", "Press overhead with control and keep wrists above elbows.", "Kontrolliert ueber Kopf druecken und Handgelenke ueber den Ellbogen halten."], ["Triceps", "Triceps", "Trizeps"]),
+    phase3ExerciseDef("lateral-raise", ["Lateral raise", "Lateral raise", "Seitheben"], ["Schouders", "Shoulders", "Schultern"], ["Dumbbells", "Dumbbells", "Kurzhanteln"], ["Til tot schouderhoogte, houd spanning en vermijd zwaaien.", "Lift to shoulder height, keep tension and avoid swinging.", "Bis Schulterhoehe heben, Spannung halten und Schwung vermeiden."], ["", "", ""]),
+    phase3ExerciseDef("rear-delt-fly", ["Rear delt fly", "Rear delt fly", "Reverse Fly"], ["Achterste schouder", "Rear delts", "Hintere Schulter"], ["Dumbbells", "Dumbbells", "Kurzhanteln"], ["Buig licht voorover, open de armen en houd nek ontspannen.", "Hinge slightly forward, open the arms and keep the neck relaxed.", "Leicht vorbeugen, Arme oeffnen und Nacken entspannt halten."], ["Bovenrug", "Upper back", "Oberer Ruecken"]),
+    phase3ExerciseDef("face-pull", ["Face pull", "Face pull", "Face Pull"], ["Achterste schouder", "Rear delts", "Hintere Schulter"], ["Cable", "Cable", "Kabelzug"], ["Trek naar je gezicht, ellebogen hoog en schouderbladen actief.", "Pull toward the face, elbows high and shoulder blades active.", "Zum Gesicht ziehen, Ellbogen hoch und Schulterblaetter aktiv halten."], ["Bovenrug", "Upper back", "Oberer Ruecken"]),
+    phase3ExerciseDef("barbell-curl", ["Barbell curl", "Barbell curl", "Langhantelcurl"], ["Biceps", "Biceps", "Bizeps"], ["Barbell", "Barbell", "Langhantel"], ["Houd ellebogen stil, krul gecontroleerd en rem de terugweg.", "Keep elbows still, curl with control and resist the return.", "Ellbogen ruhig halten, kontrolliert curlen und den Rueckweg bremsen."], ["", "", ""]),
+    phase3ExerciseDef("dumbbell-curl", ["Dumbbell curl", "Dumbbell curl", "Kurzhantelcurl"], ["Biceps", "Biceps", "Bizeps"], ["Dumbbells", "Dumbbells", "Kurzhanteln"], ["Draai rustig in, houd romp stil en beweeg zonder zwaai.", "Rotate smoothly, keep the torso still and move without swinging.", "Ruhig eindrehen, Oberkoerper still halten und ohne Schwung bewegen."], ["", "", ""]),
+    phase3ExerciseDef("hammer-curl", ["Hammer curl", "Hammer curl", "Hammercurl"], ["Biceps", "Biceps", "Bizeps"], ["Dumbbells", "Dumbbells", "Kurzhanteln"], ["Houd duimen omhoog, ellebogen naast je lichaam en controleer elke rep.", "Keep thumbs up, elbows by the body and control every rep.", "Daumen nach oben halten, Ellbogen am Koerper und jede Wiederholung kontrollieren."], ["Onderarmen", "Forearms", "Unterarme"]),
+    phase3ExerciseDef("cable-curl", ["Cable curl", "Cable curl", "Kabelcurl"], ["Biceps", "Biceps", "Bizeps"], ["Cable", "Cable", "Kabelzug"], ["Houd constante spanning en laat de kabel gecontroleerd teruglopen.", "Keep constant tension and let the cable return with control.", "Konstante Spannung halten und das Kabel kontrolliert zurueckfuehren."], ["", "", ""]),
+    phase3ExerciseDef("triceps-pushdown", ["Triceps pushdown", "Triceps pushdown", "Trizepsdruecken"], ["Triceps", "Triceps", "Trizeps"], ["Cable", "Cable", "Kabelzug"], ["Houd ellebogen naast je romp en strek volledig zonder te zwaaien.", "Keep elbows by the torso and fully extend without swinging.", "Ellbogen am Oberkoerper halten und voll strecken, ohne zu schwingen."], ["", "", ""]),
+    phase3ExerciseDef("overhead-triceps-extension", ["Overhead triceps extension", "Overhead triceps extension", "Trizepsstrecken ueber Kopf"], ["Triceps", "Triceps", "Trizeps"], ["Cable", "Cable", "Kabelzug"], ["Houd bovenarmen stabiel en voel rek zonder je rug te overstrekken.", "Keep upper arms stable and feel the stretch without overextending the back.", "Oberarme stabil halten und Dehnung spueren, ohne den Ruecken zu ueberstrecken."], ["", "", ""]),
+    phase3ExerciseDef("close-grip-bench-press", ["Close-grip bench press", "Close-grip bench press", "Enges Bankdruecken"], ["Triceps", "Triceps", "Trizeps"], ["Barbell", "Barbell", "Langhantel"], ["Gebruik een smallere greep, houd ellebogen gecontroleerd en druk krachtig uit.", "Use a narrower grip, control the elbows and press strongly.", "Engeren Griff nutzen, Ellbogen kontrollieren und kraftvoll druecken."], ["Borst", "Chest", "Brust"]),
+    phase3ExerciseDef("dips", ["Dips", "Dips", "Dips"], ["Triceps", "Triceps", "Trizeps"], ["Bodyweight", "Bodyweight", "Koerpergewicht"], ["Zak alleen zo diep als schouders comfortabel blijven en duw gecontroleerd omhoog.", "Lower only as deep as shoulders stay comfortable and press up with control.", "Nur so tief absenken, wie die Schultern komfortabel bleiben, und kontrolliert hochdruecken."], ["Borst", "Chest", "Brust"]),
+    phase3ExerciseDef("plank", ["Plank", "Plank", "Plank"], ["Core", "Core", "Core"], ["Bodyweight", "Bodyweight", "Koerpergewicht"], ["Span buik en billen aan, houd je lichaam lang en adem rustig door.", "Brace abs and glutes, keep the body long and breathe calmly.", "Bauch und Gesaess anspannen, Koerper lang halten und ruhig atmen."], ["", "", ""]),
+    phase3ExerciseDef("crunch", ["Crunch", "Crunch", "Crunch"], ["Buik", "Abs", "Bauch"], ["Bodyweight", "Bodyweight", "Koerpergewicht"], ["Rol gecontroleerd op, houd spanning op je buik en trek niet aan je nek.", "Curl up with control, keep abdominal tension and avoid pulling the neck.", "Kontrolliert aufrollen, Bauchspannung halten und nicht am Nacken ziehen."], ["", "", ""]),
+    phase3ExerciseDef("cable-crunch", ["Cable crunch", "Cable crunch", "Kabelcrunch"], ["Buik", "Abs", "Bauch"], ["Cable", "Cable", "Kabelzug"], ["Rond je bovenrug gecontroleerd en trek vanuit je buik, niet vanuit je armen.", "Round the upper back with control and pull from the abs, not the arms.", "Oberen Ruecken kontrolliert runden und aus dem Bauch ziehen, nicht aus den Armen."], ["", "", ""]),
+    phase3ExerciseDef("hanging-knee-raise", ["Hanging knee raise", "Hanging knee raise", "Haengendes Knieheben"], ["Buik", "Abs", "Bauch"], ["Bodyweight", "Bodyweight", "Koerpergewicht"], ["Kantel bekken licht, hef knieen gecontroleerd en vermijd zwaaien.", "Slightly tuck the pelvis, lift knees with control and avoid swinging.", "Becken leicht kippen, Knie kontrolliert heben und Schwung vermeiden."], ["Heupflexoren", "Hip flexors", "Hueftbeuger"]),
+    phase3ExerciseDef("dead-bug", ["Dead bug", "Dead bug", "Dead Bug"], ["Core", "Core", "Core"], ["Bodyweight", "Bodyweight", "Koerpergewicht"], ["Houd onderrug rustig, beweeg langzaam en behoud spanning.", "Keep the lower back quiet, move slowly and maintain tension.", "Unteren Ruecken ruhig halten, langsam bewegen und Spannung halten."], ["", "", ""]),
+    phase3ExerciseDef("pallof-press", ["Pallof press", "Pallof press", "Pallof Press"], ["Core", "Core", "Core"], ["Cable", "Cable", "Kabelzug"], ["Druk de kabel recht vooruit en voorkom dat je romp draait.", "Press the cable straight forward and prevent the trunk from rotating.", "Kabel gerade nach vorne druecken und Rotation im Rumpf verhindern."], ["", "", ""]),
+    phase3ExerciseDef("smith-machine-squat", ["Smith machine squat", "Smith machine squat", "Smith-Machine-Kniebeuge"], ["Quadriceps", "Quadriceps", "Quadrizeps"], ["Smith machine", "Smith machine", "Smith Machine"], ["Zet voeten stabiel, blijf gecontroleerd in de rail en duw gelijkmatig omhoog.", "Set the feet stable, stay controlled in the rail and press up evenly.", "Fuesse stabil setzen, kontrolliert in der Fuehrung bleiben und gleichmaessig hochdruecken."], ["Billen", "Glutes", "Gesaess"]),
+    phase3ExerciseDef("hack-squat", ["Hack squat", "Hack squat", "Hackenschmidt-Kniebeuge"], ["Quadriceps", "Quadriceps", "Quadrizeps"], ["Machine", "Machine", "Maschine"], ["Houd rug tegen het kussen, zak gecontroleerd en duw via je hele voet.", "Keep the back against the pad, lower with control and drive through the whole foot.", "Ruecken am Polster halten, kontrolliert absenken und ueber den ganzen Fuss druecken."], ["Billen", "Glutes", "Gesaess"]),
+    phase3ExerciseDef("goblet-squat", ["Goblet squat", "Goblet squat", "Goblet Squat"], ["Quadriceps", "Quadriceps", "Quadrizeps"], ["Dumbbell", "Dumbbell", "Kurzhantel"], ["Houd de dumbbell dicht bij je borst en beweeg rustig door de squat.", "Hold the dumbbell close to the chest and move smoothly through the squat.", "Kurzhantel nah an der Brust halten und ruhig durch die Kniebeuge bewegen."], ["Core", "Core", "Core"]),
+    phase3ExerciseDef("walking-lunge", ["Walking lunge", "Walking lunge", "Ausfallschritte gehend"], ["Quadriceps", "Quadriceps", "Quadrizeps"], ["Dumbbells", "Dumbbells", "Kurzhanteln"], ["Stap lang genoeg, houd romp rechtop en duw gecontroleerd door naar de volgende stap.", "Step far enough, keep the torso upright and drive with control into the next step.", "Ausreichend weit steigen, Oberkoerper aufrecht halten und kontrolliert in den naechsten Schritt druecken."], ["Billen", "Glutes", "Gesaess"]),
+    phase3ExerciseDef("front-squat", ["Front squat", "Front squat", "Frontkniebeuge"], ["Quadriceps", "Quadriceps", "Quadrizeps"], ["Barbell", "Barbell", "Langhantel"], ["Houd ellebogen hoog, romp stevig en zak gecontroleerd recht omlaag.", "Keep elbows high, trunk firm and lower straight down with control.", "Ellbogen hoch halten, Rumpf fest und kontrolliert gerade absenken."], ["Core", "Core", "Core"]),
+    phase3ExerciseDef("good-morning", ["Good morning", "Good morning", "Good Morning"], ["Hamstrings", "Hamstrings", "Beinbeuger"], ["Barbell", "Barbell", "Langhantel"], ["Houd rug neutraal, beweeg vanuit de heupen en houd de knieen zacht.", "Keep a neutral back, hinge from the hips and keep the knees soft.", "Ruecken neutral halten, aus der Huefte beugen und Knie leicht gebeugt halten."], ["Billen", "Glutes", "Gesaess"]),
+    phase3ExerciseDef("single-leg-romanian-deadlift", ["Single-leg Romanian deadlift", "Single-leg Romanian deadlift", "Einbeiniges rumaenisches Kreuzheben"], ["Hamstrings", "Hamstrings", "Beinbeuger"], ["Dumbbell", "Dumbbell", "Kurzhantel"], ["Houd heupen recht, reik gecontroleerd naar voren en blijf stabiel op een been.", "Keep hips square, reach forward with control and stay stable on one leg.", "Huefte gerade halten, kontrolliert nach vorne reichen und stabil auf einem Bein bleiben."], ["Billen", "Glutes", "Gesaess"]),
+    phase3ExerciseDef("sumo-deadlift", ["Sumo deadlift", "Sumo deadlift", "Sumo-Kreuzheben"], ["Hamstrings", "Hamstrings", "Beinbeuger"], ["Barbell", "Barbell", "Langhantel"], ["Zet breed, houd borst hoog en trek de stang dicht langs je lichaam omhoog.", "Use a wide stance, keep the chest tall and pull the bar close to the body.", "Breit stehen, Brust hoch halten und die Stange nah am Koerper hochziehen."], ["Billen", "Glutes", "Gesaess"]),
+    phase3ExerciseDef("back-extension", ["Back extension", "Back extension", "Rueckenstrecker"], ["Hamstrings", "Hamstrings", "Beinbeuger"], ["Machine", "Machine", "Maschine"], ["Beweeg vanuit heupen, houd romp stevig en kom gecontroleerd omhoog.", "Move from the hips, keep the trunk firm and rise with control.", "Aus der Huefte bewegen, Rumpf fest halten und kontrolliert aufrichten."], ["Onderrug", "Lower back", "Unterer Ruecken"]),
+    phase3ExerciseDef("cable-kickback", ["Cable kickback", "Cable kickback", "Kabel-Kickback"], ["Billen", "Glutes", "Gesaess"], ["Cable", "Cable", "Kabelzug"], ["Houd bekken stabiel en duw je hiel gecontroleerd naar achteren.", "Keep the pelvis stable and drive the heel back with control.", "Becken stabil halten und die Ferse kontrolliert nach hinten druecken."], ["Hamstrings", "Hamstrings", "Beinbeuger"]),
+    phase3ExerciseDef("abductor-machine", ["Abductor machine", "Abductor machine", "Abduktorenmaschine"], ["Billen", "Glutes", "Gesaess"], ["Machine", "Machine", "Maschine"], ["Zit stabiel, open gecontroleerd en houd spanning op de terugweg.", "Sit stable, open with control and keep tension on the return.", "Stabil sitzen, kontrolliert oeffnen und Spannung auf dem Rueckweg halten."], ["Heupen", "Hips", "Huefte"]),
+    phase3ExerciseDef("leg-press-calf-raise", ["Leg press calf raise", "Leg press calf raise", "Wadenheben an der Beinpresse"], ["Kuiten", "Calves", "Waden"], ["Machine", "Machine", "Maschine"], ["Gebruik de leg press rustig voor volledige enkelbeweging zonder kniebuiging.", "Use the leg press calmly for full ankle motion without bending the knees.", "Die Beinpresse ruhig fuer volle Sprunggelenksbewegung nutzen, ohne die Knie zu beugen."], ["", "", ""]),
+    phase3ExerciseDef("pec-deck", ["Pec deck", "Pec deck", "Butterfly"], ["Borst", "Chest", "Brust"], ["Machine", "Machine", "Maschine"], ["Houd borst hoog, breng armen gecontroleerd samen en rem de opening.", "Keep the chest tall, bring arms together with control and resist the opening.", "Brust hoch halten, Arme kontrolliert zusammenfuehren und die Oeffnung bremsen."], ["", "", ""]),
+    phase3ExerciseDef("dumbbell-pullover", ["Dumbbell pullover", "Dumbbell pullover", "Kurzhantel-Pullover"], ["Borst", "Chest", "Brust"], ["Dumbbell", "Dumbbell", "Kurzhantel"], ["Houd ribben laag, beweeg gecontroleerd over je hoofd en trek terug vanuit borst/rug.", "Keep ribs down, move overhead with control and pull back from chest/back.", "Rippen unten halten, kontrolliert ueber Kopf bewegen und aus Brust/Ruecken zurueckziehen."], ["Rug", "Back", "Ruecken"]),
+    phase3ExerciseDef("machine-row", ["Machine row", "Machine row", "Maschinenrudern"], ["Rug", "Back", "Ruecken"], ["Machine", "Machine", "Maschine"], ["Trek handgrepen naar je romp, houd borst tegen het kussen en controleer de terugweg.", "Pull handles toward the torso, keep the chest on the pad and control the return.", "Griffe zum Oberkoerper ziehen, Brust am Polster halten und Rueckweg kontrollieren."], ["Biceps", "Biceps", "Bizeps"]),
+    phase3ExerciseDef("t-bar-row", ["T-bar row", "T-bar row", "T-Bar Rudern"], ["Rug", "Back", "Ruecken"], ["Barbell", "Barbell", "Langhantel"], ["Houd romp stevig, trek ellebogen naar achter en laat gewicht beheerst zakken.", "Keep the torso firm, pull elbows back and lower the load under control.", "Oberkoerper fest halten, Ellbogen nach hinten ziehen und Gewicht kontrolliert absenken."], ["Biceps", "Biceps", "Bizeps"]),
+    phase3ExerciseDef("straight-arm-pulldown", ["Straight-arm pulldown", "Straight-arm pulldown", "Latziehen mit gestreckten Armen"], ["Rug", "Back", "Ruecken"], ["Cable", "Cable", "Kabelzug"], ["Houd armen bijna gestrekt en trek vanuit je lats naar je heupen.", "Keep arms nearly straight and pull from the lats toward the hips.", "Arme fast gestreckt halten und aus dem Lat Richtung Huefte ziehen."], ["Core", "Core", "Core"]),
+    phase3ExerciseDef("arnold-press", ["Arnold press", "Arnold press", "Arnold Press"], ["Schouders", "Shoulders", "Schultern"], ["Dumbbells", "Dumbbells", "Kurzhanteln"], ["Draai gecontroleerd van voor naar boven en houd de beweging vloeiend.", "Rotate with control from front to overhead and keep the motion smooth.", "Kontrolliert von vorne nach oben rotieren und die Bewegung ruhig halten."], ["Triceps", "Triceps", "Trizeps"]),
+    phase3ExerciseDef("cable-lateral-raise", ["Cable lateral raise", "Cable lateral raise", "Seitheben am Kabel"], ["Schouders", "Shoulders", "Schultern"], ["Cable", "Cable", "Kabelzug"], ["Til zijwaarts tot schouderhoogte en houd constante kabelspanning.", "Lift sideways to shoulder height and keep constant cable tension.", "Seitlich bis Schulterhoehe heben und konstante Kabelspannung halten."], ["", "", ""]),
+    phase3ExerciseDef("machine-shoulder-press", ["Machine shoulder press", "Machine shoulder press", "Schulterpresse"], ["Schouders", "Shoulders", "Schultern"], ["Machine", "Machine", "Maschine"], ["Stel zitting goed in, druk gecontroleerd omhoog en laat rustig terugkomen.", "Set the seat correctly, press up with control and return calmly.", "Sitz passend einstellen, kontrolliert hochdruecken und ruhig zurueckfuehren."], ["Triceps", "Triceps", "Trizeps"]),
+    phase3ExerciseDef("preacher-curl", ["Preacher curl", "Preacher curl", "Scottcurl"], ["Biceps", "Biceps", "Bizeps"], ["Machine", "Machine", "Maschine"], ["Houd bovenarmen op het kussen en krul zonder onderin te stuiteren.", "Keep upper arms on the pad and curl without bouncing at the bottom.", "Oberarme am Polster halten und curlen, ohne unten zu wippen."], ["", "", ""]),
+    phase3ExerciseDef("incline-dumbbell-curl", ["Incline dumbbell curl", "Incline dumbbell curl", "Schraegbank-Kurzhantelcurl"], ["Biceps", "Biceps", "Bizeps"], ["Dumbbells", "Dumbbells", "Kurzhanteln"], ["Laat armen lang hangen, krul gecontroleerd en houd schouders stil.", "Let arms hang long, curl with control and keep shoulders still.", "Arme lang haengen lassen, kontrolliert curlen und Schultern ruhig halten."], ["", "", ""]),
+    phase3ExerciseDef("concentration-curl", ["Concentration curl", "Concentration curl", "Konzentrationscurl"], ["Biceps", "Biceps", "Bizeps"], ["Dumbbell", "Dumbbell", "Kurzhantel"], ["Steun je arm stabiel en beweeg langzaam zonder te zwaaien.", "Support the arm steadily and move slowly without swinging.", "Arm stabil abstuetzen und langsam ohne Schwung bewegen."], ["", "", ""]),
+    phase3ExerciseDef("skull-crusher", ["Skull crusher", "Skull crusher", "French Press liegend"], ["Triceps", "Triceps", "Trizeps"], ["Barbell", "Barbell", "Langhantel"], ["Houd bovenarmen stil, buig gecontroleerd en strek zonder ellebogen te laten uitwaaieren.", "Keep upper arms still, bend with control and extend without flaring elbows.", "Oberarme ruhig halten, kontrolliert beugen und strecken, ohne Ellbogen ausweichen zu lassen."], ["", "", ""]),
+    phase3ExerciseDef("bench-dips", ["Bench dips", "Bench dips", "Bank-Dips"], ["Triceps", "Triceps", "Trizeps"], ["Bodyweight", "Bodyweight", "Koerpergewicht"], ["Houd schouders laag en zak alleen tot comfortabele diepte.", "Keep shoulders down and lower only to a comfortable depth.", "Schultern tief halten und nur bis zu komfortabler Tiefe absenken."], ["Borst", "Chest", "Brust"]),
+    phase3ExerciseDef("rope-overhead-extension", ["Rope overhead extension", "Rope overhead extension", "Trizepsseil ueber Kopf"], ["Triceps", "Triceps", "Trizeps"], ["Cable", "Cable", "Kabelzug"], ["Houd ellebogen stabiel en strek het touw gecontroleerd boven je hoofd.", "Keep elbows stable and extend the rope overhead with control.", "Ellbogen stabil halten und das Seil kontrolliert ueber Kopf strecken."], ["", "", ""]),
+    phase3ExerciseDef("side-plank", ["Side plank", "Side plank", "Seitstuetz"], ["Core", "Core", "Core"], ["Bodyweight", "Bodyweight", "Koerpergewicht"], ["Houd heupen hoog, lichaam lang en adem rustig door.", "Keep hips high, body long and breathe calmly.", "Huefte hoch halten, Koerper lang und ruhig weiteratmen."], ["Schuine buik", "Obliques", "Schraege Bauchmuskeln"]),
+    phase3ExerciseDef("mountain-climber", ["Mountain climber", "Mountain climber", "Mountain Climber"], ["Core", "Core", "Core"], ["Bodyweight", "Bodyweight", "Koerpergewicht"], ["Houd romp stabiel en breng knieen ritmisch naar voren.", "Keep the trunk stable and drive knees forward rhythmically.", "Rumpf stabil halten und Knie rhythmisch nach vorne fuehren."], ["Conditie", "Conditioning", "Kondition"]),
+    phase3ExerciseDef("russian-twist", ["Russian twist", "Russian twist", "Russian Twist"], ["Core", "Core", "Core"], ["Bodyweight", "Bodyweight", "Koerpergewicht"], ["Draai rustig vanuit je romp en houd spanning op je buik.", "Rotate calmly from the trunk and keep abdominal tension.", "Ruhig aus dem Rumpf rotieren und Bauchspannung halten."], ["Schuine buik", "Obliques", "Schraege Bauchmuskeln"]),
+    phase3ExerciseDef("ab-wheel-rollout", ["Ab wheel rollout", "Ab wheel rollout", "Ab-Wheel Rollout"], ["Core", "Core", "Core"], ["Bodyweight", "Bodyweight", "Koerpergewicht"], ["Rol alleen zo ver als je romp stabiel blijft en trek gecontroleerd terug.", "Roll only as far as the trunk stays stable and pull back with control.", "Nur so weit rollen, wie der Rumpf stabil bleibt, und kontrolliert zurueckziehen."], ["Schouders", "Shoulders", "Schultern"])
   ];
 
   window.FMZ_PHASE3_TRAINING_ENGINE = {
@@ -320,7 +399,8 @@
       "workout_sessions",
       "workout_set_logs"
     ],
-    freeActivePlanLimit: PHASE3_FREE_ACTIVE_PLAN_LIMIT,
+    freeActiveDayLimit: PHASE3_FREE_ACTIVE_DAY_LIMIT,
+    exerciseLibrarySize: PHASE3_EXERCISES.length,
     noAiCalls: PHASE3_NO_AI_CALLS,
     noMutationObserver: PHASE3_NO_MUTATION_OBSERVER,
     noPolling: PHASE3_NO_POLLING,
@@ -333,6 +413,42 @@
   let phase3TimerId = null;
   let phase3TimerEndsAt = 0;
   let phase3TrainingInitialHtml = "";
+  let phase3BuilderExercises = [];
+  let phase3BuilderEditIndex = null;
+  let phase3BuilderDraft = phase3EmptyBuilderDraft();
+  let phase3LibraryFilters = { search: "", category: "", equipment: "" };
+
+  function phase3EmptyBuilderDraft() {
+    return {
+      title: "",
+      dayLabel: "Maandag",
+      exerciseSlug: PHASE3_EXERCISES[0]?.slug || "",
+      sets: "3",
+      reps: "8-10",
+      targetWeight: "",
+      targetRir: "",
+      targetRpe: "",
+      restSeconds: "90",
+      notes: ""
+    };
+  }
+
+  function phase3CaptureBuilderDraft(form) {
+    if (!form) return;
+    const data = new FormData(form);
+    phase3BuilderDraft = {
+      title: String(data.get("title") || ""),
+      dayLabel: String(data.get("dayLabel") || "Maandag"),
+      exerciseSlug: String(data.get("exerciseSlug") || PHASE3_EXERCISES[0]?.slug || ""),
+      sets: String(data.get("sets") || "3"),
+      reps: String(data.get("reps") || "8-10"),
+      targetWeight: String(data.get("targetWeight") || ""),
+      targetRir: String(data.get("targetRir") || ""),
+      targetRpe: String(data.get("targetRpe") || ""),
+      restSeconds: String(data.get("restSeconds") || "90"),
+      notes: String(data.get("notes") || "")
+    };
+  }
 
   function phase3EmptyState() {
     return {
@@ -341,7 +457,8 @@
       syncMessage: "",
       plans: [],
       history: [],
-      activeSession: null
+      activeSession: null,
+      pendingPlanRetry: null
     };
   }
 
@@ -398,10 +515,46 @@
     const language = phase3Language();
     return {
       name: item.names[language] || item.names.nl,
+      category: item.category?.[language] || item.category?.nl || item.primary[language] || item.primary.nl,
       primary: item.primary[language] || item.primary.nl,
+      secondary: item.secondary?.[language] || item.secondary?.nl || "",
       equipment: item.equipment[language] || item.equipment.nl,
       instructions: item.instructions[language] || item.instructions.nl
     };
+  }
+
+  function phase3ExerciseSearchText(exercise) {
+    return [
+      ...Object.values(exercise.names || {}),
+      ...Object.values(exercise.primary || {}),
+      ...Object.values(exercise.secondary || {}),
+      ...Object.values(exercise.equipment || {}),
+      ...Object.values(exercise.instructions || {})
+    ].join(" ").toLowerCase();
+  }
+
+  function phase3LibraryOptions(field) {
+    const language = phase3Language();
+    const values = new Map();
+    PHASE3_EXERCISES.forEach((exercise) => {
+      const group = exercise[field] || {};
+      const value = group.nl || group.en || "";
+      if (!value) return;
+      values.set(value, group[language] || group.nl || value);
+    });
+    return Array.from(values.entries())
+      .map(([value, label]) => ({ value, label }))
+      .sort((a, b) => a.label.localeCompare(b.label));
+  }
+
+  function phase3FilteredExercises() {
+    const search = String(phase3LibraryFilters.search || "").trim().toLowerCase();
+    return PHASE3_EXERCISES.filter((exercise) => {
+      const categoryMatch = !phase3LibraryFilters.category || exercise.category?.nl === phase3LibraryFilters.category;
+      const equipmentMatch = !phase3LibraryFilters.equipment || exercise.equipment?.nl === phase3LibraryFilters.equipment;
+      const searchMatch = !search || phase3ExerciseSearchText(exercise).includes(search);
+      return categoryMatch && equipmentMatch && searchMatch;
+    });
   }
 
   function phase3ClientEntitlement() {
@@ -419,17 +572,21 @@
     return entitlement.pro || entitlement.personalCoaching;
   }
 
-  function phase3ActivePlanLimit() {
-    return phase3HasUnlimitedTraining() ? Infinity : PHASE3_FREE_ACTIVE_PLAN_LIMIT;
+  function phase3ActiveDayLimit() {
+    return phase3HasUnlimitedTraining() ? Infinity : PHASE3_FREE_ACTIVE_DAY_LIMIT;
   }
 
-  function phase3ActivePlans() {
-    return phase3State.plans.filter((plan) => plan.status === "active");
+  function phase3ActiveWorkoutDays() {
+    return phase3State.plans
+      .filter((plan) => plan.status === "active" && plan.source !== "legacy_bridge")
+      .flatMap((plan) => (plan.days || [])
+        .filter((day) => (day.status || "active") === "active")
+        .map((day) => ({ plan, day })));
   }
 
-  function phase3CanCreateActivePlan() {
-    const limit = phase3ActivePlanLimit();
-    return limit === Infinity || phase3ActivePlans().length < limit;
+  function phase3CanCreateActiveWorkoutDay() {
+    const limit = phase3ActiveDayLimit();
+    return limit === Infinity || phase3ActiveWorkoutDays().length < limit;
   }
 
   function phase3ProfileId() {
@@ -453,6 +610,7 @@
         phase3State.activeSession = parsed.activeSession || phase3State.activeSession;
         phase3State.plans = Array.isArray(parsed.localPlans) ? parsed.localPlans : phase3State.plans;
         phase3State.history = Array.isArray(parsed.localHistory) ? parsed.localHistory : phase3State.history;
+        phase3State.pendingPlanRetry = parsed.pendingPlanRetry || phase3State.pendingPlanRetry;
       }
     } catch {
       phase3State.syncMessage = phase3Text("localSafe");
@@ -464,7 +622,8 @@
       localStorage.setItem(phase3StorageKey(), JSON.stringify({
         activeSession: phase3State.activeSession,
         localPlans: phase3State.plans.filter((plan) => plan.localOnly),
-        localHistory: phase3State.history.filter((entry) => entry.localOnly).slice(0, 20)
+        localHistory: phase3State.history.filter((entry) => entry.localOnly).slice(0, 20),
+        pendingPlanRetry: phase3State.pendingPlanRetry
       }));
     } catch {
       phase3State.syncMessage = phase3Text("localSafe");
@@ -477,6 +636,10 @@
     phase3StopTimer();
     phase3UserKey = nextKey;
     phase3State = phase3EmptyState();
+    phase3BuilderExercises = [];
+    phase3BuilderEditIndex = null;
+    phase3BuilderDraft = phase3EmptyBuilderDraft();
+    phase3LibraryFilters = { search: "", category: "", equipment: "" };
     phase3LoadLocal();
   }
 
@@ -493,6 +656,8 @@
       id: day.id,
       label: day.day_label,
       order: day.day_order,
+      status: day.status || "active",
+      archivedAt: day.archived_at || "",
       notes: day.notes || "",
       exercises: (exercisesByDay[day.id] || []).map((exercise) => ({
         id: exercise.id,
@@ -500,6 +665,8 @@
         slug: exercise.exercise_slug,
         name: exercise.exercise_name_snapshot,
         order: exercise.exercise_order,
+        status: exercise.status || "active",
+        archivedAt: exercise.archived_at || "",
         targetSets: exercise.target_sets,
         targetReps: exercise.target_reps,
         targetWeight: exercise.target_weight ?? "",
@@ -539,7 +706,7 @@
       if (planIds.length) {
         const dayResult = await supabaseClient
           .from("training_plan_days")
-          .select("id,training_plan_id,day_label,day_order,notes")
+          .select("id,training_plan_id,day_label,day_order,status,archived_at,notes")
           .in("training_plan_id", planIds)
           .order("day_order", { ascending: true });
         if (dayResult.error) throw dayResult.error;
@@ -548,7 +715,7 @@
         if (dayIds.length) {
           const exerciseResult = await supabaseClient
             .from("training_plan_exercises")
-            .select("id,training_plan_day_id,exercise_slug,exercise_name_snapshot,exercise_order,target_sets,target_reps,target_weight,target_rir,target_rpe,rest_seconds,tempo,notes")
+            .select("id,training_plan_day_id,exercise_slug,exercise_name_snapshot,exercise_order,status,archived_at,target_sets,target_reps,target_weight,target_rir,target_rpe,rest_seconds,tempo,notes")
             .in("training_plan_day_id", dayIds)
             .order("exercise_order", { ascending: true });
           if (exerciseResult.error) throw exerciseResult.error;
@@ -673,6 +840,70 @@
     };
   }
 
+  function phase3ExerciseInsertRow(dayId, exercise, order) {
+    return {
+      id: exercise.id,
+      training_plan_day_id: dayId,
+      exercise_slug: exercise.slug,
+      exercise_name_snapshot: exercise.name,
+      exercise_order: order,
+      status: "active",
+      target_sets: exercise.targetSets,
+      target_reps: exercise.targetReps,
+      target_weight: exercise.targetWeight === "" ? null : exercise.targetWeight,
+      target_rir: exercise.targetRir === "" ? null : exercise.targetRir,
+      target_rpe: exercise.targetRpe === "" ? null : exercise.targetRpe,
+      rest_seconds: exercise.restSeconds,
+      tempo: exercise.tempo || null,
+      notes: exercise.notes || null
+    };
+  }
+
+  async function phase3PersistRemainingExercises(day) {
+    const remainingExercises = (day.exercises || []).slice(1);
+    if (!remainingExercises.length) return { ok: true };
+    const { error } = await supabaseClient
+      .from("training_plan_exercises")
+      .upsert(remainingExercises.map((item, index) => phase3ExerciseInsertRow(day.id, item, index + 1)), { onConflict: "id" });
+    if (error) throw error;
+    return { ok: true };
+  }
+
+  async function phase3HydrateAfterPartialPlanFailure(plan, error) {
+    const pending = {
+      plan,
+      failedAt: phase3IsoNow(),
+      message: error?.message || phase3Text("partialSave")
+    };
+    phase3State.pendingPlanRetry = pending;
+    phase3State.syncMessage = phase3Text("partialSave");
+    if (onlineProfile?.role === "client") {
+      await phase3HydrateTraining(onlineProfile);
+      phase3State.pendingPlanRetry = pending;
+      phase3State.syncMessage = phase3Text("partialSave");
+    }
+    phase3SaveLocal();
+  }
+
+  async function phase3RetryPendingPlanSave() {
+    const pending = phase3State.pendingPlanRetry;
+    const plan = pending?.plan;
+    const day = plan?.days?.[0];
+    if (!plan || !day || !phase3UsesSupabase()) return { ok: false, error: new Error(phase3Text("saveFailed")) };
+    try {
+      phase3State.syncMessage = phase3Text("partialRetrying");
+      await phase3PersistRemainingExercises(day);
+      phase3State.pendingPlanRetry = null;
+      if (onlineProfile?.role === "client") await phase3HydrateTraining(onlineProfile);
+      phase3State.syncMessage = phase3Text("synced");
+      phase3SaveLocal();
+      return { ok: true };
+    } catch (error) {
+      await phase3HydrateAfterPartialPlanFailure(plan, error);
+      return { ok: false, partial: true, error };
+    }
+  }
+
   async function phase3PersistPlan(plan) {
     if (!phase3UsesSupabase()) {
       plan.localOnly = true;
@@ -702,6 +933,14 @@
       });
       if (planError) throw planError;
 
+      try {
+        await phase3PersistRemainingExercises(day);
+      } catch (exerciseError) {
+        await phase3HydrateAfterPartialPlanFailure(plan, exerciseError);
+        return { ok: false, partial: true, error: exerciseError };
+      }
+
+      phase3State.pendingPlanRetry = null;
       plan.localOnly = false;
       phase3State.plans.unshift(plan);
       phase3State.migrationReady = true;
@@ -734,18 +973,135 @@
     }
     plan.status = "archived";
     plan.updatedAt = phase3IsoNow();
+    if (phase3State.pendingPlanRetry?.plan?.id === plan.id) {
+      phase3State.pendingPlanRetry = null;
+    }
     phase3SaveLocal();
     return { ok: true };
   }
 
-  function phase3BuildPlanFromForm(form) {
+  function phase3ExerciseFromForm(form, order = 0, id = phase3Id("plan-exercise")) {
     const data = new FormData(form);
     const slug = String(data.get("exerciseSlug") || PHASE3_EXERCISES[0].slug);
     const meta = phase3ExerciseMeta(slug);
+    return {
+      id,
+      key: id,
+      slug,
+      name: meta.name,
+      order,
+      status: "active",
+      archivedAt: "",
+      targetSets: Math.max(1, Math.min(20, phase3Number(data.get("sets"), 3))),
+      targetReps: String(data.get("reps") || "8-10").slice(0, 40),
+      targetWeight: phase3Number(data.get("targetWeight"), ""),
+      targetRir: phase3Number(data.get("targetRir"), ""),
+      targetRpe: phase3Number(data.get("targetRpe"), ""),
+      restSeconds: Math.max(0, Math.min(3600, phase3Number(data.get("restSeconds"), 90))),
+      tempo: "",
+      notes: String(data.get("notes") || "").trim().slice(0, 500)
+    };
+  }
+
+  function phase3NormalizeBuilderExercises() {
+    phase3BuilderExercises = phase3BuilderExercises
+      .filter((exercise) => exercise && (exercise.status || "active") === "active")
+      .map((exercise, index) => ({
+        ...exercise,
+        key: exercise.key || exercise.id,
+        order: index
+      }));
+  }
+
+  function phase3AddBuilderExercise(form) {
+    phase3CaptureBuilderDraft(form);
+    if (phase3BuilderEditIndex !== null && phase3BuilderExercises[phase3BuilderEditIndex]) {
+      const current = phase3BuilderExercises[phase3BuilderEditIndex];
+      phase3BuilderExercises[phase3BuilderEditIndex] = phase3ExerciseFromForm(form, current.order, current.id);
+      phase3BuilderEditIndex = null;
+    } else {
+      phase3BuilderExercises.push(phase3ExerciseFromForm(form, phase3BuilderExercises.length));
+    }
+    phase3NormalizeBuilderExercises();
+  }
+
+  function phase3RemoveBuilderExercise(index) {
+    phase3BuilderExercises.splice(index, 1);
+    if (phase3BuilderEditIndex === index) phase3BuilderEditIndex = null;
+    if (phase3BuilderEditIndex !== null && phase3BuilderEditIndex > index) phase3BuilderEditIndex -= 1;
+    phase3NormalizeBuilderExercises();
+  }
+
+  function phase3MoveBuilderExercise(index, direction) {
+    const target = index + direction;
+    if (target < 0 || target >= phase3BuilderExercises.length) return;
+    const current = phase3BuilderExercises[index];
+    phase3BuilderExercises[index] = phase3BuilderExercises[target];
+    phase3BuilderExercises[target] = current;
+    if (phase3BuilderEditIndex === index) phase3BuilderEditIndex = target;
+    else if (phase3BuilderEditIndex === target) phase3BuilderEditIndex = index;
+    phase3NormalizeBuilderExercises();
+  }
+
+  function phase3EditBuilderExercise(index) {
+    const exercise = phase3BuilderExercises[index];
+    if (!exercise) return;
+    phase3BuilderEditIndex = index;
+    phase3BuilderDraft = {
+      ...phase3BuilderDraft,
+      exerciseSlug: exercise.slug,
+      sets: String(exercise.targetSets || "3"),
+      reps: String(exercise.targetReps || "8-10"),
+      targetWeight: exercise.targetWeight === "" ? "" : String(exercise.targetWeight),
+      targetRir: exercise.targetRir === "" ? "" : String(exercise.targetRir),
+      targetRpe: exercise.targetRpe === "" ? "" : String(exercise.targetRpe),
+      restSeconds: String(exercise.restSeconds || 90),
+      notes: exercise.notes || ""
+    };
+  }
+
+  function phase3CancelBuilderEdit(form) {
+    phase3CaptureBuilderDraft(form);
+    phase3BuilderEditIndex = null;
+    phase3BuilderDraft = {
+      ...phase3BuilderDraft,
+      exerciseSlug: PHASE3_EXERCISES[0]?.slug || "",
+      sets: "3",
+      reps: "8-10",
+      targetWeight: "",
+      targetRir: "",
+      targetRpe: "",
+      restSeconds: "90",
+      notes: ""
+    };
+  }
+
+  function phase3BuilderExercisesForSubmit(form) {
+    if (phase3BuilderEditIndex !== null && phase3BuilderExercises[phase3BuilderEditIndex]) {
+      phase3AddBuilderExercise(form);
+    }
+    phase3NormalizeBuilderExercises();
+    if (phase3BuilderExercises.length) {
+      return phase3BuilderExercises.map((exercise, index) => {
+        const id = exercise.id || phase3Id("plan-exercise");
+        return {
+          ...exercise,
+          id,
+          key: exercise.key || id,
+          order: index
+        };
+      });
+    }
+    return [phase3ExerciseFromForm(form, 0)];
+  }
+
+  function phase3BuildPlanFromForm(form) {
+    phase3CaptureBuilderDraft(form);
+    const data = new FormData(form);
     const planId = phase3Id("plan");
     const dayId = phase3Id("day");
-    const exerciseId = phase3Id("plan-exercise");
     const dayLabel = String(data.get("dayLabel") || "Maandag");
+    const exercises = phase3BuilderExercisesForSubmit(form);
     return {
       id: planId,
       title: String(data.get("title") || "").trim() || phase3Text("createPlan"),
@@ -757,22 +1113,10 @@
         id: dayId,
         label: dayLabel,
         order: phase3DayOrder(dayLabel),
+        status: "active",
+        archivedAt: "",
         notes: "",
-        exercises: [{
-          id: exerciseId,
-          key: exerciseId,
-          slug,
-          name: meta.name,
-          order: 0,
-          targetSets: Math.max(1, Math.min(20, phase3Number(data.get("sets"), 3))),
-          targetReps: String(data.get("reps") || "8-10").slice(0, 40),
-          targetWeight: phase3Number(data.get("targetWeight"), ""),
-          targetRir: phase3Number(data.get("targetRir"), ""),
-          targetRpe: phase3Number(data.get("targetRpe"), ""),
-          restSeconds: Math.max(0, Math.min(3600, phase3Number(data.get("restSeconds"), 90))),
-          tempo: "",
-          notes: String(data.get("notes") || "").trim().slice(0, 500)
-        }]
+        exercises
       }],
       localOnly: false
     };
@@ -793,6 +1137,8 @@
           slug: phase3Slugify(exercise.exercise || `legacy-${index}`),
           name: exercise.exercise || phase3Text("exercise"),
           order: index,
+          status: "active",
+          archivedAt: "",
           targetSets: Math.max(1, phase3Number(exercise.sets, 1)),
           targetReps: String(exercise.reps || "8-10"),
           targetWeight: exercise.targetWeight ?? "",
@@ -806,6 +1152,8 @@
         id: `legacy-day-${dayIndex}`,
         label: day,
         order: dayIndex,
+        status: "active",
+        archivedAt: "",
         notes: "",
         exercises
       };
@@ -842,7 +1190,9 @@
   function phase3CreateSession(plan, day) {
     const id = phase3Id("session");
     const startedAt = phase3IsoNow();
-    const plannedExercises = day.exercises.map((exercise, index) => ({
+    const plannedExercises = (day.exercises || [])
+      .filter((exercise) => (exercise.status || "active") === "active")
+      .map((exercise, index) => ({
       ...exercise,
       key: exercise.key || exercise.id || `${exercise.slug}-${index}`
     }));
@@ -865,13 +1215,16 @@
 
   async function phase3StartWorkout(planId, dayId) {
     const plan = phase3PlansForDisplay().find((item) => item.id === planId);
-    const day = plan?.days.find((item) => item.id === dayId);
-    if (!plan || !day || !day.exercises.length) return;
+    const day = plan?.days
+      .filter((item) => (item.status || "active") === "active")
+      .find((item) => item.id === dayId);
+    const activeExercises = (day?.exercises || []).filter((exercise) => (exercise.status || "active") === "active");
+    if (!plan || !day || !activeExercises.length) return;
     if (phase3State.activeSession && ["active", "paused"].includes(phase3State.activeSession.status)) {
       renderTraining();
       return;
     }
-    phase3State.activeSession = phase3CreateSession(plan, day);
+    phase3State.activeSession = phase3CreateSession(plan, { ...day, exercises: activeExercises });
     phase3SaveLocal();
     await phase3SyncActiveSession();
     renderTraining();
@@ -1153,6 +1506,10 @@
       .phase3-plan-list, .phase3-history-list, .phase3-library-list { display: grid; gap: 10px; }
       .phase3-plan-card { border: 1px solid var(--line); border-radius: 8px; padding: 12px; display: grid; gap: 10px; }
       .phase3-plan-head, .phase3-day-head, .phase3-set-row, .phase3-history-item { display: flex; justify-content: space-between; gap: 10px; align-items: center; flex-wrap: wrap; }
+      .phase3-builder-list { display: grid; gap: 8px; }
+      .phase3-builder-item { border: 1px solid var(--line); border-radius: 8px; padding: 10px; display: grid; gap: 8px; }
+      .phase3-builder-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+      .phase3-library-filters { display: grid; grid-template-columns: 1.2fr .9fr .9fr; gap: 8px; margin-bottom: 10px; }
       .phase3-exercise-list { display: grid; gap: 8px; }
       .phase3-exercise-line { border-top: 1px solid var(--line); padding-top: 8px; display: grid; gap: 8px; }
       .phase3-workout-panel { display: grid; gap: 12px; border-color: rgba(200,147,18,.45); }
@@ -1162,17 +1519,17 @@
       .phase3-library-item { border: 1px solid var(--line); border-radius: 8px; padding: 10px; display: grid; gap: 4px; }
       .phase3-timer-pill { min-height: 28px; display: inline-flex; align-items: center; }
       @media (max-width: 880px) {
-        .phase3-grid, .phase3-form-grid, .phase3-set-grid { grid-template-columns: 1fr; }
+        .phase3-grid, .phase3-form-grid, .phase3-set-grid, .phase3-library-filters { grid-template-columns: 1fr; }
       }
     `;
     document.head.appendChild(style);
   }
 
   function phase3RenderStatus() {
-    const limit = phase3ActivePlanLimit();
+    const limit = phase3ActiveDayLimit();
     const limitLabel = limit === Infinity
-      ? phase3Text("unlimitedPlans")
-      : phase3Format("activePlans", { count: phase3ActivePlans().length, limit });
+      ? phase3Text("unlimitedWorkouts")
+      : phase3Format("activeWorkouts", { count: phase3ActiveWorkoutDays().length, limit });
     return `
       <div class="phase3-status-row">
         <span class="status ok">${escapeHTML(limitLabel)}</span>
@@ -1182,8 +1539,49 @@
     `;
   }
 
+  function phase3RenderBuilderExercises(disabled) {
+    phase3NormalizeBuilderExercises();
+    return `
+      <div class="phase3-builder-list wide">
+        <div class="panel-head compact-head">
+          <h3>${escapeHTML(phase3Text("selectedExercises"))}</h3>
+          <span class="status">${escapeHTML(phase3Format("exerciseCount", { count: phase3BuilderExercises.length }))}</span>
+        </div>
+        ${phase3BuilderExercises.length ? phase3BuilderExercises.map((exercise, index) => `
+          <article class="phase3-builder-item">
+            <div class="phase3-plan-head">
+              <div>
+                <strong>${escapeHTML(exercise.name)}</strong>
+                <p class="muted">${escapeHTML(String(exercise.targetSets))} x ${escapeHTML(exercise.targetReps)}${exercise.targetWeight !== "" ? ` - ${escapeHTML(String(exercise.targetWeight))} kg` : ""}</p>
+              </div>
+              <div class="phase3-builder-actions">
+                <button class="secondary-btn" data-phase3-edit-builder-exercise="${index}" type="button" ${disabled ? "disabled" : ""}>${escapeHTML(phase3Text("editExercise"))}</button>
+                <button class="secondary-btn" data-phase3-move-builder-exercise="${index}:-1" type="button" ${disabled || index === 0 ? "disabled" : ""}>${escapeHTML(phase3Text("moveExerciseUp"))}</button>
+                <button class="secondary-btn" data-phase3-move-builder-exercise="${index}:1" type="button" ${disabled || index === phase3BuilderExercises.length - 1 ? "disabled" : ""}>${escapeHTML(phase3Text("moveExerciseDown"))}</button>
+                <button class="secondary-btn" data-phase3-remove-builder-exercise="${index}" type="button" ${disabled ? "disabled" : ""}>${escapeHTML(phase3Text("removeExercise"))}</button>
+              </div>
+            </div>
+            ${exercise.notes ? `<p class="muted">${escapeHTML(exercise.notes)}</p>` : ""}
+          </article>
+        `).join("") : `<p class="empty-mini">${escapeHTML(phase3Text("noBuilderExercises"))}</p>`}
+        <p class="muted">${escapeHTML(phase3Text("exerciseFreeNote"))}</p>
+      </div>
+    `;
+  }
+
+  function phase3RenderPendingPlanRetry() {
+    const pending = phase3State.pendingPlanRetry;
+    if (!pending?.plan) return "";
+    return `
+      <div class="empty-mini">
+        ${escapeHTML(phase3Text("partialSave"))}
+        <button class="secondary-btn" data-phase3-retry-plan-exercises type="button">${escapeHTML(phase3Text("retryPartialSave"))}</button>
+      </div>
+    `;
+  }
+
   function phase3RenderPlanForm() {
-    const disabled = !phase3CanCreateActivePlan();
+    const disabled = !phase3CanCreateActiveWorkoutDay();
     return `
       <section class="phase3-card">
         <div class="panel-head">
@@ -1194,17 +1592,23 @@
           </div>
         </div>
         ${disabled ? `<p class="empty-mini">${escapeHTML(phase3Text("limitReached"))}</p>` : ""}
+        ${phase3RenderPendingPlanRetry()}
         <form id="phase3PlanForm" class="phase3-form-grid">
-          <label class="field"><span>${escapeHTML(phase3Text("planTitle"))}</span><input name="title" required placeholder="Full body A" ${disabled ? "disabled" : ""} /></label>
-          <label class="field"><span>${escapeHTML(phase3Text("day"))}</span><select name="dayLabel" ${disabled ? "disabled" : ""}>${DAYS.map((day) => `<option value="${escapeHTML(day)}">${escapeHTML(phase3Text(day))}</option>`).join("")}</select></label>
-          <label class="field"><span>${escapeHTML(phase3Text("exercise"))}</span><select name="exerciseSlug" ${disabled ? "disabled" : ""}>${PHASE3_EXERCISES.map((exercise) => `<option value="${exercise.slug}">${escapeHTML(phase3ExerciseName(exercise.slug))}</option>`).join("")}</select></label>
-          <label class="field"><span>${escapeHTML(phase3Text("sets"))}</span><input name="sets" type="number" min="1" max="20" value="3" ${disabled ? "disabled" : ""} /></label>
-          <label class="field"><span>${escapeHTML(phase3Text("reps"))}</span><input name="reps" value="8-10" ${disabled ? "disabled" : ""} /></label>
-          <label class="field"><span>${escapeHTML(phase3Text("targetWeight"))}</span><input name="targetWeight" type="number" min="0" step="0.5" ${disabled ? "disabled" : ""} /></label>
-          <label class="field"><span>${escapeHTML(phase3Text("rir"))}</span><input name="targetRir" type="number" min="0" max="10" ${disabled ? "disabled" : ""} /></label>
-          <label class="field"><span>${escapeHTML(phase3Text("rpe"))}</span><input name="targetRpe" type="number" min="1" max="10" step="0.5" ${disabled ? "disabled" : ""} /></label>
-          <label class="field"><span>${escapeHTML(phase3Text("rest"))}</span><input name="restSeconds" type="number" min="0" max="3600" value="90" ${disabled ? "disabled" : ""} /></label>
-          <label class="field wide"><span>${escapeHTML(phase3Text("notes"))}</span><textarea name="notes" rows="2" ${disabled ? "disabled" : ""}></textarea></label>
+          <label class="field"><span>${escapeHTML(phase3Text("planTitle"))}</span><input name="title" required placeholder="Full body A" value="${escapeHTML(phase3BuilderDraft.title)}" ${disabled ? "disabled" : ""} /></label>
+          <label class="field"><span>${escapeHTML(phase3Text("day"))}</span><select name="dayLabel" ${disabled ? "disabled" : ""}>${DAYS.map((day) => `<option value="${escapeHTML(day)}" ${phase3BuilderDraft.dayLabel === day ? "selected" : ""}>${escapeHTML(phase3Text(day))}</option>`).join("")}</select></label>
+          <label class="field"><span>${escapeHTML(phase3Text("exercise"))}</span><select name="exerciseSlug" ${disabled ? "disabled" : ""}>${PHASE3_EXERCISES.map((exercise) => `<option value="${exercise.slug}" ${phase3BuilderDraft.exerciseSlug === exercise.slug ? "selected" : ""}>${escapeHTML(phase3ExerciseName(exercise.slug))}</option>`).join("")}</select></label>
+          <label class="field"><span>${escapeHTML(phase3Text("sets"))}</span><input name="sets" type="number" min="1" max="20" value="${escapeHTML(phase3BuilderDraft.sets)}" ${disabled ? "disabled" : ""} /></label>
+          <label class="field"><span>${escapeHTML(phase3Text("reps"))}</span><input name="reps" value="${escapeHTML(phase3BuilderDraft.reps)}" ${disabled ? "disabled" : ""} /></label>
+          <label class="field"><span>${escapeHTML(phase3Text("targetWeight"))}</span><input name="targetWeight" type="number" min="0" step="0.5" value="${escapeHTML(phase3BuilderDraft.targetWeight)}" ${disabled ? "disabled" : ""} /></label>
+          <label class="field"><span>${escapeHTML(phase3Text("rir"))}</span><input name="targetRir" type="number" min="0" max="10" value="${escapeHTML(phase3BuilderDraft.targetRir)}" ${disabled ? "disabled" : ""} /></label>
+          <label class="field"><span>${escapeHTML(phase3Text("rpe"))}</span><input name="targetRpe" type="number" min="1" max="10" step="0.5" value="${escapeHTML(phase3BuilderDraft.targetRpe)}" ${disabled ? "disabled" : ""} /></label>
+          <label class="field"><span>${escapeHTML(phase3Text("rest"))}</span><input name="restSeconds" type="number" min="0" max="3600" value="${escapeHTML(phase3BuilderDraft.restSeconds)}" ${disabled ? "disabled" : ""} /></label>
+          <label class="field wide"><span>${escapeHTML(phase3Text("notes"))}</span><textarea name="notes" rows="2" ${disabled ? "disabled" : ""}>${escapeHTML(phase3BuilderDraft.notes)}</textarea></label>
+          <div class="settings-save-row wide">
+            <button class="secondary-btn" data-phase3-add-builder-exercise type="button" ${disabled ? "disabled" : ""}>${escapeHTML(phase3Text(phase3BuilderEditIndex !== null ? "updateExercise" : "addExercise"))}</button>
+            ${phase3BuilderEditIndex !== null ? `<button class="secondary-btn" data-phase3-cancel-builder-edit type="button">${escapeHTML(phase3Text("cancelEdit"))}</button>` : ""}
+          </div>
+          ${phase3RenderBuilderExercises(disabled)}
           <div class="settings-save-row wide">
             <button class="primary-btn" type="submit" ${disabled ? "disabled" : ""}>${escapeHTML(phase3Text("addPlan"))}</button>
             <span class="save-feedback" data-save-feedback="phase3-plan"></span>
@@ -1233,6 +1637,13 @@
   }
 
   function phase3RenderPlanCard(plan) {
+    const activeDays = (plan.days || [])
+      .filter((day) => (day.status || "active") === "active")
+      .map((day) => ({
+        ...day,
+        exercises: (day.exercises || []).filter((exercise) => (exercise.status || "active") === "active")
+      }))
+      .filter((day) => day.exercises.length);
     return `
       <article class="phase3-plan-card">
         <div class="phase3-plan-head">
@@ -1242,7 +1653,7 @@
           </div>
           ${plan.source !== "legacy_bridge" ? `<button class="secondary-btn" data-phase3-archive-plan="${escapeHTML(plan.id)}" type="button">${escapeHTML(phase3Text("archivePlan"))}</button>` : ""}
         </div>
-        ${plan.days.map((day) => `
+        ${activeDays.map((day) => `
           <div class="phase3-exercise-line">
             <div class="phase3-day-head">
               <strong>${escapeHTML(phase3Text(day.label) || day.label)}</strong>
@@ -1342,23 +1753,53 @@
     `;
   }
 
+  function phase3RenderLibraryResults() {
+    const exercises = phase3FilteredExercises();
+    if (!exercises.length) {
+      return `<div class="empty-mini">${escapeHTML(phase3Text("noLibraryResults"))}</div>`;
+    }
+    return exercises.map((exercise) => {
+      const meta = phase3ExerciseMeta(exercise.slug);
+      return `
+        <article class="phase3-library-item">
+          <strong>${escapeHTML(meta.name)}</strong>
+          <span>${escapeHTML(phase3Text("muscle"))}: ${escapeHTML(meta.primary)} - ${escapeHTML(phase3Text("equipment"))}: ${escapeHTML(meta.equipment)}</span>
+          ${meta.secondary ? `<span class="muted">${escapeHTML(meta.secondary)}</span>` : ""}
+          <p class="muted">${escapeHTML(meta.instructions)}</p>
+        </article>
+      `;
+    }).join("");
+  }
+
+  function phase3RefreshLibraryResults() {
+    const container = document.querySelector("[data-phase3-library-results]");
+    if (container) container.innerHTML = phase3RenderLibraryResults();
+    const count = document.querySelector("[data-phase3-library-count]");
+    if (count) count.textContent = phase3Format("libraryCount", { count: phase3FilteredExercises().length });
+  }
+
   function phase3RenderLibrary() {
+    const categories = phase3LibraryOptions("category");
+    const equipment = phase3LibraryOptions("equipment");
     return `
       <section class="phase3-card">
         <div class="panel-head compact-head">
           <h2>${escapeHTML(phase3Text("exerciseLibrary"))}</h2>
+          <span class="status" data-phase3-library-count>${escapeHTML(phase3Format("libraryCount", { count: phase3FilteredExercises().length }))}</span>
         </div>
-        <div class="phase3-library-list">
-          ${PHASE3_EXERCISES.map((exercise) => {
-            const meta = phase3ExerciseMeta(exercise.slug);
-            return `
-              <article class="phase3-library-item">
-                <strong>${escapeHTML(meta.name)}</strong>
-                <span>${escapeHTML(phase3Text("muscle"))}: ${escapeHTML(meta.primary)} - ${escapeHTML(phase3Text("equipment"))}: ${escapeHTML(meta.equipment)}</span>
-                <p class="muted">${escapeHTML(meta.instructions)}</p>
-              </article>
-            `;
-          }).join("")}
+        <div class="phase3-library-filters">
+          <label class="field"><span>${escapeHTML(phase3Text("searchLibrary"))}</span><input data-phase3-library-search value="${escapeHTML(phase3LibraryFilters.search)}" /></label>
+          <label class="field"><span>${escapeHTML(phase3Text("muscle"))}</span><select data-phase3-library-category>
+            <option value="">${escapeHTML(phase3Text("allCategories"))}</option>
+            ${categories.map((item) => `<option value="${escapeHTML(item.value)}" ${phase3LibraryFilters.category === item.value ? "selected" : ""}>${escapeHTML(item.label)}</option>`).join("")}
+          </select></label>
+          <label class="field"><span>${escapeHTML(phase3Text("equipment"))}</span><select data-phase3-library-equipment>
+            <option value="">${escapeHTML(phase3Text("allEquipment"))}</option>
+            ${equipment.map((item) => `<option value="${escapeHTML(item.value)}" ${phase3LibraryFilters.equipment === item.value ? "selected" : ""}>${escapeHTML(item.label)}</option>`).join("")}
+          </select></label>
+        </div>
+        <div class="phase3-library-list" data-phase3-library-results>
+          ${phase3RenderLibraryResults()}
         </div>
       </section>
     `;
@@ -1445,24 +1886,90 @@
   document.addEventListener("submit", async (event) => {
     if (event.target?.id !== "phase3PlanForm") return;
     event.preventDefault();
-    if (!phase3CanCreateActivePlan()) {
+    if (!phase3CanCreateActiveWorkoutDay()) {
       setSaveFeedback("phase3-plan", phase3Text("limitReached"), true);
       return;
     }
     const plan = phase3BuildPlanFromForm(event.target);
     const result = await phase3PersistPlan(plan);
     if (!result.ok) {
-      setSaveFeedback("phase3-plan", phase3Format("saveFailed", { message: result.error.message }), true);
+      setSaveFeedback("phase3-plan", result.partial ? phase3Text("partialSave") : phase3Format("saveFailed", { message: result.error.message }), true);
       return;
     }
+    phase3BuilderExercises = [];
+    phase3BuilderEditIndex = null;
+    phase3BuilderDraft = phase3EmptyBuilderDraft();
     event.target.reset();
     setSaveFeedback("phase3-plan", result.local ? phase3Text("localSafe") : phase3Text("saved"));
     renderTraining();
   });
 
+  document.addEventListener("input", (event) => {
+    if (event.target?.dataset.phase3LibrarySearch === undefined) return;
+    phase3LibraryFilters.search = String(event.target.value || "");
+    phase3RefreshLibraryResults();
+  });
+
+  document.addEventListener("change", (event) => {
+    if (event.target?.dataset.phase3LibraryCategory !== undefined) {
+      phase3LibraryFilters.category = String(event.target.value || "");
+      phase3RefreshLibraryResults();
+      return;
+    }
+    if (event.target?.dataset.phase3LibraryEquipment !== undefined) {
+      phase3LibraryFilters.equipment = String(event.target.value || "");
+      phase3RefreshLibraryResults();
+    }
+  });
+
   document.addEventListener("click", async (event) => {
     const button = event.target.closest("button");
     if (!button) return;
+
+    if (button.dataset.phase3AddBuilderExercise !== undefined) {
+      const form = button.closest("form");
+      if (form) {
+        phase3AddBuilderExercise(form);
+        renderTraining();
+      }
+      return;
+    }
+
+    if (button.dataset.phase3EditBuilderExercise) {
+      phase3CaptureBuilderDraft(button.closest("form"));
+      phase3EditBuilderExercise(Number(button.dataset.phase3EditBuilderExercise));
+      renderTraining();
+      return;
+    }
+
+    if (button.dataset.phase3CancelBuilderEdit !== undefined) {
+      phase3CancelBuilderEdit(button.closest("form"));
+      renderTraining();
+      return;
+    }
+
+    if (button.dataset.phase3RemoveBuilderExercise) {
+      phase3CaptureBuilderDraft(button.closest("form"));
+      phase3RemoveBuilderExercise(Number(button.dataset.phase3RemoveBuilderExercise));
+      renderTraining();
+      return;
+    }
+
+    if (button.dataset.phase3MoveBuilderExercise) {
+      phase3CaptureBuilderDraft(button.closest("form"));
+      const [rawIndex, rawDirection] = button.dataset.phase3MoveBuilderExercise.split(":");
+      phase3MoveBuilderExercise(Number(rawIndex), Number(rawDirection));
+      renderTraining();
+      return;
+    }
+
+    if (button.dataset.phase3RetryPlanExercises !== undefined) {
+      setSaveFeedback("phase3-plan", phase3Text("partialRetrying"));
+      const result = await phase3RetryPendingPlanSave();
+      setSaveFeedback("phase3-plan", result.ok ? phase3Text("saved") : phase3Format("saveFailed", { message: result.error.message }), !result.ok);
+      renderTraining();
+      return;
+    }
 
     if (button.dataset.phase3StartWorkout) {
       const [planId, dayId] = button.dataset.phase3StartWorkout.split(":");
