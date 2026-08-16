@@ -45,7 +45,7 @@
   }
   const phase1PatchSource = await phase1PatchResponse.text();
 
-  const phase2PatchUrl = new URL("assets/phase2-home-recovery.js?v=20260816-phase2-step1", document.baseURI);
+  const phase2PatchUrl = new URL("assets/phase2-home-recovery.js?v=20260816-phase2-logout1", document.baseURI);
   const phase2PatchResponse = await fetch(phase2PatchUrl, { cache: "no-cache" });
   if (!phase2PatchResponse.ok) {
     throw new Error(`Phase 2 Home + Recovery laden mislukt: ${phase2PatchResponse.status}`);

@@ -2,7 +2,7 @@
   if (window.FMZ_PHASE2_HOME_RECOVERY_LOADED) return;
   window.FMZ_PHASE2_HOME_RECOVERY_LOADED = true;
 
-  const PHASE2_VERSION = "20260816-phase2-step1";
+  const PHASE2_VERSION = "20260816-phase2-logout1";
   const PHASE2_LANGUAGES = ["nl", "en", "de"];
   const PHASE2_RECOVERY_SYNC_TYPES = ["steps", "sleep", "wellbeing", "training"];
   const PHASE2_NO_NATIVE_HEALTH_SYNC = true;
@@ -230,6 +230,9 @@
     noNativeHealthSync: PHASE2_NO_NATIVE_HEALTH_SYNC
   };
 
+  let phase2SessionEpoch = 0;
+  let phase2LogoutInProgress = false;
+
   function phase2NormalizeLanguage(language) {
     return PHASE2_LANGUAGES.includes(language) ? language : "nl";
   }
@@ -259,6 +262,76 @@
       ? state.phase2Recovery.logs
       : {};
     return state.phase2Recovery;
+  }
+
+  function phase2ClearRecoveryStateForLogout() {
+    if (state.phase2Recovery && typeof state.phase2Recovery === "object") {
+      state.phase2Recovery.logs = {};
+    }
+  }
+
+  function phase2RenderLoggedOut() {
+    if (cloudSaveTimer) {
+      window.clearTimeout(cloudSaveTimer);
+      cloudSaveTimer = null;
+    }
+    hydratingFromCloud = false;
+    onlineProfile = null;
+    onlineReady = false;
+    onlineErrorMessage = "";
+    passwordSetupRequired = false;
+    passwordSetupContext = "";
+    state.ui.loggedIn = false;
+    state.ui.authEmail = "";
+    state.ui.authName = "";
+    state.ui.role = "trainer";
+    currentView = "trainer-dashboard";
+    phase2ClearRecoveryStateForLogout();
+    renderAll();
+    showAuthPanel("login");
+  }
+
+  function phase2IsSameSession(epoch, profile) {
+    return epoch === phase2SessionEpoch
+      && isLoggedIn()
+      && onlineProfile?.id === profile?.id
+      && onlineProfile?.role === profile?.role;
+  }
+
+  async function phase2LogoutWithoutUiHang() {
+    if (phase2LogoutInProgress) return;
+    phase2LogoutInProgress = true;
+    phase2SessionEpoch += 1;
+
+    let signOutPromise = Promise.resolve({ error: null });
+    if (isOnlineMode() && supabaseClient?.auth?.signOut) {
+      try {
+        signOutPromise = supabaseClient.auth.signOut();
+      } catch (error) {
+        signOutPromise = Promise.reject(error);
+      }
+    }
+
+    phase2RenderLoggedOut();
+
+    try {
+      const result = await signOutPromise;
+      if (result?.error) throw result.error;
+    } catch (error) {
+      console.warn("Phase 2 logout signOut afronden mislukt", error);
+      if (!isLoggedIn()) {
+        onlineErrorMessage = "";
+        renderRoleVisibility();
+      }
+    } finally {
+      phase2LogoutInProgress = false;
+      if (!isLoggedIn()) {
+        onlineProfile = null;
+        onlineReady = false;
+        onlineErrorMessage = "";
+        renderRoleVisibility();
+      }
+    }
   }
 
   function phase2RecoveryFeelingWeek(selected) {
@@ -731,6 +804,8 @@
     if (!isOnlineMode() || !supabaseClient || !onlineProfile || onlineProfile.role !== "client") {
       return { ok: false, skipped: true, error: new Error(phase2Text("onlineRequired")) };
     }
+    const operationEpoch = phase2SessionEpoch;
+    const operationProfile = onlineProfile;
     const payload = phase2BuildRecoveryPayload(selected, index);
     const { error } = await supabaseClient
       .from("recovery_logs")
@@ -740,6 +815,9 @@
         ? phase2Text("migrationNeeded")
         : error.message;
       return { ok: false, error: new Error(message) };
+    }
+    if (!phase2IsSameSession(operationEpoch, operationProfile)) {
+      return { ok: false, skipped: true };
     }
     phase2EnsureState().logs[payload.log_date] = payload;
     return { ok: true, payload };
@@ -760,6 +838,7 @@
         throw new Error(phase2Text("onlineRequired"));
       }
       const result = await phase2PersistRecoveryLog(selected, index);
+      if (!result.ok && result.skipped) return;
       if (!result.ok) throw result.error || new Error(phase2Text("onlineRequired"));
       if (onlineProfile.trainer_id) {
         const legacySave = await saveStateToCloud();
@@ -841,9 +920,14 @@
 
   const phase2OriginalLoadOnlineWorkspace = loadOnlineWorkspace;
   loadOnlineWorkspace = async function loadOnlineWorkspacePhase2(profile) {
+    const loadEpoch = phase2SessionEpoch;
     await phase2OriginalLoadOnlineWorkspace(profile);
+    if (!phase2IsSameSession(loadEpoch, profile)) {
+      if (loadEpoch !== phase2SessionEpoch) phase2RenderLoggedOut();
+      return;
+    }
     const hydrated = await phase2HydrateRecoveryLogs(profile);
-    if (hydrated) {
+    if (hydrated && phase2IsSameSession(loadEpoch, profile)) {
       const previousHydrating = hydratingFromCloud;
       hydratingFromCloud = true;
       try {
@@ -869,9 +953,17 @@
   };
 
   document.addEventListener("click", (event) => {
+    const logoutButton = event.target?.closest?.("#logoutButton");
+    if (logoutButton) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      phase2LogoutWithoutUiHang();
+      return;
+    }
+
     const saveButton = event.target.closest("[data-phase2-save-recovery]");
     if (!saveButton) return;
     event.preventDefault();
     phase2SaveRecoveryDay(Number(saveButton.dataset.phase2SaveRecovery));
-  });
+  }, true);
 })();
