@@ -71,12 +71,12 @@
   document.addEventListener("click", (event) => {
     const tab = event.target.closest("[data-auth-mode]");
     if (!tab) return;
-    const mode = tab.dataset.authMode;
+    const mode = tab.datasetAuthMode;
     document.querySelectorAll("[data-auth-mode]").forEach((button) => {
       button.classList.toggle("active", button.dataset.authMode === mode);
     });
     document.querySelectorAll("[data-auth-panel]").forEach((panel) => {
-      panel.classList.toggle("active", panel.datasetAuthPanel === mode);
+      panel.classList.toggle("active", panel.dataset.authPanel === mode);
     });
   });
 })().catch((error) => {
