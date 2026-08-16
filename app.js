@@ -71,7 +71,7 @@
   document.addEventListener("click", (event) => {
     const tab = event.target.closest("[data-auth-mode]");
     if (!tab) return;
-    const mode = tab.datasetAuthMode;
+    const mode = tab.dataset.authMode;
     document.querySelectorAll("[data-auth-mode]").forEach((button) => {
       button.classList.toggle("active", button.dataset.authMode === mode);
     });
