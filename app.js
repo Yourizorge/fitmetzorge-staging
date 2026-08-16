@@ -52,11 +52,18 @@
   }
   const phase2PatchSource = await phase2PatchResponse.text();
 
+  const phase3PatchUrl = new URL("assets/phase3-training-engine.js?v=20260816-phase3-step1", document.baseURI);
+  const phase3PatchResponse = await fetch(phase3PatchUrl, { cache: "no-cache" });
+  if (!phase3PatchResponse.ok) {
+    throw new Error(`Phase 3 Training Engine laden mislukt: ${phase3PatchResponse.status}`);
+  }
+  const phase3PatchSource = await phase3PatchResponse.text();
+
   const phase1InitNeedle = "\ninit();";
   if (!source.includes(phase1InitNeedle)) {
     throw new Error("Phase 1 foundation kon niet voor app-init worden ingevoegd.");
   }
-  source = source.replace(phase1InitNeedle, `\n${phase1PatchSource}\n${phase2PatchSource}\ninit();`);
+  source = source.replace(phase1InitNeedle, `\n${phase1PatchSource}\n${phase2PatchSource}\n${phase3PatchSource}\ninit();`);
 
   (0, eval)(`${source}\n//# sourceURL=app.bundle.js`);
 
@@ -69,7 +76,7 @@
       button.classList.toggle("active", button.dataset.authMode === mode);
     });
     document.querySelectorAll("[data-auth-panel]").forEach((panel) => {
-      panel.classList.toggle("active", panel.dataset.authPanel === mode);
+      panel.classList.toggle("active", panel.datasetAuthPanel === mode);
     });
   });
 })().catch((error) => {
