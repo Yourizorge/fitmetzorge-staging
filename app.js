@@ -44,11 +44,19 @@
     throw new Error(`Phase 1 foundation laden mislukt: ${phase1PatchResponse.status}`);
   }
   const phase1PatchSource = await phase1PatchResponse.text();
+
+  const phase2PatchUrl = new URL("assets/phase2-home-recovery.js?v=20260816-phase2-step1", document.baseURI);
+  const phase2PatchResponse = await fetch(phase2PatchUrl, { cache: "no-cache" });
+  if (!phase2PatchResponse.ok) {
+    throw new Error(`Phase 2 Home + Recovery laden mislukt: ${phase2PatchResponse.status}`);
+  }
+  const phase2PatchSource = await phase2PatchResponse.text();
+
   const phase1InitNeedle = "\ninit();";
   if (!source.includes(phase1InitNeedle)) {
     throw new Error("Phase 1 foundation kon niet voor app-init worden ingevoegd.");
   }
-  source = source.replace(phase1InitNeedle, `\n${phase1PatchSource}\ninit();`);
+  source = source.replace(phase1InitNeedle, `\n${phase1PatchSource}\n${phase2PatchSource}\ninit();`);
 
   (0, eval)(`${source}\n//# sourceURL=app.bundle.js`);
 
