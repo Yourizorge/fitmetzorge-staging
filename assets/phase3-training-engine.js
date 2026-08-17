@@ -2,7 +2,7 @@
   if (window.FMZ_PHASE3_TRAINING_ENGINE_LOADED) return;
   window.FMZ_PHASE3_TRAINING_ENGINE_LOADED = true;
 
-  const PHASE3_VERSION = "20260817-phase3-training-ux1";
+  const PHASE3_VERSION = "20260817-phase3-compact-entry1";
   const PHASE3_LANGUAGES = ["nl", "en", "de"];
   const PHASE3_FREE_ACTIVE_DAY_LIMIT = 4;
   const PHASE3_REAL_CATALOG_EXPECTED_COUNT = 898;
@@ -3100,11 +3100,12 @@
       .phase3-instruction small { color: var(--muted); }
       .phase3-previous-list { display: grid; gap: 6px; }
       .phase3-previous-list > div { display: flex; justify-content: space-between; gap: 10px; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
-      .phase3-focus-set { display: grid; gap: 12px; }
-      .phase3-focus-inputs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
-      .phase3-focus-inputs label { display: grid; gap: 5px; color: var(--muted); font-size: .82rem; }
-      .phase3-focus-inputs label.wide { grid-column: 1 / -1; }
-      .phase3-focus-inputs input { min-width: 0; min-height: 48px; font-size: 1rem; }
+      .phase3-focus-set { display: grid; gap: 8px; width: 100%; max-width: 680px; }
+      .phase3-focus-inputs { display: grid; gap: 8px; min-width: 0; }
+      .phase3-focus-numeric-grid { display: grid; grid-template-columns: minmax(88px, 1.35fr) repeat(3, minmax(58px, .75fr)); gap: 8px; min-width: 0; }
+      .phase3-focus-inputs label { display: grid; gap: 4px; min-width: 0; color: var(--muted); font-size: .78rem; }
+      .phase3-focus-inputs input { width: 100%; min-width: 0; min-height: 44px; padding: 8px; font-size: 1rem; }
+      .phase3-focus-notes { width: 100%; }
       .phase3-gold-save { min-height: 54px; width: 100%; background: #c89312; border-color: #c89312; color: #111; font-weight: 800; }
       .phase3-gold-save:hover { background: #d8a72a; border-color: #d8a72a; }
       .phase3-rest-state, .phase3-paused-state, .phase3-complete-state { min-height: 230px; display: grid; place-items: center; align-content: center; gap: 14px; text-align: center; border: 1px solid var(--line); border-radius: 8px; padding: 20px; }
@@ -3124,13 +3125,14 @@
       .phase3-history-detail-list, .phase3-history-detail-list article { display: grid; gap: 10px; }
       .phase3-history-set { display: grid; grid-template-columns: 70px minmax(120px, 1fr) repeat(2, auto); gap: 10px; border-top: 1px solid var(--line); padding-top: 8px; }
       @media (max-width: 880px) {
-        .phase3-grid, .phase3-form-grid, .phase3-focus-exercise, .phase3-focus-inputs, .phase3-pr-row { grid-template-columns: 1fr; }
+        .phase3-grid, .phase3-form-grid, .phase3-focus-exercise, .phase3-pr-row { grid-template-columns: 1fr; }
         .phase3-picker-backdrop { align-items: end; padding: 0; }
         .phase3-picker-sheet { width: 100%; max-height: calc(100dvh - 12px); border-radius: 8px 8px 0 0; padding-bottom: calc(16px + env(safe-area-inset-bottom)); }
         .phase3-picker-card { grid-template-columns: 82px minmax(0, 1fr); }
         .phase3-picker-card .primary-btn { grid-column: 1 / -1; }
         .phase3-focus-backdrop, .phase3-history-backdrop { align-items: end; padding: 0; }
         .phase3-focus-sheet, .phase3-history-sheet { width: 100%; max-height: 100dvh; min-height: calc(100dvh - env(safe-area-inset-top)); border-radius: 0; padding: max(14px, env(safe-area-inset-top)) 14px calc(18px + env(safe-area-inset-bottom)); }
+        .phase3-focus-sheet { gap: 12px; }
         .phase3-focus-header { align-items: flex-start; }
         .phase3-focus-header-actions { justify-content: flex-start; }
         .phase3-focus-context { grid-template-columns: 1fr 1fr; }
@@ -3143,6 +3145,9 @@
         .phase3-accordion-content { padding: 12px; }
         .phase3-plan-actions { display: grid; grid-template-columns: 1fr 1fr; width: 100%; }
         .phase3-plan-actions .phase3-start-action, .phase3-plan-actions .phase3-restore-action { grid-column: 1 / -1; min-height: 48px; }
+      }
+      @media (max-width: 359px) {
+        .phase3-focus-numeric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       }
     `;
     document.head.appendChild(style);
@@ -3390,15 +3395,31 @@
     return `
       <div class="phase3-focus-set" data-phase3-set-row="${escapeHTML(key)}">
         <div class="phase3-focus-inputs">
-          <label>${escapeHTML(phase3Text("weight"))}<input data-phase3-weight="${escapeHTML(key)}" type="number" min="0" step="0.5" inputmode="decimal" value="${escapeHTML(saved.actualWeight ?? "")}" placeholder="${escapeHTML(String(exercise.targetWeight ?? ""))}" ${disabled ? "disabled" : ""} /></label>
-          <label>${escapeHTML(phase3Text("reps"))}<input data-phase3-reps="${escapeHTML(key)}" type="number" min="1" required inputmode="numeric" value="${escapeHTML(saved.actualReps ?? "")}" placeholder="${escapeHTML(exercise.targetReps || "")}" ${disabled ? "disabled" : ""} /></label>
-          <label>${escapeHTML(phase3Text("rir"))}<input data-phase3-rir="${escapeHTML(key)}" type="number" min="0" max="10" inputmode="numeric" value="${escapeHTML(saved.rir ?? "")}" ${disabled ? "disabled" : ""} /></label>
-          <label>${escapeHTML(phase3Text("rpe"))}<input data-phase3-rpe="${escapeHTML(key)}" type="number" min="1" max="10" step="0.5" inputmode="decimal" value="${escapeHTML(saved.rpe ?? "")}" ${disabled ? "disabled" : ""} /></label>
-          <label class="wide">${escapeHTML(phase3Text("notes"))}<input data-phase3-notes="${escapeHTML(key)}" value="${escapeHTML(saved.notes ?? "")}" ${disabled ? "disabled" : ""} /></label>
+          <div class="phase3-focus-numeric-grid">
+            <label>${escapeHTML(phase3Text("weight"))}<input data-phase3-set-field="weight" data-phase3-weight="${escapeHTML(key)}" type="number" min="0" step="0.5" inputmode="decimal" enterkeyhint="next" autocomplete="off" value="${escapeHTML(saved.actualWeight ?? "")}" placeholder="${escapeHTML(String(exercise.targetWeight ?? ""))}" ${disabled ? "disabled" : ""} /></label>
+            <label>${escapeHTML(phase3Text("reps"))}<input data-phase3-set-field="reps" data-phase3-reps="${escapeHTML(key)}" type="number" min="1" required inputmode="numeric" enterkeyhint="next" autocomplete="off" value="${escapeHTML(saved.actualReps ?? "")}" placeholder="${escapeHTML(exercise.targetReps || "")}" ${disabled ? "disabled" : ""} /></label>
+            <label>${escapeHTML(phase3Text("rir"))}<input data-phase3-set-field="rir" data-phase3-rir="${escapeHTML(key)}" type="number" min="0" max="10" inputmode="numeric" enterkeyhint="next" autocomplete="off" value="${escapeHTML(saved.rir ?? "")}" ${disabled ? "disabled" : ""} /></label>
+            <label>${escapeHTML(phase3Text("rpe"))}<input data-phase3-set-field="rpe" data-phase3-rpe="${escapeHTML(key)}" type="number" min="1" max="10" step="0.5" inputmode="decimal" enterkeyhint="done" autocomplete="off" value="${escapeHTML(saved.rpe ?? "")}" ${disabled ? "disabled" : ""} /></label>
+          </div>
+          <label class="phase3-focus-notes">${escapeHTML(phase3Text("notes"))}<input data-phase3-notes="${escapeHTML(key)}" autocomplete="off" value="${escapeHTML(saved.notes ?? "")}" ${disabled ? "disabled" : ""} /></label>
         </div>
         <button class="primary-btn phase3-gold-save" data-phase3-complete-set="${escapeHTML(key)}" type="button" ${disabled ? "disabled" : ""}>${escapeHTML(saved.completedAt ? phase3Text("setDone") : phase3Text("completeSet"))}</button>
       </div>
     `;
+  }
+
+  const PHASE3_SET_INPUT_SEQUENCE = ["weight", "reps", "rir", "rpe"];
+
+  function phase3HandleSetInputKeydown(event) {
+    if (event.key !== "Enter" || !event.target?.matches?.("[data-phase3-set-field]")) return false;
+    const row = event.target.closest("[data-phase3-set-row]");
+    const currentIndex = PHASE3_SET_INPUT_SEQUENCE.indexOf(event.target.dataset.phase3SetField || "");
+    if (!row || currentIndex < 0) return false;
+    event.preventDefault();
+    const nextField = PHASE3_SET_INPUT_SEQUENCE[currentIndex + 1];
+    if (nextField) row.querySelector(`[data-phase3-set-field="${nextField}"]`)?.focus();
+    else event.target.blur();
+    return true;
   }
 
   function phase3RenderRestState(session) {
@@ -4010,6 +4031,7 @@
   });
 
   document.addEventListener("keydown", (event) => {
+    if (phase3HandleSetInputKeydown(event)) return;
     if (event.key !== "Escape") return;
     if (phase3PickerOpen) {
       event.preventDefault();
