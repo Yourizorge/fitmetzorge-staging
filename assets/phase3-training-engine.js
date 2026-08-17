@@ -2,7 +2,7 @@
   if (window.FMZ_PHASE3_TRAINING_ENGINE_LOADED) return;
   window.FMZ_PHASE3_TRAINING_ENGINE_LOADED = true;
 
-  const PHASE3_VERSION = "20260817-phase3-picker-hotfix1";
+  const PHASE3_VERSION = "20260817-phase3-training-ux1";
   const PHASE3_LANGUAGES = ["nl", "en", "de"];
   const PHASE3_FREE_ACTIVE_DAY_LIMIT = 4;
   const PHASE3_REAL_CATALOG_EXPECTED_COUNT = 898;
@@ -33,6 +33,13 @@
       activeWorkouts: "{count}/{limit} actieve workouts",
       unlimitedWorkouts: "Onbeperkte workouts via Pro/PT",
       createPlan: "Workout maken",
+      myWorkouts: "Mijn workouts",
+      workoutHistory: "Workout History",
+      personalRecords: "Persoonlijke records / PR's",
+      builderSummary: "Maak of bewerk een workout",
+      workoutCounts: "{active} actief · {archived} gearchiveerd",
+      historyCount: "{count} afgerond",
+      recordCount: "{count} records",
       planTitle: "Naam workout",
       day: "Trainingsdag",
       exercise: "Oefening",
@@ -139,6 +146,21 @@
       overloadRepeat: "Vorige prestatie beschikbaar. Herhaal eerst stabiel voordat je verhoogt.",
       overloadPotential: "Alle sets gehaald met ruimte over. Kleine verhoging kan later overwogen worden.",
       archivePlan: "Workout archiveren",
+      editPlan: "Bewerken",
+      editWorkout: "Workout bewerken",
+      saveWorkoutChanges: "Wijzigingen opslaan",
+      cancelWorkoutEdit: "Bewerken annuleren",
+      activePlans: "Actief",
+      archivedPlans: "Gearchiveerd",
+      archivedStatus: "Gearchiveerd",
+      restorePlan: "Herstellen",
+      noActivePlans: "Nog geen actieve workouts.",
+      noArchivedPlans: "Nog geen gearchiveerde workouts.",
+      archiveHistoryHelp: "Archiveren maakt een herbruikbare workout inactief. Afgeronde trainingen blijven altijd in Workout History staan.",
+      planArchived: "Workout gearchiveerd. Je vindt deze onder Gearchiveerd.",
+      planRestored: "Workout hersteld en weer actief.",
+      planUpdated: "Workout bijgewerkt. Eerdere Workout History is ongewijzigd.",
+      restoreLimitReached: "Deze workout kan niet worden hersteld: Free staat maximaal 4 actieve workouts toe. Archiveer eerst een andere workout.",
       saveFailed: "Opslaan mislukt: {message}",
       saved: "Opgeslagen",
       started: "Workout gestart",
@@ -171,6 +193,13 @@
       activeWorkouts: "{count}/{limit} active workouts",
       unlimitedWorkouts: "Unlimited workouts through Pro/PT",
       createPlan: "Create workout",
+      myWorkouts: "My workouts",
+      workoutHistory: "Workout history",
+      personalRecords: "Personal records / PRs",
+      builderSummary: "Create or edit a workout",
+      workoutCounts: "{active} active · {archived} archived",
+      historyCount: "{count} completed",
+      recordCount: "{count} records",
       planTitle: "Workout name",
       day: "Training day",
       exercise: "Exercise",
@@ -277,6 +306,21 @@
       overloadRepeat: "Previous performance available. Repeat it steadily before increasing.",
       overloadPotential: "All sets completed with room left. A small increase can later be considered.",
       archivePlan: "Archive workout",
+      editPlan: "Edit",
+      editWorkout: "Edit workout",
+      saveWorkoutChanges: "Save changes",
+      cancelWorkoutEdit: "Cancel editing",
+      activePlans: "Active",
+      archivedPlans: "Archived",
+      archivedStatus: "Archived",
+      restorePlan: "Restore",
+      noActivePlans: "No active workouts yet.",
+      noArchivedPlans: "No archived workouts yet.",
+      archiveHistoryHelp: "Archiving makes a reusable workout inactive. Completed sessions always remain in Workout history.",
+      planArchived: "Workout archived. You can find it under Archived.",
+      planRestored: "Workout restored and active again.",
+      planUpdated: "Workout updated. Earlier Workout history is unchanged.",
+      restoreLimitReached: "This workout cannot be restored: Free allows up to 4 active workouts. Archive another workout first.",
       saveFailed: "Save failed: {message}",
       saved: "Saved",
       started: "Workout started",
@@ -309,6 +353,13 @@
       activeWorkouts: "{count}/{limit} aktive Workouts",
       unlimitedWorkouts: "Unbegrenzte Workouts ueber Pro/PT",
       createPlan: "Workout erstellen",
+      myWorkouts: "Meine Workouts",
+      workoutHistory: "Workout History",
+      personalRecords: "Persoenliche Rekorde / PRs",
+      builderSummary: "Workout erstellen oder bearbeiten",
+      workoutCounts: "{active} aktiv · {archived} archiviert",
+      historyCount: "{count} abgeschlossen",
+      recordCount: "{count} Rekorde",
       planTitle: "Workoutname",
       day: "Trainingstag",
       exercise: "Uebung",
@@ -415,6 +466,21 @@
       overloadRepeat: "Fruehere Leistung verfuegbar. Wiederhole sie stabil, bevor du steigerst.",
       overloadPotential: "Alle Saetze mit Reserve geschafft. Eine kleine Steigerung kann spaeter erwogen werden.",
       archivePlan: "Workout archivieren",
+      editPlan: "Bearbeiten",
+      editWorkout: "Workout bearbeiten",
+      saveWorkoutChanges: "Aenderungen speichern",
+      cancelWorkoutEdit: "Bearbeiten abbrechen",
+      activePlans: "Aktiv",
+      archivedPlans: "Archiviert",
+      archivedStatus: "Archiviert",
+      restorePlan: "Wiederherstellen",
+      noActivePlans: "Noch keine aktiven Workouts.",
+      noArchivedPlans: "Noch keine archivierten Workouts.",
+      archiveHistoryHelp: "Archivieren macht ein wiederverwendbares Workout inaktiv. Abgeschlossene Trainings bleiben immer in der Workout History.",
+      planArchived: "Workout archiviert. Du findest es unter Archiviert.",
+      planRestored: "Workout wiederhergestellt und erneut aktiv.",
+      planUpdated: "Workout aktualisiert. Die fruehere Workout History bleibt unveraendert.",
+      restoreLimitReached: "Dieses Workout kann nicht wiederhergestellt werden: Free erlaubt maximal 4 aktive Workouts. Archiviere zuerst ein anderes Workout.",
       saveFailed: "Speichern fehlgeschlagen: {message}",
       saved: "Gespeichert",
       started: "Workout gestartet",
@@ -737,6 +803,11 @@
   let phase3CatalogDetailsCacheRead = false;
   let phase3FocusOpen = false;
   let phase3HistoryDetailId = "";
+  let phase3OpenTrainingSection = "plans";
+  let phase3PlanView = "active";
+  let phase3EditingPlanId = "";
+  let phase3EditingDayId = "";
+  let phase3PlanFeedback = null;
   const phase3CatalogDetails = new Map();
 
   function phase3EmptyBuilderDraft() {
@@ -757,17 +828,21 @@
   function phase3CaptureBuilderDraft(form) {
     if (!form) return;
     const data = new FormData(form);
+    const fieldValue = (name, fallback) => {
+      const field = form.elements?.namedItem?.(name);
+      return String(field?.value ?? data.get(name) ?? fallback);
+    };
     phase3BuilderDraft = {
-      title: String(data.get("title") || ""),
-      dayLabel: String(data.get("dayLabel") || "Maandag"),
-      exerciseSlug: String(data.get("exerciseSlug") || PHASE3_EXERCISES[0]?.slug || ""),
-      sets: String(data.get("sets") || "3"),
-      reps: String(data.get("reps") || "8-10"),
-      targetWeight: String(data.get("targetWeight") || ""),
-      targetRir: String(data.get("targetRir") || ""),
-      targetRpe: String(data.get("targetRpe") || ""),
-      restSeconds: String(data.get("restSeconds") || "90"),
-      notes: String(data.get("notes") || "")
+      title: fieldValue("title", phase3BuilderDraft.title || ""),
+      dayLabel: fieldValue("dayLabel", phase3BuilderDraft.dayLabel || "Maandag"),
+      exerciseSlug: fieldValue("exerciseSlug", phase3BuilderDraft.exerciseSlug || PHASE3_EXERCISES[0]?.slug || ""),
+      sets: fieldValue("sets", phase3BuilderDraft.sets || "3"),
+      reps: fieldValue("reps", phase3BuilderDraft.reps || "8-10"),
+      targetWeight: fieldValue("targetWeight", phase3BuilderDraft.targetWeight || ""),
+      targetRir: fieldValue("targetRir", phase3BuilderDraft.targetRir || ""),
+      targetRpe: fieldValue("targetRpe", phase3BuilderDraft.targetRpe || ""),
+      restSeconds: fieldValue("restSeconds", phase3BuilderDraft.restSeconds || "90"),
+      notes: fieldValue("notes", phase3BuilderDraft.notes || "")
     };
   }
 
@@ -1218,6 +1293,27 @@
     return limit === Infinity || phase3ActiveWorkoutDays().length < limit;
   }
 
+  function phase3CanActivatePlanLocally(plan) {
+    const limit = phase3ActiveDayLimit();
+    if (limit === Infinity) return true;
+    const activatingDays = (plan?.days || []).filter((day) => (day.status || "active") === "active").length;
+    return phase3ActiveWorkoutDays().length + activatingDays <= limit;
+  }
+
+  function phase3IsFreeLimitError(error) {
+    const message = String(error?.message || "").toLowerCase();
+    return String(error?.code || "") === "23514" && message.includes("free training limit reached") && message.includes("maximum 4 active training days");
+  }
+
+  function phase3SetPlanFeedback(key, error = false, message = "") {
+    phase3PlanFeedback = { key, error, message };
+  }
+
+  function phase3PlanFeedbackText() {
+    if (!phase3PlanFeedback) return "";
+    return phase3PlanFeedback.message || phase3Text(phase3PlanFeedback.key);
+  }
+
   function phase3ProfileId() {
     return onlineProfile?.role === "client" && onlineProfile?.id ? onlineProfile.id : "";
   }
@@ -1318,9 +1414,10 @@
     phase3StopTimer();
     phase3UserKey = nextKey;
     phase3State = phase3EmptyState();
-    phase3BuilderExercises = [];
-    phase3BuilderEditIndex = null;
-    phase3BuilderDraft = phase3EmptyBuilderDraft();
+    phase3ResetPlanEditor();
+    phase3OpenTrainingSection = "plans";
+    phase3PlanView = "active";
+    phase3PlanFeedback = null;
     phase3LibraryFilters = { search: "", category: "", equipment: "" };
     phase3FocusOpen = false;
     phase3HistoryDetailId = "";
@@ -1612,9 +1709,10 @@
     return { ok: true };
   }
 
-  async function phase3HydrateAfterPartialPlanFailure(plan, error) {
+  async function phase3HydrateAfterPartialPlanFailure(plan, error, mode = "create") {
     const pending = {
       plan,
+      mode,
       failedAt: phase3IsoNow(),
       message: error?.message || phase3Text("partialSave")
     };
@@ -1633,6 +1731,7 @@
     const plan = pending?.plan;
     const day = plan?.days?.[0];
     if (!plan || !day || !phase3UsesSupabase()) return { ok: false, error: new Error(phase3Text("saveFailed")) };
+    if (pending.mode === "edit") return phase3PersistEditedPlan(plan);
     try {
       phase3EnsurePlanDbIds(plan);
       phase3State.syncMessage = phase3Text("partialRetrying");
@@ -1706,6 +1805,60 @@
     }
   }
 
+  async function phase3PersistEditedPlan(plan) {
+    phase3EnsurePlanDbIds(plan);
+    const day = plan.days?.find((item) => item.id === phase3EditingDayId) || plan.days?.[0];
+    if (!day) return { ok: false, error: new Error("Workout day missing") };
+
+    if (!phase3UsesSupabase() || plan.localOnly) {
+      const planIndex = phase3State.plans.findIndex((item) => item.id === plan.id);
+      if (planIndex < 0) return { ok: false, error: new Error("Workout not found") };
+      plan.localOnly = true;
+      phase3State.plans[planIndex] = plan;
+      phase3State.pendingPlanRetry = null;
+      phase3SaveLocal();
+      return { ok: true, local: true };
+    }
+
+    try {
+      const { error: planError } = await supabaseClient
+        .from("training_plans")
+        .update({ title: plan.title })
+        .eq("id", plan.id)
+        .eq("user_id", phase3ProfileId());
+      if (planError) throw planError;
+
+      const { error: dayError } = await supabaseClient
+        .from("training_plan_days")
+        .update({ day_label: day.label, day_order: day.order })
+        .eq("id", day.id)
+        .eq("training_plan_id", plan.id);
+      if (dayError) throw dayError;
+
+      const { error: archiveError } = await supabaseClient
+        .from("training_plan_exercises")
+        .update({ status: "archived" })
+        .eq("training_plan_day_id", day.id)
+        .eq("status", "active");
+      if (archiveError) throw archiveError;
+
+      const exerciseRows = (day.exercises || []).map((exercise, index) => phase3ExerciseInsertRow(day.id, exercise, index));
+      const { error: exerciseError } = await supabaseClient
+        .from("training_plan_exercises")
+        .upsert(exerciseRows, { onConflict: "id" });
+      if (exerciseError) throw exerciseError;
+
+      phase3State.pendingPlanRetry = null;
+      if (onlineProfile?.role === "client") await phase3HydrateTraining(onlineProfile);
+      phase3State.syncMessage = phase3Text("synced");
+      phase3SaveLocal();
+      return { ok: true };
+    } catch (error) {
+      await phase3HydrateAfterPartialPlanFailure(plan, error, "edit");
+      return { ok: false, partial: true, error };
+    }
+  }
+
   async function phase3ArchivePlan(planId) {
     const plan = phase3State.plans.find((item) => item.id === planId);
     if (!plan || plan.source === "legacy_bridge") return { ok: true };
@@ -1722,6 +1875,27 @@
     if (phase3State.pendingPlanRetry?.plan?.id === plan.id) {
       phase3State.pendingPlanRetry = null;
     }
+    phase3SaveLocal();
+    return { ok: true };
+  }
+
+  async function phase3RestorePlan(planId) {
+    const plan = phase3State.plans.find((item) => item.id === planId);
+    if (!plan || plan.source === "legacy_bridge" || plan.status !== "archived") return { ok: false, error: new Error("Archived workout not found") };
+
+    if (phase3UsesSupabase() && !plan.localOnly) {
+      const { error } = await supabaseClient
+        .from("training_plans")
+        .update({ status: "active" })
+        .eq("id", plan.id)
+        .eq("user_id", phase3ProfileId());
+      if (error) return { ok: false, limit: phase3IsFreeLimitError(error), error };
+    } else if (!phase3CanActivatePlanLocally(plan)) {
+      return { ok: false, limit: true, error: new Error(phase3Text("restoreLimitReached")) };
+    }
+
+    plan.status = "active";
+    plan.updatedAt = phase3IsoNow();
     phase3SaveLocal();
     return { ok: true };
   }
@@ -1745,16 +1919,17 @@
     return { ok: true };
   }
 
-  function phase3ExerciseFromForm(form, order = 0, id = phase3DbId()) {
+  function phase3ExerciseFromForm(form, order = 0, id = phase3DbId(), current = null) {
     const data = new FormData(form);
     const slug = String(data.get("exerciseSlug") || PHASE3_EXERCISES[0].slug);
     const meta = phase3ExerciseMeta(slug);
+    const keepsCurrentIdentity = current?.slug === slug && current?.catalogBacked && phase3IsUuid(current.exerciseId);
     return {
       id,
       key: id,
-      exerciseId: meta.id,
-      catalogBacked: meta.catalogBacked,
-      canonicalSlug: meta.canonicalSlug,
+      exerciseId: meta.catalogBacked ? meta.id : (keepsCurrentIdentity ? current.exerciseId : ""),
+      catalogBacked: Boolean(meta.catalogBacked || keepsCurrentIdentity),
+      canonicalSlug: meta.canonicalSlug || current?.canonicalSlug || slug,
       slug,
       name: meta.name,
       primaryMuscle: meta.primary,
@@ -1788,7 +1963,7 @@
     phase3CaptureBuilderDraft(form);
     if (phase3BuilderEditIndex !== null && phase3BuilderExercises[phase3BuilderEditIndex]) {
       const current = phase3BuilderExercises[phase3BuilderEditIndex];
-      phase3BuilderExercises[phase3BuilderEditIndex] = phase3ExerciseFromForm(form, current.order, current.id);
+      phase3BuilderExercises[phase3BuilderEditIndex] = phase3ExerciseFromForm(form, current.order, current.id, current);
       phase3BuilderEditIndex = null;
     } else {
       phase3BuilderExercises.push(phase3ExerciseFromForm(form, phase3BuilderExercises.length));
@@ -1890,6 +2065,75 @@
         exercises
       }],
       localOnly: false
+    };
+  }
+
+  function phase3ResetPlanEditor() {
+    phase3EditingPlanId = "";
+    phase3EditingDayId = "";
+    phase3BuilderExercises = [];
+    phase3BuilderEditIndex = null;
+    phase3BuilderDraft = phase3EmptyBuilderDraft();
+  }
+
+  function phase3BeginPlanEdit(planId) {
+    const plan = phase3State.plans.find((item) => item.id === planId && item.status === "active" && item.source !== "legacy_bridge");
+    const day = plan?.days?.find((item) => (item.status || "active") === "active");
+    if (!plan || !day) return false;
+    const activeExercises = (day.exercises || []).filter((exercise) => (exercise.status || "active") === "active");
+    phase3EditingPlanId = plan.id;
+    phase3EditingDayId = day.id;
+    phase3BuilderExercises = activeExercises.map((exercise, index) => {
+      const meta = phase3ExerciseMeta(exercise.slug);
+      return {
+        ...exercise,
+        key: exercise.key || exercise.id,
+        exerciseId: exercise.exerciseId || (meta.catalogBacked ? meta.id : ""),
+        catalogBacked: Boolean(exercise.catalogBacked || (meta.catalogBacked && phase3IsUuid(meta.id))),
+        canonicalSlug: exercise.canonicalSlug || meta.canonicalSlug,
+        order: index
+      };
+    });
+    const first = phase3BuilderExercises[0];
+    phase3BuilderEditIndex = first ? 0 : null;
+    phase3BuilderDraft = {
+      ...phase3EmptyBuilderDraft(),
+      title: plan.title,
+      dayLabel: day.label,
+      ...(first ? {
+        exerciseSlug: first.slug,
+        sets: String(first.targetSets || "3"),
+        reps: String(first.targetReps || "8-10"),
+        targetWeight: first.targetWeight === "" ? "" : String(first.targetWeight),
+        targetRir: first.targetRir === "" ? "" : String(first.targetRir),
+        targetRpe: first.targetRpe === "" ? "" : String(first.targetRpe),
+        restSeconds: String(first.restSeconds ?? 90),
+        notes: first.notes || ""
+      } : {})
+    };
+    phase3OpenTrainingSection = "builder";
+    phase3PlanFeedback = null;
+    return true;
+  }
+
+  function phase3BuildEditedPlanFromForm(form) {
+    phase3CaptureBuilderDraft(form);
+    const current = phase3State.plans.find((item) => item.id === phase3EditingPlanId);
+    const currentDay = current?.days?.find((item) => item.id === phase3EditingDayId);
+    if (!current || !currentDay) return null;
+    const data = new FormData(form);
+    const dayLabel = String(data.get("dayLabel") || currentDay.label || "Maandag");
+    const exercises = phase3BuilderExercisesForSubmit(form);
+    return {
+      ...current,
+      title: String(data.get("title") || "").trim() || current.title,
+      updatedAt: phase3IsoNow(),
+      days: (current.days || []).map((day) => day.id === currentDay.id ? {
+        ...day,
+        label: dayLabel,
+        order: phase3DayOrder(dayLabel),
+        exercises
+      } : day)
     };
   }
 
@@ -2785,6 +3029,29 @@
       .phase3-status-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
       .phase3-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(280px, .7fr); gap: 14px; align-items: start; }
       .phase3-card { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 14px; box-shadow: var(--shadow); }
+      .phase3-accordion-list { display: grid; gap: 10px; min-width: 0; }
+      .phase3-accordion { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--shadow); min-width: 0; overflow: clip; }
+      .phase3-accordion-toggle { width: 100%; min-height: 62px; padding: 12px 14px; border: 0; background: transparent; color: var(--text); display: flex; align-items: center; justify-content: space-between; gap: 12px; text-align: left; }
+      .phase3-accordion-toggle:hover { background: var(--surface-2); }
+      .phase3-accordion-heading { display: grid; gap: 2px; min-width: 0; }
+      .phase3-accordion-heading strong { font-size: 1rem; }
+      .phase3-accordion-heading small { color: var(--muted); overflow-wrap: anywhere; }
+      .phase3-accordion-chevron { width: 28px; height: 28px; flex: 0 0 28px; display: grid; place-items: center; font-size: 1.3rem; transform: rotate(0deg); transition: transform .18s ease; }
+      .phase3-accordion-toggle[aria-expanded="true"] .phase3-accordion-chevron { transform: rotate(90deg); }
+      .phase3-accordion-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .18s ease; }
+      .phase3-accordion-body.open { grid-template-rows: 1fr; }
+      .phase3-accordion-body > div { min-height: 0; overflow: hidden; }
+      .phase3-accordion-content { border-top: 1px solid var(--line); padding: 14px; min-width: 0; }
+      .phase3-plan-tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; padding: 4px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-2); }
+      .phase3-plan-tab { min-height: 44px; border: 0; border-radius: 6px; background: transparent; color: var(--text); }
+      .phase3-plan-tab.active { background: var(--surface); box-shadow: var(--shadow); font-weight: 700; }
+      .phase3-plan-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+      .phase3-start-action { background: #c89312; border-color: #c89312; color: #111; font-weight: 800; }
+      .phase3-start-action:hover { background: #d8a72a; border-color: #d8a72a; }
+      .phase3-tertiary-action { border-color: transparent; background: transparent; color: var(--muted); }
+      .phase3-plan-feedback { margin: 10px 0 0; }
+      .phase3-plan-feedback.error { border-color: #b64242; }
+      .phase3-archive-help { margin: 10px 0 0; }
       .phase3-form-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
       .phase3-form-grid .wide { grid-column: 1 / -1; }
       .phase3-plan-list, .phase3-history-list { display: grid; gap: 10px; }
@@ -2872,6 +3139,10 @@
         .phase3-rest-countdown { font-size: 4rem; }
         .phase3-history-set { grid-template-columns: 55px minmax(110px, 1fr); }
         .phase3-history-set span:nth-child(n+3) { font-size: .82rem; }
+        .phase3-accordion-toggle { min-height: 66px; }
+        .phase3-accordion-content { padding: 12px; }
+        .phase3-plan-actions { display: grid; grid-template-columns: 1fr 1fr; width: 100%; }
+        .phase3-plan-actions .phase3-start-action, .phase3-plan-actions .phase3-restore-action { grid-column: 1 / -1; min-height: 48px; }
       }
     `;
     document.head.appendChild(style);
@@ -2933,14 +3204,15 @@
   }
 
   function phase3RenderPlanForm() {
-    const disabled = !phase3CanCreateActiveWorkoutDay();
+    const editing = Boolean(phase3EditingPlanId && phase3EditingDayId);
+    const disabled = !editing && !phase3CanCreateActiveWorkoutDay();
     const selectedMeta = phase3SelectedExerciseMeta();
     return `
-      <section class="phase3-card">
+      <div>
         <div class="panel-head">
           <div>
-            <p class="eyebrow">${escapeHTML(phase3Text("createPlan"))}</p>
-            <h2>${escapeHTML(phase3Text("freeLimitTitle"))}</h2>
+            <p class="eyebrow">${escapeHTML(phase3Text(editing ? "editWorkout" : "createPlan"))}</p>
+            <h2>${escapeHTML(editing ? phase3BuilderDraft.title : phase3Text("freeLimitTitle"))}</h2>
             <p class="muted">${escapeHTML(phase3Text("freeLimitText"))}</p>
           </div>
         </div>
@@ -2971,33 +3243,57 @@
           </div>
           ${phase3RenderBuilderExercises(disabled)}
           <div class="settings-save-row wide">
-            <button class="primary-btn" type="submit" ${disabled ? "disabled" : ""}>${escapeHTML(phase3Text("addPlan"))}</button>
+            <button class="primary-btn" type="submit" ${disabled ? "disabled" : ""}>${escapeHTML(phase3Text(editing ? "saveWorkoutChanges" : "addPlan"))}</button>
+            ${editing ? `<button class="secondary-btn" data-phase3-cancel-plan-edit type="button">${escapeHTML(phase3Text("cancelWorkoutEdit"))}</button>` : ""}
             <span class="save-feedback" data-save-feedback="phase3-plan"></span>
           </div>
         </form>
-      </section>
+      </div>
     `;
   }
 
   function phase3RenderPlans() {
-    const plans = phase3PlansForDisplay().filter((plan) => plan.status === "active");
+    const normalizedPlans = phase3State.plans.filter((plan) => plan.source !== "legacy_bridge");
+    const plans = phase3PlanView === "archived"
+      ? normalizedPlans.filter((plan) => plan.status === "archived")
+      : phase3PlansForDisplay().filter((plan) => plan.status === "active");
+    const emptyKey = phase3PlanView === "archived" ? "noArchivedPlans" : "noActivePlans";
+    const feedbackText = phase3PlanFeedbackText();
     return `
-      <section class="phase3-card">
-        <div class="panel-head">
-          <div>
-            <p class="eyebrow">${escapeHTML(phase3Text("plans"))}</p>
-            <h2>${escapeHTML(phase3Text("startWorkout"))}</h2>
-          </div>
+      <div>
+        <div class="phase3-plan-tabs" role="tablist" aria-label="${escapeHTML(phase3Text("myWorkouts"))}">
+          <button class="phase3-plan-tab ${phase3PlanView === "active" ? "active" : ""}" data-phase3-plan-view="active" type="button" role="tab" aria-selected="${phase3PlanView === "active"}">${escapeHTML(phase3Text("activePlans"))}</button>
+          <button class="phase3-plan-tab ${phase3PlanView === "archived" ? "active" : ""}" data-phase3-plan-view="archived" type="button" role="tab" aria-selected="${phase3PlanView === "archived"}">${escapeHTML(phase3Text("archivedPlans"))}</button>
         </div>
+        ${feedbackText ? `<p class="empty-mini phase3-plan-feedback ${phase3PlanFeedback?.error ? "error" : ""}" role="${phase3PlanFeedback?.error ? "alert" : "status"}">${escapeHTML(feedbackText)}</p>` : ""}
+        <p class="muted phase3-archive-help">${escapeHTML(phase3Text("archiveHistoryHelp"))}</p>
         <div class="phase3-plan-list">
-          ${plans.length ? plans.map((plan) => phase3RenderPlanCard(plan)).join("") : `<div class="empty-state">${escapeHTML(phase3Text("noPlans"))}</div>`}
+          ${plans.length ? plans.map((plan) => phase3RenderPlanCard(plan)).join("") : `<div class="empty-state">${escapeHTML(phase3Text(emptyKey))}</div>`}
         </div>
-        ${phase3LegacyPlan() ? `<p class="muted">${escapeHTML(phase3Text("legacyBridge"))}</p>` : ""}
-      </section>
+        ${phase3PlanView === "active" && phase3LegacyPlan() ? `<p class="muted">${escapeHTML(phase3Text("legacyBridge"))}</p>` : ""}
+      </div>
     `;
   }
 
   function phase3RenderPlanCard(plan) {
+    if (plan.status === "archived") {
+      const activeDays = (plan.days || []).filter((day) => (day.status || "active") === "active");
+      const exerciseCount = activeDays.reduce((count, day) => count + (day.exercises || []).filter((exercise) => (exercise.status || "active") === "active").length, 0);
+      return `
+        <article class="phase3-plan-card">
+          <div class="phase3-plan-head">
+            <div>
+              <strong>${escapeHTML(plan.title)}</strong>
+              <span class="status">${escapeHTML(phase3Text("archivedStatus"))}</span>
+              <p class="muted">${escapeHTML(phase3Format("exerciseCount", { count: exerciseCount }))}</p>
+            </div>
+            <div class="phase3-plan-actions">
+              <button class="primary-btn phase3-start-action phase3-restore-action" data-phase3-restore-plan="${escapeHTML(plan.id)}" type="button">${escapeHTML(phase3Text("restorePlan"))}</button>
+            </div>
+          </div>
+        </article>
+      `;
+    }
     const activeDays = (plan.days || [])
       .filter((day) => (day.status || "active") === "active")
       .map((day) => ({
@@ -3012,20 +3308,23 @@
             <strong>${escapeHTML(plan.title)}</strong>
             <span class="muted">${escapeHTML(plan.source === "legacy_bridge" ? phase3Text("legacyPlan") : phase3Text("synced"))}</span>
           </div>
-          ${plan.source !== "legacy_bridge" ? `<button class="secondary-btn" data-phase3-archive-plan="${escapeHTML(plan.id)}" type="button">${escapeHTML(phase3Text("archivePlan"))}</button>` : ""}
+          ${plan.source !== "legacy_bridge" ? `
+            <div class="phase3-plan-actions">
+              ${activeDays[0] ? `<button class="primary-btn phase3-start-action" data-phase3-start-workout="${escapeHTML(plan.id)}:${escapeHTML(activeDays[0].id)}" type="button">${escapeHTML(phase3Text("startWorkout"))}</button>` : ""}
+              <button class="secondary-btn" data-phase3-edit-plan="${escapeHTML(plan.id)}" type="button">${escapeHTML(phase3Text("editPlan"))}</button>
+              <button class="secondary-btn phase3-tertiary-action" data-phase3-archive-plan="${escapeHTML(plan.id)}" type="button">${escapeHTML(phase3Text("archivePlan"))}</button>
+            </div>
+          ` : ""}
         </div>
         ${activeDays.map((day) => `
           <div class="phase3-exercise-line">
             <div class="phase3-day-head">
               <strong>${escapeHTML(phase3Text(day.label) || day.label)}</strong>
-              <button class="primary-btn" data-phase3-start-workout="${escapeHTML(plan.id)}:${escapeHTML(day.id)}" type="button">${escapeHTML(phase3Text("startWorkout"))}</button>
+              ${plan.source === "legacy_bridge" ? `<button class="primary-btn phase3-start-action" data-phase3-start-workout="${escapeHTML(plan.id)}:${escapeHTML(day.id)}" type="button">${escapeHTML(phase3Text("startWorkout"))}</button>` : ""}
             </div>
             <div class="phase3-exercise-list">
               ${day.exercises.map((exercise) => `
-                <div class="phase3-plan-head">
-                  <span>${escapeHTML(exercise.name)} - ${escapeHTML(String(exercise.targetSets))} x ${escapeHTML(exercise.targetReps)}${exercise.targetWeight !== "" ? ` - ${escapeHTML(String(exercise.targetWeight))} kg` : ""}</span>
-                  ${plan.source !== "legacy_bridge" ? `<button class="secondary-btn" data-phase3-archive-exercise="${escapeHTML(plan.id)}:${escapeHTML(day.id)}:${escapeHTML(exercise.id)}" type="button">${escapeHTML(phase3Text("archiveExercise"))}</button>` : ""}
-                </div>
+                <span>${escapeHTML(exercise.name)} - ${escapeHTML(String(exercise.targetSets))} x ${escapeHTML(exercise.targetReps)}${exercise.targetWeight !== "" ? ` - ${escapeHTML(String(exercise.targetWeight))} kg` : ""}</span>
               `).join("")}
             </div>
           </div>
@@ -3264,36 +3563,63 @@
 
   function phase3RenderHistory() {
     const history = phase3State.history.slice(0, 5);
+    return `
+      <div class="phase3-history-list">
+        ${history.length ? history.map((entry) => `
+          <button class="phase3-history-item phase3-history-button" data-phase3-open-history="${escapeHTML(entry.id)}" type="button">
+            <span><strong>${escapeHTML(entry.title)}</strong>${entry.dayLabel ? ` <small>${escapeHTML(phase3Text(entry.dayLabel) || entry.dayLabel)}</small>` : ""}</span>
+            <span>${escapeHTML(String(entry.completedAt || "").slice(0, 10))}</span>
+            <span class="phase3-history-open">${escapeHTML(phase3Text("openHistory"))}<span aria-hidden="true">&rsaquo;</span></span>
+          </button>
+        `).join("") : `<div class="empty-mini">${escapeHTML(phase3Text("noHistory"))}</div>`}
+      </div>
+    `;
+  }
+
+  function phase3RenderPersonalRecords() {
     const records = phase3GroupedPersonalRecords().slice(0, 6);
     return `
-      <section class="phase3-card">
-        <div class="panel-head compact-head">
-          <h2>${escapeHTML(phase3Text("historyTitle"))}</h2>
-        </div>
-        <div class="phase3-history-list">
-          ${history.length ? history.map((entry) => `
-            <button class="phase3-history-item phase3-history-button" data-phase3-open-history="${escapeHTML(entry.id)}" type="button">
-              <span><strong>${escapeHTML(entry.title)}</strong>${entry.dayLabel ? ` <small>${escapeHTML(phase3Text(entry.dayLabel) || entry.dayLabel)}</small>` : ""}</span>
-              <span>${escapeHTML(String(entry.completedAt || "").slice(0, 10))}</span>
-              <span class="phase3-history-open">${escapeHTML(phase3Text("openHistory"))}<span aria-hidden="true">&rsaquo;</span></span>
-            </button>
-          `).join("") : `<div class="empty-mini">${escapeHTML(phase3Text("noHistory"))}</div>`}
-        </div>
-        <div class="panel-head compact-head">
-          <h2>${escapeHTML(phase3Text("prTitle"))}</h2>
-        </div>
-        <div class="phase3-pr-list">
-          ${records.length ? records.map((group) => `
-            <article class="phase3-pr-row">
-              <strong>${escapeHTML(group.name)}</strong>
-              <div><span>${escapeHTML(phase3Text("maxWeight"))}</span><strong>${escapeHTML(String(group.records.max_weight?.value ?? "-"))}${group.records.max_weight ? " kg" : ""}</strong></div>
-              <div><span>${escapeHTML(phase3Text("maxReps"))}</span><strong>${escapeHTML(String(group.records.max_reps?.value ?? "-"))}</strong></div>
-              <div><span>${escapeHTML(phase3Text("estimatedOneRm"))}</span><strong>${escapeHTML(String(group.records.estimated_1rm?.value ?? "-"))}${group.records.estimated_1rm ? " kg" : ""}</strong></div>
-            </article>
-          `).join("") : `<div class="empty-mini">${escapeHTML(phase3Text("overloadNeutral"))}</div>`}
+      <div class="phase3-pr-list">
+        ${records.length ? records.map((group) => `
+          <article class="phase3-pr-row">
+            <strong>${escapeHTML(group.name)}</strong>
+            <div><span>${escapeHTML(phase3Text("maxWeight"))}</span><strong>${escapeHTML(String(group.records.max_weight?.value ?? "-"))}${group.records.max_weight ? " kg" : ""}</strong></div>
+            <div><span>${escapeHTML(phase3Text("maxReps"))}</span><strong>${escapeHTML(String(group.records.max_reps?.value ?? "-"))}</strong></div>
+            <div><span>${escapeHTML(phase3Text("estimatedOneRm"))}</span><strong>${escapeHTML(String(group.records.estimated_1rm?.value ?? "-"))}${group.records.estimated_1rm ? " kg" : ""}</strong></div>
+          </article>
+        `).join("") : `<div class="empty-mini">${escapeHTML(phase3Text("overloadNeutral"))}</div>`}
+      </div>
+    `;
+  }
+
+  function phase3RenderAccordionSection(key, title, summary, content) {
+    const expanded = phase3OpenTrainingSection === key;
+    const panelId = `phase3-section-${key}`;
+    return `
+      <section class="phase3-accordion" data-phase3-section="${escapeHTML(key)}">
+        <button class="phase3-accordion-toggle" data-phase3-toggle-section="${escapeHTML(key)}" type="button" aria-expanded="${expanded}" aria-controls="${escapeHTML(panelId)}">
+          <span class="phase3-accordion-heading"><strong>${escapeHTML(title)}</strong><small>${escapeHTML(summary)}</small></span>
+          <span class="phase3-accordion-chevron" aria-hidden="true">&rsaquo;</span>
+        </button>
+        <div id="${escapeHTML(panelId)}" class="phase3-accordion-body ${expanded ? "open" : ""}" aria-hidden="${!expanded}" ${expanded ? "" : "inert"}>
+          <div><div class="phase3-accordion-content">${content}</div></div>
         </div>
       </section>
     `;
+  }
+
+  function phase3ApplyAccordionState() {
+    document.querySelectorAll(".phase3-accordion").forEach((section) => {
+      const key = section.dataset.phase3Section || "";
+      const expanded = key === phase3OpenTrainingSection;
+      const toggle = section.querySelector(".phase3-accordion-toggle");
+      const body = section.querySelector(".phase3-accordion-body");
+      toggle?.setAttribute("aria-expanded", String(expanded));
+      body?.setAttribute("aria-hidden", String(!expanded));
+      body?.classList.toggle("open", expanded);
+      if (expanded) body?.removeAttribute("inert");
+      else body?.setAttribute("inert", "");
+    });
   }
 
   function phase3RenderClientTraining() {
@@ -3301,6 +3627,10 @@
     if (!hasSelectedClient(selected)) {
       return `<div class="empty-state">${escapeHTML(phase3Text("noPlans"))}</div>`;
     }
+    const activePlanCount = phase3State.plans.filter((plan) => plan.status === "active").length;
+    const archivedPlanCount = phase3State.plans.filter((plan) => plan.status === "archived").length;
+    const historyCount = phase3State.history.length;
+    const recordCount = phase3GroupedPersonalRecords().length;
     return `
       <div class="phase3-shell">
         <div class="view-head phase3-head">
@@ -3313,14 +3643,11 @@
         </div>
         ${!phase3State.migrationReady ? `<div class="phase3-card"><p class="muted">${escapeHTML(phase3Text("dbPending"))}</p></div>` : ""}
         ${phase3RenderActiveWorkout()}
-        <div class="phase3-grid">
-          <div class="phase3-shell">
-            ${phase3RenderPlanForm()}
-            ${phase3RenderPlans()}
-          </div>
-          <div class="phase3-shell">
-            ${phase3RenderHistory()}
-          </div>
+        <div class="phase3-accordion-list">
+          ${phase3RenderAccordionSection("builder", phase3Text(phase3EditingPlanId ? "editWorkout" : "createPlan"), phase3Text("builderSummary"), phase3RenderPlanForm())}
+          ${phase3RenderAccordionSection("plans", phase3Text("myWorkouts"), phase3Format("workoutCounts", { active: activePlanCount, archived: archivedPlanCount }), phase3RenderPlans())}
+          ${phase3RenderAccordionSection("history", phase3Text("workoutHistory"), phase3Format("historyCount", { count: historyCount }), phase3RenderHistory())}
+          ${phase3RenderAccordionSection("records", phase3Text("personalRecords"), phase3Format("recordCount", { count: recordCount }), phase3RenderPersonalRecords())}
         </div>
       </div>
     `;
@@ -3336,7 +3663,7 @@
       if (!section) return;
       section.dataset.phase3Mode = "client";
       section.innerHTML = phase3RenderClientTraining();
-      phase3SyncPickerPortal(!phase3CanCreateActiveWorkoutDay());
+      phase3SyncPickerPortal(!phase3EditingPlanId && !phase3CanCreateActiveWorkoutDay());
       phase3SyncFocusPortal();
       phase3SyncHistoryPortal();
       phase3UpdateTimerText();
@@ -3394,6 +3721,10 @@
       phase3RemoveHistoryPortal();
       phase3State = phase3EmptyState();
       phase3UserKey = "";
+      phase3ResetPlanEditor();
+      phase3OpenTrainingSection = "plans";
+      phase3PlanView = "active";
+      phase3PlanFeedback = null;
     }
     return phase3OriginalRenderAll();
   };
@@ -3401,21 +3732,29 @@
   document.addEventListener("submit", async (event) => {
     if (event.target?.id !== "phase3PlanForm") return;
     event.preventDefault();
-    if (!phase3CanCreateActiveWorkoutDay()) {
+    const editing = Boolean(phase3EditingPlanId && phase3EditingDayId);
+    if (!editing && !phase3CanCreateActiveWorkoutDay()) {
       setSaveFeedback("phase3-plan", phase3Text("limitReached"), true);
       return;
     }
-    const plan = phase3BuildPlanFromForm(event.target);
-    const result = await phase3PersistPlan(plan);
+    const plan = editing ? phase3BuildEditedPlanFromForm(event.target) : phase3BuildPlanFromForm(event.target);
+    if (!plan) {
+      setSaveFeedback("phase3-plan", phase3Format("saveFailed", { message: "Workout not found" }), true);
+      return;
+    }
+    const result = editing ? await phase3PersistEditedPlan(plan) : await phase3PersistPlan(plan);
     if (!result.ok) {
+      if (result.partial) {
+        phase3OpenTrainingSection = "builder";
+        renderTraining();
+      }
       setSaveFeedback("phase3-plan", result.partial ? phase3Text("partialSave") : phase3Format("saveFailed", { message: result.error.message }), true);
       return;
     }
-    phase3BuilderExercises = [];
-    phase3BuilderEditIndex = null;
-    phase3BuilderDraft = phase3EmptyBuilderDraft();
-    event.target.reset();
-    setSaveFeedback("phase3-plan", result.local ? phase3Text("localSafe") : phase3Text("saved"));
+    phase3ResetPlanEditor();
+    phase3PlanView = "active";
+    phase3OpenTrainingSection = "plans";
+    phase3SetPlanFeedback(editing ? "planUpdated" : "saved");
     renderTraining();
   });
 
@@ -3442,6 +3781,33 @@
     }
     const button = event.target.closest("button");
     if (!button) return;
+
+    if (button.dataset.phase3ToggleSection) {
+      phase3CaptureBuilderDraft(document.getElementById("phase3PlanForm"));
+      const section = button.dataset.phase3ToggleSection;
+      phase3OpenTrainingSection = phase3OpenTrainingSection === section ? "" : section;
+      phase3ApplyAccordionState();
+      return;
+    }
+
+    if (button.dataset.phase3PlanView) {
+      phase3PlanView = button.dataset.phase3PlanView === "archived" ? "archived" : "active";
+      phase3PlanFeedback = null;
+      renderTraining();
+      return;
+    }
+
+    if (button.dataset.phase3EditPlan) {
+      if (phase3BeginPlanEdit(button.dataset.phase3EditPlan)) renderTraining();
+      return;
+    }
+
+    if (button.dataset.phase3CancelPlanEdit !== undefined) {
+      phase3ResetPlanEditor();
+      phase3OpenTrainingSection = "plans";
+      renderTraining();
+      return;
+    }
 
     if (button.dataset.phase3AddBuilderExercise !== undefined) {
       const form = button.closest("form");
@@ -3528,10 +3894,19 @@
     }
 
     if (button.dataset.phase3RetryPlanExercises !== undefined) {
+      const retryMode = phase3State.pendingPlanRetry?.mode || "create";
       setSaveFeedback("phase3-plan", phase3Text("partialRetrying"));
       const result = await phase3RetryPendingPlanSave();
-      setSaveFeedback("phase3-plan", result.ok ? phase3Text("saved") : phase3Format("saveFailed", { message: result.error.message }), !result.ok);
+      if (result.ok) {
+        phase3ResetPlanEditor();
+        phase3PlanView = "active";
+        phase3OpenTrainingSection = "plans";
+        phase3SetPlanFeedback(retryMode === "edit" ? "planUpdated" : "saved");
+      } else {
+        phase3OpenTrainingSection = "builder";
+      }
       renderTraining();
+      if (!result.ok) setSaveFeedback("phase3-plan", phase3Format("saveFailed", { message: result.error.message }), true);
       return;
     }
 
@@ -3599,7 +3974,29 @@
 
     if (button.dataset.phase3ArchivePlan) {
       const result = await phase3ArchivePlan(button.dataset.phase3ArchivePlan);
-      if (!result.ok) setSaveFeedback("phase3-plan", phase3Format("saveFailed", { message: result.error.message }), true);
+      if (result.ok) {
+        if (phase3EditingPlanId === button.dataset.phase3ArchivePlan) phase3ResetPlanEditor();
+        phase3PlanView = "archived";
+        phase3OpenTrainingSection = "plans";
+        phase3SetPlanFeedback("planArchived");
+      } else {
+        phase3SetPlanFeedback("", true, phase3Format("saveFailed", { message: result.error.message }));
+      }
+      renderTraining();
+      return;
+    }
+
+    if (button.dataset.phase3RestorePlan) {
+      const result = await phase3RestorePlan(button.dataset.phase3RestorePlan);
+      if (result.ok) {
+        phase3PlanView = "active";
+        phase3SetPlanFeedback("planRestored");
+      } else if (result.limit) {
+        phase3SetPlanFeedback("restoreLimitReached", true);
+      } else {
+        phase3SetPlanFeedback("", true, phase3Format("saveFailed", { message: result.error.message }));
+      }
+      phase3OpenTrainingSection = "plans";
       renderTraining();
       return;
     }
