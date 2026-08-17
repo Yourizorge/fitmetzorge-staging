@@ -2,9 +2,16 @@
   if (window.FMZ_PHASE3_TRAINING_ENGINE_LOADED) return;
   window.FMZ_PHASE3_TRAINING_ENGINE_LOADED = true;
 
-  const PHASE3_VERSION = "20260816-phase3-workout-builder1";
+  const PHASE3_VERSION = "20260817-phase3-catalog-final1";
   const PHASE3_LANGUAGES = ["nl", "en", "de"];
   const PHASE3_FREE_ACTIVE_DAY_LIMIT = 4;
+  const PHASE3_REAL_CATALOG_EXPECTED_COUNT = 898;
+  const PHASE3_EXERCISE_UUID_NAMESPACE = "9439f2af-0e84-5e41-9482-d4b6765154ed";
+  const PHASE3_CATALOG_CACHE_KEY = "fmz-phase3-exercise-catalog:kinetic-8652d873";
+  const PHASE3_CATALOG_DETAILS_CACHE_KEY = "fmz-phase3-exercise-details:kinetic-8652d873";
+  const PHASE3_CATALOG_QUERY_PAGE_SIZE = 500;
+  const PHASE3_PICKER_PAGE_SIZE = 36;
+  const PHASE3_UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
   const PHASE3_NO_AI_CALLS = true;
   const PHASE3_NO_MUTATION_OBSERVER = true;
   const PHASE3_NO_POLLING = true;
@@ -37,7 +44,21 @@
       rpe: "RPE",
       rest: "Rust",
       notes: "Notities",
+      chooseExercise: "Oefening kiezen",
+      selectedExercise: "Gekozen oefening",
+      exercisePickerTitle: "Oefening selecteren",
+      openExercisePicker: "Open oefeningkiezer",
+      closePicker: "Sluiten",
+      clearFilters: "Filters wissen",
+      pickerResults: "Resultaten",
+      showingResults: "{shown} van {total} zichtbaar",
+      loadMoreExercises: "Meer oefeningen laden",
+      animationPreview: "Animatiepreview",
+      animationPlaceholder: "Branded placeholder",
+      youriAvatarPending: "Youri-avatar animatie volgt later",
+      activeExercisePreview: "Actieve oefening preview",
       addExercise: "Oefening toevoegen",
+      archiveExercise: "Oefening archiveren",
       removeExercise: "Verwijderen",
       editExercise: "Wijzigen",
       updateExercise: "Oefening bijwerken",
@@ -132,7 +153,21 @@
       rpe: "RPE",
       rest: "Rest",
       notes: "Notes",
+      chooseExercise: "Choose exercise",
+      selectedExercise: "Selected exercise",
+      exercisePickerTitle: "Select exercise",
+      openExercisePicker: "Open exercise picker",
+      closePicker: "Close",
+      clearFilters: "Clear filters",
+      pickerResults: "Results",
+      showingResults: "{shown} of {total} visible",
+      loadMoreExercises: "Load more exercises",
+      animationPreview: "Animation preview",
+      animationPlaceholder: "Branded placeholder",
+      youriAvatarPending: "Youri avatar animation will follow later",
+      activeExercisePreview: "Active exercise preview",
       addExercise: "Add exercise",
+      archiveExercise: "Archive exercise",
       removeExercise: "Remove",
       editExercise: "Edit",
       updateExercise: "Update exercise",
@@ -227,7 +262,21 @@
       rpe: "RPE",
       rest: "Pause",
       notes: "Notizen",
+      chooseExercise: "Uebung waehlen",
+      selectedExercise: "Ausgewaehlte Uebung",
+      exercisePickerTitle: "Uebung auswaehlen",
+      openExercisePicker: "Uebungsauswahl oeffnen",
+      closePicker: "Schliessen",
+      clearFilters: "Filter loeschen",
+      pickerResults: "Ergebnisse",
+      showingResults: "{shown} von {total} sichtbar",
+      loadMoreExercises: "Mehr Uebungen laden",
+      animationPreview: "Animationsvorschau",
+      animationPlaceholder: "Branded Placeholder",
+      youriAvatarPending: "Youri-Avatar Animation folgt spaeter",
+      activeExercisePreview: "Aktive Uebung Vorschau",
       addExercise: "Uebung hinzufuegen",
+      archiveExercise: "Uebung archivieren",
       removeExercise: "Entfernen",
       editExercise: "Bearbeiten",
       updateExercise: "Uebung aktualisieren",
@@ -302,19 +351,141 @@
     return { nl: values[0], en: values[1], de: values[2] };
   }
 
-  function phase3ExerciseDef(slug, names, primary, equipment, instructions, secondary = ["", "", ""]) {
-    return {
-      slug,
+  function phase3CatalogSlug(value) {
+    return String(value || "exercise")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 96) || "exercise";
+  }
+
+  function phase3Utf8Bytes(value) {
+    const bytes = [];
+    for (const character of String(value)) {
+      const code = character.codePointAt(0);
+      if (code <= 0x7f) bytes.push(code);
+      else if (code <= 0x7ff) bytes.push(0xc0 | (code >> 6), 0x80 | (code & 0x3f));
+      else if (code <= 0xffff) bytes.push(0xe0 | (code >> 12), 0x80 | ((code >> 6) & 0x3f), 0x80 | (code & 0x3f));
+      else bytes.push(0xf0 | (code >> 18), 0x80 | ((code >> 12) & 0x3f), 0x80 | ((code >> 6) & 0x3f), 0x80 | (code & 0x3f));
+    }
+    return bytes;
+  }
+
+  function phase3Sha1(inputBytes) {
+    const bytes = inputBytes.slice();
+    const bitLength = bytes.length * 8;
+    bytes.push(0x80);
+    while ((bytes.length % 64) !== 56) bytes.push(0);
+    const high = Math.floor(bitLength / 0x100000000);
+    const low = bitLength >>> 0;
+    for (let shift = 24; shift >= 0; shift -= 8) bytes.push((high >>> shift) & 0xff);
+    for (let shift = 24; shift >= 0; shift -= 8) bytes.push((low >>> shift) & 0xff);
+
+    let h0 = 0x67452301;
+    let h1 = 0xefcdab89;
+    let h2 = 0x98badcfe;
+    let h3 = 0x10325476;
+    let h4 = 0xc3d2e1f0;
+    const words = new Array(80);
+    for (let offset = 0; offset < bytes.length; offset += 64) {
+      for (let i = 0; i < 16; i += 1) {
+        const index = offset + i * 4;
+        words[i] = ((bytes[index] << 24) | (bytes[index + 1] << 16) | (bytes[index + 2] << 8) | bytes[index + 3]) >>> 0;
+      }
+      for (let i = 16; i < 80; i += 1) {
+        const value = words[i - 3] ^ words[i - 8] ^ words[i - 14] ^ words[i - 16];
+        words[i] = ((value << 1) | (value >>> 31)) >>> 0;
+      }
+      let a = h0;
+      let b = h1;
+      let c = h2;
+      let d = h3;
+      let e = h4;
+      for (let i = 0; i < 80; i += 1) {
+        let f;
+        let k;
+        if (i < 20) {
+          f = (b & c) | ((~b) & d);
+          k = 0x5a827999;
+        } else if (i < 40) {
+          f = b ^ c ^ d;
+          k = 0x6ed9eba1;
+        } else if (i < 60) {
+          f = (b & c) | (b & d) | (c & d);
+          k = 0x8f1bbcdc;
+        } else {
+          f = b ^ c ^ d;
+          k = 0xca62c1d6;
+        }
+        const rotatedA = ((a << 5) | (a >>> 27)) >>> 0;
+        const temp = (rotatedA + f + e + k + words[i]) >>> 0;
+        e = d;
+        d = c;
+        c = ((b << 30) | (b >>> 2)) >>> 0;
+        b = a;
+        a = temp;
+      }
+      h0 = (h0 + a) >>> 0;
+      h1 = (h1 + b) >>> 0;
+      h2 = (h2 + c) >>> 0;
+      h3 = (h3 + d) >>> 0;
+      h4 = (h4 + e) >>> 0;
+    }
+    return [h0, h1, h2, h3, h4].flatMap((word) => [24, 16, 8, 0].map((shift) => (word >>> shift) & 0xff));
+  }
+
+  function phase3UuidBytes(value) {
+    if (!PHASE3_UUID_PATTERN.test(String(value || ""))) throw new Error("Invalid Phase 3 UUID namespace");
+    return String(value).replace(/-/g, "").match(/.{2}/g).map((pair) => Number.parseInt(pair, 16));
+  }
+
+  function phase3UuidV5(name, namespace = PHASE3_EXERCISE_UUID_NAMESPACE) {
+    const bytes = phase3Sha1([...phase3UuidBytes(namespace), ...phase3Utf8Bytes(name)]).slice(0, 16);
+    bytes[6] = (bytes[6] & 0x0f) | 0x50;
+    bytes[8] = (bytes[8] & 0x3f) | 0x80;
+    const hex = bytes.map((byte) => byte.toString(16).padStart(2, "0")).join("");
+    return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20, 32)}`;
+  }
+
+  function phase3StableUuid(seed) {
+    return phase3UuidV5(phase3CatalogSlug(seed));
+  }
+
+  function phase3ExerciseDef(slug, names, primary, equipment, instructions, secondary = ["", "", ""], options = {}) {
+    const canonicalSlug = phase3CatalogSlug(slug);
+    const item = {
+      id: phase3StableUuid(canonicalSlug),
+      slug: canonicalSlug,
+      canonicalSlug,
       names: phase3Localized(names),
       category: phase3Localized(primary),
       primary: phase3Localized(primary),
       secondary: phase3Localized(secondary),
       equipment: phase3Localized(equipment),
-      instructions: phase3Localized(instructions)
+      instructions: phase3Localized(instructions),
+      bodyRegion: options.bodyRegion || "general",
+      equipmentGroup: options.equipmentGroup || equipment[1] || equipment[0] || "Other",
+      movementPattern: options.movementPattern || "general",
+      animationStatus: options.animationStatus || "placeholder",
+      animationSource: options.animationSource || "placeholder",
+      animationUrl: options.animationUrl || "",
+      legacyAnimationUrl: options.legacyAnimationUrl || "",
+      sourceReference: options.sourceReference || "fmz_core_seed"
     };
+    item.searchIndex = [
+      ...Object.values(item.names || {}),
+      ...Object.values(item.primary || {}),
+      ...Object.values(item.secondary || {}),
+      ...Object.values(item.equipment || {}),
+      ...Object.values(item.instructions || {}),
+      item.canonicalSlug,
+      item.equipmentGroup,
+      item.movementPattern
+    ].join(" ").toLowerCase();
+    return item;
   }
 
-  const PHASE3_EXERCISES = [
+  const PHASE3_CORE_EXERCISES = [
     phase3ExerciseDef("bodyweight-squat", ["Squat", "Squat", "Kniebeuge"], ["Quadriceps", "Quadriceps", "Quadrizeps"], ["Bodyweight", "Bodyweight", "Koerpergewicht"], ["Zak gecontroleerd, houd knieen stabiel en duw via je hele voet omhoog.", "Lower with control, keep knees stable and drive through the whole foot.", "Kontrolliert absenken, Knie stabil halten und ueber den ganzen Fuss hochdruecken."], ["Billen", "Glutes", "Gesaess"]),
     phase3ExerciseDef("barbell-squat", ["Barbell squat", "Barbell squat", "Langhantel-Kniebeuge"], ["Quadriceps", "Quadriceps", "Quadrizeps"], ["Barbell", "Barbell", "Langhantel"], ["Span je romp aan, houd de stang stabiel en beweeg gecontroleerd door de hele rep.", "Brace the trunk, keep the bar stable and move with control through the whole rep.", "Rumpf anspannen, Stange stabil halten und die Wiederholung kontrolliert ausfuehren."], ["Billen", "Glutes", "Gesaess"]),
     phase3ExerciseDef("leg-press", ["Leg press", "Leg press", "Beinpresse"], ["Quadriceps", "Quadriceps", "Quadrizeps"], ["Machine", "Machine", "Maschine"], ["Plaats voeten stevig, zak gecontroleerd en strek zonder je knieen hard te blokkeren.", "Plant the feet firmly, lower with control and extend without hard-locking the knees.", "Fuesse stabil platzieren, kontrolliert absenken und ohne hartes Durchdruecken strecken."], ["Billen", "Glutes", "Gesaess"]),
@@ -389,6 +560,45 @@
     phase3ExerciseDef("ab-wheel-rollout", ["Ab wheel rollout", "Ab wheel rollout", "Ab-Wheel Rollout"], ["Core", "Core", "Core"], ["Bodyweight", "Bodyweight", "Koerpergewicht"], ["Rol alleen zo ver als je romp stabiel blijft en trek gecontroleerd terug.", "Roll only as far as the trunk stays stable and pull back with control.", "Nur so weit rollen, wie der Rumpf stabil bleibt, und kontrolliert zurueckziehen."], ["Schouders", "Shoulders", "Schultern"])
   ];
 
+  const PHASE3_MUSCLE_LABELS = {
+    chest: phase3Localized(["Borst", "Chest", "Brust"]),
+    back: phase3Localized(["Rug", "Back", "Ruecken"]),
+    shoulders: phase3Localized(["Schouders", "Shoulders", "Schultern"]),
+    biceps: phase3Localized(["Biceps", "Biceps", "Bizeps"]),
+    triceps: phase3Localized(["Triceps", "Triceps", "Trizeps"]),
+    quadriceps: phase3Localized(["Quadriceps", "Quadriceps", "Quadrizeps"]),
+    hamstrings: phase3Localized(["Hamstrings", "Hamstrings", "Beinbeuger"]),
+    "hip-flexors": phase3Localized(["Heupbuigers", "Hip flexors", "Hueftbeuger"]),
+    glutes: phase3Localized(["Billen / Glutes", "Glutes", "Gesaess"]),
+    calves: phase3Localized(["Kuiten", "Calves", "Waden"]),
+    core: phase3Localized(["Core / Buik", "Core / Abs", "Core / Bauch"]),
+    forearms: phase3Localized(["Onderarmen", "Forearms", "Unterarme"]),
+    trapezius: phase3Localized(["Trapezius", "Trapezius", "Trapezmuskel"]),
+    adductors: phase3Localized(["Adductoren", "Adductors", "Adduktoren"]),
+    abductors: phase3Localized(["Abductoren", "Abductors", "Abduktoren"]),
+    "lower-back": phase3Localized(["Lower back", "Lower back", "Unterer Ruecken"]),
+    "full-body": phase3Localized(["Full body", "Full body", "Ganzkoerper"]),
+    neck: phase3Localized(["Nek", "Neck", "Nacken"])
+  };
+
+  const PHASE3_EQUIPMENT_LABELS = {
+    machine: phase3Localized(["Machine", "Machine", "Maschine"]),
+    cable: phase3Localized(["Kabel", "Cable", "Kabelzug"]),
+    dumbbell: phase3Localized(["Dumbbell", "Dumbbell", "Kurzhantel"]),
+    barbell: phase3Localized(["Halterstang / Barbell", "Barbell", "Langhantel"]),
+    "smith-machine": phase3Localized(["Smith Machine", "Smith Machine", "Smith Machine"]),
+    bodyweight: phase3Localized(["Lichaamsgewicht", "Bodyweight", "Koerpergewicht"]),
+    "ez-bar": phase3Localized(["EZ-Bar", "EZ-Bar", "SZ-Stange"]),
+    kettlebell: phase3Localized(["Kettlebell", "Kettlebell", "Kettlebell"]),
+    "resistance-band": phase3Localized(["Resistance Band", "Resistance Band", "Widerstandsband"]),
+    suspension: phase3Localized(["TRX/Suspension", "TRX/Suspension", "TRX/Suspension"]),
+    landmine: phase3Localized(["Landmine", "Landmine", "Landmine"]),
+    plate: phase3Localized(["Plate", "Plate", "Gewichtsscheibe"]),
+    other: phase3Localized(["Overig", "Other", "Sonstiges"])
+  };
+
+  let PHASE3_EXERCISES = PHASE3_CORE_EXERCISES.map((exercise) => ({ ...exercise, catalogBacked: false }));
+
   window.FMZ_PHASE3_TRAINING_ENGINE = {
     version: PHASE3_VERSION,
     surfaces: ["client_training", "active_workout", "training_history", "exercise_library"],
@@ -401,10 +611,18 @@
     ],
     freeActiveDayLimit: PHASE3_FREE_ACTIVE_DAY_LIMIT,
     exerciseLibrarySize: PHASE3_EXERCISES.length,
+    realCatalogExpectedCount: PHASE3_REAL_CATALOG_EXPECTED_COUNT,
+    catalogSource: "public.exercises with curated 72-exercise offline fallback",
+    syntheticProductionEntries: 0,
     noAiCalls: PHASE3_NO_AI_CALLS,
     noMutationObserver: PHASE3_NO_MUTATION_OBSERVER,
     noPolling: PHASE3_NO_POLLING,
-    noFullWorkspaceSetSave: PHASE3_NO_FULL_WORKSPACE_SET_SAVE
+    noFullWorkspaceSetSave: PHASE3_NO_FULL_WORKSPACE_SET_SAVE,
+    canonicalIdentity: "stable canonical slug plus FitMetZorge namespaced UUIDv5",
+    canonicalUuidNamespace: PHASE3_EXERCISE_UUID_NAMESPACE,
+    exerciseLanguagePolicy: "nl_canonical_english_name_nl_instruction_en_english_de_reviewed_or_english_fallback",
+    coreExerciseIdentities: PHASE3_EXERCISES.map((exercise) => ({ slug: exercise.canonicalSlug, id: exercise.id })),
+    animationArchitecture: "placeholder_or_legacy_now_youri_avatar_ready_later"
   };
 
   let phase3UserKey = "";
@@ -417,6 +635,12 @@
   let phase3BuilderEditIndex = null;
   let phase3BuilderDraft = phase3EmptyBuilderDraft();
   let phase3LibraryFilters = { search: "", category: "", equipment: "" };
+  let phase3PickerOpen = false;
+  let phase3PickerVisibleCount = PHASE3_PICKER_PAGE_SIZE;
+  let phase3CatalogHydrated = false;
+  let phase3CatalogLoading = null;
+  let phase3CatalogDetailsCacheRead = false;
+  const phase3CatalogDetails = new Map();
 
   function phase3EmptyBuilderDraft() {
     return {
@@ -480,9 +704,206 @@
     return text;
   }
 
-  function phase3Id(prefix = "phase3") {
-    const random = window.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`;
-    return `${prefix}-${random}`;
+  function phase3IsUuid(value) {
+    return PHASE3_UUID_PATTERN.test(String(value || ""));
+  }
+
+  function phase3CatalogLabel(dictionary, key, fallback) {
+    const labels = dictionary[key] || phase3Localized([fallback, fallback, fallback]);
+    return labels;
+  }
+
+  function phase3CatalogRowToExercise(row) {
+    const muscle = phase3CatalogLabel(PHASE3_MUSCLE_LABELS, row.primary_muscle, row.primary_muscle || "General");
+    const secondary = (row.secondary_muscles || [])
+      .map((key) => phase3CatalogLabel(PHASE3_MUSCLE_LABELS, key, key))
+      .reduce((labels, item) => ({
+        nl: [...labels.nl, item.nl].filter(Boolean),
+        en: [...labels.en, item.en].filter(Boolean),
+        de: [...labels.de, item.de].filter(Boolean)
+      }), { nl: [], en: [], de: [] });
+    const equipment = phase3CatalogLabel(PHASE3_EQUIPMENT_LABELS, row.equipment_group, row.equipment || "Other");
+    const item = {
+      id: row.id,
+      slug: row.canonical_slug,
+      canonicalSlug: row.canonical_slug,
+      names: { nl: row.name_en, en: row.name_en, de: row.name_de || row.name_en },
+      category: muscle,
+      primary: muscle,
+      secondary: { nl: secondary.nl.join(", "), en: secondary.en.join(", "), de: secondary.de.join(", ") },
+      equipment,
+      instructions: {
+        nl: row.instructions_nl || row.instructions_en || "",
+        en: row.instructions_en || "",
+        de: row.instructions_de || row.instructions_en || ""
+      },
+      detailsHydrated: Boolean(row.instructions_en),
+      bodyRegion: row.body_region || "general",
+      equipmentGroup: row.equipment_group || "other",
+      movementPattern: row.movement_pattern || "general",
+      animationStatus: row.animation_status || "placeholder",
+      animationSource: row.animation_source || "placeholder",
+      animationUrl: row.animation_url || "",
+      legacyAnimationUrl: row.legacy_animation_url || "",
+      sourceReference: row.source_reference || "public.exercises",
+      catalogBacked: true
+    };
+    item.searchIndex = [
+      ...Object.values(item.names),
+      ...Object.values(item.primary),
+      ...Object.values(item.secondary),
+      ...Object.values(item.equipment),
+      item.canonicalSlug,
+      item.equipmentGroup,
+      item.movementPattern
+    ].join(" ").toLowerCase();
+    return item;
+  }
+
+  function phase3ApplyCatalogRows(rows) {
+    const catalog = new Map(PHASE3_CORE_EXERCISES.map((exercise) => [exercise.canonicalSlug, { ...exercise, catalogBacked: false }]));
+    (rows || [])
+      .filter((row) => phase3IsUuid(row.id) && row.canonical_slug)
+      .forEach((row) => catalog.set(row.canonical_slug, phase3CatalogRowToExercise(row)));
+    PHASE3_EXERCISES = Array.from(catalog.values()).sort((a, b) => a.canonicalSlug.localeCompare(b.canonicalSlug));
+    phase3CatalogHydrated = (rows || []).length > 0;
+    window.FMZ_PHASE3_TRAINING_ENGINE.exerciseLibrarySize = PHASE3_EXERCISES.length;
+    window.FMZ_PHASE3_TRAINING_ENGINE.loadedCatalogRecords = (rows || []).length;
+  }
+
+  function phase3ReadCatalogCache() {
+    try {
+      const cached = window.sessionStorage?.getItem(PHASE3_CATALOG_CACHE_KEY);
+      if (!cached) return false;
+      const rows = JSON.parse(cached);
+      if (!Array.isArray(rows) || !rows.length) return false;
+      phase3ApplyCatalogRows(rows);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  function phase3WriteCatalogCache(rows) {
+    try {
+      window.sessionStorage?.setItem(PHASE3_CATALOG_CACHE_KEY, JSON.stringify(rows));
+    } catch {
+      // The global catalog remains usable in memory when session storage is unavailable.
+    }
+  }
+
+  function phase3ApplyCatalogDetailRows(rows) {
+    (rows || []).forEach((row) => {
+      if (!phase3IsUuid(row.id)) return;
+      const details = {
+        id: row.id,
+        instructions_nl: row.instructions_nl || null,
+        instructions_en: row.instructions_en || "",
+        instructions_de: row.instructions_de || null
+      };
+      phase3CatalogDetails.set(row.id, details);
+      const exercise = phase3ExerciseById(row.id);
+      if (!exercise) return;
+      exercise.instructions = {
+        nl: details.instructions_nl || details.instructions_en,
+        en: details.instructions_en,
+        de: details.instructions_de || details.instructions_en
+      };
+      exercise.detailsHydrated = true;
+      exercise.searchIndex = phase3ExerciseSearchText(exercise);
+    });
+  }
+
+  function phase3ReadCatalogDetailsCache() {
+    if (phase3CatalogDetailsCacheRead) return;
+    phase3CatalogDetailsCacheRead = true;
+    try {
+      const cached = JSON.parse(window.sessionStorage?.getItem(PHASE3_CATALOG_DETAILS_CACHE_KEY) || "[]");
+      if (Array.isArray(cached)) phase3ApplyCatalogDetailRows(cached);
+    } catch {
+      // Detail hydration remains available from Supabase when cache data is unavailable.
+    }
+  }
+
+  function phase3WriteCatalogDetailsCache() {
+    try {
+      window.sessionStorage?.setItem(PHASE3_CATALOG_DETAILS_CACHE_KEY, JSON.stringify(Array.from(phase3CatalogDetails.values())));
+    } catch {
+      // Selected exercise details remain available in memory for the active session.
+    }
+  }
+
+  async function phase3LoadExerciseDetails(exercises) {
+    phase3ReadCatalogDetailsCache();
+    const catalogExercises = (exercises || []).filter((exercise) => exercise?.catalogBacked && phase3IsUuid(exercise.id));
+    phase3ApplyCatalogDetailRows(catalogExercises.map((exercise) => phase3CatalogDetails.get(exercise.id)).filter(Boolean));
+    const ids = Array.from(new Set(catalogExercises.filter((exercise) => !exercise.detailsHydrated).map((exercise) => exercise.id)));
+    if (!ids.length || !phase3UsesSupabase()) return true;
+    try {
+      const { data, error } = await supabaseClient
+        .from("exercises")
+        .select("id,instructions_nl,instructions_en,instructions_de")
+        .in("id", ids);
+      if (error) throw error;
+      phase3ApplyCatalogDetailRows(data || []);
+      phase3WriteCatalogDetailsCache();
+      return true;
+    } catch (error) {
+      if (!phase3MigrationMissing(error)) console.warn("Phase 3 exercise detail hydrate skipped", error);
+      return false;
+    }
+  }
+
+  async function phase3LoadCanonicalCatalog() {
+    if (phase3CatalogHydrated || phase3ReadCatalogCache()) return true;
+    if (!phase3UsesSupabase()) return false;
+    if (phase3CatalogLoading) return phase3CatalogLoading;
+    phase3CatalogLoading = (async () => {
+      try {
+        const rows = [];
+        for (let from = 0; ; from += PHASE3_CATALOG_QUERY_PAGE_SIZE) {
+          const { data, error } = await supabaseClient
+            .from("exercises")
+            .select("id,canonical_slug,name_en,name_de,primary_muscle,secondary_muscles,body_region,equipment,equipment_group,movement_pattern,animation_url,legacy_animation_url,animation_source,animation_status,source_reference,is_active")
+            .eq("is_active", true)
+            .order("canonical_slug", { ascending: true })
+            .range(from, from + PHASE3_CATALOG_QUERY_PAGE_SIZE - 1);
+          if (error) throw error;
+          rows.push(...(data || []));
+          if (!data || data.length < PHASE3_CATALOG_QUERY_PAGE_SIZE) break;
+        }
+        if (!rows.length) return false;
+        phase3ApplyCatalogRows(rows);
+        phase3WriteCatalogCache(rows);
+        return true;
+      } catch (error) {
+        if (!phase3MigrationMissing(error)) console.warn("Phase 3 exercise catalog hydrate skipped", error);
+        return false;
+      } finally {
+        phase3CatalogLoading = null;
+      }
+    })();
+    return phase3CatalogLoading;
+  }
+
+  function phase3DbId() {
+    const random = window.crypto?.randomUUID?.();
+    if (phase3IsUuid(random)) return random;
+    const hex = Array.from({ length: 32 }, () => Math.floor(Math.random() * 16).toString(16));
+    hex[12] = "4";
+    hex[16] = (8 + Math.floor(Math.random() * 4)).toString(16);
+    return `${hex.slice(0, 8).join("")}-${hex.slice(8, 12).join("")}-${hex.slice(12, 16).join("")}-${hex.slice(16, 20).join("")}-${hex.slice(20).join("")}`;
+  }
+
+  function phase3EnsureDbId(value, label) {
+    if (phase3IsUuid(value)) return String(value);
+    const repaired = phase3DbId();
+    console.warn(`Phase 3 repaired non-UUID ${label || "id"} before database sync`, value);
+    return repaired;
+  }
+
+  function phase3LocalKey(prefix, id = phase3DbId()) {
+    return `fmz:phase3:${prefix}:${id}`;
   }
 
   function phase3IsoNow() {
@@ -504,26 +925,67 @@
     return PHASE3_EXERCISES.find((item) => item.slug === slug) || null;
   }
 
+  function phase3ExerciseById(id) {
+    return phase3IsUuid(id) ? PHASE3_EXERCISES.find((item) => item.id === id) || null : null;
+  }
+
   function phase3ExerciseName(slug) {
     const item = phase3Exercise(slug);
     if (!item) return String(slug || phase3Text("exercise"));
     return item.names[phase3Language()] || item.names.nl;
   }
 
+  function phase3ExerciseRecordName(record) {
+    const item = phase3ExerciseById(record?.exercise_id) || phase3Exercise(record?.exercise_slug);
+    if (!item) return String(record?.exercise_slug || phase3Text("exercise"));
+    return item.names[phase3Language()] || item.names.en || item.names.nl;
+  }
+
   function phase3ExerciseMeta(slug) {
-    const item = phase3Exercise(slug) || PHASE3_EXERCISES[0];
+    const item = phase3Exercise(slug);
     const language = phase3Language();
+    if (!item) {
+      return {
+        id: "",
+        catalogBacked: false,
+        canonicalSlug: String(slug || ""),
+        name: String(slug || phase3Text("exercise")),
+        category: "",
+        primary: "",
+        secondary: "",
+        equipment: "",
+        equipmentGroup: "other",
+        movementPattern: "general",
+        animationStatus: "placeholder",
+        animationSource: "placeholder",
+        animationUrl: "",
+        legacyAnimationUrl: "",
+        instructions: "",
+        sourceReference: "legacy_snapshot"
+      };
+    }
     return {
+      id: item.id,
+      catalogBacked: item.catalogBacked === true,
+      canonicalSlug: item.canonicalSlug || item.slug,
       name: item.names[language] || item.names.nl,
       category: item.category?.[language] || item.category?.nl || item.primary[language] || item.primary.nl,
       primary: item.primary[language] || item.primary.nl,
       secondary: item.secondary?.[language] || item.secondary?.nl || "",
       equipment: item.equipment[language] || item.equipment.nl,
-      instructions: item.instructions[language] || item.instructions.nl
+      equipmentGroup: item.equipmentGroup || item.equipment?.en || item.equipment?.nl || "Other",
+      movementPattern: item.movementPattern || "general",
+      animationStatus: item.animationStatus || "placeholder",
+      animationSource: item.animationSource || "placeholder",
+      animationUrl: item.animationUrl || "",
+      legacyAnimationUrl: item.legacyAnimationUrl || "",
+      instructions: item.instructions[language] || item.instructions.nl || "",
+      sourceReference: item.sourceReference || ""
     };
   }
 
   function phase3ExerciseSearchText(exercise) {
+    if (exercise.searchIndex) return exercise.searchIndex;
     return [
       ...Object.values(exercise.names || {}),
       ...Object.values(exercise.primary || {}),
@@ -640,6 +1102,8 @@
     phase3BuilderEditIndex = null;
     phase3BuilderDraft = phase3EmptyBuilderDraft();
     phase3LibraryFilters = { search: "", category: "", equipment: "" };
+    phase3PickerOpen = false;
+    phase3PickerVisibleCount = PHASE3_PICKER_PAGE_SIZE;
     phase3LoadLocal();
   }
 
@@ -648,7 +1112,7 @@
   }
 
   function phase3MigrationMissing(error) {
-    return /fmz_phase3_create_training_plan|training_plans|workout_sessions|workout_set_logs|schema cache|not find|does not exist|relation/i.test(error?.message || "");
+    return /fmz_phase3_create_training_plan|training_plans|workout_sessions|workout_set_logs|public\.exercises|exercise_id|schema cache|not find|does not exist|relation/i.test(error?.message || "");
   }
 
   function phase3PlanFromRow(row, daysByPlan, exercisesByDay) {
@@ -662,8 +1126,14 @@
       exercises: (exercisesByDay[day.id] || []).map((exercise) => ({
         id: exercise.id,
         key: exercise.id,
+        exerciseId: exercise.exercise_id || phase3Exercise(exercise.exercise_slug)?.id || "",
+        catalogBacked: phase3IsUuid(exercise.exercise_id),
+        canonicalSlug: exercise.exercise_slug,
         slug: exercise.exercise_slug,
         name: exercise.exercise_name_snapshot,
+        primaryMuscle: phase3ExerciseMeta(exercise.exercise_slug).primary,
+        secondaryMuscles: phase3ExerciseMeta(exercise.exercise_slug).secondary,
+        equipment: phase3ExerciseMeta(exercise.exercise_slug).equipment,
         order: exercise.exercise_order,
         status: exercise.status || "active",
         archivedAt: exercise.archived_at || "",
@@ -715,7 +1185,7 @@
         if (dayIds.length) {
           const exerciseResult = await supabaseClient
             .from("training_plan_exercises")
-            .select("id,training_plan_day_id,exercise_slug,exercise_name_snapshot,exercise_order,status,archived_at,target_sets,target_reps,target_weight,target_rir,target_rpe,rest_seconds,tempo,notes")
+            .select("id,training_plan_day_id,exercise_id,exercise_slug,exercise_name_snapshot,exercise_order,status,archived_at,target_sets,target_reps,target_weight,target_rir,target_rpe,rest_seconds,tempo,notes")
             .in("training_plan_day_id", dayIds)
             .order("exercise_order", { ascending: true });
           if (exerciseResult.error) throw exerciseResult.error;
@@ -736,7 +1206,7 @@
       if (sessionIds.length) {
         const setResult = await supabaseClient
           .from("workout_set_logs")
-          .select("id,user_id,workout_session_id,training_plan_exercise_id,planned_exercise_key,exercise_slug,exercise_name_snapshot,set_index,target_reps,target_weight,actual_reps,actual_weight,rir,rpe,notes,completed_at,source")
+            .select("id,user_id,workout_session_id,training_plan_exercise_id,exercise_id,planned_exercise_key,exercise_slug,exercise_name_snapshot,set_index,target_reps,target_weight,actual_reps,actual_weight,rir,rpe,notes,completed_at,source,metadata")
           .in("workout_session_id", sessionIds);
         if (setResult.error) throw setResult.error;
         setLogs = setResult.data || [];
@@ -810,6 +1280,8 @@
         id: setLog.id,
         plannedExerciseKey: setLog.planned_exercise_key,
         exerciseSlug: setLog.exercise_slug,
+        exerciseId: setLog.exercise_id || "",
+        catalogBacked: phase3IsUuid(setLog.exercise_id),
         exerciseName: setLog.exercise_name_snapshot,
         setIndex: setLog.set_index,
         targetReps: setLog.target_reps || "",
@@ -841,9 +1313,11 @@
   }
 
   function phase3ExerciseInsertRow(dayId, exercise, order) {
+    const canonicalExerciseId = exercise.catalogBacked && phase3IsUuid(exercise.exerciseId) ? exercise.exerciseId : "";
     return {
-      id: exercise.id,
+      id: phase3EnsureDbId(exercise.id, "training_plan_exercises.id"),
       training_plan_day_id: dayId,
+      ...(canonicalExerciseId ? { exercise_id: canonicalExerciseId } : {}),
       exercise_slug: exercise.slug,
       exercise_name_snapshot: exercise.name,
       exercise_order: order,
@@ -857,6 +1331,40 @@
       tempo: exercise.tempo || null,
       notes: exercise.notes || null
     };
+  }
+
+  async function phase3PersistFirstExerciseCatalogLink(dayId, exercise) {
+    if (!exercise?.catalogBacked || !phase3IsUuid(exercise.exerciseId)) return { ok: true, skipped: true };
+    const { error } = await supabaseClient
+      .from("training_plan_exercises")
+      .update({ exercise_id: exercise.exerciseId })
+      .eq("id", exercise.id)
+      .eq("training_plan_day_id", dayId);
+    if (error) throw error;
+    return { ok: true };
+  }
+
+  function phase3EnsurePlanDbIds(plan) {
+    if (!plan || plan.source === "legacy_bridge") return plan;
+    plan.id = phase3EnsureDbId(plan.id, "training_plans.id");
+    (plan.days || []).forEach((day) => {
+      day.id = phase3EnsureDbId(day.id, "training_plan_days.id");
+      (day.exercises || []).forEach((exercise) => {
+        exercise.id = phase3EnsureDbId(exercise.id, "training_plan_exercises.id");
+        exercise.key = exercise.key || exercise.id;
+      });
+    });
+    return plan;
+  }
+
+  function phase3EnsureSessionDbIds(session) {
+    if (!session) return session;
+    session.id = phase3EnsureDbId(session.id, "workout_sessions.id");
+    Object.values(session.setLogs || {}).forEach((setLog) => {
+      setLog.id = phase3EnsureDbId(setLog.id, "workout_set_logs.id");
+      if (!phase3IsUuid(setLog.trainingPlanExerciseId)) setLog.trainingPlanExerciseId = "";
+    });
+    return session;
   }
 
   async function phase3PersistRemainingExercises(day) {
@@ -891,6 +1399,7 @@
     const day = plan?.days?.[0];
     if (!plan || !day || !phase3UsesSupabase()) return { ok: false, error: new Error(phase3Text("saveFailed")) };
     try {
+      phase3EnsurePlanDbIds(plan);
       phase3State.syncMessage = phase3Text("partialRetrying");
       await phase3PersistRemainingExercises(day);
       phase3State.pendingPlanRetry = null;
@@ -905,6 +1414,7 @@
   }
 
   async function phase3PersistPlan(plan) {
+    phase3EnsurePlanDbIds(plan);
     if (!phase3UsesSupabase()) {
       plan.localOnly = true;
       phase3State.plans.unshift(plan);
@@ -934,6 +1444,7 @@
       if (planError) throw planError;
 
       try {
+        await phase3PersistFirstExerciseCatalogLink(day.id, exercise);
         await phase3PersistRemainingExercises(day);
       } catch (exerciseError) {
         await phase3HydrateAfterPartialPlanFailure(plan, exerciseError);
@@ -980,15 +1491,40 @@
     return { ok: true };
   }
 
-  function phase3ExerciseFromForm(form, order = 0, id = phase3Id("plan-exercise")) {
+  async function phase3ArchivePlanExercise(planId, dayId, exerciseId) {
+    const plan = phase3State.plans.find((item) => item.id === planId);
+    const day = plan?.days?.find((item) => item.id === dayId);
+    const exercise = day?.exercises?.find((item) => item.id === exerciseId);
+    if (!plan || !day || !exercise || plan.source === "legacy_bridge") return { ok: true };
+    if (phase3UsesSupabase() && !plan.localOnly && phase3IsUuid(exercise.id)) {
+      const { error } = await supabaseClient
+        .from("training_plan_exercises")
+        .update({ status: "archived" })
+        .eq("id", exercise.id)
+        .eq("training_plan_day_id", day.id);
+      if (error) return { ok: false, error };
+    }
+    exercise.status = "archived";
+    exercise.archivedAt = phase3IsoNow();
+    phase3SaveLocal();
+    return { ok: true };
+  }
+
+  function phase3ExerciseFromForm(form, order = 0, id = phase3DbId()) {
     const data = new FormData(form);
     const slug = String(data.get("exerciseSlug") || PHASE3_EXERCISES[0].slug);
     const meta = phase3ExerciseMeta(slug);
     return {
       id,
       key: id,
+      exerciseId: meta.id,
+      catalogBacked: meta.catalogBacked,
+      canonicalSlug: meta.canonicalSlug,
       slug,
       name: meta.name,
+      primaryMuscle: meta.primary,
+      secondaryMuscles: meta.secondary,
+      equipment: meta.equipment,
       order,
       status: "active",
       archivedAt: "",
@@ -1083,7 +1619,7 @@
     phase3NormalizeBuilderExercises();
     if (phase3BuilderExercises.length) {
       return phase3BuilderExercises.map((exercise, index) => {
-        const id = exercise.id || phase3Id("plan-exercise");
+        const id = phase3EnsureDbId(exercise.id, "training_plan_exercises.id");
         return {
           ...exercise,
           id,
@@ -1098,8 +1634,8 @@
   function phase3BuildPlanFromForm(form) {
     phase3CaptureBuilderDraft(form);
     const data = new FormData(form);
-    const planId = phase3Id("plan");
-    const dayId = phase3Id("day");
+    const planId = phase3DbId();
+    const dayId = phase3DbId();
     const dayLabel = String(data.get("dayLabel") || "Maandag");
     const exercises = phase3BuilderExercisesForSubmit(form);
     return {
@@ -1188,13 +1724,14 @@
   }
 
   function phase3CreateSession(plan, day) {
-    const id = phase3Id("session");
+    const id = phase3DbId();
     const startedAt = phase3IsoNow();
     const plannedExercises = (day.exercises || [])
       .filter((exercise) => (exercise.status || "active") === "active")
       .map((exercise, index) => ({
       ...exercise,
-      key: exercise.key || exercise.id || `${exercise.slug}-${index}`
+      key: exercise.key || exercise.id || `${exercise.slug}-${index}`,
+      instructions: phase3ExerciseMeta(exercise.slug).instructions
     }));
     return {
       id,
@@ -1224,6 +1761,7 @@
       renderTraining();
       return;
     }
+    await phase3LoadExerciseDetails(activeExercises.map((exercise) => phase3ExerciseById(exercise.exerciseId) || phase3Exercise(exercise.slug)).filter(Boolean));
     phase3State.activeSession = phase3CreateSession(plan, { ...day, exercises: activeExercises });
     phase3SaveLocal();
     await phase3SyncActiveSession();
@@ -1234,6 +1772,7 @@
     const session = phase3State.activeSession;
     if (!session || !phase3UsesSupabase()) return { ok: false, skipped: true };
     try {
+      phase3EnsureSessionDbIds(session);
       const { error } = await supabaseClient
         .from("workout_sessions")
         .upsert({
@@ -1281,7 +1820,8 @@
           id: setLog.id,
           user_id: phase3ProfileId(),
           workout_session_id: phase3State.activeSession.id,
-          training_plan_exercise_id: setLog.trainingPlanExerciseId || null,
+          training_plan_exercise_id: phase3IsUuid(setLog.trainingPlanExerciseId) ? setLog.trainingPlanExerciseId : null,
+          ...(setLog.catalogBacked && phase3IsUuid(setLog.exerciseId) ? { exercise_id: setLog.exerciseId } : {}),
           planned_exercise_key: setLog.plannedExerciseKey,
           exercise_slug: setLog.exerciseSlug,
           exercise_name_snapshot: setLog.exerciseName,
@@ -1294,7 +1834,13 @@
           rpe: setLog.rpe === "" ? null : setLog.rpe,
           notes: setLog.notes || null,
           completed_at: setLog.completedAt,
-          source: setLog.source || phase3State.activeSession.source
+          source: setLog.source || phase3State.activeSession.source,
+          metadata: {
+            phase: 3,
+            version: PHASE3_VERSION,
+            exerciseId: setLog.exerciseId || "",
+            canonicalSlug: setLog.exerciseSlug || ""
+          }
         }, { onConflict: "workout_session_id,planned_exercise_key,set_index" });
       if (error) throw error;
       setLog.syncedAt = phase3IsoNow();
@@ -1331,9 +1877,11 @@
     const setIndex = Number(rawSetIndex);
     const inputs = phase3ReadSetInputs(setKey);
     const setLog = {
-      id: session.setLogs[setKey]?.id || phase3Id("set-log"),
+      id: phase3IsUuid(session.setLogs[setKey]?.id) ? session.setLogs[setKey].id : phase3DbId(),
       plannedExerciseKey: String(exercise.key),
-      trainingPlanExerciseId: exercise.id && !String(exercise.id).startsWith("legacy") ? exercise.id : "",
+      trainingPlanExerciseId: phase3IsUuid(exercise.id) ? exercise.id : "",
+      exerciseId: exercise.catalogBacked && phase3IsUuid(exercise.exerciseId) ? exercise.exerciseId : "",
+      catalogBacked: exercise.catalogBacked === true,
       exerciseSlug: exercise.slug,
       exerciseName: exercise.name,
       setIndex,
@@ -1388,8 +1936,26 @@
     renderTraining();
   }
 
+  function phase3ExerciseIdentity(value) {
+    const exerciseId = value?.exerciseId || value?.exercise_id || "";
+    if (phase3IsUuid(exerciseId)) return `id:${exerciseId}`;
+    const slug = value?.exerciseSlug || value?.exercise_slug || value?.slug || value?.canonicalSlug || "";
+    return slug ? `slug:${slug}` : "";
+  }
+
+  function phase3SameExercise(left, right) {
+    const leftId = left?.exerciseId || left?.exercise_id || "";
+    const rightId = right?.exerciseId || right?.exercise_id || "";
+    if (phase3IsUuid(leftId) && phase3IsUuid(rightId)) return leftId === rightId;
+    const leftSlug = left?.exerciseSlug || left?.exercise_slug || left?.slug || "";
+    const rightSlug = right?.exerciseSlug || right?.exercise_slug || right?.slug || "";
+    return Boolean(leftSlug && rightSlug && leftSlug === rightSlug);
+  }
+
   function phase3RecordCandidates(setLog) {
     const exerciseSlug = setLog.exerciseSlug || setLog.exercise_slug || "";
+    const exerciseId = setLog.exerciseId || setLog.exercise_id || "";
+    const exerciseIdentity = phase3ExerciseIdentity(setLog);
     const candidates = [
       { metric: "max_weight", value: phase3Number(setLog.actualWeight, 0), unit: "kg" },
       { metric: "max_reps", value: phase3Number(setLog.actualReps, 0), unit: "reps" }
@@ -1404,9 +1970,11 @@
       });
     }
     return candidates
-      .filter((candidate) => exerciseSlug && candidate.value)
+      .filter((candidate) => exerciseIdentity && candidate.value)
       .map((candidate) => ({
+        exercise_id: phase3IsUuid(exerciseId) ? exerciseId : null,
         exercise_slug: exerciseSlug,
+        exercise_identity: exerciseIdentity,
         metric: candidate.metric,
         value: candidate.value,
         unit: candidate.unit,
@@ -1422,26 +1990,25 @@
       .forEach((setLog) => {
         const normalized = {
           id: setLog.id,
+          exerciseId: setLog.exerciseId || setLog.exercise_id || "",
           exerciseSlug: setLog.exerciseSlug || setLog.exercise_slug,
           actualReps: setLog.actualReps ?? setLog.actual_reps,
           actualWeight: setLog.actualWeight ?? setLog.actual_weight,
           completedAt: setLog.completedAt || setLog.completed_at
         };
         phase3RecordCandidates(normalized).forEach((candidate) => {
-          const key = `${candidate.exercise_slug}:${candidate.metric}`;
+          const key = `${candidate.exercise_identity}:${candidate.metric}`;
           const previous = records[key];
-          if (!previous || Number(candidate.value) > Number(previous.value || 0)) {
-            records[key] = candidate;
-          }
+          if (!previous || Number(candidate.value) > Number(previous.value || 0)) records[key] = candidate;
         });
       });
     return Object.values(records);
   }
 
-  function phase3PreviousPerformance(exerciseSlug) {
+  function phase3PreviousPerformance(exercise) {
     const sets = phase3State.history
       .flatMap((entry) => entry.sets || [])
-      .filter((setLog) => setLog.exercise_slug === exerciseSlug || setLog.exerciseSlug === exerciseSlug)
+      .filter((setLog) => phase3SameExercise(exercise, setLog))
       .sort((a, b) => String(b.completed_at || b.completedAt || "").localeCompare(String(a.completed_at || a.completedAt || "")));
     const first = sets[0];
     if (!first) return "";
@@ -1491,6 +2058,125 @@
     target.textContent = `${phase3Text("timer")}: ${minutes}:${seconds}`;
   }
 
+  function phase3ExerciseMediaLabel(exercise) {
+    const status = exercise?.animationStatus || "placeholder";
+    if (status === "legacy") return "Legacy";
+    if (status === "youri_avatar_ready") return "Youri";
+    return "Youri";
+  }
+
+  function phase3RenderExerciseMedia(exercise, mode = "thumb") {
+    const meta = phase3ExerciseMeta(exercise?.slug || exercise?.canonicalSlug || phase3BuilderDraft.exerciseSlug);
+    const label = meta.animationStatus === "legacy" ? phase3Text("animationPreview") : phase3Text("youriAvatarPending");
+    return `
+      <div class="phase3-media phase3-media-${escapeHTML(mode)}" aria-label="${escapeHTML(phase3Text("animationPreview"))}">
+        <span class="phase3-media-avatar">${escapeHTML(phase3ExerciseMediaLabel(exercise))}</span>
+        <span class="phase3-media-caption">${escapeHTML(label)}</span>
+      </div>
+    `;
+  }
+
+  function phase3SelectedExerciseMeta() {
+    return phase3ExerciseMeta(phase3BuilderDraft.exerciseSlug || PHASE3_EXERCISES[0]?.slug || "");
+  }
+
+  function phase3RenderPickerChips(type, options) {
+    const activeValue = phase3LibraryFilters[type] || "";
+    const allLabel = type === "category" ? phase3Text("allCategories") : phase3Text("allEquipment");
+    return `
+      <div class="phase3-chip-row" role="list">
+        <button class="phase3-chip ${!activeValue ? "active" : ""}" data-phase3-picker-filter="${type}:" type="button">${escapeHTML(allLabel)}</button>
+        ${options.map((item) => `
+          <button class="phase3-chip ${activeValue === item.value ? "active" : ""}" data-phase3-picker-filter="${escapeHTML(type)}:${escapeHTML(item.value)}" type="button">${escapeHTML(item.label)}</button>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  function phase3RenderPickerResults() {
+    const results = phase3FilteredExercises();
+    const visible = results.slice(0, phase3PickerVisibleCount);
+    return `
+      <div class="phase3-picker-count">${escapeHTML(phase3Format("showingResults", { shown: visible.length, total: results.length }))}</div>
+      <div class="phase3-picker-results">
+        ${visible.map((exercise) => {
+          const meta = phase3ExerciseMeta(exercise.slug);
+          return `
+            <article class="phase3-picker-card">
+              ${phase3RenderExerciseMedia(exercise, "thumb")}
+              <div>
+                <strong>${escapeHTML(meta.name)}</strong>
+                <p class="muted">${escapeHTML(meta.primary)} · ${escapeHTML(meta.equipment)}</p>
+                ${meta.instructions ? `<p class="muted">${escapeHTML(meta.instructions)}</p>` : ""}
+              </div>
+              <button class="primary-btn" data-phase3-select-exercise="${escapeHTML(exercise.slug)}" type="button">${escapeHTML(phase3Text("chooseExercise"))}</button>
+            </article>
+          `;
+        }).join("") || `<div class="empty-mini">${escapeHTML(phase3Text("noLibraryResults"))}</div>`}
+      </div>
+      ${visible.length < results.length ? `<button class="secondary-btn phase3-load-more" data-phase3-load-more-exercises type="button">${escapeHTML(phase3Text("loadMoreExercises"))}</button>` : ""}
+    `;
+  }
+
+  function phase3RefreshPickerResults() {
+    const container = document.querySelector("[data-phase3-picker-results]");
+    if (container) container.innerHTML = phase3RenderPickerResults();
+  }
+
+  async function phase3OpenExercisePicker(form) {
+    phase3CaptureBuilderDraft(form);
+    phase3PickerOpen = true;
+    phase3PickerVisibleCount = PHASE3_PICKER_PAGE_SIZE;
+    await phase3LoadCanonicalCatalog();
+  }
+
+  function phase3CloseExercisePicker() {
+    phase3PickerOpen = false;
+    phase3PickerVisibleCount = PHASE3_PICKER_PAGE_SIZE;
+  }
+
+  async function phase3SelectExercise(slug) {
+    const exercise = phase3Exercise(slug);
+    if (!exercise) return;
+    await phase3LoadExerciseDetails([exercise]);
+    phase3BuilderDraft.exerciseSlug = slug;
+    phase3CloseExercisePicker();
+  }
+
+  function phase3RenderExercisePicker(disabled) {
+    if (!phase3PickerOpen || disabled) return "";
+    const categories = phase3LibraryOptions("category");
+    const equipment = phase3LibraryOptions("equipment");
+    return `
+      <div class="phase3-picker-backdrop" data-phase3-picker-backdrop>
+        <section class="phase3-picker-sheet" role="dialog" aria-modal="true" aria-label="${escapeHTML(phase3Text("exercisePickerTitle"))}">
+          <div class="phase3-plan-head">
+            <div>
+              <p class="eyebrow">${escapeHTML(phase3Text("exercisePickerTitle"))}</p>
+              <h2>${escapeHTML(phase3Text("chooseExercise"))}</h2>
+            </div>
+            <button class="secondary-btn" data-phase3-close-picker type="button">${escapeHTML(phase3Text("closePicker"))}</button>
+          </div>
+          <label class="field"><span>${escapeHTML(phase3Text("searchLibrary"))}</span><input data-phase3-picker-search value="${escapeHTML(phase3LibraryFilters.search)}" placeholder="${escapeHTML(phase3Text("searchLibrary"))}" /></label>
+          <div>
+            <strong>${escapeHTML(phase3Text("muscle"))}</strong>
+            ${phase3RenderPickerChips("category", categories)}
+          </div>
+          <div>
+            <strong>${escapeHTML(phase3Text("equipment"))}</strong>
+            ${phase3RenderPickerChips("equipment", equipment)}
+          </div>
+          <div class="settings-save-row">
+            <button class="secondary-btn" data-phase3-clear-picker-filters type="button">${escapeHTML(phase3Text("clearFilters"))}</button>
+          </div>
+          <div data-phase3-picker-results>
+            ${phase3RenderPickerResults()}
+          </div>
+        </section>
+      </div>
+    `;
+  }
+
   function phase3InstallStyles() {
     if (document.getElementById("phase3-training-engine-styles")) return;
     const style = document.createElement("style");
@@ -1513,6 +2199,19 @@
       .phase3-exercise-list { display: grid; gap: 8px; }
       .phase3-exercise-line { border-top: 1px solid var(--line); padding-top: 8px; display: grid; gap: 8px; }
       .phase3-workout-panel { display: grid; gap: 12px; border-color: rgba(200,147,18,.45); }
+      .phase3-media { min-height: 86px; border: 1px dashed var(--line); border-radius: 8px; display: grid; place-items: center; align-content: center; gap: 4px; background: linear-gradient(135deg, rgba(30,90,86,.08), rgba(200,147,18,.10)); color: var(--text); text-align: center; }
+      .phase3-media-large { min-height: 160px; }
+      .phase3-media-avatar { font-weight: 800; letter-spacing: 0; }
+      .phase3-media-caption { font-size: .78rem; color: var(--muted); }
+      .phase3-picker-backdrop { position: fixed; inset: 0; z-index: 80; background: rgba(10,18,24,.42); display: grid; place-items: center; padding: 18px; }
+      .phase3-picker-sheet { width: min(880px, 100%); max-height: min(760px, 92vh); overflow: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--shadow); padding: 16px; display: grid; gap: 14px; }
+      .phase3-chip-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+      .phase3-chip { border: 1px solid var(--line); background: var(--panel-soft); color: var(--text); border-radius: 999px; min-height: 34px; padding: 0 12px; }
+      .phase3-chip.active { border-color: var(--brand); background: rgba(30,90,86,.12); font-weight: 700; }
+      .phase3-picker-count { color: var(--muted); font-size: .86rem; }
+      .phase3-picker-results { display: grid; gap: 10px; }
+      .phase3-picker-card { display: grid; grid-template-columns: 96px minmax(0, 1fr) auto; gap: 12px; align-items: center; border: 1px solid var(--line); border-radius: 8px; padding: 10px; }
+      .phase3-load-more { justify-self: center; }
       .phase3-set-grid { display: grid; grid-template-columns: repeat(5, minmax(70px, 1fr)) auto; gap: 8px; align-items: end; }
       .phase3-set-grid label { display: grid; gap: 4px; font-size: .82rem; color: var(--muted); }
       .phase3-set-grid input { min-width: 0; }
@@ -1520,6 +2219,10 @@
       .phase3-timer-pill { min-height: 28px; display: inline-flex; align-items: center; }
       @media (max-width: 880px) {
         .phase3-grid, .phase3-form-grid, .phase3-set-grid, .phase3-library-filters { grid-template-columns: 1fr; }
+        .phase3-picker-backdrop { align-items: end; padding: 0; }
+        .phase3-picker-sheet { width: 100%; max-height: 92vh; border-radius: 8px 8px 0 0; }
+        .phase3-picker-card { grid-template-columns: 82px minmax(0, 1fr); }
+        .phase3-picker-card .primary-btn { grid-column: 1 / -1; }
       }
     `;
     document.head.appendChild(style);
@@ -1582,6 +2285,7 @@
 
   function phase3RenderPlanForm() {
     const disabled = !phase3CanCreateActiveWorkoutDay();
+    const selectedMeta = phase3SelectedExerciseMeta();
     return `
       <section class="phase3-card">
         <div class="panel-head">
@@ -1596,7 +2300,15 @@
         <form id="phase3PlanForm" class="phase3-form-grid">
           <label class="field"><span>${escapeHTML(phase3Text("planTitle"))}</span><input name="title" required placeholder="Full body A" value="${escapeHTML(phase3BuilderDraft.title)}" ${disabled ? "disabled" : ""} /></label>
           <label class="field"><span>${escapeHTML(phase3Text("day"))}</span><select name="dayLabel" ${disabled ? "disabled" : ""}>${DAYS.map((day) => `<option value="${escapeHTML(day)}" ${phase3BuilderDraft.dayLabel === day ? "selected" : ""}>${escapeHTML(phase3Text(day))}</option>`).join("")}</select></label>
-          <label class="field"><span>${escapeHTML(phase3Text("exercise"))}</span><select name="exerciseSlug" ${disabled ? "disabled" : ""}>${PHASE3_EXERCISES.map((exercise) => `<option value="${exercise.slug}" ${phase3BuilderDraft.exerciseSlug === exercise.slug ? "selected" : ""}>${escapeHTML(phase3ExerciseName(exercise.slug))}</option>`).join("")}</select></label>
+          <div class="field">
+            <span>${escapeHTML(phase3Text("selectedExercise"))}</span>
+            <input name="exerciseSlug" type="hidden" value="${escapeHTML(phase3BuilderDraft.exerciseSlug)}" />
+            <div class="phase3-plan-card">
+              <strong>${escapeHTML(selectedMeta.name)}</strong>
+              <p class="muted">${escapeHTML(selectedMeta.primary)} · ${escapeHTML(selectedMeta.equipment)}</p>
+              <button class="secondary-btn" data-phase3-open-picker type="button" ${disabled ? "disabled" : ""}>${escapeHTML(phase3Text("openExercisePicker"))}</button>
+            </div>
+          </div>
           <label class="field"><span>${escapeHTML(phase3Text("sets"))}</span><input name="sets" type="number" min="1" max="20" value="${escapeHTML(phase3BuilderDraft.sets)}" ${disabled ? "disabled" : ""} /></label>
           <label class="field"><span>${escapeHTML(phase3Text("reps"))}</span><input name="reps" value="${escapeHTML(phase3BuilderDraft.reps)}" ${disabled ? "disabled" : ""} /></label>
           <label class="field"><span>${escapeHTML(phase3Text("targetWeight"))}</span><input name="targetWeight" type="number" min="0" step="0.5" value="${escapeHTML(phase3BuilderDraft.targetWeight)}" ${disabled ? "disabled" : ""} /></label>
@@ -1614,6 +2326,7 @@
             <span class="save-feedback" data-save-feedback="phase3-plan"></span>
           </div>
         </form>
+        ${phase3RenderExercisePicker(disabled)}
       </section>
     `;
   }
@@ -1661,7 +2374,10 @@
             </div>
             <div class="phase3-exercise-list">
               ${day.exercises.map((exercise) => `
-                <span>${escapeHTML(exercise.name)} - ${escapeHTML(String(exercise.targetSets))} x ${escapeHTML(exercise.targetReps)}${exercise.targetWeight !== "" ? ` - ${escapeHTML(String(exercise.targetWeight))} kg` : ""}</span>
+                <div class="phase3-plan-head">
+                  <span>${escapeHTML(exercise.name)} - ${escapeHTML(String(exercise.targetSets))} x ${escapeHTML(exercise.targetReps)}${exercise.targetWeight !== "" ? ` - ${escapeHTML(String(exercise.targetWeight))} kg` : ""}</span>
+                  ${plan.source !== "legacy_bridge" ? `<button class="secondary-btn" data-phase3-archive-exercise="${escapeHTML(plan.id)}:${escapeHTML(day.id)}:${escapeHTML(exercise.id)}" type="button">${escapeHTML(phase3Text("archiveExercise"))}</button>` : ""}
+                </div>
               `).join("")}
             </div>
           </div>
@@ -1694,11 +2410,15 @@
   }
 
   function phase3RenderWorkoutExercise(exercise, session) {
-    const previous = phase3PreviousPerformance(exercise.slug);
+    const previous = phase3PreviousPerformance(exercise);
+    const instructions = exercise.instructions || phase3ExerciseMeta(exercise.slug).instructions;
     return `
       <article class="phase3-plan-card">
+        ${phase3RenderExerciseMedia(exercise, "large")}
         <div>
           <strong>${escapeHTML(exercise.name)}</strong>
+          <p class="muted">${escapeHTML(phase3Text("activeExercisePreview"))}: ${escapeHTML(exercise.primaryMuscle || phase3ExerciseMeta(exercise.slug).primary)} · ${escapeHTML(exercise.equipment || phase3ExerciseMeta(exercise.slug).equipment)}</p>
+          ${instructions ? `<p class="muted"><strong>${escapeHTML(phase3Text("instructions"))}:</strong> ${escapeHTML(instructions)}</p>` : ""}
           <p class="muted">${escapeHTML(phase3Text("previousPerformance"))}: ${escapeHTML(previous || phase3Text("noPrevious"))}</p>
           <p class="muted">${escapeHTML(phase3Text("overloadTitle"))}: ${escapeHTML(phase3OverloadSignal(exercise, session))}</p>
         </div>
@@ -1744,7 +2464,7 @@
         <div class="phase3-history-list">
           ${records.length ? records.map((record) => `
             <div class="phase3-history-item">
-              <span>${escapeHTML(phase3ExerciseName(record.exercise_slug) || record.exercise_slug)} - ${escapeHTML(record.metric)}</span>
+              <span>${escapeHTML(phase3ExerciseRecordName(record))} - ${escapeHTML(record.metric)}</span>
               <strong>${escapeHTML(String(record.value))} ${escapeHTML(record.unit)}</strong>
             </div>
           `).join("") : `<div class="empty-mini">${escapeHTML(phase3Text("overloadNeutral"))}</div>`}
@@ -1758,10 +2478,11 @@
     if (!exercises.length) {
       return `<div class="empty-mini">${escapeHTML(phase3Text("noLibraryResults"))}</div>`;
     }
-    return exercises.map((exercise) => {
+    return exercises.slice(0, 24).map((exercise) => {
       const meta = phase3ExerciseMeta(exercise.slug);
       return `
         <article class="phase3-library-item">
+          ${phase3RenderExerciseMedia(exercise, "thumb")}
           <strong>${escapeHTML(meta.name)}</strong>
           <span>${escapeHTML(phase3Text("muscle"))}: ${escapeHTML(meta.primary)} - ${escapeHTML(phase3Text("equipment"))}: ${escapeHTML(meta.equipment)}</span>
           ${meta.secondary ? `<span class="muted">${escapeHTML(meta.secondary)}</span>` : ""}
@@ -1870,7 +2591,13 @@
   const phase3OriginalShowView = showView;
   showView = function showViewPhase3(view) {
     if (view !== "training") phase3StopTimer();
-    return phase3OriginalShowView(view);
+    const result = phase3OriginalShowView(view);
+    if (view === "training" && isLoggedIn() && state.ui.role === "client") {
+      phase3LoadCanonicalCatalog().then((loaded) => {
+        if (loaded && currentView === "training") renderTraining();
+      });
+    }
+    return result;
   };
 
   const phase3OriginalRenderAll = renderAll;
@@ -1905,9 +2632,11 @@
   });
 
   document.addEventListener("input", (event) => {
-    if (event.target?.dataset.phase3LibrarySearch === undefined) return;
+    if (event.target?.dataset.phase3LibrarySearch === undefined && event.target?.dataset.phase3PickerSearch === undefined) return;
     phase3LibraryFilters.search = String(event.target.value || "");
+    phase3PickerVisibleCount = PHASE3_PICKER_PAGE_SIZE;
     phase3RefreshLibraryResults();
+    phase3RefreshPickerResults();
   });
 
   document.addEventListener("change", (event) => {
@@ -1923,6 +2652,11 @@
   });
 
   document.addEventListener("click", async (event) => {
+    if (event.target?.dataset?.phase3PickerBackdrop !== undefined) {
+      phase3CloseExercisePicker();
+      renderTraining();
+      return;
+    }
     const button = event.target.closest("button");
     if (!button) return;
 
@@ -1932,6 +2666,47 @@
         phase3AddBuilderExercise(form);
         renderTraining();
       }
+      return;
+    }
+
+    if (button.dataset.phase3OpenPicker !== undefined) {
+      await phase3OpenExercisePicker(button.closest("form"));
+      renderTraining();
+      return;
+    }
+
+    if (button.dataset.phase3ClosePicker !== undefined) {
+      phase3CloseExercisePicker();
+      renderTraining();
+      return;
+    }
+
+    if (button.dataset.phase3ClearPickerFilters !== undefined) {
+      phase3LibraryFilters = { search: "", category: "", equipment: "" };
+      phase3PickerVisibleCount = PHASE3_PICKER_PAGE_SIZE;
+      renderTraining();
+      return;
+    }
+
+    if (button.dataset.phase3PickerFilter) {
+      const [type, value = ""] = button.dataset.phase3PickerFilter.split(":");
+      if (type === "category" || type === "equipment") {
+        phase3LibraryFilters[type] = value;
+        phase3PickerVisibleCount = PHASE3_PICKER_PAGE_SIZE;
+        renderTraining();
+      }
+      return;
+    }
+
+    if (button.dataset.phase3LoadMoreExercises !== undefined) {
+      phase3PickerVisibleCount += PHASE3_PICKER_PAGE_SIZE;
+      phase3RefreshPickerResults();
+      return;
+    }
+
+    if (button.dataset.phase3SelectExercise) {
+      await phase3SelectExercise(button.dataset.phase3SelectExercise);
+      renderTraining();
       return;
     }
 
@@ -1994,6 +2769,14 @@
 
     if (button.dataset.phase3ArchivePlan) {
       const result = await phase3ArchivePlan(button.dataset.phase3ArchivePlan);
+      if (!result.ok) setSaveFeedback("phase3-plan", phase3Format("saveFailed", { message: result.error.message }), true);
+      renderTraining();
+      return;
+    }
+
+    if (button.dataset.phase3ArchiveExercise) {
+      const [planId, dayId, exerciseId] = button.dataset.phase3ArchiveExercise.split(":");
+      const result = await phase3ArchivePlanExercise(planId, dayId, exerciseId);
       if (!result.ok) setSaveFeedback("phase3-plan", phase3Format("saveFailed", { message: result.error.message }), true);
       renderTraining();
     }
