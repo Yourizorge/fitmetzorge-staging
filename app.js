@@ -52,7 +52,7 @@
   }
   const phase2PatchSource = await phase2PatchResponse.text();
 
-  const phase3PatchUrl = new URL("assets/phase3-training-engine.js?v=20260817-phase3-compact-entry1", document.baseURI);
+  const phase3PatchUrl = new URL("assets/phase3-training-engine.js?v=20260817-phase3-instruction-disclosure1", document.baseURI);
   const phase3PatchResponse = await fetch(phase3PatchUrl, { cache: "no-cache" });
   if (!phase3PatchResponse.ok) {
     throw new Error(`Phase 3 Training Engine laden mislukt: ${phase3PatchResponse.status}`);

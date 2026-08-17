@@ -2,7 +2,7 @@
   if (window.FMZ_PHASE3_TRAINING_ENGINE_LOADED) return;
   window.FMZ_PHASE3_TRAINING_ENGINE_LOADED = true;
 
-  const PHASE3_VERSION = "20260817-phase3-compact-entry1";
+  const PHASE3_VERSION = "20260817-phase3-instruction-disclosure1";
   const PHASE3_LANGUAGES = ["nl", "en", "de"];
   const PHASE3_FREE_ACTIVE_DAY_LIMIT = 4;
   const PHASE3_REAL_CATALOG_EXPECTED_COUNT = 898;
@@ -46,6 +46,8 @@
       muscle: "Spiergroep",
       equipment: "Materiaal",
       instructions: "Instructies",
+      showInstructions: "Uitleg bekijken",
+      hideInstructions: "Uitleg verbergen",
       sets: "Sets",
       reps: "Reps",
       weight: "Gewicht",
@@ -206,6 +208,8 @@
       muscle: "Muscle group",
       equipment: "Equipment",
       instructions: "Instructions",
+      showInstructions: "View instructions",
+      hideInstructions: "Hide instructions",
       sets: "Sets",
       reps: "Reps",
       weight: "Weight",
@@ -366,6 +370,8 @@
       muscle: "Muskelgruppe",
       equipment: "Geraet",
       instructions: "Anleitung",
+      showInstructions: "Anleitung ansehen",
+      hideInstructions: "Anleitung ausblenden",
       sets: "Saetze",
       reps: "Wdh.",
       weight: "Gewicht",
@@ -1360,7 +1366,9 @@
       pauseStartedAt: "",
       rest: null,
       feedback: "",
-      allExercisesCompleted: false
+      allExercisesCompleted: false,
+      instructionExerciseKey: "",
+      instructionExpanded: false
     };
   }
 
@@ -1374,7 +1382,9 @@
       currentSetIndex: Math.max(1, Number(current.currentSetIndex || 1)),
       skippedExerciseKeys: Array.isArray(current.skippedExerciseKeys) ? current.skippedExerciseKeys.map(String) : [],
       accumulatedPausedMs: Math.max(0, Number(current.accumulatedPausedMs || 0)),
-      rest: current.rest && typeof current.rest === "object" ? { ...current.rest } : null
+      rest: current.rest && typeof current.rest === "object" ? { ...current.rest } : null,
+      instructionExerciseKey: String(current.instructionExerciseKey || ""),
+      instructionExpanded: current.instructionExpanded === true
     };
     return session.focus;
   }
@@ -3094,10 +3104,12 @@
       .phase3-focus-exercise { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(240px, .55fr); gap: 14px; align-items: start; }
       .phase3-focus-main, .phase3-focus-previous { display: grid; gap: 12px; min-width: 0; }
       .phase3-focus-previous { border-left: 1px solid var(--line); padding-left: 14px; }
-      .phase3-instruction { border: 1px solid var(--line); border-radius: 8px; padding: 10px; }
-      .phase3-instruction summary { cursor: pointer; font-weight: 700; }
-      .phase3-instruction p { line-height: 1.5; }
-      .phase3-instruction small { color: var(--muted); }
+      .phase3-instruction { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+      .phase3-instruction-toggle { appearance: none; display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; min-height: 44px; padding: 9px 11px; border: 0; background: transparent; color: inherit; font: inherit; font-weight: 700; text-align: left; cursor: pointer; }
+      .phase3-instruction-toggle:focus-visible { outline: 2px solid #c89312; outline-offset: -2px; }
+      .phase3-instruction-body { padding: 0 11px 10px; }
+      .phase3-instruction-body p { margin: 0 0 6px; line-height: 1.5; }
+      .phase3-instruction-body small { color: var(--muted); }
       .phase3-previous-list { display: grid; gap: 6px; }
       .phase3-previous-list > div { display: flex; justify-content: space-between; gap: 10px; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
       .phase3-focus-set { display: grid; gap: 8px; width: 100%; max-width: 680px; }
@@ -3454,6 +3466,13 @@
     const instructions = meta?.instructions || exercise?.instructions || "";
     const instructionLocale = meta?.instructionLocale || phase3Exercise(exercise?.slug)?.instructionLocales?.[phase3Language()] || "";
     const totalSets = Math.max(1, Number(exercise?.targetSets || 1));
+    const instructionExerciseKey = exercise ? phase3ExerciseKey(exercise) : "";
+    if (focus.instructionExerciseKey !== instructionExerciseKey) {
+      focus.instructionExerciseKey = instructionExerciseKey;
+      focus.instructionExpanded = false;
+    }
+    const instructionExpanded = focus.instructionExpanded === true;
+    const instructionPanelId = `phase3-instruction-${focus.currentExerciseIndex}`;
     return `
       <div class="phase3-focus-backdrop">
         <section class="phase3-focus-sheet" role="dialog" aria-modal="true" aria-labelledby="phase3-focus-title">
@@ -3491,7 +3510,18 @@
                   <p class="muted">${escapeHTML(exercise.primaryMuscle || meta.primary)} · ${escapeHTML(exercise.equipment || meta.equipment)}</p>
                 </div>
                 ${phase3RenderExerciseMedia(exercise, "large")}
-                ${instructions ? `<details class="phase3-instruction" open><summary>${escapeHTML(phase3Text("instructions"))}</summary><p>${escapeHTML(instructions)}</p>${phase3Language() === "nl" && instructionLocale === "en" ? `<small>${escapeHTML(phase3Text("englishInstructionFallback"))}</small>` : ""}</details>` : ""}
+                ${instructions ? `
+                  <div class="phase3-instruction">
+                    <button class="phase3-instruction-toggle" data-phase3-toggle-instructions="${escapeHTML(instructionExerciseKey)}" type="button" aria-expanded="${instructionExpanded}" aria-controls="${escapeHTML(instructionPanelId)}" aria-label="${escapeHTML(phase3Text(instructionExpanded ? "hideInstructions" : "showInstructions"))}">
+                      <span>${escapeHTML(phase3Text(instructionExpanded ? "hideInstructions" : "showInstructions"))}</span>
+                      <span aria-hidden="true">${instructionExpanded ? "&#9652;" : "&#9662;"}</span>
+                    </button>
+                    <div class="phase3-instruction-body" id="${escapeHTML(instructionPanelId)}" ${instructionExpanded ? "" : "hidden"}>
+                      <p>${escapeHTML(instructions)}</p>
+                      ${phase3Language() === "nl" && instructionLocale === "en" ? `<small>${escapeHTML(phase3Text("englishInstructionFallback"))}</small>` : ""}
+                    </div>
+                  </div>
+                ` : ""}
               </div>
               <aside class="phase3-focus-previous">
                 <h3>${escapeHTML(phase3Text("previousTime"))}</h3>
@@ -3945,6 +3975,24 @@
     if (button.dataset.phase3CloseFocus !== undefined) {
       phase3CloseFocus();
       renderTraining();
+      return;
+    }
+
+    if (button.dataset.phase3ToggleInstructions !== undefined) {
+      const session = phase3State.activeSession;
+      const focus = phase3EnsureSessionFocus(session);
+      const exercise = session ? phase3CurrentFocusExercise(session) : null;
+      const exerciseKey = phase3ExerciseKey(exercise);
+      if (!exercise || button.dataset.phase3ToggleInstructions !== exerciseKey) return;
+      if (focus.instructionExerciseKey !== exerciseKey) {
+        focus.instructionExerciseKey = exerciseKey;
+        focus.instructionExpanded = false;
+      } else {
+        focus.instructionExpanded = !focus.instructionExpanded;
+      }
+      phase3SaveLocal();
+      phase3SyncFocusPortal();
+      document.querySelector("[data-phase3-toggle-instructions]")?.focus();
       return;
     }
 
