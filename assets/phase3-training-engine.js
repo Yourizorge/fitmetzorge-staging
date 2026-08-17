@@ -10,6 +10,8 @@
   const PHASE3_CATALOG_CACHE_KEY = "fmz-phase3-exercise-catalog:kinetic-8652d873";
   const PHASE3_CATALOG_DETAILS_CACHE_KEY = "fmz-phase3-exercise-details:kinetic-8652d873";
   const PHASE3_PICKER_PORTAL_ID = "phase3-exercise-picker-portal";
+  const PHASE3_FOCUS_PORTAL_ID = "phase3-workout-focus-portal";
+  const PHASE3_HISTORY_PORTAL_ID = "phase3-workout-history-portal";
   const PHASE3_CATALOG_QUERY_PAGE_SIZE = 500;
   const PHASE3_PICKER_PAGE_SIZE = 36;
   const PHASE3_UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -52,6 +54,7 @@
       closePicker: "Sluiten",
       clearFilters: "Filters wissen",
       catalogLoading: "Oefencatalogus laden...",
+      catalogProgress: "{loaded} van {total} oefeningen geladen",
       catalogLoadError: "De oefencatalogus kon niet worden geladen. Probeer opnieuw of sluit de kiezer.",
       retryCatalog: "Opnieuw proberen",
       pickerResults: "Resultaten",
@@ -77,7 +80,6 @@
       allCategories: "Alle spiergroepen",
       allEquipment: "Alle materialen",
       noLibraryResults: "Geen oefeningen gevonden.",
-      libraryCount: "{count} oefeningen",
       partialSave: "Workout deels opgeslagen. De opgeslagen oefeningen blijven bewaard; probeer de resterende oefeningen opnieuw te syncen.",
       retryPartialSave: "Resterende oefeningen opnieuw syncen",
       partialRetrying: "Opnieuw syncen...",
@@ -89,6 +91,8 @@
       legacyBridge: "Legacy training blijft zichtbaar en wordt niet aangepast door Phase 3.",
       startWorkout: "Workout starten",
       continueWorkout: "Workout hervatten",
+      openFocus: "Open workout",
+      closeFocus: "Workout verkleinen",
       pause: "Pauzeren",
       resume: "Hervatten",
       completeWorkout: "Workout afronden",
@@ -98,18 +102,42 @@
       completed: "Voltooid",
       completeSet: "Set opslaan",
       setDone: "Set opgeslagen",
+      currentSet: "Huidige set",
+      exerciseProgress: "Oefening {current} van {total}",
+      setProgress: "Set {current} van {total}",
+      workoutDuration: "Workoutduur",
+      trainingPaused: "Training gepauzeerd",
+      skipExercise: "Oefening overslaan",
+      exerciseCompleted: "Oefening voltooid",
+      allExercisesCompleted: "Alle oefeningen zijn doorlopen. Rond de training af wanneer je klaar bent.",
+      next: "Volgende",
       timer: "Rusttimer",
       timerDone: "Rust voorbij",
+      restTitle: "Rust",
+      skipRest: "Rust overslaan",
+      addFifteen: "+15 sec",
+      restartRest: "Herstart",
+      vibrationSetting: "Trillen bij einde rusttimer",
+      setValidationFailed: "Vul minimaal 1 geldige herhaling in. Gewicht mag leeg zijn; RIR moet 0-10 en RPE 1-10 zijn.",
+      setSaveFailed: "Set kon niet veilig worden opgeslagen. Controleer je verbinding en probeer opnieuw.",
       previousPerformance: "Vorige prestatie",
+      previousTime: "Vorige keer",
       noPrevious: "Nog geen vorige prestatie",
+      noPerformedSets: "Geen uitgevoerde sets opgeslagen.",
       prTitle: "PR foundation",
+      maxWeight: "Max gewicht",
+      maxReps: "Max reps",
+      estimatedOneRm: "Geschatte 1RM",
       historyTitle: "Workout history",
       noHistory: "Nog geen afgeronde workouts.",
+      openHistory: "Workout bekijken",
+      historyDetail: "Workoutdetails",
+      durationUnavailable: "Duur niet beschikbaar",
+      englishInstructionFallback: "Engelse instructie; Nederlandse vertaling volgt na inhoudsreview.",
       overloadTitle: "Progressive overload",
       overloadNeutral: "Log eerst prestaties; daarna verschijnt een veilige trendstatus.",
       overloadRepeat: "Vorige prestatie beschikbaar. Herhaal eerst stabiel voordat je verhoogt.",
       overloadPotential: "Alle sets gehaald met ruimte over. Kleine verhoging kan later overwogen worden.",
-      exerciseLibrary: "Oefenbibliotheek",
       archivePlan: "Workout archiveren",
       saveFailed: "Opslaan mislukt: {message}",
       saved: "Opgeslagen",
@@ -164,6 +192,7 @@
       closePicker: "Close",
       clearFilters: "Clear filters",
       catalogLoading: "Loading exercise catalog...",
+      catalogProgress: "{loaded} of {total} exercises loaded",
       catalogLoadError: "The exercise catalog could not be loaded. Retry or close the picker.",
       retryCatalog: "Retry",
       pickerResults: "Results",
@@ -189,7 +218,6 @@
       allCategories: "All muscle groups",
       allEquipment: "All equipment",
       noLibraryResults: "No exercises found.",
-      libraryCount: "{count} exercises",
       partialSave: "Workout partly saved. The saved exercises remain available; retry syncing the remaining exercises.",
       retryPartialSave: "Retry remaining exercises",
       partialRetrying: "Retrying sync...",
@@ -201,6 +229,8 @@
       legacyBridge: "Legacy training stays visible and is not modified by Phase 3.",
       startWorkout: "Start workout",
       continueWorkout: "Continue workout",
+      openFocus: "Open workout",
+      closeFocus: "Minimize workout",
       pause: "Pause",
       resume: "Resume",
       completeWorkout: "Complete workout",
@@ -210,18 +240,42 @@
       completed: "Completed",
       completeSet: "Save set",
       setDone: "Set saved",
+      currentSet: "Current set",
+      exerciseProgress: "Exercise {current} of {total}",
+      setProgress: "Set {current} of {total}",
+      workoutDuration: "Workout duration",
+      trainingPaused: "Training paused",
+      skipExercise: "Skip exercise",
+      exerciseCompleted: "Exercise completed",
+      allExercisesCompleted: "All exercises have been covered. Complete the workout when you are ready.",
+      next: "Next",
       timer: "Rest timer",
       timerDone: "Rest done",
+      restTitle: "Rest",
+      skipRest: "Skip rest",
+      addFifteen: "+15 sec",
+      restartRest: "Restart",
+      vibrationSetting: "Vibrate at the end of the rest timer",
+      setValidationFailed: "Enter at least 1 valid repetition. Weight may be empty; RIR must be 0-10 and RPE 1-10.",
+      setSaveFailed: "The set could not be saved safely. Check your connection and retry.",
       previousPerformance: "Previous performance",
+      previousTime: "Last time",
       noPrevious: "No previous performance yet",
+      noPerformedSets: "No performed sets were saved.",
       prTitle: "PR foundation",
+      maxWeight: "Max weight",
+      maxReps: "Max reps",
+      estimatedOneRm: "Estimated 1RM",
       historyTitle: "Workout history",
       noHistory: "No completed workouts yet.",
+      openHistory: "View workout",
+      historyDetail: "Workout details",
+      durationUnavailable: "Duration unavailable",
+      englishInstructionFallback: "English instruction fallback.",
       overloadTitle: "Progressive overload",
       overloadNeutral: "Log performances first; then a safe trend status appears.",
       overloadRepeat: "Previous performance available. Repeat it steadily before increasing.",
       overloadPotential: "All sets completed with room left. A small increase can later be considered.",
-      exerciseLibrary: "Exercise library",
       archivePlan: "Archive workout",
       saveFailed: "Save failed: {message}",
       saved: "Saved",
@@ -276,6 +330,7 @@
       closePicker: "Schliessen",
       clearFilters: "Filter loeschen",
       catalogLoading: "Uebungskatalog wird geladen...",
+      catalogProgress: "{loaded} von {total} Uebungen geladen",
       catalogLoadError: "Der Uebungskatalog konnte nicht geladen werden. Erneut versuchen oder die Auswahl schliessen.",
       retryCatalog: "Erneut versuchen",
       pickerResults: "Ergebnisse",
@@ -301,7 +356,6 @@
       allCategories: "Alle Muskelgruppen",
       allEquipment: "Alle Geraete",
       noLibraryResults: "Keine Uebungen gefunden.",
-      libraryCount: "{count} Uebungen",
       partialSave: "Workout teilweise gespeichert. Gespeicherte Uebungen bleiben erhalten; synchronisiere die restlichen Uebungen erneut.",
       retryPartialSave: "Restliche Uebungen erneut syncen",
       partialRetrying: "Sync wird wiederholt...",
@@ -313,6 +367,8 @@
       legacyBridge: "Legacy-Training bleibt sichtbar und wird durch Phase 3 nicht angepasst.",
       startWorkout: "Workout starten",
       continueWorkout: "Workout fortsetzen",
+      openFocus: "Workout oeffnen",
+      closeFocus: "Workout verkleinern",
       pause: "Pausieren",
       resume: "Fortsetzen",
       completeWorkout: "Workout abschliessen",
@@ -322,18 +378,42 @@
       completed: "Abgeschlossen",
       completeSet: "Satz speichern",
       setDone: "Satz gespeichert",
+      currentSet: "Aktueller Satz",
+      exerciseProgress: "Uebung {current} von {total}",
+      setProgress: "Satz {current} von {total}",
+      workoutDuration: "Workoutdauer",
+      trainingPaused: "Training pausiert",
+      skipExercise: "Uebung ueberspringen",
+      exerciseCompleted: "Uebung abgeschlossen",
+      allExercisesCompleted: "Alle Uebungen wurden durchlaufen. Schliesse das Workout ab, wenn du fertig bist.",
+      next: "Als Naechstes",
       timer: "Pausentimer",
       timerDone: "Pause vorbei",
+      restTitle: "Pause",
+      skipRest: "Pause ueberspringen",
+      addFifteen: "+15 Sek.",
+      restartRest: "Neu starten",
+      vibrationSetting: "Am Ende des Pausentimers vibrieren",
+      setValidationFailed: "Trage mindestens 1 gueltige Wiederholung ein. Gewicht darf leer bleiben; RIR muss 0-10 und RPE 1-10 sein.",
+      setSaveFailed: "Der Satz konnte nicht sicher gespeichert werden. Verbindung pruefen und erneut versuchen.",
       previousPerformance: "Fruehere Leistung",
+      previousTime: "Letztes Mal",
       noPrevious: "Noch keine fruehere Leistung",
+      noPerformedSets: "Keine ausgefuehrten Saetze gespeichert.",
       prTitle: "PR Foundation",
+      maxWeight: "Max Gewicht",
+      maxReps: "Max Wdh.",
+      estimatedOneRm: "Geschaetztes 1RM",
       historyTitle: "Workout History",
       noHistory: "Noch keine abgeschlossenen Workouts.",
+      openHistory: "Workout ansehen",
+      historyDetail: "Workoutdetails",
+      durationUnavailable: "Dauer nicht verfuegbar",
+      englishInstructionFallback: "Englische Anleitung als Fallback.",
       overloadTitle: "Progressive Overload",
       overloadNeutral: "Logge zuerst Leistungen; danach erscheint ein sicherer Trendstatus.",
       overloadRepeat: "Fruehere Leistung verfuegbar. Wiederhole sie stabil, bevor du steigerst.",
       overloadPotential: "Alle Saetze mit Reserve geschafft. Eine kleine Steigerung kann spaeter erwogen werden.",
-      exerciseLibrary: "Uebungsbibliothek",
       archivePlan: "Workout archivieren",
       saveFailed: "Speichern fehlgeschlagen: {message}",
       saved: "Gespeichert",
@@ -611,7 +691,7 @@
 
   window.FMZ_PHASE3_TRAINING_ENGINE = {
     version: PHASE3_VERSION,
-    surfaces: ["client_training", "active_workout", "training_history", "exercise_library"],
+    surfaces: ["client_training", "active_workout_focus", "training_history", "exercise_picker"],
     tables: [
       "training_plans",
       "training_plan_days",
@@ -622,7 +702,7 @@
     freeActiveDayLimit: PHASE3_FREE_ACTIVE_DAY_LIMIT,
     exerciseLibrarySize: PHASE3_EXERCISES.length,
     realCatalogExpectedCount: PHASE3_REAL_CATALOG_EXPECTED_COUNT,
-    catalogSource: "public.exercises with curated 72-exercise offline fallback",
+    catalogSource: "public.exercises; curated core is internal legacy/offline compatibility only",
     syntheticProductionEntries: 0,
     noAiCalls: PHASE3_NO_AI_CALLS,
     noMutationObserver: PHASE3_NO_MUTATION_OBSERVER,
@@ -640,6 +720,8 @@
   let phase3Hydrating = false;
   let phase3TimerId = null;
   let phase3TimerEndsAt = 0;
+  let phase3LastVibrationSecond = null;
+  let phase3RestVibrationEnabled = true;
   let phase3TrainingInitialHtml = "";
   let phase3BuilderExercises = [];
   let phase3BuilderEditIndex = null;
@@ -651,7 +733,10 @@
   let phase3PickerError = "";
   let phase3CatalogHydrated = false;
   let phase3CatalogLoading = null;
+  let phase3CatalogLoadState = { loaded: 0, total: PHASE3_REAL_CATALOG_EXPECTED_COUNT, error: "" };
   let phase3CatalogDetailsCacheRead = false;
+  let phase3FocusOpen = false;
+  let phase3HistoryDetailId = "";
   const phase3CatalogDetails = new Map();
 
   function phase3EmptyBuilderDraft() {
@@ -749,6 +834,11 @@
         en: row.instructions_en || "",
         de: row.instructions_de || row.instructions_en || ""
       },
+      instructionLocales: {
+        nl: row.instructions_nl ? "nl" : row.instructions_en ? "en" : "",
+        en: row.instructions_en ? "en" : "",
+        de: row.instructions_de ? "de" : row.instructions_en ? "en" : ""
+      },
       detailsHydrated: Boolean(row.instructions_en),
       bodyRegion: row.body_region || "general",
       equipmentGroup: row.equipment_group || "other",
@@ -788,10 +878,18 @@
       const cached = window.sessionStorage?.getItem(PHASE3_CATALOG_CACHE_KEY);
       if (!cached) return false;
       const rows = JSON.parse(cached);
-      if (!Array.isArray(rows) || rows.length !== PHASE3_REAL_CATALOG_EXPECTED_COUNT) return false;
+      if (!Array.isArray(rows) || rows.length !== PHASE3_REAL_CATALOG_EXPECTED_COUNT) {
+        window.sessionStorage?.removeItem(PHASE3_CATALOG_CACHE_KEY);
+        return false;
+      }
       phase3ApplyCatalogRows(rows);
       return phase3CatalogHydrated;
     } catch {
+      try {
+        window.sessionStorage?.removeItem(PHASE3_CATALOG_CACHE_KEY);
+      } catch {
+        // A blocked session storage implementation must not block live hydration.
+      }
       return false;
     }
   }
@@ -820,6 +918,11 @@
         nl: details.instructions_nl || details.instructions_en,
         en: details.instructions_en,
         de: details.instructions_de || details.instructions_en
+      };
+      exercise.instructionLocales = {
+        nl: details.instructions_nl ? "nl" : details.instructions_en ? "en" : "",
+        en: details.instructions_en ? "en" : "",
+        de: details.instructions_de ? "de" : details.instructions_en ? "en" : ""
       };
       exercise.detailsHydrated = true;
       exercise.searchIndex = phase3ExerciseSearchText(exercise);
@@ -868,12 +971,18 @@
 
   async function phase3LoadCanonicalCatalog() {
     if (phase3CatalogHydrated || phase3ReadCatalogCache()) return true;
-    if (!phase3UsesSupabase()) return false;
+    if (!isLoggedIn() || !isOnlineMode() || !supabaseClient) return false;
     if (phase3CatalogLoading) return phase3CatalogLoading;
     phase3CatalogLoading = (async () => {
       try {
-        const rows = [];
-        for (let from = 0; ; from += PHASE3_CATALOG_QUERY_PAGE_SIZE) {
+        phase3CatalogLoadState = { loaded: 0, total: PHASE3_REAL_CATALOG_EXPECTED_COUNT, error: "" };
+        if (supabaseClient.auth?.getSession) {
+          const { data: authData, error: authError } = await supabaseClient.auth.getSession();
+          if (authError || !authData?.session) throw authError || new Error("Authenticated catalog session is not ready");
+        }
+        const pageCount = Math.ceil(PHASE3_REAL_CATALOG_EXPECTED_COUNT / PHASE3_CATALOG_QUERY_PAGE_SIZE);
+        const pageRequests = Array.from({ length: pageCount }, async (_, pageIndex) => {
+          const from = pageIndex * PHASE3_CATALOG_QUERY_PAGE_SIZE;
           const { data, error } = await supabaseClient
             .from("exercises")
             .select("id,canonical_slug,name_en,name_de,primary_muscle,secondary_muscles,body_region,equipment,equipment_group,movement_pattern,animation_url,legacy_animation_url,animation_source,animation_status,source_reference,is_active")
@@ -881,17 +990,24 @@
             .order("canonical_slug", { ascending: true })
             .range(from, from + PHASE3_CATALOG_QUERY_PAGE_SIZE - 1);
           if (error) throw error;
-          rows.push(...(data || []));
-          if (!data || data.length < PHASE3_CATALOG_QUERY_PAGE_SIZE) break;
-        }
+          phase3CatalogLoadState.loaded += (data || []).length;
+          if (phase3PickerOpen) phase3SyncPickerPortal();
+          return data || [];
+        });
+        const rows = (await Promise.all(pageRequests)).flat();
         if (rows.length !== PHASE3_REAL_CATALOG_EXPECTED_COUNT) {
           throw new Error(`Expected ${PHASE3_REAL_CATALOG_EXPECTED_COUNT} canonical exercises, received ${rows.length}`);
+        }
+        if (new Set(rows.map((row) => row.id)).size !== PHASE3_REAL_CATALOG_EXPECTED_COUNT
+          || new Set(rows.map((row) => row.canonical_slug)).size !== PHASE3_REAL_CATALOG_EXPECTED_COUNT) {
+          throw new Error("Canonical exercise catalog contains duplicate identities");
         }
         phase3ApplyCatalogRows(rows);
         if (!phase3CatalogHydrated) throw new Error("Canonical exercise catalog identity validation failed");
         phase3WriteCatalogCache(rows);
         return true;
       } catch (error) {
+        phase3CatalogLoadState.error = String(error?.message || "catalog_load_failed");
         if (!phase3MigrationMissing(error)) console.warn("Phase 3 exercise catalog hydrate skipped", error);
         return false;
       } finally {
@@ -925,6 +1041,38 @@
     return new Date().toISOString();
   }
 
+  function phase3TimestampMs(value) {
+    const parsed = Date.parse(String(value || ""));
+    return Number.isFinite(parsed) ? parsed : 0;
+  }
+
+  function phase3CompletedDurationSeconds(startedAt, completedAt, focus = {}) {
+    const start = phase3TimestampMs(startedAt);
+    const end = phase3TimestampMs(completedAt);
+    if (!start || !end || end < start || !focus || !Number.isFinite(Number(focus.accumulatedPausedMs))) return null;
+    const pausedMs = Math.max(0, Number(focus?.accumulatedPausedMs || 0));
+    return Math.max(0, Math.floor((end - start - pausedMs) / 1000));
+  }
+
+  function phase3WorkoutElapsedSeconds(session) {
+    if (!session) return 0;
+    const start = phase3TimestampMs(session.startedAt);
+    if (!start) return 0;
+    const focus = phase3EnsureSessionFocus(session);
+    const end = phase3TimestampMs(session.completedAt) || Date.now();
+    const openPauseMs = focus.pauseStartedAt ? Math.max(0, end - phase3TimestampMs(focus.pauseStartedAt)) : 0;
+    return Math.max(0, Math.floor((end - start - focus.accumulatedPausedMs - openPauseMs) / 1000));
+  }
+
+  function phase3FormatDuration(totalSeconds) {
+    if (totalSeconds === null || totalSeconds === undefined || !Number.isFinite(Number(totalSeconds))) return phase3Text("durationUnavailable");
+    const safe = Math.max(0, Math.floor(Number(totalSeconds)));
+    const hours = String(Math.floor(safe / 3600)).padStart(2, "0");
+    const minutes = String(Math.floor((safe % 3600) / 60)).padStart(2, "0");
+    const seconds = String(safe % 60).padStart(2, "0");
+    return `${hours}:${minutes}:${seconds}`;
+  }
+
   function phase3Number(value, fallback = null) {
     if (value === "" || value === null || value === undefined) return fallback;
     const parsed = Number(value);
@@ -951,8 +1099,10 @@
   }
 
   function phase3ExerciseRecordName(record) {
-    const item = phase3ExerciseById(record?.exercise_id) || phase3Exercise(record?.exercise_slug);
-    if (!item) return String(record?.exercise_slug || phase3Text("exercise"));
+    const exerciseId = record?.exerciseId || record?.exercise_id || "";
+    const exerciseSlug = record?.exerciseSlug || record?.exercise_slug || "";
+    const item = phase3ExerciseById(exerciseId) || phase3Exercise(exerciseSlug);
+    if (!item) return String(record?.exerciseName || record?.exercise_name_snapshot || exerciseSlug || phase3Text("exercise"));
     return item.names[phase3Language()] || item.names.en || item.names.nl;
   }
 
@@ -976,6 +1126,7 @@
         animationUrl: "",
         legacyAnimationUrl: "",
         instructions: "",
+        instructionLocale: "",
         sourceReference: "legacy_snapshot"
       };
     }
@@ -995,6 +1146,7 @@
       animationUrl: item.animationUrl || "",
       legacyAnimationUrl: item.legacyAnimationUrl || "",
       instructions: item.instructions[language] || item.instructions.nl || "",
+      instructionLocale: item.instructionLocales?.[language] || (item.catalogBacked ? "" : language),
       sourceReference: item.sourceReference || ""
     };
   }
@@ -1078,6 +1230,59 @@
     return `fmz-phase3-training:${phase3CurrentUserKey()}`;
   }
 
+  function phase3VibrationStorageKey() {
+    return `fmz-phase3-rest-vibration:${phase3CurrentUserKey()}`;
+  }
+
+  function phase3DefaultRestVibration() {
+    return !window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+  }
+
+  function phase3LoadRestVibrationPreference() {
+    try {
+      const stored = localStorage.getItem(phase3VibrationStorageKey());
+      phase3RestVibrationEnabled = stored === null ? phase3DefaultRestVibration() : stored === "true";
+    } catch {
+      phase3RestVibrationEnabled = phase3DefaultRestVibration();
+    }
+  }
+
+  function phase3SaveRestVibrationPreference() {
+    try {
+      localStorage.setItem(phase3VibrationStorageKey(), String(phase3RestVibrationEnabled));
+    } catch {
+      // The preference remains active in memory when local storage is unavailable.
+    }
+  }
+
+  function phase3DefaultFocusState() {
+    return {
+      currentExerciseIndex: 0,
+      currentSetIndex: 1,
+      skippedExerciseKeys: [],
+      accumulatedPausedMs: 0,
+      pauseStartedAt: "",
+      rest: null,
+      feedback: "",
+      allExercisesCompleted: false
+    };
+  }
+
+  function phase3EnsureSessionFocus(session) {
+    if (!session) return phase3DefaultFocusState();
+    const current = session.focus && typeof session.focus === "object" ? session.focus : {};
+    session.focus = {
+      ...phase3DefaultFocusState(),
+      ...current,
+      currentExerciseIndex: Math.max(0, Number(current.currentExerciseIndex || 0)),
+      currentSetIndex: Math.max(1, Number(current.currentSetIndex || 1)),
+      skippedExerciseKeys: Array.isArray(current.skippedExerciseKeys) ? current.skippedExerciseKeys.map(String) : [],
+      accumulatedPausedMs: Math.max(0, Number(current.accumulatedPausedMs || 0)),
+      rest: current.rest && typeof current.rest === "object" ? { ...current.rest } : null
+    };
+    return session.focus;
+  }
+
   function phase3LoadLocal() {
     try {
       const raw = localStorage.getItem(phase3StorageKey());
@@ -1117,7 +1322,12 @@
     phase3BuilderEditIndex = null;
     phase3BuilderDraft = phase3EmptyBuilderDraft();
     phase3LibraryFilters = { search: "", category: "", equipment: "" };
+    phase3FocusOpen = false;
+    phase3HistoryDetailId = "";
     phase3CloseExercisePicker();
+    phase3RemoveFocusPortal();
+    phase3RemoveHistoryPortal();
+    phase3LoadRestVibrationPreference();
     phase3LoadLocal();
   }
 
@@ -1252,8 +1462,11 @@
           id: session.id,
           title: session.title_snapshot,
           dayLabel: session.day_label || "",
+          startedAt: session.started_at,
           completedAt: session.completed_at,
           source: session.source,
+          metadata: session.metadata || {},
+          durationSeconds: phase3CompletedDurationSeconds(session.started_at, session.completed_at, session.metadata?.focus),
           sets: setsBySession[session.id] || []
         }));
       phase3State.plans = [
@@ -1267,8 +1480,10 @@
       const active = (sessions || []).find((session) => session.status === "active" || session.status === "paused");
       if (active && !localActive) {
         phase3State.activeSession = phase3SessionFromDb(active, setsBySession[active.id] || []);
+        phase3FocusOpen = true;
       } else if (localActive) {
         phase3State.activeSession = localActive;
+        phase3EnsureSessionFocus(localActive);
         phase3SyncActiveSession();
       }
       phase3State.hydrated = true;
@@ -1320,9 +1535,15 @@
       source: session.source,
       startedAt: session.started_at,
       pausedAt: session.paused_at || "",
+      resumedAt: session.resumed_at || "",
       completedAt: session.completed_at || "",
       plannedExercises: Array.isArray(session.metadata?.plannedExercises) ? session.metadata.plannedExercises : [],
-      setLogs: setMap
+      setLogs: setMap,
+      focus: {
+        ...phase3DefaultFocusState(),
+        ...(session.metadata?.focus || {}),
+        accumulatedPausedMs: Math.max(0, Number(session.metadata?.focus?.accumulatedPausedMs || 0))
+      }
     };
   }
 
@@ -1758,9 +1979,11 @@
       source: plan.source === "legacy_bridge" ? "legacy_bridge" : "phase3_client",
       startedAt,
       pausedAt: "",
+      resumedAt: "",
       completedAt: "",
       plannedExercises,
-      setLogs: {}
+      setLogs: {},
+      focus: phase3DefaultFocusState()
     };
   }
 
@@ -1777,6 +2000,7 @@
     }
     await phase3LoadExerciseDetails(activeExercises.map((exercise) => phase3ExerciseById(exercise.exerciseId) || phase3Exercise(exercise.slug)).filter(Boolean));
     phase3State.activeSession = phase3CreateSession(plan, { ...day, exercises: activeExercises });
+    phase3FocusOpen = true;
     phase3SaveLocal();
     await phase3SyncActiveSession();
     renderTraining();
@@ -1800,18 +2024,21 @@
           day_label: session.dayLabel || null,
           started_at: session.startedAt,
           paused_at: session.pausedAt || null,
+          resumed_at: session.resumedAt || null,
           completed_at: session.completedAt || null,
           source: session.source,
           metadata: {
             phase: 3,
             version: PHASE3_VERSION,
-            plannedExercises: session.plannedExercises
+            plannedExercises: session.plannedExercises,
+            focus: phase3EnsureSessionFocus(session)
           }
         }, { onConflict: "id" });
       if (error) throw error;
       const unsynced = Object.values(session.setLogs || {}).filter((setLog) => !setLog.syncedAt);
       for (const setLog of unsynced) {
-        await phase3PersistSetLog(setLog);
+        const setResult = await phase3PersistSetLog(setLog);
+        if (!setResult.ok) throw setResult.error || new Error("Phase 3 set sync failed");
       }
       phase3State.migrationReady = true;
       phase3State.syncMessage = phase3Text("synced");
@@ -1882,6 +2109,52 @@
     };
   }
 
+  function phase3ValidateSetInputs(inputs) {
+    const repsValid = Number.isInteger(inputs.actualReps) && inputs.actualReps >= 1;
+    const weightValid = inputs.actualWeight === "" || (Number.isFinite(inputs.actualWeight) && inputs.actualWeight >= 0);
+    const rirValid = inputs.rir === "" || (Number.isFinite(inputs.rir) && inputs.rir >= 0 && inputs.rir <= 10);
+    const rpeValid = inputs.rpe === "" || (Number.isFinite(inputs.rpe) && inputs.rpe >= 1 && inputs.rpe <= 10);
+    return repsValid && weightValid && rirValid && rpeValid;
+  }
+
+  function phase3ExerciseKey(exercise) {
+    return String(exercise?.key || exercise?.id || exercise?.slug || "");
+  }
+
+  function phase3NextExerciseIndex(session, startIndex) {
+    const focus = phase3EnsureSessionFocus(session);
+    for (let index = Math.max(0, startIndex); index < session.plannedExercises.length; index += 1) {
+      if (!focus.skippedExerciseKeys.includes(phase3ExerciseKey(session.plannedExercises[index]))) return index;
+    }
+    return -1;
+  }
+
+  function phase3ApplyFocusStep(session, step, completedExercise = false) {
+    const focus = phase3EnsureSessionFocus(session);
+    focus.rest = null;
+    phase3TimerEndsAt = 0;
+    phase3LastVibrationSecond = null;
+    if (!step || step.exerciseIndex < 0) {
+      focus.allExercisesCompleted = true;
+      focus.feedback = phase3Text("allExercisesCompleted");
+      return;
+    }
+    focus.currentExerciseIndex = step.exerciseIndex;
+    focus.currentSetIndex = step.setIndex;
+    focus.allExercisesCompleted = false;
+    focus.feedback = completedExercise ? phase3Text("exerciseCompleted") : "";
+  }
+
+  function phase3NextStepAfterSet(session, exercise, setIndex) {
+    const exerciseIndex = session.plannedExercises.indexOf(exercise);
+    const totalSets = Math.max(1, Number(exercise.targetSets || 1));
+    if (setIndex < totalSets) return { exerciseIndex, setIndex: setIndex + 1, completedExercise: false };
+    const nextExerciseIndex = phase3NextExerciseIndex(session, exerciseIndex + 1);
+    return nextExerciseIndex >= 0
+      ? { exerciseIndex: nextExerciseIndex, setIndex: 1, completedExercise: true }
+      : { exerciseIndex: -1, setIndex: 1, completedExercise: true };
+  }
+
   async function phase3CompleteSet(setKey) {
     const session = phase3State.activeSession;
     if (!session) return;
@@ -1890,6 +2163,18 @@
     if (!exercise) return;
     const setIndex = Number(rawSetIndex);
     const inputs = phase3ReadSetInputs(setKey);
+    const focus = phase3EnsureSessionFocus(session);
+    if (!phase3ValidateSetInputs(inputs)) {
+      focus.feedback = phase3Text("setValidationFailed");
+      phase3SaveLocal();
+      const feedback = document.querySelector("[data-phase3-focus-feedback]");
+      if (feedback) {
+        feedback.hidden = false;
+        feedback.textContent = focus.feedback;
+      }
+      document.querySelector(`[data-phase3-reps="${setKey}"]`)?.reportValidity?.();
+      return;
+    }
     const setLog = {
       id: phase3IsUuid(session.setLogs[setKey]?.id) ? session.setLogs[setKey].id : phase3DbId(),
       plannedExerciseKey: String(exercise.key),
@@ -1911,18 +2196,54 @@
       syncedAt: ""
     };
     session.setLogs[setKey] = setLog;
+    focus.feedback = "";
     phase3SaveLocal();
-    phase3StartTimer(exercise.restSeconds || 90);
+    const persisted = phase3UsesSupabase() ? await phase3PersistSetLog(setLog) : { ok: true, local: true };
+    if (!persisted.ok) {
+      focus.feedback = phase3Text("setSaveFailed");
+      phase3SaveLocal();
+      renderTraining();
+      return;
+    }
+    const nextStep = phase3NextStepAfterSet(session, exercise, setIndex);
+    phase3StartTimer(exercise.restSeconds || 0, nextStep);
     await phase3SyncActiveSession();
+    renderTraining();
+  }
+
+  function phase3SkipCurrentExercise() {
+    const session = phase3State.activeSession;
+    if (!session) return;
+    const focus = phase3EnsureSessionFocus(session);
+    const exercise = session.plannedExercises[focus.currentExerciseIndex];
+    if (!exercise) return;
+    const key = phase3ExerciseKey(exercise);
+    if (!focus.skippedExerciseKeys.includes(key)) focus.skippedExerciseKeys.push(key);
+    const nextExerciseIndex = phase3NextExerciseIndex(session, focus.currentExerciseIndex + 1);
+    phase3StopTimer();
+    phase3ApplyFocusStep(session, nextExerciseIndex >= 0 ? { exerciseIndex: nextExerciseIndex, setIndex: 1 } : null);
+    phase3SaveLocal();
+    phase3SyncActiveSession();
     renderTraining();
   }
 
   async function phase3SetSessionStatus(status) {
     const session = phase3State.activeSession;
     if (!session) return;
+    const focus = phase3EnsureSessionFocus(session);
+    const now = phase3IsoNow();
     session.status = status;
-    if (status === "paused") session.pausedAt = phase3IsoNow();
-    if (status === "active") session.pausedAt = "";
+    if (status === "paused" && !focus.pauseStartedAt) {
+      session.pausedAt = now;
+      focus.pauseStartedAt = now;
+      phase3PauseRestTimer();
+    }
+    if (status === "active" && focus.pauseStartedAt) {
+      focus.accumulatedPausedMs += Math.max(0, Date.now() - phase3TimestampMs(focus.pauseStartedAt));
+      focus.pauseStartedAt = "";
+      session.resumedAt = now;
+      phase3ResumeRestTimer();
+    }
     phase3SaveLocal();
     await phase3SyncActiveSession();
     renderTraining();
@@ -1931,21 +2252,42 @@
   async function phase3CompleteWorkout() {
     const session = phase3State.activeSession;
     if (!session) return;
+    const focus = phase3EnsureSessionFocus(session);
+    const previousStatus = session.status;
+    const previousCompletedAt = session.completedAt;
+    if (focus.pauseStartedAt) {
+      focus.accumulatedPausedMs += Math.max(0, Date.now() - phase3TimestampMs(focus.pauseStartedAt));
+      focus.pauseStartedAt = "";
+    }
     session.status = "completed";
     session.completedAt = phase3IsoNow();
-    await phase3SyncActiveSession();
+    phase3StopTimer();
+    const synced = await phase3SyncActiveSession();
+    if (phase3UsesSupabase() && !synced.ok) {
+      session.status = previousStatus;
+      session.completedAt = previousCompletedAt;
+      focus.feedback = phase3Text("setSaveFailed");
+      phase3SaveLocal();
+      phase3FocusOpen = true;
+      renderTraining();
+      return;
+    }
     const historyEntry = {
       id: session.id,
       title: session.planTitle,
       dayLabel: session.dayLabel,
+      startedAt: session.startedAt,
       completedAt: session.completedAt,
       source: session.source,
       localOnly: true,
+      metadata: { focus },
+      durationSeconds: phase3WorkoutElapsedSeconds(session),
       sets: Object.values(session.setLogs || {})
     };
     phase3State.history.unshift(historyEntry);
     phase3State.activeSession = null;
-    phase3StopTimer();
+    phase3FocusOpen = false;
+    phase3RemoveFocusPortal();
     phase3SaveLocal();
     renderTraining();
   }
@@ -2020,15 +2362,22 @@
   }
 
   function phase3PreviousPerformance(exercise) {
-    const sets = phase3State.history
-      .flatMap((entry) => entry.sets || [])
-      .filter((setLog) => phase3SameExercise(exercise, setLog))
-      .sort((a, b) => String(b.completed_at || b.completedAt || "").localeCompare(String(a.completed_at || a.completedAt || "")));
-    const first = sets[0];
+    const first = phase3PreviousPerformanceSets(exercise)[0];
     if (!first) return "";
     const reps = first.actual_reps ?? first.actualReps ?? "-";
     const weight = first.actual_weight ?? first.actualWeight ?? "-";
     return `${weight} kg x ${reps}`;
+  }
+
+  function phase3PreviousPerformanceSets(exercise) {
+    const latestEntry = phase3State.history
+      .slice()
+      .sort((a, b) => String(b.completedAt || "").localeCompare(String(a.completedAt || "")))
+      .find((entry) => (entry.sets || []).some((setLog) => phase3SameExercise(exercise, setLog)));
+    return (latestEntry?.sets || [])
+      .filter((setLog) => phase3SameExercise(exercise, setLog))
+      .slice()
+      .sort((a, b) => Number(a.set_index ?? a.setIndex ?? 0) - Number(b.set_index ?? b.setIndex ?? 0));
   }
 
   function phase3OverloadSignal(exercise, session) {
@@ -2042,14 +2391,43 @@
     return phase3Text("overloadRepeat");
   }
 
-  function phase3StartTimer(seconds) {
-    phase3StopTimer();
-    phase3TimerEndsAt = Date.now() + Math.max(0, Number(seconds || 0)) * 1000;
+  function phase3CancelVibration() {
+    try {
+      if (typeof navigator.vibrate === "function") navigator.vibrate(0);
+    } catch {
+      // Vibration is optional and must never interrupt workout state.
+    }
+  }
+
+  function phase3StartTimer(seconds, nextStep = null) {
+    const session = phase3State.activeSession;
+    if (!session) return;
+    const focus = phase3EnsureSessionFocus(session);
+    const durationSeconds = Math.max(0, Number(seconds || 0));
+    if (!durationSeconds) {
+      phase3ApplyFocusStep(session, nextStep, Boolean(nextStep?.completedExercise));
+      phase3SaveLocal();
+      return;
+    }
+    phase3TimerEndsAt = Date.now() + durationSeconds * 1000;
+    phase3LastVibrationSecond = null;
+    focus.rest = {
+      durationSeconds,
+      endsAt: phase3TimerEndsAt,
+      remainingMs: durationSeconds * 1000,
+      paused: false,
+      nextExerciseIndex: Number(nextStep?.exerciseIndex ?? -1),
+      nextSetIndex: Number(nextStep?.setIndex || 1),
+      completedExercise: Boolean(nextStep?.completedExercise)
+    };
+    phase3SaveLocal();
+    phase3EnsureTimerRunning();
     phase3UpdateTimerText();
-    phase3TimerId = window.setInterval(() => {
-      phase3UpdateTimerText();
-      if (Date.now() >= phase3TimerEndsAt) phase3StopTimer(true);
-    }, 1000);
+  }
+
+  function phase3EnsureTimerRunning() {
+    if (phase3TimerId || !phase3FocusOpen || !phase3State.activeSession) return;
+    phase3TimerId = window.setInterval(() => phase3UpdateTimerText(), 1000);
   }
 
   function phase3StopTimer(done = false) {
@@ -2057,19 +2435,98 @@
       window.clearInterval(phase3TimerId);
       phase3TimerId = null;
     }
-    if (done) {
-      const target = document.querySelector("[data-phase3-timer]");
-      if (target) target.textContent = phase3Text("timerDone");
-    }
+    phase3LastVibrationSecond = null;
+    phase3CancelVibration();
+    if (done) phase3TimerEndsAt = 0;
+  }
+
+  function phase3PauseRestTimer() {
+    const rest = phase3EnsureSessionFocus(phase3State.activeSession).rest;
+    if (!rest || rest.paused) return;
+    rest.remainingMs = Math.max(0, Number(rest.endsAt || 0) - Date.now());
+    rest.endsAt = 0;
+    rest.paused = true;
+    phase3TimerEndsAt = 0;
+    phase3LastVibrationSecond = null;
+    phase3CancelVibration();
+  }
+
+  function phase3ResumeRestTimer() {
+    const rest = phase3EnsureSessionFocus(phase3State.activeSession).rest;
+    if (!rest || !rest.paused) return;
+    rest.endsAt = Date.now() + Math.max(0, Number(rest.remainingMs || 0));
+    rest.paused = false;
+    phase3TimerEndsAt = rest.endsAt;
+    phase3LastVibrationSecond = null;
+  }
+
+  function phase3FinishRestTimer() {
+    const session = phase3State.activeSession;
+    const rest = phase3EnsureSessionFocus(session).rest;
+    if (!session || !rest) return;
+    phase3ApplyFocusStep(session, {
+      exerciseIndex: Number(rest.nextExerciseIndex),
+      setIndex: Number(rest.nextSetIndex || 1)
+    }, Boolean(rest.completedExercise));
+    phase3SaveLocal();
+  }
+
+  function phase3SkipRestTimer() {
+    phase3FinishRestTimer();
+    renderTraining();
+  }
+
+  function phase3AddRestSeconds(seconds = 15) {
+    const rest = phase3EnsureSessionFocus(phase3State.activeSession).rest;
+    if (!rest) return;
+    if (rest.paused) rest.remainingMs = Math.max(0, Number(rest.remainingMs || 0)) + seconds * 1000;
+    else rest.endsAt = Math.max(Date.now(), Number(rest.endsAt || Date.now())) + seconds * 1000;
+    phase3TimerEndsAt = Number(rest.endsAt || 0);
+    phase3LastVibrationSecond = null;
+    phase3SaveLocal();
+    phase3UpdateTimerText();
+  }
+
+  function phase3RestartRestTimer() {
+    const rest = phase3EnsureSessionFocus(phase3State.activeSession).rest;
+    if (!rest) return;
+    rest.remainingMs = Math.max(0, Number(rest.durationSeconds || 0)) * 1000;
+    rest.endsAt = rest.paused ? 0 : Date.now() + rest.remainingMs;
+    phase3TimerEndsAt = Number(rest.endsAt || 0);
+    phase3LastVibrationSecond = null;
+    phase3SaveLocal();
+    phase3UpdateTimerText();
   }
 
   function phase3UpdateTimerText() {
-    const target = document.querySelector("[data-phase3-timer]");
-    if (!target || !phase3TimerEndsAt) return;
-    const remaining = Math.max(0, Math.ceil((phase3TimerEndsAt - Date.now()) / 1000));
+    const session = phase3State.activeSession;
+    if (!session) return;
+    const durationText = phase3FormatDuration(phase3WorkoutElapsedSeconds(session));
+    document.querySelectorAll("[data-phase3-workout-duration]").forEach((target) => {
+      target.textContent = durationText;
+    });
+    const rest = phase3EnsureSessionFocus(session).rest;
+    if (!rest) return;
+    const remainingMs = rest.paused ? Number(rest.remainingMs || 0) : Math.max(0, Number(rest.endsAt || 0) - Date.now());
+    const remaining = Math.max(0, Math.ceil(remainingMs / 1000));
     const minutes = Math.floor(remaining / 60);
     const seconds = String(remaining % 60).padStart(2, "0");
-    target.textContent = `${phase3Text("timer")}: ${minutes}:${seconds}`;
+    const target = document.querySelector("[data-phase3-rest-countdown]");
+    if (target) target.textContent = `${String(minutes).padStart(2, "0")}:${seconds}`;
+    if (!rest.paused && remaining > 0 && remaining <= 3 && phase3LastVibrationSecond !== remaining) {
+      phase3LastVibrationSecond = remaining;
+      if (phase3RestVibrationEnabled && phase3FocusOpen && session.status === "active" && document.visibilityState === "visible") {
+        try {
+          if (typeof navigator.vibrate === "function") navigator.vibrate(80);
+        } catch {
+          // Unsupported haptics remain a no-op.
+        }
+      }
+    }
+    if (!rest.paused && remaining <= 0) {
+      phase3FinishRestTimer();
+      renderTraining();
+    }
   }
 
   function phase3ExerciseMediaLabel(exercise) {
@@ -2191,6 +2648,80 @@
     phase3RemovePickerPortal();
   }
 
+  function phase3FocusPortal() {
+    let portal = document.getElementById(PHASE3_FOCUS_PORTAL_ID);
+    if (portal) return portal;
+    portal = document.createElement("div");
+    portal.id = PHASE3_FOCUS_PORTAL_ID;
+    portal.className = "phase3-focus-portal";
+    document.body.appendChild(portal);
+    return portal;
+  }
+
+  function phase3RemoveFocusPortal() {
+    document.getElementById(PHASE3_FOCUS_PORTAL_ID)?.remove();
+    document.body.classList.remove("phase3-focus-open");
+  }
+
+  function phase3SyncFocusPortal() {
+    if (!phase3FocusOpen || !phase3State.activeSession) {
+      phase3RemoveFocusPortal();
+      return;
+    }
+    phase3FocusPortal().innerHTML = phase3RenderWorkoutFocus();
+    document.body.classList.add("phase3-focus-open");
+    phase3EnsureTimerRunning();
+    phase3UpdateTimerText();
+  }
+
+  function phase3OpenFocus() {
+    if (!phase3State.activeSession) return;
+    phase3EnsureSessionFocus(phase3State.activeSession);
+    phase3FocusOpen = true;
+    phase3SyncFocusPortal();
+  }
+
+  function phase3CloseFocus() {
+    phase3FocusOpen = false;
+    phase3StopTimer();
+    phase3RemoveFocusPortal();
+  }
+
+  function phase3HistoryPortal() {
+    let portal = document.getElementById(PHASE3_HISTORY_PORTAL_ID);
+    if (portal) return portal;
+    portal = document.createElement("div");
+    portal.id = PHASE3_HISTORY_PORTAL_ID;
+    portal.className = "phase3-history-portal";
+    document.body.appendChild(portal);
+    return portal;
+  }
+
+  function phase3RemoveHistoryPortal() {
+    document.getElementById(PHASE3_HISTORY_PORTAL_ID)?.remove();
+    document.body.classList.remove("phase3-history-open");
+  }
+
+  function phase3SyncHistoryPortal() {
+    if (!phase3HistoryDetailId || !phase3HistoryEntry(phase3HistoryDetailId)) {
+      phase3RemoveHistoryPortal();
+      return;
+    }
+    phase3HistoryPortal().innerHTML = phase3RenderHistoryDetail();
+    document.body.classList.add("phase3-history-open");
+  }
+
+  function phase3OpenHistory(entryId) {
+    if (!phase3HistoryEntry(entryId)) return;
+    phase3HistoryDetailId = String(entryId);
+    phase3SyncHistoryPortal();
+  }
+
+  function phase3CloseHistory() {
+    phase3HistoryDetailId = "";
+    phase3RemoveHistoryPortal();
+  }
+
   async function phase3SelectExercise(slug) {
     const exercise = phase3Exercise(slug);
     if (!exercise) return;
@@ -2204,10 +2735,11 @@
     const categories = phase3LibraryOptions("category");
     const equipment = phase3LibraryOptions("equipment");
     const content = phase3PickerLoading
-      ? `<div class="phase3-picker-state" role="status">${escapeHTML(phase3Text("catalogLoading"))}</div>`
+      ? `<div class="phase3-picker-state" role="status"><strong>${escapeHTML(phase3Text("catalogLoading"))}</strong><span>${escapeHTML(phase3Format("catalogProgress", phase3CatalogLoadState))}</span></div>`
       : phase3PickerError || !phase3CatalogHydrated
         ? `<div class="phase3-picker-state phase3-picker-error" role="alert">
             <p>${escapeHTML(phase3Text("catalogLoadError"))}</p>
+            <small>${escapeHTML(phase3Format("catalogProgress", phase3CatalogLoadState))}</small>
             <button class="primary-btn" data-phase3-retry-catalog type="button">${escapeHTML(phase3Text("retryCatalog"))}</button>
           </div>`
         : `
@@ -2255,21 +2787,20 @@
       .phase3-card { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 14px; box-shadow: var(--shadow); }
       .phase3-form-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
       .phase3-form-grid .wide { grid-column: 1 / -1; }
-      .phase3-plan-list, .phase3-history-list, .phase3-library-list { display: grid; gap: 10px; }
+      .phase3-plan-list, .phase3-history-list { display: grid; gap: 10px; }
       .phase3-plan-card { border: 1px solid var(--line); border-radius: 8px; padding: 12px; display: grid; gap: 10px; }
       .phase3-plan-head, .phase3-day-head, .phase3-set-row, .phase3-history-item { display: flex; justify-content: space-between; gap: 10px; align-items: center; flex-wrap: wrap; }
       .phase3-builder-list { display: grid; gap: 8px; }
       .phase3-builder-item { border: 1px solid var(--line); border-radius: 8px; padding: 10px; display: grid; gap: 8px; }
       .phase3-builder-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-      .phase3-library-filters { display: grid; grid-template-columns: 1.2fr .9fr .9fr; gap: 8px; margin-bottom: 10px; }
       .phase3-exercise-list { display: grid; gap: 8px; }
       .phase3-exercise-line { border-top: 1px solid var(--line); padding-top: 8px; display: grid; gap: 8px; }
-      .phase3-workout-panel { display: grid; gap: 12px; border-color: rgba(200,147,18,.45); }
+      .phase3-active-summary { display: grid; gap: 12px; border-color: rgba(200,147,18,.45); }
       .phase3-media { min-height: 86px; border: 1px dashed var(--line); border-radius: 8px; display: grid; place-items: center; align-content: center; gap: 4px; background: linear-gradient(135deg, rgba(30,90,86,.08), rgba(200,147,18,.10)); color: var(--text); text-align: center; }
       .phase3-media-large { min-height: 160px; }
       .phase3-media-avatar { font-weight: 800; letter-spacing: 0; }
       .phase3-media-caption { font-size: .78rem; color: var(--muted); }
-      body.phase3-picker-open { overflow: hidden; }
+      body.phase3-picker-open, body.phase3-focus-open, body.phase3-history-open { overflow: hidden; }
       .phase3-picker-portal { position: relative; z-index: 70; }
       .phase3-picker-backdrop { position: fixed; inset: 0; z-index: 70; background: rgba(10,18,24,.58); display: grid; place-items: center; padding: 18px; }
       .phase3-picker-sheet { position: relative; z-index: 1; width: min(880px, calc(100vw - 36px)); max-height: min(760px, calc(100dvh - 36px)); overflow-y: auto; overscroll-behavior: contain; background: var(--bg); color: var(--text); border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--shadow); padding: 16px; display: grid; gap: 14px; }
@@ -2282,17 +2813,65 @@
       .phase3-picker-results { display: grid; gap: 10px; }
       .phase3-picker-card { display: grid; grid-template-columns: 96px minmax(0, 1fr) auto; gap: 12px; align-items: center; border: 1px solid var(--line); border-radius: 8px; padding: 10px; }
       .phase3-load-more { justify-self: center; }
-      .phase3-set-grid { display: grid; grid-template-columns: repeat(5, minmax(70px, 1fr)) auto; gap: 8px; align-items: end; }
-      .phase3-set-grid label { display: grid; gap: 4px; font-size: .82rem; color: var(--muted); }
-      .phase3-set-grid input { min-width: 0; }
-      .phase3-library-item { border: 1px solid var(--line); border-radius: 8px; padding: 10px; display: grid; gap: 4px; }
-      .phase3-timer-pill { min-height: 28px; display: inline-flex; align-items: center; }
+      .phase3-focus-portal { position: relative; z-index: 65; }
+      .phase3-focus-backdrop { position: fixed; inset: 0; z-index: 65; background: rgba(7,11,18,.72); display: grid; place-items: center; padding: 18px; }
+      .phase3-focus-sheet { width: min(960px, calc(100vw - 36px)); max-height: min(860px, calc(100dvh - 36px)); overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; background: var(--bg); color: var(--text); border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--shadow); padding: 18px; display: grid; gap: 16px; }
+      .phase3-focus-header, .phase3-focus-header-actions, .phase3-focus-actions { display: flex; gap: 10px; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+      .phase3-focus-header h2, .phase3-focus-main h3, .phase3-focus-previous h3 { margin: 0; }
+      .phase3-focus-context { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+      .phase3-focus-context > div { border: 1px solid var(--line); border-radius: 8px; padding: 10px; display: grid; gap: 2px; }
+      .phase3-focus-context span { color: var(--muted); font-size: .82rem; }
+      .phase3-focus-context strong { font-size: 1.08rem; }
+      .phase3-focus-progress { height: 6px; border-radius: 999px; overflow: hidden; background: var(--surface-2); }
+      .phase3-focus-progress span { display: block; height: 100%; max-width: 100%; background: var(--brand); }
+      .phase3-focus-exercise { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(240px, .55fr); gap: 14px; align-items: start; }
+      .phase3-focus-main, .phase3-focus-previous { display: grid; gap: 12px; min-width: 0; }
+      .phase3-focus-previous { border-left: 1px solid var(--line); padding-left: 14px; }
+      .phase3-instruction { border: 1px solid var(--line); border-radius: 8px; padding: 10px; }
+      .phase3-instruction summary { cursor: pointer; font-weight: 700; }
+      .phase3-instruction p { line-height: 1.5; }
+      .phase3-instruction small { color: var(--muted); }
+      .phase3-previous-list { display: grid; gap: 6px; }
+      .phase3-previous-list > div { display: flex; justify-content: space-between; gap: 10px; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+      .phase3-focus-set { display: grid; gap: 12px; }
+      .phase3-focus-inputs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+      .phase3-focus-inputs label { display: grid; gap: 5px; color: var(--muted); font-size: .82rem; }
+      .phase3-focus-inputs label.wide { grid-column: 1 / -1; }
+      .phase3-focus-inputs input { min-width: 0; min-height: 48px; font-size: 1rem; }
+      .phase3-gold-save { min-height: 54px; width: 100%; background: #c89312; border-color: #c89312; color: #111; font-weight: 800; }
+      .phase3-gold-save:hover { background: #d8a72a; border-color: #d8a72a; }
+      .phase3-rest-state, .phase3-paused-state, .phase3-complete-state { min-height: 230px; display: grid; place-items: center; align-content: center; gap: 14px; text-align: center; border: 1px solid var(--line); border-radius: 8px; padding: 20px; }
+      .phase3-rest-countdown { font-size: 5.5rem; line-height: 1; font-variant-numeric: tabular-nums; }
+      .phase3-focus-feedback { border-left: 3px solid #c89312; padding: 8px 10px; background: rgba(200,147,18,.10); }
+      .phase3-vibration-setting { display: flex; gap: 10px; align-items: center; min-height: 44px; }
+      .phase3-vibration-setting input { width: 20px; height: 20px; }
+      .phase3-history-button { width: 100%; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-2); color: var(--text); padding: 12px; text-align: left; min-height: 52px; }
+      .phase3-history-open { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 6px; color: var(--accent); font-weight: 700; }
+      .phase3-pr-list { display: grid; gap: 8px; }
+      .phase3-pr-row { display: grid; grid-template-columns: minmax(150px, 1.4fr) repeat(3, minmax(90px, 1fr)); gap: 10px; align-items: center; border: 1px solid var(--line); border-radius: 8px; padding: 10px; }
+      .phase3-pr-row > div { display: grid; gap: 2px; }
+      .phase3-pr-row span { color: var(--muted); font-size: .78rem; }
+      .phase3-history-portal { position: relative; z-index: 68; }
+      .phase3-history-backdrop { position: fixed; inset: 0; z-index: 68; background: rgba(7,11,18,.68); display: grid; place-items: center; padding: 18px; }
+      .phase3-history-sheet { width: min(760px, calc(100vw - 36px)); max-height: min(800px, calc(100dvh - 36px)); overflow-x: hidden; overflow-y: auto; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 16px; display: grid; gap: 14px; }
+      .phase3-history-detail-list, .phase3-history-detail-list article { display: grid; gap: 10px; }
+      .phase3-history-set { display: grid; grid-template-columns: 70px minmax(120px, 1fr) repeat(2, auto); gap: 10px; border-top: 1px solid var(--line); padding-top: 8px; }
       @media (max-width: 880px) {
-        .phase3-grid, .phase3-form-grid, .phase3-set-grid, .phase3-library-filters { grid-template-columns: 1fr; }
+        .phase3-grid, .phase3-form-grid, .phase3-focus-exercise, .phase3-focus-inputs, .phase3-pr-row { grid-template-columns: 1fr; }
         .phase3-picker-backdrop { align-items: end; padding: 0; }
         .phase3-picker-sheet { width: 100%; max-height: calc(100dvh - 12px); border-radius: 8px 8px 0 0; padding-bottom: calc(16px + env(safe-area-inset-bottom)); }
         .phase3-picker-card { grid-template-columns: 82px minmax(0, 1fr); }
         .phase3-picker-card .primary-btn { grid-column: 1 / -1; }
+        .phase3-focus-backdrop, .phase3-history-backdrop { align-items: end; padding: 0; }
+        .phase3-focus-sheet, .phase3-history-sheet { width: 100%; max-height: 100dvh; min-height: calc(100dvh - env(safe-area-inset-top)); border-radius: 0; padding: max(14px, env(safe-area-inset-top)) 14px calc(18px + env(safe-area-inset-bottom)); }
+        .phase3-focus-header { align-items: flex-start; }
+        .phase3-focus-header-actions { justify-content: flex-start; }
+        .phase3-focus-context { grid-template-columns: 1fr 1fr; }
+        .phase3-focus-previous { border-left: 0; border-top: 1px solid var(--line); padding: 12px 0 0; }
+        .phase3-media-large { min-height: 190px; }
+        .phase3-rest-countdown { font-size: 4rem; }
+        .phase3-history-set { grid-template-columns: 55px minmax(110px, 1fr); }
+        .phase3-history-set span:nth-child(n+3) { font-size: .82rem; }
       }
     `;
     document.head.appendChild(style);
@@ -2460,7 +3039,7 @@
     if (!session) return "";
     const isPaused = session.status === "paused";
     return `
-      <section class="phase3-card phase3-workout-panel">
+      <section class="phase3-card phase3-active-summary">
         <div class="phase3-plan-head">
           <div>
             <p class="eyebrow">${escapeHTML(phase3Text("activeWorkout"))}</p>
@@ -2468,52 +3047,224 @@
             <span class="status ${isPaused ? "" : "ok"}">${escapeHTML(isPaused ? phase3Text("paused") : phase3Text("active"))}</span>
           </div>
           <div class="phase3-status-row">
-            <span class="status phase3-timer-pill" data-phase3-timer>${escapeHTML(phase3Text("timer"))}</span>
-            <button class="secondary-btn" data-phase3-session-status="${isPaused ? "active" : "paused"}" type="button">${escapeHTML(isPaused ? phase3Text("resume") : phase3Text("pause"))}</button>
-            <button class="primary-btn" data-phase3-complete-workout type="button">${escapeHTML(phase3Text("completeWorkout"))}</button>
+            <span class="status"><span>${escapeHTML(phase3Text("workoutDuration"))}</span> <strong data-phase3-workout-duration>${escapeHTML(phase3FormatDuration(phase3WorkoutElapsedSeconds(session)))}</strong></span>
+            <button class="primary-btn" data-phase3-open-focus type="button">${escapeHTML(phase3Text("openFocus"))}</button>
           </div>
         </div>
-        ${session.plannedExercises.map((exercise) => phase3RenderWorkoutExercise(exercise, session)).join("")}
       </section>
     `;
   }
 
-  function phase3RenderWorkoutExercise(exercise, session) {
-    const previous = phase3PreviousPerformance(exercise);
-    const instructions = exercise.instructions || phase3ExerciseMeta(exercise.slug).instructions;
+  function phase3CurrentFocusExercise(session) {
+    const focus = phase3EnsureSessionFocus(session);
+    if (focus.allExercisesCompleted) return null;
+    return session.plannedExercises[focus.currentExerciseIndex] || null;
+  }
+
+  function phase3RenderPreviousSets(exercise) {
+    const sets = phase3PreviousPerformanceSets(exercise);
+    if (!sets.length) return `<p class="muted">${escapeHTML(phase3Text("noPrevious"))}</p>`;
     return `
-      <article class="phase3-plan-card">
-        ${phase3RenderExerciseMedia(exercise, "large")}
-        <div>
-          <strong>${escapeHTML(exercise.name)}</strong>
-          <p class="muted">${escapeHTML(phase3Text("activeExercisePreview"))}: ${escapeHTML(exercise.primaryMuscle || phase3ExerciseMeta(exercise.slug).primary)} · ${escapeHTML(exercise.equipment || phase3ExerciseMeta(exercise.slug).equipment)}</p>
-          ${instructions ? `<p class="muted"><strong>${escapeHTML(phase3Text("instructions"))}:</strong> ${escapeHTML(instructions)}</p>` : ""}
-          <p class="muted">${escapeHTML(phase3Text("previousPerformance"))}: ${escapeHTML(previous || phase3Text("noPrevious"))}</p>
-          <p class="muted">${escapeHTML(phase3Text("overloadTitle"))}: ${escapeHTML(phase3OverloadSignal(exercise, session))}</p>
-        </div>
-        ${Array.from({ length: Number(exercise.targetSets || 1) }).map((_, index) => phase3RenderSetRow(exercise, index + 1, session)).join("")}
-      </article>
+      <div class="phase3-previous-list">
+        ${sets.map((setLog) => {
+          const index = setLog.set_index ?? setLog.setIndex ?? "-";
+          return `<div><span>Set ${escapeHTML(String(index))}</span><strong>${escapeHTML(phase3FormatSetPerformance(setLog))}</strong></div>`;
+        }).join("")}
+      </div>
     `;
   }
 
-  function phase3RenderSetRow(exercise, setIndex, session) {
+  function phase3FormatSetPerformance(setLog) {
+    const weight = setLog.actual_weight ?? setLog.actualWeight ?? "";
+    const reps = setLog.actual_reps ?? setLog.actualReps ?? "";
+    const hasWeight = weight !== "" && weight !== null && weight !== undefined;
+    const hasReps = reps !== "" && reps !== null && reps !== undefined;
+    if (hasWeight && hasReps) return `${weight} kg x ${reps}`;
+    if (hasWeight) return `${weight} kg`;
+    if (hasReps) return `${reps} ${phase3Text("reps")}`;
+    return "-";
+  }
+
+  function phase3RenderSetRow(exercise, setIndex, session, disabled = false) {
     const key = phase3SetKey(exercise, setIndex);
     const saved = session.setLogs?.[key] || {};
     return `
-      <div class="phase3-set-grid" data-phase3-set-row="${escapeHTML(key)}">
-        <label>${escapeHTML(phase3Text("reps"))}<input data-phase3-reps="${escapeHTML(key)}" type="number" min="0" value="${escapeHTML(saved.actualReps ?? "")}" placeholder="${escapeHTML(exercise.targetReps || "")}" /></label>
-        <label>${escapeHTML(phase3Text("weight"))}<input data-phase3-weight="${escapeHTML(key)}" type="number" min="0" step="0.5" value="${escapeHTML(saved.actualWeight ?? "")}" placeholder="${escapeHTML(String(exercise.targetWeight ?? ""))}" /></label>
-        <label>${escapeHTML(phase3Text("rir"))}<input data-phase3-rir="${escapeHTML(key)}" type="number" min="0" max="10" value="${escapeHTML(saved.rir ?? "")}" /></label>
-        <label>${escapeHTML(phase3Text("rpe"))}<input data-phase3-rpe="${escapeHTML(key)}" type="number" min="1" max="10" step="0.5" value="${escapeHTML(saved.rpe ?? "")}" /></label>
-        <label>${escapeHTML(phase3Text("notes"))}<input data-phase3-notes="${escapeHTML(key)}" value="${escapeHTML(saved.notes ?? "")}" /></label>
-        <button class="secondary-btn" data-phase3-complete-set="${escapeHTML(key)}" type="button">${escapeHTML(saved.completedAt ? phase3Text("setDone") : phase3Text("completeSet"))}</button>
+      <div class="phase3-focus-set" data-phase3-set-row="${escapeHTML(key)}">
+        <div class="phase3-focus-inputs">
+          <label>${escapeHTML(phase3Text("weight"))}<input data-phase3-weight="${escapeHTML(key)}" type="number" min="0" step="0.5" inputmode="decimal" value="${escapeHTML(saved.actualWeight ?? "")}" placeholder="${escapeHTML(String(exercise.targetWeight ?? ""))}" ${disabled ? "disabled" : ""} /></label>
+          <label>${escapeHTML(phase3Text("reps"))}<input data-phase3-reps="${escapeHTML(key)}" type="number" min="1" required inputmode="numeric" value="${escapeHTML(saved.actualReps ?? "")}" placeholder="${escapeHTML(exercise.targetReps || "")}" ${disabled ? "disabled" : ""} /></label>
+          <label>${escapeHTML(phase3Text("rir"))}<input data-phase3-rir="${escapeHTML(key)}" type="number" min="0" max="10" inputmode="numeric" value="${escapeHTML(saved.rir ?? "")}" ${disabled ? "disabled" : ""} /></label>
+          <label>${escapeHTML(phase3Text("rpe"))}<input data-phase3-rpe="${escapeHTML(key)}" type="number" min="1" max="10" step="0.5" inputmode="decimal" value="${escapeHTML(saved.rpe ?? "")}" ${disabled ? "disabled" : ""} /></label>
+          <label class="wide">${escapeHTML(phase3Text("notes"))}<input data-phase3-notes="${escapeHTML(key)}" value="${escapeHTML(saved.notes ?? "")}" ${disabled ? "disabled" : ""} /></label>
+        </div>
+        <button class="primary-btn phase3-gold-save" data-phase3-complete-set="${escapeHTML(key)}" type="button" ${disabled ? "disabled" : ""}>${escapeHTML(saved.completedAt ? phase3Text("setDone") : phase3Text("completeSet"))}</button>
+      </div>
+    `;
+  }
+
+  function phase3RenderRestState(session) {
+    const focus = phase3EnsureSessionFocus(session);
+    const rest = focus.rest;
+    if (!rest) return "";
+    const nextExercise = Number(rest.nextExerciseIndex) >= 0 ? session.plannedExercises[Number(rest.nextExerciseIndex)] : null;
+    const remainingMs = rest.paused ? Number(rest.remainingMs || 0) : Math.max(0, Number(rest.endsAt || 0) - Date.now());
+    const remaining = Math.ceil(remainingMs / 1000);
+    return `
+      <section class="phase3-rest-state" aria-live="polite">
+        <span class="eyebrow">${escapeHTML(phase3Text("restTitle"))}</span>
+        <strong class="phase3-rest-countdown" data-phase3-rest-countdown>${escapeHTML(phase3FormatDuration(remaining).slice(3))}</strong>
+        <p>${escapeHTML(phase3Text("next"))}: ${escapeHTML(nextExercise ? `Set ${rest.nextSetIndex} · ${nextExercise.name}` : phase3Text("completeWorkout"))}</p>
+        <div class="phase3-focus-actions">
+          <button class="secondary-btn" data-phase3-skip-rest type="button">${escapeHTML(phase3Text("skipRest"))}</button>
+          <button class="secondary-btn" data-phase3-add-rest type="button">${escapeHTML(phase3Text("addFifteen"))}</button>
+          <button class="secondary-btn" data-phase3-restart-rest type="button">${escapeHTML(phase3Text("restartRest"))}</button>
+        </div>
+      </section>
+    `;
+  }
+
+  function phase3RenderWorkoutFocus() {
+    const session = phase3State.activeSession;
+    if (!session || !phase3FocusOpen) return "";
+    const focus = phase3EnsureSessionFocus(session);
+    const exercise = phase3CurrentFocusExercise(session);
+    const isPaused = session.status === "paused";
+    const totalExercises = session.plannedExercises.length;
+    const meta = exercise ? phase3ExerciseMeta(exercise.slug) : null;
+    const instructions = meta?.instructions || exercise?.instructions || "";
+    const instructionLocale = meta?.instructionLocale || phase3Exercise(exercise?.slug)?.instructionLocales?.[phase3Language()] || "";
+    const totalSets = Math.max(1, Number(exercise?.targetSets || 1));
+    return `
+      <div class="phase3-focus-backdrop">
+        <section class="phase3-focus-sheet" role="dialog" aria-modal="true" aria-labelledby="phase3-focus-title">
+          <header class="phase3-focus-header">
+            <div>
+              <p class="eyebrow">${escapeHTML(phase3Text("activeWorkout"))}</p>
+              <h2 id="phase3-focus-title">${escapeHTML(session.planTitle)}</h2>
+            </div>
+            <div class="phase3-focus-header-actions">
+              <button class="secondary-btn" data-phase3-session-status="${isPaused ? "active" : "paused"}" type="button">${escapeHTML(isPaused ? phase3Text("resume") : phase3Text("pause"))}</button>
+              <button class="secondary-btn" data-phase3-close-focus type="button">${escapeHTML(phase3Text("closeFocus"))}</button>
+            </div>
+          </header>
+          <div class="phase3-focus-context">
+            <div><span>${escapeHTML(phase3Text("workoutDuration"))}</span><strong data-phase3-workout-duration>${escapeHTML(phase3FormatDuration(phase3WorkoutElapsedSeconds(session)))}</strong></div>
+            <div><span>${escapeHTML(exercise ? phase3Format("exerciseProgress", { current: focus.currentExerciseIndex + 1, total: totalExercises }) : phase3Text("completed"))}</span><strong>${escapeHTML(exercise ? phase3Format("setProgress", { current: focus.currentSetIndex, total: totalSets }) : `${totalExercises}/${totalExercises}`)}</strong></div>
+          </div>
+          <div class="phase3-focus-progress"><span style="width:${escapeHTML(String(exercise ? ((focus.currentExerciseIndex + (focus.currentSetIndex / totalSets)) / Math.max(1, totalExercises)) * 100 : 100))}%"></span></div>
+          ${isPaused ? `
+            <section class="phase3-paused-state">
+              <span class="eyebrow">${escapeHTML(phase3Text("trainingPaused"))}</span>
+              <button class="primary-btn" data-phase3-session-status="active" type="button">${escapeHTML(phase3Text("resume"))}</button>
+            </section>
+          ` : focus.allExercisesCompleted || !exercise ? `
+            <section class="phase3-complete-state">
+              <h3>${escapeHTML(phase3Text("exerciseCompleted"))}</h3>
+              <p>${escapeHTML(phase3Text("allExercisesCompleted"))}</p>
+              <button class="primary-btn" data-phase3-complete-workout type="button">${escapeHTML(phase3Text("completeWorkout"))}</button>
+            </section>
+          ` : `
+            <div class="phase3-focus-exercise">
+              <div class="phase3-focus-main">
+                <div>
+                  <h3>${escapeHTML(exercise.name)}</h3>
+                  <p class="muted">${escapeHTML(exercise.primaryMuscle || meta.primary)} · ${escapeHTML(exercise.equipment || meta.equipment)}</p>
+                </div>
+                ${phase3RenderExerciseMedia(exercise, "large")}
+                ${instructions ? `<details class="phase3-instruction" open><summary>${escapeHTML(phase3Text("instructions"))}</summary><p>${escapeHTML(instructions)}</p>${phase3Language() === "nl" && instructionLocale === "en" ? `<small>${escapeHTML(phase3Text("englishInstructionFallback"))}</small>` : ""}</details>` : ""}
+              </div>
+              <aside class="phase3-focus-previous">
+                <h3>${escapeHTML(phase3Text("previousTime"))}</h3>
+                ${phase3RenderPreviousSets(exercise)}
+                <p class="muted">${escapeHTML(phase3OverloadSignal(exercise, session))}</p>
+              </aside>
+            </div>
+            <p class="phase3-focus-feedback" data-phase3-focus-feedback role="status" ${focus.feedback ? "" : "hidden"}>${escapeHTML(focus.feedback || "")}</p>
+            ${focus.rest ? phase3RenderRestState(session) : `
+              <section>
+                <p class="eyebrow">${escapeHTML(phase3Text("currentSet"))}</p>
+                ${phase3RenderSetRow(exercise, focus.currentSetIndex, session)}
+                <div class="phase3-focus-actions">
+                  <button class="secondary-btn" data-phase3-skip-exercise type="button">${escapeHTML(phase3Text("skipExercise"))}</button>
+                  <button class="secondary-btn" data-phase3-complete-workout type="button">${escapeHTML(phase3Text("completeWorkout"))}</button>
+                </div>
+              </section>
+            `}
+          `}
+          <label class="phase3-vibration-setting">
+            <input data-phase3-vibration-setting type="checkbox" ${phase3RestVibrationEnabled ? "checked" : ""} />
+            <span>${escapeHTML(phase3Text("vibrationSetting"))}</span>
+          </label>
+        </section>
+      </div>
+    `;
+  }
+
+  function phase3GroupedPersonalRecords() {
+    const groups = new Map();
+    phase3DerivedPersonalRecords().forEach((record) => {
+      const key = record.exercise_identity;
+      if (!groups.has(key)) groups.set(key, { name: phase3ExerciseRecordName(record), records: {} });
+      groups.get(key).records[record.metric] = record;
+    });
+    return Array.from(groups.values()).sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+  function phase3HistoryEntry(entryId) {
+    return phase3State.history.find((entry) => String(entry.id) === String(entryId)) || null;
+  }
+
+  function phase3HistoryGroups(entry) {
+    const groups = new Map();
+    (entry?.sets || []).forEach((setLog) => {
+      const key = phase3ExerciseIdentity(setLog) || `snapshot:${setLog.exercise_name_snapshot || setLog.exerciseName || "exercise"}`;
+      if (!groups.has(key)) groups.set(key, { name: phase3ExerciseRecordName(setLog), sets: [] });
+      groups.get(key).sets.push(setLog);
+    });
+    return Array.from(groups.values()).map((group) => ({
+      ...group,
+      sets: group.sets.sort((a, b) => Number(a.set_index ?? a.setIndex ?? 0) - Number(b.set_index ?? b.setIndex ?? 0))
+    }));
+  }
+
+  function phase3RenderHistoryDetail() {
+    const entry = phase3HistoryEntry(phase3HistoryDetailId);
+    if (!entry) return "";
+    const duration = Number.isFinite(Number(entry.durationSeconds))
+      ? phase3FormatDuration(entry.durationSeconds)
+      : phase3FormatDuration(phase3CompletedDurationSeconds(entry.startedAt, entry.completedAt, entry.metadata?.focus));
+    return `
+      <div class="phase3-history-backdrop">
+        <section class="phase3-history-sheet" role="dialog" aria-modal="true" aria-labelledby="phase3-history-title">
+          <div class="phase3-plan-head">
+            <div><p class="eyebrow">${escapeHTML(phase3Text("historyDetail"))}</p><h2 id="phase3-history-title">${escapeHTML(entry.title)}</h2></div>
+            <button class="secondary-btn" data-phase3-close-history type="button">${escapeHTML(phase3Text("closePicker"))}</button>
+          </div>
+          <p class="muted">${escapeHTML(String(entry.completedAt || "").slice(0, 10))} · ${escapeHTML(duration)}</p>
+          <div class="phase3-history-detail-list">
+            ${phase3HistoryGroups(entry).map((group) => `
+              <article>
+                <h3>${escapeHTML(group.name)}</h3>
+                ${group.sets.map((setLog) => `
+                  <div class="phase3-history-set">
+                    <span>Set ${escapeHTML(String(setLog.set_index ?? setLog.setIndex ?? "-"))}</span>
+                    <strong>${escapeHTML(phase3FormatSetPerformance(setLog))}</strong>
+                    ${(setLog.rir ?? "") !== "" ? `<span>RIR ${escapeHTML(String(setLog.rir))}</span>` : ""}
+                    ${(setLog.rpe ?? "") !== "" ? `<span>RPE ${escapeHTML(String(setLog.rpe))}</span>` : ""}
+                    ${setLog.notes ? `<span>${escapeHTML(setLog.notes)}</span>` : ""}
+                  </div>
+                `).join("")}
+              </article>
+            `).join("") || `<p>${escapeHTML(phase3Text("noPerformedSets"))}</p>`}
+          </div>
+        </section>
       </div>
     `;
   }
 
   function phase3RenderHistory() {
     const history = phase3State.history.slice(0, 5);
-    const records = phase3DerivedPersonalRecords().slice(0, 6);
+    const records = phase3GroupedPersonalRecords().slice(0, 6);
     return `
       <section class="phase3-card">
         <div class="panel-head compact-head">
@@ -2521,75 +3272,25 @@
         </div>
         <div class="phase3-history-list">
           ${history.length ? history.map((entry) => `
-            <div class="phase3-history-item">
-              <span>${escapeHTML(entry.title)} ${entry.dayLabel ? `- ${escapeHTML(phase3Text(entry.dayLabel) || entry.dayLabel)}` : ""}</span>
-              <strong>${escapeHTML(String(entry.completedAt || "").slice(0, 10))}</strong>
-            </div>
+            <button class="phase3-history-item phase3-history-button" data-phase3-open-history="${escapeHTML(entry.id)}" type="button">
+              <span><strong>${escapeHTML(entry.title)}</strong>${entry.dayLabel ? ` <small>${escapeHTML(phase3Text(entry.dayLabel) || entry.dayLabel)}</small>` : ""}</span>
+              <span>${escapeHTML(String(entry.completedAt || "").slice(0, 10))}</span>
+              <span class="phase3-history-open">${escapeHTML(phase3Text("openHistory"))}<span aria-hidden="true">&rsaquo;</span></span>
+            </button>
           `).join("") : `<div class="empty-mini">${escapeHTML(phase3Text("noHistory"))}</div>`}
         </div>
         <div class="panel-head compact-head">
           <h2>${escapeHTML(phase3Text("prTitle"))}</h2>
         </div>
-        <div class="phase3-history-list">
-          ${records.length ? records.map((record) => `
-            <div class="phase3-history-item">
-              <span>${escapeHTML(phase3ExerciseRecordName(record))} - ${escapeHTML(record.metric)}</span>
-              <strong>${escapeHTML(String(record.value))} ${escapeHTML(record.unit)}</strong>
-            </div>
+        <div class="phase3-pr-list">
+          ${records.length ? records.map((group) => `
+            <article class="phase3-pr-row">
+              <strong>${escapeHTML(group.name)}</strong>
+              <div><span>${escapeHTML(phase3Text("maxWeight"))}</span><strong>${escapeHTML(String(group.records.max_weight?.value ?? "-"))}${group.records.max_weight ? " kg" : ""}</strong></div>
+              <div><span>${escapeHTML(phase3Text("maxReps"))}</span><strong>${escapeHTML(String(group.records.max_reps?.value ?? "-"))}</strong></div>
+              <div><span>${escapeHTML(phase3Text("estimatedOneRm"))}</span><strong>${escapeHTML(String(group.records.estimated_1rm?.value ?? "-"))}${group.records.estimated_1rm ? " kg" : ""}</strong></div>
+            </article>
           `).join("") : `<div class="empty-mini">${escapeHTML(phase3Text("overloadNeutral"))}</div>`}
-        </div>
-      </section>
-    `;
-  }
-
-  function phase3RenderLibraryResults() {
-    const exercises = phase3FilteredExercises();
-    if (!exercises.length) {
-      return `<div class="empty-mini">${escapeHTML(phase3Text("noLibraryResults"))}</div>`;
-    }
-    return exercises.slice(0, 24).map((exercise) => {
-      const meta = phase3ExerciseMeta(exercise.slug);
-      return `
-        <article class="phase3-library-item">
-          ${phase3RenderExerciseMedia(exercise, "thumb")}
-          <strong>${escapeHTML(meta.name)}</strong>
-          <span>${escapeHTML(phase3Text("muscle"))}: ${escapeHTML(meta.primary)} - ${escapeHTML(phase3Text("equipment"))}: ${escapeHTML(meta.equipment)}</span>
-          ${meta.secondary ? `<span class="muted">${escapeHTML(meta.secondary)}</span>` : ""}
-          <p class="muted">${escapeHTML(meta.instructions)}</p>
-        </article>
-      `;
-    }).join("");
-  }
-
-  function phase3RefreshLibraryResults() {
-    const container = document.querySelector("[data-phase3-library-results]");
-    if (container) container.innerHTML = phase3RenderLibraryResults();
-    const count = document.querySelector("[data-phase3-library-count]");
-    if (count) count.textContent = phase3Format("libraryCount", { count: phase3FilteredExercises().length });
-  }
-
-  function phase3RenderLibrary() {
-    const categories = phase3LibraryOptions("category");
-    const equipment = phase3LibraryOptions("equipment");
-    return `
-      <section class="phase3-card">
-        <div class="panel-head compact-head">
-          <h2>${escapeHTML(phase3Text("exerciseLibrary"))}</h2>
-          <span class="status" data-phase3-library-count>${escapeHTML(phase3Format("libraryCount", { count: phase3FilteredExercises().length }))}</span>
-        </div>
-        <div class="phase3-library-filters">
-          <label class="field"><span>${escapeHTML(phase3Text("searchLibrary"))}</span><input data-phase3-library-search value="${escapeHTML(phase3LibraryFilters.search)}" /></label>
-          <label class="field"><span>${escapeHTML(phase3Text("muscle"))}</span><select data-phase3-library-category>
-            <option value="">${escapeHTML(phase3Text("allCategories"))}</option>
-            ${categories.map((item) => `<option value="${escapeHTML(item.value)}" ${phase3LibraryFilters.category === item.value ? "selected" : ""}>${escapeHTML(item.label)}</option>`).join("")}
-          </select></label>
-          <label class="field"><span>${escapeHTML(phase3Text("equipment"))}</span><select data-phase3-library-equipment>
-            <option value="">${escapeHTML(phase3Text("allEquipment"))}</option>
-            ${equipment.map((item) => `<option value="${escapeHTML(item.value)}" ${phase3LibraryFilters.equipment === item.value ? "selected" : ""}>${escapeHTML(item.label)}</option>`).join("")}
-          </select></label>
-        </div>
-        <div class="phase3-library-list" data-phase3-library-results>
-          ${phase3RenderLibraryResults()}
         </div>
       </section>
     `;
@@ -2619,7 +3320,6 @@
           </div>
           <div class="phase3-shell">
             ${phase3RenderHistory()}
-            ${phase3RenderLibrary()}
           </div>
         </div>
       </div>
@@ -2637,6 +3337,8 @@
       section.dataset.phase3Mode = "client";
       section.innerHTML = phase3RenderClientTraining();
       phase3SyncPickerPortal(!phase3CanCreateActiveWorkoutDay());
+      phase3SyncFocusPortal();
+      phase3SyncHistoryPortal();
       phase3UpdateTimerText();
       return;
     }
@@ -2654,7 +3356,10 @@
     await phase3OriginalLoadOnlineWorkspace(profile);
     if (profile?.role === "client") {
       phase3EnsureUserContext();
-      const hydrated = await phase3HydrateTraining(profile);
+      const [hydrated] = await Promise.all([
+        phase3HydrateTraining(profile),
+        phase3LoadCanonicalCatalog()
+      ]);
       if (hydrated && isLoggedIn() && state.ui.role === "client") renderTraining();
     }
   };
@@ -2662,8 +3367,12 @@
   const phase3OriginalShowView = showView;
   showView = function showViewPhase3(view) {
     if (view !== "training") {
+      phase3FocusOpen = false;
+      phase3HistoryDetailId = "";
       phase3StopTimer();
       phase3CloseExercisePicker();
+      phase3RemoveFocusPortal();
+      phase3RemoveHistoryPortal();
     }
     const result = phase3OriginalShowView(view);
     if (view === "training" && isLoggedIn() && state.ui.role === "client") {
@@ -2679,6 +3388,10 @@
     if (!isLoggedIn()) {
       phase3StopTimer();
       phase3CloseExercisePicker();
+      phase3FocusOpen = false;
+      phase3HistoryDetailId = "";
+      phase3RemoveFocusPortal();
+      phase3RemoveHistoryPortal();
       phase3State = phase3EmptyState();
       phase3UserKey = "";
     }
@@ -2707,22 +3420,17 @@
   });
 
   document.addEventListener("input", (event) => {
-    if (event.target?.dataset.phase3LibrarySearch === undefined && event.target?.dataset.phase3PickerSearch === undefined) return;
+    if (event.target?.dataset.phase3PickerSearch === undefined) return;
     phase3LibraryFilters.search = String(event.target.value || "");
     phase3PickerVisibleCount = PHASE3_PICKER_PAGE_SIZE;
-    phase3RefreshLibraryResults();
     phase3RefreshPickerResults();
   });
 
   document.addEventListener("change", (event) => {
-    if (event.target?.dataset.phase3LibraryCategory !== undefined) {
-      phase3LibraryFilters.category = String(event.target.value || "");
-      phase3RefreshLibraryResults();
-      return;
-    }
-    if (event.target?.dataset.phase3LibraryEquipment !== undefined) {
-      phase3LibraryFilters.equipment = String(event.target.value || "");
-      phase3RefreshLibraryResults();
+    if (event.target?.dataset.phase3VibrationSetting !== undefined) {
+      phase3RestVibrationEnabled = Boolean(event.target.checked);
+      phase3SaveRestVibrationPreference();
+      if (!phase3RestVibrationEnabled) phase3CancelVibration();
     }
   });
 
@@ -2833,6 +3541,47 @@
       return;
     }
 
+    if (button.dataset.phase3OpenFocus !== undefined) {
+      phase3OpenFocus();
+      return;
+    }
+
+    if (button.dataset.phase3CloseFocus !== undefined) {
+      phase3CloseFocus();
+      renderTraining();
+      return;
+    }
+
+    if (button.dataset.phase3SkipExercise !== undefined) {
+      phase3SkipCurrentExercise();
+      return;
+    }
+
+    if (button.dataset.phase3SkipRest !== undefined) {
+      phase3SkipRestTimer();
+      return;
+    }
+
+    if (button.dataset.phase3AddRest !== undefined) {
+      phase3AddRestSeconds(15);
+      return;
+    }
+
+    if (button.dataset.phase3RestartRest !== undefined) {
+      phase3RestartRestTimer();
+      return;
+    }
+
+    if (button.dataset.phase3OpenHistory) {
+      phase3OpenHistory(button.dataset.phase3OpenHistory);
+      return;
+    }
+
+    if (button.dataset.phase3CloseHistory !== undefined) {
+      phase3CloseHistory();
+      return;
+    }
+
     if (button.dataset.phase3CompleteSet) {
       await phase3CompleteSet(button.dataset.phase3CompleteSet);
       return;
@@ -2864,10 +3613,27 @@
   });
 
   document.addEventListener("keydown", (event) => {
-    if (event.key !== "Escape" || !phase3PickerOpen) return;
-    event.preventDefault();
-    phase3CloseExercisePicker();
-    renderTraining();
+    if (event.key !== "Escape") return;
+    if (phase3PickerOpen) {
+      event.preventDefault();
+      phase3CloseExercisePicker();
+      renderTraining();
+      return;
+    }
+    if (phase3HistoryDetailId) {
+      event.preventDefault();
+      phase3CloseHistory();
+      return;
+    }
+    if (phase3FocusOpen) {
+      event.preventDefault();
+      phase3CloseFocus();
+      renderTraining();
+    }
+  });
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState !== "visible") phase3CancelVibration();
   });
 
   window.addEventListener("online", () => {
