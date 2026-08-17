@@ -2,13 +2,14 @@
   if (window.FMZ_PHASE3_TRAINING_ENGINE_LOADED) return;
   window.FMZ_PHASE3_TRAINING_ENGINE_LOADED = true;
 
-  const PHASE3_VERSION = "20260817-phase3-catalog-final1";
+  const PHASE3_VERSION = "20260817-phase3-picker-hotfix1";
   const PHASE3_LANGUAGES = ["nl", "en", "de"];
   const PHASE3_FREE_ACTIVE_DAY_LIMIT = 4;
   const PHASE3_REAL_CATALOG_EXPECTED_COUNT = 898;
   const PHASE3_EXERCISE_UUID_NAMESPACE = "9439f2af-0e84-5e41-9482-d4b6765154ed";
   const PHASE3_CATALOG_CACHE_KEY = "fmz-phase3-exercise-catalog:kinetic-8652d873";
   const PHASE3_CATALOG_DETAILS_CACHE_KEY = "fmz-phase3-exercise-details:kinetic-8652d873";
+  const PHASE3_PICKER_PORTAL_ID = "phase3-exercise-picker-portal";
   const PHASE3_CATALOG_QUERY_PAGE_SIZE = 500;
   const PHASE3_PICKER_PAGE_SIZE = 36;
   const PHASE3_UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -50,6 +51,9 @@
       openExercisePicker: "Open oefeningkiezer",
       closePicker: "Sluiten",
       clearFilters: "Filters wissen",
+      catalogLoading: "Oefencatalogus laden...",
+      catalogLoadError: "De oefencatalogus kon niet worden geladen. Probeer opnieuw of sluit de kiezer.",
+      retryCatalog: "Opnieuw proberen",
       pickerResults: "Resultaten",
       showingResults: "{shown} van {total} zichtbaar",
       loadMoreExercises: "Meer oefeningen laden",
@@ -159,6 +163,9 @@
       openExercisePicker: "Open exercise picker",
       closePicker: "Close",
       clearFilters: "Clear filters",
+      catalogLoading: "Loading exercise catalog...",
+      catalogLoadError: "The exercise catalog could not be loaded. Retry or close the picker.",
+      retryCatalog: "Retry",
       pickerResults: "Results",
       showingResults: "{shown} of {total} visible",
       loadMoreExercises: "Load more exercises",
@@ -268,6 +275,9 @@
       openExercisePicker: "Uebungsauswahl oeffnen",
       closePicker: "Schliessen",
       clearFilters: "Filter loeschen",
+      catalogLoading: "Uebungskatalog wird geladen...",
+      catalogLoadError: "Der Uebungskatalog konnte nicht geladen werden. Erneut versuchen oder die Auswahl schliessen.",
+      retryCatalog: "Erneut versuchen",
       pickerResults: "Ergebnisse",
       showingResults: "{shown} von {total} sichtbar",
       loadMoreExercises: "Mehr Uebungen laden",
@@ -637,6 +647,8 @@
   let phase3LibraryFilters = { search: "", category: "", equipment: "" };
   let phase3PickerOpen = false;
   let phase3PickerVisibleCount = PHASE3_PICKER_PAGE_SIZE;
+  let phase3PickerLoading = false;
+  let phase3PickerError = "";
   let phase3CatalogHydrated = false;
   let phase3CatalogLoading = null;
   let phase3CatalogDetailsCacheRead = false;
@@ -761,14 +773,14 @@
   }
 
   function phase3ApplyCatalogRows(rows) {
-    const catalog = new Map(PHASE3_CORE_EXERCISES.map((exercise) => [exercise.canonicalSlug, { ...exercise, catalogBacked: false }]));
+    const catalog = new Map();
     (rows || [])
       .filter((row) => phase3IsUuid(row.id) && row.canonical_slug)
       .forEach((row) => catalog.set(row.canonical_slug, phase3CatalogRowToExercise(row)));
     PHASE3_EXERCISES = Array.from(catalog.values()).sort((a, b) => a.canonicalSlug.localeCompare(b.canonicalSlug));
-    phase3CatalogHydrated = (rows || []).length > 0;
+    phase3CatalogHydrated = PHASE3_EXERCISES.length === PHASE3_REAL_CATALOG_EXPECTED_COUNT;
     window.FMZ_PHASE3_TRAINING_ENGINE.exerciseLibrarySize = PHASE3_EXERCISES.length;
-    window.FMZ_PHASE3_TRAINING_ENGINE.loadedCatalogRecords = (rows || []).length;
+    window.FMZ_PHASE3_TRAINING_ENGINE.loadedCatalogRecords = PHASE3_EXERCISES.length;
   }
 
   function phase3ReadCatalogCache() {
@@ -776,9 +788,9 @@
       const cached = window.sessionStorage?.getItem(PHASE3_CATALOG_CACHE_KEY);
       if (!cached) return false;
       const rows = JSON.parse(cached);
-      if (!Array.isArray(rows) || !rows.length) return false;
+      if (!Array.isArray(rows) || rows.length !== PHASE3_REAL_CATALOG_EXPECTED_COUNT) return false;
       phase3ApplyCatalogRows(rows);
-      return true;
+      return phase3CatalogHydrated;
     } catch {
       return false;
     }
@@ -872,8 +884,11 @@
           rows.push(...(data || []));
           if (!data || data.length < PHASE3_CATALOG_QUERY_PAGE_SIZE) break;
         }
-        if (!rows.length) return false;
+        if (rows.length !== PHASE3_REAL_CATALOG_EXPECTED_COUNT) {
+          throw new Error(`Expected ${PHASE3_REAL_CATALOG_EXPECTED_COUNT} canonical exercises, received ${rows.length}`);
+        }
         phase3ApplyCatalogRows(rows);
+        if (!phase3CatalogHydrated) throw new Error("Canonical exercise catalog identity validation failed");
         phase3WriteCatalogCache(rows);
         return true;
       } catch (error) {
@@ -1102,8 +1117,7 @@
     phase3BuilderEditIndex = null;
     phase3BuilderDraft = phase3EmptyBuilderDraft();
     phase3LibraryFilters = { search: "", category: "", equipment: "" };
-    phase3PickerOpen = false;
-    phase3PickerVisibleCount = PHASE3_PICKER_PAGE_SIZE;
+    phase3CloseExercisePicker();
     phase3LoadLocal();
   }
 
@@ -2123,16 +2137,58 @@
     if (container) container.innerHTML = phase3RenderPickerResults();
   }
 
+  function phase3PickerPortal() {
+    let portal = document.getElementById(PHASE3_PICKER_PORTAL_ID);
+    if (portal) return portal;
+    portal = document.createElement("div");
+    portal.id = PHASE3_PICKER_PORTAL_ID;
+    portal.className = "phase3-picker-portal";
+    portal.dataset.phase3PickerPortal = "";
+    document.body.appendChild(portal);
+    return portal;
+  }
+
+  function phase3RemovePickerPortal() {
+    document.getElementById(PHASE3_PICKER_PORTAL_ID)?.remove();
+    document.body.classList.remove("phase3-picker-open");
+  }
+
+  function phase3SyncPickerPortal(disabled = false) {
+    if (!phase3PickerOpen || disabled) {
+      phase3RemovePickerPortal();
+      return;
+    }
+    const portal = phase3PickerPortal();
+    portal.innerHTML = phase3RenderExercisePicker();
+    document.body.classList.add("phase3-picker-open");
+  }
+
+  async function phase3RetryExerciseCatalog() {
+    phase3PickerLoading = true;
+    phase3PickerError = "";
+    phase3SyncPickerPortal();
+    const loaded = await phase3LoadCanonicalCatalog();
+    phase3PickerLoading = false;
+    if (!loaded || !phase3CatalogHydrated || window.FMZ_PHASE3_TRAINING_ENGINE.loadedCatalogRecords !== PHASE3_REAL_CATALOG_EXPECTED_COUNT) {
+      phase3PickerError = "catalog_load_failed";
+    }
+    phase3SyncPickerPortal();
+    return !phase3PickerError;
+  }
+
   async function phase3OpenExercisePicker(form) {
     phase3CaptureBuilderDraft(form);
     phase3PickerOpen = true;
     phase3PickerVisibleCount = PHASE3_PICKER_PAGE_SIZE;
-    await phase3LoadCanonicalCatalog();
+    await phase3RetryExerciseCatalog();
   }
 
   function phase3CloseExercisePicker() {
     phase3PickerOpen = false;
+    phase3PickerLoading = false;
+    phase3PickerError = "";
     phase3PickerVisibleCount = PHASE3_PICKER_PAGE_SIZE;
+    phase3RemovePickerPortal();
   }
 
   async function phase3SelectExercise(slug) {
@@ -2143,20 +2199,18 @@
     phase3CloseExercisePicker();
   }
 
-  function phase3RenderExercisePicker(disabled) {
-    if (!phase3PickerOpen || disabled) return "";
+  function phase3RenderExercisePicker() {
+    if (!phase3PickerOpen) return "";
     const categories = phase3LibraryOptions("category");
     const equipment = phase3LibraryOptions("equipment");
-    return `
-      <div class="phase3-picker-backdrop" data-phase3-picker-backdrop>
-        <section class="phase3-picker-sheet" role="dialog" aria-modal="true" aria-label="${escapeHTML(phase3Text("exercisePickerTitle"))}">
-          <div class="phase3-plan-head">
-            <div>
-              <p class="eyebrow">${escapeHTML(phase3Text("exercisePickerTitle"))}</p>
-              <h2>${escapeHTML(phase3Text("chooseExercise"))}</h2>
-            </div>
-            <button class="secondary-btn" data-phase3-close-picker type="button">${escapeHTML(phase3Text("closePicker"))}</button>
-          </div>
+    const content = phase3PickerLoading
+      ? `<div class="phase3-picker-state" role="status">${escapeHTML(phase3Text("catalogLoading"))}</div>`
+      : phase3PickerError || !phase3CatalogHydrated
+        ? `<div class="phase3-picker-state phase3-picker-error" role="alert">
+            <p>${escapeHTML(phase3Text("catalogLoadError"))}</p>
+            <button class="primary-btn" data-phase3-retry-catalog type="button">${escapeHTML(phase3Text("retryCatalog"))}</button>
+          </div>`
+        : `
           <label class="field"><span>${escapeHTML(phase3Text("searchLibrary"))}</span><input data-phase3-picker-search value="${escapeHTML(phase3LibraryFilters.search)}" placeholder="${escapeHTML(phase3Text("searchLibrary"))}" /></label>
           <div>
             <strong>${escapeHTML(phase3Text("muscle"))}</strong>
@@ -2172,6 +2226,18 @@
           <div data-phase3-picker-results>
             ${phase3RenderPickerResults()}
           </div>
+        `;
+    return `
+      <div class="phase3-picker-backdrop" data-phase3-picker-backdrop>
+        <section class="phase3-picker-sheet" role="dialog" aria-modal="true" aria-labelledby="phase3-picker-title">
+          <div class="phase3-plan-head">
+            <div>
+              <p class="eyebrow">${escapeHTML(phase3Text("exercisePickerTitle"))}</p>
+              <h2 id="phase3-picker-title">${escapeHTML(phase3Text("chooseExercise"))}</h2>
+            </div>
+            <button class="secondary-btn" data-phase3-close-picker type="button">${escapeHTML(phase3Text("closePicker"))}</button>
+          </div>
+          ${content}
         </section>
       </div>
     `;
@@ -2186,7 +2252,7 @@
       .phase3-head { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; flex-wrap: wrap; }
       .phase3-status-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
       .phase3-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(280px, .7fr); gap: 14px; align-items: start; }
-      .phase3-card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 14px; box-shadow: var(--shadow); }
+      .phase3-card { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 14px; box-shadow: var(--shadow); }
       .phase3-form-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
       .phase3-form-grid .wide { grid-column: 1 / -1; }
       .phase3-plan-list, .phase3-history-list, .phase3-library-list { display: grid; gap: 10px; }
@@ -2203,10 +2269,14 @@
       .phase3-media-large { min-height: 160px; }
       .phase3-media-avatar { font-weight: 800; letter-spacing: 0; }
       .phase3-media-caption { font-size: .78rem; color: var(--muted); }
-      .phase3-picker-backdrop { position: fixed; inset: 0; z-index: 80; background: rgba(10,18,24,.42); display: grid; place-items: center; padding: 18px; }
-      .phase3-picker-sheet { width: min(880px, 100%); max-height: min(760px, 92vh); overflow: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--shadow); padding: 16px; display: grid; gap: 14px; }
+      body.phase3-picker-open { overflow: hidden; }
+      .phase3-picker-portal { position: relative; z-index: 70; }
+      .phase3-picker-backdrop { position: fixed; inset: 0; z-index: 70; background: rgba(10,18,24,.58); display: grid; place-items: center; padding: 18px; }
+      .phase3-picker-sheet { position: relative; z-index: 1; width: min(880px, calc(100vw - 36px)); max-height: min(760px, calc(100dvh - 36px)); overflow-y: auto; overscroll-behavior: contain; background: var(--bg); color: var(--text); border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--shadow); padding: 16px; display: grid; gap: 14px; }
+      .phase3-picker-state { min-height: 180px; display: grid; place-items: center; align-content: center; gap: 12px; padding: 24px; text-align: center; }
+      .phase3-picker-error { color: var(--text); }
       .phase3-chip-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
-      .phase3-chip { border: 1px solid var(--line); background: var(--panel-soft); color: var(--text); border-radius: 999px; min-height: 34px; padding: 0 12px; }
+      .phase3-chip { border: 1px solid var(--line); background: var(--surface-2); color: var(--text); border-radius: 999px; min-height: 34px; padding: 0 12px; }
       .phase3-chip.active { border-color: var(--brand); background: rgba(30,90,86,.12); font-weight: 700; }
       .phase3-picker-count { color: var(--muted); font-size: .86rem; }
       .phase3-picker-results { display: grid; gap: 10px; }
@@ -2220,7 +2290,7 @@
       @media (max-width: 880px) {
         .phase3-grid, .phase3-form-grid, .phase3-set-grid, .phase3-library-filters { grid-template-columns: 1fr; }
         .phase3-picker-backdrop { align-items: end; padding: 0; }
-        .phase3-picker-sheet { width: 100%; max-height: 92vh; border-radius: 8px 8px 0 0; }
+        .phase3-picker-sheet { width: 100%; max-height: calc(100dvh - 12px); border-radius: 8px 8px 0 0; padding-bottom: calc(16px + env(safe-area-inset-bottom)); }
         .phase3-picker-card { grid-template-columns: 82px minmax(0, 1fr); }
         .phase3-picker-card .primary-btn { grid-column: 1 / -1; }
       }
@@ -2326,7 +2396,6 @@
             <span class="save-feedback" data-save-feedback="phase3-plan"></span>
           </div>
         </form>
-        ${phase3RenderExercisePicker(disabled)}
       </section>
     `;
   }
@@ -2567,11 +2636,13 @@
       if (!section) return;
       section.dataset.phase3Mode = "client";
       section.innerHTML = phase3RenderClientTraining();
+      phase3SyncPickerPortal(!phase3CanCreateActiveWorkoutDay());
       phase3UpdateTimerText();
       return;
     }
     const section = document.getElementById("training");
     if (section?.dataset.phase3Mode === "client") {
+      phase3CloseExercisePicker();
       section.innerHTML = phase3TrainingInitialHtml;
       delete section.dataset.phase3Mode;
     }
@@ -2590,7 +2661,10 @@
 
   const phase3OriginalShowView = showView;
   showView = function showViewPhase3(view) {
-    if (view !== "training") phase3StopTimer();
+    if (view !== "training") {
+      phase3StopTimer();
+      phase3CloseExercisePicker();
+    }
     const result = phase3OriginalShowView(view);
     if (view === "training" && isLoggedIn() && state.ui.role === "client") {
       phase3LoadCanonicalCatalog().then((loaded) => {
@@ -2604,6 +2678,7 @@
   renderAll = function renderAllPhase3() {
     if (!isLoggedIn()) {
       phase3StopTimer();
+      phase3CloseExercisePicker();
       phase3State = phase3EmptyState();
       phase3UserKey = "";
     }
@@ -2677,6 +2752,12 @@
 
     if (button.dataset.phase3ClosePicker !== undefined) {
       phase3CloseExercisePicker();
+      renderTraining();
+      return;
+    }
+
+    if (button.dataset.phase3RetryCatalog !== undefined) {
+      await phase3RetryExerciseCatalog();
       renderTraining();
       return;
     }
@@ -2780,6 +2861,13 @@
       if (!result.ok) setSaveFeedback("phase3-plan", phase3Format("saveFailed", { message: result.error.message }), true);
       renderTraining();
     }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape" || !phase3PickerOpen) return;
+    event.preventDefault();
+    phase3CloseExercisePicker();
+    renderTraining();
   });
 
   window.addEventListener("online", () => {
