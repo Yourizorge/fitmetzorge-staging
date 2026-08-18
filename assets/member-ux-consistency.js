@@ -2,7 +2,7 @@
   if (window.FMZ_MEMBER_UX_CONSISTENCY_LOADED) return;
   window.FMZ_MEMBER_UX_CONSISTENCY_LOADED = true;
 
-  const MEMBER_UX_VERSION = "20260818-member-ux-runtime-contract1";
+  const MEMBER_UX_VERSION = "20260818-member-ux-today-hydration1";
   const MEMBER_UX_LANGUAGES = ["nl", "en", "de"];
   const MEMBER_UX_LEGACY_TRACKER_VIEW_IDS = ["steps", "sleep", "wellbeing", "water", "progress"];
 
@@ -333,6 +333,17 @@
     return Boolean(contract && typeof contract.isComplete === "function" && contract.isComplete(selected));
   }
 
+  function memberUxOnboardingStatus(selected) {
+    const contract = window.FMZ_PHASE1_ONBOARDING;
+    const status = contract && typeof contract.inspect === "function"
+      ? contract.inspect(selected)
+      : { complete: false, missingRequiredFields: ["phase1_contract"] };
+    const hydration = contract && typeof contract.hydrationState === "function"
+      ? contract.hydrationState()
+      : { loaded: false, rowFound: false, failed: false };
+    return { ...status, hydration };
+  }
+
   function memberUxSetLegacyTrackerViewsHidden(hidden) {
     MEMBER_UX_LEGACY_TRACKER_VIEW_IDS.forEach((id) => {
       const view = document.getElementById(id);
@@ -574,6 +585,7 @@
     const recovery = memberUxRecoveryCompletion(day);
     const training = memberUxTrainingSummary();
     const onboardingComplete = memberUxOnboardingComplete(selected);
+    const onboardingStatus = memberUxOnboardingStatus(selected);
     const firstName = String(selected.name || state.ui.authName || "").split(" ")[0] || memberUxText("today");
     const checkinTitle = memberUxText(recovery.complete ? "checkinComplete" : "checkinQuestion");
     const checkinAction = memberUxText(recovery.complete ? "viewCheckin" : "fillCheckin");
@@ -612,6 +624,23 @@
         `}
       </div>
     `;
+
+    window.FMZ_MEMBER_UX_TODAY_DIAGNOSTICS = Object.freeze({
+      version: MEMBER_UX_VERSION,
+      activeView: currentView,
+      onboardingLoaded: Boolean(onboardingStatus.hydration.loaded),
+      onboardingRowLoaded: Boolean(onboardingStatus.hydration.rowFound),
+      onboardingHydrationFailed: Boolean(onboardingStatus.hydration.failed),
+      onboardingComplete,
+      missingRequiredFields: [...onboardingStatus.missingRequiredFields],
+      normalTodayBranch: onboardingComplete,
+      checkinEligible: onboardingComplete,
+      trainingEligible: onboardingComplete,
+      checkinRendered: Boolean(target.querySelector(".member-ux-daily-checkin")),
+      trainingRendered: Boolean(target.querySelector(".member-ux-training-today")),
+      gateRendered: Boolean(target.querySelector(".member-ux-profile-cta")),
+      staleGateRendered: onboardingComplete && Boolean(target.querySelector(".member-ux-profile-cta"))
+    });
   }
 
   function memberUxTrackerCard(type, title, value, detail, actions = "", wide = false) {

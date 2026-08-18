@@ -5,6 +5,12 @@
   const PHASE1_LANGUAGES = ["nl", "en", "de"];
   const PHASE1_GENDERS = ["female", "male", "non_binary", "prefer_not_to_say", "not_relevant"];
   const PHASE1_GOAL_DIRECTIONS = ["lose_weight", "gain_muscle", "recomposition", "fitness", "health", "other"];
+  const PHASE1_GOAL_DIRECTION_ALIASES = Object.freeze({
+    maintain_weight: "health",
+    improve_fitness: "fitness",
+    general_health: "health"
+  });
+  let phase1OnboardingHydrationState = { loaded: false, rowFound: false, failed: false };
 
   const PHASE1_I18N = {
     nl: {
@@ -1226,6 +1232,8 @@
       ...defaultClientProfileData(),
       ...previousProfile
     };
+    selected.profile.gender = phase1NormalizeGender(selected.profile.gender);
+    selected.profile.goalDirection = phase1NormalizeGoalDirection(selected.profile.goalDirection);
     if (!selected.profile.firstName && selected.name) {
       selected.profile.firstName = String(selected.name).split(" ")[0] || "";
     }
@@ -1292,25 +1300,48 @@
     return phase1RefreshClient(created);
   };
 
-  function phase1OnboardingComplete(selected) {
+  function phase1NormalizeGender(value) {
+    return String(value || "").trim().toLowerCase().replace(/[\s-]+/g, "_");
+  }
+
+  function phase1NormalizeGoalDirection(value) {
+    const normalized = String(value || "").trim().toLowerCase().replace(/[\s-]+/g, "_");
+    return PHASE1_GOAL_DIRECTION_ALIASES[normalized] || normalized;
+  }
+
+  function phase1OnboardingStatus(selected) {
     const profile = selected?.profile || {};
     const hasName = Boolean(String(profile.firstName || selected?.name || "").trim());
     const age = number(profile.age);
     const height = number(profile.height);
     const weight = number(profile.currentWeight);
-    const hasTargetWhenNeeded = !["lose_weight", "gain_muscle"].includes(profile.goalDirection) || number(profile.targetWeight) > 0;
-    return hasName
-      && age >= 18
-      && height > 0
-      && weight > 0
-      && PHASE1_GENDERS.includes(profile.gender)
-      && PHASE1_GOAL_DIRECTIONS.includes(profile.goalDirection)
-      && Boolean(String(selected?.goal || "").trim())
-      && hasTargetWhenNeeded;
+    const gender = phase1NormalizeGender(profile.gender);
+    const goalDirection = phase1NormalizeGoalDirection(profile.goalDirection);
+    const hasGoal = Boolean(String(selected?.goal || "").trim());
+    const hasTargetWhenNeeded = !["lose_weight", "gain_muscle"].includes(goalDirection) || number(profile.targetWeight) > 0;
+    const missingRequiredFields = [];
+    if (!hasName) missingRequiredFields.push("name");
+    if (age < 18) missingRequiredFields.push("age");
+    if (height <= 0) missingRequiredFields.push("height");
+    if (weight <= 0) missingRequiredFields.push("weight");
+    if (!PHASE1_GENDERS.includes(gender)) missingRequiredFields.push("gender");
+    if (!PHASE1_GOAL_DIRECTIONS.includes(goalDirection)) missingRequiredFields.push("goal_direction");
+    if (!hasGoal) missingRequiredFields.push("fitness_goal");
+    if (!hasTargetWhenNeeded) missingRequiredFields.push("target_weight");
+    return {
+      complete: missingRequiredFields.length === 0,
+      missingRequiredFields
+    };
+  }
+
+  function phase1OnboardingComplete(selected) {
+    return phase1OnboardingStatus(selected).complete;
   }
 
   window.FMZ_PHASE1_ONBOARDING = Object.freeze({
-    isComplete: phase1OnboardingComplete
+    isComplete: phase1OnboardingComplete,
+    inspect: phase1OnboardingStatus,
+    hydrationState: () => ({ ...phase1OnboardingHydrationState })
   });
 
   function phase1LanguageOptions(active) {
@@ -2023,8 +2054,8 @@
       age: row.age ?? selected.profile?.age ?? "",
       height: row.height_cm ?? selected.profile?.height ?? "",
       currentWeight: row.weight_kg ?? selected.profile?.currentWeight ?? "",
-      gender: row.gender ?? selected.profile?.gender ?? "",
-      goalDirection: row.goal_direction ?? selected.profile?.goalDirection ?? "",
+      gender: phase1NormalizeGender(row.gender ?? selected.profile?.gender ?? ""),
+      goalDirection: phase1NormalizeGoalDirection(row.goal_direction ?? selected.profile?.goalDirection ?? ""),
       targetWeight: row.target_weight_kg ?? selected.profile?.targetWeight ?? "",
       trainingExperience: row.training_experience ?? selected.profile?.trainingExperience ?? "",
       availableDays: row.available_days ?? selected.profile?.availableDays ?? "",
@@ -2046,6 +2077,7 @@
 
   async function phase1HydrateOnboarding(profile) {
     if (!isOnlineMode() || !supabaseClient || profile?.role !== "client" || !profile.id) return null;
+    phase1OnboardingHydrationState = { loaded: false, rowFound: false, failed: false };
     try {
       const { data, error } = await supabaseClient
         .from("user_onboarding")
@@ -2053,8 +2085,10 @@
         .eq("user_id", profile.id)
         .maybeSingle();
       if (error) throw error;
+      phase1OnboardingHydrationState = { loaded: true, rowFound: Boolean(data), failed: false };
       return data || null;
     } catch (error) {
+      phase1OnboardingHydrationState = { loaded: true, rowFound: false, failed: true };
       console.warn("Phase 1 basisprofiel laden mislukt", error);
       return null;
     }
@@ -2127,9 +2161,18 @@
       return;
     }
     await phase1OriginalLoadOnlineWorkspace(profile);
+    let onboardingApplied = false;
+    if (profile?.role === "client" && remoteOnboarding) {
+      const selected = client();
+      if (selected && hasSelectedClient(selected)) {
+        phase1ApplyOnboardingRow(selected, remoteOnboarding);
+        onboardingApplied = true;
+      }
+    }
     if (remoteSettings) {
       phase1ApplyAccountSettings(remoteSettings);
-      saveState();
+    }
+    if (remoteSettings || onboardingApplied) {
       renderNav();
       renderAll();
       showView(currentView);
