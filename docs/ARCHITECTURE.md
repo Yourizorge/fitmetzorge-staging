@@ -1,0 +1,277 @@
+# FitMetZorge Architecture
+
+Status: CURRENT AND TARGET ARCHITECTURE DOCUMENTED
+Last updated: 2026-08-15
+
+## Environment Boundary
+
+Staging and production are permanently separate.
+
+- Staging Supabase project ref: `mokxyyullfhkfalopbzd`.
+- Production Supabase project ref: `hgoygcviutmynaihcvpd`.
+- Production is strictly forbidden without explicit owner approval.
+- This architecture document does not authorize code, database, Supabase, Auth, Edge Function, SMTP, deployment, or production changes.
+
+## CURRENT ARCHITECTURE
+
+The current staging application is a static frontend application built with plain HTML, CSS, and JavaScript.
+
+The current root files include:
+
+- `index.html` as the main static entrypoint.
+- `styles.css` for application styling.
+- `config.js` for public Supabase configuration.
+- `app.js` as a staging launcher that loads and rewrites `app.bundle.js` at runtime.
+- `app.bundle.js` as the main monolithic application bundle.
+- `Fit_Met_Zorge_Coach_App_standalone.html` as a standalone historical artifact.
+- `supabase/migrations/20260813_trainer_signup_bootstrap.sql` as the only visible local migration from the baseline audit.
+
+Supabase is used for Auth and cloud synchronization. The frontend initializes Supabase through the hosted Supabase JS v2 library.
+
+The visible database model currently depends on:
+
+- `profiles`.
+- `coach_workspaces`.
+- Supabase `auth.users`.
+
+The current application stores most trainer and client domain data inside `coach_workspaces.state` as JSONB. The frontend reads and writes this workspace state directly through Supabase queries.
+
+The current state structure includes trainer account data, UI state, finance/admin settings, exercise library data, and `clients[]`. Client entries include profile fields, goals, training plans, nutrition plans, trackers, appointments, logs, and progress data.
+
+## CURRENT STAGING INFRASTRUCTURE VERIFIED IN PHASE 0B
+
+Phase 0B verified live staging metadata and dashboard state for project ref `mokxyyullfhkfalopbzd`.
+
+Verified areas:
+
+- Full structure of `profiles` from read-only metadata output.
+- Full structure of `coach_workspaces` from read-only metadata output.
+- Primary keys, foreign keys, unique constraints, indexes, RLS status, and policies from metadata output.
+- Function/RPC `accept_client_invite` existence and definition metadata.
+- Trigger/functions around new Auth users, including `fmz_bootstrap_trainer_profile` and `fmz_handle_new_auth_user` metadata.
+- Edge Function `invite-client` exists, is deployed, and source was reviewed read-only.
+- Edge Function secret names were verified without secret values.
+- Auth URL configuration was verified.
+- SMTP/email configuration and templates were verified.
+- Storage was verified: staging currently has no Storage buckets.
+
+See `docs/STAGING_INFRA_VERIFICATION.md` for the detailed Phase 0B record.
+
+## CURRENT AUTH AND INVITE ARCHITECTURE
+
+Phase 0B live staging verification confirmed the Edge Function `invite-client` exists and is deployed in staging project ref `mokxyyullfhkfalopbzd`.
+
+The current client invite architecture is:
+
+- Browser frontend calls `/functions/v1/invite-client` with the trainer's Supabase bearer token.
+- Edge Function verifies the bearer token through a user-scoped Supabase client and `auth.getUser()`.
+- Edge Function authorizes the caller by checking the caller's `profiles` row and requiring `role = trainer`.
+- Edge Function uses a service-role Supabase client only in the trusted server-side function context.
+- Service-role is required for Auth admin actions such as inviting users, listing existing Auth users, updating user metadata, sending reset links for existing users, and upserting `profiles` links.
+- New client users receive `auth.admin.inviteUserByEmail(...)` with metadata containing `role`, `trainer_id`, `client_id`, and `name`.
+- Existing Auth users are found through paginated Auth admin user listing, relinked through Auth metadata and `profiles`, then sent a password reset email as the invite/re-entry flow.
+- The persistent trainer/client relationship is stored in `profiles.trainer_id` and `profiles.client_id`.
+- Invite metadata mirrors that relationship in Auth `user_metadata` so `accept_client_invite` can complete or repair the client profile on login.
+
+Verified staging redirect behavior in `invite-client`:
+
+- Default redirect: `https://yourizorge.github.io/fitmetzorge-staging/`.
+- Allowed redirect origins in the function: `https://yourizorge.github.io` and `https://test.appfmz.nl`.
+- `yourizorge.github.io` redirects must stay under `/fitmetzorge-staging/`.
+- `WEBAPP_URL` may be used only if it passes the same whitelist.
+
+Auth URL Configuration verified in Dashboard:
+
+- Site URL: `https://yourizorge.github.io/fitmetzorge-staging/`.
+- Allowed Redirect URLs: `https://yourizorge.github.io/fitmetzorge-staging/` and `https://yourizorge.github.io/fitmetzorge-staging/**`.
+- No production URLs were present in this configuration.
+
+Known technical risks to preserve for later design:
+
+- The Edge Function currently uses broad CORS with `Access-Control-Allow-Origin: *`.
+- Existing Auth-user relinking currently scans Auth users with pagination up to 20 pages of 1000 users.
+- `updateUserById` writes a complete `user_metadata` object for the client invite metadata, which may replace unrelated existing metadata.
+- These risks are documented only; they must not be changed until a controlled implementation phase.
+
+## CURRENT LEGACY CAPABILITIES TO PRESERVE
+
+The rebuild must preserve existing working staging functionality until tested replacements are accepted:
+
+- Trainer dashboard.
+- Member/client management.
+- Client invite and invite acceptance.
+- Goals.
+- Training builder and exercise library.
+- Nutrition, recipes, macros.
+- Trackers.
+- Agenda and appointment types.
+- Administration, invoices, rates, finance.
+- Settings.
+- Client dashboard.
+- Client training, nutrition, trackers, agenda.
+- Supabase Auth, session persistence, password reset, cloud workspace sync.
+
+## PHASE 1 IMPLEMENTED FOUNDATION
+
+Status: LOCAL IMPLEMENTATION COMPLETE, DATABASE MIGRATION NOT EXECUTED
+
+Phase 1 adds an additive account foundation while preserving the current legacy app bundle and `coach_workspaces.state` compatibility.
+
+Local app changes:
+
+- `app.js` loads `assets/phase1-foundation.js` before `init()` inside the evaluated app bundle.
+- `app.bundle.js` is not modified.
+- Existing trainer/client login, reset, invite and invite acceptance paths remain in place.
+- Client onboarding, BMI, Goal Engine foundation, account language settings and local entitlement read model are added as a Phase 1 layer.
+
+Prepared database target:
+
+- `user_settings` for language/country/unit foundation.
+- `user_onboarding` for Phase 1 onboarding and safe goal metadata.
+- `entitlements` for default Free entitlement source of truth.
+- `fmz_phase1_upsert_account_foundation(...)` RPC for authenticated account foundation upsert.
+
+The prepared migration is `supabase/migrations/20260815_phase1_account_foundation.sql` and must be run manually only in staging project ref `mokxyyullfhkfalopbzd` before full online verification.
+## TARGET ARCHITECTURE
+
+The target architecture is a staged, normalized Supabase-backed web/PWA platform with server-enforced authorization and entitlements, AI behind trusted backend functions, and a permanent staging-to-production release path.
+
+### Frontend Target
+
+- Web/PWA first.
+- Mobile-first responsive consumer UX.
+- Trainer and owner/admin surfaces in the same product ecosystem with role-based access.
+- Translation-key based NL/EN/DE UI.
+- Feature flags for incomplete or high-risk capabilities.
+- Native iOS/Android later, using as much shared code as possible.
+
+### Data Model Target
+
+The new architecture must not permanently depend on one giant `coach_workspaces.state` JSONB model. Legacy remains temporarily as a compatibility source until migration is safe.
+
+Conceptual normalized domains:
+
+- IDENTITY: `profiles`, `user_settings`, `subscriptions`, `entitlements`.
+- COACHING: `coach_client_relationships`, `coach_notes`, trainer/copilot data.
+- TRAINING: `exercises`, `exercise_translations`, `training_plans`, `workouts`, `workout_exercises`, `workout_logs`, `workout_set_logs`, `personal_records`.
+- NUTRITION: `nutrition_targets`, `food_logs`, `food_log_items`, `foods`, `recipes`, `saved_meals`.
+- PROGRESS: `weight_logs`, `body_measurements`, `progress_photos`, `goals`, `goal_milestones`, `achievements`.
+- RECOVERY: `recovery_logs`, `health_sync_connections`, health samples where needed.
+- AI: `ai_threads`, `ai_messages`, `ai_recommendations`, `ai_action_proposals`, `ai_action_decisions`.
+- GROWTH: `referrals`, `referral_rewards`, `goal_rewards`, `bonus_entitlements`.
+- NOTIFICATIONS: `notifications`, `notification_preferences`, `push_tokens`.
+- ANALYTICS: privacy-aware event and aggregate data.
+
+These table names are directional. Later design may refine normalization, but the functional domains must remain covered.
+
+### Legacy Bridge And Migration Target
+
+Preserve these relationships during migration:
+
+- Auth user <-> `profiles.id`.
+- Trainer <-> `profiles.trainer_id`.
+- Client <-> `profiles.client_id`.
+- Trainer workspace <-> `coach_workspaces.trainer_id`.
+- Legacy client id <-> `coach_workspaces.state.clients[].id`.
+
+Target migration strategy:
+
+1. Inventory legacy JSON state shape.
+2. Design normalized tables and RLS in staging.
+3. Build compatibility bridge/read model where needed.
+4. Rehearse migration with staging data only.
+5. Validate counts, relationships, permissions, and user flows.
+6. Keep rollback path.
+7. Only consider production after backup, rehearsal, validation, rollback plan, and owner approval.
+
+### Security And RLS Target
+
+- RLS is primary database security.
+- UI hiding is never a security boundary.
+- Sensitive actions require server-side authorization.
+- Trainer can access only linked clients.
+- Client can access only own/allowed data.
+- Owner/admin access must be explicit through role/claims and safe backend rules.
+- Service-role, AI, and payment secrets never reach the frontend.
+- Use least privilege and audit logging for important actions.
+- Avoid personal, health, and fitness data in logs unless necessary and safe.
+
+### Entitlements And Payments Target
+
+The entitlement layer is the single source of truth for plan and feature access.
+
+Free/Pro/AI access must be enforced server-side.
+
+Entitlements must cover barcode, Health sync, AI Coach, workout limits, premium analytics, bonus AI, and Personal Coaching included access.
+
+A minimal entitlement foundation is required before consumer domains or AI consume entitlement decisions. Subscription, trial, referral, goal reward, bonus-day, and payment-webhook lifecycle logic expands later in Phase 7.
+
+Trials, referrals, goal rewards, and Personal Coaching access must be real temporary entitlements/credits.
+
+Payment provider is `NEEDS DECISION`. Provider webhooks must become source of truth for paid subscriptions. Client-side premium booleans are not trusted. Payment integration starts in staging test mode only.
+
+### Phase 4 Nutrition Target
+
+The Phase 4 architecture/readiness audit is recorded in `docs/PHASE4_NUTRITION_ARCHITECTURE_READINESS.md`. The locked owner product contract and exact first additive schema-slice design are recorded in `docs/PHASE4_NUTRITION_PRODUCT_CONTRACT_SCHEMA_SLICE1.md`. The additive local migration `supabase/migrations/20260818_phase4_nutrition_schema_slice1.sql`, its read-only verification artifact, and the Phase 4 static suite have been created for owner review. They have not been executed or deployed; no live Phase 4 table, feature code, food import, or provider integration exists.
+
+The target Nutrition architecture replaces new whole-workspace JSON writes with normalized own-user data while preserving legacy `coach_workspaces.state` Nutrition until a reviewed transition is accepted. Directional objects include versioned `nutrition_targets`, calendar-day `food_logs`, immutable-snapshot `food_log_items`, provenance-aware `foods`, favorites, saved meals/items, recipes/items, and normalized nutrition plans/meals/items.
+
+Key architecture rules:
+
+- Historical log items keep nutrient/source snapshots; mutable catalog rows cannot rewrite history.
+- Day totals derive from non-archived item snapshots; no second mutable totals source is introduced by default.
+- Dates use the member's local `log_date` plus timezone context; weekend is not assumed to mean rest day.
+- Macro values use constrained PostgreSQL `numeric`; volume conversion requires known density/serving data.
+- Phase 1 `entitlements` is evaluated server-side for current active/time-valid rights; missing rights produce Free behavior.
+- RLS is own-user only in the initial member slice. No broad trainer policy or whole-workspace authorization is added.
+- Multi-row writes and copy operations are transactional and idempotent through stable UUID/request IDs and unique constraints.
+- Barcode/provider access is backend-mediated, feature-flagged, entitlement-checked, cached, rate-limited, and secret-free in the browser.
+- Youri AI execution remains Phase 6; trainer normalized access requires a separately reviewed linked-client architecture.
+
+The owner contract fixes Free at targets, unlimited normal daily logging, totals, 10 active custom foods, and seven-day history. Pro adds the complete self-service engine; AI receives Pro Nutrition without Phase 4 AI execution; PT receives full member capability while trainer access remains a separate reviewed policy. History and custom-food limits are server-authoritative. Slice 1 uses six additive own-user tables and entitlement-aware RPC reads; direct authenticated base-table reads do not expose premium history.
+
+The reviewed local SQL implements RPC-only direct access for preferences, targets, logs, and items; authenticated receives SELECT only on `foods` and `food_portions`. Internal helpers and trigger functions have no app-role execute right. Public RPCs derive authority from `auth.uid()`, use a fixed safe search path, and expose no trainer shortcut. These are intended contracts pending owner SQL review and live staging verification, not claims about the current live database.
+
+### AI Backend Target
+
+No browser-to-AI provider calls.
+
+Required flow:
+
+1. App calls secure backend/Edge Function.
+2. Backend authenticates user.
+3. Backend authorizes action.
+4. Backend checks entitlement.
+5. Backend retrieves minimal relevant context.
+6. Backend calls AI provider.
+7. Backend validates structured response.
+8. Backend stores recommendation/proposal/action only where allowed.
+
+Strategic AI actions require proposal -> approval -> execution. Trainer priority applies for PT clients. AI usage, cost, rate limit, and abuse-control logging are mandatory.
+
+### Storage Target
+
+Phase 0B verified no current staging Storage buckets.
+
+Target storage:
+
+- Private progress-photo bucket.
+- Private sensitive upload buckets as needed.
+- Signed URLs or equivalent secure access.
+- Exercise media separately as read-only/public or CDN-like assets where appropriate.
+- No sensitive files public.
+
+### Analytics Target
+
+Owner analytics and Business Insights must be privacy-aware. Product AI insights must distinguish observation, correlation, hypothesis, and recommendation. Unsupported causal claims are forbidden.
+
+### Mobile Target
+
+After mature PWA staging:
+
+1. iOS TestFlight staging build.
+2. Android internal/closed staging build.
+3. Mobile QA using staging backend.
+4. Production app store builds only after Production Readiness Review and owner approval.
+
+
