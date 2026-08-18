@@ -2,7 +2,7 @@
   if (window.FMZ_MEMBER_UX_CONSISTENCY_LOADED) return;
   window.FMZ_MEMBER_UX_CONSISTENCY_LOADED = true;
 
-  const MEMBER_UX_VERSION = "20260818-member-ux-final-owner1";
+  const MEMBER_UX_VERSION = "20260818-member-ux-runtime-contract1";
   const MEMBER_UX_LANGUAGES = ["nl", "en", "de"];
   const MEMBER_UX_LEGACY_TRACKER_VIEW_IDS = ["steps", "sleep", "wellbeing", "water", "progress"];
 
@@ -329,7 +329,8 @@
   }
 
   function memberUxOnboardingComplete(selected) {
-    return phase1OnboardingComplete(selected);
+    const contract = window.FMZ_PHASE1_ONBOARDING;
+    return Boolean(contract && typeof contract.isComplete === "function" && contract.isComplete(selected));
   }
 
   function memberUxSetLegacyTrackerViewsHidden(hidden) {
