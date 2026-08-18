@@ -2,10 +2,9 @@
   if (window.FMZ_MEMBER_UX_CONSISTENCY_LOADED) return;
   window.FMZ_MEMBER_UX_CONSISTENCY_LOADED = true;
 
-  const MEMBER_UX_VERSION = "20260818-member-ux-today-simplified1";
+  const MEMBER_UX_VERSION = "20260818-member-ux-final-owner1";
   const MEMBER_UX_LANGUAGES = ["nl", "en", "de"];
-  const MEMBER_UX_GENDERS = ["female", "male", "non_binary", "prefer_not_to_say", "not_relevant"];
-  const MEMBER_UX_GOAL_DIRECTIONS = ["lose_weight", "maintain_weight", "gain_muscle", "improve_fitness", "general_health"];
+  const MEMBER_UX_LEGACY_TRACKER_VIEW_IDS = ["steps", "sleep", "wellbeing", "water", "progress"];
 
   const MEMBER_UX_I18N = {
     nl: {
@@ -330,16 +329,21 @@
   }
 
   function memberUxOnboardingComplete(selected) {
-    const profile = selected?.profile || {};
-    const targetRequired = ["lose_weight", "gain_muscle"].includes(profile.goalDirection);
-    return Boolean(String(profile.firstName || selected?.name || "").trim())
-      && number(profile.age) >= 18
-      && number(profile.height) > 0
-      && number(profile.currentWeight) > 0
-      && MEMBER_UX_GENDERS.includes(profile.gender)
-      && MEMBER_UX_GOAL_DIRECTIONS.includes(profile.goalDirection)
-      && Boolean(String(selected?.goal || "").trim())
-      && (!targetRequired || number(profile.targetWeight) > 0);
+    return phase1OnboardingComplete(selected);
+  }
+
+  function memberUxSetLegacyTrackerViewsHidden(hidden) {
+    MEMBER_UX_LEGACY_TRACKER_VIEW_IDS.forEach((id) => {
+      const view = document.getElementById(id);
+      if (!view) return;
+      view.hidden = hidden;
+      if (hidden) {
+        view.classList.remove("active");
+        view.setAttribute("aria-hidden", "true");
+      } else {
+        view.removeAttribute("aria-hidden");
+      }
+    });
   }
 
   function memberUxSelectedDayIndex() {
@@ -477,6 +481,11 @@
       .member-ux-card-wide { grid-column: 1 / -1; }
       .member-ux-card p { margin: 0; }
       .member-ux-card-actions { justify-content: flex-start; flex-wrap: wrap; }
+      .member-ux-primary-action {
+        background: linear-gradient(135deg, var(--gold), #e2b848);
+        border-color: transparent;
+        color: #17120a;
+      }
       .member-ux-metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
       .member-ux-metric { display: grid; gap: 2px; min-width: 0; }
       .member-ux-metric span,
@@ -607,7 +616,7 @@
   function memberUxTrackerCard(type, title, value, detail, actions = "", wide = false) {
     return `
       <section class="member-ux-card ${wide ? "member-ux-card-wide" : ""}">
-        <div class="member-ux-card-head"><h2>${escapeHTML(title)}</h2><button class="secondary-btn" data-member-open-detail="${escapeHTML(type)}" type="button" aria-haspopup="dialog" aria-controls="memberUxDetailPortal" aria-expanded="false">${escapeHTML(memberUxText("open"))}</button></div>
+        <div class="member-ux-card-head"><h2>${escapeHTML(title)}</h2><button class="primary-btn member-ux-primary-action" data-member-open-detail="${escapeHTML(type)}" type="button" aria-haspopup="dialog" aria-controls="memberUxDetailPortal" aria-expanded="false">${escapeHTML(memberUxText("open"))}</button></div>
         <strong>${escapeHTML(value)}</strong>
         ${detail ? `<p class="muted">${escapeHTML(detail)}</p>` : ""}
         ${actions ? `<div class="member-ux-card-actions">${actions}</div>` : ""}
@@ -625,6 +634,7 @@
       target.innerHTML = emptyTrackerState(memberUxText("noData"));
       return;
     }
+    memberUxSetLegacyTrackerViewsHidden(true);
     const index = memberUxSelectedDayIndex();
     const day = memberUxReadDay(selected, index);
     const recovery = memberUxRecoveryCompletion(day);
@@ -918,6 +928,9 @@
   };
 
   showView = function showViewMemberBoundary(id) {
+    if (isLoggedIn() && state.ui.role === "client" && MEMBER_UX_LEGACY_TRACKER_VIEW_IDS.includes(id)) {
+      id = "trackers";
+    }
     const selectiveMemberView = isLoggedIn()
       && state.ui.role === "client"
       && ["client-home", "trackers"].includes(id)
@@ -934,7 +947,9 @@
 
   renderAll = function renderAllMemberBoundary() {
     const result = memberUxOriginalRenderAll();
-    if (!isLoggedIn() || state.ui.role !== "client") memberUxCloseDetail({ restoreFocus: false });
+    const clientMode = isLoggedIn() && state.ui.role === "client";
+    memberUxSetLegacyTrackerViewsHidden(clientMode);
+    if (!clientMode) memberUxCloseDetail({ restoreFocus: false });
     return result;
   };
 
