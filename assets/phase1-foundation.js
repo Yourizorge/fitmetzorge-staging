@@ -2009,6 +2009,53 @@
     }
   }
 
+  function phase1ApplyOnboardingRow(selected, row) {
+    if (!selected || !row) return selected;
+    selected.profile = {
+      ...defaultClientProfileData(),
+      ...(selected.profile || {}),
+      firstName: row.first_name ?? selected.profile?.firstName ?? "",
+      lastName: row.last_name ?? selected.profile?.lastName ?? "",
+      age: row.age ?? selected.profile?.age ?? "",
+      height: row.height_cm ?? selected.profile?.height ?? "",
+      currentWeight: row.weight_kg ?? selected.profile?.currentWeight ?? "",
+      gender: row.gender ?? selected.profile?.gender ?? "",
+      goalDirection: row.goal_direction ?? selected.profile?.goalDirection ?? "",
+      targetWeight: row.target_weight_kg ?? selected.profile?.targetWeight ?? "",
+      trainingExperience: row.training_experience ?? selected.profile?.trainingExperience ?? "",
+      availableDays: row.available_days ?? selected.profile?.availableDays ?? "",
+      nutritionPreferences: row.nutrition_preferences ?? selected.profile?.nutritionPreferences ?? "",
+      practicalConstraints: row.practical_constraints ?? selected.profile?.practicalConstraints ?? "",
+      onboardingCompletedAt: row.completed_at ?? selected.profile?.onboardingCompletedAt ?? "",
+      bmi: row.bmi ?? selected.profile?.bmi ?? "",
+      goalSafetyStatus: row.goal_safety_status ?? selected.profile?.goalSafetyStatus ?? "needs_input",
+      goalSafetyNote: row.goal_safety_note ?? selected.profile?.goalSafetyNote ?? "",
+      goalTimelineWeeks: row.goal_timeline_weeks ?? selected.profile?.goalTimelineWeeks ?? ""
+    };
+    selected.goal = row.fitness_goal ?? selected.goal ?? "";
+    selected.goals = selected.goals || { ...DEFAULT_GOALS };
+    selected.goals.targetWeight = selected.profile.targetWeight || "";
+    const profileName = `${selected.profile.firstName || ""} ${selected.profile.lastName || ""}`.trim();
+    if (profileName) selected.name = profileName;
+    return phase1RefreshClient(selected);
+  }
+
+  async function phase1HydrateOnboarding(profile) {
+    if (!isOnlineMode() || !supabaseClient || profile?.role !== "client" || !profile.id) return null;
+    try {
+      const { data, error } = await supabaseClient
+        .from("user_onboarding")
+        .select("first_name,last_name,age,height_cm,weight_kg,gender,fitness_goal,goal_direction,target_weight_kg,training_experience,available_days,nutrition_preferences,practical_constraints,bmi,goal_safety_status,goal_safety_note,goal_timeline_weeks,completed_at")
+        .eq("user_id", profile.id)
+        .maybeSingle();
+      if (error) throw error;
+      return data || null;
+    } catch (error) {
+      console.warn("Phase 1 basisprofiel laden mislukt", error);
+      return null;
+    }
+  }
+
   const phase1OriginalEnsureOnlineProfile = ensureOnlineProfile;
   ensureOnlineProfile = async function ensureOnlineProfilePhase1(roleHint = "", nameHint = "") {
     try {
@@ -2039,7 +2086,10 @@
 
   const phase1OriginalLoadOnlineWorkspace = loadOnlineWorkspace;
   loadOnlineWorkspace = async function loadOnlineWorkspacePhase1(profile) {
-    const remoteSettings = await phase1HydrateAccountSettings(profile);
+    const [remoteSettings, remoteOnboarding] = await Promise.all([
+      phase1HydrateAccountSettings(profile),
+      phase1HydrateOnboarding(profile)
+    ]);
     if (profile?.role === "client" && !profile.trainer_id) {
       const freeClient = createClientProfile({
         name: profile.name || profile.email || phase1Text("freeUserName"),
@@ -2047,6 +2097,7 @@
         password: "",
         registered: true
       });
+      phase1ApplyOnboardingRow(freeClient, remoteOnboarding);
       freeClient.id = profile.client_id || `free-${profile.id}`;
       const freeState = seedState();
       freeState.clients = [freeClient];
