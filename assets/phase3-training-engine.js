@@ -2,7 +2,7 @@
   if (window.FMZ_PHASE3_TRAINING_ENGINE_LOADED) return;
   window.FMZ_PHASE3_TRAINING_ENGINE_LOADED = true;
 
-  const PHASE3_VERSION = "20260817-phase3-instruction-disclosure1";
+  const PHASE3_VERSION = "20260818-phase3-disclosure-focusfix1";
   const PHASE3_LANGUAGES = ["nl", "en", "de"];
   const PHASE3_FREE_ACTIVE_DAY_LIMIT = 4;
   const PHASE3_REAL_CATALOG_EXPECTED_COUNT = 898;
@@ -3371,8 +3371,7 @@
     `;
   }
 
-  function phase3CurrentFocusExercise(session) {
-    const focus = phase3EnsureSessionFocus(session);
+  function phase3CurrentFocusExercise(session, focus = phase3EnsureSessionFocus(session)) {
     if (focus.allExercisesCompleted) return null;
     return session.plannedExercises[focus.currentExerciseIndex] || null;
   }
@@ -3459,7 +3458,7 @@
     const session = phase3State.activeSession;
     if (!session || !phase3FocusOpen) return "";
     const focus = phase3EnsureSessionFocus(session);
-    const exercise = phase3CurrentFocusExercise(session);
+    const exercise = phase3CurrentFocusExercise(session, focus);
     const isPaused = session.status === "paused";
     const totalExercises = session.plannedExercises.length;
     const meta = exercise ? phase3ExerciseMeta(exercise.slug) : null;
@@ -3981,7 +3980,7 @@
     if (button.dataset.phase3ToggleInstructions !== undefined) {
       const session = phase3State.activeSession;
       const focus = phase3EnsureSessionFocus(session);
-      const exercise = session ? phase3CurrentFocusExercise(session) : null;
+      const exercise = session ? phase3CurrentFocusExercise(session, focus) : null;
       const exerciseKey = phase3ExerciseKey(exercise);
       if (!exercise || button.dataset.phase3ToggleInstructions !== exerciseKey) return;
       if (focus.instructionExerciseKey !== exerciseKey) {
