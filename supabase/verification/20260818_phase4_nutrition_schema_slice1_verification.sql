@@ -484,31 +484,42 @@ missing_fks as (
    and a.delete_action = e.delete_action
   where a.table_name is null
 ),
-expected_indexes(index_name, table_name, unique_expected, key_expressions, predicate_compact) as (
+expected_indexes(
+  index_name,
+  table_name,
+  access_method,
+  unique_expected,
+  key_expressions,
+  sort_directions,
+  nulls_first,
+  opclasses,
+  predicate_compact
+) as (
   values
-    ('foods_canonical_slug_uidx'::text, 'foods'::text, true, array['canonical_slug']::text[], 'catalog_scope=''canonical'''::text),
-    ('foods_provider_identity_uidx', 'foods', true, array['source_provider', 'provider_food_id']::text[], 'provider_food_idisnotnull'),
-    ('foods_barcode_idx', 'foods', false, array['barcode']::text[], 'barcodeisnotnullandstatus=''active'''),
-    ('foods_active_name_idx', 'foods', false, array['lower(name) text_pattern_ops', 'id']::text[], 'status=''active'''),
-    ('foods_owner_status_idx', 'foods', false, array['owner_user_id', 'status']::text[], 'catalog_scope=''custom'''),
-    ('foods_source_provenance_idx', 'foods', false, array['source_provider', 'source_updated_at desc']::text[], 'catalog_scope=''canonical'''),
-    ('food_portions_active_label_uidx', 'food_portions', true, array['food_id', 'lower(label)']::text[], 'status=''active'''),
-    ('food_portions_one_active_default_uidx', 'food_portions', true, array['food_id']::text[], 'status=''active''andis_default'),
-    ('food_portions_food_status_order_idx', 'food_portions', false, array['food_id', 'status', 'sort_order', 'id']::text[], null),
-    ('nutrition_targets_user_request_uidx', 'nutrition_targets', true, array['user_id', 'request_id']::text[], null),
-    ('nutrition_targets_one_active_context_uidx', 'nutrition_targets', true, array['user_id', 'target_context']::text[], 'status=''active'''),
-    ('nutrition_targets_user_history_idx', 'nutrition_targets', false, array['user_id', 'target_context', 'effective_from desc', 'created_at desc']::text[], null),
-    ('food_logs_user_date_unique', 'food_logs', true, array['user_id', 'log_date']::text[], null),
-    ('food_logs_user_history_idx', 'food_logs', false, array['user_id', 'log_date desc']::text[], 'status=''active'''),
-    ('food_log_items_user_request_uidx', 'food_log_items', true, array['user_id', 'request_id']::text[], null),
-    ('food_log_items_log_meal_order_idx', 'food_log_items', false, array['user_id', 'food_log_id', 'meal_moment', 'sort_order', 'id']::text[], 'status=''active'''),
-    ('food_log_items_recent_food_idx', 'food_log_items', false, array['user_id', 'created_at desc', 'food_id']::text[], 'status=''active''andfood_idisnotnull'),
-    ('food_log_items_food_idx', 'food_log_items', false, array['food_id', 'created_at desc']::text[], 'food_idisnotnull')
+    ('foods_canonical_slug_uidx'::text, 'foods'::text, 'btree'::text, true, array['canonical_slug']::text[], array['asc']::text[], array[false]::boolean[], array['default']::text[], 'catalog_scope=''canonical'''::text),
+    ('foods_provider_identity_uidx', 'foods', 'btree', true, array['source_provider', 'provider_food_id']::text[], array['asc', 'asc']::text[], array[false, false]::boolean[], array['default', 'default']::text[], 'provider_food_idisnotnull'),
+    ('foods_barcode_idx', 'foods', 'btree', false, array['barcode']::text[], array['asc']::text[], array[false]::boolean[], array['default']::text[], 'barcodeisnotnullandstatus=''active'''),
+    ('foods_active_name_idx', 'foods', 'btree', false, array['lower(name)', 'id']::text[], array['asc', 'asc']::text[], array[false, false]::boolean[], array['text_pattern_ops', 'default']::text[], 'status=''active'''),
+    ('foods_owner_status_idx', 'foods', 'btree', false, array['owner_user_id', 'status']::text[], array['asc', 'asc']::text[], array[false, false]::boolean[], array['default', 'default']::text[], 'catalog_scope=''custom'''),
+    ('foods_source_provenance_idx', 'foods', 'btree', false, array['source_provider', 'source_updated_at']::text[], array['asc', 'desc']::text[], array[false, true]::boolean[], array['default', 'default']::text[], 'catalog_scope=''canonical'''),
+    ('food_portions_active_label_uidx', 'food_portions', 'btree', true, array['food_id', 'lower(label)']::text[], array['asc', 'asc']::text[], array[false, false]::boolean[], array['default', 'default']::text[], 'status=''active'''),
+    ('food_portions_one_active_default_uidx', 'food_portions', 'btree', true, array['food_id']::text[], array['asc']::text[], array[false]::boolean[], array['default']::text[], 'status=''active''andis_default'),
+    ('food_portions_food_status_order_idx', 'food_portions', 'btree', false, array['food_id', 'status', 'sort_order', 'id']::text[], array['asc', 'asc', 'asc', 'asc']::text[], array[false, false, false, false]::boolean[], array['default', 'default', 'default', 'default']::text[], null),
+    ('nutrition_targets_user_request_uidx', 'nutrition_targets', 'btree', true, array['user_id', 'request_id']::text[], array['asc', 'asc']::text[], array[false, false]::boolean[], array['default', 'default']::text[], null),
+    ('nutrition_targets_one_active_context_uidx', 'nutrition_targets', 'btree', true, array['user_id', 'target_context']::text[], array['asc', 'asc']::text[], array[false, false]::boolean[], array['default', 'default']::text[], 'status=''active'''),
+    ('nutrition_targets_user_history_idx', 'nutrition_targets', 'btree', false, array['user_id', 'target_context', 'effective_from', 'created_at']::text[], array['asc', 'asc', 'desc', 'desc']::text[], array[false, false, true, true]::boolean[], array['default', 'default', 'default', 'default']::text[], null),
+    ('food_logs_user_date_unique', 'food_logs', 'btree', true, array['user_id', 'log_date']::text[], array['asc', 'asc']::text[], array[false, false]::boolean[], array['default', 'default']::text[], null),
+    ('food_logs_user_history_idx', 'food_logs', 'btree', false, array['user_id', 'log_date']::text[], array['asc', 'desc']::text[], array[false, true]::boolean[], array['default', 'default']::text[], 'status=''active'''),
+    ('food_log_items_user_request_uidx', 'food_log_items', 'btree', true, array['user_id', 'request_id']::text[], array['asc', 'asc']::text[], array[false, false]::boolean[], array['default', 'default']::text[], null),
+    ('food_log_items_log_meal_order_idx', 'food_log_items', 'btree', false, array['user_id', 'food_log_id', 'meal_moment', 'sort_order', 'id']::text[], array['asc', 'asc', 'asc', 'asc', 'asc']::text[], array[false, false, false, false, false]::boolean[], array['default', 'default', 'default', 'default', 'default']::text[], 'status=''active'''),
+    ('food_log_items_recent_food_idx', 'food_log_items', 'btree', false, array['user_id', 'created_at', 'food_id']::text[], array['asc', 'desc', 'asc']::text[], array[false, true, false]::boolean[], array['default', 'default', 'default']::text[], 'status=''active''andfood_idisnotnull'),
+    ('food_log_items_food_idx', 'food_log_items', 'btree', false, array['food_id', 'created_at']::text[], array['asc', 'desc']::text[], array[false, true]::boolean[], array['default', 'default']::text[], 'food_idisnotnull')
 ),
 actual_indexes as (
   select
     ic.relname::text as index_name,
     tc.relname::text as table_name,
+    am.amname::text as access_method,
     i.indisunique,
     i.indisvalid,
     i.indisready,
@@ -526,11 +537,31 @@ actual_indexes as (
       from pg_catalog.generate_series(1, i.indnkeyatts) as key_position
       order by key_position
     )::text[] as key_expressions,
+    array(
+      select case when (option_bits::integer & 1) = 1 then 'desc' else 'asc' end
+      from pg_catalog.unnest(i.indoption::smallint[]) with ordinality as options(option_bits, key_position)
+      where key_position <= i.indnkeyatts
+      order by key_position
+    )::text[] as sort_directions,
+    array(
+      select (option_bits::integer & 2) = 2
+      from pg_catalog.unnest(i.indoption::smallint[]) with ordinality as options(option_bits, key_position)
+      where key_position <= i.indnkeyatts
+      order by key_position
+    )::boolean[] as nulls_first,
+    array(
+      select case when opc.opcdefault then 'default' else opc.opcname::text end
+      from pg_catalog.unnest(i.indclass::oid[]) with ordinality as classes(opclass_oid, key_position)
+      join pg_catalog.pg_opclass opc on opc.oid = classes.opclass_oid
+      where key_position <= i.indnkeyatts
+      order by key_position
+    )::text[] as opclasses,
     pg_catalog.pg_get_indexdef(i.indexrelid)::text as definition
   from pg_catalog.pg_index i
   join pg_catalog.pg_class ic on ic.oid = i.indexrelid
   join pg_catalog.pg_class tc on tc.oid = i.indrelid
   join pg_catalog.pg_namespace n on n.oid = tc.relnamespace
+  join pg_catalog.pg_am am on am.oid = ic.relam
   where n.nspname = 'public'
     and tc.relname in (select table_name from expected_tables)
 ),
@@ -538,11 +569,20 @@ missing_or_invalid_indexes as (
   select
     e.index_name,
     e.table_name,
+    e.access_method as expected_access_method,
+    a.access_method as actual_access_method,
     e.unique_expected,
     e.key_expressions as expected_key_expressions,
     a.key_expressions as actual_key_expressions,
+    e.sort_directions as expected_sort_directions,
+    a.sort_directions as actual_sort_directions,
+    e.nulls_first as expected_nulls_first,
+    a.nulls_first as actual_nulls_first,
+    e.opclasses as expected_opclasses,
+    a.opclasses as actual_opclasses,
     e.predicate_compact as expected_predicate,
-    a.predicate_compact as actual_predicate
+    a.predicate_compact as actual_predicate,
+    a.definition as actual_definition
   from expected_indexes e
   left join actual_indexes a
     on a.index_name = e.index_name
@@ -550,8 +590,12 @@ missing_or_invalid_indexes as (
   where a.index_name is null
      or not a.indisvalid
      or not a.indisready
+     or a.access_method is distinct from e.access_method
      or a.indisunique is distinct from e.unique_expected
      or a.key_expressions is distinct from e.key_expressions
+     or a.sort_directions is distinct from e.sort_directions
+     or a.nulls_first is distinct from e.nulls_first
+     or a.opclasses is distinct from e.opclasses
      or a.predicate_compact is distinct from e.predicate_compact
 ),
 expected_policies(
@@ -1071,11 +1115,16 @@ checks(check_name, pass, details) as (
       'actual', coalesce((select jsonb_agg(jsonb_build_object(
         'name', index_name,
         'table', table_name,
+        'access_method', access_method,
         'unique', indisunique,
         'valid', indisvalid,
         'ready', indisready,
         'keys', key_expressions,
-        'predicate', predicate_compact
+        'sort_directions', sort_directions,
+        'nulls_first', nulls_first,
+        'opclasses', opclasses,
+        'predicate', predicate_compact,
+        'definition', definition
       ) order by index_name) from actual_indexes where index_name in (select index_name from expected_indexes)), '[]'::jsonb)
     )
 

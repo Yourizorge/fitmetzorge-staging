@@ -1,6 +1,6 @@
 # Phase 4 Nutrition Engine - Final Product Contract And Schema Slice 1 Design
 
-Status: OWNER PRODUCT CONTRACT LOCKED - SCHEMA SLICE 1 MIGRATION CREATED / LOCAL REVIEW PASS - NOT EXECUTED
+Status: OWNER PRODUCT CONTRACT LOCKED - SCHEMA SLICE 1 MIGRATION EXECUTED ON STAGING - CORRECTED READ-ONLY VERIFICATION PENDING RERUN
 
 Last updated: 2026-08-18
 
@@ -502,7 +502,7 @@ Required CTE/check groups:
 1. Six exact tables present; no unexpected Phase 4 tables.
 2. Exact columns, `data_type`/`udt_name`, nullability, defaults, precision, and scale. Integer precision metadata is normalized to avoid prior false negatives.
 3. PK/FK/unique/check constraints and FK delete actions.
-4. Exact indexes, keys, predicates, validity, and readiness. `name[]` is explicitly cast to `text[]` before comparison.
+4. Exact indexes, base key expressions, access method, uniqueness, predicates, validity, readiness, per-key ASC/DESC and NULL ordering from `pg_index.indoption`, and default/non-default operator classes from `pg_index.indclass` joined to `pg_opclass`. Full `pg_get_indexdef` output remains included as diagnostic evidence.
 5. RLS enabled on all six tables.
 6. Exact policies/commands/expressions; no DELETE or trainer-like policy.
 7. Table ACLs via `information_schema.role_table_grants`; exact authenticated grants and no `anon`/`PUBLIC` grants.
@@ -544,11 +544,11 @@ The current `assets/phase4-static-check.js` suite fails unless:
 ## 26. Implementation Plan And Gates
 
 1. Owner approves this final contract and Slice 1 design. COMPLETE.
-2. Create one additive migration from this design only after explicit implementation GO. COMPLETE LOCALLY / NOT EXECUTED.
-3. Run local SQL/static/security self-review; show full SQL to owner. LOCAL REVIEW COMPLETE / OWNER SQL REVIEW NEXT.
-4. Perform external/final migration review.
-5. Owner executes migration manually on staging only.
-6. Owner runs the SELECT-only post-migration checker and returns full JSON.
+2. Create one additive migration from this design only after explicit implementation GO. COMPLETE.
+3. Run local SQL/static/security self-review; show full SQL to owner. COMPLETE.
+4. Perform external/final migration review. COMPLETE.
+5. Execute the exact reviewed migration on staging only. COMPLETE WITH COMMIT.
+6. Run the SELECT-only post-migration checker and return full JSON. INITIAL RUN COMPLETE; INDEX-METADATA FALSE NEGATIVE CORRECTED; OWNER RERUN PENDING.
 7. Correct only verified schema/security blockers through a separately reviewed hardening migration if needed.
 8. Prepare the first mobile frontend logging slice only after live database verification PASS and separate GO.
 9. Seed/import canonical foods only after provider/catalog/license review; never as an implicit part of schema deployment.
@@ -574,10 +574,10 @@ Final product contract: LOCKED.
 
 Schema Slice 1 design: LOCKED.
 
-Migration: `supabase/migrations/20260818_phase4_nutrition_schema_slice1.sql` - CREATED / LOCAL REVIEW PASS / NOT EXECUTED. SHA-256: `D70A589FEF997C14FCC9805E746536C86556E22622C8952B33DE9CA222B36188`.
+Migration: `supabase/migrations/20260818_phase4_nutrition_schema_slice1.sql` - EXECUTED WITH COMMIT ON STAGING `mokxyyullfhkfalopbzd`. SHA-256 unchanged: `D70A589FEF997C14FCC9805E746536C86556E22622C8952B33DE9CA222B36188`.
 
-Post-migration checker: `supabase/verification/20260818_phase4_nutrition_schema_slice1_verification.sql` - HARDENED / SELECT-ONLY / NOT EXECUTED. SHA-256: `D77AD4EBE0FE194F1AC73F297C1855A5B34FDEEEABAC44FCDF28B5C5E244D485`.
+Post-migration checker: `supabase/verification/20260818_phase4_nutrition_schema_slice1_verification.sql` - CORRECTED / SELECT-ONLY / OWNER RERUN PENDING. Previous SHA-256: `D77AD4EBE0FE194F1AC73F297C1855A5B34FDEEEABAC44FCDF28B5C5E244D485`; current SHA-256: `6756126F896161B6D4A480C380D9FD8CB4E21DCAD5DAA59207E20E6CA2916CFA`.
 
-Static/security suite: `assets/phase4-static-check.js` - CREATED / PASS.
+Static/security suite: `assets/phase4-static-check.js` - PASS, 90 checks.
 
-Next gate: owner/external migration review before any manual staging execution.
+Next gate: owner executes the corrected read-only checker on staging. Slice 1 remains pending until it returns `overall_pass: true`; no repair migration is currently required.

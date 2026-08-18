@@ -38,8 +38,8 @@ This matrix records the required functional, security, entitlement, AI, migratio
 | Pre-Phase 4 | Member Vandaag consistency | One combined hero, exactly one Daily Check-in CTA, Training active-session/fallback entry, conditional onboarding; no standalone Tracker cards or Analyse implementation | BLOCKING GATE | PASS - OWNER/RUNTIME VERIFIED; FROZEN |
 | Pre-Phase 4 | Member Tracker consistency | Compact overview, focused body-level details, shared Water/day values, mobile Recovery history, no wide default table | BLOCKING GATE | PASS - OWNER/RUNTIME VERIFIED; FROZEN |
 | Pre-Phase 4 | Rendering and regression | Active-view boundaries, no Nutrition render on Tracker day change, no polling/observer/reload, Phase 1-3 preserved | BLOCKING GATE | PASS - OWNER/RUNTIME VERIFIED; FROZEN |
-| Phase 4 | Architecture/readiness | Legacy inventory, normalized model, entitlement/RLS boundaries, food sources, retry, performance, slices, decisions, and test design | BLOCKING GATE | PASS - OWNER CONTRACT LOCKED; SLICE 1 MIGRATION CREATED / LOCAL REVIEW PASS / NOT EXECUTED |
-| Phase 4 | Schema Slice 1 local security | Exact six-table scope, constraints/FKs/indexes, own-user RLS, exact ACLs, RPC authority, Free 10-custom limit, seven-day history, snapshots, retry identity | BLOCKING GATE | PASS LOCALLY - MIGRATION AND READ-ONLY CHECKER REVIEW-READY; LIVE VERIFICATION PENDING |
+| Phase 4 | Architecture/readiness | Legacy inventory, normalized model, entitlement/RLS boundaries, food sources, retry, performance, slices, decisions, and test design | BLOCKING GATE | PASS - OWNER CONTRACT LOCKED; SLICE 1 MIGRATION EXECUTED ON STAGING |
+| Phase 4 | Schema Slice 1 local security | Exact six-table scope, constraints/FKs/indexes, own-user RLS, exact ACLs, RPC authority, Free 10-custom limit, seven-day history, snapshots, retry identity | BLOCKING GATE | MIGRATION EXECUTED; ALL INITIAL LIVE CHECKS EXCEPT INDEX METADATA PASS; CORRECTED CHECKER RERUN PENDING |
 | Phase 4 | Nutrition | Day totals, meal moments, manual logging, macros, custom foods | BLOCKING GATE | PLANNED |
 | Phase 4 | Nutrition Pro | Full kcal/protein/carbs/fat goals, saved meals, recipes, copy meal/day | BLOCKING GATE | PLANNED |
 | Phase 4 | Barcode | Barcode behind entitlement and feature flag | BLOCKING GATE | PLANNED |
@@ -86,7 +86,7 @@ This matrix records the required functional, security, entitlement, AI, migratio
 | Phase 1 | Rollback/restoration notes for auth/profile/onboarding/entitlement foundation changes | PASS |
 | Phase 2 | Recovery data changes documented; Health-sync remains placeholder unless separately approved | PASS |
 | Phase 3 | Legacy training preserved until replacement accepted; workout data restoration path documented | PASS FOR FUNCTIONAL FREEZE; LEGACY DATA PRESERVED |
-| Phase 4 | Nutrition data changes reversible or forward-fixable; invoices remain outside consumer nutrition | PASS FOR EMPTY LOCAL MIGRATION DESIGN; EXECUTION/LIVE VERIFICATION PENDING |
+| Phase 4 | Nutrition data changes reversible or forward-fixable; invoices remain outside consumer nutrition | MIGRATION EXECUTED ON EMPTY STAGING FOUNDATION; CORRECTED LIVE VERIFICATION PENDING |
 | Phase 5 | Private storage/RLS rollback notes required before progress photos go live | PLANNED |
 | Phase 6 | AI calls gated by entitlement; no secret exposure; AI proposal/action rollback rules documented | PLANNED |
 | Phase 7 | Payment/growth lifecycle changes staging test mode only; entitlement rollback/credit correction path documented | PLANNED |
@@ -297,10 +297,12 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | Free seven-local-day read/write/retry/archive boundary | PASS STATIC REVIEW |
 | Server-calculated immutable food/provenance snapshots and request idempotency | PASS STATIC REVIEW |
 | `node --check assets/phase4-static-check.js` | PASS |
-| `node assets/phase4-static-check.js` | PASS, 87 checks |
+| `node assets/phase4-static-check.js` | PASS, 90 checks |
 | Frozen Phase 1 suite | PASS, 75 checks |
 | Frozen Phase 2 suite | PASS, 46 checks |
 | Frozen Phase 3 suite | PASS, 222 checks |
 | Frozen Member UX suite | PASS, 56 checks |
-| Post-migration JSON verification query | CREATED / SELECT-ONLY / NOT EXECUTED |
-| Phase 4 migration execution | NOT EXECUTED |
+| Phase 4 migration execution | SUCCESS WITH COMMIT on staging `mokxyyullfhkfalopbzd` |
+| Initial post-migration JSON verification | `overall_pass: false`; every check passed except index metadata reconstruction |
+| Live index investigation | PASS: migration definitions correct; verifier omitted `indoption` direction/null ordering and `indclass` operator-class semantics |
+| Corrected post-migration JSON verification | SELECT/CTE-ONLY / STATIC PASS / OWNER RERUN PENDING |
