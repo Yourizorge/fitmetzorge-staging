@@ -38,7 +38,7 @@
   source = source.replace('const FMZ_CONFIG = window.FMZ_CONFIG || {};', stagingConfigSource);
   source = source.replace(/const APP_AUTH_REDIRECT_URL = "[^"]+";/, stagingRedirectSource);
 
-  const phase1PatchUrl = new URL("assets/phase1-foundation.js?v=20260815-phase1-perf1", document.baseURI);
+  const phase1PatchUrl = new URL("assets/phase1-foundation.js?v=20260818-member-ux-final-owner1", document.baseURI);
   const phase1PatchResponse = await fetch(phase1PatchUrl, { cache: "no-cache" });
   if (!phase1PatchResponse.ok) {
     throw new Error(`Phase 1 foundation laden mislukt: ${phase1PatchResponse.status}`);
@@ -59,7 +59,7 @@
   }
   const phase3PatchSource = await phase3PatchResponse.text();
 
-  const memberUxPatchUrl = new URL("assets/member-ux-consistency.js?v=20260818-member-ux-today-simplified1", document.baseURI);
+  const memberUxPatchUrl = new URL("assets/member-ux-consistency.js?v=20260818-member-ux-final-owner1", document.baseURI);
   const memberUxPatchResponse = await fetch(memberUxPatchUrl, { cache: "no-cache" });
   if (!memberUxPatchResponse.ok) {
     throw new Error(`Member UX consistency laden mislukt: ${memberUxPatchResponse.status}`);
