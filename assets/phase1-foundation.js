@@ -1309,6 +1309,10 @@
       && hasTargetWhenNeeded;
   }
 
+  window.FMZ_PHASE1_ONBOARDING = Object.freeze({
+    isComplete: phase1OnboardingComplete
+  });
+
   function phase1LanguageOptions(active) {
     return PHASE1_LANGUAGES
       .map((language) => `<option value="${language}" ${language === active ? "selected" : ""}>${language.toUpperCase()}</option>`)
