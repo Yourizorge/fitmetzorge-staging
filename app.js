@@ -59,7 +59,7 @@
   }
   const phase3PatchSource = await phase3PatchResponse.text();
 
-  const memberUxPatchUrl = new URL("assets/member-ux-consistency.js?v=20260818-member-ux-dashboard-trackers1", document.baseURI);
+  const memberUxPatchUrl = new URL("assets/member-ux-consistency.js?v=20260818-member-ux-today-simplified1", document.baseURI);
   const memberUxPatchResponse = await fetch(memberUxPatchUrl, { cache: "no-cache" });
   if (!memberUxPatchResponse.ok) {
     throw new Error(`Member UX consistency laden mislukt: ${memberUxPatchResponse.status}`);

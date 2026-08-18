@@ -2,7 +2,7 @@
   if (window.FMZ_MEMBER_UX_CONSISTENCY_LOADED) return;
   window.FMZ_MEMBER_UX_CONSISTENCY_LOADED = true;
 
-  const MEMBER_UX_VERSION = "20260818-member-ux-dashboard-trackers1";
+  const MEMBER_UX_VERSION = "20260818-member-ux-today-simplified1";
   const MEMBER_UX_LANGUAGES = ["nl", "en", "de"];
   const MEMBER_UX_GENDERS = ["female", "male", "non_binary", "prefer_not_to_say", "not_relevant"];
   const MEMBER_UX_GOAL_DIRECTIONS = ["lose_weight", "maintain_weight", "gain_muscle", "improve_fitness", "general_health"];
@@ -10,8 +10,12 @@
   const MEMBER_UX_I18N = {
     nl: {
       today: "Vandaag",
-      greeting: "Goedemorgen {name}.",
-      todayIntro: "Je dag in een oogopslag.",
+      greeting: "Goedemorgen, {name}",
+      todayIntro: "Dit staat er vandaag voor je klaar.",
+      dailyCheckin: "Dagelijkse check-in",
+      checkinQuestion: "Hoe voel je je vandaag?",
+      checkinComplete: "Check-in voltooid",
+      viewCheckin: "Check-in bekijken",
       complete: "Vandaag compleet",
       partial: "Gedeeltelijk ingevuld",
       empty: "Nog invullen",
@@ -26,6 +30,8 @@
       trainingEntry: "Open Training om een workout te kiezen.",
       activeWorkout: "Actieve workout",
       pausedWorkout: "Workout gepauzeerd",
+      readyToTrain: "Klaar om te trainen?",
+      trainingToday: "Training vandaag",
       openTraining: "Training openen",
       activity: "Activiteit",
       steps: "Stappen",
@@ -91,8 +97,12 @@
     },
     en: {
       today: "Today",
-      greeting: "Good morning {name}.",
-      todayIntro: "Your day at a glance.",
+      greeting: "Good morning, {name}",
+      todayIntro: "This is what is ready for you today.",
+      dailyCheckin: "Daily check-in",
+      checkinQuestion: "How do you feel today?",
+      checkinComplete: "Check-in completed",
+      viewCheckin: "View check-in",
       complete: "Today complete",
       partial: "Partly completed",
       empty: "Needs input",
@@ -107,6 +117,8 @@
       trainingEntry: "Open Training to choose a workout.",
       activeWorkout: "Active workout",
       pausedWorkout: "Workout paused",
+      readyToTrain: "Ready to train?",
+      trainingToday: "Training today",
       openTraining: "Open Training",
       activity: "Activity",
       steps: "Steps",
@@ -172,8 +184,12 @@
     },
     de: {
       today: "Heute",
-      greeting: "Guten Morgen {name}.",
-      todayIntro: "Dein Tag auf einen Blick.",
+      greeting: "Guten Morgen, {name}",
+      todayIntro: "Das steht heute fuer dich bereit.",
+      dailyCheckin: "Taeglicher Check-in",
+      checkinQuestion: "Wie fuehlst du dich heute?",
+      checkinComplete: "Check-in abgeschlossen",
+      viewCheckin: "Check-in ansehen",
       complete: "Heute komplett",
       partial: "Teilweise ausgefuellt",
       empty: "Noch ausfuellen",
@@ -188,6 +204,8 @@
       trainingEntry: "Oeffne Training, um ein Workout zu waehlen.",
       activeWorkout: "Aktives Workout",
       pausedWorkout: "Workout pausiert",
+      readyToTrain: "Bereit fuer dein Training?",
+      trainingToday: "Training heute",
       openTraining: "Training oeffnen",
       activity: "Aktivitaet",
       steps: "Schritte",
@@ -332,15 +350,15 @@
     return selected?.recoveryFeelingByWeek?.[activeWeekStart()]?.[index] || {};
   }
 
-  function memberUxReadDay(selected, index = memberUxSelectedDayIndex()) {
+  function memberUxReadDay(selected, index = memberUxSelectedDayIndex(), { includeExtendedTrackers = true } = {}) {
     const dates = weekDates(activeWeekStart());
     const day = dates[index] || dates[0];
     const stored = state?.phase2Recovery?.logs?.[day.date] || {};
     const stepsEntry = weekArray(selected, "stepsByWeek", "value")[index] || {};
-    const waterEntry = weekWaterEntries(selected)[index] || {};
+    const waterEntry = includeExtendedTrackers ? (weekWaterEntries(selected)[index] || {}) : {};
     const sleepEntry = weekArray(selected, "sleepByWeek", "hours", { quality: "", bed: "", wake: "" })[index] || {};
     const wellbeingEntry = weekArray(selected, "wellbeingByWeek", "energy", { stress: "", motivation: "", mood: "" })[index] || {};
-    const progressEntry = progressWeekEntries(selected)[index] || {};
+    const progressEntry = includeExtendedTrackers ? (progressWeekEntries(selected)[index] || {}) : {};
     const feelingEntry = memberUxLegacyRecoveryFeeling(selected, index);
     return {
       index,
@@ -393,7 +411,7 @@
     } catch {
       // A generic Training entry remains available if the local session snapshot is unavailable.
     }
-    return { active: false, title: memberUxText("training"), status: memberUxText("trainingEntry") };
+    return { active: false, title: memberUxText("readyToTrain"), status: memberUxText("trainingEntry") };
   }
 
   function memberUxLatestWeight(selected) {
@@ -542,89 +560,46 @@
       target.innerHTML = emptyTrackerState(memberUxText("noData"));
       return;
     }
-    const day = memberUxReadDay(selected, todayIndex());
+    const day = memberUxReadDay(selected, todayIndex(), { includeExtendedTrackers: false });
     const recovery = memberUxRecoveryCompletion(day);
     const training = memberUxTrainingSummary();
     const onboardingComplete = memberUxOnboardingComplete(selected);
     const firstName = String(selected.name || state.ui.authName || "").split(" ")[0] || memberUxText("today");
-    const stepGoal = number(selected.goals?.steps, 10000) || 10000;
-    const waterGoal = number(selected.goals?.water, 2.5) || 2.5;
-    const stepPercent = Math.min(100, Math.max(0, number(day.steps) / stepGoal * 100));
-    const latestWeight = memberUxLatestWeight(selected);
-    const primaryType = recovery.complete ? "training" : "recovery";
-    const primaryLabel = recovery.complete ? memberUxText("openTraining") : memberUxText("fillCheckin");
+    const checkinTitle = memberUxText(recovery.complete ? "checkinComplete" : "checkinQuestion");
+    const checkinAction = memberUxText(recovery.complete ? "viewCheckin" : "fillCheckin");
 
     target.innerHTML = `
-      <div class="member-ux-shell">
-        ${onboardingComplete ? "" : `
+      <div class="member-ux-shell member-ux-today-simplified">
+        <section class="member-ux-hero" aria-labelledby="member-ux-today-title">
+          <div><p class="eyebrow">${escapeHTML(memberUxText("today"))}</p><h1 id="member-ux-today-title">${escapeHTML(memberUxFormat("greeting", { name: firstName }))}</h1></div>
+          <p class="muted">${escapeHTML(memberUxText("todayIntro"))}</p>
+        </section>
+
+        ${onboardingComplete ? `
+          <section class="member-ux-card member-ux-daily-checkin" aria-labelledby="member-ux-checkin-title">
+            <div class="member-ux-card-head">
+              <div><p class="eyebrow">${escapeHTML(memberUxText("dailyCheckin"))}</p><h2 id="member-ux-checkin-title">${escapeHTML(checkinTitle)}</h2></div>
+              <span class="status ${recovery.complete ? "ok" : recovery.count ? "warn" : ""}">${escapeHTML(recovery.label)}</span>
+            </div>
+            ${recovery.complete ? `<p class="muted">${escapeHTML(memberUxText("recoveryFeeling"))}: ${escapeHTML(day.recoveryFeeling)}/10</p>` : ""}
+            <div class="member-ux-card-actions">${memberUxDialogButton("recovery", checkinAction, "primary-btn")}</div>
+          </section>
+
+          <section class="member-ux-card member-ux-training-today" aria-labelledby="member-ux-training-title">
+            <div class="member-ux-card-head">
+              <div><p class="eyebrow">${escapeHTML(memberUxText(training.active ? "trainingToday" : "training"))}</p><h2 id="member-ux-training-title">${escapeHTML(training.title)}</h2></div>
+              ${training.active ? '<span class="status ok">Live</span>' : ""}
+            </div>
+            <p class="muted">${escapeHTML(training.status)}</p>
+            <div class="member-ux-card-actions"><button class="primary-btn" data-member-open-view="training" type="button">${escapeHTML(memberUxText("openTraining"))}</button></div>
+          </section>
+        ` : `
           <section class="member-ux-profile-cta" aria-labelledby="member-ux-profile-title">
             <div><p class="eyebrow">${escapeHTML(memberUxText("accountProfile"))}</p><h2 id="member-ux-profile-title">${escapeHTML(memberUxText("profileIncomplete"))}</h2></div>
             <p class="muted">${escapeHTML(memberUxText("profileIntro"))}</p>
             <div><button class="primary-btn" data-member-open-profile type="button">${escapeHTML(memberUxText("completeProfile"))}</button></div>
           </section>
         `}
-        <section class="member-ux-hero" aria-labelledby="member-ux-today-title">
-          <div class="member-ux-hero-row">
-            <div><p class="eyebrow">${escapeHTML(memberUxText("today"))}</p><h1 id="member-ux-today-title">${escapeHTML(memberUxFormat("greeting", { name: firstName }))}</h1></div>
-            <span class="status ${recovery.complete ? "ok" : recovery.count ? "warn" : ""}">${escapeHTML(recovery.label)}</span>
-          </div>
-          <p class="muted">${escapeHTML(memberUxText("todayIntro"))}</p>
-          <div><button class="primary-btn" ${primaryType === "training" ? 'data-member-open-view="training"' : 'data-member-open-detail="recovery" aria-haspopup="dialog" aria-controls="memberUxDetailPortal" aria-expanded="false"'} type="button">${escapeHTML(primaryLabel)}</button></div>
-        </section>
-
-        <div class="member-ux-grid">
-          <section class="member-ux-card member-ux-card-wide" aria-labelledby="member-ux-recovery-title">
-            <div class="member-ux-card-head"><h2 id="member-ux-recovery-title">${escapeHTML(memberUxText("recovery"))}</h2><span class="status ${recovery.complete ? "ok" : ""}">${escapeHTML(recovery.label)}</span></div>
-            <p class="muted">${escapeHTML(memberUxText("recoveryIntro"))}</p>
-            <div class="member-ux-metrics">
-              ${memberUxMetric(memberUxText("recoveryFeeling"), day.recoveryFeeling === "" ? memberUxText("noData") : `${day.recoveryFeeling}/10`)}
-              ${memberUxMetric(memberUxText("sleep"), day.sleepHours === "" ? memberUxText("noData") : `${fmt(day.sleepHours, 1)}u`, day.sleepQuality === "" ? "" : `${day.sleepQuality}/10`)}
-            </div>
-            <div class="member-ux-card-actions">${memberUxDialogButton("recovery", recovery.complete ? memberUxText("view") : memberUxText("fillCheckin"), recovery.complete ? "secondary-btn" : "primary-btn")}</div>
-          </section>
-
-          <section class="member-ux-card" aria-labelledby="member-ux-training-title">
-            <div class="member-ux-card-head"><h2 id="member-ux-training-title">${escapeHTML(memberUxText("training"))}</h2>${training.active ? '<span class="status ok">Live</span>' : ""}</div>
-            <strong>${escapeHTML(training.title)}</strong>
-            <p class="muted">${escapeHTML(training.status)}</p>
-            <div class="member-ux-card-actions"><button class="primary-btn" data-member-open-view="training" type="button">${escapeHTML(memberUxText("openTraining"))}</button></div>
-          </section>
-
-          <section class="member-ux-card member-ux-card-wide" aria-labelledby="member-ux-activity-title">
-            <div class="member-ux-card-head"><h2 id="member-ux-activity-title">${escapeHTML(memberUxText("activity"))}</h2><span class="status">${escapeHTML(memberUxDateLabel(day.date))}</span></div>
-            <div class="member-ux-metrics">
-              ${memberUxMetric(memberUxText("steps"), day.steps === "" ? memberUxText("noData") : fmt(day.steps), `${memberUxText("target")} ${fmt(stepGoal)}`)}
-              ${memberUxMetric(memberUxText("water"), day.water === "" ? memberUxText("noData") : `${fmt(day.water, 2)}L`, `${memberUxText("target")} ${fmt(waterGoal, 1)}L`)}
-            </div>
-            <div class="member-ux-progress" aria-label="${escapeHTML(memberUxText("steps"))}: ${fmt(stepPercent)}%"><span style="--member-progress:${stepPercent}%"></span></div>
-            <div class="member-ux-card-actions">
-              <button class="secondary-btn" data-member-water-adjust="0.25" data-member-water-index="${day.index}" type="button">${escapeHTML(memberUxText("addWater"))}</button>
-              ${memberUxDialogButton("water", memberUxText("openTrackers"))}
-              <span class="save-feedback" data-save-feedback="water-${day.index}" role="status" aria-live="polite"></span>
-            </div>
-          </section>
-
-          <section class="member-ux-card" aria-labelledby="member-ux-sleep-title">
-            <h2 id="member-ux-sleep-title">${escapeHTML(memberUxText("sleep"))}</h2>
-            <strong>${day.sleepHours === "" ? escapeHTML(memberUxText("noData")) : `${fmt(day.sleepHours, 1)}u`}</strong>
-            <p class="muted">${day.sleepQuality === "" ? escapeHTML(memberUxText("noData")) : `${escapeHTML(memberUxText("quality"))}: ${escapeHTML(day.sleepQuality)}/10`}</p>
-            <div>${memberUxDialogButton("sleep", memberUxText("open"))}</div>
-          </section>
-
-          <section class="member-ux-card" aria-labelledby="member-ux-wellbeing-title">
-            <h2 id="member-ux-wellbeing-title">${escapeHTML(memberUxText("wellbeing"))}</h2>
-            <strong>${escapeHTML(memberUxWellbeingSummary(day))}</strong>
-            <div>${memberUxDialogButton("wellbeing", memberUxText("open"))}</div>
-          </section>
-
-          ${latestWeight === "" ? "" : `
-            <section class="member-ux-card" aria-labelledby="member-ux-progress-title">
-              <h2 id="member-ux-progress-title">${escapeHTML(memberUxText("progress"))}</h2>
-              <strong>${fmt(latestWeight, 1)} kg</strong>
-              <div>${memberUxDialogButton("progress", memberUxText("open"))}</div>
-            </section>
-          `}
-        </div>
       </div>
     `;
   }
