@@ -59,11 +59,18 @@
   }
   const phase3PatchSource = await phase3PatchResponse.text();
 
+  const memberUxPatchUrl = new URL("assets/member-ux-consistency.js?v=20260818-member-ux-dashboard-trackers1", document.baseURI);
+  const memberUxPatchResponse = await fetch(memberUxPatchUrl, { cache: "no-cache" });
+  if (!memberUxPatchResponse.ok) {
+    throw new Error(`Member UX consistency laden mislukt: ${memberUxPatchResponse.status}`);
+  }
+  const memberUxPatchSource = await memberUxPatchResponse.text();
+
   const phase1InitNeedle = "\ninit();";
   if (!source.includes(phase1InitNeedle)) {
     throw new Error("Phase 1 foundation kon niet voor app-init worden ingevoegd.");
   }
-  source = source.replace(phase1InitNeedle, `\n${phase1PatchSource}\n${phase2PatchSource}\n${phase3PatchSource}\ninit();`);
+  source = source.replace(phase1InitNeedle, `\n${phase1PatchSource}\n${phase2PatchSource}\n${phase3PatchSource}\n${memberUxPatchSource}\ninit();`);
 
   (0, eval)(`${source}\n//# sourceURL=app.bundle.js`);
 
