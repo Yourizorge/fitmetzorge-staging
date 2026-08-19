@@ -5221,6 +5221,16 @@ body:not(.light) .appointment-type-card small {
 
 /* Ledenomgeving gebaseerd op de lid-preview, gekoppeld aan echte app-data. */
 body.client-mode {
+  --member-bottom-nav-height: 118px;
+  --member-bottom-nav-offset: 14px;
+  --member-bottom-interaction-spacing: 44px;
+  --member-device-safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --member-content-bottom-safe-area: calc(
+    var(--member-bottom-nav-height) +
+    var(--member-bottom-nav-offset) +
+    var(--member-device-safe-area-bottom) +
+    var(--member-bottom-interaction-spacing)
+  );
   background:
     radial-gradient(circle at 20% -10%, rgba(184, 138, 21, 0.24), transparent 34%),
     radial-gradient(circle at 100% 0%, rgba(29, 78, 216, 0.2), transparent 36%),
@@ -5231,7 +5241,7 @@ body.client-mode .app-shell {
   grid-template-columns: minmax(0, 1fr);
   max-width: 1180px;
   margin: 0 auto;
-  padding-bottom: 98px;
+  padding-bottom: 0;
 }
 
 body.client-mode .topbar {
@@ -5259,7 +5269,7 @@ body.client-mode .sidebar {
   position: fixed;
   left: 50%;
   right: auto;
-  bottom: 14px;
+  bottom: calc(var(--member-bottom-nav-offset) + var(--member-device-safe-area-bottom));
   top: auto;
   z-index: 60;
   width: min(720px, calc(100% - 24px));
@@ -5271,6 +5281,19 @@ body.client-mode .sidebar {
   background: rgba(7, 11, 18, 0.9);
   backdrop-filter: blur(18px);
   box-shadow: var(--shadow);
+  transition: opacity 0.16s ease, visibility 0.16s ease;
+}
+
+body.client-mode:is(
+  .phase3-picker-open,
+  .phase3-focus-open,
+  .phase3-history-open,
+  .phase4-nutrition-dialog-open,
+  .phase4-s3-dialog-open
+) .sidebar {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
 }
 
 body.client-mode .sidebar-brand {
@@ -5325,7 +5348,16 @@ body.client-mode .nav-btn.active {
 
 body.client-mode .content {
   grid-column: 1;
-  padding: 12px clamp(14px, 3vw, 30px) 0;
+  padding: 12px clamp(14px, 3vw, 30px) var(--member-content-bottom-safe-area);
+  scroll-padding-bottom: var(--member-content-bottom-safe-area);
+}
+
+body.client-mode .phase3-picker-sheet,
+body.client-mode .phase3-focus-sheet,
+body.client-mode .phase3-history-sheet,
+body.client-mode .phase4-sheet,
+body.client-mode .phase4-s3-sheet {
+  scroll-padding-block: 72px calc(88px + var(--member-device-safe-area-bottom));
 }
 
 body.client-mode .view-head {
