@@ -14,10 +14,10 @@ Last updated: 2026-08-19
 - Phase 0B Storage verification: COMPLETE
 - Master Plan Specification: COMPLETE
 - Master Plan Final Review: COMPLETE
-- Implementation: PHASE 4 IN PROGRESS / SCHEMA SLICE 1 COMPLETE, LIVE, AND VERIFIED / FUNCTIONAL SLICE 2 OWNER-TESTED AND FROZEN / ATOMIC REPLACEMENT RPC LIVE AND VERIFIED / FUNCTIONAL SLICE 3 DEPLOYED TO STAGING, OWNER ACCEPTANCE PENDING
+- Implementation: PHASE 4 IN PROGRESS / SCHEMA SLICE 1 COMPLETE, LIVE, AND VERIFIED / FUNCTIONAL SLICE 2 OWNER-TESTED AND FROZEN / ATOMIC REPLACEMENT RPC LIVE AND VERIFIED / FUNCTIONAL SLICE 3 OWNER-TESTED, COMPLETE, AND FROZEN / SLICE 4A LOCKED / SLICE 4B LIVE AND COMPLETE / SLICE 4C LIVE AND VERIFIED / USDA EDGE FUNCTION LOCAL, NOT DEPLOYED
 - Production Migration: NOT STARTED
 
-Current next step: owner real-phone acceptance of Functional Slice 3 for mobile daily food logging and macro progress. Schema Slice 1 and the atomic logged-item replacement RPC are live and verified on staging `mokxyyullfhkfalopbzd`; Functional Slice 2 is owner-tested and frozen. Functional Slice 3 is deployed at runtime commit `14884e410c25cf3df651e08064e5120b59238149` with cache version `20260819-phase4-nutrition-slice3-1`. No Slice 4 work, extra migration, provider import, legacy migration, AI, trainer access, or production change is authorized by this status.
+Current next step: owner-controlled STAGING secret configuration and a separately approved deployment of the security-reviewed `supabase/functions/nutrition-provider/` USDA adapter. Slice 4B and Slice 4C are live and read-only verified on staging. Functional Slice 3 and the global member bottom-navigation safe-area contract remain owner-tested, complete, and frozen. No Edge Function deployment, provider secret configuration, live provider call, catalog import, frontend implementation, legacy migration, AI, trainer access, or production change is authorized by this status.
 
 ## Environment Guardrail
 
@@ -120,7 +120,7 @@ Summary: The simplified Vandaag composition, compact Trackers overview/details, 
 
 ### Phase 4 Nutrition Engine
 
-Status: IN PROGRESS; SCHEMA SLICE 1 COMPLETE / LIVE / VERIFIED; FUNCTIONAL SLICE 2 OWNER-TESTED / FROZEN; ATOMIC REPLACEMENT RPC LIVE / VERIFIED; FUNCTIONAL SLICE 3 DEPLOYED TO STAGING / OWNER ACCEPTANCE PENDING
+Status: IN PROGRESS; SCHEMA SLICE 1 COMPLETE / LIVE / VERIFIED; FUNCTIONAL SLICE 2 OWNER-TESTED / FROZEN; ATOMIC REPLACEMENT RPC LIVE / VERIFIED; FUNCTIONAL SLICE 3 OWNER-TESTED / COMPLETE / FROZEN; SLICE 4A LOCKED / COMPLETE; SLICE 4B LIVE / COMPLETE; SLICE 4C LIVE / VERIFIED; USDA EDGE FUNCTION IMPLEMENTED LOCALLY / NOT DEPLOYED
 
 Architecture audit: PASS.
 
@@ -132,13 +132,21 @@ Post-migration verification artifact: `supabase/verification/20260818_phase4_nut
 
 Static/security suite: `assets/phase4-static-check.js` - PASS locally, 90 checks. Functional Slice 2 remains PASS with 98 static and 46 browser checks. The atomic replacement suite passes 79 checks. Functional Slice 3 adds `assets/phase4-nutrition-slice3-static-check.js` and `assets/phase4-nutrition-slice3-browser-check.js`, passing 105 and 46 checks. Frozen Phase 1, Phase 2, Phase 3, and Member UX suites remain required before deployment.
 
+Slice 4B live artifacts: migration `supabase/migrations/20260819_phase4_nutrition_slice4b_alias_search.sql`, SHA-256 `4C0E63DC09A8CC1DE7F93DBA278CD36F714C52BEDAB32FFC98147A5DA0D5C88F`; SELECT-only verifier `supabase/verification/20260819_phase4_nutrition_slice4b_alias_search_verification.sql`, SHA-256 `598D70447917FA7903472D9B2C4977FDC4BEA5AA08B1B9739C69703067B2F414`. Owner-confirmed migration execution and direct read-only verification PASS on staging: `pg_trgm` in `extensions`, `food_aliases` with 19 columns and zero rows, RLS, one SELECT policy, zero removal policies, authenticated SELECT only, `anon` none, and seven expected indexes. No catalog or alias rows were imported.
+
+Slice 4C artifacts: migration `supabase/migrations/20260819_phase4_nutrition_slice4c_operational_state.sql`, SHA-256 `0A2D2CA5B4CAAD30A17B73F66C018A742DC1D9326335AA7C9307D0021CF0AE2F`; SELECT-only verifier `supabase/verification/20260819_phase4_nutrition_slice4c_operational_state_verification.sql`, SHA-256 `B444C84CA42347E2D637A025CD76141F8C12821262CBD0E110B770BBBA2CA200`; static/security suite `assets/phase4-nutrition-slice4c-static-check.js`, PASS 116 checks. Owner-confirmed migration execution and read-only verification PASS on staging `mokxyyullfhkfalopbzd`: exact four tables, RLS, zero client policies/ACL, exact service-role ACL and two internal functions; all operational tables remained empty.
+
+USDA provider proxy local status: `supabase/functions/nutrition-provider/` completed final pre-deployment code, security, dependency and test review with adapter version `phase4_usda_v1`. `PHASE4_PROVIDER_CANDIDATE_UUID_NAMESPACE` is permanently locked to `23440733-7e58-4c21-ad15-591eae6ab8ac`; `usda_fdc:171077` deterministically yields `a30e5e7f-9711-5823-b668-a25ff4a729fe`. Search/lookup, `auth.getUser()` verification, strict staging CORS, signed candidate tokens, canonical HMAC cache/rate identity, exact cache-payload validation, shared circuit state, USDA quality mapping and bounded safe responses exist. The sole external runtime dependency is pinned to `@supabase/supabase-js@2.95.0` with a frozen integrity lock. Provider unit tests PASS 23/23 and provider static/security checks PASS 95/95. Edge Function deployed: NO. Secrets configured by this work: NO. Live USDA calls: NO. Catalog import/frontend change: NO.
+
 Summary: The current Nutrition UI, calculations, 41-food compatibility list, deterministic recipe templates, `nutritionPlan`, `foodLog`, `trainerCalc`, and `coach_workspaces.state` persistence were audited. A normalized own-user architecture, macro/target correctness rules, entitlement enforcement, RLS/grants design, idempotent retry model, food-source options, 1,000+ user performance approach, future trainer/Youri boundaries, implementation slices, and test/exit gates are documented in `docs/PHASE4_NUTRITION_ARCHITECTURE_READINESS.md`.
 
 The locked contract gives Free targets, unlimited normal daily logging, totals, 10 active private custom foods, and seven-day history; Pro adds the complete self-service engine; AI gets Pro Nutrition without Phase 4 AI; PT keeps full member Nutrition with later reviewed trainer assignment/access. Provider-neutral foods, snapshots, units, targets, history, copy behavior, privacy gates, exact six-table Slice 1 columns, RLS/grants/RPCs, entitlement enforcement, rollback, verification, and static checks are documented in `docs/PHASE4_NUTRITION_PRODUCT_CONTRACT_SCHEMA_SLICE1.md`.
 
 The empty additive Slice 1 migration executed successfully on staging after the owner-confirmed empty-schema preflight. The corrected checker subsequently returned `overall_pass: true`, so Slice 1 is complete, live, and verified. Functional Slice 2 is deployed, owner-tested, and frozen as the client-only normalized targets, bounded search, and private custom-food foundation.
 
-The reviewed `fmz_phase4_replace_food_log_item` migration is live and read-only verified on staging. Functional Slice 3 is deployed on that contract: authoritative day reads and macro totals, four meal moments, server-side logging, custom-food-from-log, immutable item details, one-RPC atomic replacement editing, archive, retry identity, local-timezone date handling, and the server-enforced history boundary. The four runtime files are live and byte-verified against commit `14884e410c25cf3df651e08064e5120b59238149`. The trainer Nutrition renderer and all legacy `nutritionPlan`, `foodLog`, `goals`, `trainerCalc`, 41-food, 44-template, and `coach_workspaces.state` data remain preserved. No database change occurred during deployment; owner real-phone acceptance is pending.
+The reviewed `fmz_phase4_replace_food_log_item` migration is live and read-only verified on staging. Functional Slice 3 is deployed on that contract and its complete functional scope passed owner real-phone testing. The global tokenized member-navigation safe-area hotfix is live at commit `7604010becbb57bb09c4749ac0c010573e55229b` and owner-accepted on a real phone. The trainer Nutrition renderer and all legacy data remain preserved.
+
+Hotfix verification: global navigation static suite PASS, 41 checks; responsive browser suite PASS, 45 checks; live files matched the staging commit and owner real-phone acceptance passed. Slice 4A locks the local-first hybrid catalog: USDA for curated generic foods, Open Food Facts for later Dutch/EU branded/barcode data after legal approval, and private custom foods for gaps. Slice 4B and Slice 4C are live and verified. The USDA provider proxy is local-only and not deployed; no provider call, catalog import, frontend integration, secret change, or production action has occurred.
 
 ### Production Migration
 

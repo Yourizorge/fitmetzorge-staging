@@ -42,7 +42,12 @@ This matrix records the required functional, security, entitlement, AI, migratio
 | Phase 4 | Schema Slice 1 live security | Exact six-table scope, constraints/FKs/indexes, own-user RLS, exact ACLs, RPC authority, Free 10-custom limit, seven-day history, snapshots, retry identity | BLOCKING GATE | PASS - COMPLETE / LIVE / VERIFIED ON STAGING; CORRECTED CHECKER `overall_pass: true` |
 | Phase 4 | Functional Slice 2 | Manual daily targets, bounded cursor search, empty catalog, private custom create/edit/archive, NL/EN/DE, mobile-first and legacy isolation | BLOCKING GATE | PASS - DEPLOYED / REAL-PHONE OWNER-TESTED / FROZEN |
 | Phase 4 | Atomic log-item replacement | Own-user one-transaction immutable replacement, stale guard, replay identity, archive trail, authoritative day return | BLOCKING GATE | PASS - LIVE / READ-ONLY VERIFIED ON STAGING |
-| Phase 4 | Functional Slice 3 | Day totals, targets, four meal moments, logging, atomic edit, archive, retries, date/history behavior, NL/EN/DE | OWNER ACCEPTANCE GATE | DEPLOYED TO STAGING; READ-ONLY LIVE VERIFICATION PASS; OWNER REAL-PHONE ACCEPTANCE PENDING |
+| Phase 4 | Functional Slice 3 | Day totals, targets, four meal moments, logging, atomic edit, archive, retries, date/history behavior, NL/EN/DE | OWNER ACCEPTANCE GATE | PASS - OWNER-TESTED / COMPLETE / FROZEN |
+| Phase 4 | Member bottom navigation safe area | Every final member action scrolls above fixed navigation; safe-area, dialogs, keyboard, phone/tablet/desktop | UX FREEZE GATE | PASS - LIVE / OWNER-TESTED / FROZEN |
+| Phase 4 | Slice 4A provider contract | OFF/USDA roles, legal gates, local-first ingestion, identity, quality, provenance, privacy, rate limits, 10k-1m scale | ARCHITECTURE GATE | PASS - OWNER LOCKED; OFF LEGAL GATE REMAINS BEFORE USE |
+| Phase 4 | Slice 4B alias/search schema | Exact alias columns/constraints/FK/indexes, `pg_trgm`, RLS, SELECT-only ACL, no write/trainer policy, empty catalog, frozen guards | MIGRATION REVIEW GATE | PASS - LIVE / READ-ONLY VERIFIED ON STAGING |
+| Phase 4 | Slice 4C provider operational state | Private cache/rate/circuit tables, zero client ACL/policy, service-role least privilege, atomic rate consumption, read-only verification | SECURITY GATE | PASS - LIVE / READ-ONLY VERIFIED ON STAGING |
+| Phase 4 | USDA Provider Edge Function Local | Dedicated UUIDv5 identity, auth, CORS, cache, signed lookup, rate/circuit, normalization, no canonical write or secret | PRE-DEPLOYMENT GATE | PASS - IMPLEMENTED LOCALLY / NOT DEPLOYED |
 | Phase 4 | Nutrition Pro | Full kcal/protein/carbs/fat goals, saved meals, recipes, copy meal/day | BLOCKING GATE | PLANNED |
 | Phase 4 | Barcode | Barcode behind entitlement and feature flag | BLOCKING GATE | PLANNED |
 | Phase 4 | Consumer boundaries | Invoices do not appear in consumer nutrition | BLOCKING GATE | PLANNED |
@@ -88,7 +93,7 @@ This matrix records the required functional, security, entitlement, AI, migratio
 | Phase 1 | Rollback/restoration notes for auth/profile/onboarding/entitlement foundation changes | PASS |
 | Phase 2 | Recovery data changes documented; Health-sync remains placeholder unless separately approved | PASS |
 | Phase 3 | Legacy training preserved until replacement accepted; workout data restoration path documented | PASS FOR FUNCTIONAL FREEZE; LEGACY DATA PRESERVED |
-| Phase 4 | Nutrition data changes reversible or forward-fixable; invoices remain outside consumer nutrition | MIGRATION EXECUTED ON EMPTY STAGING FOUNDATION; CORRECTED LIVE VERIFICATION PENDING |
+| Phase 4 | Nutrition data changes reversible or forward-fixable; invoices remain outside consumer nutrition | PASS - MIGRATION EXECUTED ON EMPTY STAGING FOUNDATION; CORRECTED LIVE VERIFICATION `overall_pass: true` |
 | Phase 5 | Private storage/RLS rollback notes required before progress photos go live | PLANNED |
 | Phase 6 | AI calls gated by entitlement; no secret exposure; AI proposal/action rollback rules documented | PLANNED |
 | Phase 7 | Payment/growth lifecycle changes staging test mode only; entitlement rollback/credit correction path documented | PLANNED |
@@ -364,3 +369,93 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | Staging deployment | PASS - runtime commit `14884e410c25cf3df651e08064e5120b59238149`, cache `20260819-phase4-nutrition-slice3-1` |
 | Live read-only assets/runtime shell | PASS - four runtime files HTTP 200 and byte-identical; assembled auth navigation initialized; no horizontal overflow at required viewports |
 | Database/migration/production during deployment | NO CHANGE / NO EXECUTION / UNTOUCHED |
+
+## Phase 4 Member Bottom Navigation Safe-Area Hotfix Checks
+
+| Check | Result |
+| --- | --- |
+| Root cause: six member items in a five-column fixed nav create two rows while old reserve was only `98px` | CONFIRMED |
+| Global nav height, offset, device inset and interaction-spacing tokens | PASS |
+| Member content and scroll padding consume the global safe-area token | PASS |
+| Maximum-scroll final action clears nav: Vandaag, Training, Voeding, Trackers, Agenda, Instellingen | PASS |
+| Phone `390x844` and `320x700`, no horizontal overflow | PASS; 35px final-action clearance |
+| Tablet `820x1180` and desktop `1440x900` | PASS; 34px final-action clearance |
+| iPhone-style 34px inset and Android-style zero inset | PASS |
+| Slice 2/Slice 3 Nutrition dialogs hide and restore fixed navigation | PASS |
+| Phase 3 Exercise Picker, Focus Mode and History hide and restore fixed navigation | PASS |
+| Reduced keyboard viewport keeps focused input and save action reachable | PASS |
+| Tap targets, focus restoration, dialog semantics and Escape contracts | PASS |
+| `node assets/member-bottom-nav-safe-area-static-check.js` | PASS, 41 checks |
+| `node assets/member-bottom-nav-safe-area-browser-check.js` | PASS, 45 checks |
+| Full frozen regression suites, syntax and combined browser bundle parse | PASS |
+| Database/migration/deployment/production | NO CHANGE / NO EXECUTION / NO DEPLOYMENT / UNTOUCHED |
+
+## Phase 4 Slice 4B Alias/Search Schema Local Checks
+
+| Check | Result |
+| --- | --- |
+| Slice 4A provider/local-first contract | PASS - OWNER LOCKED; OFF legal gate remains |
+| One new table only: `public.food_aliases` | PASS |
+| Exact 19-column alias/provenance/market/archive contract | PASS |
+| FK, 14 CHECK constraints and active alias uniqueness | PASS |
+| `pg_trgm`, prefix, trigram, parent and market-priority indexes | PASS |
+| RLS and visible-parent policy | PASS |
+| `authenticated` SELECT only; `anon`/`PUBLIC` none | PASS |
+| No write/delete/trainer policy or new RPC | PASS |
+| No seed, backfill, provider table, provider data or legacy mutation | PASS |
+| SELECT/CTE-only live verifier and ACL metadata handling | PASS |
+| `node assets/phase4-nutrition-slice4b-static-check.js` | PASS, 83 checks |
+| Phase 1 / Phase 2 / Phase 3 / Member UX | PASS, 75 / 46 / 222 / 56 checks |
+| Phase 4 schema / Slice 2 / atomic / Slice 3 | PASS, 90 / 98+46 / 79 / 105+46 checks |
+| Member safe-area frozen suites | PASS, 41 static / 45 browser checks |
+| Migration/verifier execution | PASS - LIVE / READ-ONLY VERIFIED ON STAGING |
+
+## Phase 4 USDA Provider Edge Function Local Checks
+
+| Check | Result |
+| --- | --- |
+| Dedicated permanent namespace `23440733-7e58-4c21-ad15-591eae6ab8ac` | PASS |
+| Exact `provider_code:provider_food_id` UUIDv5 identity | PASS |
+| `usda_fdc:171077` deterministic result `a30e5e7f-9711-5823-b668-a25ff4a729fe` | PASS |
+| Phase 3 exercise namespace separate and unused | PASS |
+| Supabase bearer verification and no client authority input | PASS |
+| Strict staging CORS and fixed USDA host | PASS |
+| Search/lookup input, body, result and response bounds | PASS |
+| HMAC-signed candidate token, canonical encoding, expiry and tamper rejection | PASS |
+| Query/user HMAC privacy; request replay bound to operation identity | PASS |
+| Cache-first; checksum, mapping-version and TTL validation | PASS |
+| Atomic shared rate limit and circuit state integration | PASS |
+| USDA type and nutrient mapping, 100 g basis, no density assumption | PASS |
+| Quality reject/quarantine and safe provider errors | PASS |
+| No canonical food/alias/portion write or ingestion route | PASS |
+| No secret value, production ref, AI, OFF, barcode or frontend change | PASS |
+| `deno check --frozen supabase/functions/nutrition-provider/index.ts` | PASS; complete pinned dependency graph and Edge entrypoint typecheck |
+| `deno test --frozen supabase/functions/nutrition-provider/nutrition-provider.test.ts` | PASS, 23 tests |
+| `node --experimental-strip-types --test supabase/functions/nutrition-provider/nutrition-provider.test.ts` | PASS, 23 tests; independent non-Deno harness |
+| `node assets/phase4-nutrition-provider-static-check.js` | PASS, 95 checks |
+| Edge Function deployment / live USDA call | NOT PERFORMED |
+
+## Phase 4 Slice 4C Operational State Schema Local Checks
+
+| Check | Result |
+| --- | --- |
+| Slice 4A provider contract and USDA-first boundary | PASS - OWNER LOCKED |
+| Slice 4B staging foundation | PASS - LIVE / COMPLETE |
+| Exactly four operational tables; ingestion ledger deferred | PASS |
+| Query cache excludes raw query/user identity and bounds payloads | PASS |
+| Food candidate cache preserves provider/mapping/checksum/quality identity | PASS |
+| USDA user budgets 3/30s, 12/10m, 100/day and global 800/hour | PASS |
+| Global plus per-user check/consume is transactionally atomic | PASS |
+| Same-window request replay cannot double-consume | PASS |
+| Circuit closed/open/half-open transitions are serialized | PASS |
+| RLS enabled with zero member/trainer policies | PASS |
+| `authenticated`/`anon`/`PUBLIC` table privileges none | PASS |
+| Internal function EXECUTE limited to `service_role` | PASS |
+| Cache ACL limited to backend SELECT/INSERT/UPDATE; no removal privilege | PASS |
+| SELECT/CTE-only verifier; no application function execution | PASS |
+| No provider call, food import, canonical write, Edge deployment or frontend | PASS |
+| `node assets/phase4-nutrition-slice4c-static-check.js` | PASS, 116 checks |
+| Frozen Phase 1/2/3/Member UX suites | PASS, 75 / 46 / 222 / 56 checks |
+| Phase 4 schema / Slice 2 / atomic / Slice 3 | PASS, 90 / 98+46 / 79 / 105+46 checks |
+| Member safe-area / Slice 4B suites | PASS, 41+45 / 83 checks |
+| Migration/verifier execution | PASS - LIVE / READ-ONLY VERIFIED ON STAGING |

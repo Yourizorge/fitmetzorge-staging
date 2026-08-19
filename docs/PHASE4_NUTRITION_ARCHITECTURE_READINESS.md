@@ -1,6 +1,6 @@
 # Phase 4 Nutrition Engine - Architecture And Readiness Audit
 
-Status: ARCHITECTURE AUDIT COMPLETE - OWNER PRODUCT CONTRACT LOCKED - SLICE 1 LIVE / VERIFIED - SLICE 2 OWNER-TESTED / FROZEN - ATOMIC REPLACEMENT LIVE / VERIFIED - SLICE 3 DEPLOYED / OWNER ACCEPTANCE PENDING
+Status: ARCHITECTURE AUDIT COMPLETE - OWNER PRODUCT CONTRACT LOCKED - SLICE 1 LIVE / VERIFIED - SLICE 2 OWNER-TESTED / FROZEN - ATOMIC REPLACEMENT LIVE / VERIFIED - SLICE 3 OWNER-TESTED / COMPLETE / FROZEN - SLICE 4A LOCKED - SLICE 4B LIVE / COMPLETE - SLICE 4C LIVE / VERIFIED - USDA EDGE FUNCTION LOCAL / NOT DEPLOYED
 
 Last updated: 2026-08-19
 
@@ -10,7 +10,7 @@ Environment guard: staging project ref `mokxyyullfhkfalopbzd` only. Production p
 
 This document records the documentation-only Phase 4 architecture and readiness audit. It defines what exists, what must remain compatible, the proposed normalized target, security and entitlement boundaries, implementation slices, tests, and the owner decisions required before implementation.
 
-The audit itself did not change runtime or a database. After separate explicit owner GO and review, the additive Slice 1 migration executed successfully on staging `mokxyyullfhkfalopbzd`. The corrected read-only verifier returned `overall_pass: true`; the earlier index result was a checker-only false negative, and no repair migration was needed. Functional Slice 2 was later deployed, real-phone owner-tested, and frozen. The separately reviewed atomic log-item replacement RPC is live and verified on staging. Functional Slice 3 is deployed and read-only verified at the asset/runtime-shell level; owner real-phone acceptance remains pending. No food data was imported, no food API was connected, and production remains untouched.
+The audit itself did not change runtime or a database. After separate explicit owner GO and review, the additive Slice 1 migration executed successfully on staging `mokxyyullfhkfalopbzd`. The corrected read-only verifier returned `overall_pass: true`; the earlier index result was a checker-only false negative, and no repair migration was needed. Functional Slice 2 was later deployed, real-phone owner-tested, and frozen. The separately reviewed atomic log-item replacement RPC is live and verified on staging. Functional Slice 3 and the global member safe-area contract are deployed, real-phone owner-tested, complete, and frozen. No food data was imported, no food API was connected, and production remains untouched.
 
 The owner resolved the Phase 4 product decisions on 2026-08-18. The final contract and exact first additive schema-slice design are recorded in `docs/PHASE4_NUTRITION_PRODUCT_CONTRACT_SCHEMA_SLICE1.md`.
 
