@@ -15,11 +15,14 @@ import {
 } from "./crypto.ts";
 import { createNutritionProviderHandler } from "./handler.ts";
 import { normalizeUsdaFood } from "./normalization.ts";
+import { ProviderError } from "./types.ts";
 import type {
   FoodCacheKey,
   FoodCacheRow,
   NutritionProviderDependencies,
   OperationalStore,
+  ProviderLogMutation,
+  ProviderReplaceMutation,
   QueryCacheKey,
   QueryCacheRow,
   RuntimeTransitionInput,
@@ -73,6 +76,10 @@ class MemoryStore implements OperationalStore {
   foodWrites = 0;
   transitions: RuntimeTransitionInput[] = [];
   rateRequestIds: string[] = [];
+  providerLogCalls: ProviderLogMutation[] = [];
+  providerReplaceCalls: ProviderReplaceMutation[] = [];
+  providerLogRequests = new Map<string, string>();
+  providerReplaceRequests = new Map<string, string>();
 
   async getQueryCache(_key: QueryCacheKey) {
     return this.queryCache;
@@ -102,6 +109,55 @@ class MemoryStore implements OperationalStore {
   }
   async transitionRuntime(input: RuntimeTransitionInput) {
     this.transitions.push(input);
+  }
+  async logProviderFoodItem(input: ProviderLogMutation) {
+    const payload = JSON.stringify(input);
+    const existing = this.providerLogRequests.get(input.input.requestId);
+    if (existing && existing !== payload) {
+      throw new ProviderError(
+        "provider_log_request_conflict",
+        "Request identity was already used with different input.",
+        409,
+      );
+    }
+    this.providerLogRequests.set(input.input.requestId, payload);
+    this.providerLogCalls.push(input);
+    return {
+      item: {
+        id: input.input.itemId,
+        food_id: null,
+        consumed_quantity: input.input.consumedQuantity,
+        consumed_unit: "g",
+        energy_kcal_snapshot:
+          Math.round(input.candidate.energy_kcal_per_100g * input.input.consumedQuantity * 10) /
+          1_000,
+      },
+      day: { log_date: input.input.logDate },
+      idempotent_replay: this.providerLogCalls.length > 1,
+    };
+  }
+  async replaceProviderFoodLogItem(input: ProviderReplaceMutation) {
+    const payload = JSON.stringify(input);
+    const existing = this.providerReplaceRequests.get(input.input.requestId);
+    if (existing && existing !== payload) {
+      throw new ProviderError(
+        "provider_replace_request_conflict",
+        "Request identity was already used with different input.",
+        409,
+      );
+    }
+    this.providerReplaceRequests.set(input.input.requestId, payload);
+    this.providerReplaceCalls.push(input);
+    return {
+      replacement_item: {
+        id: input.input.replacementItemId,
+        food_id: null,
+        status: "active",
+      },
+      archived_original: { id: input.input.originalItemId, status: "archived" },
+      day: { log_date: "2026-08-19" },
+      idempotent_replay: this.providerReplaceCalls.length > 1,
+    };
   }
 }
 
@@ -140,7 +196,7 @@ function dependencies(store = new MemoryStore(), searchResponse?: UpstreamRespon
 }
 
 function request(
-  route: "search" | "lookup",
+  route: "search" | "lookup" | "log" | "replace",
   body: unknown,
   options: { token?: string; origin?: string } = {},
 ) {
@@ -153,6 +209,27 @@ function request(
     },
     body: JSON.stringify(body),
   });
+}
+
+async function providerToken() {
+  return await signCandidateToken(HMAC_KEY, "171077", "Foundation", NOW);
+}
+
+function providerLogBody(candidateToken: string, overrides: Record<string, unknown> = {}) {
+  return {
+    candidate_token: candidateToken,
+    item_id: "33333333-3333-4333-8333-333333333333",
+    request_id: REQUEST_ID,
+    log_date: "2026-08-19",
+    timezone_name: "Europe/Amsterdam",
+    timezone_offset_minutes: 120,
+    meal_moment: "lunch",
+    consumed_quantity: 150,
+    consumed_unit: "g",
+    notes: "After training",
+    consumed_at: "2026-08-19T10:00:00.000Z",
+    ...overrides,
+  };
 }
 
 function searchBody(overrides: Record<string, unknown> = {}) {
@@ -782,6 +859,147 @@ test("provider timeout aborts request and records circuit failure without retry"
   assert.equal(response.status, 503);
   assert.equal(calls, 1);
   assert.equal(store.transitions[0].errorClass, "upstream-timeout");
+});
+
+test("provider log revalidates the signed candidate and forwards trusted 100 g snapshots", async () => {
+  const store = new MemoryStore();
+  const current = dependencies(store);
+  const response = await createNutritionProviderHandler(current.deps)(
+    request("log", providerLogBody(await providerToken())),
+  );
+  assert.equal(response.status, 200);
+  assert.equal(current.calls.lookup, 1);
+  assert.equal(store.providerLogCalls.length, 1);
+  const mutation = store.providerLogCalls[0];
+  assert.equal(mutation.userId, USER_ID);
+  assert.equal(mutation.input.consumedQuantity, 150);
+  assert.equal(mutation.input.consumedUnit, "g");
+  assert.equal(mutation.candidate.provider, "usda_fdc");
+  assert.equal(mutation.candidate.provider_food_id, "171077");
+  assert.equal(mutation.candidate.reference_amount, 100);
+  assert.equal(mutation.candidate.reference_unit, "g");
+  assert.equal(mutation.candidate.energy_kcal_per_100g, 165);
+  assert.equal(mutation.candidate.protein_grams_per_100g, 31.02);
+  assert.equal(mutation.candidate.source_updated_at, "2024-01-01T00:00:00.000Z");
+  assert.equal((mutation.candidate.provenance as Record<string, unknown>).reference_basis, "per_100_g");
+  const payload = await response.json();
+  assert.equal(payload.data.result.item.food_id, null);
+  assert.equal(payload.data.result.item.energy_kcal_snapshot, 247.5);
+});
+
+test("provider log request schema rejects browser nutrition authority and non-gram input", async () => {
+  const token = await providerToken();
+  for (const unsafe of [
+    { kcal: 1 },
+    { protein: 1 },
+    { carbohydrate: 1 },
+    { fat: 1 },
+    { fiber: 1 },
+    { food_id: "44444444-4444-4444-8444-444444444444" },
+    { user_id: USER_ID },
+    { role: "trainer" },
+    { entitlement: "pro" },
+    { provider_url: "https://example.invalid" },
+  ]) {
+    const store = new MemoryStore();
+    const current = dependencies(store);
+    const response = await createNutritionProviderHandler(current.deps)(
+      request("log", providerLogBody(token, unsafe)),
+    );
+    assert.equal(response.status, 400);
+    assert.equal(store.providerLogCalls.length, 0);
+    assert.equal(current.calls.lookup, 0);
+  }
+
+  for (const invalid of [
+    { consumed_unit: "ml" },
+    { consumed_quantity: 0 },
+    { consumed_quantity: -1 },
+  ]) {
+    const store = new MemoryStore();
+    const response = await createNutritionProviderHandler(dependencies(store).deps)(
+      request("log", providerLogBody(token, invalid)),
+    );
+    assert.equal(response.status, 400);
+    assert.equal(store.providerLogCalls.length, 0);
+  }
+});
+
+test("provider log rejects invalid candidates before any member log mutation", async () => {
+  const validToken = await providerToken();
+  const tampered = `${validToken.slice(0, -1)}${validToken.endsWith("a") ? "b" : "a"}`;
+  const tamperedStore = new MemoryStore();
+  const tamperedResponse = await createNutritionProviderHandler(dependencies(tamperedStore).deps)(
+    request("log", providerLogBody(tampered)),
+  );
+  assert.equal(tamperedResponse.status, 409);
+  assert.equal(tamperedStore.providerLogCalls.length, 0);
+
+  const missingMacroStore = new MemoryStore();
+  const missingMacro = dependencies(missingMacroStore);
+  missingMacro.deps.usda.lookup = async () => upstream(200, usdaFood({
+    foodNutrients: [
+      { nutrient: { id: 2048 }, amount: 165 },
+      { nutrient: { id: 1003 }, amount: 31 },
+      { nutrient: { id: 1004 }, amount: 4 },
+    ],
+  }));
+  const missingResponse = await createNutritionProviderHandler(missingMacro.deps)(
+    request("log", providerLogBody(validToken)),
+  );
+  assert.equal(missingResponse.status, 502);
+  assert.equal(missingMacroStore.providerLogCalls.length, 0);
+});
+
+test("provider log retries are idempotent and changed payload reuse is rejected", async () => {
+  const store = new MemoryStore();
+  const current = dependencies(store);
+  const handler = createNutritionProviderHandler(current.deps);
+  const token = await providerToken();
+  const body = providerLogBody(token);
+  assert.equal((await handler(request("log", body))).status, 200);
+  const replay = await handler(request("log", body));
+  assert.equal(replay.status, 200);
+  assert.equal((await replay.json()).data.result.idempotent_replay, true);
+  assert.equal(store.providerLogCalls.length, 2);
+  assert.equal(current.calls.lookup, 1);
+
+  const changed = await handler(request("log", providerLogBody(token, { consumed_quantity: 151 })));
+  assert.equal(changed.status, 409);
+  assert.equal(store.providerLogCalls.length, 2);
+});
+
+test("provider replacement uses a separate atomic backend mutation contract", async () => {
+  const store = new MemoryStore();
+  const current = dependencies(store);
+  const token = await providerToken();
+  const body = {
+    candidate_token: token,
+    original_item_id: "33333333-3333-4333-8333-333333333333",
+    replacement_item_id: "44444444-4444-4444-8444-444444444444",
+    request_id: REQUEST_ID,
+    expected_original_updated_at: "2026-08-19T09:55:00.000Z",
+    meal_moment: "dinner",
+    consumed_quantity: 200,
+    consumed_unit: "g",
+    notes: "Edited",
+  };
+  const handler = createNutritionProviderHandler(current.deps);
+  const response = await handler(request("replace", body));
+  assert.equal(response.status, 200);
+  assert.equal(store.providerReplaceCalls.length, 1);
+  assert.equal(store.providerReplaceCalls[0].input.originalItemId, body.original_item_id);
+  assert.equal(store.providerReplaceCalls[0].input.replacementItemId, body.replacement_item_id);
+  assert.equal(store.providerReplaceCalls[0].input.mealMoment, "dinner");
+  const payload = await response.json();
+  assert.equal(payload.data.result.replacement_item.status, "active");
+  assert.equal(payload.data.result.archived_original.status, "archived");
+
+  assert.equal((await handler(request("replace", body))).status, 200);
+  assert.equal(
+    (await handler(request("replace", { ...body, notes: "Changed reuse" }))).status,
+    409,
+  );
 });
 
 test("oversized bodies are rejected before provider use", async () => {

@@ -6,6 +6,7 @@ import {
   USDA_API_BASE_URL,
 } from "./constants.ts";
 import { createNutritionProviderHandler } from "./handler.ts";
+import { ProviderError } from "./types.ts";
 import type {
   AuthGateway,
   FoodCacheKey,
@@ -84,6 +85,75 @@ function failDatabase(operation: string, error: { message?: string } | null): ne
   throw new Error(`${operation} failed: ${error?.message ?? "database error"}`);
 }
 
+function failProviderMutation(
+  operation: "log" | "replace",
+  error: { code?: string; message?: string } | null,
+): never {
+  const code = error?.code ?? "";
+  if (code === "22023" || code === "23514") {
+    throw new ProviderError(
+      `provider_${operation}_invalid`,
+      "Provider food input was rejected.",
+      400,
+    );
+  }
+  if (code === "23505") {
+    throw new ProviderError(
+      `provider_${operation}_request_conflict`,
+      "Request identity was already used with different input.",
+      409,
+    );
+  }
+  if (code === "40001") {
+    throw new ProviderError(
+      `provider_${operation}_stale`,
+      "Food log item changed; refresh and try again.",
+      409,
+    );
+  }
+  if (code === "42501") {
+    throw new ProviderError(
+      `provider_${operation}_forbidden`,
+      "Provider food logging is not allowed for this request.",
+      403,
+    );
+  }
+  throw new ProviderError(
+    `provider_${operation}_unavailable`,
+    "Provider food logging could not be completed.",
+    500,
+  );
+}
+
+function providerMutationResult(
+  operation: "log" | "replace",
+  value: unknown,
+): Record<string, unknown> {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    throw new ProviderError(
+      `provider_${operation}_response_invalid`,
+      "Provider food logging returned an invalid response.",
+      500,
+    );
+  }
+  const result = value as Record<string, unknown>;
+  const required = operation === "log"
+    ? ["item", "day", "idempotent_replay"]
+    : ["replacement_item", "archived_original", "day", "idempotent_replay"];
+  if (
+    required.some((key) => !(key in result)) ||
+    typeof result.idempotent_replay !== "boolean" ||
+    !result.day || typeof result.day !== "object" || Array.isArray(result.day)
+  ) {
+    throw new ProviderError(
+      `provider_${operation}_response_invalid`,
+      "Provider food logging returned an invalid response.",
+      500,
+    );
+  }
+  return result;
+}
+
 const store: OperationalStore = {
   async getQueryCache(key: QueryCacheKey) {
     const { data, error } = await admin
@@ -160,6 +230,40 @@ const store: OperationalStore = {
         { caller: "nutrition-provider", mapping_version: "phase4_usda_v1" },
     });
     if (error) failDatabase("circuit transition", error);
+  },
+  async logProviderFoodItem({ userId, input, candidate }) {
+    const { data, error } = await admin.rpc("fmz_phase4_log_provider_food_item", {
+      p_user_id: userId,
+      p_item_id: input.itemId,
+      p_request_id: input.requestId,
+      p_log_date: input.logDate,
+      p_timezone_name: input.timezoneName,
+      p_timezone_offset_minutes: input.timezoneOffsetMinutes,
+      p_meal_moment: input.mealMoment,
+      p_consumed_quantity: input.consumedQuantity,
+      p_consumed_unit: input.consumedUnit,
+      p_notes: input.notes,
+      p_consumed_at: input.consumedAt,
+      p_candidate: candidate,
+    });
+    if (error) failProviderMutation("log", error);
+    return providerMutationResult("log", data);
+  },
+  async replaceProviderFoodLogItem({ userId, input, candidate }) {
+    const { data, error } = await admin.rpc("fmz_phase4_replace_provider_food_log_item", {
+      p_user_id: userId,
+      p_original_item_id: input.originalItemId,
+      p_replacement_item_id: input.replacementItemId,
+      p_replacement_request_id: input.requestId,
+      p_expected_original_updated_at: input.expectedOriginalUpdatedAt,
+      p_meal_moment: input.mealMoment,
+      p_consumed_quantity: input.consumedQuantity,
+      p_consumed_unit: input.consumedUnit,
+      p_notes: input.notes,
+      p_candidate: candidate,
+    });
+    if (error) failProviderMutation("replace", error);
+    return providerMutationResult("replace", data);
   },
 };
 

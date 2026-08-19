@@ -47,7 +47,8 @@ This matrix records the required functional, security, entitlement, AI, migratio
 | Phase 4 | Slice 4A provider contract | OFF/USDA roles, legal gates, local-first ingestion, identity, quality, provenance, privacy, rate limits, 10k-1m scale | ARCHITECTURE GATE | PASS - OWNER LOCKED; OFF LEGAL GATE REMAINS BEFORE USE |
 | Phase 4 | Slice 4B alias/search schema | Exact alias columns/constraints/FK/indexes, `pg_trgm`, RLS, SELECT-only ACL, no write/trainer policy, empty catalog, frozen guards | MIGRATION REVIEW GATE | PASS - LIVE / READ-ONLY VERIFIED ON STAGING |
 | Phase 4 | Slice 4C provider operational state | Private cache/rate/circuit tables, zero client ACL/policy, service-role least privilege, atomic rate consumption, read-only verification | SECURITY GATE | PASS - LIVE / READ-ONLY VERIFIED ON STAGING |
-| Phase 4 | USDA Provider Edge Function Local | Dedicated UUIDv5 identity, auth, CORS, cache, signed lookup, rate/circuit, normalization, no canonical write or secret | PRE-DEPLOYMENT GATE | PASS - IMPLEMENTED LOCALLY / NOT DEPLOYED |
+| Phase 4 | USDA Provider Edge Function | Dedicated UUIDv5 identity, auth, CORS, cache, signed lookup, rate/circuit, normalization, no canonical write or secret | PROVIDER GATE | PASS - SEARCH/LOOKUP LIVE + AUTHENTICATED STAGING SMOKE |
+| Phase 4 | Slice 4D transient provider logging | Gram-only signed-candidate log, nullable food identity, immutable snapshots, service-role-only RPC, atomic replacement, no canonical promotion | MIGRATION REVIEW GATE | PASS - FINAL REVIEW + GITHUB SYNC / NOT EXECUTED OR DEPLOYED |
 | Phase 4 | Nutrition Pro | Full kcal/protein/carbs/fat goals, saved meals, recipes, copy meal/day | BLOCKING GATE | PLANNED |
 | Phase 4 | Barcode | Barcode behind entitlement and feature flag | BLOCKING GATE | PLANNED |
 | Phase 4 | Consumer boundaries | Invoices do not appear in consumer nutrition | BLOCKING GATE | PLANNED |
@@ -410,7 +411,7 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | Member safe-area frozen suites | PASS, 41 static / 45 browser checks |
 | Migration/verifier execution | PASS - LIVE / READ-ONLY VERIFIED ON STAGING |
 
-## Phase 4 USDA Provider Edge Function Local Checks
+## Phase 4 USDA Provider Edge Function Checks
 
 | Check | Result |
 | --- | --- |
@@ -430,10 +431,40 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | No canonical food/alias/portion write or ingestion route | PASS |
 | No secret value, production ref, AI, OFF, barcode or frontend change | PASS |
 | `deno check --frozen supabase/functions/nutrition-provider/index.ts` | PASS; complete pinned dependency graph and Edge entrypoint typecheck |
-| `deno test --frozen supabase/functions/nutrition-provider/nutrition-provider.test.ts` | PASS, 23 tests |
-| `node --experimental-strip-types --test supabase/functions/nutrition-provider/nutrition-provider.test.ts` | PASS, 23 tests; independent non-Deno harness |
-| `node assets/phase4-nutrition-provider-static-check.js` | PASS, 95 checks |
-| Edge Function deployment / live USDA call | NOT PERFORMED |
+| `node --experimental-strip-types --test supabase/functions/nutrition-provider/nutrition-provider.test.ts` | PASS, 28 tests; dependency-injected local harness, no live calls |
+| `node assets/phase4-nutrition-provider-static-check.js` | PASS, 103 checks |
+| Edge Function search/lookup deployment and authenticated USDA smoke | PASS - STAGING ONLY; query/food cache, signed token, tamper rejection, rate/circuit state verified |
+| Canonical foods/portions/aliases unchanged by provider smoke | PASS |
+
+## Phase 4 Slice 4D Transient Provider Snapshot Logging Local Checks
+
+| Check | Result |
+| --- | --- |
+| Owner decisions: transient snapshot, grams-only, no auto-promotion | PASS - LOCKED |
+| Existing `food_log_items.food_id` / `food_portion_id` nullable compatibility | PASS - NO TABLE CHANGE REQUIRED |
+| Provider log/replace RPCs exact service-role-only ACL | PASS |
+| `PUBLIC`, `anon`, `authenticated` cannot execute provider RPCs | PASS |
+| Fixed search path and `SECURITY DEFINER` boundary | PASS |
+| Browser cannot submit nutrients, food ID, provider payload, user, role or entitlement | PASS |
+| Signed candidate token is revalidated through trusted lookup/cache | PASS |
+| USDA accepted types, identity, mapping, nutrition bounds and provenance validation | PASS |
+| 100 g reference and consumed grams only | PASS |
+| Stable item/request UUID and exact-payload idempotent replay | PASS |
+| Changed-payload request reuse rejected | PASS |
+| Request/item/day advisory-lock ordering | PASS |
+| Free current day plus six prior local days | PASS |
+| Current Pro/AI/Personal Coaching full-history helper reused | PASS |
+| Atomic provider replace: lock, expected timestamp, active replacement, archived original | PASS |
+| Existing archive RPC remains nullable-food compatible and unchanged | PASS |
+| No canonical `foods`, `food_portions`, or `food_aliases` write | PASS |
+| No trainer policy, DELETE policy, seed, import, frontend, AI or production path | PASS |
+| Read-only verifier returns individual checks plus `overall_pass` | PASS - LOCAL ARTIFACT |
+| Provider unit tests | PASS, 28 tests |
+| Provider security/static checks | PASS, 103 checks |
+| Slice 4D migration/verifier/static checks | PASS, 93 checks |
+| Phase 1 / Phase 2 / Phase 3 / Member UX frozen suites | PASS, 75 / 46 / 222 / 56 checks |
+| Phase 4 schema / Slice 2 / Slice 3 / atomic / Slice 4B / Slice 4C | PASS, 90 / 98 / 105 / 79 / 83 / 116 checks |
+| Migration execution / Edge deployment / frontend integration | NOT PERFORMED |
 
 ## Phase 4 Slice 4C Operational State Schema Local Checks
 

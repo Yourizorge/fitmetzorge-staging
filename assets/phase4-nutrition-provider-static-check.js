@@ -29,12 +29,22 @@ check("different identity separation is tested", tests.includes('createCandidate
 check("different provider prefix separation is tested", tests.includes('"open_food_facts:171077"'));
 check("Phase 3 namespace non-use is tested", tests.includes("uuidV5(PHASE3_EXERCISE_UUID_NAMESPACE"));
 
-check("only search and lookup routes are exposed", sources["handler.ts"].includes('route === "search" || route === "lookup"') && !/route\s*===\s*["']ingest/.test(source));
+check("only reviewed search lookup log and replace routes are exposed", ["search", "lookup", "log", "replace"].every((route) => sources["handler.ts"].includes(`route === "${route}"`)) && !/route\s*===\s*["']ingest/.test(source));
 check("only POST and OPTIONS are accepted", sources["handler.ts"].includes('request.method !== "POST"') && sources["handler.ts"].includes('request.method === "OPTIONS"'));
 check("bearer authentication is mandatory", sources["handler.ts"].includes("verifyBearer(bearerToken(request))"));
 check("Supabase getUser verifies bearer", sources["index.ts"].includes("verifier.auth.getUser(token)"));
-check("client role and entitlement input are rejected", !/allowedKeys:[\s\S]*(role|package|entitlement|user_id)/.test(source) && tests.includes('role: "trainer"'));
+const parseLogSource = sources["handler.ts"].match(/function parseLog[\s\S]*?function parseReplace/)?.[0] || "";
+const parseReplaceSource = sources["handler.ts"].match(/function parseReplace[\s\S]*?async function readBody/)?.[0] || "";
+check("client role and entitlement input are rejected", !/("role"|"package"|"entitlement"|"user_id")/.test(`${parseLogSource}\n${parseReplaceSource}`) && tests.includes('role: "trainer"') && tests.includes('entitlement: "pro"'));
 check("no client user id is trusted", !/body\.(user_id|userId)/.test(source));
+check("provider log rejects browser nutrition authority", ["food_id", "kcal", "protein", "carbohydrate", "fat", "fiber", "provider_url", "user_id", "role", "entitlement"].every((field) => tests.includes(field)));
+check("provider log accepts grams only", sources["handler.ts"].includes('body.consumed_unit !== "g"') && sources["handler.ts"].includes('consumedUnit: "g"'));
+check("provider log revalidates candidate through lookup", /async function handleLog[\s\S]*handleLookup/.test(sources["handler.ts"]));
+check("provider replace revalidates candidate through lookup", /async function handleReplace[\s\S]*handleLookup/.test(sources["handler.ts"]));
+check("provider snapshots are built only after trusted resolution", sources["handler.ts"].includes("providerSnapshot(lookup.result)"));
+check("provider log uses backend-only RPC adapter", sources["index.ts"].includes('admin.rpc("fmz_phase4_log_provider_food_item"'));
+check("provider replace uses backend-only RPC adapter", sources["index.ts"].includes('admin.rpc("fmz_phase4_replace_provider_food_log_item"'));
+check("provider log does not promote canonical foods", !/fmz_phase4_log_provider_food_item[\s\S]{0,500}\.from\(["']foods["']\)/.test(sources["index.ts"]));
 
 check("USDA host is fixed", sources["constants.ts"].includes('"https://api.nal.usda.gov/fdc/v1"'));
 check("caller cannot supply an upstream URL", !/(body|input)\.(url|host|endpoint|apiKey|api_key)/.test(source));
@@ -119,7 +129,7 @@ check("namespace decision is documented", decisions.includes("PHASE4_PROVIDER_CA
 check("architecture documents derivation contract", architecture.includes("provider_code:provider_food_id") && architecture.includes("usda_fdc:171077") && architecture.includes("23440733-7e58-4c21-ad15-591eae6ab8ac"));
 check("master plan locks namespace permanence", masterPlan.includes("PHASE4_PROVIDER_CANDIDATE_UUID_NAMESPACE") && /permanent/i.test(masterPlan));
 check("Phase 4 architecture records USDA local adapter", phase4.includes("nutrition-provider") && phase4.includes("phase4_usda_v1"));
-check("test matrix includes provider local checks", /USDA Provider Edge Function Local/i.test(testMatrix));
+check("test matrix includes provider checks", /USDA Provider Edge Function Checks/i.test(testMatrix));
 
 const failed = checks.filter((item) => !item.condition);
 for (const item of checks) console.log(`${item.condition ? "PASS" : "FAIL"} - ${item.name}`);

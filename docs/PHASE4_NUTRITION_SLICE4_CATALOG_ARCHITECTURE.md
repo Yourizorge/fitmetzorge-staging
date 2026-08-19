@@ -1,10 +1,10 @@
 # Phase 4 Nutrition - Slice 4 Canonical Food Catalog Architecture
 
-Status: SLICE 4A LOCKED / SLICE 4B LIVE AND COMPLETE / SLICE 4C LIVE AND VERIFIED / USDA EDGE FUNCTION LOCAL, NOT DEPLOYED
+Status: SLICE 4A LOCKED / SLICE 4B LIVE AND COMPLETE / SLICE 4C LIVE AND VERIFIED / USDA SEARCH+LOOKUP EDGE LIVE AND SMOKE-VERIFIED / SLICE 4D FINAL REVIEW PASS AND GITHUB-SYNCED, NOT EXECUTED OR DEPLOYED
 
 Date: 2026-08-19
 
-Environment: Slice 4B and Slice 4C are live and read-only verified on staging `mokxyyullfhkfalopbzd`. The USDA Edge Function exists locally for review only. No provider secret, live provider call, food import, Edge Function deployment, frontend change, or production change has occurred.
+Environment: Slice 4B and Slice 4C are live and read-only verified on staging `mokxyyullfhkfalopbzd`. USDA search/lookup is deployed and its authenticated smoke path passed without canonical mutation. Slice 4D provider logging exists locally only. No food import, provider-log frontend integration, Slice 4D migration execution/deployment, or production change has occurred.
 
 ## Frozen Baseline
 
@@ -212,11 +212,21 @@ The migration and SELECT-only verifier completed successfully on staging. The ex
 
 ### Local USDA Edge Function
 
-`supabase/functions/nutrition-provider/` implements reviewed but undeployed routes `POST /search` and `POST /lookup` using mapping version `phase4_usda_v1`. Search accepts only Foundation, Survey (FNDDS), and SR Legacy. Lookup requires a short-lived HMAC-signed candidate token from search. The proxy authenticates the Supabase bearer user, uses no client role/package/user authority, sends no member identity to USDA, uses only a fixed USDA host, applies strict staging CORS, and returns bounded normalized candidates rather than raw provider payloads. Cache hits are accepted only after checksum, exact payload shape, deterministic UUID, nutrition bounds, attribution and provenance revalidation. Replay identities use canonical structured operation serialization. The exact `@supabase/supabase-js@2.95.0` runtime dependency and its transitive graph are integrity-locked in frozen Deno mode.
+`supabase/functions/nutrition-provider/` implements deployed staging routes `POST /search` and `POST /lookup` using mapping version `phase4_usda_v1`. Search accepts only Foundation, Survey (FNDDS), and SR Legacy. Lookup requires a short-lived HMAC-signed candidate token from search. The proxy authenticates the Supabase bearer user, uses no client role/package/user authority, sends no member identity to USDA, uses only a fixed USDA host, applies strict staging CORS, and returns bounded normalized candidates rather than raw provider payloads. Cache hits are accepted only after checksum, exact payload shape, deterministic UUID, nutrition bounds, attribution and provenance revalidation. Replay identities use canonical structured operation serialization. The exact `@supabase/supabase-js@2.95.0` runtime dependency and its transitive graph are integrity-locked in frozen Deno mode.
 
 Cache lookup precedes provider budget consumption. Cache identity and rate subject are HMAC-derived; rate replay identity is additionally bound server-side to client request ID plus route and operation. The live atomic rate RPC and circuit RPC remain authoritative across Edge instances. Positive query cache is 24 hours, empty search 15 minutes, and food detail 30 days. Nutrients are per 100 g, USDA nutrient IDs and energy precedence are explicit, kJ conversion uses 4.184, missing macros are never zero-filled, and volume is never assumed equal to mass. Invalid details are quarantined. No canonical `foods`, `food_portions`, or `food_aliases` write exists.
 
-Required secret names are `USDA_FDC_API_KEY` and `FMZ_PROVIDER_HMAC_KEY`; values are absent from source and were not configured. The function has not been deployed and no live USDA call was made.
+Required secret names are `USDA_FDC_API_KEY` and `FMZ_PROVIDER_HMAC_KEY`; values are absent from source and reports. Both names are configured on staging. Controlled authenticated search/lookup, cache, token-tamper, rate and circuit smoke checks passed without canonical writes.
+
+### Slice 4D Transient Provider Snapshot Logging
+
+Owner-approved initial behavior is gram-only transient USDA logging with no canonical promotion. The browser sends `candidate_token`, stable item/request UUIDs, local day/timezone context, meal, grams, notes, and optional consumed timestamp to `POST /log`. It cannot send food ID, nutrients, provider URL/payload, user ID, role, package, or entitlement. The Edge Function verifies the bearer user, verifies and resolves the signed candidate through the existing trusted cache/lookup path, constructs the authoritative snapshot, and calls service-role-only `fmz_phase4_log_provider_food_item`.
+
+Provider rows keep `food_id = NULL` and `food_portion_id = NULL`; the existing nullable FK contract already permits this. Reference amount/unit remain 100 g, calculation is direct-reference grams, and the row snapshots provider ID, candidate UUID, mapping/data type, source version, retrieval/source timestamps, derivation, attribution, provenance, notes, and calculated kcal/macros. No future cache or canonical row is required to interpret history.
+
+Provider edits use service-role-only `fmz_phase4_replace_provider_food_log_item`. It serializes request and object identities, locks the original, requires `expected_updated_at`, creates one active replacement in the same log/day, and archives the original in the same transaction. Same exact requests replay; changed payload reuse rejects. Existing `fmz_phase4_archive_food_log_item` already supports nullable `food_id` and remains the only archive route. Free retains the current local day plus six prior days; current Pro, AI, and Personal Coaching entitlements retain full history. USDA portions, browser archive-plus-readd editing, automatic writes to `foods`/`food_portions`/`food_aliases`, frontend wiring, and deployment remain blocked pending separate review.
+
+Final reviewed artifacts are `supabase/migrations/20260819_phase4_nutrition_slice4d_provider_snapshot_logging.sql` (SHA-256 `10228D7CDEC07341C85BFF80D2464ED4F46995FB732976F3045DFB2CB72F9DD0`) and `supabase/verification/20260819_phase4_nutrition_slice4d_provider_snapshot_logging_verification.sql` (SHA-256 `035B61D9175B49F163A400E3932A5E42D0F41D4ABE258B57CE0524F215025450`). The earlier verifier hash `1DABC7E3AF0941DDBACB3BB4A72A01338AE05BB277C98EDCB6A877A8AF83D27F` is obsolete because final review corrected its exact `proconfig` comparison and strengthened trigger, canonical-member-path, numeric-bound, and day-total assertions. The migration remains byte-identical: one additive transaction changing only the two ownership trigger functions required for internal nullable-food writes, the two provider RPCs, and their ACL. The verifier remains one SELECT/CTE statement and invokes no application function.
 
 ## Scale
 
@@ -244,12 +254,13 @@ Barcode input later calls the same backend provider lookup, validates the code, 
 
 1. **4A Provider/legal contract:** LOCKED. Provider roles and local-first behavior are approved; the OFF legal gate remains mandatory before use.
 2. **4B Additive search schema:** LIVE / COMPLETE ON STAGING. Alias/search indexes only; no catalog rows imported.
-3. **4C Backend provider proxy:** OPERATIONAL STATE LIVE / VERIFIED; EDGE FUNCTION FINAL LOCAL SECURITY REVIEW PASS / DEPLOYMENT PENDING. Private caches, atomic abuse limits, shared circuit state, and the reviewed USDA adapter exist; secrets, deployment and live provider calls remain blocked.
-4. **4D Curated generic catalog:** deterministic USDA-based generic artifact, Dutch aliases, provenance, quality report, hash review, staged import, and read-only verification.
-5. **4E Branded ingestion/cache:** OFF only after legal approval; controlled Dutch/EU subset or export/on-demand pipeline, never blind bulk ingestion.
-6. **4F Member search integration:** ranked local-first results, `catalog` versus `my food`, bounded provider fallback, NL/EN/DE, and mobile-first UX.
-7. **4G Quality/attribution operations:** refresh, archive/discontinued behavior, provider drift monitoring, attribution UI, and audit/export process.
-8. **4H Owner acceptance:** real-phone Dutch search coverage, nutrition correctness, provider failure, security, performance, frozen regressions, and explicit freeze.
+3. **4C Backend provider proxy:** OPERATIONAL STATE LIVE / VERIFIED; SEARCH+LOOKUP EDGE LIVE / AUTHENTICATED SMOKE PASS. Private caches, atomic abuse limits, shared circuit state, and the reviewed USDA adapter are active on staging without canonical mutation.
+4. **4D Transient provider logging:** FINAL SQL/EDGE REVIEW PASS / GITHUB SYNCED / NOT EXECUTED OR DEPLOYED. Gram-only immutable USDA snapshots, service-role-only log/replace RPCs, existing member archive route, no canonical promotion; staging migration execution, live verification, Edge deployment, and frontend wiring remain separate gates.
+5. **4E Curated generic catalog:** deterministic USDA-based generic artifact, Dutch aliases, provenance, quality report, hash review, staged import, and read-only verification.
+6. **4F Branded ingestion/cache:** OFF only after legal approval; controlled Dutch/EU subset or export/on-demand pipeline, never blind bulk ingestion.
+7. **4G Member search integration:** ranked local-first results, `catalog` versus `my food`, bounded provider fallback, NL/EN/DE, and mobile-first UX.
+8. **4H Quality/attribution operations:** refresh, archive/discontinued behavior, provider drift monitoring, attribution UI, and audit/export process.
+9. **4I Owner acceptance:** real-phone Dutch search coverage, nutrition correctness, provider failure, security, performance, frozen regressions, and explicit freeze.
 
 ## External Gates
 
@@ -261,4 +272,4 @@ Barcode input later calls the same backend provider lookup, validates the code, 
 
 ## Exact Next Step
 
-Owner performs the full Edge Function pre-deployment review. Any later staging deployment and each secret configuration require explicit owner approval. A controlled staging smoke test may follow only after deployment and secret gates. Imports, barcode, frontend search changes, production, Open Food Facts, and legacy mutation remain blocked.
+Owner may separately authorize execution of the final reviewed Slice 4D migration on staging `mokxyyullfhkfalopbzd`. Execution must be followed by the final read-only verifier before any separately approved Edge deployment. Provider-log frontend wiring, canonical imports, barcode, production, Open Food Facts, and legacy mutation remain blocked.

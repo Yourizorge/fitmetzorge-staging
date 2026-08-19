@@ -336,3 +336,21 @@ Provider codes are part of identity, so a later separately approved provider can
 Rationale:
 
 Stable candidate IDs make cache, signed lookup, review, and future promotion flows deterministic across staging and production without exposing a secret or conflating Exercise and Nutrition identity domains.
+
+## Decision 0024: USDA candidates use transient immutable log snapshots
+
+Status: APPROVED / ARCHITECTURE LOCKED / FINAL REVIEW PASS / GITHUB SYNCED / EXECUTION PENDING
+
+Date: 2026-08-19
+
+Decision:
+
+A member may log a revalidated USDA candidate without promoting it to the canonical `foods` catalog. The resulting `food_log_items` row keeps `food_id = NULL` and `food_portion_id = NULL`, uses an explicit 100 g reference, accepts consumed grams only, and stores immutable server-generated nutrition, provider identity, candidate UUID, mapping version, source timestamps, derivation, attribution, and provenance snapshots.
+
+The browser submits only a signed candidate token and normal log inputs to `nutrition-provider`. The Edge Function verifies the bearer user, verifies and resolves the candidate through trusted cache/lookup logic, and calls service-role-only `fmz_phase4_log_provider_food_item`. Editing uses a separate atomic `fmz_phase4_replace_provider_food_log_item`; browser archive-plus-readd emulation is forbidden. Existing `fmz_phase4_archive_food_log_item` remains the archive route. Provider RPC execution is revoked from `PUBLIC`, `anon`, and `authenticated` and granted only to `service_role`.
+
+USDA serving portions, automatic canonical promotion, canonical `foods`/`food_portions`/`food_aliases` writes, frontend integration, and Open Food Facts remain outside this decision. Retry identity uses stable item/request UUIDs and exact payload comparison; changed-payload request reuse is rejected.
+
+Rationale:
+
+Transient snapshots let members log trusted provider nutrition without polluting the reviewed canonical catalog. A server-authoritative gram-only path keeps calculations auditable, prevents browser nutrient spoofing, preserves immutable history, and isolates canonical ingestion for a separate owner-reviewed pipeline.

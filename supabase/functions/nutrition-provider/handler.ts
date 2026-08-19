@@ -32,6 +32,9 @@ import type {
   LookupInput,
   MemberSafeCandidate,
   NutritionProviderDependencies,
+  ProviderLogInput,
+  ProviderReplaceInput,
+  ProviderSnapshotCandidate,
   QueryCacheKey,
   QueryCacheRow,
   RouteName,
@@ -96,7 +99,9 @@ function errorResponse(error: ProviderError, origin: string | null): Response {
 
 function routeFromUrl(url: URL): RouteName {
   const route = url.pathname.split("/").filter(Boolean).at(-1);
-  if (route === "search" || route === "lookup") return route;
+  if (route === "search" || route === "lookup" || route === "log" || route === "replace") {
+    return route;
+  }
   throw new ProviderError("route_not_found", "Route not found.", 404);
 }
 
@@ -171,6 +176,151 @@ function parseLookup(value: unknown): LookupInput {
     throw new ProviderError("candidate_token_invalid", "Candidate token is required.", 400);
   }
   return { candidateToken: body.candidate_token, requestId: parseRequestId(body.request_id) };
+}
+
+function parseUuid(value: unknown, field: string): string {
+  if (typeof value !== "string" || !UUID_PATTERN.test(value)) {
+    throw new ProviderError("invalid_request", `${field} must be a valid UUID.`, 400);
+  }
+  return value.toLowerCase();
+}
+
+function parseMealMoment(value: unknown): ProviderLogInput["mealMoment"] {
+  if (value !== "breakfast" && value !== "lunch" && value !== "dinner" && value !== "snacks") {
+    throw new ProviderError("invalid_meal_moment", "Meal moment is not supported.", 400);
+  }
+  return value;
+}
+
+function parseConsumedQuantity(value: unknown): number {
+  if (typeof value !== "number" || !Number.isFinite(value) || value <= 0 || value > 100_000) {
+    throw new ProviderError("invalid_consumed_quantity", "Consumed grams are invalid.", 400);
+  }
+  return value;
+}
+
+function parseNotes(value: unknown): string | null {
+  if (value === undefined || value === null || value === "") return null;
+  if (typeof value !== "string" || value.length > 1_000) {
+    throw new ProviderError("invalid_notes", "Notes exceed the supported length.", 400);
+  }
+  const normalized = value.trim();
+  return normalized || null;
+}
+
+function parseIsoTimestamp(value: unknown, field: string, nullable: boolean): string | null {
+  if (nullable && (value === undefined || value === null)) return null;
+  if (typeof value !== "string" || !Number.isFinite(Date.parse(value))) {
+    throw new ProviderError("invalid_request", `${field} must be a valid timestamp.`, 400);
+  }
+  return new Date(value).toISOString();
+}
+
+function parseLogDate(value: unknown): string {
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/u.test(value)) {
+    throw new ProviderError("invalid_log_date", "Log date must be a local calendar date.", 400);
+  }
+  const parsed = new Date(`${value}T00:00:00.000Z`);
+  if (!Number.isFinite(parsed.getTime()) || parsed.toISOString().slice(0, 10) !== value) {
+    throw new ProviderError("invalid_log_date", "Log date must be a valid calendar date.", 400);
+  }
+  return value;
+}
+
+function parseTimezone(value: unknown): string {
+  if (
+    typeof value !== "string" || value.length < 1 || value.length > 64 ||
+    !/^[A-Za-z0-9_+\-/]+$/u.test(value)
+  ) {
+    throw new ProviderError("invalid_timezone", "Timezone is invalid.", 400);
+  }
+  try {
+    new Intl.DateTimeFormat("en", { timeZone: value }).format(new Date(0));
+  } catch {
+    throw new ProviderError("invalid_timezone", "Timezone is invalid.", 400);
+  }
+  return value;
+}
+
+function parseLog(value: unknown): ProviderLogInput {
+  const body = exactObject(value, [
+    "candidate_token",
+    "item_id",
+    "request_id",
+    "log_date",
+    "timezone_name",
+    "timezone_offset_minutes",
+    "meal_moment",
+    "consumed_quantity",
+    "consumed_unit",
+    "notes",
+    "consumed_at",
+  ]);
+  if (typeof body.candidate_token !== "string") {
+    throw new ProviderError("candidate_token_invalid", "Candidate token is required.", 400);
+  }
+  if (body.consumed_unit !== "g") {
+    throw new ProviderError("invalid_consumed_unit", "Provider logging supports grams only.", 400);
+  }
+  if (
+    !Number.isSafeInteger(body.timezone_offset_minutes) ||
+    Number(body.timezone_offset_minutes) < -840 ||
+    Number(body.timezone_offset_minutes) > 840
+  ) {
+    throw new ProviderError("invalid_timezone_offset", "Timezone offset is invalid.", 400);
+  }
+  return {
+    candidateToken: body.candidate_token,
+    itemId: parseUuid(body.item_id, "item_id"),
+    requestId: parseRequestId(body.request_id),
+    logDate: parseLogDate(body.log_date),
+    timezoneName: parseTimezone(body.timezone_name),
+    timezoneOffsetMinutes: Number(body.timezone_offset_minutes),
+    mealMoment: parseMealMoment(body.meal_moment),
+    consumedQuantity: parseConsumedQuantity(body.consumed_quantity),
+    consumedUnit: "g",
+    notes: parseNotes(body.notes),
+    consumedAt: parseIsoTimestamp(body.consumed_at, "consumed_at", true),
+  };
+}
+
+function parseReplace(value: unknown): ProviderReplaceInput {
+  const body = exactObject(value, [
+    "candidate_token",
+    "original_item_id",
+    "replacement_item_id",
+    "request_id",
+    "expected_original_updated_at",
+    "meal_moment",
+    "consumed_quantity",
+    "consumed_unit",
+    "notes",
+  ]);
+  if (typeof body.candidate_token !== "string") {
+    throw new ProviderError("candidate_token_invalid", "Candidate token is required.", 400);
+  }
+  if (body.consumed_unit !== "g") {
+    throw new ProviderError("invalid_consumed_unit", "Provider logging supports grams only.", 400);
+  }
+  const expectedOriginalUpdatedAt = parseIsoTimestamp(
+    body.expected_original_updated_at,
+    "expected_original_updated_at",
+    false,
+  );
+  if (!expectedOriginalUpdatedAt) {
+    throw new ProviderError("invalid_request", "Expected timestamp is required.", 400);
+  }
+  return {
+    candidateToken: body.candidate_token,
+    originalItemId: parseUuid(body.original_item_id, "original_item_id"),
+    replacementItemId: parseUuid(body.replacement_item_id, "replacement_item_id"),
+    requestId: parseRequestId(body.request_id),
+    expectedOriginalUpdatedAt,
+    mealMoment: parseMealMoment(body.meal_moment),
+    consumedQuantity: parseConsumedQuantity(body.consumed_quantity),
+    consumedUnit: "g",
+    notes: parseNotes(body.notes),
+  };
 }
 
 async function readBody(request: Request): Promise<unknown> {
@@ -813,6 +963,85 @@ async function handleLookup(
   };
 }
 
+function providerSnapshot(candidate: SafeCandidate): ProviderSnapshotCandidate {
+  const sourceUpdatedAt = candidate.provenance.source_version &&
+      Number.isFinite(Date.parse(candidate.provenance.source_version))
+    ? new Date(candidate.provenance.source_version).toISOString()
+    : null;
+  return {
+    provider: PROVIDER_CODE,
+    provider_food_id: candidate.provider_food_id,
+    candidate_id: candidate.candidate_id,
+    mapping_version: MAPPING_VERSION,
+    provider_data_type: candidate.data_type,
+    food_name: candidate.name,
+    brand: candidate.brand,
+    reference_amount: 100,
+    reference_unit: "g",
+    energy_kcal_per_100g: candidate.kcal,
+    protein_grams_per_100g: candidate.protein,
+    carbohydrate_grams_per_100g: candidate.carbohydrates,
+    fat_grams_per_100g: candidate.fat,
+    fiber_grams_per_100g: candidate.fiber,
+    source_version: candidate.provenance.source_version,
+    retrieved_at: candidate.provenance.retrieved_at,
+    source_updated_at: sourceUpdatedAt,
+    provenance: {
+      provider: PROVIDER_CODE,
+      provider_food_id: candidate.provider_food_id,
+      candidate_id: candidate.candidate_id,
+      mapping_version: MAPPING_VERSION,
+      provider_data_type: candidate.data_type,
+      retrieved_at: candidate.provenance.retrieved_at,
+      source_version: candidate.provenance.source_version,
+      source_updated_at: sourceUpdatedAt,
+      reference_basis: "per_100_g",
+      derivation: candidate.derivation,
+      attribution: candidate.attribution,
+    },
+  };
+}
+
+async function handleLog(
+  input: ProviderLogInput,
+  userId: string,
+  dependencies: NutritionProviderDependencies,
+  now: Date,
+): Promise<{ cache: "hit" | "miss"; result: Record<string, unknown> }> {
+  const lookup = await handleLookup(
+    { candidateToken: input.candidateToken, requestId: input.requestId },
+    userId,
+    dependencies,
+    now,
+  );
+  const result = await dependencies.store.logProviderFoodItem({
+    userId,
+    input,
+    candidate: providerSnapshot(lookup.result),
+  });
+  return { cache: lookup.cache, result };
+}
+
+async function handleReplace(
+  input: ProviderReplaceInput,
+  userId: string,
+  dependencies: NutritionProviderDependencies,
+  now: Date,
+): Promise<{ cache: "hit" | "miss"; result: Record<string, unknown> }> {
+  const lookup = await handleLookup(
+    { candidateToken: input.candidateToken, requestId: input.requestId },
+    userId,
+    dependencies,
+    now,
+  );
+  const result = await dependencies.store.replaceProviderFoodLogItem({
+    userId,
+    input,
+    candidate: providerSnapshot(lookup.result),
+  });
+  return { cache: lookup.cache, result };
+}
+
 function latencyBucket(startedAt: number): StructuredLogEvent["latency_bucket"] {
   const elapsed = performance.now() - startedAt;
   if (elapsed < 100) return "lt_100ms";
@@ -860,9 +1089,31 @@ export function createNutritionProviderHandler(dependencies: NutritionProviderDe
           origin,
         );
       }
-      const input = parseLookup(body);
+      if (route === "lookup") {
+        const input = parseLookup(body);
+        requestId = input.requestId;
+        const result = await handleLookup(input, user.id, dependencies, now);
+        cache = result.cache;
+        return jsonResponse(
+          200,
+          { ok: true, data: { ...result, provider: PROVIDER_CODE } },
+          origin,
+        );
+      }
+      if (route === "log") {
+        const input = parseLog(body);
+        requestId = input.requestId;
+        const result = await handleLog(input, user.id, dependencies, now);
+        cache = result.cache;
+        return jsonResponse(
+          200,
+          { ok: true, data: { ...result, provider: PROVIDER_CODE } },
+          origin,
+        );
+      }
+      const input = parseReplace(body);
       requestId = input.requestId;
-      const result = await handleLookup(input, user.id, dependencies, now);
+      const result = await handleReplace(input, user.id, dependencies, now);
       cache = result.cache;
       return jsonResponse(200, { ok: true, data: { ...result, provider: PROVIDER_CODE } }, origin);
     } catch (error) {

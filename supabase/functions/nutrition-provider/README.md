@@ -1,6 +1,7 @@
 # Phase 4 Nutrition Provider Edge Function
 
-Status: local implementation only. Not deployed. No live USDA request has been made.
+Status: search/lookup provider runtime is live on staging. Slice 4D transient provider logging is
+implemented locally only and is not deployed.
 
 ## Identity
 
@@ -16,8 +17,15 @@ frozen.
   Legacy search.
 - `POST /nutrition-provider/lookup`: authenticated detail lookup using only a current HMAC-signed
   candidate token returned by search.
+- `POST /nutrition-provider/log`: authenticated, gram-only transient provider-snapshot logging.
+  The browser supplies only the signed candidate token and ordinary log inputs. The function
+  revalidates the candidate and calls the service-role-only logging RPC.
+- `POST /nutrition-provider/replace`: authenticated atomic replacement of an existing provider
+  snapshot item. The same trusted candidate revalidation applies and the original item is archived
+  in the database transaction that creates its replacement.
 
-There is no ingest route. Candidates are not canonical `foods` rows.
+There is no ingest route. Logging and replacing candidates never creates canonical `foods`,
+`food_portions`, or `food_aliases` rows.
 
 ## Runtime boundary
 
@@ -34,7 +42,26 @@ There is no ingest route. Candidates are not canonical `foods` rows.
 - Revalidates checksums, exact payload shape, deterministic candidate identity, nutrition bounds,
   attribution, provenance, and portions before serving any query or food cache hit.
 - Returns bounded normalized candidate data and attribution; never raw USDA payloads or secrets.
-- Writes no canonical food, alias, portion, target, or member log data.
+- Search and lookup write only provider operational state. Slice 4D log/replace writes immutable
+  member `food_log_items` snapshots through two reviewed service-role-only RPCs. It never writes a
+  canonical food, alias, or portion.
+
+## Transient provider snapshot contract
+
+- USDA provider items use `food_id = NULL` and `food_portion_id = NULL`.
+- The calculation reference is fixed at 100 g and consumption is grams only. No serving, piece,
+  millilitre, density, or inferred conversion is accepted.
+- Candidate UUID, provider food ID, mapping version, accepted USDA data type, source version,
+  retrieval/source timestamps, derivation, attribution, and provenance are stored with immutable
+  nutrition snapshots.
+- The browser cannot send user identity, provider identity, nutrition authority, canonical food ID,
+  role, package, or entitlement data.
+- Stable item/request UUIDs, request-payload equality checks, transaction advisory locks, and the
+  existing unique request index provide retry idempotency. Changed payload reuse is rejected.
+- Free history remains the current local day plus six prior local dates. Current Pro, AI, and
+  personal-coaching entitlements retain the existing full-history contract.
+- Existing `fmz_phase4_archive_food_log_item` remains the only member archive route and supports
+  provider rows because it does not require `food_id`.
 
 ## Required secret names
 
