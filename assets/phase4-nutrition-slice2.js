@@ -2,7 +2,7 @@
   if (window.FMZ_PHASE4_NUTRITION_SLICE2_LOADED) return;
   window.FMZ_PHASE4_NUTRITION_SLICE2_LOADED = true;
 
-  const PHASE4_NUTRITION_SLICE2_VERSION = "20260818-phase4-nutrition-slice2-1";
+  const PHASE4_NUTRITION_SLICE2_VERSION = "20260819-phase4-nutrition-slice3-1";
   const PHASE4_LANGUAGES = ["nl", "en", "de"];
   const PHASE4_SEARCH_PAGE_SIZE = 25;
   const PHASE4_CUSTOM_PAGE_SIZE = 25;
@@ -535,6 +535,20 @@
     const userId = phase4EnsureCurrentUser();
     const isOnline = isOnlineMode();
     const canHydrate = Boolean(userId);
+    const slice3 = window.FMZ_PHASE4_NUTRITION_SLICE3;
+    if (typeof slice3?.renderOverview === "function" && slice3.renderOverview({
+      root,
+      userId,
+      isOnline,
+      canHydrate,
+      targetStatus: phase4State.target.status,
+      target: phase4State.target.value,
+      targetError: phase4State.target.error,
+      notice: phase4State.notice
+    }) === true) {
+      if (canHydrate && phase4State.target.status === "idle") phase4LoadTarget();
+      return;
+    }
     root.innerHTML = `
       <div class="phase4-nutrition-shell">
         <header class="phase4-page-head">

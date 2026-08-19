@@ -59,12 +59,19 @@
   }
   const phase3PatchSource = await phase3PatchResponse.text();
 
-  const phase4NutritionPatchUrl = new URL("assets/phase4-nutrition-slice2.js?v=20260818-phase4-nutrition-slice2-1", document.baseURI);
+  const phase4NutritionPatchUrl = new URL("assets/phase4-nutrition-slice2.js?v=20260819-phase4-nutrition-slice3-1", document.baseURI);
   const phase4NutritionPatchResponse = await fetch(phase4NutritionPatchUrl, { cache: "no-cache" });
   if (!phase4NutritionPatchResponse.ok) {
     throw new Error(`Phase 4 Nutrition Slice 2 laden mislukt: ${phase4NutritionPatchResponse.status}`);
   }
   const phase4NutritionPatchSource = await phase4NutritionPatchResponse.text();
+
+  const phase4NutritionSlice3PatchUrl = new URL("assets/phase4-nutrition-slice3.js?v=20260819-phase4-nutrition-slice3-1", document.baseURI);
+  const phase4NutritionSlice3PatchResponse = await fetch(phase4NutritionSlice3PatchUrl, { cache: "no-cache" });
+  if (!phase4NutritionSlice3PatchResponse.ok) {
+    throw new Error(`Phase 4 Nutrition Slice 3 laden mislukt: ${phase4NutritionSlice3PatchResponse.status}`);
+  }
+  const phase4NutritionSlice3PatchSource = await phase4NutritionSlice3PatchResponse.text();
 
   const memberUxPatchUrl = new URL("assets/member-ux-consistency.js?v=20260818-member-ux-today-hydration1", document.baseURI);
   const memberUxPatchResponse = await fetch(memberUxPatchUrl, { cache: "no-cache" });
@@ -77,7 +84,7 @@
   if (!source.includes(phase1InitNeedle)) {
     throw new Error("Phase 1 foundation kon niet voor app-init worden ingevoegd.");
   }
-  source = source.replace(phase1InitNeedle, `\n${phase1PatchSource}\n${phase2PatchSource}\n${phase3PatchSource}\n${phase4NutritionPatchSource}\n${memberUxPatchSource}\ninit();`);
+  source = source.replace(phase1InitNeedle, `\n${phase1PatchSource}\n${phase2PatchSource}\n${phase3PatchSource}\n${phase4NutritionPatchSource}\n${phase4NutritionSlice3PatchSource}\n${memberUxPatchSource}\ninit();`);
 
   (0, eval)(`${source}\n//# sourceURL=app.bundle.js`);
 
