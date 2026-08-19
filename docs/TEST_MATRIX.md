@@ -38,9 +38,11 @@ This matrix records the required functional, security, entitlement, AI, migratio
 | Pre-Phase 4 | Member Vandaag consistency | One combined hero, exactly one Daily Check-in CTA, Training active-session/fallback entry, conditional onboarding; no standalone Tracker cards or Analyse implementation | BLOCKING GATE | PASS - OWNER/RUNTIME VERIFIED; FROZEN |
 | Pre-Phase 4 | Member Tracker consistency | Compact overview, focused body-level details, shared Water/day values, mobile Recovery history, no wide default table | BLOCKING GATE | PASS - OWNER/RUNTIME VERIFIED; FROZEN |
 | Pre-Phase 4 | Rendering and regression | Active-view boundaries, no Nutrition render on Tracker day change, no polling/observer/reload, Phase 1-3 preserved | BLOCKING GATE | PASS - OWNER/RUNTIME VERIFIED; FROZEN |
-| Phase 4 | Architecture/readiness | Legacy inventory, normalized model, entitlement/RLS boundaries, food sources, retry, performance, slices, decisions, and test design | BLOCKING GATE | PASS - OWNER CONTRACT LOCKED; SLICE 1 MIGRATION EXECUTED ON STAGING |
-| Phase 4 | Schema Slice 1 local security | Exact six-table scope, constraints/FKs/indexes, own-user RLS, exact ACLs, RPC authority, Free 10-custom limit, seven-day history, snapshots, retry identity | BLOCKING GATE | MIGRATION EXECUTED; ALL INITIAL LIVE CHECKS EXCEPT INDEX METADATA PASS; CORRECTED CHECKER RERUN PENDING |
-| Phase 4 | Nutrition | Day totals, meal moments, manual logging, macros, custom foods | BLOCKING GATE | PLANNED |
+| Phase 4 | Architecture/readiness | Legacy inventory, normalized model, entitlement/RLS boundaries, food sources, retry, performance, slices, decisions, and test design | BLOCKING GATE | PASS - OWNER CONTRACT LOCKED; PHASE 4 IN PROGRESS |
+| Phase 4 | Schema Slice 1 live security | Exact six-table scope, constraints/FKs/indexes, own-user RLS, exact ACLs, RPC authority, Free 10-custom limit, seven-day history, snapshots, retry identity | BLOCKING GATE | PASS - COMPLETE / LIVE / VERIFIED ON STAGING; CORRECTED CHECKER `overall_pass: true` |
+| Phase 4 | Functional Slice 2 | Manual daily targets, bounded cursor search, empty catalog, private custom create/edit/archive, NL/EN/DE, mobile-first and legacy isolation | BLOCKING GATE | PASS - DEPLOYED / REAL-PHONE OWNER-TESTED / FROZEN |
+| Phase 4 | Atomic log-item replacement | Own-user one-transaction immutable replacement, stale guard, replay identity, archive trail, authoritative day return | BLOCKING GATE | PASS - LIVE / READ-ONLY VERIFIED ON STAGING |
+| Phase 4 | Functional Slice 3 | Day totals, targets, four meal moments, logging, atomic edit, archive, retries, date/history behavior, NL/EN/DE | OWNER ACCEPTANCE GATE | DEPLOYED TO STAGING; READ-ONLY LIVE VERIFICATION PASS; OWNER REAL-PHONE ACCEPTANCE PENDING |
 | Phase 4 | Nutrition Pro | Full kcal/protein/carbs/fat goals, saved meals, recipes, copy meal/day | BLOCKING GATE | PLANNED |
 | Phase 4 | Barcode | Barcode behind entitlement and feature flag | BLOCKING GATE | PLANNED |
 | Phase 4 | Consumer boundaries | Invoices do not appear in consumer nutrition | BLOCKING GATE | PLANNED |
@@ -121,7 +123,7 @@ This matrix records the required functional, security, entitlement, AI, migratio
 | Training | Free limit | Free | Max 4 active training_plan_days/workouts enforced server-side; exercise count inside workout is not limited | PASS - OWNER LIVE VERIFIED |
 | Training | Exercise library | All | Canonical exercise metadata, picker, translations, and placeholder/legacy animation slots render correctly | PASS - 898 CATALOG/PICKER OWNER ACCEPTED; CONTENT/MEDIA GATES SEPARATE |
 | Training | UUID save | All | Workout save works for one and multiple exercises without invalid uuid syntax | PASS - OWNER ACCEPTED |
-| Nutrition | Free contract | Free | Targets, canonical search, unlimited normal daily logging, totals, max 10 active custom foods, seven-day server-enforced history | PLANNED - CONTRACT LOCKED |
+| Nutrition | Free contract | Free | Targets, canonical search, unlimited normal daily logging, totals, max 10 active custom foods, seven-day server-enforced history | SLICE 2 OWNER-TESTED; SLICE 3 LOGGING/TOTALS/HISTORY UI LOCAL PASS |
 | Nutrition | Full macros | Pro/AI/PT | kcal/protein/carbs/fat tracked correctly; AI receives Pro Nutrition without Phase 4 AI execution | PLANNED - CONTRACT LOCKED |
 | Nutrition | Barcode | Pro/AI/PT | Barcode feature requires entitlement and enabled flag | PLANNED |
 | Nutrition | Recipes/meals | Pro/AI/PT | Saved meals, recipes, favorites, copy meal/day work | PLANNED |
@@ -305,4 +307,60 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | Phase 4 migration execution | SUCCESS WITH COMMIT on staging `mokxyyullfhkfalopbzd` |
 | Initial post-migration JSON verification | `overall_pass: false`; every check passed except index metadata reconstruction |
 | Live index investigation | PASS: migration definitions correct; verifier omitted `indoption` direction/null ordering and `indclass` operator-class semantics |
-| Corrected post-migration JSON verification | SELECT/CTE-ONLY / STATIC PASS / OWNER RERUN PENDING |
+| Corrected post-migration JSON verification | PASS ON STAGING - `overall_pass: true`; prior index result confirmed checker-only false negative |
+
+## Phase 4 Functional Slice 2 Local Checks Executed
+
+| Check | Result |
+| --- | --- |
+| Slice 1 live prerequisite | PASS - corrected staging verifier `overall_pass: true` |
+| Client-only normalized Nutrition view; trainer legacy renderer delegated | PASS |
+| Empty/current target read, create/supersede RPC, bounds, stable request identity | PASS |
+| Changed target retry rotates target/request IDs; unchanged retry reuses them | PASS |
+| Empty catalog, query, 25-row server page, cursor append, error/retry | PASS |
+| Custom food create/edit/archive through reviewed RPCs | PASS |
+| Custom read bounded to 25 rows through SELECT-only RLS catalog access | PASS |
+| Free 10-active limit message; server remains authority | PASS |
+| Optimistic stale-edit/archive timestamp contract | PASS |
+| `g`/`ml` explicit basis and serving/piece explicit conversion | PASS |
+| No `1 ml = 1 g` assumption; no primary portion editor | PASS |
+| NL/EN/DE runtime copy | PASS |
+| Accessibility: semantic dialog, labels, 44px targets, Escape, focus restore, aria-live | PASS |
+| Phone `390x844` | PASS - no horizontal overflow; touch targets preserved |
+| Narrow phone `320x700` | PASS - no horizontal overflow; touch targets preserved |
+| Tablet `820x1180` | PASS - no horizontal overflow; touch targets preserved |
+| Desktop `1440x900` | PASS - compatibility maintained |
+| `node --check assets/phase4-nutrition-slice2.js` | PASS |
+| `node --check assets/phase4-nutrition-slice2-static-check.js` | PASS |
+| `node --check assets/phase4-nutrition-slice2-browser-check.js` | PASS |
+| `node assets/phase4-nutrition-slice2-browser-check.js` | PASS, 46 checks |
+| `node assets/phase4-nutrition-slice2-static-check.js` | PASS after documentation synchronization |
+| Full daily logging, recipes, saved meals, favorites, copy, barcode, provider, AI, trainer access | NOT IMPLEMENTED BY DESIGN |
+| Database/migration/deployment/production during Slice 2 implementation | NO CHANGE / NO EXECUTION / STAGING DEPLOYMENT LATER OWNER-TESTED / PRODUCTION UNTOUCHED |
+
+## Phase 4 Functional Slice 3 Local Checks Executed
+
+| Check | Result |
+| --- | --- |
+| Atomic replacement prerequisite | PASS - RPC live and read-only verified on staging `mokxyyullfhkfalopbzd` |
+| Authoritative selected-day read, four meals, empty day, totals and target progress | PASS |
+| New item logging through `fmz_phase4_log_food_item` | PASS |
+| Item edit through one `fmz_phase4_replace_food_log_item` call | PASS |
+| Original archived, replacement active, same/changed meal, food, amount and notes | PASS |
+| Stale `expected_updated_at`, `40001`, `23505`, network retry and changed-payload identity | PASS |
+| Archive/remove and authoritative returned-day refresh | PASS |
+| Local IANA timezone, local calendar date and previous-day navigation | PASS |
+| Free seven-day behavior remains server-authoritative; Pro/AI/PT authority remains server-side | PASS |
+| NL/EN/DE, accessibility and phone-first responsive behavior | PASS |
+| Phase 1 frozen suite | PASS, 75 checks |
+| Phase 2 frozen suite | PASS, 46 checks |
+| Phase 3 frozen suite | PASS, 222 checks |
+| Member UX frozen suite | PASS, 56 checks |
+| Phase 4 schema suite | PASS, 90 checks |
+| Slice 2 static/browser suites | PASS, 98 / 46 checks |
+| Atomic replacement static suite | PASS, 79 checks |
+| Slice 3 static/browser suites | PASS, 105 / 46 checks |
+| JavaScript syntax and combined browser bundle parse | PASS |
+| Staging deployment | PASS - runtime commit `14884e410c25cf3df651e08064e5120b59238149`, cache `20260819-phase4-nutrition-slice3-1` |
+| Live read-only assets/runtime shell | PASS - four runtime files HTTP 200 and byte-identical; assembled auth navigation initialized; no horizontal overflow at required viewports |
+| Database/migration/production during deployment | NO CHANGE / NO EXECUTION / UNTOUCHED |

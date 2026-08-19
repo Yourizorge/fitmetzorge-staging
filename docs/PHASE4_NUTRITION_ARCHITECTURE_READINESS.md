@@ -1,8 +1,8 @@
 # Phase 4 Nutrition Engine - Architecture And Readiness Audit
 
-Status: ARCHITECTURE AUDIT COMPLETE - OWNER PRODUCT CONTRACT LOCKED - SLICE 1 MIGRATION EXECUTED ON STAGING / CORRECTED VERIFICATION PENDING RERUN
+Status: ARCHITECTURE AUDIT COMPLETE - OWNER PRODUCT CONTRACT LOCKED - SLICE 1 LIVE / VERIFIED - SLICE 2 OWNER-TESTED / FROZEN - ATOMIC REPLACEMENT LIVE / VERIFIED - SLICE 3 DEPLOYED / OWNER ACCEPTANCE PENDING
 
-Last updated: 2026-08-18
+Last updated: 2026-08-19
 
 Environment guard: staging project ref `mokxyyullfhkfalopbzd` only. Production project ref `hgoygcviutmynaihcvpd` was not connected to or changed.
 
@@ -10,7 +10,7 @@ Environment guard: staging project ref `mokxyyullfhkfalopbzd` only. Production p
 
 This document records the documentation-only Phase 4 architecture and readiness audit. It defines what exists, what must remain compatible, the proposed normalized target, security and entitlement boundaries, implementation slices, tests, and the owner decisions required before implementation.
 
-The audit itself did not change runtime or a database. After separate explicit owner GO and review, the additive Slice 1 migration executed successfully on staging `mokxyyullfhkfalopbzd`. The first read-only verification run passed all checks except an index metadata reconstruction check; that checker false negative has been corrected locally and awaits owner rerun. No food data was imported, no food API was connected, no frontend was changed, and no deployment or production change occurred.
+The audit itself did not change runtime or a database. After separate explicit owner GO and review, the additive Slice 1 migration executed successfully on staging `mokxyyullfhkfalopbzd`. The corrected read-only verifier returned `overall_pass: true`; the earlier index result was a checker-only false negative, and no repair migration was needed. Functional Slice 2 was later deployed, real-phone owner-tested, and frozen. The separately reviewed atomic log-item replacement RPC is live and verified on staging. Functional Slice 3 is deployed and read-only verified at the asset/runtime-shell level; owner real-phone acceptance remains pending. No food data was imported, no food API was connected, and production remains untouched.
 
 The owner resolved the Phase 4 product decisions on 2026-08-18. The final contract and exact first additive schema-slice design are recorded in `docs/PHASE4_NUTRITION_PRODUCT_CONTRACT_SCHEMA_SLICE1.md`.
 
@@ -345,23 +345,23 @@ Future trainer integration must:
 
 ## 12. Reviewable Implementation Slices
 
-This audit did not itself authorize a slice. A later explicit owner GO authorized only local creation and review of Slice 1; execution and feature implementation remain unauthorized.
+This audit did not itself authorize implementation. Later explicit owner approvals authorized and completed the reviewed Slice 1 staging migration/verification and authorized local Functional Slice 2 implementation. No Slice 2 deployment or later slice is implied.
 
 ### Slice 0 - Locked Contract And Preconditions
 
-The Free/Pro/AI/PT, privacy, source, target, logging, copy, and linked-client boundaries are locked. The exact Schema Slice 1 design is approved; the created full migration SQL still requires owner/external review before any staging execution.
+The Free/Pro/AI/PT, privacy, source, target, logging, copy, and linked-client boundaries are locked. The exact Schema Slice 1 migration and corrected verifier passed on staging.
 
 ### Slice 1 - Normalized Schema And Security Foundation
 
-Prepare one reviewed additive staging migration containing only Nutrition preferences, provider-neutral foods, food portions, member daily targets, day logs, log items, constraints, indexes, grants, RLS, and the minimum trusted RPC contracts. Saved meals, recipes, nutrition plans, copy, barcode, trainer access, AI, and catalog rows remain later slices. Execute manually only after SQL review, then run read-only live verification. No frontend deployment in the migration step.
+Status: COMPLETE / LIVE / VERIFIED ON STAGING. The reviewed additive migration contains only Nutrition preferences, provider-neutral foods, food portions, member daily targets, day logs, log items, constraints, indexes, grants, RLS, and minimum trusted RPC contracts. Saved meals, recipes, nutrition plans, copy, barcode, trainer access, AI, and catalog rows remain later slices.
 
-### Slice 2 - Curated Foods, Search, And Custom Foods
+### Slice 2 - Member Targets, Search, And Custom Foods
 
-Implement the approved provider-neutral catalog, paginated search, provenance display contract, and own-user custom foods. No barcode yet unless separately approved.
+Status: DEPLOYED / REAL-PHONE OWNER-TESTED / FROZEN. Compact member-controlled daily targets, bounded cursor food search, truthful empty catalog handling, and private custom-food create/edit/archive use only the reviewed RPC and RLS contracts. No catalog import, provider, barcode implementation, recipes, saved meals, favorites, copy, AI, trainer access, or legacy migration belongs to this slice.
 
 ### Slice 3 - Mobile Day Logging, Targets, And Totals
 
-Build the phone-first overview, meal moments, detail entry, correct macro snapshots/totals, date isolation, target selection, and the approved Free/Pro gate.
+Status: DEPLOYED TO STAGING / READ-ONLY LIVE VERIFICATION PASS / OWNER ACCEPTANCE PENDING. Build phone-first daily logging, four meal moments, detail entry, authoritative macro snapshots/totals, date isolation, and the approved Free/Pro history gate. Item edits use the live one-transaction `fmz_phase4_replace_food_log_item` RPC; browser-side archive-plus-create emulation is forbidden. Reuse the manual target established in Slice 2; do not create a second target authority. See `docs/PHASE4_NUTRITION_FUNCTIONAL_SLICE3.md`.
 
 ### Slice 4 - Favorites, Recents, Saved Meals, And Recipes
 

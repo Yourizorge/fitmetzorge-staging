@@ -1,6 +1,6 @@
 # FitMetZorge Build Status
 
-Last updated: 2026-08-18
+Last updated: 2026-08-19
 
 - Baseline audit: COMPLETE
 - Phase 0A Governance: COMPLETE
@@ -14,10 +14,10 @@ Last updated: 2026-08-18
 - Phase 0B Storage verification: COMPLETE
 - Master Plan Specification: COMPLETE
 - Master Plan Final Review: COMPLETE
-- Implementation: PHASE 4 SCHEMA SLICE 1 MIGRATION EXECUTED ON STAGING / CORRECTED READ-ONLY VERIFICATION PENDING RERUN; FEATURE IMPLEMENTATION NOT STARTED
+- Implementation: PHASE 4 IN PROGRESS / SCHEMA SLICE 1 COMPLETE, LIVE, AND VERIFIED / FUNCTIONAL SLICE 2 OWNER-TESTED AND FROZEN / ATOMIC REPLACEMENT RPC LIVE AND VERIFIED / FUNCTIONAL SLICE 3 DEPLOYED TO STAGING, OWNER ACCEPTANCE PENDING
 - Production Migration: NOT STARTED
 
-Current next step: owner rerun of the corrected SELECT/CTE-only post-migration checker on staging `mokxyyullfhkfalopbzd`. The exact reviewed migration executed successfully with `COMMIT`; the first live checker run passed every check except index metadata reconstruction. Investigation confirmed a checker false negative because its per-column `pg_get_indexdef` projection omitted sort direction and non-default operator-class metadata. No repair migration or frontend work is authorized.
+Current next step: owner real-phone acceptance of Functional Slice 3 for mobile daily food logging and macro progress. Schema Slice 1 and the atomic logged-item replacement RPC are live and verified on staging `mokxyyullfhkfalopbzd`; Functional Slice 2 is owner-tested and frozen. Functional Slice 3 is deployed at runtime commit `14884e410c25cf3df651e08064e5120b59238149` with cache version `20260819-phase4-nutrition-slice3-1`. No Slice 4 work, extra migration, provider import, legacy migration, AI, trainer access, or production change is authorized by this status.
 
 ## Environment Guardrail
 
@@ -120,7 +120,7 @@ Summary: The simplified Vandaag composition, compact Trackers overview/details, 
 
 ### Phase 4 Nutrition Engine
 
-Status: OWNER PRODUCT CONTRACT LOCKED; SCHEMA SLICE 1 MIGRATION EXECUTED ON STAGING; CORRECTED READ-ONLY VERIFICATION PENDING RERUN
+Status: IN PROGRESS; SCHEMA SLICE 1 COMPLETE / LIVE / VERIFIED; FUNCTIONAL SLICE 2 OWNER-TESTED / FROZEN; ATOMIC REPLACEMENT RPC LIVE / VERIFIED; FUNCTIONAL SLICE 3 DEPLOYED TO STAGING / OWNER ACCEPTANCE PENDING
 
 Architecture audit: PASS.
 
@@ -128,15 +128,17 @@ Owner product decisions: LOCKED.
 
 Migration artifact: `supabase/migrations/20260818_phase4_nutrition_schema_slice1.sql` - EXECUTED WITH COMMIT ON STAGING `mokxyyullfhkfalopbzd`. SHA-256 unchanged: `D70A589FEF997C14FCC9805E746536C86556E22622C8952B33DE9CA222B36188`.
 
-Post-migration verification artifact: `supabase/verification/20260818_phase4_nutrition_schema_slice1_verification.sql` - CORRECTED / SELECT-ONLY / PENDING OWNER RERUN. Previous SHA-256: `D77AD4EBE0FE194F1AC73F297C1855A5B34FDEEEABAC44FCDF28B5C5E244D485`; current SHA-256: `6756126F896161B6D4A480C380D9FD8CB4E21DCAD5DAA59207E20E6CA2916CFA`.
+Post-migration verification artifact: `supabase/verification/20260818_phase4_nutrition_schema_slice1_verification.sql` - CORRECTED / SELECT-ONLY / LIVE PASS. Current SHA-256: `6756126F896161B6D4A480C380D9FD8CB4E21DCAD5DAA59207E20E6CA2916CFA`. Owner-confirmed staging result: project guard `mokxyyullfhkfalopbzd`, scope `phase4_nutrition_schema_slice1`, `overall_pass: true`. The earlier index result was a verifier false negative; no repair migration was required.
 
-Static/security suite: `assets/phase4-static-check.js` - PASS locally, 90 checks. Frozen Phase 1, Phase 2, Phase 3, and Member UX suites remain required before any frontend execution or deployment gate.
+Static/security suite: `assets/phase4-static-check.js` - PASS locally, 90 checks. Functional Slice 2 remains PASS with 98 static and 46 browser checks. The atomic replacement suite passes 79 checks. Functional Slice 3 adds `assets/phase4-nutrition-slice3-static-check.js` and `assets/phase4-nutrition-slice3-browser-check.js`, passing 105 and 46 checks. Frozen Phase 1, Phase 2, Phase 3, and Member UX suites remain required before deployment.
 
 Summary: The current Nutrition UI, calculations, 41-food compatibility list, deterministic recipe templates, `nutritionPlan`, `foodLog`, `trainerCalc`, and `coach_workspaces.state` persistence were audited. A normalized own-user architecture, macro/target correctness rules, entitlement enforcement, RLS/grants design, idempotent retry model, food-source options, 1,000+ user performance approach, future trainer/Youri boundaries, implementation slices, and test/exit gates are documented in `docs/PHASE4_NUTRITION_ARCHITECTURE_READINESS.md`.
 
 The locked contract gives Free targets, unlimited normal daily logging, totals, 10 active private custom foods, and seven-day history; Pro adds the complete self-service engine; AI gets Pro Nutrition without Phase 4 AI; PT keeps full member Nutrition with later reviewed trainer assignment/access. Provider-neutral foods, snapshots, units, targets, history, copy behavior, privacy gates, exact six-table Slice 1 columns, RLS/grants/RPCs, entitlement enforcement, rollback, verification, and static checks are documented in `docs/PHASE4_NUTRITION_PRODUCT_CONTRACT_SCHEMA_SLICE1.md`.
 
-The empty additive Slice 1 migration executed successfully on staging after the owner-confirmed empty-schema preflight. Live read-only checks confirmed the exact six empty tables, RLS on all six, 18 policies, and zero DELETE policies. The exact checker then passed all checks except its index-key presentation check. The migration definitions are correct; the checker now reads direction/null-order bits from `pg_index.indoption`, operator classes through `pg_index.indclass` and `pg_opclass`, and access method through `pg_am`. Slice 1 remains unverified until the corrected checker returns `overall_pass: true`. No repair migration, application feature, API integration, import, deployment, legacy mutation, or production change was made during this investigation.
+The empty additive Slice 1 migration executed successfully on staging after the owner-confirmed empty-schema preflight. The corrected checker subsequently returned `overall_pass: true`, so Slice 1 is complete, live, and verified. Functional Slice 2 is deployed, owner-tested, and frozen as the client-only normalized targets, bounded search, and private custom-food foundation.
+
+The reviewed `fmz_phase4_replace_food_log_item` migration is live and read-only verified on staging. Functional Slice 3 is deployed on that contract: authoritative day reads and macro totals, four meal moments, server-side logging, custom-food-from-log, immutable item details, one-RPC atomic replacement editing, archive, retry identity, local-timezone date handling, and the server-enforced history boundary. The four runtime files are live and byte-verified against commit `14884e410c25cf3df651e08064e5120b59238149`. The trainer Nutrition renderer and all legacy `nutritionPlan`, `foodLog`, `goals`, `trainerCalc`, 41-food, 44-template, and `coach_workspaces.state` data remain preserved. No database change occurred during deployment; owner real-phone acceptance is pending.
 
 ### Production Migration
 
