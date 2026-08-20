@@ -1056,7 +1056,7 @@
         request_id: provider.requestId
       });
       if (provider.requestToken !== requestToken || slice3State.portal.type !== "search") return;
-      const rows = Array.isArray(data?.result) ? data.result.filter((candidate) => candidate?.candidate_id && candidate?.candidate_token) : [];
+      const rows = Array.isArray(data?.results) ? data.results.filter((candidate) => candidate?.candidate_id && candidate?.candidate_token) : [];
       const map = new Map((reset ? [] : provider.items).map((candidate) => [candidate.candidate_id, candidate]));
       rows.forEach((candidate) => map.set(candidate.candidate_id, candidate));
       provider.items = Array.from(map.values());
