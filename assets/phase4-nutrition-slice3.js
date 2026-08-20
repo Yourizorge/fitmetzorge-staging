@@ -2,7 +2,7 @@
   if (window.FMZ_PHASE4_NUTRITION_SLICE3_LOADED) return;
   window.FMZ_PHASE4_NUTRITION_SLICE3_LOADED = true;
 
-  const PHASE4_SLICE3_VERSION = "20260820-phase4-provider-frontend1";
+  const PHASE4_SLICE3_VERSION = "20260820-phase4-unified-search1";
   const PHASE4_SLICE3_SEARCH_PAGE_SIZE = 25;
   const PHASE4_SLICE3_FREE_HISTORY_DAYS = 7;
   const PHASE4_SLICE3_MEALS = ["breakfast", "lunch", "dinner", "snacks"];
@@ -47,6 +47,8 @@
       searchPlaceholder: "Zoek op naam, merk of barcode",
       search: "Zoeken",
       results: "Resultaten",
+      myFoodsResults: "Mijn voedingsmiddelen",
+      catalogResults: "Voedingsmiddelen",
       searchLoading: "Voedingsmiddelen laden...",
       searchFailed: "Zoeken is niet gelukt.",
       noFoods: "Geen passende voedingsmiddelen gevonden.",
@@ -157,6 +159,8 @@
       searchPlaceholder: "Search by name, brand, or barcode",
       search: "Search",
       results: "Results",
+      myFoodsResults: "My foods",
+      catalogResults: "Foods",
       searchLoading: "Loading foods...",
       searchFailed: "Search failed.",
       noFoods: "No matching foods found.",
@@ -267,6 +271,8 @@
       searchPlaceholder: "Nach Name, Marke oder Barcode suchen",
       search: "Suchen",
       results: "Ergebnisse",
+      myFoodsResults: "Meine Lebensmittel",
+      catalogResults: "Lebensmittel",
       searchLoading: "Lebensmittel werden geladen...",
       searchFailed: "Die Suche ist fehlgeschlagen.",
       noFoods: "Keine passenden Lebensmittel gefunden.",
@@ -360,6 +366,8 @@
     submission: { kind: "", itemId: "", requestId: "", submittedFingerprint: "", inFlight: false },
     customDraft: { foodId: "", submittedFingerprint: "" }
   };
+  const PHASE4_PROVIDER_SEARCH_DEBOUNCE_MS = 400;
+  let providerSearchDebounceTimer = null;
 
   function language() {
     const current = state?.accountSettings?.language || "nl";
@@ -431,6 +439,7 @@
   }
 
   function resetForUser(userId) {
+    cancelProviderSearchDebounce();
     closePortal(false);
     slice3State.userId = userId;
     slice3State.todayDate = localTodayISO();
@@ -494,6 +503,8 @@
       .phase4-s3-form .field { min-width:0; }
       .phase4-s3-form input, .phase4-s3-form select, .phase4-s3-form textarea { width:100%; min-height:44px; }
       .phase4-s3-search-form { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; }
+      .phase4-s3-search-group { display:grid; gap:8px; min-width:0; }
+      .phase4-s3-search-group + .phase4-s3-search-group { margin-top:14px; }
       .phase4-s3-search-list { display:grid; gap:8px; }
       .phase4-s3-search-row { display:grid; gap:6px; padding:11px 0; border-bottom:1px solid var(--line); }
       .phase4-s3-search-row strong, .phase4-s3-search-row small { overflow-wrap:anywhere; }
@@ -820,7 +831,17 @@
     return payload.data;
   }
 
+  function cancelProviderSearchDebounce() {
+    if (providerSearchDebounceTimer !== null) window.clearTimeout(providerSearchDebounceTimer);
+    providerSearchDebounceTimer = null;
+  }
+
+  function normalizedSearchQuery(value) {
+    return String(value || "").normalize("NFKC").replace(/\s+/g, " ").trim();
+  }
+
   function resetProviderSearch() {
+    cancelProviderSearchDebounce();
     slice3State.providerSearch = {
       status: "idle",
       query: "",
@@ -883,6 +904,7 @@
   }
 
   function closePortal(restoreFocus = true) {
+    cancelProviderSearchDebounce();
     const opener = slice3State.portal?.opener;
     document.getElementById("phase4Slice3Portal")?.remove();
     document.body.classList.remove("phase4-s3-dialog-open");
@@ -890,10 +912,13 @@
     if (restoreFocus) opener?.focus?.();
   }
 
-  function renderPortal() {
+  function renderPortal({ preserveSearchFocus = false } = {}) {
     if (!slice3State.portal.type) return;
     let portal = document.getElementById("phase4Slice3Portal");
     const isNew = !portal;
+    const activeSearchInput = preserveSearchFocus && document.activeElement?.matches?.('#phase4Slice3SearchForm input[name="query"]');
+    const selectionStart = activeSearchInput ? document.activeElement.selectionStart : null;
+    const selectionEnd = activeSearchInput ? document.activeElement.selectionEnd : null;
     if (!portal) {
       portal = document.createElement("div");
       portal.id = "phase4Slice3Portal";
@@ -905,7 +930,13 @@
     if (slice3State.portal.type === "item") portal.innerHTML = itemDialog();
     if (slice3State.portal.type === "remove") portal.innerHTML = removeDialog();
     if (slice3State.portal.type === "custom") portal.innerHTML = customDialog();
-    if (isNew) window.requestAnimationFrame(() => portal.querySelector("input, button, select")?.focus?.());
+    if (activeSearchInput) {
+      window.requestAnimationFrame(() => {
+        const input = portal.querySelector('#phase4Slice3SearchForm input[name="query"]');
+        input?.focus?.();
+        if (Number.isInteger(selectionStart) && Number.isInteger(selectionEnd)) input?.setSelectionRange?.(selectionStart, selectionEnd);
+      });
+    } else if (isNew) window.requestAnimationFrame(() => portal.querySelector("input, button, select")?.focus?.());
   }
 
   function openSearch(meal, opener, item = null) {
@@ -933,22 +964,27 @@
   function providerSearchMarkup() {
     if (!providerSearchAllowed()) return "";
     const provider = slice3State.providerSearch;
-    const currentQuery = String(slice3State.search.query || "").trim();
+    const currentQuery = normalizedSearchQuery(slice3State.search.query);
     const queryReady = currentQuery.length >= 3 && currentQuery.length <= 80;
-    let results = "";
-    if (provider.status === "loading" && !provider.items.length) results = `<div class="phase4-s3-state" aria-live="polite">${escapeHTML(text("providerSearchLoading"))}</div>`;
-    else if (provider.status === "error" && !provider.items.length) results = `<div class="phase4-s3-state error" aria-live="polite">${escapeHTML(provider.error)}</div>`;
-    else if (provider.status === "ready" && !provider.items.length) results = `<div class="phase4-s3-state" aria-live="polite">${escapeHTML(text("providerSearchEmpty"))}</div>`;
-    else if (provider.items.length) results = `<div class="phase4-s3-search-list" aria-live="polite">${provider.items.map(providerResultRow).join("")}</div>`;
+    const results = provider.items.length
+      ? `<div class="phase4-s3-search-list" aria-live="polite">${provider.items.map(providerResultRow).join("")}</div>`
+      : "";
+    const status = provider.status === "scheduled" || provider.status === "loading"
+      ? `<p class="phase4-s3-feedback" aria-live="polite">${escapeHTML(text("providerSearchLoading"))}</p>`
+      : provider.status === "error"
+        ? `<div class="phase4-s3-state error" aria-live="polite"><span>${escapeHTML(provider.error)}</span><button class="secondary-btn" data-phase4-s3-provider-retry type="button">${escapeHTML(text("retry"))}</button></div>`
+        : "";
     const lookupFeedback = provider.lookupStatus === "loading"
       ? `<p class="phase4-s3-feedback" aria-live="polite">${escapeHTML(text("providerLookupLoading"))}</p>`
       : provider.lookupStatus === "error"
         ? `<p class="phase4-s3-feedback error" aria-live="polite">${escapeHTML(provider.error)}</p>`
         : "";
+    if ((!queryReady || provider.status === "idle" || provider.status === "ready") && !results && !lookupFeedback) return "";
     return `
       <section class="phase4-s3-provider" aria-label="${escapeHTML(text("providerResults"))}">
-        <div class="phase4-s3-provider-head"><strong>${escapeHTML(text("providerResults"))}</strong><button class="secondary-btn" data-phase4-s3-provider-search type="button" ${!queryReady || provider.status === "loading" ? "disabled" : ""}>${escapeHTML(text("providerSearch"))}</button></div>
+        <div class="phase4-s3-provider-head"><strong>${escapeHTML(text("providerResults"))}</strong></div>
         ${results}
+        ${status}
         ${lookupFeedback}
         ${provider.hasMore ? `<button class="secondary-btn" data-phase4-s3-provider-more type="button" ${provider.status === "loading" ? "disabled" : ""}>${escapeHTML(text("loadMore"))}</button>` : ""}
       </section>
@@ -957,19 +993,25 @@
 
   function searchDialog() {
     const search = slice3State.search;
+    const provider = slice3State.providerSearch;
+    const query = normalizedSearchQuery(search.query);
+    const queryReady = query.length >= 3 && query.length <= 80 && providerSearchAllowed();
+    const providerSettled = !queryReady || provider.status === "ready" || provider.status === "error";
+    const combinedEmpty = search.status === "ready" && !search.items.length && providerSettled && !provider.items.length;
     let results = "";
     if (search.status === "loading" && !search.items.length) results = `<div class="phase4-s3-state" aria-live="polite">${escapeHTML(text("searchLoading"))}</div>`;
     else if (search.status === "error" && !search.items.length) results = `<div class="phase4-s3-state error" aria-live="polite"><span>${escapeHTML(search.error)}</span><button class="secondary-btn" data-phase4-s3-retry-search type="button">${escapeHTML(text("retry"))}</button></div>`;
-    else if (search.status === "ready" && !search.items.length) results = `<div class="phase4-s3-state" aria-live="polite"><strong>${escapeHTML(text("noFoods"))}</strong><button class="phase4-s3-gold" data-phase4-s3-custom type="button">${escapeHTML(text("createCustom"))}</button></div>`;
-    else results = `
-      <div class="phase4-s3-search-list" aria-live="polite">${search.items.map(searchRow).join("")}</div>
+    else if (combinedEmpty) results = `<div class="phase4-s3-state" aria-live="polite"><strong>${escapeHTML(text("noFoods"))}</strong></div>`;
+    else if (search.items.length) results = `
+      ${searchResultGroup(text("myFoodsResults"), search.items.filter((food) => food.catalog_scope === "custom"))}
+      ${searchResultGroup(text("catalogResults"), search.items.filter((food) => food.catalog_scope !== "custom"))}
       ${search.status === "error" ? `<p class="phase4-s3-feedback error">${escapeHTML(search.error)}</p>` : ""}
       ${search.hasMore || search.status === "loading" ? `<button class="secondary-btn" data-phase4-s3-more-search type="button" ${search.status === "loading" ? "disabled" : ""}>${escapeHTML(search.status === "loading" ? text("searchLoading") : text("loadMore"))}</button>` : ""}
     `;
     const body = `
       <form id="phase4Slice3SearchForm" class="phase4-s3-search-form" role="search"><label class="field"><span class="sr-only">${escapeHTML(text("searchFood"))}</span><input name="query" type="search" value="${escapeHTML(search.query)}" placeholder="${escapeHTML(text("searchPlaceholder"))}" autocomplete="off"></label><button class="phase4-s3-gold" type="submit">${escapeHTML(text("search"))}</button></form>
       ${feedbackMarkup()}
-      <div><p class="eyebrow">${escapeHTML(text("results"))}</p>${results}</div>
+      <div>${results}</div>
       ${providerSearchMarkup()}
       <div class="phase4-s3-dialog-actions"><button class="secondary-btn" data-phase4-s3-custom type="button">${escapeHTML(text("createCustom"))}</button></div>
     `;
@@ -986,7 +1028,12 @@
     `;
   }
 
-  async function searchFoods({ reset = true } = {}) {
+  function searchResultGroup(title, items) {
+    if (!items.length) return "";
+    return `<section class="phase4-s3-search-group" aria-label="${escapeHTML(title)}"><p class="eyebrow">${escapeHTML(title)}</p><div class="phase4-s3-search-list" aria-live="polite">${items.map(searchRow).join("")}</div></section>`;
+  }
+
+  async function searchFoods({ reset = true, preserveSearchFocus = false } = {}) {
     if (!slice3State.userId || !supabaseClient) return;
     const search = slice3State.search;
     const requestToken = search.requestToken + 1;
@@ -999,7 +1046,7 @@
       search.afterId = null;
       search.hasMore = false;
     }
-    renderPortal();
+    renderPortal({ preserveSearchFocus });
     try {
       const { data, error } = await supabaseClient.rpc("fmz_phase4_search_foods", {
         p_query: search.query || null,
@@ -1023,14 +1070,34 @@
       search.status = "error";
       search.error = errorMessage(error, "search");
     }
-    renderPortal();
+    renderPortal({ preserveSearchFocus });
+  }
+
+  function scheduleProviderSearch(query) {
+    const normalizedQuery = normalizedSearchQuery(query);
+    if (!providerSearchAllowed() || normalizedQuery.length < 3 || normalizedQuery.length > 80) return;
+    const provider = slice3State.providerSearch;
+    if (provider.query === normalizedQuery && ["scheduled", "loading", "ready"].includes(provider.status)) return;
+    cancelProviderSearchDebounce();
+    provider.query = normalizedQuery;
+    provider.status = "scheduled";
+    provider.error = "";
+    provider.page = 1;
+    provider.hasMore = false;
+    renderPortal({ preserveSearchFocus: true });
+    providerSearchDebounceTimer = window.setTimeout(() => {
+      providerSearchDebounceTimer = null;
+      if (slice3State.portal.type !== "search" || normalizedSearchQuery(slice3State.search.query) !== normalizedQuery) return;
+      searchProviderFoods({ reset: true });
+    }, PHASE4_PROVIDER_SEARCH_DEBOUNCE_MS);
   }
 
   async function searchProviderFoods({ reset = true } = {}) {
-    const query = String(slice3State.search.query || "").normalize("NFKC").replace(/\s+/g, " ").trim();
+    const query = normalizedSearchQuery(slice3State.search.query);
     if (!providerSearchAllowed() || query.length < 3 || query.length > 80) return;
     const provider = slice3State.providerSearch;
     const page = reset ? 1 : Math.min(PHASE4_PROVIDER_MAX_PAGES, provider.page + 1);
+    if (provider.status === "loading" && provider.query === query && provider.page === page) return;
     const fingerprint = JSON.stringify([query, language(), providerCountryCode(), page, PHASE4_PROVIDER_SEARCH_PAGE_SIZE]);
     if (!provider.requestId || provider.submittedFingerprint !== fingerprint) provider.requestId = uuid();
     provider.submittedFingerprint = fingerprint;
@@ -1045,7 +1112,7 @@
     }
     const requestToken = provider.requestToken + 1;
     provider.requestToken = requestToken;
-    renderPortal();
+    renderPortal({ preserveSearchFocus: true });
     try {
       const data = await providerRequest("search", {
         query,
@@ -1055,7 +1122,7 @@
         page_size: PHASE4_PROVIDER_SEARCH_PAGE_SIZE,
         request_id: provider.requestId
       });
-      if (provider.requestToken !== requestToken || slice3State.portal.type !== "search") return;
+      if (provider !== slice3State.providerSearch || provider.requestToken !== requestToken || slice3State.portal.type !== "search" || normalizedSearchQuery(slice3State.search.query) !== query) return;
       const rows = Array.isArray(data?.results) ? data.results.filter((candidate) => candidate?.candidate_id && candidate?.candidate_token) : [];
       const map = new Map((reset ? [] : provider.items).map((candidate) => [candidate.candidate_id, candidate]));
       rows.forEach((candidate) => map.set(candidate.candidate_id, candidate));
@@ -1063,11 +1130,11 @@
       provider.hasMore = rows.length === PHASE4_PROVIDER_SEARCH_PAGE_SIZE && page < PHASE4_PROVIDER_MAX_PAGES;
       provider.status = "ready";
     } catch (error) {
-      if (provider.requestToken !== requestToken || slice3State.portal.type !== "search") return;
+      if (provider !== slice3State.providerSearch || provider.requestToken !== requestToken || slice3State.portal.type !== "search" || normalizedSearchQuery(slice3State.search.query) !== query) return;
       provider.status = "error";
       provider.error = providerErrorMessage(error);
     }
-    renderPortal();
+    renderPortal({ preserveSearchFocus: true });
   }
 
   async function selectProviderFood(candidateId) {
@@ -1584,7 +1651,7 @@
     if (button.dataset.phase4S3Close !== undefined) return closePortal();
     if (button.dataset.phase4S3RetrySearch !== undefined) return searchFoods({ reset: true });
     if (button.dataset.phase4S3MoreSearch !== undefined) return searchFoods({ reset: false });
-    if (button.dataset.phase4S3ProviderSearch !== undefined) return searchProviderFoods({ reset: true });
+    if (button.dataset.phase4S3ProviderRetry !== undefined) return searchProviderFoods({ reset: true });
     if (button.dataset.phase4S3ProviderMore !== undefined) return searchProviderFoods({ reset: false });
     if (button.dataset.phase4S3SelectProvider) return selectProviderFood(button.dataset.phase4S3SelectProvider);
     if (button.dataset.phase4S3SelectFood) return selectSearchFood(button.dataset.phase4S3SelectFood);
@@ -1599,12 +1666,27 @@
     if (button.dataset.phase4S3ConfirmRemove !== undefined) return archiveItem();
   }
 
+  function runUnifiedSearch(value, { forceLocal = false } = {}) {
+    const rawQuery = String(value || "");
+    const query = normalizedSearchQuery(rawQuery);
+    const rawChanged = rawQuery !== slice3State.search.query;
+    const providerQueryChanged = query !== normalizedSearchQuery(slice3State.search.query);
+    if (!rawChanged && !forceLocal) return;
+    slice3State.search.query = rawQuery;
+    if (providerQueryChanged) resetProviderSearch();
+    searchFoods({ reset: true, preserveSearchFocus: true });
+    scheduleProviderSearch(query);
+  }
+
+  function handleInput(event) {
+    if (!event.target?.matches?.('#phase4Slice3SearchForm input[name="query"]')) return;
+    runUnifiedSearch(event.target.value);
+  }
+
   function handleSubmit(event) {
     if (event.target?.id === "phase4Slice3SearchForm") {
       event.preventDefault();
-      slice3State.search.query = String(new FormData(event.target).get("query") || "").trim();
-      resetProviderSearch();
-      searchFoods({ reset: true });
+      runUnifiedSearch(new FormData(event.target).get("query"), { forceLocal: true });
     }
     if (event.target?.id === "phase4Slice3EntryForm") {
       event.preventDefault();
@@ -1630,6 +1712,7 @@
   }
 
   document.addEventListener("click", handleClick);
+  document.addEventListener("input", handleInput);
   document.addEventListener("submit", handleSubmit);
   document.addEventListener("change", handleChange);
   document.addEventListener("keydown", handleKeydown);
