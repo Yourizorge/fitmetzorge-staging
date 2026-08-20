@@ -15,7 +15,7 @@ import {
 } from "./crypto.ts";
 import { createNutritionProviderHandler } from "./handler.ts";
 import { normalizeUsdaFood } from "./normalization.ts";
-import { ProviderError } from "./types.ts";
+import { ActiveProviderItemUnavailableError, ProviderError } from "./types.ts";
 import type {
   FoodCacheKey,
   FoodCacheRow,
@@ -33,7 +33,10 @@ import type {
 
 const NOW = new Date("2026-08-19T10:00:00.000Z");
 const USER_ID = "11111111-1111-4111-8111-111111111111";
+const OTHER_USER_ID = "99999999-9999-4999-8999-999999999999";
 const REQUEST_ID = "22222222-2222-4222-8222-222222222222";
+const ORIGINAL_ITEM_ID = "33333333-3333-4333-8333-333333333333";
+const REPLACEMENT_ITEM_ID = "44444444-4444-4444-8444-444444444444";
 const HMAC_KEY = "test-only-key-with-at-least-thirty-two-characters";
 
 function usdaFood(overrides: Record<string, unknown> = {}) {
@@ -79,9 +82,13 @@ class MemoryStore implements OperationalStore {
   rateRequestIds: string[] = [];
   providerLogCalls: ProviderLogMutation[] = [];
   providerReplaceCalls: ProviderReplaceMutation[] = [];
+  providerReplacementRows = new Set<string>();
   providerLogRequests = new Map<string, string>();
   providerReplaceRequests = new Map<string, string>();
   resolverCalls: Array<{ userId: string; originalItemId: string }> = [];
+  resolverFailures = new Map<string, Error>();
+  resolverOwners = new Map<string, string>();
+  archivedResolverItems = new Set<string>();
   historicalIdentity: HistoricalProviderIdentity = {
     provider: "usda_fdc",
     provider_food_id: "171077",
@@ -121,6 +128,12 @@ class MemoryStore implements OperationalStore {
   }
   async resolveProviderFoodLogItem(userId: string, originalItemId: string) {
     this.resolverCalls.push({ userId, originalItemId });
+    const failure = this.resolverFailures.get(originalItemId);
+    if (failure) throw failure;
+    const owner = this.resolverOwners.get(originalItemId);
+    if ((owner && owner !== userId) || this.archivedResolverItems.has(originalItemId)) {
+      throw new ActiveProviderItemUnavailableError();
+    }
     return this.historicalIdentity;
   }
   async logProviderFoodItem(input: ProviderLogMutation) {
@@ -152,15 +165,38 @@ class MemoryStore implements OperationalStore {
   async replaceProviderFoodLogItem(input: ProviderReplaceMutation) {
     const payload = JSON.stringify(input);
     const existing = this.providerReplaceRequests.get(input.input.requestId);
-    if (existing && existing !== payload) {
+    if (existing) {
+      if (existing !== payload) {
+        throw new ProviderError(
+          "provider_replace_request_conflict",
+          "Request identity was already used with different input.",
+          409,
+        );
+      }
+      this.providerReplaceCalls.push(input);
+      return {
+        replacement_item: {
+          id: input.input.replacementItemId,
+          food_id: null,
+          status: "active",
+        },
+        archived_original: { id: input.input.originalItemId, status: "archived" },
+        day: { log_date: "2026-08-19" },
+        idempotent_replay: true,
+      };
+    }
+    if (this.archivedResolverItems.has(input.input.originalItemId)) {
       throw new ProviderError(
-        "provider_replace_request_conflict",
-        "Request identity was already used with different input.",
+        "provider_replace_stale",
+        "Food log item changed; refresh and try again.",
         409,
       );
     }
     this.providerReplaceRequests.set(input.input.requestId, payload);
     this.providerReplaceCalls.push(input);
+    this.providerReplacementRows.add(input.input.replacementItemId);
+    this.archivedResolverItems.add(input.input.originalItemId);
+    this.resolverOwners.set(input.input.replacementItemId, input.userId);
     return {
       replacement_item: {
         id: input.input.replacementItemId,
@@ -169,7 +205,7 @@ class MemoryStore implements OperationalStore {
       },
       archived_original: { id: input.input.originalItemId, status: "archived" },
       day: { log_date: "2026-08-19" },
-      idempotent_replay: this.providerReplaceCalls.length > 1,
+      idempotent_replay: false,
     };
   }
 }
@@ -268,8 +304,8 @@ function providerLogBody(candidateToken: string, overrides: Record<string, unkno
 
 function historicalReplaceBody(overrides: Record<string, unknown> = {}) {
   return {
-    original_item_id: "33333333-3333-4333-8333-333333333333",
-    replacement_item_id: "44444444-4444-4444-8444-444444444444",
+    original_item_id: ORIGINAL_ITEM_ID,
+    replacement_item_id: REPLACEMENT_ITEM_ID,
     request_id: REQUEST_ID,
     expected_original_updated_at: "2026-08-20T10:12:34.123456Z",
     meal_moment: "dinner",
@@ -1202,9 +1238,114 @@ test("historical provider replacement replay remains idempotent", async () => {
   const first = await handler(request("replace", historicalReplaceBody()));
   const replay = await handler(request("replace", historicalReplaceBody()));
   assert.equal(first.status, 200);
+  assert.equal(store.archivedResolverItems.has(ORIGINAL_ITEM_ID), true);
+  assert.equal(store.providerReplacementRows.size, 1);
   assert.equal(replay.status, 200);
   assert.equal((await replay.json()).data.result.idempotent_replay, true);
+  assert.deepEqual(store.resolverCalls, [
+    { userId: USER_ID, originalItemId: ORIGINAL_ITEM_ID },
+    { userId: USER_ID, originalItemId: ORIGINAL_ITEM_ID },
+    { userId: USER_ID, originalItemId: REPLACEMENT_ITEM_ID },
+  ]);
   assert.equal(store.providerReplaceCalls.length, 2);
+  assert.equal(store.providerReplacementRows.size, 1);
+});
+
+test("historical replay delegates changed grams meal and notes to database rejection", async () => {
+  const changedCases = [
+    { consumed_quantity: 151 },
+    { meal_moment: "lunch" },
+    { notes: "Changed replay notes" },
+  ];
+  for (const changed of changedCases) {
+    const store = new MemoryStore();
+    store.foodCache = await validFoodCache();
+    const handler = createNutritionProviderHandler(dependencies(store).deps);
+    assert.equal((await handler(request("replace", historicalReplaceBody()))).status, 200);
+    const response = await handler(request("replace", historicalReplaceBody(changed)));
+    assert.equal(response.status, 409);
+    assert.equal((await response.json()).error.code, "provider_replace_request_conflict");
+    assert.equal(store.providerReplacementRows.size, 1);
+  }
+});
+
+test("historical replay cannot change provider candidate under the same request", async () => {
+  const store = new MemoryStore();
+  store.foodCache = await validFoodCache();
+  const current = dependencies(store);
+  const handler = createNutritionProviderHandler(current.deps);
+  assert.equal((await handler(request("replace", historicalReplaceBody()))).status, 200);
+
+  store.foodCache = null;
+  current.deps.usda.lookup = async () => upstream(200, usdaFood({ fdcId: 171078 }));
+  const changedCandidateToken = await signCandidateToken(
+    HMAC_KEY,
+    "171078",
+    "Foundation",
+    NOW,
+  );
+  const response = await handler(request("replace", historicalReplaceBody({
+    candidate_token: changedCandidateToken,
+  })));
+  assert.equal(response.status, 409);
+  assert.equal((await response.json()).error.code, "provider_replace_request_conflict");
+  assert.equal(store.providerReplacementRows.size, 1);
+});
+
+test("historical replay rejects wrong replacement and request identities without a third row", async () => {
+  const store = new MemoryStore();
+  store.foodCache = await validFoodCache();
+  const handler = createNutritionProviderHandler(dependencies(store).deps);
+  assert.equal((await handler(request("replace", historicalReplaceBody()))).status, 200);
+
+  const wrongReplacement = await handler(request("replace", historicalReplaceBody({
+    replacement_item_id: "55555555-5555-4555-8555-555555555555",
+  })));
+  assert.equal(wrongReplacement.status, 409);
+  assert.equal((await wrongReplacement.json()).error.code, "provider_replace_request_conflict");
+
+  const wrongRequest = await handler(request("replace", historicalReplaceBody({
+    request_id: "66666666-6666-4666-8666-666666666666",
+  })));
+  assert.equal(wrongRequest.status, 409);
+  assert.equal((await wrongRequest.json()).error.code, "provider_replace_stale");
+  assert.equal(store.providerReplacementRows.size, 1);
+});
+
+test("historical replay fallback rejects archived and cross-user replacement items", async () => {
+  for (const mode of ["archived", "other_user"] as const) {
+    const store = new MemoryStore();
+    store.foodCache = await validFoodCache();
+    const handler = createNutritionProviderHandler(dependencies(store).deps);
+    assert.equal((await handler(request("replace", historicalReplaceBody()))).status, 200);
+    if (mode === "archived") store.archivedResolverItems.add(REPLACEMENT_ITEM_ID);
+    if (mode === "other_user") store.resolverOwners.set(REPLACEMENT_ITEM_ID, OTHER_USER_ID);
+
+    const response = await handler(request("replace", historicalReplaceBody()));
+    assert.equal(response.status, 403);
+    assert.equal((await response.json()).error.code, "provider_replace_forbidden");
+    assert.equal(store.providerReplaceCalls.length, 1);
+    assert.equal(store.providerReplacementRows.size, 1);
+  }
+});
+
+test("historical replacement never falls back for unexpected resolver failures", async () => {
+  const store = new MemoryStore();
+  store.resolverFailures.set(
+    ORIGINAL_ITEM_ID,
+    new ProviderError(
+      "provider_replace_unavailable",
+      "Provider food logging could not be completed.",
+      500,
+    ),
+  );
+  const response = await createNutritionProviderHandler(dependencies(store).deps)(request(
+    "replace",
+    historicalReplaceBody(),
+  ));
+  assert.equal(response.status, 500);
+  assert.deepEqual(store.resolverCalls, [{ userId: USER_ID, originalItemId: ORIGINAL_ITEM_ID }]);
+  assert.equal(store.providerReplaceCalls.length, 0);
 });
 
 test("oversized bodies are rejected before provider use", async () => {

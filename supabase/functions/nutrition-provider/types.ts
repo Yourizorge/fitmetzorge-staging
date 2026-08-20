@@ -308,6 +308,13 @@ export interface NutritionProviderDependencies {
   timeoutMs?: number;
 }
 
+export class ActiveProviderItemUnavailableError extends Error {
+  constructor() {
+    super("Active provider food log item is unavailable.");
+    this.name = "ActiveProviderItemUnavailableError";
+  }
+}
+
 export class ProviderError extends Error {
   readonly code: string;
   readonly status: number;

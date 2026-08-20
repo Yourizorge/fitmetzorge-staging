@@ -6,7 +6,7 @@ import {
   USDA_API_BASE_URL,
 } from "./constants.ts";
 import { createNutritionProviderHandler } from "./handler.ts";
-import { ProviderError } from "./types.ts";
+import { ActiveProviderItemUnavailableError, ProviderError } from "./types.ts";
 import type {
   AuthGateway,
   FoodCacheKey,
@@ -237,6 +237,12 @@ const store: OperationalStore = {
       p_user_id: userId,
       p_original_item_id: originalItemId,
     });
+    if (
+      error?.code === "42501" &&
+      error.message === "active provider food log item is unavailable for this user"
+    ) {
+      throw new ActiveProviderItemUnavailableError();
+    }
     if (error) failProviderMutation("replace", error);
     return data as HistoricalProviderIdentity;
   },

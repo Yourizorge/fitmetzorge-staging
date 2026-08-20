@@ -45,7 +45,7 @@ import type {
   StructuredLogEvent,
   UpstreamResponse,
 } from "./types.ts";
-import { ProviderError } from "./types.ts";
+import { ActiveProviderItemUnavailableError, ProviderError } from "./types.ts";
 
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu;
 const PROVIDER_FOOD_ID_PATTERN = /^[1-9][0-9]{0,15}$/u;
@@ -1108,8 +1108,32 @@ async function handleReplace(
   dependencies: NutritionProviderDependencies,
   now: Date,
 ): Promise<{ cache: "hit" | "miss"; result: Record<string, unknown> }> {
+  let historicalIdentity: HistoricalProviderIdentity | null = null;
+  if (input.candidateToken === null) {
+    try {
+      historicalIdentity = await dependencies.store.resolveProviderFoodLogItem(
+        userId,
+        input.originalItemId,
+      );
+    } catch (error) {
+      if (!(error instanceof ActiveProviderItemUnavailableError)) throw error;
+      try {
+        historicalIdentity = await dependencies.store.resolveProviderFoodLogItem(
+          userId,
+          input.replacementItemId,
+        );
+      } catch (fallbackError) {
+        if (!(fallbackError instanceof ActiveProviderItemUnavailableError)) throw fallbackError;
+        throw new ProviderError(
+          "provider_replace_forbidden",
+          "Provider food logging is not allowed for this request.",
+          403,
+        );
+      }
+    }
+  }
   const candidateToken = input.candidateToken ?? await historicalCandidateToken(
-    await dependencies.store.resolveProviderFoodLogItem(userId, input.originalItemId),
+    historicalIdentity,
     dependencies.hmacKey,
     now,
   );

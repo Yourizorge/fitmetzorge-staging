@@ -1,8 +1,9 @@
 # Phase 4 Nutrition Provider Edge Function
 
-Status: search, lookup, transient provider logging and atomic replacement are live and verified on
-staging. Historical same-food replacement resolver support is implemented locally only and is not
-deployed.
+Status: search, lookup, transient provider logging, atomic replacement and historical same-food
+replacement resolver support are live on staging. The Edge replay orchestration resolves an active
+replacement snapshot only when the active-only original resolver reports the exact unavailable
+condition; the existing database RPC remains authoritative for idempotent replay validity.
 
 ## Identity
 
@@ -26,7 +27,10 @@ frozen.
   token, the Edge Function uses the service-role-only historical resolver, validates the returned
   immutable provider identity, and revalidates it through the same cache-first/controlled USDA
   lookup path. The original item is archived in the database transaction that creates its
-  replacement.
+  replacement. On an exact retry after that archive, the Edge Function may resolve the supplied
+  active replacement item only to re-establish trusted candidate authority. It then delegates all
+  original/replacement linkage, request identity and payload equality checks to the same atomic
+  database RPC.
 
 There is no ingest route. Logging and replacing candidates never creates canonical `foods`,
 `food_portions`, or `food_aliases` rows.

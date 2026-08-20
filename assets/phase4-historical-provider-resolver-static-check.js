@@ -2,7 +2,8 @@ const fs = require("fs");
 const path = require("path");
 
 const root = path.resolve(__dirname, "..");
-const read = (relativePath) => fs.readFileSync(path.join(root, relativePath), "utf8");
+const read = (relativePath) =>
+  fs.readFileSync(path.join(root, relativePath), "utf8").replace(/\r\n/gu, "\n");
 const migrationPath = "supabase/migrations/20260820134211_phase4_nutrition_slice4d_historical_provider_resolver.sql";
 const verificationPath = "supabase/verification/20260820134211_phase4_nutrition_slice4d_historical_provider_resolver_verification.sql";
 const migration = read(migrationPath);
@@ -49,8 +50,12 @@ check("resolver performs no canonical promotion", !/(public\.foods|public\.food_
 check("migration changes no existing provider RPC", !migration.includes("function public.fmz_phase4_log_provider_food_item(") && !migration.includes("function public.fmz_phase4_replace_provider_food_log_item("));
 
 check("replace candidate token is optional only for resolver mode", types.includes("candidateToken: string | null") && handler.includes('"candidate_token" in body'));
-check("token mode remains first choice", handler.includes("const candidateToken = input.candidateToken ?? await historicalCandidateToken("));
-check("tokenless mode resolves by authenticated user and original item", handler.includes("resolveProviderFoodLogItem(userId, input.originalItemId)"));
+check("token mode bypasses resolver orchestration", handler.includes("if (input.candidateToken === null)") && handler.includes("const candidateToken = input.candidateToken ?? await historicalCandidateToken("));
+check("tokenless mode resolves by authenticated user and original item", /resolveProviderFoodLogItem\(\s*userId,\s*input\.originalItemId/u.test(handler));
+check("replay fallback resolves only supplied replacement item", handler.includes("resolveProviderFoodLogItem(\n          userId,\n          input.replacementItemId"));
+check("fallback uses a dedicated internal unavailable error", types.includes("class ActiveProviderItemUnavailableError") && handler.includes("error instanceof ActiveProviderItemUnavailableError"));
+check("only exact active-item database denial enables fallback", index.includes('error?.code === "42501"') && index.includes('error.message === "active provider food log item is unavailable for this user"'));
+check("fallback resolver denial remains generic forbidden", handler.includes('"provider_replace_forbidden"') && handler.includes('"Provider food logging is not allowed for this request."'));
 check("service adapter calls only narrow resolver RPC", index.includes('admin.rpc("fmz_phase4_resolve_provider_food_log_item"') && index.includes("p_user_id: userId") && index.includes("p_original_item_id: originalItemId"));
 check("resolver response is revalidated deterministically", handler.includes("identity.candidate_id !== await createCandidateId(identity.provider_food_id)"));
 check("historical identity is signed internally only", handler.includes("return await signCandidateToken(") && !index.includes("candidate_token:"));
@@ -69,6 +74,14 @@ check("cache-miss lookup test exists", tests.includes("controlled lookup"));
 check("provider unavailable no-mutation test exists", tests.includes("never mutates when provider revalidation is unavailable"));
 check("resolver mismatch test exists", tests.includes("must match deterministic provider identity"));
 check("historical replay test exists", tests.includes("historical provider replacement replay remains idempotent"));
+check("historical replay test models archived original", tests.includes("archivedResolverItems.has(ORIGINAL_ITEM_ID)") && tests.includes("ActiveProviderItemUnavailableError"));
+check("historical replay proves replacement resolver fallback", tests.includes("originalItemId: REPLACEMENT_ITEM_ID"));
+check("historical replay proves no duplicate replacement row", tests.includes("providerReplacementRows.size, 1"));
+check("changed grams meal and notes remain database rejected", tests.includes("delegates changed grams meal and notes to database rejection"));
+check("changed provider candidate remains database rejected", tests.includes("cannot change provider candidate under the same request"));
+check("wrong replacement and request identities are rejected", tests.includes("rejects wrong replacement and request identities without a third row"));
+check("archived and cross-user fallback are rejected", tests.includes("rejects archived and cross-user replacement items"));
+check("unexpected resolver failures never trigger fallback", tests.includes("never falls back for unexpected resolver failures"));
 check("amount meal notes test coverage exists", tests.includes("Updated historical provider item") && tests.includes("consumedQuantity, 150") && tests.includes('mealMoment, "dinner"'));
 
 check("verifier is one read-only CTE statement", /with[\s\S]*select jsonb_build_object\([\s\S]*from checks;\s*$/u.test(verification));
