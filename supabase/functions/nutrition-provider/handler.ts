@@ -216,6 +216,38 @@ function parseIsoTimestamp(value: unknown, field: string, nullable: boolean): st
   return new Date(value).toISOString();
 }
 
+const RFC3339_PRECISE_TIMESTAMP_PATTERN =
+  /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.\d{1,6})?(?:Z|[+-](\d{2}):(\d{2}))$/u;
+
+function parseExactIsoTimestamp(value: unknown, field: string): string {
+  if (typeof value !== "string") {
+    throw new ProviderError("invalid_request", `${field} must be a valid timestamp.`, 400);
+  }
+  const timestamp = value.trim();
+  const match = RFC3339_PRECISE_TIMESTAMP_PATTERN.exec(timestamp);
+  if (!match) {
+    throw new ProviderError("invalid_request", `${field} must be a valid timestamp.`, 400);
+  }
+  const [, yearText, monthText, dayText, hourText, minuteText, secondText, offsetHourText, offsetMinuteText] = match;
+  const year = Number(yearText);
+  const month = Number(monthText);
+  const day = Number(dayText);
+  const hour = Number(hourText);
+  const minute = Number(minuteText);
+  const second = Number(secondText);
+  const offsetHour = offsetHourText === undefined ? 0 : Number(offsetHourText);
+  const offsetMinute = offsetMinuteText === undefined ? 0 : Number(offsetMinuteText);
+  const leapYear = year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+  const daysInMonth = [31, leapYear ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  if (
+    month < 1 || month > 12 || day < 1 || day > daysInMonth[month - 1] ||
+    hour > 23 || minute > 59 || second > 59 || offsetHour > 23 || offsetMinute > 59
+  ) {
+    throw new ProviderError("invalid_request", `${field} must be a valid timestamp.`, 400);
+  }
+  return timestamp;
+}
+
 function parseLogDate(value: unknown): string {
   if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/u.test(value)) {
     throw new ProviderError("invalid_log_date", "Log date must be a local calendar date.", 400);
@@ -302,14 +334,10 @@ function parseReplace(value: unknown): ProviderReplaceInput {
   if (body.consumed_unit !== "g") {
     throw new ProviderError("invalid_consumed_unit", "Provider logging supports grams only.", 400);
   }
-  const expectedOriginalUpdatedAt = parseIsoTimestamp(
+  const expectedOriginalUpdatedAt = parseExactIsoTimestamp(
     body.expected_original_updated_at,
     "expected_original_updated_at",
-    false,
   );
-  if (!expectedOriginalUpdatedAt) {
-    throw new ProviderError("invalid_request", "Expected timestamp is required.", 400);
-  }
   return {
     candidateToken: body.candidate_token,
     originalItemId: parseUuid(body.original_item_id, "original_item_id"),

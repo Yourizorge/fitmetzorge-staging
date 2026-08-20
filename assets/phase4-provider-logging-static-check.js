@@ -79,6 +79,13 @@ check("authoritative day is returned", (migration.match(/fmz_phase4_day_payload/
 check("Edge exposes reviewed log and replace routes", ["log", "replace"].every((route) => handler.includes(`route === "${route}"`)));
 check("Edge requires bearer auth before route work", handler.includes("verifyBearer(bearerToken(request))"));
 check("Edge exact-object boundary rejects extra fields", handler.includes("exactObject(value") && handler.includes("Request contains unsupported fields"));
+check("replace timestamp uses precision-preserving parser", handler.includes("parseExactIsoTimestamp(") && handler.includes("RFC3339_PRECISE_TIMESTAMP_PATTERN"));
+const exactTimestampParser = handler.match(/function parseExactIsoTimestamp[\s\S]*?function parseLogDate/u)?.[0] || "";
+check("replace timestamp preserves validated source text", exactTimestampParser.includes("return timestamp;") && !exactTimestampParser.includes("toISOString("));
+check("replace timestamp accepts six fractional digits", handler.includes("(?:\\.\\d{1,6})?") && tests.includes("2026-08-20T10:12:34.123456+00:00"));
+check("replace timestamp tests exact offset preservation", tests.includes("2026-08-20T12:12:34.654321+02:00"));
+check("replace timestamp malformed cases are rejected", tests.includes("rejects malformed authoritative timestamps") && tests.includes("2026-02-30T10:12:34.123456Z"));
+check("SQLSTATE 40001 maps to safe stale response", index.includes('code === "40001"') && index.includes("provider_${operation}_stale") && index.includes("409"));
 check("Edge log body accepts no nutrition fields", !/function parseLog[\s\S]*allowedKeys[\s\S]*(kcal|protein|carbohydrate|fat|fiber)/u.test(handler));
 check("Edge log body accepts no user role or entitlement", !/function parseLog[\s\S]*allowedKeys[\s\S]*(user_id|role|entitlement)/u.test(handler));
 check("Edge revalidates candidate for log", /async function handleLog[\s\S]*handleLookup/u.test(handler));

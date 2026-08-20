@@ -1002,6 +1002,65 @@ test("provider replacement uses a separate atomic backend mutation contract", as
   );
 });
 
+test("provider replacement preserves authoritative timestamp precision exactly", async () => {
+  const token = await providerToken();
+  const cases = [
+    ["2026-08-20T10:12:34.123Z", "2026-08-20T10:12:34.123Z"],
+    ["2026-08-20T10:12:34.123456+00:00", "2026-08-20T10:12:34.123456+00:00"],
+    ["2026-08-20T12:12:34.654321+02:00", "2026-08-20T12:12:34.654321+02:00"],
+    ["  2026-08-20T10:12:34.123456Z  ", "2026-08-20T10:12:34.123456Z"],
+  ];
+  for (const [inputTimestamp, expectedTimestamp] of cases) {
+    const store = new MemoryStore();
+    const handler = createNutritionProviderHandler(dependencies(store).deps);
+    const response = await handler(request("replace", {
+      candidate_token: token,
+      original_item_id: "33333333-3333-4333-8333-333333333333",
+      replacement_item_id: "44444444-4444-4444-8444-444444444444",
+      request_id: REQUEST_ID,
+      expected_original_updated_at: inputTimestamp,
+      meal_moment: "dinner",
+      consumed_quantity: 200,
+      consumed_unit: "g",
+      notes: "Edited",
+    }));
+    assert.equal(response.status, 200);
+    assert.equal(store.providerReplaceCalls.length, 1);
+    assert.equal(
+      store.providerReplaceCalls[0].input.expectedOriginalUpdatedAt,
+      expectedTimestamp,
+    );
+  }
+});
+
+test("provider replacement rejects malformed authoritative timestamps", async () => {
+  const token = await providerToken();
+  for (const timestamp of [
+    "2026-08-20 10:12:34Z",
+    "2026-08-20T10:12:34",
+    "2026-02-30T10:12:34.123456Z",
+    "2026-08-20T25:12:34Z",
+    "not-a-timestamp",
+  ]) {
+    const store = new MemoryStore();
+    const handler = createNutritionProviderHandler(dependencies(store).deps);
+    const response = await handler(request("replace", {
+      candidate_token: token,
+      original_item_id: "33333333-3333-4333-8333-333333333333",
+      replacement_item_id: "44444444-4444-4444-8444-444444444444",
+      request_id: REQUEST_ID,
+      expected_original_updated_at: timestamp,
+      meal_moment: "dinner",
+      consumed_quantity: 200,
+      consumed_unit: "g",
+      notes: null,
+    }));
+    assert.equal(response.status, 400);
+    assert.equal((await response.json()).error.code, "invalid_request");
+    assert.equal(store.providerReplaceCalls.length, 0);
+  }
+});
+
 test("oversized bodies are rejected before provider use", async () => {
   const { deps, calls } = dependencies();
   const response = await createNutritionProviderHandler(deps)(request(
