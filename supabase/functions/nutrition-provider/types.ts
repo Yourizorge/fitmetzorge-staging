@@ -43,7 +43,7 @@ export interface ProviderLogInput {
 }
 
 export interface ProviderReplaceInput {
-  candidateToken: string;
+  candidateToken: string | null;
   originalItemId: string;
   replacementItemId: string;
   requestId: string;
@@ -52,6 +52,14 @@ export interface ProviderReplaceInput {
   consumedQuantity: number;
   consumedUnit: "g";
   notes: string | null;
+}
+
+export interface HistoricalProviderIdentity {
+  provider: "usda_fdc";
+  provider_food_id: string;
+  candidate_id: string;
+  mapping_version: string;
+  provider_data_type: AcceptedDataType;
 }
 
 export interface CandidateTokenPayload {
@@ -238,6 +246,10 @@ export interface OperationalStore {
   consumeRateLimit(userSubjectHmac: string, requestId: string): Promise<RateLimitResult>;
   beginProbe(): Promise<ProbeResult>;
   transitionRuntime(input: RuntimeTransitionInput): Promise<void>;
+  resolveProviderFoodLogItem(
+    userId: string,
+    originalItemId: string,
+  ): Promise<HistoricalProviderIdentity>;
   logProviderFoodItem(input: ProviderLogMutation): Promise<Record<string, unknown>>;
   replaceProviderFoodLogItem(
     input: ProviderReplaceMutation,

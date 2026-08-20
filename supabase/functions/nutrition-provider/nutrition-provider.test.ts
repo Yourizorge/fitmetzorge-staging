@@ -19,6 +19,7 @@ import { ProviderError } from "./types.ts";
 import type {
   FoodCacheKey,
   FoodCacheRow,
+  HistoricalProviderIdentity,
   NutritionProviderDependencies,
   OperationalStore,
   ProviderLogMutation,
@@ -80,6 +81,14 @@ class MemoryStore implements OperationalStore {
   providerReplaceCalls: ProviderReplaceMutation[] = [];
   providerLogRequests = new Map<string, string>();
   providerReplaceRequests = new Map<string, string>();
+  resolverCalls: Array<{ userId: string; originalItemId: string }> = [];
+  historicalIdentity: HistoricalProviderIdentity = {
+    provider: "usda_fdc",
+    provider_food_id: "171077",
+    candidate_id: "a30e5e7f-9711-5823-b668-a25ff4a729fe",
+    mapping_version: MAPPING_VERSION,
+    provider_data_type: "Foundation",
+  };
 
   async getQueryCache(_key: QueryCacheKey) {
     return this.queryCache;
@@ -109,6 +118,10 @@ class MemoryStore implements OperationalStore {
   }
   async transitionRuntime(input: RuntimeTransitionInput) {
     this.transitions.push(input);
+  }
+  async resolveProviderFoodLogItem(userId: string, originalItemId: string) {
+    this.resolverCalls.push({ userId, originalItemId });
+    return this.historicalIdentity;
   }
   async logProviderFoodItem(input: ProviderLogMutation) {
     const payload = JSON.stringify(input);
@@ -215,6 +228,27 @@ async function providerToken() {
   return await signCandidateToken(HMAC_KEY, "171077", "Foundation", NOW);
 }
 
+async function validFoodCache(): Promise<FoodCacheRow> {
+  const candidate = await normalizeUsdaFood(usdaFood(), NOW);
+  return {
+    provider_code: "usda_fdc",
+    provider_food_id: "171077",
+    provider_data_type: "Foundation",
+    mapping_version: MAPPING_VERSION,
+    candidate_id: candidate.candidate_id,
+    normalized_payload: candidate,
+    payload_checksum: await sha256Hex(candidate),
+    quality_state: "candidate",
+    rejection_code: null,
+    source_version: null,
+    source_updated_at: null,
+    provenance: candidate.provenance,
+    metadata: {},
+    fetched_at: NOW.toISOString(),
+    expires_at: new Date(NOW.getTime() + 60_000).toISOString(),
+  };
+}
+
 function providerLogBody(candidateToken: string, overrides: Record<string, unknown> = {}) {
   return {
     candidate_token: candidateToken,
@@ -228,6 +262,20 @@ function providerLogBody(candidateToken: string, overrides: Record<string, unkno
     consumed_unit: "g",
     notes: "After training",
     consumed_at: "2026-08-19T10:00:00.000Z",
+    ...overrides,
+  };
+}
+
+function historicalReplaceBody(overrides: Record<string, unknown> = {}) {
+  return {
+    original_item_id: "33333333-3333-4333-8333-333333333333",
+    replacement_item_id: "44444444-4444-4444-8444-444444444444",
+    request_id: REQUEST_ID,
+    expected_original_updated_at: "2026-08-20T10:12:34.123456Z",
+    meal_moment: "dinner",
+    consumed_quantity: 150,
+    consumed_unit: "g",
+    notes: "Updated historical provider item",
     ...overrides,
   };
 }
@@ -1059,6 +1107,104 @@ test("provider replacement rejects malformed authoritative timestamps", async ()
     assert.equal((await response.json()).error.code, "invalid_request");
     assert.equal(store.providerReplaceCalls.length, 0);
   }
+});
+
+test("historical provider replacement resolves the owned item and uses a valid cache first", async () => {
+  const store = new MemoryStore();
+  store.foodCache = await validFoodCache();
+  const current = dependencies(store);
+  const response = await createNutritionProviderHandler(current.deps)(request(
+    "replace",
+    historicalReplaceBody(),
+  ));
+  assert.equal(response.status, 200);
+  assert.deepEqual(store.resolverCalls, [{
+    userId: USER_ID,
+    originalItemId: "33333333-3333-4333-8333-333333333333",
+  }]);
+  assert.equal(current.calls.lookup, 0);
+  assert.equal(store.rateCalls, 0);
+  assert.equal(store.providerReplaceCalls.length, 1);
+  assert.equal(store.providerReplaceCalls[0].input.candidateToken, null);
+  assert.equal(store.providerReplaceCalls[0].input.consumedQuantity, 150);
+  assert.equal(store.providerReplaceCalls[0].input.mealMoment, "dinner");
+  assert.equal(store.providerReplaceCalls[0].input.notes, "Updated historical provider item");
+  assert.equal(
+    store.providerReplaceCalls[0].input.expectedOriginalUpdatedAt,
+    "2026-08-20T10:12:34.123456Z",
+  );
+});
+
+test("historical provider replacement refreshes a missing cache through controlled lookup", async () => {
+  const store = new MemoryStore();
+  const current = dependencies(store);
+  const response = await createNutritionProviderHandler(current.deps)(request(
+    "replace",
+    historicalReplaceBody(),
+  ));
+  assert.equal(response.status, 200);
+  assert.equal(store.resolverCalls.length, 1);
+  assert.equal(current.calls.lookup, 1);
+  assert.equal(store.rateCalls, 1);
+  assert.equal(store.foodWrites, 1);
+  assert.equal(store.providerReplaceCalls.length, 1);
+});
+
+test("historical provider replacement never mutates when provider revalidation is unavailable", async () => {
+  const store = new MemoryStore();
+  const current = dependencies(store);
+  current.deps.usda.lookup = async () => upstream(503, { error: "temporarily unavailable" });
+  const response = await createNutritionProviderHandler(current.deps)(request(
+    "replace",
+    historicalReplaceBody(),
+  ));
+  assert.equal(response.status, 503);
+  assert.equal(store.resolverCalls.length, 1);
+  assert.equal(store.providerReplaceCalls.length, 0);
+});
+
+test("historical provider resolver identity must match deterministic provider identity", async () => {
+  const store = new MemoryStore();
+  store.historicalIdentity = {
+    ...store.historicalIdentity,
+    candidate_id: "55555555-5555-5555-8555-555555555555",
+  };
+  const response = await createNutritionProviderHandler(dependencies(store).deps)(request(
+    "replace",
+    historicalReplaceBody(),
+  ));
+  assert.equal(response.status, 409);
+  assert.equal(store.providerReplaceCalls.length, 0);
+});
+
+test("changing provider food continues to require a newly signed candidate token", async () => {
+  const store = new MemoryStore();
+  const current = dependencies(store);
+  const response = await createNutritionProviderHandler(current.deps)(request(
+    "replace",
+    { ...historicalReplaceBody(), candidate_token: await providerToken() },
+  ));
+  assert.equal(response.status, 200);
+  assert.equal(store.resolverCalls.length, 0);
+  assert.equal(current.calls.lookup, 1);
+
+  const arbitraryIdentity = await createNutritionProviderHandler(dependencies().deps)(request(
+    "replace",
+    { ...historicalReplaceBody(), provider_food_id: "171078" },
+  ));
+  assert.equal(arbitraryIdentity.status, 400);
+});
+
+test("historical provider replacement replay remains idempotent", async () => {
+  const store = new MemoryStore();
+  store.foodCache = await validFoodCache();
+  const handler = createNutritionProviderHandler(dependencies(store).deps);
+  const first = await handler(request("replace", historicalReplaceBody()));
+  const replay = await handler(request("replace", historicalReplaceBody()));
+  assert.equal(first.status, 200);
+  assert.equal(replay.status, 200);
+  assert.equal((await replay.json()).data.result.idempotent_replay, true);
+  assert.equal(store.providerReplaceCalls.length, 2);
 });
 
 test("oversized bodies are rejected before provider use", async () => {

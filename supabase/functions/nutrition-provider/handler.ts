@@ -29,6 +29,7 @@ import { normalizeUsdaFood, normalizeUsdaSearchPayload } from "./normalization.t
 import type {
   CandidateTokenPayload,
   FoodCacheRow,
+  HistoricalProviderIdentity,
   LookupInput,
   MemberSafeCandidate,
   NutritionProviderDependencies,
@@ -47,6 +48,7 @@ import type {
 import { ProviderError } from "./types.ts";
 
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu;
+const PROVIDER_FOOD_ID_PATTERN = /^[1-9][0-9]{0,15}$/u;
 const COUNTRY_PATTERN = /^[A-Z]{2}$/u;
 // deno-lint-ignore no-control-regex -- control characters are intentionally rejected at the boundary.
 const SAFE_QUERY = /^[^\u0000-\u001f\u007f]{3,80}$/u;
@@ -328,8 +330,8 @@ function parseReplace(value: unknown): ProviderReplaceInput {
     "consumed_unit",
     "notes",
   ]);
-  if (typeof body.candidate_token !== "string") {
-    throw new ProviderError("candidate_token_invalid", "Candidate token is required.", 400);
+  if ("candidate_token" in body && typeof body.candidate_token !== "string") {
+    throw new ProviderError("candidate_token_invalid", "Candidate token is invalid.", 400);
   }
   if (body.consumed_unit !== "g") {
     throw new ProviderError("invalid_consumed_unit", "Provider logging supports grams only.", 400);
@@ -339,7 +341,7 @@ function parseReplace(value: unknown): ProviderReplaceInput {
     "expected_original_updated_at",
   );
   return {
-    candidateToken: body.candidate_token,
+    candidateToken: typeof body.candidate_token === "string" ? body.candidate_token : null,
     originalItemId: parseUuid(body.original_item_id, "original_item_id"),
     replacementItemId: parseUuid(body.replacement_item_id, "replacement_item_id"),
     requestId: parseRequestId(body.request_id),
@@ -1030,6 +1032,56 @@ function providerSnapshot(candidate: SafeCandidate): ProviderSnapshotCandidate {
   };
 }
 
+async function historicalCandidateToken(
+  value: unknown,
+  hmacKey: string,
+  now: Date,
+): Promise<string> {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    throw new ProviderError(
+      "provider_replace_resolver_invalid",
+      "Historical provider identity could not be validated.",
+      500,
+    );
+  }
+  const identity = value as HistoricalProviderIdentity;
+  const expectedKeys = [
+    "candidate_id",
+    "mapping_version",
+    "provider",
+    "provider_data_type",
+    "provider_food_id",
+  ];
+  if (
+    Object.keys(identity).sort().join("|") !== expectedKeys.join("|") ||
+    identity.provider !== PROVIDER_CODE ||
+    identity.mapping_version !== MAPPING_VERSION ||
+    !PROVIDER_FOOD_ID_PATTERN.test(identity.provider_food_id) ||
+    !UUID_PATTERN.test(identity.candidate_id) ||
+    identity.candidate_id.charAt(14).toLowerCase() !== "5" ||
+    !ACCEPTED_DATA_TYPES.includes(identity.provider_data_type)
+  ) {
+    throw new ProviderError(
+      "provider_replace_resolver_invalid",
+      "Historical provider identity could not be validated.",
+      500,
+    );
+  }
+  if (identity.candidate_id !== await createCandidateId(identity.provider_food_id)) {
+    throw new ProviderError(
+      "provider_replace_resolver_mismatch",
+      "Historical provider identity does not match.",
+      409,
+    );
+  }
+  return await signCandidateToken(
+    hmacKey,
+    identity.provider_food_id,
+    identity.provider_data_type,
+    now,
+  );
+}
+
 async function handleLog(
   input: ProviderLogInput,
   userId: string,
@@ -1056,8 +1108,13 @@ async function handleReplace(
   dependencies: NutritionProviderDependencies,
   now: Date,
 ): Promise<{ cache: "hit" | "miss"; result: Record<string, unknown> }> {
+  const candidateToken = input.candidateToken ?? await historicalCandidateToken(
+    await dependencies.store.resolveProviderFoodLogItem(userId, input.originalItemId),
+    dependencies.hmacKey,
+    now,
+  );
   const lookup = await handleLookup(
-    { candidateToken: input.candidateToken, requestId: input.requestId },
+    { candidateToken, requestId: input.requestId },
     userId,
     dependencies,
     now,

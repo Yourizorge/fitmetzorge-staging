@@ -11,6 +11,7 @@ import type {
   AuthGateway,
   FoodCacheKey,
   FoodCacheRow,
+  HistoricalProviderIdentity,
   OperationalStore,
   ProviderLogger,
   QueryCacheKey,
@@ -230,6 +231,14 @@ const store: OperationalStore = {
         { caller: "nutrition-provider", mapping_version: "phase4_usda_v1" },
     });
     if (error) failDatabase("circuit transition", error);
+  },
+  async resolveProviderFoodLogItem(userId, originalItemId) {
+    const { data, error } = await admin.rpc("fmz_phase4_resolve_provider_food_log_item", {
+      p_user_id: userId,
+      p_original_item_id: originalItemId,
+    });
+    if (error) failProviderMutation("replace", error);
+    return data as HistoricalProviderIdentity;
   },
   async logProviderFoodItem({ userId, input, candidate }) {
     const { data, error } = await admin.rpc("fmz_phase4_log_provider_food_item", {

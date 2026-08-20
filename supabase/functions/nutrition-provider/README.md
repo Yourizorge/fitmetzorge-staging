@@ -1,7 +1,8 @@
 # Phase 4 Nutrition Provider Edge Function
 
-Status: search/lookup provider runtime is live on staging. Slice 4D transient provider logging is
-implemented locally only and is not deployed.
+Status: search, lookup, transient provider logging and atomic replacement are live and verified on
+staging. Historical same-food replacement resolver support is implemented locally only and is not
+deployed.
 
 ## Identity
 
@@ -21,11 +22,18 @@ frozen.
   The browser supplies only the signed candidate token and ordinary log inputs. The function
   revalidates the candidate and calls the service-role-only logging RPC.
 - `POST /nutrition-provider/replace`: authenticated atomic replacement of an existing provider
-  snapshot item. The same trusted candidate revalidation applies and the original item is archived
-  in the database transaction that creates its replacement.
+  snapshot item. A supplied candidate token keeps the existing new/different-food path. Without a
+  token, the Edge Function uses the service-role-only historical resolver, validates the returned
+  immutable provider identity, and revalidates it through the same cache-first/controlled USDA
+  lookup path. The original item is archived in the database transaction that creates its
+  replacement.
 
 There is no ingest route. Logging and replacing candidates never creates canonical `foods`,
 `food_portions`, or `food_aliases` rows.
+
+The historical resolver never returns a candidate token or nutrient authority to the browser. It
+accepts only the authenticated member identity established by the Edge Function and the original
+item UUID, and it rejects archived, canonical, custom, cross-user, or malformed provider rows.
 
 ## Runtime boundary
 
