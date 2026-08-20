@@ -112,11 +112,18 @@ check("verifier has one terminal SQL statement", (verification.match(/;/gu) || [
 check("verifier returns overall_pass", verification.includes("'overall_pass', bool_and(pass)"));
 check("verifier checks exact ACL", verification.includes("provider_functions_acl_service_role_only"));
 check("verifier checks exact safe search path", verification.includes("search_path=pg_catalog, public, pg_temp"));
+check("verifier normalizes pg_proc source whitespace", (verification.match(/regexp_replace\(/gu) || []).length >= 3 && verification.includes("'[[:space:]]+'") && verification.includes("source_compact"));
+check("verifier compact checks preserve member authority", verification.includes("v_user_iduuid:=auth.uid()") && verification.includes("f.owner_user_id=v_user_id") && verification.includes("p.food_id=new.food_id"));
+check("verifier compact checks preserve gram contract", verification.includes("p_consumed_unitisdistinctfrom''g''") && verification.includes("v_factor:=p_consumed_quantity/100") && verification.includes("reference_amount''isdistinctfrom''100''"));
+check("verifier compact checks preserve idempotency", verification.includes("wherei.user_id=v_user_idandi.request_id=p_request_id") && verification.includes("providerrequestUUIDwasalreadyusedwithadifferentpayload"));
+check("verifier compact checks preserve provider bounds", verification.includes("v_kcal<0orv_kcal>1500") && verification.includes("v_provider_data_typenotin") && verification.includes("v_provenance->>''reference_basis''isdistinctfrom''per_100_g''"));
+check("verifier compact checks preserve atomic replacement", verification.includes("wherei.id=p_original_item_idandi.user_id=v_user_idforupdate") && verification.includes("updatepublic.food_log_itemssetstatus=''archived''") && verification.includes("atomicreplacementrolledback"));
 check("verifier checks nullable food identity", verification.includes("food_log_items_nullable_provider_compatibility"));
 check("verifier checks trigger mapping", verification.includes("food_logs_20_enforce_owner") && verification.includes("food_log_items_20_enforce_owner"));
 check("verifier checks canonical member writes", verification.includes("canonical_member_write_paths_preserved"));
 check("verifier checks provider numeric bounds", verification.includes("provider_numeric_and_snapshot_bounds"));
 check("verifier checks archive compatibility", verification.includes("existing_archive_provider_compatible"));
+check("verifier locks exact two-argument archive signature", verification.includes("fmz_phase4_archive_food_log_item(uuid,timestamp with time zone)") && verification.includes("argument_types = 'uuid, timestamp with time zone'") && !verification.includes("fmz_phase4_archive_food_log_item(uuid,uuid,timestamp with time zone)"));
 check("verifier checks provider day totals", verification.includes("provider_day_payload_compatibility"));
 check("verifier checks no canonical promotion", verification.includes("no_canonical_provider_promotion"));
 check("verifier checks frozen guards", verification.includes("frozen_guard_tables_present_with_rls") && verification.includes("frozen_function_guards"));

@@ -25,7 +25,13 @@ actual_functions as (
     p.proconfig,
     p.proacl,
     p.proowner,
-    p.prosrc::text as source
+    p.prosrc::text as source,
+    pg_catalog.regexp_replace(
+      p.prosrc::text,
+      '[[:space:]]+',
+      '',
+      'g'
+    ) as source_compact
   from pg_catalog.pg_proc p
   join pg_catalog.pg_namespace n on n.oid = p.pronamespace
   where n.nspname = 'public'
@@ -78,9 +84,16 @@ compatibility_columns as (
 support_functions as (
   select
     p.proname::text as function_name,
+    pg_catalog.oidvectortypes(p.proargtypes)::text as argument_types,
     p.prosecdef as security_definer,
     p.proconfig,
-    p.prosrc::text as source
+    p.prosrc::text as source,
+    pg_catalog.regexp_replace(
+      p.prosrc::text,
+      '[[:space:]]+',
+      '',
+      'g'
+    ) as source_compact
   from pg_catalog.pg_proc p
   join pg_catalog.pg_namespace n on n.oid = p.pronamespace
   where n.nspname = 'public'
@@ -96,7 +109,13 @@ member_write_functions as (
   select
     p.proname::text as function_name,
     pg_catalog.oidvectortypes(p.proargtypes)::text as argument_types,
-    p.prosrc::text as source
+    p.prosrc::text as source,
+    pg_catalog.regexp_replace(
+      p.prosrc::text,
+      '[[:space:]]+',
+      '',
+      'g'
+    ) as source_compact
   from pg_catalog.pg_proc p
   join pg_catalog.pg_namespace n on n.oid = p.pronamespace
   where n.nspname = 'public'
@@ -294,8 +313,8 @@ checks(check_name, pass, details) as (
             'search_path=pg_catalog, public, pg_temp' = any(proconfig),
             false
           )
-          and position('fmz.phase4_provider_snapshot_user_id' in source) > 0
-          and position('coalesce(v_authenticated_user_id, v_internal_user_id)' in source) > 0
+          and position('fmz.phase4_provider_snapshot_user_id' in source_compact) > 0
+          and position('coalesce(v_authenticated_user_id,v_internal_user_id)' in source_compact) > 0
       )
       and exists (
         select 1 from support_functions
@@ -305,11 +324,11 @@ checks(check_name, pass, details) as (
             'search_path=pg_catalog, public, pg_temp' = any(proconfig),
             false
           )
-          and position('new.food_id is null' in source) > 0
-          and position('v_authenticated_user_id is not null' in source) > 0
-          and position('new.food_portion_id is not null' in source) > 0
-          and position('trusted USDA backend context' in source) > 0
-          and position('historical food log item snapshots are immutable' in source) > 0
+          and position('new.food_idisnull' in source_compact) > 0
+          and position('v_authenticated_user_idisnotnull' in source_compact) > 0
+          and position('new.food_portion_idisnotnull' in source_compact) > 0
+          and position('trustedUSDAbackendcontext' in source_compact) > 0
+          and position('historicalfoodlogitemsnapshotsareimmutable' in source_compact) > 0
       ),
     jsonb_build_object(
       'triggers', coalesce((select jsonb_agg(to_jsonb(t) order by trigger_name) from phase4_triggers t), '[]'::jsonb),
@@ -321,24 +340,24 @@ checks(check_name, pass, details) as (
     (select count(*) from member_write_functions) = 2
       and not exists (
         select 1 from member_write_functions
-        where position('v_user_id uuid := auth.uid()' in source) = 0
-           or position('p_food_id is null' in source) = 0
-           or position('from public.foods' in source) = 0
-           or position('f.status = ''active''' in source) = 0
-           or position('f.catalog_scope = ''canonical''' in source) = 0
-           or position('f.catalog_scope = ''custom''' in source) = 0
-           or position('f.owner_user_id = v_user_id' in source) = 0
-           or position('from public.food_portions' in source) = 0
+        where position('v_user_iduuid:=auth.uid()' in source_compact) = 0
+           or position('p_food_idisnull' in source_compact) = 0
+           or position('frompublic.foods' in source_compact) = 0
+           or position('f.status=''active''' in source_compact) = 0
+           or position('f.catalog_scope=''canonical''' in source_compact) = 0
+           or position('f.catalog_scope=''custom''' in source_compact) = 0
+           or position('f.owner_user_id=v_user_id' in source_compact) = 0
+           or position('frompublic.food_portions' in source_compact) = 0
       )
       and exists (
         select 1 from support_functions
         where function_name = 'fmz_phase4_enforce_food_log_item_owner'
-          and position('if new.food_id is null then' in source) > 0
-          and position('v_authenticated_user_id is not null' in source) > 0
-          and position('f.catalog_scope = ''canonical''' in source) > 0
-          and position('f.catalog_scope = ''custom''' in source) > 0
-          and position('f.owner_user_id = v_user_id' in source) > 0
-          and position('p.food_id = new.food_id' in source) > 0
+          and position('ifnew.food_idisnullthen' in source_compact) > 0
+          and position('v_authenticated_user_idisnotnull' in source_compact) > 0
+          and position('f.catalog_scope=''canonical''' in source_compact) > 0
+          and position('f.catalog_scope=''custom''' in source_compact) > 0
+          and position('f.owner_user_id=v_user_id' in source_compact) > 0
+          and position('p.food_id=new.food_id' in source_compact) > 0
       ),
     coalesce((select jsonb_agg(jsonb_build_object(
       'name', function_name, 'args', argument_types
@@ -349,17 +368,23 @@ checks(check_name, pass, details) as (
     exists (
       select 1 from actual_functions
       where function_name = 'fmz_phase4_log_provider_food_item'
-        and position('provider food logging supports grams only' in source) > 0
-        and position('p_consumed_quantity / 100' in source) > 0
-        and position('phase4_provider_snapshot_v1' in source) > 0
-        and position('transient_provider_snapshot' in source) > 0
-        and position('per_100_g' in source) > 0
-        and position('food_id' in source) > 0
-        and position('usda_fdc' in source) > 0
-        and position('phase4_usda_v1' in source) > 0
-        and position('Foundation' in source) > 0
-        and position('Survey (FNDDS)' in source) > 0
-        and position('SR Legacy' in source) > 0
+        and position('p_consumed_unitisdistinctfrom''g''' in source_compact) > 0
+        and position('providerfoodloggingsupportsgramsonly' in source_compact) > 0
+        and position('p_candidate->>''reference_amount''isdistinctfrom''100''' in source_compact) > 0
+        and position('p_candidate->>''reference_unit''isdistinctfrom''g''' in source_compact) > 0
+        and position('v_factor:=p_consumed_quantity/100' in source_compact) > 0
+        and position('v_log.id,null,null' in source_compact) > 0
+        and position('p_consumed_quantity,''g'',v_food_name' in source_compact) > 0
+        and position('100,''g'',null,null,null,null,''direct_reference''' in source_compact) > 0
+        and position('phase4_provider_snapshot_v1' in source_compact) > 0
+        and position('transient_provider_snapshot' in source_compact) > 0
+        and position('per_100_g' in source_compact) > 0
+        and position('p_candidate->>''provider''isdistinctfrom''usda_fdc''' in source_compact) > 0
+        and position('phase4_usda_v1' in source_compact) > 0
+        and position('Foundation' in source_compact) > 0
+        and position('Survey(FNDDS)' in source_compact) > 0
+        and position('SRLegacy' in source_compact) > 0
+        and position('p_consumed_unitin(' in source_compact) = 0
     ),
     '{}'::jsonb
   union all
@@ -367,19 +392,34 @@ checks(check_name, pass, details) as (
     'provider_numeric_and_snapshot_bounds',
     not exists (
       select 1 from actual_functions
-      where position('p_consumed_quantity <= 0' in source) = 0
-         or position('p_consumed_quantity > 100000' in source) = 0
-         or position('v_kcal < 0 or v_kcal > 1500' in source) = 0
-         or position('v_protein < 0 or v_protein > 100' in source) = 0
-         or position('v_carbohydrates < 0 or v_carbohydrates > 100' in source) = 0
-         or position('v_fat < 0 or v_fat > 100' in source) = 0
-         or position('v_fiber < 0 or v_fiber > 100' in source) = 0
-         or position('food_name_snapshot' in source) = 0
-         or position('source_provider_snapshot' in source) = 0
-         or position('provider_food_id_snapshot' in source) = 0
-         or position('source_version_snapshot' in source) = 0
-         or position('provenance_snapshot' in source) = 0
-         or position('calculation_version' in source) = 0
+      where position('p_consumed_quantityisnull' in source_compact) = 0
+         or position('p_consumed_quantity<=0' in source_compact) = 0
+         or position('p_consumed_quantity>100000' in source_compact) = 0
+         or position('v_kcal<0orv_kcal>1500' in source_compact) = 0
+         or position('v_protein<0orv_protein>100' in source_compact) = 0
+         or position('v_carbohydrates<0orv_carbohydrates>100' in source_compact) = 0
+         or position('v_fat<0orv_fat>100' in source_compact) = 0
+         or position('v_fiber<0orv_fiber>100' in source_compact) = 0
+         or position('v_provider_data_typenotin(''Foundation'',''Survey(FNDDS)'',''SRLegacy'')' in source_compact) = 0
+         or position('v_provider_food_id!~''^[1-9][0-9]{0,15}$''' in source_compact) = 0
+         or position('p_candidate->>''mapping_version''isdistinctfrom''phase4_usda_v1''' in source_compact) = 0
+         or position('v_retrieved_atisnull' in source_compact) = 0
+         or position('v_retrieved_at>now()+interval''5minutes''' in source_compact) = 0
+         or position('v_source_updated_at>now()+interval''5minutes''' in source_compact) = 0
+         or position('v_provenance->>''provider''isdistinctfrom''usda_fdc''' in source_compact) = 0
+         or position('v_provenance->>''provider_food_id''isdistinctfromv_provider_food_id' in source_compact) = 0
+         or position('v_provenance->>''candidate_id''isdistinctfromv_candidate_id::text' in source_compact) = 0
+         or position('v_provenance->>''mapping_version''isdistinctfrom''phase4_usda_v1''' in source_compact) = 0
+         or position('v_provenance->>''reference_basis''isdistinctfrom''per_100_g''' in source_compact) = 0
+         or position('v_provenance->>''retrieved_at''isdistinctfromp_candidate->>''retrieved_at''' in source_compact) = 0
+         or position('v_provenance->''derivation''isnull' in source_compact) = 0
+         or position('v_provenance->''attribution''isnull' in source_compact) = 0
+         or position('food_name_snapshot' in source_compact) = 0
+         or position('source_provider_snapshot' in source_compact) = 0
+         or position('provider_food_id_snapshot' in source_compact) = 0
+         or position('source_version_snapshot' in source_compact) = 0
+         or position('provenance_snapshot' in source_compact) = 0
+         or position('calculation_version' in source_compact) = 0
     ),
     '{}'::jsonb
   union all
@@ -388,12 +428,16 @@ checks(check_name, pass, details) as (
     exists (
       select 1 from actual_functions
       where function_name = 'fmz_phase4_log_provider_food_item'
-        and position('fmz_phase4_food_log_request:' in source) > 0
-        and position('fmz_phase4_food_log:' in source) > 0
-        and position('provider_request' in source) > 0
-        and position('different payload' in source) > 0
-        and position('on conflict (user_id, log_date) do nothing' in source) > 0
-        and position('fmz_phase4_day_payload' in source) > 0
+        and position('fmz_phase4_food_log_request:' in source_compact) > 0
+        and position('fmz_phase4_food_log:' in source_compact) > 0
+        and position('wherei.user_id=v_user_idandi.request_id=p_request_id' in source_compact) > 0
+        and position('v_existing_item.idisdistinctfromp_item_id' in source_compact) > 0
+        and position('v_existing_item.metadata->''provider_request''isdistinctfromv_request_payload' in source_compact) > 0
+        and position('providerrequestUUIDwasalreadyusedwithadifferentpayload' in source_compact) > 0
+        and position('wherei.id=p_item_id' in source_compact) > 0
+        and position('onconflict(user_id,log_date)donothing' in source_compact) > 0
+        and position('''idempotent_replay'',true' in source_compact) > 0
+        and position('fmz_phase4_day_payload' in source_compact) > 0
     ),
     '{}'::jsonb
   union all
@@ -402,13 +446,13 @@ checks(check_name, pass, details) as (
     exists (
       select 1 from support_functions
       where function_name = 'fmz_phase4_day_payload'
-        and position('from public.food_log_items' in source) > 0
-        and position('i.status = ''active''' in source) > 0
-        and position('sum(i.energy_kcal_snapshot)' in source) > 0
-        and position('sum(i.protein_grams_snapshot)' in source) > 0
-        and position('sum(i.carbohydrate_grams_snapshot)' in source) > 0
-        and position('sum(i.fat_grams_snapshot)' in source) > 0
-        and position('food_id' in source) = 0
+        and position('frompublic.food_log_items' in source_compact) > 0
+        and position('i.status=''active''' in source_compact) > 0
+        and position('sum(i.energy_kcal_snapshot)' in source_compact) > 0
+        and position('sum(i.protein_grams_snapshot)' in source_compact) > 0
+        and position('sum(i.carbohydrate_grams_snapshot)' in source_compact) > 0
+        and position('sum(i.fat_grams_snapshot)' in source_compact) > 0
+        and position('food_id' in source_compact) = 0
     ),
     '{}'::jsonb
   union all
@@ -416,19 +460,18 @@ checks(check_name, pass, details) as (
     'provider_history_and_entitlements',
     not exists (
       select 1 from actual_functions
-      where position('fmz_phase4_has_full_nutrition_access' in source) = 0
-         or position('v_today - 6' in source) = 0
-         or position('at time zone' in source) = 0
+      where position('fmz_phase4_has_full_nutrition_access' in source_compact) = 0
+         or position('v_today-6' in source_compact) = 0
+         or position('attimezone' in source_compact) = 0
     )
       and exists (
         select 1 from support_functions
         where function_name = 'fmz_phase4_has_full_nutrition_access'
-          and position('pro' in source) > 0
-          and position('ai' in source) > 0
-          and position('personal_coaching' in source) > 0
-          and position('status = ''active''' in source) > 0
-          and position('starts_at <= now()' in source) > 0
-          and position('ends_at is null or e.ends_at > now()' in source) > 0
+          and position('e.user_id=p_user_id' in source_compact) > 0
+          and position('e.entitlement_codein(''pro'',''ai'',''personal_coaching'')' in source_compact) > 0
+          and position('e.status=''active''' in source_compact) > 0
+          and position('e.starts_at<=now()' in source_compact) > 0
+          and position('(e.ends_atisnullore.ends_at>now())' in source_compact) > 0
       ),
     '{}'::jsonb
   union all
@@ -437,42 +480,64 @@ checks(check_name, pass, details) as (
     exists (
       select 1 from actual_functions
       where function_name = 'fmz_phase4_replace_provider_food_log_item'
-        and position('p_expected_original_updated_at' in source) > 0
-        and position('fmz_phase4_food_log_request:' in source) > 0
-        and position('fmz_phase4_food_log_item_request:' in source) > 0
-        and position('for update' in source) > 0
-        and position('provider_replacement_request' in source) > 0
-        and position('provider_replace' in source) > 0
-        and position('replacement_item' in source) > 0
-        and position('archived_original' in source) > 0
-        and position('status = ''archived''' in source) > 0
-        and position('atomic replacement rolled back' in source) > 0
-        and position('fmz_phase4_day_payload' in source) > 0
+        and position('p_expected_original_updated_at' in source_compact) > 0
+        and position('fmz_phase4_food_log_request:' in source_compact) > 0
+        and position('fmz_phase4_food_log_item_request:' in source_compact) > 0
+        and position('wherei.id=p_original_item_idandi.user_id=v_user_idforupdate' in source_compact) > 0
+        and position('wherel.id=v_original.food_log_idandl.user_id=v_user_idandl.status=''active''forupdate' in source_compact) > 0
+        and position('wherei.user_id=v_user_idandi.request_id=p_replacement_request_id' in source_compact) > 0
+        and position('v_replacement.idisdistinctfromp_replacement_item_id' in source_compact) > 0
+        and position('v_replacement.food_log_idisdistinctfromv_original.food_log_id' in source_compact) > 0
+        and position('v_replacement.metadata->''provider_replacement_request''isdistinctfromv_request_payload' in source_compact) > 0
+        and position('providerreplacementrequestUUIDwasalreadyusedwithadifferentpayload' in source_compact) > 0
+        and position('v_original.food_idisnotnull' in source_compact) > 0
+        and position('v_original.source_provider_snapshotisdistinctfrom''usda_fdc''' in source_compact) > 0
+        and position('providerreplacementacceptsprovidersnapshotitemsonly' in source_compact) > 0
+        and position('v_original.updated_atisdistinctfromp_expected_original_updated_at' in source_compact) > 0
+        and position('p_replacement_item_id,v_user_id,v_original.food_log_id,null,null' in source_compact) > 0
+        and position('''operation'',''provider_replace''' in source_compact) > 0
+        and position('''replacement_item''' in source_compact) > 0
+        and position('''archived_original''' in source_compact) > 0
+        and position('updatepublic.food_log_itemssetstatus=''archived''' in source_compact) > 0
+        and position('andupdated_at=p_expected_original_updated_at' in source_compact) > 0
+        and position('atomicreplacementrolledback' in source_compact) > 0
+        and position('''idempotent_replay'',true' in source_compact) > 0
+        and position('fmz_phase4_day_payload' in source_compact) > 0
     ),
     '{}'::jsonb
   union all
   select
     'existing_archive_provider_compatible',
-    exists (
+    (select count(*) from support_functions
+      where function_name = 'fmz_phase4_archive_food_log_item') = 1
+      and exists (
       select 1 from support_functions
       where function_name = 'fmz_phase4_archive_food_log_item'
-        and position('food_id' in source) = 0
-        and position('status = ''archived''' in source) > 0
-        and position('fmz_phase4_day_payload' in source) > 0
+        and argument_types = 'uuid, timestamp with time zone'
+        and position('food_id' in source_compact) = 0
+        and position('status=''archived''' in source_compact) > 0
+        and position('fmz_phase4_day_payload' in source_compact) > 0
     ),
-    '{}'::jsonb
+    jsonb_build_object(
+      'expected_signature', 'fmz_phase4_archive_food_log_item(uuid,timestamp with time zone)',
+      'actual_signatures', coalesce((
+        select jsonb_agg(argument_types order by argument_types)
+        from support_functions
+        where function_name = 'fmz_phase4_archive_food_log_item'
+      ), '[]'::jsonb)
+    )
   union all
   select
     'no_canonical_provider_promotion',
     not exists (
       select 1 from actual_functions
-      where position('insert ' || 'into public.foods' in lower(source)) > 0
-         or position('insert ' || 'into public.food_portions' in lower(source)) > 0
-         or position('insert ' || 'into public.food_aliases' in lower(source)) > 0
-         or position('update public.foods' in lower(source)) > 0
-         or position('update public.food_portions' in lower(source)) > 0
-         or position('update public.food_aliases' in lower(source)) > 0
-         or position('de' || 'lete from public.' in lower(source)) > 0
+      where position('insert' || 'intopublic.foods' in lower(source_compact)) > 0
+         or position('insert' || 'intopublic.food_portions' in lower(source_compact)) > 0
+         or position('insert' || 'intopublic.food_aliases' in lower(source_compact)) > 0
+         or position('updatepublic.foods' in lower(source_compact)) > 0
+         or position('updatepublic.food_portions' in lower(source_compact)) > 0
+         or position('updatepublic.food_aliases' in lower(source_compact)) > 0
+         or position('de' || 'letefrompublic.' in lower(source_compact)) > 0
     ),
     '{}'::jsonb
   union all
