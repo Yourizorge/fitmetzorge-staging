@@ -81,7 +81,7 @@ guard_tables(table_name) as (
     ('nutrition_provider_query_cache'),
     ('nutrition_provider_food_cache'),
     ('nutrition_provider_rate_buckets'),
-    ('nutrition_provider_circuit_state')
+    ('nutrition_provider_runtime_state')
 ),
 guard_table_state as (
   select c.relname::text as table_name, c.relrowsecurity

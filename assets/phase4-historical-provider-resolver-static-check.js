@@ -80,6 +80,26 @@ check("verifier checks snapshot identity", verification.includes("resolver_usda_
 check("verifier checks read-only resolver", verification.includes("resolver_read_only_no_canonical_promotion"));
 check("verifier checks frozen provider RPCs", verification.includes("provider_log_rpc_frozen") && verification.includes("provider_replace_rpc_frozen"));
 check("verifier checks Slice 4B/4C guards", verification.includes("slice4b_4c_operational_guards_frozen"));
+check("verifier expects the frozen runtime-state table", verification.includes("('nutrition_provider_runtime_state')"));
+check("verifier rejects the obsolete circuit-state table name", !verification.includes("nutrition_provider_circuit_state"));
+check("verifier preserves all sixteen frozen guard tables", [
+  "profiles",
+  "coach_workspaces",
+  "user_settings",
+  "user_onboarding",
+  "entitlements",
+  "recovery_logs",
+  "foods",
+  "food_portions",
+  "food_aliases",
+  "nutrition_targets",
+  "food_logs",
+  "food_log_items",
+  "nutrition_provider_query_cache",
+  "nutrition_provider_food_cache",
+  "nutrition_provider_rate_buckets",
+  "nutrition_provider_runtime_state"
+].every((tableName) => new RegExp(`\\('${tableName}'(?:\\s*::text)?\\)`, "u").test(verification)));
 
 check("no production project reference exists", ![migration, handler, index, types, tests].join("\n").includes("hgoygcviutmynaihcvpd"));
 check("no embedded JWT-like token exists", !/eyJ[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{20,}/u.test(combined));
