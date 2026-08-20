@@ -66,7 +66,7 @@
   }
   const phase4NutritionPatchSource = await phase4NutritionPatchResponse.text();
 
-  const phase4NutritionSlice3PatchUrl = new URL("assets/phase4-nutrition-slice3.js?v=20260819-phase4-nutrition-slice3-1", document.baseURI);
+  const phase4NutritionSlice3PatchUrl = new URL("assets/phase4-nutrition-slice3.js?v=20260820-phase4-nutrition-slice4d-provider1", document.baseURI);
   const phase4NutritionSlice3PatchResponse = await fetch(phase4NutritionSlice3PatchUrl, { cache: "no-cache" });
   if (!phase4NutritionSlice3PatchResponse.ok) {
     throw new Error(`Phase 4 Nutrition Slice 3 laden mislukt: ${phase4NutritionSlice3PatchResponse.status}`);

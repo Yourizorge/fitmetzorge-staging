@@ -2,11 +2,14 @@
   if (window.FMZ_PHASE4_NUTRITION_SLICE3_LOADED) return;
   window.FMZ_PHASE4_NUTRITION_SLICE3_LOADED = true;
 
-  const PHASE4_SLICE3_VERSION = "20260819-phase4-nutrition-slice3-1";
+  const PHASE4_SLICE3_VERSION = "20260820-phase4-provider-frontend1";
   const PHASE4_SLICE3_SEARCH_PAGE_SIZE = 25;
   const PHASE4_SLICE3_FREE_HISTORY_DAYS = 7;
   const PHASE4_SLICE3_MEALS = ["breakfast", "lunch", "dinner", "snacks"];
   const PHASE4_SLICE3_UNITS = ["g", "ml", "serving", "piece"];
+  const PHASE4_PROVIDER_FUNCTION = "nutrition-provider";
+  const PHASE4_PROVIDER_SEARCH_PAGE_SIZE = 5;
+  const PHASE4_PROVIDER_MAX_PAGES = 3;
 
   const COPY = {
     nl: {
@@ -47,6 +50,20 @@
       searchLoading: "Voedingsmiddelen laden...",
       searchFailed: "Zoeken is niet gelukt.",
       noFoods: "Geen passende voedingsmiddelen gevonden.",
+      providerSearch: "Meer voedingsmiddelen zoeken",
+      providerResults: "Meer resultaten",
+      providerSearchLoading: "Meer voedingsmiddelen zoeken...",
+      providerSearchEmpty: "Geen aanvullende voedingsmiddelen gevonden.",
+      providerLookupLoading: "Voedingsmiddel controleren...",
+      providerSource: "USDA FoodData Central",
+      providerAttribution: "Bron: USDA FoodData Central (CC0)",
+      providerGramsOnly: "Dit voedingsmiddel wordt in gram gelogd.",
+      providerAuthRequired: "Je sessie is verlopen. Log opnieuw in en probeer het daarna nog eens.",
+      providerRateLimited: "De aanvullende zoekdienst is tijdelijk druk. Probeer het later opnieuw.",
+      providerUnavailable: "Meer voedingsmiddelen zoeken is tijdelijk niet beschikbaar. Lokale en eigen voedingsmiddelen blijven bruikbaar.",
+      providerCandidateInvalid: "Dit zoekresultaat is verlopen. Zoek het voedingsmiddel opnieuw.",
+      providerStale: "Deze invoer is intussen gewijzigd. De dag is vernieuwd; open de invoer opnieuw.",
+      providerHistorical: "Opgeslagen voedingswaarden; voor weergave is geen nieuwe zoekopdracht nodig.",
       createCustom: "Eigen voedingsmiddel maken",
       loadMore: "Meer laden",
       select: "Kiezen",
@@ -143,6 +160,20 @@
       searchLoading: "Loading foods...",
       searchFailed: "Search failed.",
       noFoods: "No matching foods found.",
+      providerSearch: "Search more foods",
+      providerResults: "More results",
+      providerSearchLoading: "Searching more foods...",
+      providerSearchEmpty: "No additional foods found.",
+      providerLookupLoading: "Checking food...",
+      providerSource: "USDA FoodData Central",
+      providerAttribution: "Source: USDA FoodData Central (CC0)",
+      providerGramsOnly: "This food is logged in grams.",
+      providerAuthRequired: "Your session has expired. Sign in again and then retry.",
+      providerRateLimited: "The additional food search is temporarily busy. Try again later.",
+      providerUnavailable: "Searching more foods is temporarily unavailable. Local and custom foods remain available.",
+      providerCandidateInvalid: "This search result has expired. Search for the food again.",
+      providerStale: "This entry changed in the meantime. The day was refreshed; open the entry again.",
+      providerHistorical: "Saved nutrition values; displaying this entry does not require another search.",
       createCustom: "Create custom food",
       loadMore: "Load more",
       select: "Select",
@@ -239,6 +270,20 @@
       searchLoading: "Lebensmittel werden geladen...",
       searchFailed: "Die Suche ist fehlgeschlagen.",
       noFoods: "Keine passenden Lebensmittel gefunden.",
+      providerSearch: "Weitere Lebensmittel suchen",
+      providerResults: "Weitere Ergebnisse",
+      providerSearchLoading: "Weitere Lebensmittel werden gesucht...",
+      providerSearchEmpty: "Keine weiteren Lebensmittel gefunden.",
+      providerLookupLoading: "Lebensmittel wird geprueft...",
+      providerSource: "USDA FoodData Central",
+      providerAttribution: "Quelle: USDA FoodData Central (CC0)",
+      providerGramsOnly: "Dieses Lebensmittel wird in Gramm protokolliert.",
+      providerAuthRequired: "Deine Sitzung ist abgelaufen. Melde dich erneut an und versuche es danach noch einmal.",
+      providerRateLimited: "Die zusaetzliche Lebensmittelsuche ist voruebergehend ausgelastet. Versuche es spaeter erneut.",
+      providerUnavailable: "Die Suche nach weiteren Lebensmitteln ist voruebergehend nicht verfuegbar. Lokale und eigene Lebensmittel bleiben nutzbar.",
+      providerCandidateInvalid: "Dieses Suchergebnis ist abgelaufen. Suche das Lebensmittel erneut.",
+      providerStale: "Dieser Eintrag wurde inzwischen geaendert. Der Tag wurde aktualisiert; oeffne den Eintrag erneut.",
+      providerHistorical: "Gespeicherte Naehrwerte; fuer die Anzeige ist keine neue Suche erforderlich.",
       createCustom: "Eigenes Lebensmittel erstellen",
       loadMore: "Mehr laden",
       select: "Auswaehlen",
@@ -308,10 +353,11 @@
     timezone: { status: "idle", error: "", requestToken: 0 },
     day: { status: "idle", value: null, error: "", requestToken: 0 },
     notice: "",
-    portal: { type: "", opener: null, meal: "breakfast", food: null, item: null, feedback: "", feedbackType: "" },
+    portal: { type: "", opener: null, meal: "breakfast", food: null, item: null, providerCandidate: null, candidateToken: "", feedback: "", feedbackType: "" },
     search: { status: "idle", query: "", items: [], afterName: null, afterId: null, hasMore: false, error: "", requestToken: 0 },
+    providerSearch: { status: "idle", query: "", items: [], page: 1, hasMore: false, error: "", requestToken: 0, requestId: "", submittedFingerprint: "", lookupStatus: "idle", lookupCandidateId: "", lookupRequestId: "" },
     portions: { status: "idle", items: [], error: "", requestToken: 0 },
-    submission: { kind: "", itemId: "", requestId: "", submittedFingerprint: "" },
+    submission: { kind: "", itemId: "", requestId: "", submittedFingerprint: "", inFlight: false },
     customDraft: { foodId: "", submittedFingerprint: "" }
   };
 
@@ -394,8 +440,9 @@
     slice3State.day = { status: "idle", value: null, error: "", requestToken: slice3State.day.requestToken + 1 };
     slice3State.notice = "";
     slice3State.search = { status: "idle", query: "", items: [], afterName: null, afterId: null, hasMore: false, error: "", requestToken: slice3State.search.requestToken + 1 };
+    slice3State.providerSearch = { status: "idle", query: "", items: [], page: 1, hasMore: false, error: "", requestToken: slice3State.providerSearch.requestToken + 1, requestId: "", submittedFingerprint: "", lookupStatus: "idle", lookupCandidateId: "", lookupRequestId: "" };
     slice3State.portions = { status: "idle", items: [], error: "", requestToken: slice3State.portions.requestToken + 1 };
-    slice3State.submission = { kind: "", itemId: "", requestId: "", submittedFingerprint: "" };
+    slice3State.submission = { kind: "", itemId: "", requestId: "", submittedFingerprint: "", inFlight: false };
     slice3State.customDraft = { foodId: "", submittedFingerprint: "" };
   }
 
@@ -451,6 +498,9 @@
       .phase4-s3-search-row { display:grid; gap:6px; padding:11px 0; border-bottom:1px solid var(--line); }
       .phase4-s3-search-row strong, .phase4-s3-search-row small { overflow-wrap:anywhere; }
       .phase4-s3-search-head { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
+      .phase4-s3-provider { display:grid; gap:10px; padding-top:12px; border-top:1px solid var(--line); }
+      .phase4-s3-provider-head { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+      .phase4-s3-provider-source { color:var(--muted); font-size:12px; font-weight:700; }
       .phase4-s3-feedback { min-height:22px; margin:0; color:var(--muted); }
       .phase4-s3-feedback.error { color:#ffb0b0; }
       .phase4-s3-feedback.ok { color:#8bd8b8; }
@@ -553,11 +603,13 @@
   }
 
   function itemRowMarkup(item) {
+    const providerSource = isProviderSnapshot(item) ? `<small class="phase4-s3-provider-source">${escapeHTML(text("providerSource"))}</small>` : "";
     return `
       <button class="phase4-s3-item-row" data-phase4-s3-item="${escapeHTML(item.id)}" type="button" aria-haspopup="dialog">
         <span class="phase4-s3-item-main">
           <strong>${escapeHTML(item.food_name_snapshot || "-")}</strong>
           <small>${escapeHTML(`${formatNumber(item.consumed_quantity, 3)} ${unitLabel(item.consumed_unit)} | P ${formatNumber(item.protein_grams_snapshot, 1)}g | C ${formatNumber(item.carbohydrate_grams_snapshot, 1)}g | F ${formatNumber(item.fat_grams_snapshot, 1)}g`)}</small>
+          ${providerSource}
         </span>
         <span class="phase4-s3-item-kcal">${escapeHTML(`${formatNumber(item.energy_kcal_snapshot, 0)} kcal`)}</span>
       </button>
@@ -696,6 +748,95 @@
     return text("unexpected");
   }
 
+  function isProviderSnapshot(item) {
+    return Boolean(item && item.food_id === null && item.source_provider_snapshot === "usda_fdc");
+  }
+
+  function providerCountryCode() {
+    const match = /-([a-z]{2})$/i.exec(String(navigator.language || ""));
+    if (match) return match[1].toUpperCase();
+    return { nl: "NL", en: "US", de: "DE" }[language()] || "NL";
+  }
+
+  function providerErrorMessage(error) {
+    const code = String(error?.code || "");
+    const status = Number(error?.status || 0);
+    const message = String(error?.message || error || "").toLowerCase();
+    if (status === 401 || code === "unauthorized") return text("providerAuthRequired");
+    if (code === "provider_replace_stale") return text("providerStale");
+    if (status === 429 || code.includes("rate_limited")) return text("providerRateLimited");
+    if (status === 409 && (code.includes("candidate") || code.includes("candidate_token"))) return text("providerCandidateInvalid");
+    if (status === 502 || status === 503 || code.includes("provider_unavailable") || code.includes("circuit")) return text("providerUnavailable");
+    if (message.includes("network") || message.includes("fetch") || message.includes("connection")) return text("networkRetry");
+    if (code.includes("request_conflict")) return text("conflict");
+    return text("providerUnavailable");
+  }
+
+  async function providerRequest(route, body) {
+    if (!supabaseClient?.auth?.getSession || !SUPABASE_URL || !SUPABASE_ANON_KEY) {
+      const unavailable = new Error("provider client unavailable");
+      unavailable.code = "provider_unavailable";
+      unavailable.status = 503;
+      throw unavailable;
+    }
+    const { data: sessionData, error: sessionError } = await supabaseClient.auth.getSession();
+    const accessToken = sessionData?.session?.access_token;
+    if (sessionError || !accessToken) {
+      const unauthorized = new Error("authentication required");
+      unauthorized.code = "unauthorized";
+      unauthorized.status = 401;
+      throw unauthorized;
+    }
+    let response;
+    try {
+      response = await fetch(`${SUPABASE_URL}/functions/v1/${PHASE4_PROVIDER_FUNCTION}/${route}`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          apikey: SUPABASE_ANON_KEY,
+          "content-type": "application/json"
+        },
+        body: JSON.stringify(body),
+        cache: "no-store"
+      });
+    } catch (error) {
+      const networkError = new Error("provider network failure");
+      networkError.code = "network_failure";
+      networkError.status = 0;
+      throw networkError;
+    }
+    let payload = null;
+    try {
+      payload = await response.json();
+    } catch {
+      payload = null;
+    }
+    if (!response.ok || payload?.ok !== true || !payload?.data) {
+      const requestError = new Error(String(payload?.error?.message || "provider request failed"));
+      requestError.code = String(payload?.error?.code || "provider_unavailable");
+      requestError.status = response.status;
+      throw requestError;
+    }
+    return payload.data;
+  }
+
+  function resetProviderSearch() {
+    slice3State.providerSearch = {
+      status: "idle",
+      query: "",
+      items: [],
+      page: 1,
+      hasMore: false,
+      error: "",
+      requestToken: slice3State.providerSearch.requestToken + 1,
+      requestId: "",
+      submittedFingerprint: "",
+      lookupStatus: "idle",
+      lookupCandidateId: "",
+      lookupRequestId: ""
+    };
+  }
+
   function changeDate(direction) {
     const next = direction === "previous" ? shiftDate(slice3State.selectedDate, -1) : shiftDate(slice3State.selectedDate, 1);
     if (next > slice3State.todayDate) return;
@@ -732,6 +873,8 @@
       meal: options.meal || previous.meal || "breakfast",
       food: options.food || null,
       item: options.item || null,
+      providerCandidate: options.providerCandidate || null,
+      candidateToken: options.candidateToken || "",
       feedback: options.feedback || "",
       feedbackType: options.feedbackType || ""
     };
@@ -743,7 +886,7 @@
     const opener = slice3State.portal?.opener;
     document.getElementById("phase4Slice3Portal")?.remove();
     document.body.classList.remove("phase4-s3-dialog-open");
-    slice3State.portal = { type: "", opener: null, meal: "breakfast", food: null, item: null, feedback: "", feedbackType: "" };
+    slice3State.portal = { type: "", opener: null, meal: "breakfast", food: null, item: null, providerCandidate: null, candidateToken: "", feedback: "", feedbackType: "" };
     if (restoreFocus) opener?.focus?.();
   }
 
@@ -767,8 +910,49 @@
 
   function openSearch(meal, opener, item = null) {
     slice3State.search = { status: "idle", query: "", items: [], afterName: null, afterId: null, hasMore: false, error: "", requestToken: slice3State.search.requestToken + 1 };
+    resetProviderSearch();
     openPortal("search", opener, { meal, item });
     searchFoods({ reset: true });
+  }
+
+  function providerSearchAllowed() {
+    return !slice3State.portal.item || isProviderSnapshot(slice3State.portal.item);
+  }
+
+  function providerResultRow(candidate) {
+    const fiber = candidate.fiber === null || candidate.fiber === undefined ? "" : ` | ${text("fiber")} ${formatNumber(candidate.fiber, 1)}g`;
+    return `
+      <article class="phase4-s3-search-row">
+        <div class="phase4-s3-search-head"><div><strong>${escapeHTML(candidate.name || "-")}</strong>${candidate.brand ? `<br><small>${escapeHTML(candidate.brand)}</small>` : ""}</div><button class="phase4-s3-gold" data-phase4-s3-select-provider="${escapeHTML(candidate.candidate_id)}" type="button" ${slice3State.providerSearch.lookupStatus === "loading" ? "disabled" : ""}>${escapeHTML(text("select"))}</button></div>
+        <small>${escapeHTML(`100 g | ${formatNumber(candidate.kcal, 1)} kcal | P ${formatNumber(candidate.protein, 1)}g | C ${formatNumber(candidate.carbohydrates, 1)}g | F ${formatNumber(candidate.fat, 1)}g${fiber}`)}</small>
+        <small class="phase4-s3-provider-source">${escapeHTML(text("providerAttribution"))}</small>
+      </article>
+    `;
+  }
+
+  function providerSearchMarkup() {
+    if (!providerSearchAllowed()) return "";
+    const provider = slice3State.providerSearch;
+    const currentQuery = String(slice3State.search.query || "").trim();
+    const queryReady = currentQuery.length >= 3 && currentQuery.length <= 80;
+    let results = "";
+    if (provider.status === "loading" && !provider.items.length) results = `<div class="phase4-s3-state" aria-live="polite">${escapeHTML(text("providerSearchLoading"))}</div>`;
+    else if (provider.status === "error" && !provider.items.length) results = `<div class="phase4-s3-state error" aria-live="polite">${escapeHTML(provider.error)}</div>`;
+    else if (provider.status === "ready" && !provider.items.length) results = `<div class="phase4-s3-state" aria-live="polite">${escapeHTML(text("providerSearchEmpty"))}</div>`;
+    else if (provider.items.length) results = `<div class="phase4-s3-search-list" aria-live="polite">${provider.items.map(providerResultRow).join("")}</div>`;
+    const lookupFeedback = provider.lookupStatus === "loading"
+      ? `<p class="phase4-s3-feedback" aria-live="polite">${escapeHTML(text("providerLookupLoading"))}</p>`
+      : provider.lookupStatus === "error"
+        ? `<p class="phase4-s3-feedback error" aria-live="polite">${escapeHTML(provider.error)}</p>`
+        : "";
+    return `
+      <section class="phase4-s3-provider" aria-label="${escapeHTML(text("providerResults"))}">
+        <div class="phase4-s3-provider-head"><strong>${escapeHTML(text("providerResults"))}</strong><button class="secondary-btn" data-phase4-s3-provider-search type="button" ${!queryReady || provider.status === "loading" ? "disabled" : ""}>${escapeHTML(text("providerSearch"))}</button></div>
+        ${results}
+        ${lookupFeedback}
+        ${provider.hasMore ? `<button class="secondary-btn" data-phase4-s3-provider-more type="button" ${provider.status === "loading" ? "disabled" : ""}>${escapeHTML(text("loadMore"))}</button>` : ""}
+      </section>
+    `;
   }
 
   function searchDialog() {
@@ -786,6 +970,7 @@
       <form id="phase4Slice3SearchForm" class="phase4-s3-search-form" role="search"><label class="field"><span class="sr-only">${escapeHTML(text("searchFood"))}</span><input name="query" type="search" value="${escapeHTML(search.query)}" placeholder="${escapeHTML(text("searchPlaceholder"))}" autocomplete="off"></label><button class="phase4-s3-gold" type="submit">${escapeHTML(text("search"))}</button></form>
       ${feedbackMarkup()}
       <div><p class="eyebrow">${escapeHTML(text("results"))}</p>${results}</div>
+      ${providerSearchMarkup()}
       <div class="phase4-s3-dialog-actions"><button class="secondary-btn" data-phase4-s3-custom type="button">${escapeHTML(text("createCustom"))}</button></div>
     `;
     return dialogFrame(text("searchFood"), body, text(slice3State.portal.meal));
@@ -841,6 +1026,80 @@
     renderPortal();
   }
 
+  async function searchProviderFoods({ reset = true } = {}) {
+    const query = String(slice3State.search.query || "").normalize("NFKC").replace(/\s+/g, " ").trim();
+    if (!providerSearchAllowed() || query.length < 3 || query.length > 80) return;
+    const provider = slice3State.providerSearch;
+    const page = reset ? 1 : Math.min(PHASE4_PROVIDER_MAX_PAGES, provider.page + 1);
+    const fingerprint = JSON.stringify([query, language(), providerCountryCode(), page, PHASE4_PROVIDER_SEARCH_PAGE_SIZE]);
+    if (!provider.requestId || provider.submittedFingerprint !== fingerprint) provider.requestId = uuid();
+    provider.submittedFingerprint = fingerprint;
+    provider.query = query;
+    provider.page = page;
+    provider.status = "loading";
+    provider.error = "";
+    provider.lookupStatus = "idle";
+    if (reset) {
+      provider.items = [];
+      provider.hasMore = false;
+    }
+    const requestToken = provider.requestToken + 1;
+    provider.requestToken = requestToken;
+    renderPortal();
+    try {
+      const data = await providerRequest("search", {
+        query,
+        locale: language(),
+        country_code: providerCountryCode(),
+        page_number: page,
+        page_size: PHASE4_PROVIDER_SEARCH_PAGE_SIZE,
+        request_id: provider.requestId
+      });
+      if (provider.requestToken !== requestToken || slice3State.portal.type !== "search") return;
+      const rows = Array.isArray(data?.result) ? data.result.filter((candidate) => candidate?.candidate_id && candidate?.candidate_token) : [];
+      const map = new Map((reset ? [] : provider.items).map((candidate) => [candidate.candidate_id, candidate]));
+      rows.forEach((candidate) => map.set(candidate.candidate_id, candidate));
+      provider.items = Array.from(map.values());
+      provider.hasMore = rows.length === PHASE4_PROVIDER_SEARCH_PAGE_SIZE && page < PHASE4_PROVIDER_MAX_PAGES;
+      provider.status = "ready";
+    } catch (error) {
+      if (provider.requestToken !== requestToken || slice3State.portal.type !== "search") return;
+      provider.status = "error";
+      provider.error = providerErrorMessage(error);
+    }
+    renderPortal();
+  }
+
+  async function selectProviderFood(candidateId) {
+    const provider = slice3State.providerSearch;
+    const candidate = provider.items.find((entry) => entry.candidate_id === candidateId);
+    if (!candidate?.candidate_token || provider.lookupStatus === "loading") return;
+    if (provider.lookupCandidateId !== candidateId || !provider.lookupRequestId) {
+      provider.lookupCandidateId = candidateId;
+      provider.lookupRequestId = uuid();
+    }
+    const requestToken = provider.requestToken + 1;
+    provider.requestToken = requestToken;
+    provider.lookupStatus = "loading";
+    provider.error = "";
+    renderPortal();
+    try {
+      const data = await providerRequest("lookup", {
+        candidate_token: candidate.candidate_token,
+        request_id: provider.lookupRequestId
+      });
+      if (provider.requestToken !== requestToken || slice3State.portal.type !== "search") return;
+      const verified = data?.result;
+      if (!verified?.candidate_id || verified.candidate_id !== candidateId || !verified.candidate_token) throw new Error("provider lookup response invalid");
+      openProviderEntry(verified, verified.candidate_token, slice3State.portal.meal, slice3State.portal.opener, slice3State.portal.item);
+    } catch (error) {
+      if (provider.requestToken !== requestToken || slice3State.portal.type !== "search") return;
+      provider.lookupStatus = "error";
+      provider.error = providerErrorMessage(error);
+      renderPortal();
+    }
+  }
+
   function selectSearchFood(foodId) {
     const food = slice3State.search.items.find((entry) => entry.id === foodId);
     if (!food) return;
@@ -861,7 +1120,7 @@
   }
 
   function resetSubmission(kind) {
-    slice3State.submission = { kind, itemId: uuid(), requestId: uuid(), submittedFingerprint: "" };
+    slice3State.submission = { kind, itemId: uuid(), requestId: uuid(), submittedFingerprint: "", inFlight: false };
   }
 
   function openEntry(food, meal, opener, item = null) {
@@ -869,6 +1128,18 @@
     slice3State.portions = { status: "idle", items: [], error: "", requestToken: slice3State.portions.requestToken + 1 };
     openPortal("entry", opener, { food, meal, item });
     loadPortions(food.id);
+  }
+
+  function openProviderEntry(candidate, candidateToken, meal, opener, item = null) {
+    resetSubmission(item ? "provider-edit" : "provider-new");
+    slice3State.portions = { status: "ready", items: [], error: "", requestToken: slice3State.portions.requestToken + 1 };
+    openPortal("entry", opener, {
+      food: null,
+      meal,
+      item,
+      providerCandidate: candidate || null,
+      candidateToken: candidateToken || ""
+    });
   }
 
   async function loadPortions(foodId) {
@@ -902,6 +1173,30 @@
   function entryDialog() {
     const food = slice3State.portal.food || {};
     const item = slice3State.portal.item;
+    const candidate = slice3State.portal.providerCandidate;
+    const providerEntry = Boolean(candidate) || isProviderSnapshot(item);
+    if (providerEntry) {
+      const name = candidate?.name || item?.food_name_snapshot || "-";
+      const brand = candidate?.brand || item?.brand_snapshot || "";
+      const body = `
+        <div><strong>${escapeHTML(name)}</strong>${brand ? `<br><small class="phase4-s3-muted">${escapeHTML(brand)}</small>` : ""}</div>
+        <form id="phase4Slice3EntryForm" class="phase4-s3-form" novalidate data-provider-entry="true">
+          <div class="phase4-s3-form-grid">
+            <label class="field"><span>${escapeHTML(text("meal"))}</span><select name="meal">${PHASE4_SLICE3_MEALS.map((meal) => `<option value="${meal}" ${meal === (item?.meal_moment || slice3State.portal.meal) ? "selected" : ""}>${escapeHTML(text(meal))}</option>`).join("")}</select></label>
+            <label class="field"><span>${escapeHTML(text("amount"))}</span><span class="phase4-s3-search-form"><input name="quantity" type="number" inputmode="decimal" min="0.001" max="100000" step="0.001" required value="${escapeHTML(item?.consumed_quantity ?? 100)}" autocomplete="off"><strong aria-hidden="true">g</strong></span></label>
+            <input name="selection" type="hidden" value="direct:g">
+            <label class="field wide"><span>${escapeHTML(text("notes"))}</span><textarea name="notes" maxlength="1000" rows="3">${escapeHTML(item?.notes || "")}</textarea></label>
+          </div>
+          <p class="phase4-s3-muted">${escapeHTML(text("providerGramsOnly"))}</p>
+          <p class="phase4-s3-provider-source">${escapeHTML(text("providerAttribution"))}</p>
+          ${isProviderSnapshot(item) && !candidate ? `<p class="phase4-s3-muted">${escapeHTML(text("providerHistorical"))}</p>` : ""}
+          <p class="phase4-s3-muted">${escapeHTML(text("serverCalculated"))}</p>
+          ${feedbackMarkup()}
+          <div class="phase4-s3-dialog-actions"><button class="phase4-s3-gold" type="submit">${escapeHTML(text(item ? "saveEdit" : "saveEntry"))}</button><button class="secondary-btn" data-phase4-s3-change-food type="button">${escapeHTML(text("changeFood"))}</button><button class="secondary-btn" data-phase4-s3-close type="button">${escapeHTML(text("cancel"))}</button></div>
+        </form>
+      `;
+      return dialogFrame(text(item ? "editEntryTitle" : "entryTitle"), body, text(item?.meal_moment || slice3State.portal.meal));
+    }
     const selection = entrySelection(food, item);
     const unitOptions = directUnits(food).map((unit) => `<option value="direct:${escapeHTML(unit)}" ${selection === `direct:${unit}` ? "selected" : ""}>${escapeHTML(text("directUnit", { unit: unitLabel(unit) }))}</option>`).join("");
     const portionOptions = slice3State.portions.items.map((portion) => `<option value="portion:${escapeHTML(portion.id)}" ${selection === `portion:${portion.id}` ? "selected" : ""}>${escapeHTML(text("portion", { label: portion.label, amount: formatNumber(portion.amount, 3), unit: unitLabel(portion.unit) }))}</option>`).join("");
@@ -957,19 +1252,105 @@
     slice3State.submission.submittedFingerprint = fingerprint;
   }
 
+  function setSubmissionBusy(form, busy) {
+    slice3State.submission.inFlight = busy;
+    const submit = form?.querySelector?.('button[type="submit"]');
+    if (submit) submit.disabled = busy;
+  }
+
+  function providerEntryFingerprint(payload, original, candidate) {
+    return JSON.stringify([
+      original?.id || null,
+      candidate?.candidate_id || original?.provider_food_id_snapshot || null,
+      payload.meal,
+      payload.quantity,
+      "g",
+      payload.notes || null
+    ]);
+  }
+
+  function acceptAuthoritativeDay(day, noticeKey) {
+    if (!day || day.log_date !== slice3State.selectedDate || !Array.isArray(day.items) || !day.totals) throw new Error("authoritative Nutrition day payload unavailable");
+    slice3State.day = { status: "ready", value: day, error: "", requestToken: slice3State.day.requestToken + 1 };
+    slice3State.notice = text(noticeKey);
+    slice3State.submission = { kind: "", itemId: "", requestId: "", submittedFingerprint: "", inFlight: false };
+    closePortal();
+    renderRoot();
+  }
+
+  async function saveProviderEntry(form, payload, original) {
+    const candidate = slice3State.portal.providerCandidate;
+    const candidateToken = slice3State.portal.candidateToken;
+    if (!candidate && !isProviderSnapshot(original)) return;
+    if (original && !isProviderSnapshot(original)) {
+      showFeedback(text("providerUnavailable"), "error");
+      return;
+    }
+    if (candidate && !candidateToken) {
+      showFeedback(text("providerCandidateInvalid"), "error");
+      return;
+    }
+    const kind = original ? "provider-edit" : "provider-new";
+    const fingerprint = providerEntryFingerprint(payload, original, candidate);
+    prepareSubmission(kind, fingerprint);
+    if (slice3State.submission.inFlight) return;
+    setSubmissionBusy(form, true);
+    showFeedback(text("saving"));
+    try {
+      const body = original
+        ? {
+            ...(candidateToken ? { candidate_token: candidateToken } : {}),
+            original_item_id: original.id,
+            replacement_item_id: slice3State.submission.itemId,
+            request_id: slice3State.submission.requestId,
+            expected_original_updated_at: original.updated_at,
+            meal_moment: payload.meal,
+            consumed_quantity: payload.quantity,
+            consumed_unit: "g",
+            notes: payload.notes || null
+          }
+        : {
+            candidate_token: candidateToken,
+            item_id: slice3State.submission.itemId,
+            request_id: slice3State.submission.requestId,
+            log_date: slice3State.selectedDate,
+            timezone_name: slice3State.timezoneName,
+            timezone_offset_minutes: timezoneOffsetMinutes(slice3State.selectedDate),
+            meal_moment: payload.meal,
+            consumed_quantity: payload.quantity,
+            consumed_unit: "g",
+            notes: payload.notes || null,
+            consumed_at: localConsumedAt(slice3State.selectedDate)
+          };
+      const data = await providerRequest(original ? "replace" : "log", body);
+      acceptAuthoritativeDay(data?.result?.day, original ? "edited" : "saved");
+    } catch (error) {
+      const code = String(error?.code || "");
+      if (code.includes("request_conflict")) resetSubmission(kind);
+      showFeedback(providerErrorMessage(error), "error");
+      if (code === "provider_replace_stale") await loadDay(true);
+    } finally {
+      if (slice3State.portal.type === "entry") setSubmissionBusy(form, false);
+    }
+  }
+
   async function saveEntry(form) {
     const food = slice3State.portal.food;
     const original = slice3State.portal.item;
-    if (!food?.id || !supabaseClient) return;
+    if (!supabaseClient) return;
     const payload = entryPayload(form);
     const errors = validateEntry(payload);
     if (errors.length) {
       showFeedback(errors.join(" "), "error");
       return;
     }
+    if (slice3State.portal.providerCandidate || isProviderSnapshot(original)) return saveProviderEntry(form, payload, original);
+    if (!food?.id) return;
     const kind = original ? "edit" : "new";
     const fingerprint = entryFingerprint(payload, food.id, original?.id || null);
     prepareSubmission(kind, fingerprint);
+    if (slice3State.submission.inFlight) return;
+    setSubmissionBusy(form, true);
     showFeedback(text("saving"));
     try {
       const response = original
@@ -1000,18 +1381,15 @@
             p_consumed_at: localConsumedAt(slice3State.selectedDate)
           });
       if (response.error) throw response.error;
-      if (!response.data?.day || response.data.day.log_date !== slice3State.selectedDate) throw new Error("authoritative Nutrition day payload unavailable");
-      slice3State.day = { status: "ready", value: response.data.day, error: "", requestToken: slice3State.day.requestToken + 1 };
-      slice3State.notice = text(original ? "edited" : "saved");
-      slice3State.submission = { kind: "", itemId: "", requestId: "", submittedFingerprint: "" };
-      closePortal();
-      renderRoot();
+      acceptAuthoritativeDay(response.data?.day, original ? "edited" : "saved");
     } catch (error) {
       const code = String(error?.code || "");
       const message = errorMessage(error);
-      if (code === "23505") slice3State.submission = { kind, itemId: uuid(), requestId: uuid(), submittedFingerprint: "" };
+      if (code === "23505") resetSubmission(kind);
       showFeedback(message, "error");
       if (code === "40001") loadDay(true);
+    } finally {
+      if (slice3State.portal.type === "entry") setSubmissionBusy(form, false);
     }
   }
 
@@ -1021,6 +1399,7 @@
 
   function itemDialog() {
     const item = slice3State.portal.item || {};
+    const source = isProviderSnapshot(item) ? text("providerSource") : (item.source_provider_snapshot || "-");
     const body = `
       <div class="phase4-s3-detail-grid">
         <div class="wide"><span>${escapeHTML(text("name"))}</span><strong>${escapeHTML(item.food_name_snapshot || "-")}</strong></div>
@@ -1032,8 +1411,9 @@
         <div><span>${escapeHTML(text("carbohydrate"))}</span><strong>${escapeHTML(`${formatNumber(item.carbohydrate_grams_snapshot, 1)} g`)}</strong></div>
         <div><span>${escapeHTML(text("fat"))}</span><strong>${escapeHTML(`${formatNumber(item.fat_grams_snapshot, 1)} g`)}</strong></div>
         ${item.notes ? `<div class="wide"><span>${escapeHTML(text("notes"))}</span><strong>${escapeHTML(item.notes)}</strong></div>` : ""}
-        <div class="wide"><span>${escapeHTML(text("sourceSnapshot"))}</span><strong>${escapeHTML(item.source_provider_snapshot || "-")}</strong></div>
+        <div class="wide"><span>${escapeHTML(text("sourceSnapshot"))}</span><strong>${escapeHTML(source)}</strong></div>
       </div>
+      ${isProviderSnapshot(item) ? `<p class="phase4-s3-muted">${escapeHTML(text("providerHistorical"))}</p>` : ""}
       ${feedbackMarkup()}
       <div class="phase4-s3-dialog-actions"><button class="phase4-s3-gold" data-phase4-s3-edit-item type="button">${escapeHTML(text("edit"))}</button><button class="secondary-btn" data-phase4-s3-remove-item type="button">${escapeHTML(text("remove"))}</button><button class="secondary-btn" data-phase4-s3-close type="button">${escapeHTML(text("close"))}</button></div>
     `;
@@ -1065,6 +1445,10 @@
   }
 
   async function loadFoodForEdit(item, opener) {
+    if (isProviderSnapshot(item)) {
+      openProviderEntry(null, "", item.meal_moment, opener, item);
+      return;
+    }
     if (!item?.food_id || !supabaseClient) return;
     showFeedback(text("searchLoading"));
     try {
@@ -1200,6 +1584,9 @@
     if (button.dataset.phase4S3Close !== undefined) return closePortal();
     if (button.dataset.phase4S3RetrySearch !== undefined) return searchFoods({ reset: true });
     if (button.dataset.phase4S3MoreSearch !== undefined) return searchFoods({ reset: false });
+    if (button.dataset.phase4S3ProviderSearch !== undefined) return searchProviderFoods({ reset: true });
+    if (button.dataset.phase4S3ProviderMore !== undefined) return searchProviderFoods({ reset: false });
+    if (button.dataset.phase4S3SelectProvider) return selectProviderFood(button.dataset.phase4S3SelectProvider);
     if (button.dataset.phase4S3SelectFood) return selectSearchFood(button.dataset.phase4S3SelectFood);
     if (button.dataset.phase4S3Custom !== undefined) {
       slice3State.customDraft = { foodId: uuid(), submittedFingerprint: "" };
@@ -1216,6 +1603,7 @@
     if (event.target?.id === "phase4Slice3SearchForm") {
       event.preventDefault();
       slice3State.search.query = String(new FormData(event.target).get("query") || "").trim();
+      resetProviderSearch();
       searchFoods({ reset: true });
     }
     if (event.target?.id === "phase4Slice3EntryForm") {
@@ -1259,7 +1647,9 @@
       timezoneStatus: slice3State.timezone.status,
       dayStatus: slice3State.day.status,
       portalType: slice3State.portal.type,
-      activeItemCount: (slice3State.day.value?.items || []).length
+      activeItemCount: (slice3State.day.value?.items || []).length,
+      providerSearchStatus: slice3State.providerSearch.status,
+      providerResultCount: slice3State.providerSearch.items.length
     })
   });
 })();
