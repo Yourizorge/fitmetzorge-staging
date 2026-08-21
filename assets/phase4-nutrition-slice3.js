@@ -2,7 +2,7 @@
   if (window.FMZ_PHASE4_NUTRITION_SLICE3_LOADED) return;
   window.FMZ_PHASE4_NUTRITION_SLICE3_LOADED = true;
 
-  const PHASE4_SLICE3_VERSION = "20260820-phase4-unified-search1";
+  const PHASE4_SLICE3_VERSION = "20260821-phase4-unified-search-perf1";
   const PHASE4_SLICE3_SEARCH_PAGE_SIZE = 25;
   const PHASE4_SLICE3_FREE_HISTORY_DAYS = 7;
   const PHASE4_SLICE3_MEALS = ["breakfast", "lunch", "dinner", "snacks"];
@@ -366,7 +366,9 @@
     submission: { kind: "", itemId: "", requestId: "", submittedFingerprint: "", inFlight: false },
     customDraft: { foodId: "", submittedFingerprint: "" }
   };
+  const PHASE4_LOCAL_SEARCH_DEBOUNCE_MS = 150;
   const PHASE4_PROVIDER_SEARCH_DEBOUNCE_MS = 400;
+  let localSearchDebounceTimer = null;
   let providerSearchDebounceTimer = null;
 
   function language() {
@@ -439,6 +441,7 @@
   }
 
   function resetForUser(userId) {
+    cancelLocalSearchDebounce();
     cancelProviderSearchDebounce();
     closePortal(false);
     slice3State.userId = userId;
@@ -836,6 +839,11 @@
     providerSearchDebounceTimer = null;
   }
 
+  function cancelLocalSearchDebounce() {
+    if (localSearchDebounceTimer !== null) window.clearTimeout(localSearchDebounceTimer);
+    localSearchDebounceTimer = null;
+  }
+
   function normalizedSearchQuery(value) {
     return String(value || "").normalize("NFKC").replace(/\s+/g, " ").trim();
   }
@@ -904,6 +912,7 @@
   }
 
   function closePortal(restoreFocus = true) {
+    cancelLocalSearchDebounce();
     cancelProviderSearchDebounce();
     const opener = slice3State.portal?.opener;
     document.getElementById("phase4Slice3Portal")?.remove();
@@ -916,9 +925,10 @@
     if (!slice3State.portal.type) return;
     let portal = document.getElementById("phase4Slice3Portal");
     const isNew = !portal;
-    const activeSearchInput = preserveSearchFocus && document.activeElement?.matches?.('#phase4Slice3SearchForm input[name="query"]');
-    const selectionStart = activeSearchInput ? document.activeElement.selectionStart : null;
-    const selectionEnd = activeSearchInput ? document.activeElement.selectionEnd : null;
+    if (preserveSearchFocus && slice3State.portal.type === "search" && portal?.querySelector("#phase4Slice3SearchForm")) {
+      renderSearchResults();
+      return;
+    }
     if (!portal) {
       portal = document.createElement("div");
       portal.id = "phase4Slice3Portal";
@@ -930,13 +940,7 @@
     if (slice3State.portal.type === "item") portal.innerHTML = itemDialog();
     if (slice3State.portal.type === "remove") portal.innerHTML = removeDialog();
     if (slice3State.portal.type === "custom") portal.innerHTML = customDialog();
-    if (activeSearchInput) {
-      window.requestAnimationFrame(() => {
-        const input = portal.querySelector('#phase4Slice3SearchForm input[name="query"]');
-        input?.focus?.();
-        if (Number.isInteger(selectionStart) && Number.isInteger(selectionEnd)) input?.setSelectionRange?.(selectionStart, selectionEnd);
-      });
-    } else if (isNew) window.requestAnimationFrame(() => portal.querySelector("input, button, select")?.focus?.());
+    if (isNew) window.requestAnimationFrame(() => portal.querySelector("input, button, select")?.focus?.());
   }
 
   function openSearch(meal, opener, item = null) {
@@ -991,7 +995,7 @@
     `;
   }
 
-  function searchDialog() {
+  function localSearchResultsMarkup() {
     const search = slice3State.search;
     const provider = slice3State.providerSearch;
     const query = normalizedSearchQuery(search.query);
@@ -1008,14 +1012,33 @@
       ${search.status === "error" ? `<p class="phase4-s3-feedback error">${escapeHTML(search.error)}</p>` : ""}
       ${search.hasMore || search.status === "loading" ? `<button class="secondary-btn" data-phase4-s3-more-search type="button" ${search.status === "loading" ? "disabled" : ""}>${escapeHTML(search.status === "loading" ? text("searchLoading") : text("loadMore"))}</button>` : ""}
     `;
+    return results;
+  }
+
+  function searchDialog() {
+    const search = slice3State.search;
     const body = `
       <form id="phase4Slice3SearchForm" class="phase4-s3-search-form" role="search"><label class="field"><span class="sr-only">${escapeHTML(text("searchFood"))}</span><input name="query" type="search" value="${escapeHTML(search.query)}" placeholder="${escapeHTML(text("searchPlaceholder"))}" autocomplete="off"></label><button class="phase4-s3-gold" type="submit">${escapeHTML(text("search"))}</button></form>
       ${feedbackMarkup()}
-      <div>${results}</div>
-      ${providerSearchMarkup()}
+      <div id="phase4Slice3LocalSearchResults">${localSearchResultsMarkup()}</div>
+      <div id="phase4Slice3ProviderSearchResults">${providerSearchMarkup()}</div>
       <div class="phase4-s3-dialog-actions"><button class="secondary-btn" data-phase4-s3-custom type="button">${escapeHTML(text("createCustom"))}</button></div>
     `;
     return dialogFrame(text("searchFood"), body, text(slice3State.portal.meal));
+  }
+
+  function renderSearchResults() {
+    const portal = document.getElementById("phase4Slice3Portal");
+    const localResults = portal?.querySelector("#phase4Slice3LocalSearchResults");
+    const providerResults = portal?.querySelector("#phase4Slice3ProviderSearchResults");
+    if (!localResults || !providerResults) return;
+    localResults.innerHTML = localSearchResultsMarkup();
+    providerResults.innerHTML = providerSearchMarkup();
+  }
+
+  function clearProviderSearchResults() {
+    const providerResults = document.querySelector("#phase4Slice3ProviderSearchResults");
+    if (providerResults?.hasChildNodes()) providerResults.replaceChildren();
   }
 
   function searchRow(food) {
@@ -1035,13 +1058,14 @@
 
   async function searchFoods({ reset = true, preserveSearchFocus = false } = {}) {
     if (!slice3State.userId || !supabaseClient) return;
+    cancelLocalSearchDebounce();
     const search = slice3State.search;
+    const requestQuery = normalizedSearchQuery(search.query);
     const requestToken = search.requestToken + 1;
     search.requestToken = requestToken;
     search.status = "loading";
     search.error = "";
     if (reset) {
-      search.items = [];
       search.afterName = null;
       search.afterId = null;
       search.hasMore = false;
@@ -1049,13 +1073,13 @@
     renderPortal({ preserveSearchFocus });
     try {
       const { data, error } = await supabaseClient.rpc("fmz_phase4_search_foods", {
-        p_query: search.query || null,
+        p_query: requestQuery || null,
         p_page_size: PHASE4_SLICE3_SEARCH_PAGE_SIZE,
         p_after_name: reset ? null : search.afterName,
         p_after_id: reset ? null : search.afterId
       });
       if (error) throw error;
-      if (search.requestToken !== requestToken || slice3State.portal.type !== "search") return;
+      if (search.requestToken !== requestToken || slice3State.portal.type !== "search" || normalizedSearchQuery(search.query) !== requestQuery) return;
       const rows = Array.isArray(data) ? data : [];
       const map = new Map((reset ? [] : search.items).map((food) => [food.id, food]));
       rows.forEach((food) => map.set(food.id, food));
@@ -1066,11 +1090,23 @@
       search.hasMore = rows.length === PHASE4_SLICE3_SEARCH_PAGE_SIZE;
       search.status = "ready";
     } catch (error) {
-      if (search.requestToken !== requestToken || slice3State.portal.type !== "search") return;
+      if (search.requestToken !== requestToken || slice3State.portal.type !== "search" || normalizedSearchQuery(search.query) !== requestQuery) return;
       search.status = "error";
       search.error = errorMessage(error, "search");
     }
     renderPortal({ preserveSearchFocus });
+  }
+
+  function scheduleLocalSearch(query) {
+    const normalizedQuery = normalizedSearchQuery(query);
+    cancelLocalSearchDebounce();
+    slice3State.search.status = "scheduled";
+    slice3State.search.error = "";
+    localSearchDebounceTimer = window.setTimeout(() => {
+      localSearchDebounceTimer = null;
+      if (slice3State.portal.type !== "search" || normalizedSearchQuery(slice3State.search.query) !== normalizedQuery) return;
+      searchFoods({ reset: true, preserveSearchFocus: true });
+    }, PHASE4_LOCAL_SEARCH_DEBOUNCE_MS);
   }
 
   function scheduleProviderSearch(query) {
@@ -1084,7 +1120,6 @@
     provider.error = "";
     provider.page = 1;
     provider.hasMore = false;
-    renderPortal({ preserveSearchFocus: true });
     providerSearchDebounceTimer = window.setTimeout(() => {
       providerSearchDebounceTimer = null;
       if (slice3State.portal.type !== "search" || normalizedSearchQuery(slice3State.search.query) !== normalizedQuery) return;
@@ -1673,9 +1708,14 @@
     const providerQueryChanged = query !== normalizedSearchQuery(slice3State.search.query);
     if (!rawChanged && !forceLocal) return;
     slice3State.search.query = rawQuery;
-    if (providerQueryChanged) resetProviderSearch();
-    searchFoods({ reset: true, preserveSearchFocus: true });
-    scheduleProviderSearch(query);
+    if (providerQueryChanged) {
+      slice3State.search.requestToken += 1;
+      resetProviderSearch();
+      clearProviderSearchResults();
+    }
+    if (forceLocal) searchFoods({ reset: true, preserveSearchFocus: true });
+    else if (providerQueryChanged) scheduleLocalSearch(query);
+    if (providerQueryChanged || forceLocal) scheduleProviderSearch(query);
   }
 
   function handleInput(event) {
