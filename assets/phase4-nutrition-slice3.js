@@ -2,7 +2,7 @@
   if (window.FMZ_PHASE4_NUTRITION_SLICE3_LOADED) return;
   window.FMZ_PHASE4_NUTRITION_SLICE3_LOADED = true;
 
-  const PHASE4_SLICE3_VERSION = "20260821-phase4-unified-search-perf1";
+  const PHASE4_SLICE3_VERSION = "20260821-phase4-unified-search-stability1";
   const PHASE4_SLICE3_SEARCH_PAGE_SIZE = 25;
   const PHASE4_SLICE3_FREE_HISTORY_DAYS = 7;
   const PHASE4_SLICE3_MEALS = ["breakfast", "lunch", "dinner", "snacks"];
@@ -506,6 +506,8 @@
       .phase4-s3-form .field { min-width:0; }
       .phase4-s3-form input, .phase4-s3-form select, .phase4-s3-form textarea { width:100%; min-height:44px; }
       .phase4-s3-search-form { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; }
+      .phase4-s3-search-fixed { display:grid; gap:8px; min-width:0; }
+      .phase4-s3-search-results { min-width:0; display:grid; gap:14px; overflow-anchor:none; }
       .phase4-s3-search-group { display:grid; gap:8px; min-width:0; }
       .phase4-s3-search-group + .phase4-s3-search-group { margin-top:14px; }
       .phase4-s3-search-list { display:grid; gap:8px; }
@@ -522,6 +524,10 @@
       .phase4-s3-detail-grid > div { min-width:0; display:grid; gap:2px; }
       .phase4-s3-detail-grid span { color:var(--muted); font-size:12px; font-weight:800; }
       .phase4-s3-detail-grid strong { overflow-wrap:anywhere; }
+      @media (max-width:719px) {
+        .phase4-s3-search-sheet { height:94dvh; max-height:94dvh; overflow:hidden; grid-template-rows:auto auto minmax(0,1fr) auto; }
+        .phase4-s3-search-results { min-height:0; overflow-y:auto; overscroll-behavior:contain; }
+      }
       @media (min-width:720px) {
         .phase4-s3-shell { max-width:920px; }
         .phase4-s3-progress-grid { grid-template-columns:repeat(4,minmax(0,1fr)); }
@@ -883,10 +889,10 @@
     loadDay();
   }
 
-  function dialogFrame(title, body, eyebrow = text("nutrition")) {
+  function dialogFrame(title, body, eyebrow = text("nutrition"), sheetClass = "") {
     return `
       <button class="phase4-s3-backdrop" data-phase4-s3-close type="button" aria-label="${escapeHTML(text("close"))}"></button>
-      <section class="phase4-s3-sheet" role="dialog" aria-modal="true" aria-labelledby="phase4-s3-dialog-title">
+      <section class="phase4-s3-sheet ${escapeHTML(sheetClass)}" role="dialog" aria-modal="true" aria-labelledby="phase4-s3-dialog-title">
         <header class="phase4-s3-dialog-head"><div><p class="eyebrow">${escapeHTML(eyebrow)}</p><h2 id="phase4-s3-dialog-title">${escapeHTML(title)}</h2></div><button class="secondary-btn phase4-s3-close" data-phase4-s3-close type="button">${escapeHTML(text("close"))}</button></header>
         ${body}
       </section>
@@ -1018,13 +1024,17 @@
   function searchDialog() {
     const search = slice3State.search;
     const body = `
-      <form id="phase4Slice3SearchForm" class="phase4-s3-search-form" role="search"><label class="field"><span class="sr-only">${escapeHTML(text("searchFood"))}</span><input name="query" type="search" value="${escapeHTML(search.query)}" placeholder="${escapeHTML(text("searchPlaceholder"))}" autocomplete="off"></label><button class="phase4-s3-gold" type="submit">${escapeHTML(text("search"))}</button></form>
-      ${feedbackMarkup()}
-      <div id="phase4Slice3LocalSearchResults">${localSearchResultsMarkup()}</div>
-      <div id="phase4Slice3ProviderSearchResults">${providerSearchMarkup()}</div>
+      <div class="phase4-s3-search-fixed">
+        <form id="phase4Slice3SearchForm" class="phase4-s3-search-form" role="search"><label class="field"><span class="sr-only">${escapeHTML(text("searchFood"))}</span><input name="query" type="search" value="${escapeHTML(search.query)}" placeholder="${escapeHTML(text("searchPlaceholder"))}" autocomplete="off"></label><button class="phase4-s3-gold" type="submit">${escapeHTML(text("search"))}</button></form>
+        ${feedbackMarkup()}
+      </div>
+      <div class="phase4-s3-search-results">
+        <div id="phase4Slice3LocalSearchResults">${localSearchResultsMarkup()}</div>
+        <div id="phase4Slice3ProviderSearchResults">${providerSearchMarkup()}</div>
+      </div>
       <div class="phase4-s3-dialog-actions"><button class="secondary-btn" data-phase4-s3-custom type="button">${escapeHTML(text("createCustom"))}</button></div>
     `;
-    return dialogFrame(text("searchFood"), body, text(slice3State.portal.meal));
+    return dialogFrame(text("searchFood"), body, text(slice3State.portal.meal), "phase4-s3-search-sheet");
   }
 
   function renderSearchResults() {
