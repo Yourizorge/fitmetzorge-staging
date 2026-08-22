@@ -1,6 +1,6 @@
 # Phase 4 Nutrition Slice 4E - Dutch Local Catalog Foundation
 
-Status: LOCAL IMPLEMENTATION COMPLETE / MIGRATION REVIEW REQUIRED / NOT EXECUTED
+Status: MIGRATION LIVE ON STAGING / VERIFIER CORRECTION READY / LIVE RERUN PENDING
 
 Environment guard: staging project `mokxyyullfhkfalopbzd` only. Production is forbidden.
 
@@ -10,7 +10,7 @@ Slice 4D remains complete and frozen. Slice 4E prepares a reviewed Dutch local c
 
 Catalog imported: NO
 
-Migration executed: NO
+Migration executed: YES - STAGING ONLY
 
 Frontend changed: NO
 
@@ -94,11 +94,12 @@ The same artifact cannot create a second ledger row. Existing provider identity 
 - Migration: `supabase/migrations/20260821214541_phase4_nutrition_slice4e_ingestion_alias_search.sql`
 - Migration SHA-256: `A19FF1AA8DAEC57CD61A8DB5FEB19F1A98FD049838EA1F1B7B6C7E3B3C32B54C`
 - Read-only verifier: `supabase/verification/20260821214541_phase4_nutrition_slice4e_ingestion_alias_search_verification.sql`
-- Verifier SHA-256: `81393E24CF04E853FEF6DCB131503A56ABD154B9DABFFB9AF53A2522752C219C`
+- Verifier SHA-256: `98B22C8CEC13B6E688B1CA363A18EF9D69C6805A826B77F531FF4D7F591AEB49`
+- Invalidated verifier SHA-256: `81393E24CF04E853FEF6DCB131503A56ABD154B9DABFFB9AF53A2522752C219C`
 - Static/security suite: `assets/phase4-nutrition-slice4e-static-check.js`
-- Static/security result: PASS, 139 checks.
+- Static/security result: PASS, 153 checks.
 
-The verifier is one SELECT/CTE statement, invokes no application RPC, returns `overall_pass`, and checks ledger schema/security, restrictive links, quality policies, alias ranking, keyset pagination, frozen Slice 4B/4C/4D contracts, and all expected RLS guard tables.
+The verifier is one SELECT/CTE statement, invokes no application RPC, returns `overall_pass`, and checks ledger schema/security, restrictive links, quality policies, alias ranking, keyset pagination, frozen Slice 4B/4C/4D contracts, and all expected RLS guard tables. Its function-source assertions now use whitespace-only compaction and report alias participation, review quality, canonical quality, preferred ranking, NL language, NL market, pg_trgm, and food-ID dedupe as eight separate checks. The corrected verifier has not yet been rerun live.
 
 ## Review Gate
 

@@ -192,6 +192,35 @@ check("verifier has no mutating statement", !/^\s*(insert|update|delete|truncate
 check("verifier invokes no application RPC", !/select\s+public\.fmz_phase4_/i.test(verifierWithoutComments));
 check("verifier returns overall pass", verifier.includes("'overall_pass', overall_pass"));
 check("verifier uses ACL metadata for PUBLIC", verifier.includes("pg_catalog.aclexplode") && verifier.includes("acl.grantee = 0"));
+check("verifier normalizes function source whitespace only", verifier.includes("pg_catalog.regexp_replace(lower(p.prosrc::text), '[[:space:]]+', '', 'g') as compact_source"));
+check("verifier removes obsolete opaque alias ranking check", !verifier.includes("'search_alias_ranking_and_quality'"));
+check("verifier separates all eight alias search predicates", [
+  "search_alias_table_participation",
+  "search_alias_reviewed_verified_gate",
+  "search_canonical_reviewed_verified_quality_gate",
+  "search_preferred_alias_ranking",
+  "search_nl_language_priority",
+  "search_nl_market_priority",
+  "search_alias_pg_trgm_contract",
+  "search_food_id_dedupe"
+].every((name) => verifier.includes(`'${name}'`)));
+check("verifier compact alias fragments preserve identifiers and values", [
+  "frompublic.food_aliasesa",
+  "a.review_statusin(''reviewed'',''verified'')",
+  "f.quality_statusin(''reviewed'',''verified'')",
+  "a.is_preferred",
+  "a.language_code=''nl''",
+  "a.market_code=''nl''",
+  "extensions.similarity",
+  "distincton(c.food_id)"
+].every((fragment) => verifier.includes(fragment)));
+check("verifier retains active alias quality gate", verifier.includes("a.status=''active''"));
+check("verifier retains complete canonical quality gate", [
+  "f.status=''active''",
+  "f.catalog_scope=''canonical''",
+  "f.ingestion_idisnotnull"
+].every((fragment) => verifier.includes(fragment)));
+check("verifier retains schema-qualified pg_trgm operator", verifier.includes("operator(extensions.%)"));
 for (const verifierCheck of [
   "ledger_table_and_columns",
   "ledger_defaults_and_constraints",
@@ -203,7 +232,14 @@ for (const verifierCheck of [
   "canonical_quality_visibility",
   "alias_quality_and_parent_visibility",
   "search_signature_security_and_acl",
-  "search_alias_ranking_and_quality",
+  "search_alias_table_participation",
+  "search_alias_reviewed_verified_gate",
+  "search_canonical_reviewed_verified_quality_gate",
+  "search_preferred_alias_ranking",
+  "search_nl_language_priority",
+  "search_nl_market_priority",
+  "search_alias_pg_trgm_contract",
+  "search_food_id_dedupe",
   "search_stable_bounded_keyset",
   "catalog_table_acl_and_no_browser_writes",
   "no_trainer_or_removal_policy",
@@ -221,11 +257,11 @@ check("Slice 4C migration remains frozen", sha256(slice4c) === "0A2D2CA5B4CAAD30
 check("Slice 4D provider migration remains frozen", sha256(slice4d) === "10228D7CDEC07341C85BFF80D2464ED4F46995FB732976F3045DFB2CB72F9DD0");
 check("Slice 4D resolver migration remains frozen", sha256(resolver) === "2B28BA69D89892D9CD52E852DB7F6E12D9849977C646C2E596C5464EA39F44CD");
 check("Slice 4D frontend remains frozen", sha256(phase4Frontend) === "525538DD4A9D57A4321BFFC3FA9D396937F6E8BA8FC438D85F15C32BD0A16F26");
-check("architecture documents no import execution", architecture.includes("Catalog imported: NO") && architecture.includes("Migration executed: NO"));
+check("architecture records staging migration live and catalog import blocked", architecture.includes("Catalog imported: NO") && architecture.includes("Migration executed: YES - STAGING ONLY"));
 check("decision log locks Slice 4E authority", /Decision 0025[\s\S]*Slice 4E/i.test(decisions));
-check("master plan records Slice 4E review gate", /Slice 4E[\s\S]*migration review/i.test(masterPlan));
+check("master plan records corrected Slice 4E verifier gate", /Slice 4E[\s\S]*corrected read-only verifier awaits/i.test(masterPlan));
 check("architecture overview records ledger and alias search", architectureOverview.includes("nutrition_food_ingestions") && architectureOverview.includes("alias-aware"));
-check("build status records local-only Slice 4E", /Slice 4E[\s\S]*LOCAL[\s\S]*NOT EXECUTED/i.test(buildStatus));
+check("build status records Slice 4E live and verifier rerun pending", /Slice 4E[\s\S]*MIGRATION LIVE ON STAGING[\s\S]*LIVE RERUN PENDING/i.test(buildStatus));
 check("test matrix records Slice 4E suite", testMatrix.includes("Phase 4 Slice 4E Ingestion Ledger + Alias Search Local Checks"));
 
 const failed = checks.filter((item) => !item.condition);

@@ -151,7 +151,8 @@ functions as (
     p.proconfig,
     p.proacl,
     p.proowner,
-    p.prosrc::text as source
+    p.prosrc::text as source,
+    pg_catalog.regexp_replace(lower(p.prosrc::text), '[[:space:]]+', '', 'g') as compact_source
   from pg_catalog.pg_proc p
   join pg_catalog.pg_namespace n on n.oid = p.pronamespace
   where n.nspname = 'public'
@@ -374,20 +375,95 @@ checks as (
     '{}'::jsonb
   union all
   select
-    'search_alias_ranking_and_quality',
+    'search_alias_table_participation',
     exists (
       select 1 from functions
       where function_name = 'fmz_phase4_search_foods'
-        and lower(source) like '%public.food_aliases%'
-        and lower(source) like '%review_status in (''reviewed'', ''verified'')%'
-        and lower(source) like '%quality_status in (''reviewed'', ''verified'')%'
-        and lower(source) like '%is_preferred%'
-        and lower(source) like '%language_code = ''nl''%'
-        and lower(source) like '%market_code = ''nl''%'
-        and lower(source) like '%extensions.similarity%'
-        and lower(source) like '%distinct on (c.food_id)%'
+        and compact_source like '%frompublic.food_aliasesa%'
     ),
-    '{}'::jsonb
+    jsonb_build_object('source_form', 'compact_source', 'expected_fragment', 'frompublic.food_aliasesa')
+  union all
+  select
+    'search_alias_reviewed_verified_gate',
+    exists (
+      select 1 from functions
+      where function_name = 'fmz_phase4_search_foods'
+        and compact_source like '%a.status=''active''%'
+        and compact_source like '%a.review_statusin(''reviewed'',''verified'')%'
+    ),
+    jsonb_build_object(
+      'source_form', 'compact_source',
+      'expected_fragments', jsonb_build_array('a.status=''active''', 'a.review_statusin(''reviewed'',''verified'')')
+    )
+  union all
+  select
+    'search_canonical_reviewed_verified_quality_gate',
+    exists (
+      select 1 from functions
+      where function_name = 'fmz_phase4_search_foods'
+        and compact_source like '%f.status=''active''%'
+        and compact_source like '%f.catalog_scope=''canonical''%'
+        and compact_source like '%f.quality_statusin(''reviewed'',''verified'')%'
+        and compact_source like '%f.ingestion_idisnotnull%'
+    ),
+    jsonb_build_object(
+      'source_form', 'compact_source',
+      'expected_fragments', jsonb_build_array(
+        'f.status=''active''',
+        'f.catalog_scope=''canonical''',
+        'f.quality_statusin(''reviewed'',''verified'')',
+        'f.ingestion_idisnotnull'
+      )
+    )
+  union all
+  select
+    'search_preferred_alias_ranking',
+    exists (
+      select 1 from functions
+      where function_name = 'fmz_phase4_search_foods'
+        and compact_source like '%a.is_preferred%'
+    ),
+    jsonb_build_object('source_form', 'compact_source', 'expected_fragment', 'a.is_preferred')
+  union all
+  select
+    'search_nl_language_priority',
+    exists (
+      select 1 from functions
+      where function_name = 'fmz_phase4_search_foods'
+        and compact_source like '%a.language_code=''nl''%'
+    ),
+    jsonb_build_object('source_form', 'compact_source', 'expected_fragment', 'a.language_code=''nl''')
+  union all
+  select
+    'search_nl_market_priority',
+    exists (
+      select 1 from functions
+      where function_name = 'fmz_phase4_search_foods'
+        and compact_source like '%a.market_code=''nl''%'
+    ),
+    jsonb_build_object('source_form', 'compact_source', 'expected_fragment', 'a.market_code=''nl''')
+  union all
+  select
+    'search_alias_pg_trgm_contract',
+    exists (
+      select 1 from functions
+      where function_name = 'fmz_phase4_search_foods'
+        and compact_source like '%extensions.similarity%'
+        and compact_source like '%operator(extensions.%)%'
+    ),
+    jsonb_build_object(
+      'source_form', 'compact_source',
+      'expected_fragments', jsonb_build_array('extensions.similarity', 'operator(extensions.%)')
+    )
+  union all
+  select
+    'search_food_id_dedupe',
+    exists (
+      select 1 from functions
+      where function_name = 'fmz_phase4_search_foods'
+        and compact_source like '%distincton(c.food_id)%'
+    ),
+    jsonb_build_object('source_form', 'compact_source', 'expected_fragment', 'distincton(c.food_id)')
   union all
   select
     'search_stable_bounded_keyset',

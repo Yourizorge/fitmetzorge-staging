@@ -511,11 +511,13 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | Rank-aware stable keyset; no OFFSET; bounded candidates/pages | PASS |
 | Existing Slice 4B pg_trgm/prefix indexes reused | PASS |
 | No browser canonical write, trainer route, seed, provider call or import | PASS |
-| SELECT/CTE-only verifier with `overall_pass` | PASS - LOCAL ARTIFACT |
-| `node assets/phase4-nutrition-slice4e-static-check.js` | PASS, 139 checks |
+| SELECT/CTE-only verifier with `overall_pass` | PASS - CORRECTED LOCAL ARTIFACT / LIVE RERUN PENDING |
+| Eight separate whitespace-insensitive alias search source checks | PASS |
+| `node assets/phase4-nutrition-slice4e-static-check.js` | PASS, 153 checks |
 | PostgreSQL + PL/pgSQL offline parse | PASS |
 | Phase 1 / Phase 2 / Phase 3 / Member UX frozen static suites | PASS, 75 / 46 / 222 / 56 checks |
 | Phase 4 schema / Slice 2 / atomic / Slice 3 | PASS, 90 / 98 / 79 / 111 checks |
 | Slice 4B / Slice 4C / provider / provider logging / resolver / Slice 4D | PASS, 83 / 116 / 103 / 106 / 80 / 108 checks |
 | Slice 2 / Slice 3 / member safe-area browser suites | PASS, 46 / 104 / 45 checks |
-| Migration execution / catalog import / deployment | NOT PERFORMED |
+| Migration execution | PASS - LIVE ON STAGING |
+| Corrected verifier rerun / catalog import / deployment | NOT PERFORMED |
