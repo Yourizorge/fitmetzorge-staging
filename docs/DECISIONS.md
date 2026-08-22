@@ -339,7 +339,7 @@ Stable candidate IDs make cache, signed lookup, review, and future promotion flo
 
 ## Decision 0024: USDA candidates use transient immutable log snapshots
 
-Status: APPROVED / ARCHITECTURE LOCKED / FINAL REVIEW PASS / GITHUB SYNCED / EXECUTION PENDING
+Status: APPROVED / LIVE / VERIFIED / OWNER-ACCEPTED / FROZEN
 
 Date: 2026-08-19
 
@@ -354,3 +354,21 @@ USDA serving portions, automatic canonical promotion, canonical `foods`/`food_po
 Rationale:
 
 Transient snapshots let members log trusted provider nutrition without polluting the reviewed canonical catalog. A server-authoritative gram-only path keeps calculations auditable, prevents browser nutrient spoofing, preserves immutable history, and isolates canonical ingestion for a separate owner-reviewed pipeline.
+
+## Decision 0025: Slice 4E canonical ingestion is ledgered and local search is alias-aware
+
+Status: APPROVED / LOCAL MIGRATION CREATED / EXECUTION PENDING
+
+Date: 2026-08-21
+
+Decision:
+
+The first reviewed Dutch local canonical catalog import must be represented by a private `nutrition_food_ingestions` audit row. Reviewed/verified canonical foods and imported provider aliases link to that artifact. The ledger is RLS-enabled, has no browser or trainer policy/ACL, uses forward-only status transitions, and cannot be removed through a data workflow. Current import authority is a separately reviewed SQL artifact; no public ingestion RPC exists.
+
+Canonical member visibility requires active reviewed/verified quality plus an ingestion link. Owned custom-food visibility remains unchanged. Active reviewed/verified aliases participate in the existing `fmz_phase4_search_foods(text,integer,text,uuid)` contract. The RPC ranks exact custom names, Dutch aliases, canonical names, prefixes, reviewed market relevance, and controlled trigram matches, deduplicates by food UUID, and preserves stable keyset pagination by recomputing the cursor food's rank from its UUID.
+
+One active preferred Dutch alias per normalized alias and market is enforced explicitly. Raw/cooked foods and provider identities remain separate. USDA generic foods remain the approved future source; Open Food Facts, NEVO, a catalog manifest, seed execution, frontend changes, and production remain outside this decision.
+
+Rationale:
+
+Artifact-level auditability and quality-gated visibility prevent unreviewed provider data from silently becoming canonical member content. Alias-aware local search makes the future Dutch catalog discoverable without introducing a second frontend flow or weakening custom-food ownership.

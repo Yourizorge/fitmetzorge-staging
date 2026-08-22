@@ -48,7 +48,7 @@ This matrix records the required functional, security, entitlement, AI, migratio
 | Phase 4 | Slice 4B alias/search schema | Exact alias columns/constraints/FK/indexes, `pg_trgm`, RLS, SELECT-only ACL, no write/trainer policy, empty catalog, frozen guards | MIGRATION REVIEW GATE | PASS - LIVE / READ-ONLY VERIFIED ON STAGING |
 | Phase 4 | Slice 4C provider operational state | Private cache/rate/circuit tables, zero client ACL/policy, service-role least privilege, atomic rate consumption, read-only verification | SECURITY GATE | PASS - LIVE / READ-ONLY VERIFIED ON STAGING |
 | Phase 4 | USDA Provider Edge Function | Dedicated UUIDv5 identity, auth, CORS, cache, signed lookup, rate/circuit, normalization, no canonical write or secret | PROVIDER GATE | PASS - SEARCH/LOOKUP LIVE + AUTHENTICATED STAGING SMOKE |
-| Phase 4 | Slice 4D transient provider logging | Gram-only signed-candidate log, nullable food identity, immutable snapshots, service-role-only RPC, atomic replacement, no canonical promotion | MIGRATION REVIEW GATE | PASS - FINAL REVIEW + GITHUB SYNC / NOT EXECUTED OR DEPLOYED |
+| Phase 4 | Slice 4D transient provider logging | Gram-only signed-candidate log, nullable food identity, immutable snapshots, service-role-only RPC, atomic replacement, no canonical promotion | OWNER ACCEPTANCE GATE | PASS - LIVE / VERIFIED / OWNER-ACCEPTED / FROZEN |
 | Phase 4 | Nutrition Pro | Full kcal/protein/carbs/fat goals, saved meals, recipes, copy meal/day | BLOCKING GATE | PLANNED |
 | Phase 4 | Barcode | Barcode behind entitlement and feature flag | BLOCKING GATE | PLANNED |
 | Phase 4 | Consumer boundaries | Invoices do not appear in consumer nutrition | BLOCKING GATE | PLANNED |
@@ -490,3 +490,32 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | Phase 4 schema / Slice 2 / atomic / Slice 3 | PASS, 90 / 98+46 / 79 / 105+46 checks |
 | Member safe-area / Slice 4B suites | PASS, 41+45 / 83 checks |
 | Migration/verifier execution | PASS - LIVE / READ-ONLY VERIFIED ON STAGING |
+
+## Phase 4 Slice 4E Ingestion Ledger + Alias Search Local Checks
+
+| Check | Result |
+| --- | --- |
+| Slice 4D backend/frontend baseline | PASS - FROZEN |
+| One private additive ingestion-ledger table | PASS |
+| Artifact SHA/provider-version uniqueness and bounded provenance | PASS |
+| Forward-only lifecycle, immutable identity, no removal workflow | PASS |
+| RLS enabled; zero member/trainer/anon/PUBLIC/service-role ACL | PASS |
+| Nullable restrictive foods/aliases ingestion links | PASS |
+| Reviewed/verified canonical quality gate | PASS |
+| Owned custom foods preserved; other-user custom hidden | PASS |
+| Reviewed/verified alias and visible-parent gate | PASS |
+| One preferred active NL alias per normalized term and market | PASS |
+| Existing search signature/response contract preserved | PASS |
+| Exact custom, NL alias, canonical, prefix, relevance, trigram ranking | PASS |
+| Dedupe by food UUID; raw/cooked identities remain separate | PASS |
+| Rank-aware stable keyset; no OFFSET; bounded candidates/pages | PASS |
+| Existing Slice 4B pg_trgm/prefix indexes reused | PASS |
+| No browser canonical write, trainer route, seed, provider call or import | PASS |
+| SELECT/CTE-only verifier with `overall_pass` | PASS - LOCAL ARTIFACT |
+| `node assets/phase4-nutrition-slice4e-static-check.js` | PASS, 139 checks |
+| PostgreSQL + PL/pgSQL offline parse | PASS |
+| Phase 1 / Phase 2 / Phase 3 / Member UX frozen static suites | PASS, 75 / 46 / 222 / 56 checks |
+| Phase 4 schema / Slice 2 / atomic / Slice 3 | PASS, 90 / 98 / 79 / 111 checks |
+| Slice 4B / Slice 4C / provider / provider logging / resolver / Slice 4D | PASS, 83 / 116 / 103 / 106 / 80 / 108 checks |
+| Slice 2 / Slice 3 / member safe-area browser suites | PASS, 46 / 104 / 45 checks |
+| Migration execution / catalog import / deployment | NOT PERFORMED |
