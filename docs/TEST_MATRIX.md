@@ -511,13 +511,22 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | Rank-aware stable keyset; no OFFSET; bounded candidates/pages | PASS |
 | Existing Slice 4B pg_trgm/prefix indexes reused | PASS |
 | No browser canonical write, trainer route, seed, provider call or import | PASS |
-| SELECT/CTE-only verifier with `overall_pass` | PASS - CORRECTED LOCAL ARTIFACT / LIVE RERUN PENDING |
+| SELECT/CTE-only foundation verifier with `overall_pass` | PASS - LIVE STAGING, 27 PASS / 0 FAIL |
 | Eight separate whitespace-insensitive alias search source checks | PASS |
 | `node assets/phase4-nutrition-slice4e-static-check.js` | PASS, 153 checks |
+| Reviewed USDA manifest | PASS, 64 canonical foods / 197 aliases / 0 portions |
+| Category distribution | PASS, carbohydrates 17 / dairy 7 / fats-basics 7 / fruit 8 / legumes 4 / protein 11 / vegetables 10 |
+| Raw/dry and cooked identity separation | PASS, 10 reviewed pairs |
+| Preferred ambiguous NL alias uniqueness | PASS, 9 documented decisions |
+| Required Dutch local-search coverage | PASS, 12/12 including `volkoren brood` and reviewed 2%-milk `halfvolle melk` alias |
+| Deterministic one-transaction seed | PASS, fail-on-drift replay / exact counts / no DELETE or TRUNCATE |
+| SELECT/CTE-only post-import verifier | PASS local parse/static review; NOT EXECUTED |
+| `node assets/phase4-nutrition-slice4e-catalog-static-check.js` | PASS, 1908 checks |
 | PostgreSQL + PL/pgSQL offline parse | PASS |
 | Phase 1 / Phase 2 / Phase 3 / Member UX frozen static suites | PASS, 75 / 46 / 222 / 56 checks |
 | Phase 4 schema / Slice 2 / atomic / Slice 3 | PASS, 90 / 98 / 79 / 111 checks |
 | Slice 4B / Slice 4C / provider / provider logging / resolver / Slice 4D | PASS, 83 / 116 / 103 / 106 / 80 / 108 checks |
 | Slice 2 / Slice 3 / member safe-area browser suites | PASS, 46 / 104 / 45 checks |
 | Migration execution | PASS - LIVE ON STAGING |
-| Corrected verifier rerun / catalog import / deployment | NOT PERFORMED |
+| Corrected foundation verifier rerun | PASS - LIVE STAGING, `overall_pass = true` |
+| Catalog import / post-import verifier / deployment | NOT PERFORMED |

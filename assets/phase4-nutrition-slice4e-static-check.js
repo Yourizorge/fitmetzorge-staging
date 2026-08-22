@@ -259,9 +259,9 @@ check("Slice 4D resolver migration remains frozen", sha256(resolver) === "2B28BA
 check("Slice 4D frontend remains frozen", sha256(phase4Frontend) === "525538DD4A9D57A4321BFFC3FA9D396937F6E8BA8FC438D85F15C32BD0A16F26");
 check("architecture records staging migration live and catalog import blocked", architecture.includes("Catalog imported: NO") && architecture.includes("Migration executed: YES - STAGING ONLY"));
 check("decision log locks Slice 4E authority", /Decision 0025[\s\S]*Slice 4E/i.test(decisions));
-check("master plan records corrected Slice 4E verifier gate", /Slice 4E[\s\S]*corrected read-only verifier awaits/i.test(masterPlan));
+check("master plan records verified Slice 4E foundation and import gate", /Slice 4E[\s\S]*foundation is LIVE \/ VERIFIED[\s\S]*have not been executed/i.test(masterPlan));
 check("architecture overview records ledger and alias search", architectureOverview.includes("nutrition_food_ingestions") && architectureOverview.includes("alias-aware"));
-check("build status records Slice 4E live and verifier rerun pending", /Slice 4E[\s\S]*MIGRATION LIVE ON STAGING[\s\S]*LIVE RERUN PENDING/i.test(buildStatus));
+check("build status records Slice 4E foundation verified and import pending", /Slice 4E[\s\S]*FOUNDATION LIVE \+ VERIFIED[\s\S]*IMPORT NOT EXECUTED/i.test(buildStatus));
 check("test matrix records Slice 4E suite", testMatrix.includes("Phase 4 Slice 4E Ingestion Ledger + Alias Search Local Checks"));
 
 const failed = checks.filter((item) => !item.condition);

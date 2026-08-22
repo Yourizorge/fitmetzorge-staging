@@ -357,7 +357,7 @@ Transient snapshots let members log trusted provider nutrition without polluting
 
 ## Decision 0025: Slice 4E canonical ingestion is ledgered and local search is alias-aware
 
-Status: APPROVED / LOCAL MIGRATION CREATED / EXECUTION PENDING
+Status: APPROVED / FOUNDATION LIVE + VERIFIED / FIRST MANIFEST READY / IMPORT PENDING
 
 Date: 2026-08-21
 
@@ -367,7 +367,7 @@ The first reviewed Dutch local canonical catalog import must be represented by a
 
 Canonical member visibility requires active reviewed/verified quality plus an ingestion link. Owned custom-food visibility remains unchanged. Active reviewed/verified aliases participate in the existing `fmz_phase4_search_foods(text,integer,text,uuid)` contract. The RPC ranks exact custom names, Dutch aliases, canonical names, prefixes, reviewed market relevance, and controlled trigram matches, deduplicates by food UUID, and preserves stable keyset pagination by recomputing the cursor food's rank from its UUID.
 
-One active preferred Dutch alias per normalized alias and market is enforced explicitly. Raw/cooked foods and provider identities remain separate. USDA generic foods remain the approved future source; Open Food Facts, NEVO, a catalog manifest, seed execution, frontend changes, and production remain outside this decision.
+One active preferred Dutch alias per normalized alias and market is enforced explicitly. Raw/cooked foods and provider identities remain separate. The first reviewed manifest locks 64 generic USDA foods, 197 aliases, 10 raw/cooked pairs, 9 preferred ambiguous Dutch aliases, and 0 portions. It uses pinned Foundation, Survey (FNDDS), and SR Legacy detail datasets, deterministic `usda_fdc:<fdcId>` UUIDv5 identities, and a one-transaction fail-on-drift seed. `Magere kwark`, `halfvolle kwark`, `skyr`, and Dutch product-specific breads remain explicit coverage gaps. Open Food Facts, NEVO, seed execution, frontend changes, and production remain outside this decision.
 
 Rationale:
 

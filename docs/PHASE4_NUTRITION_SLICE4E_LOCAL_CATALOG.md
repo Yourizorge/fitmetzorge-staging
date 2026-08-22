@@ -1,12 +1,12 @@
 # Phase 4 Nutrition Slice 4E - Dutch Local Catalog Foundation
 
-Status: MIGRATION LIVE ON STAGING / VERIFIER CORRECTION READY / LIVE RERUN PENDING
+Status: FOUNDATION LIVE + VERIFIED / REVIEWED 64-FOOD MANIFEST + SEED READY / IMPORT NOT EXECUTED
 
 Environment guard: staging project `mokxyyullfhkfalopbzd` only. Production is forbidden.
 
 ## Locked Scope
 
-Slice 4D remains complete and frozen. Slice 4E prepares a reviewed Dutch local canonical catalog without importing catalog rows. USDA generic foods are the approved future source. Open Food Facts branded foods, NEVO, barcode, media, AI, trainer catalog access, and legacy Nutrition mutation remain outside this slice.
+Slice 4D remains complete and frozen. Slice 4E prepares a reviewed Dutch local canonical catalog without importing catalog rows. USDA FoodData Central Foundation, Survey (FNDDS), and SR Legacy generic foods are the only sources in the first manifest. Open Food Facts branded foods, NEVO, barcode, media, AI, trainer catalog access, and legacy Nutrition mutation remain outside this slice.
 
 Catalog imported: NO
 
@@ -76,18 +76,19 @@ The current signature has no locale parameter. Search therefore preserves NL/EN/
 
 Existing Slice 4B prefix and `pg_trgm` indexes are reused. Slice 4E adds only ingestion-reference indexes and the narrow preferred-NL-alias uniqueness index.
 
-## Future Import Idempotency
+## Reviewed Dutch Catalog Artifact
 
-A future separately reviewed manifest must use:
+The first manifest contains 64 reviewed generic canonical foods and 197 reviewed aliases. Category coverage is carbohydrates 17, dairy 7, fats/basics 7, fruit 8, legumes 4, protein 11, and vegetables 10. Ten explicit raw/dry-versus-cooked pairs cover Atlantic salmon, brown rice, chicken breast, ground turkey, lean beef, pasta, potato, sweet potato, white rice, and whole-wheat pasta.
 
-- one unique artifact SHA and one provider/version identity;
-- deterministic canonical food UUIDs;
-- deterministic alias UUIDs;
-- explicit ingestion links on reviewed/verified canonical foods and provider aliases;
-- a new artifact row and predecessor for changed content;
-- one transaction, no `TRUNCATE`, no delete-all, and no silent replacement.
+Nine ambiguous Dutch aliases have one intentional preferred NL interpretation: `aardappel`, `pasta`, `rijst`, `zoete aardappel`, `melk`, `kalkoengehakt`, `kipfilet`, `mager rundvlees`, and `zalm`. The manifest documents each decision. Known local gaps are `magere kwark`, `halfvolle kwark`, `skyr`, and Dutch product-specific bread types. They are not approximated or padded. Generic whole-wheat bread is included; USDA 2% reduced-fat milk is retained with an explicit 2% label and reviewed `halfvolle melk` search alias as the closest approved generic record.
 
-The same artifact cannot create a second ledger row. Existing provider identity and alias identity indexes continue preventing duplicate canonical foods and aliases. No 64-food manifest or seed exists in this slice.
+The records come from pinned official USDA detail datasets: Foundation 2026-04-30, FNDDS 2021-2023 release 2024-10-31, and SR Legacy 2018-04. Archive and extracted-JSON hashes are stored in the manifest. Nutrients use the existing `phase4_usda_v1` detail-record mapping per 100 g. Missing fiber remains `null`; no missing value is converted to zero and no volume/mass assumption is made.
+
+Canonical food UUIDs use UUIDv5 namespace `23440733-7e58-4c21-ad15-591eae6ab8ac` and exact name `usda_fdc:<fdcId>`. Alias UUIDs are deterministic under their canonical food UUID. The single ingestion identity is `92fbeedd-63a8-5d22-9000-24e2a16189f1`.
+
+## Import Idempotency
+
+The reviewed seed uses one transaction and embeds the exact manifest. It validates the current ledger state, replays or inserts the ingestion artifact, foods, and aliases, compares every deterministic identity to the expected payload, verifies exact counts and zero portions, and only then transitions the ledger to `imported`. A replay creates no duplicate and performs no silent overwrite; any identity collision or payload drift raises an exception and rolls back the transaction. It contains no `DELETE`, `TRUNCATE`, custom-food mutation, remote call, or legacy mutation.
 
 ## Artifacts
 
@@ -98,9 +99,18 @@ The same artifact cannot create a second ledger row. Existing provider identity 
 - Invalidated verifier SHA-256: `81393E24CF04E853FEF6DCB131503A56ABD154B9DABFFB9AF53A2522752C219C`
 - Static/security suite: `assets/phase4-nutrition-slice4e-static-check.js`
 - Static/security result: PASS, 153 checks.
+- Catalog generator: `supabase/catalog/generate_phase4_dutch_catalog.py`
+- Reviewed manifest: `supabase/catalog/20260822_phase4_dutch_catalog_manifest.json`
+- Manifest SHA-256: `5E9D8ED2C70125794F869827FC835A62BED56749CB23792E4225310E8F6864D5`
+- Deterministic seed: `supabase/seeds/20260822_phase4_dutch_catalog_seed.sql`
+- Seed SHA-256: `567B6E6A63E93329B5B696B4631331716DE53E05AC08CD32DDD37ACE7A38886B`
+- Post-import verifier: `supabase/verification/20260822_phase4_dutch_catalog_import_verification.sql`
+- Post-import verifier SHA-256: `E27C09762C2C853AC1C2DE1AB75498297155DD9B698C5B006A74124CCEEAED51`
+- Catalog static/security suite: `assets/phase4-nutrition-slice4e-catalog-static-check.js`
+- Catalog static/security result: PASS, 1908 checks.
 
-The verifier is one SELECT/CTE statement, invokes no application RPC, returns `overall_pass`, and checks ledger schema/security, restrictive links, quality policies, alias ranking, keyset pagination, frozen Slice 4B/4C/4D contracts, and all expected RLS guard tables. Its function-source assertions now use whitespace-only compaction and report alias participation, review quality, canonical quality, preferred ranking, NL language, NL market, pg_trgm, and food-ID dedupe as eight separate checks. The corrected verifier has not yet been rerun live.
+The foundation verifier is one SELECT/CTE statement, invokes no application RPC, returns `overall_pass`, and checks ledger schema/security, restrictive links, quality policies, alias ranking, keyset pagination, frozen Slice 4B/4C/4D contracts, and all expected RLS guard tables. Its corrected live staging rerun passed all 27 checks. The separate post-import verifier is also one SELECT/CTE statement; it verifies the exact imported artifact, row counts, UUID/link integrity, generic USDA provenance, nutrients, aliases, raw/cooked separation, required Dutch terms, and zero portions.
 
 ## Review Gate
 
-The exact migration and verifier require owner/external SQL review. No migration may be executed before a separate staging-only GO. After execution, the exact read-only verifier must return `overall_pass = true` before any catalog manifest is created or imported.
+The Slice 4E foundation migration and corrected verifier are live and accepted on staging. The manifest, seed, and post-import verifier are review artifacts only. Catalog import remains blocked until the owner separately reviews the immutable hashes and gives an explicit staging-only execution instruction. This preparation performed no database, frontend, Edge, production, or legacy-data change.
