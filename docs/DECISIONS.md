@@ -357,7 +357,7 @@ Transient snapshots let members log trusted provider nutrition without polluting
 
 ## Decision 0025: Slice 4E canonical ingestion is ledgered and local search is alias-aware
 
-Status: APPROVED / FOUNDATION LIVE + VERIFIED / FIRST MANIFEST READY / IMPORT PENDING
+Status: APPROVED / FOUNDATION AND 64-FOOD IMPORT LIVE / ACCEPTED / FROZEN
 
 Date: 2026-08-21
 
@@ -367,8 +367,28 @@ The first reviewed Dutch local canonical catalog import must be represented by a
 
 Canonical member visibility requires active reviewed/verified quality plus an ingestion link. Owned custom-food visibility remains unchanged. Active reviewed/verified aliases participate in the existing `fmz_phase4_search_foods(text,integer,text,uuid)` contract. The RPC ranks exact custom names, Dutch aliases, canonical names, prefixes, reviewed market relevance, and controlled trigram matches, deduplicates by food UUID, and preserves stable keyset pagination by recomputing the cursor food's rank from its UUID.
 
-One active preferred Dutch alias per normalized alias and market is enforced explicitly. Raw/cooked foods and provider identities remain separate. The first reviewed manifest locks 64 generic USDA foods, 197 aliases, 10 raw/cooked pairs, 9 preferred ambiguous Dutch aliases, and 0 portions. It uses pinned Foundation, Survey (FNDDS), and SR Legacy detail datasets, deterministic `usda_fdc:<fdcId>` UUIDv5 identities, and a one-transaction fail-on-drift seed. `Magere kwark`, `halfvolle kwark`, `skyr`, and Dutch product-specific breads remain explicit coverage gaps. Open Food Facts, NEVO, seed execution, frontend changes, and production remain outside this decision.
+One active preferred Dutch alias per normalized alias and market is enforced explicitly. Raw/cooked foods and provider identities remain separate. The accepted first manifest locks 64 generic USDA foods, 197 aliases, 10 raw/cooked pairs, 9 preferred ambiguous Dutch aliases, and 0 portions. It uses pinned Foundation, Survey (FNDDS), and SR Legacy detail datasets, deterministic `usda_fdc:<fdcId>` UUIDv5 identities, and a one-transaction fail-on-drift seed. `Magere kwark`, `halfvolle kwark`, `skyr`, and Dutch product-specific breads remain explicit coverage gaps. The imported catalog is frozen. Open Food Facts, NEVO, further catalog mutation, and production remain outside this decision.
 
 Rationale:
 
 Artifact-level auditability and quality-gated visibility prevent unreviewed provider data from silently becoming canonical member content. Alias-aware local search makes the future Dutch catalog discoverable without introducing a second frontend flow or weakening custom-food ownership.
+
+## Decision 0026: Open Food Facts remains a separate ODbL catalog domain
+
+Status: APPROVED / SLICE 4F ARCHITECTURE LOCKED; MIGRATION NOT EXECUTED
+
+Date: 2026-08-24
+
+Decision:
+
+Store Open Food Facts branded products in separate `nutrition_off_catalog_releases`, `nutrition_off_products`, and `nutrition_off_product_names` tables. Do not merge OFF rows into `public.foods` or `food_aliases`. Unified member search may combine typed result sets, but must preserve `off_branded_food`, `generic_food`, and `custom_food` identity.
+
+Use permanent provider namespace `23440733-7e58-4c21-ad15-591eae6ab8ac` and exact identity name `open_food_facts:<normalized_gtin14>`. Validate EAN-8, UPC-A, EAN-13, and GTIN-14 check digits; retain the original barcode; keep `per_100_g` and `per_100_ml` separate. Only active complete/reviewed products are nutrition authority. Complete community data is not labelled FitMetZorge verified. Conflicts are quarantined rather than silently selected.
+
+The OFF domain keeps ODbL 1.0 provenance, attribution, release hashes, and exportability. Product images remain optional separately licensed references and are not bulk downloaded. Authenticated clients receive read-only active catalog access; no trainer-special write route, browser service-role, automatic canonical promotion, barcode scanner, import, or production action is authorized by this decision.
+
+The accepted audit baseline is 106,650 Netherlands-associated source rows and 24,458 eligible products. A later pinned, deterministic, hash-reviewed import artifact and post-import verifier are mandatory before those rows may be loaded.
+
+Rationale:
+
+The separate domain keeps ODbL content technically and operationally distinguishable from CC0 USDA foods, private custom foods, immutable member logs, and proprietary FitMetZorge data. Typed local search still gives members one fast discovery surface without weakening provenance, licensing, quality, or future refresh controls.

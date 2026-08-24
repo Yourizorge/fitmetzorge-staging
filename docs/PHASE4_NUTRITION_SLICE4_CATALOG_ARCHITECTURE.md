@@ -255,16 +255,16 @@ Barcode input later calls the same backend provider lookup, validates the code, 
 1. **4A Provider/legal contract:** LOCKED. Provider roles and local-first behavior are approved; the OFF legal gate remains mandatory before use.
 2. **4B Additive search schema:** LIVE / COMPLETE ON STAGING. Alias/search indexes only; no catalog rows imported.
 3. **4C Backend provider proxy:** OPERATIONAL STATE LIVE / VERIFIED; SEARCH+LOOKUP EDGE LIVE / AUTHENTICATED SMOKE PASS. Private caches, atomic abuse limits, shared circuit state, and the reviewed USDA adapter are active on staging without canonical mutation.
-4. **4D Transient provider logging:** FINAL SQL/EDGE REVIEW PASS / GITHUB SYNCED / NOT EXECUTED OR DEPLOYED. Gram-only immutable USDA snapshots, service-role-only log/replace RPCs, existing member archive route, no canonical promotion; staging migration execution, live verification, Edge deployment, and frontend wiring remain separate gates.
-5. **4E Curated generic catalog:** deterministic USDA-based generic artifact, Dutch aliases, provenance, quality report, hash review, staged import, and read-only verification.
-6. **4F Branded ingestion/cache:** OFF only after legal approval; controlled Dutch/EU subset or export/on-demand pipeline, never blind bulk ingestion.
-7. **4G Member search integration:** ranked local-first results, `catalog` versus `my food`, bounded provider fallback, NL/EN/DE, and mobile-first UX.
+4. **4D Transient provider logging:** LIVE / VERIFIED / OWNER-ACCEPTED / FROZEN. Gram-only immutable USDA snapshots, service-role-only log/replace RPCs, historical resolver, existing member archive route, and no automatic canonical promotion.
+5. **4E Curated generic catalog:** ACCEPTED / FROZEN. The deterministic 64-food USDA catalog and 197 aliases preserve provenance, reviewed quality, raw/cooked identities, and zero invented portions.
+6. **4F Branded catalog foundation:** LOCAL REVIEW READY / NOT EXECUTED. OFF-specific ODbL release/product/name tables, deterministic GTIN UUIDv5 identity, typed bounded local search, exact local barcode lookup, verifier, and future immutable logging design. The 24,458-row import is explicitly separate.
+7. **4G Member search integration:** later ranked mobile-first consumption of the typed local RPC, barcode scanner UI and feature gates. Not started by the 4F schema foundation.
 8. **4H Quality/attribution operations:** refresh, archive/discontinued behavior, provider drift monitoring, attribution UI, and audit/export process.
 9. **4I Owner acceptance:** real-phone Dutch search coverage, nutrition correctness, provider failure, security, performance, frozen regressions, and explicit freeze.
 
 ## External Gates
 
-- OWNER/LEGAL DECISION REQUIRED: Open Food Facts ODbL/DCL reuse, attribution, share-alike/database-extract obligations, and commercial product presentation.
+- PRODUCTION LEGAL REVIEW REQUIRED: the owner-approved separate OFF ODbL domain preserves attribution/export/share-alike boundaries, but final commercial presentation and production obligations still require sign-off.
 - OWNER DECISION REQUIRED: initial curated generic coverage target and acceptance benchmark.
 - OWNER/PRIVACY DECISION REQUIRED: raw-query retention policy and DPIA/AVG posture.
 - OWNER/OPERATIONS DECISION REQUIRED: provider budget, refresh cadence, monitoring, and incident ownership.
@@ -272,4 +272,4 @@ Barcode input later calls the same backend provider lookup, validates the code, 
 
 ## Exact Next Step
 
-Owner may separately authorize execution of the final reviewed Slice 4D migration on staging `mokxyyullfhkfalopbzd`. Execution must be followed by the final read-only verifier before any separately approved Edge deployment. Provider-log frontend wiring, canonical imports, barcode, production, Open Food Facts, and legacy mutation remain blocked.
+Owner reviews the Slice 4F migration, verifier, hashes, and static/security report. Only a separate explicit GO may authorize migration execution on staging `mokxyyullfhkfalopbzd`, followed by the exact read-only verifier. The 24,458-row OFF import, typed-search frontend integration, barcode scanner, Edge changes, legacy mutation, and production remain separate blocked gates.

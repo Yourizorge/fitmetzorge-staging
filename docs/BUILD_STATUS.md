@@ -120,7 +120,7 @@ Summary: The simplified Vandaag composition, compact Trackers overview/details, 
 
 ### Phase 4 Nutrition Engine
 
-Status: IN PROGRESS; SCHEMA SLICE 1 COMPLETE / LIVE / VERIFIED; FUNCTIONAL SLICE 2 OWNER-TESTED / FROZEN; ATOMIC REPLACEMENT RPC LIVE / VERIFIED; FUNCTIONAL SLICE 3 OWNER-TESTED / COMPLETE / FROZEN; SLICE 4A LOCKED / COMPLETE; SLICE 4B LIVE / COMPLETE; SLICE 4C LIVE / VERIFIED; USDA SEARCH+LOOKUP EDGE LIVE / SMOKE-VERIFIED; SLICE 4D MIGRATION LIVE / CORRECTED VERIFIER READY FOR RERUN / EDGE EXTENSION NOT DEPLOYED
+Status: IN PROGRESS; SCHEMA SLICE 1 COMPLETE / LIVE / VERIFIED; FUNCTIONAL SLICES 2-3 OWNER-TESTED / FROZEN; SLICES 4B-4C LIVE / VERIFIED; SLICE 4D OWNER-ACCEPTED / FROZEN; SLICE 4E ACCEPTED / FROZEN; SLICE 4F LOCAL FOUNDATION READY FOR MIGRATION REVIEW
 
 Architecture audit: PASS.
 
@@ -146,15 +146,23 @@ The empty additive Slice 1 migration executed successfully on staging after the 
 
 The reviewed `fmz_phase4_replace_food_log_item` migration is live and read-only verified on staging. Functional Slice 3 is deployed on that contract and its complete functional scope passed owner real-phone testing. The global tokenized member-navigation safe-area hotfix is live at commit `7604010becbb57bb09c4749ac0c010573e55229b` and owner-accepted on a real phone. Slice 4D migration, corrected verifier, provider `/log` and `/replace`, historical resolver, Edge runtime, and member provider integration are live, verified, owner-accepted, and frozen on staging. The byte-identical provider migration remains locked at SHA-256 `10228D7CDEC07341C85BFF80D2464ED4F46995FB732976F3045DFB2CB72F9DD0`. The trainer Nutrition renderer and all legacy data remain preserved.
 
-Hotfix verification: global navigation static suite PASS, 41 checks; responsive browser suite PASS, 45 checks; live files matched the staging commit and owner real-phone acceptance passed. Slice 4A locks the local-first hybrid catalog: USDA for curated generic foods, Open Food Facts for later Dutch/EU branded/barcode data after legal approval, and private custom foods for gaps. Slice 4B, Slice 4C, and frozen Slice 4D are live and verified. USDA search/lookup/log/edit and the unified local/provider member search are owner-accepted on staging. No canonical catalog import, legacy mutation, or production action has occurred.
+Hotfix verification: global navigation static suite PASS, 41 checks; responsive browser suite PASS, 45 checks; live files matched the staging commit and owner real-phone acceptance passed. Slice 4A locks the local-first hybrid catalog: reviewed USDA generics, a separate OFF ODbL branded/barcode domain, and private custom foods. Slice 4B, Slice 4C, and frozen Slice 4D are live and verified. USDA search/lookup/log/edit and the unified local/provider member search are owner-accepted on staging. The reviewed 64-food Slice 4E USDA catalog is accepted and frozen; no OFF import, legacy mutation, or production action has occurred.
 
 ### Phase 4 Slice 4E - Dutch Local Catalog Foundation
 
-Status: FOUNDATION LIVE + VERIFIED / REVIEWED MANIFEST + SEED READY / IMPORT NOT EXECUTED
+Status: FOUNDATION + 64-FOOD IMPORT ACCEPTED / FROZEN
 
-Summary: The owner-approved Slice 4E migration `20260821214541_phase4_nutrition_slice4e_ingestion_alias_search.sql` is live on staging. The corrected read-only verifier returned `overall_pass = true` with 27 PASS and 0 FAIL. A reviewed Dutch-first USDA manifest is now prepared locally with 64 generic canonical foods, 197 aliases, 10 raw/cooked pairs, deterministic UUIDv5 identity, full detail-record provenance, and 0 portions. Its one-transaction deterministic seed and SELECT/CTE-only post-import verifier are ready for owner review. No catalog row was imported and no frontend, Edge, legacy-data, or production change occurred. Slice 4D remains frozen.
+Summary: The owner-approved Slice 4E foundation and reviewed Dutch-first USDA import are accepted and frozen. The catalog contains the locked 64 generic canonical foods, 197 aliases, 10 raw/cooked pairs, deterministic UUIDv5 identity, full detail-record provenance, and 0 portions. Canonical identities and names remain unchanged. Slice 4D and all earlier baselines remain frozen.
 
-Artifacts: foundation migration SHA-256 `A19FF1AA8DAEC57CD61A8DB5FEB19F1A98FD049838EA1F1B7B6C7E3B3C32B54C`; corrected foundation verifier SHA-256 `98B22C8CEC13B6E688B1CA363A18EF9D69C6805A826B77F531FF4D7F591AEB49`; manifest SHA-256 `5E9D8ED2C70125794F869827FC835A62BED56749CB23792E4225310E8F6864D5`; seed SHA-256 `567B6E6A63E93329B5B696B4631331716DE53E05AC08CD32DDD37ACE7A38886B`; post-import verifier SHA-256 `E27C09762C2C853AC1C2DE1AB75498297155DD9B698C5B006A74124CCEEAED51`; foundation static suite PASS 153; catalog static/security suite PASS 1908. Next gate: owner review of the immutable manifest/seed/verifier before any staging import.
+Artifacts remain locked: foundation migration SHA-256 `A19FF1AA8DAEC57CD61A8DB5FEB19F1A98FD049838EA1F1B7B6C7E3B3C32B54C`; corrected foundation verifier SHA-256 `98B22C8CEC13B6E688B1CA363A18EF9D69C6805A826B77F531FF4D7F591AEB49`; manifest SHA-256 `5E9D8ED2C70125794F869827FC835A62BED56749CB23792E4225310E8F6864D5`; seed SHA-256 `567B6E6A63E93329B5B696B4631331716DE53E05AC08CD32DDD37ACE7A38886B`; post-import verifier SHA-256 `E27C09762C2C853AC1C2DE1AB75498297155DD9B698C5B006A74124CCEEAED51`.
+
+### Phase 4 Slice 4F - OFF Branded Catalog Foundation
+
+Status: LOCAL MIGRATION + VERIFIER + TESTS READY FOR OWNER MIGRATION REVIEW; NOT EXECUTED
+
+Summary: The owner-approved architecture keeps Open Food Facts in three separate ODbL tables and never merges it into `public.foods`. The local migration adds release-ledger, product, localized-name, deterministic UUIDv5/GTIN, quality, RLS/ACL, typed bounded unified-search, and exact local barcode-lookup contracts. The accepted 106,650 source / 24,458 eligible audit is documentation only; no OFF row or import artifact is included. The NL member presentation patch reads existing `metadata.dutch_display_label` without changing canonical identity, logs, calculations, or database data. No frontend or Edge deployment occurred.
+
+Artifacts: migration SHA-256 `DE2E00772E9417D4863B60C786A1725030B9965A56E4BCBF691704A935342DC4`; read-only verifier SHA-256 `EC4655F4269DEF0E48462CB0E6FFC9BABB0241BFB59C9517078B1FA5C1B400F3`; Slice 4F schema/static/security suite PASS, 117 checks. The NL display-label runtime fix and focused runtime regressions are locally ready but intentionally not synchronized to the Pages-backed staging branch without a separate frontend deployment GO.
 
 ### Production Migration
 

@@ -1,14 +1,14 @@
 # Phase 4 Nutrition Slice 4E - Dutch Local Catalog Foundation
 
-Status: FOUNDATION LIVE + VERIFIED / REVIEWED 64-FOOD MANIFEST + SEED READY / IMPORT NOT EXECUTED
+Status: FOUNDATION + REVIEWED 64-FOOD IMPORT ACCEPTED / FROZEN
 
 Environment guard: staging project `mokxyyullfhkfalopbzd` only. Production is forbidden.
 
 ## Locked Scope
 
-Slice 4D remains complete and frozen. Slice 4E prepares a reviewed Dutch local canonical catalog without importing catalog rows. USDA FoodData Central Foundation, Survey (FNDDS), and SR Legacy generic foods are the only sources in the first manifest. Open Food Facts branded foods, NEVO, barcode, media, AI, trainer catalog access, and legacy Nutrition mutation remain outside this slice.
+Slice 4D remains complete and frozen. Slice 4E is the accepted reviewed Dutch local canonical catalog. USDA FoodData Central Foundation, Survey (FNDDS), and SR Legacy generic foods are the only sources in this frozen first release. Open Food Facts branded foods remain isolated in the separately reviewed Slice 4F ODbL domain; NEVO, scanner runtime, media import, AI, trainer catalog access, and legacy Nutrition mutation remain outside Slice 4E.
 
-Catalog imported: NO
+Catalog imported: YES - 64 FOODS / 197 ALIASES / 0 PORTIONS, OWNER-ACCEPTED STAGING BASELINE
 
 Migration executed: YES - STAGING ONLY
 

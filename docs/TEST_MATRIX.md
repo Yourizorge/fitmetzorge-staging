@@ -49,6 +49,8 @@ This matrix records the required functional, security, entitlement, AI, migratio
 | Phase 4 | Slice 4C provider operational state | Private cache/rate/circuit tables, zero client ACL/policy, service-role least privilege, atomic rate consumption, read-only verification | SECURITY GATE | PASS - LIVE / READ-ONLY VERIFIED ON STAGING |
 | Phase 4 | USDA Provider Edge Function | Dedicated UUIDv5 identity, auth, CORS, cache, signed lookup, rate/circuit, normalization, no canonical write or secret | PROVIDER GATE | PASS - SEARCH/LOOKUP LIVE + AUTHENTICATED STAGING SMOKE |
 | Phase 4 | Slice 4D transient provider logging | Gram-only signed-candidate log, nullable food identity, immutable snapshots, service-role-only RPC, atomic replacement, no canonical promotion | OWNER ACCEPTANCE GATE | PASS - LIVE / VERIFIED / OWNER-ACCEPTED / FROZEN |
+| Phase 4 | Slice 4E Dutch generic catalog | 64 reviewed USDA foods, 197 Dutch/provider aliases, deterministic identity, local quality-gated search | CATALOG FREEZE GATE | PASS - ACCEPTED / FROZEN |
+| Phase 4 | Slice 4F OFF branded foundation | Separate ODbL release/product/name domain, GTIN/UUIDv5, typed bounded local search, exact local barcode lookup, read-only member ACL | MIGRATION REVIEW GATE | LOCAL PASS - NOT EXECUTED / NOT IMPORTED |
 | Phase 4 | Nutrition Pro | Full kcal/protein/carbs/fat goals, saved meals, recipes, copy meal/day | BLOCKING GATE | PLANNED |
 | Phase 4 | Barcode | Barcode behind entitlement and feature flag | BLOCKING GATE | PLANNED |
 | Phase 4 | Consumer boundaries | Invoices do not appear in consumer nutrition | BLOCKING GATE | PLANNED |
@@ -526,7 +528,38 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | Phase 1 / Phase 2 / Phase 3 / Member UX frozen static suites | PASS, 75 / 46 / 222 / 56 checks |
 | Phase 4 schema / Slice 2 / atomic / Slice 3 | PASS, 90 / 98 / 79 / 111 checks |
 | Slice 4B / Slice 4C / provider / provider logging / resolver / Slice 4D | PASS, 83 / 116 / 103 / 106 / 80 / 108 checks |
-| Slice 2 / Slice 3 / member safe-area browser suites | PASS, 46 / 104 / 45 checks |
+| Slice 2 / Slice 3 / member safe-area browser suites | PASS, 46 / 107 / 45 checks |
 | Migration execution | PASS - LIVE ON STAGING |
 | Corrected foundation verifier rerun | PASS - LIVE STAGING, `overall_pass = true` |
-| Catalog import / post-import verifier / deployment | NOT PERFORMED |
+| Catalog import / post-import verifier | PASS - OWNER-ACCEPTED / FROZEN |
+
+## Phase 4 Slice 4F OFF Catalog + Local Search Local Checks
+
+| Check | Result |
+| --- | --- |
+| Slice 4E 64-food/197-alias catalog | PASS - ACCEPTED / FROZEN |
+| Separate release, product and localized-name ODbL tables | PASS |
+| Permanent `open_food_facts:<normalized_gtin14>` UUIDv5 identity | PASS |
+| EAN-8, UPC-A, EAN-13 and GTIN-14 check-digit normalization | PASS |
+| Original barcode retained; normalized GTIN-14 unique | PASS |
+| Duplicate/conflicting GTIN quarantine contract | PASS |
+| `per_100_g` and `per_100_ml` distinct; no density assumption | PASS |
+| Required nutrition fields and finite bounds | PASS |
+| Active complete/reviewed quality gate | PASS |
+| Release lifecycle, one current release and exact import-count guard | PASS |
+| Product-name revision/licence relational guard | PASS |
+| RLS enabled; authenticated SELECT-only; anon/PUBLIC/service-role no direct table grant | PASS |
+| No trainer policy, mutating member policy, DELETE policy or browser service role | PASS |
+| Frozen `fmz_phase4_search_foods` unchanged | PASS |
+| Typed custom/OFF/generic unified-search source separation | PASS |
+| Exact/prefix/trigram deterministic ranking | PASS |
+| 15 individually bounded branches, global 1,000 cap, page max 25 | PASS |
+| Rank-aware keyset pagination; no OFFSET | PASS |
+| Exact local barcode lookup; no provider/network call | PASS |
+| Read-only verifier with individual checks and `overall_pass` | PASS - LOCAL ARTIFACT |
+| NL Dutch display label with canonical fallback | PASS - LOCAL ONLY / NOT DEPLOYED |
+| Visible-day label hydration bounded to 200 IDs with duplicate suppression | PASS |
+| Future immutable OFF snapshot and unknown-barcode path | PASS - ARCHITECTURE ONLY |
+| ODbL attribution/export and separate image-licence policy | PASS - DOCUMENTED; PRODUCTION LEGAL REVIEW STILL REQUIRED |
+| 24,458-product import | NOT CREATED / NOT EXECUTED |
+| Migration execution / frontend deployment / Edge deployment | NOT PERFORMED |
