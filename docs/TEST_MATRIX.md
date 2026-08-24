@@ -553,8 +553,11 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | Frozen `fmz_phase4_search_foods` unchanged | PASS |
 | Typed custom/OFF/generic unified-search source separation | PASS |
 | Exact/prefix/trigram deterministic ranking | PASS |
+| Trigram branches use indexable `%` predicates with fixed threshold | PASS |
+| Cross-language OFF prefix index matches search predicate | PASS |
 | 15 individually bounded branches, global 1,000 cap, page max 25 | PASS |
-| Rank-aware keyset pagination; no OFFSET | PASS |
+| Rank-aware keyset pagination with symmetric trimmed-name cursor; no OFFSET | PASS |
+| Authenticated OFF reads limited to explicit safe catalog columns | PASS |
 | Exact local barcode lookup; no provider/network call | PASS |
 | Read-only verifier with individual checks and `overall_pass` | PASS - LOCAL ARTIFACT |
 | NL Dutch display label with canonical fallback | PASS - LOCAL ONLY / NOT DEPLOYED |

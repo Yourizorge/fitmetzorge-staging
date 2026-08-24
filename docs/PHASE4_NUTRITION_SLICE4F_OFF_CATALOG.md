@@ -36,7 +36,7 @@ Image references are optional. No images are downloaded in this slice. A retaine
 
 ## Search And Barcode
 
-The frozen `fmz_phase4_search_foods` RPC is unchanged. The new `fmz_phase4_search_nutrition_catalog` RPC is authenticated, `SECURITY INVOKER`, stable, page-capped at 25, keyset-paginated, and source-typed. It ranks exact barcode, exact own custom name, exact Dutch OFF name, other exact OFF name, brand relevance, reviewed Dutch generic aliases, prefixes, and controlled trigram candidates. Every candidate branch is bounded before a global cap and final page ordering. Prefix, trigram, quality-partial, release, and exact GTIN indexes cover the expected 24,458 products and 50,000-90,000 name rows.
+The frozen `fmz_phase4_search_foods` RPC is unchanged. The new `fmz_phase4_search_nutrition_catalog` RPC is authenticated, `SECURITY INVOKER`, stable, page-capped at 25, keyset-paginated, and source-typed. It ranks exact barcode, exact own custom name, exact Dutch OFF name, other exact OFF name, brand relevance, reviewed Dutch generic aliases, prefixes, and controlled trigram candidates. Every candidate branch is bounded before a global cap and final page ordering. Prefix, indexable trigram, quality-partial, release, and exact GTIN indexes cover the expected 24,458 products and 50,000-90,000 name rows. The keyset comparison and returned cursor apply the same trimmed/lowercased display-name normalization.
 
 `fmz_phase4_lookup_off_product_by_barcode` performs authenticated local exact lookup only. It makes no network request, creates no member row, and returns only active complete/reviewed OFF nutrition. Camera scanning and feature-entitlement UI remain later work.
 
@@ -56,7 +56,7 @@ Refreshes compare deterministic GTIN identity and checksums. New rows are insert
 
 ## Access Contract
 
-RLS is enabled on all three OFF tables. Authenticated members get SELECT only on active complete/reviewed product and name rows. The release ledger has no client policy or grant. `anon`, `PUBLIC`, `service_role`, and trainer-specific routes receive no direct OFF table write authority. Import uses only a separately reviewed owner SQL artifact. Browser code contains no service-role credential.
+RLS is enabled on all three OFF tables. Authenticated members get column-scoped SELECT only on safe active complete/reviewed product and name fields; release IDs, source revisions, checksums, provenance, completeness metadata, import metadata, and ingestion timestamps remain outside the browser ACL. The release ledger has no client policy or grant. `anon`, `PUBLIC`, `service_role`, and trainer-specific routes receive no direct OFF table authority. Import uses only a separately reviewed owner SQL artifact. Browser code contains no service-role credential.
 
 ## Dutch Display Labels
 
@@ -65,11 +65,11 @@ The local presentation-only fix uses `foods.metadata.dutch_display_label` in the
 ## Artifacts
 
 - Migration: `supabase/migrations/20260824113551_phase4_nutrition_slice4f_off_catalog_search.sql`
-- Migration SHA-256: `DE2E00772E9417D4863B60C786A1725030B9965A56E4BCBF691704A935342DC4`
+- Migration SHA-256: `606658F53EA29083E315F43546B507B40C9D0CF7D02FB074591B542E71D89AF4`
 - Verification: `supabase/verification/20260824113551_phase4_nutrition_slice4f_off_catalog_search_verification.sql`
-- Verification SHA-256: `EC4655F4269DEF0E48462CB0E6FFC9BABB0241BFB59C9517078B1FA5C1B400F3`
+- Verification SHA-256: `4772BF4550978572BE6DD0D595A42E145FB2DF7D29D7008FF3F87934A12F967D`
 - Static/security suite: `assets/phase4-nutrition-slice4f-static-check.js`
-- Static/security result: PASS, 117 checks. Full PostgreSQL, PL/pgSQL, JavaScript, combined-browser parse, frozen regression, responsive browser, and security scans also pass. The Dutch label runtime and its focused regression changes remain local because pushing loaded runtime assets to the Pages-backed `main` branch would be a frontend deployment.
+- Static/security result: PASS, 125 checks. Final review replaced the old artifact hashes after adding indexable trigram predicates, aligning the cross-language prefix index, removing an unused product GIN index, making keyset name normalization symmetric, restricting authenticated catalog access to explicit safe columns, and strengthening release-identity and exact-ACL verification. Full PostgreSQL, PL/pgSQL, JavaScript, combined-browser parse, frozen regression, responsive browser, and security scans also pass. The Dutch label runtime and its focused regression changes remain local because pushing loaded runtime assets to the Pages-backed `main` branch would be a frontend deployment.
 
 Migration executed: NO
 

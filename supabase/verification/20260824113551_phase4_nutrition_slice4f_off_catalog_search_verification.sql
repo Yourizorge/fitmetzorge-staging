@@ -167,6 +167,58 @@ table_acl as (
       'nutrition_off_product_names'
     )
 ),
+expected_authenticated_columns(table_name, columns) as (
+  values
+    (
+      'nutrition_off_products'::text,
+      array[
+        'attribution_text','barcode_original','brand','carbohydrate_grams_100',
+        'energy_kcal_100','fat_grams_100','fiber_grams_100','generic_name','id',
+        'image_attribution','image_license_code','image_reference_url','license_code',
+        'license_url','lifecycle_status','normalized_brand','normalized_gtin14',
+        'nutrition_basis','product_name','product_name_nl','protein_grams_100',
+        'quality_status','quantity_text','serving_size_text','source_provider'
+      ]::text[]
+    ),
+    (
+      'nutrition_off_product_names'::text,
+      array[
+        'id','is_preferred','language_code','lifecycle_status','name','name_type',
+        'normalized_name','product_id','quality_status'
+      ]::text[]
+    )
+),
+column_acl as (
+  select
+    c.relname::text as table_name,
+    a.attname::text as column_name,
+    coalesce(r.rolname, 'PUBLIC')::text as grantee,
+    acl.privilege_type::text
+  from pg_catalog.pg_class c
+  join pg_catalog.pg_namespace n on n.oid = c.relnamespace
+  join pg_catalog.pg_attribute a on a.attrelid = c.oid
+  cross join lateral pg_catalog.aclexplode(
+    coalesce(a.attacl, '{}'::aclitem[])
+  ) acl
+  left join pg_catalog.pg_roles r on r.oid = acl.grantee
+  where n.nspname = 'public'
+    and c.relname in (
+      'nutrition_off_catalog_releases',
+      'nutrition_off_products',
+      'nutrition_off_product_names'
+    )
+    and a.attnum > 0
+    and not a.attisdropped
+),
+authenticated_column_state as (
+  select
+    table_name,
+    array_agg(column_name order by column_name)::text[] as columns
+  from column_acl
+  where grantee = 'authenticated'
+    and privilege_type = 'SELECT'
+  group by table_name
+),
 functions as (
   select
     p.oid,
@@ -315,6 +367,17 @@ checks(check_name, pass, details) as (
       '{}'::jsonb
     ),
     (
+      'off_release_audit_identity',
+      exists (select 1 from constraints where constraint_name = 'nutrition_off_releases_artifact_sha_key' and contype = 'u')
+      and exists (select 1 from constraints where constraint_name = 'nutrition_off_releases_source_sha_check' and definition like '%[A-F0-9]{64}%')
+      and exists (select 1 from constraints where constraint_name = 'nutrition_off_releases_artifact_sha_check' and definition like '%[A-F0-9]{64}%')
+      and exists (select 1 from constraints where constraint_name = 'nutrition_off_releases_count_check')
+      and exists (select 1 from constraints where constraint_name = 'nutrition_off_releases_mapping_check')
+      and exists (select 1 from functions where proname = 'fmz_phase4_enforce_off_release_state' and source like '%OFF release audit identity is immutable; use a successor release%')
+      and exists (select 1 from indexes where index_name = 'nutrition_off_releases_predecessor_uidx' and indisunique),
+      '{}'::jsonb
+    ),
+    (
       'off_odbl_metadata_contract',
       exists (select 1 from constraints where constraint_name = 'nutrition_off_releases_license_check' and definition like '%ODbL-1.0%')
       and exists (select 1 from constraints where constraint_name = 'nutrition_off_products_license_check' and definition like '%ODbL-1.0%')
@@ -357,13 +420,12 @@ checks(check_name, pass, details) as (
     ),
     (
       'off_search_indexes',
-      (select count(*) = 12 from indexes where index_name in (
+      (select count(*) = 11 from indexes where index_name in (
         'nutrition_off_products_gtin_key',
         'nutrition_off_releases_current_uidx',
         'nutrition_off_products_active_name_prefix_idx',
         'nutrition_off_products_active_nl_name_prefix_idx',
         'nutrition_off_products_active_brand_prefix_idx',
-        'nutrition_off_products_active_search_trgm_idx',
         'nutrition_off_product_names_active_identity_uidx',
         'nutrition_off_product_names_preferred_uidx',
         'nutrition_off_product_names_active_exact_idx',
@@ -371,6 +433,15 @@ checks(check_name, pass, details) as (
         'nutrition_off_product_names_active_trgm_idx',
         'nutrition_off_product_names_product_idx'
       ))
+      and exists (
+        select 1 from indexes
+        where index_name = 'nutrition_off_product_names_active_prefix_idx'
+          and definition like '%(normalized_name text_pattern_ops, language_code%'
+      )
+      and not exists (
+        select 1 from indexes
+        where index_name = 'nutrition_off_products_active_search_trgm_idx'
+      )
       and (select bool_and(indisvalid and indisready) from indexes where index_name like 'nutrition_off_%'),
       (select jsonb_agg(jsonb_build_object('name', index_name, 'unique', indisunique, 'partial', is_partial, 'predicate', predicate) order by index_name) from indexes where index_name like 'nutrition_off_%')
     ),
@@ -394,13 +465,24 @@ checks(check_name, pass, details) as (
     ),
     (
       'off_table_acl_least_privilege',
-      exists (select 1 from table_acl where table_name = 'nutrition_off_products' and grantee = 'authenticated' and privilege_type = 'SELECT')
-      and exists (select 1 from table_acl where table_name = 'nutrition_off_product_names' and grantee = 'authenticated' and privilege_type = 'SELECT')
-      and not exists (select 1 from table_acl where grantee in ('anon','PUBLIC'))
-      and not exists (select 1 from table_acl where grantee = 'service_role')
-      and not exists (select 1 from table_acl where table_name = 'nutrition_off_catalog_releases' and grantee in ('anon','authenticated','PUBLIC','service_role'))
-      and not exists (select 1 from table_acl where table_name in ('nutrition_off_products','nutrition_off_product_names') and grantee = 'authenticated' and privilege_type <> 'SELECT'),
-      (select jsonb_agg(to_jsonb(a) order by table_name, grantee, privilege_type) from table_acl a where grantee in ('anon','authenticated','PUBLIC','service_role'))
+      not exists (select 1 from table_acl where grantee in ('anon','authenticated','PUBLIC','service_role'))
+      and not exists (select 1 from column_acl where grantee in ('anon','PUBLIC','service_role'))
+      and not exists (
+        select 1 from column_acl
+        where grantee = 'authenticated'
+          and privilege_type <> 'SELECT'
+      )
+      and (select count(*) = 2 from authenticated_column_state)
+      and (
+        select count(*) = 2
+          and bool_and(a.columns = e.columns)
+        from expected_authenticated_columns e
+        join authenticated_column_state a using (table_name)
+      ),
+      jsonb_build_object(
+        'table_acl', (select jsonb_agg(to_jsonb(a) order by table_name, grantee, privilege_type) from table_acl a where grantee in ('anon','authenticated','PUBLIC','service_role')),
+        'authenticated_columns', (select jsonb_agg(to_jsonb(a) order by table_name) from authenticated_column_state a)
+      )
     ),
     (
       'typed_unified_search_signature',
@@ -412,6 +494,7 @@ checks(check_name, pass, details) as (
           and not prosecdef
           and provolatile = 's'
           and configuration @> array['search_path=pg_catalog, public, extensions, pg_temp']::text[]
+          and configuration @> array['pg_trgm.similarity_threshold=0.3']::text[]
       ),
       '{}'::jsonb
     ),
@@ -438,6 +521,8 @@ checks(check_name, pass, details) as (
           and position('select ''off_branded_food'', n.product_id, 20' in source) > position('select ''custom_food'', f.id, 10' in source)
           and position('select ''generic_food'', a.food_id, 50' in source) > position('select ''off_branded_food'', n.product_id, 20' in source)
           and source like '%quality_status in (''complete'', ''reviewed'')%'
+          and source like '%normalized_name operator(extensions.%) v_query%'
+          and source like '%normalized_alias operator(extensions.%) v_query%'
           and source like '%row_number() over%partition by bc.source_type, bc.candidate_id%'
       ),
       '{}'::jsonb
@@ -455,6 +540,9 @@ checks(check_name, pass, details) as (
           and source like '%limit 1000%'
           and source like '%limit v_page_size%'
           and source like '%least(coalesce(p_page_size, 25), 25)%'
+          and source like '%lower(btrim(h.display_name)) as page_name%'
+          and source like '%(lower(btrim(h.display_name)), h.result_type, h.source_id)%'
+          and source not like '%(lower(h.display_name), h.result_type, h.source_id)%'
           and source not like '%offset%'
       ),
       '{}'::jsonb

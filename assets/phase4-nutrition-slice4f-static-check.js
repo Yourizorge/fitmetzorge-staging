@@ -76,6 +76,7 @@ check("duplicate conflict can be quarantined", migration.includes("quality_statu
 check("release import count matches loggable rows", migration.includes("imported count must equal active loggable products"));
 check("only one current imported release", migration.includes("nutrition_off_releases_current_uidx") && migration.includes("where status = 'imported'"));
 check("release lifecycle is forward-only", migration.includes("invalid OFF release status transition") && migration.includes("use a successor release"));
+check("release artifact identity is unique and immutable", migration.includes("nutrition_off_releases_artifact_sha_key") && migration.includes("OFF release audit identity is immutable; use a successor release"));
 check("name rows match product revision and licence", migration.includes("must match its product source revision and licence"));
 check("one preferred active name per product and language", migration.includes("nutrition_off_product_names_preferred_uidx"));
 
@@ -92,7 +93,8 @@ check("archived OFF rows are excluded", migration.includes("lifecycle_status = '
 
 check("RLS enabled on all OFF tables", (migration.match(/alter table public\.nutrition_off_[a-z_]+ enable row level security;/giu) || []).length === 3);
 check("only two catalog SELECT policies are created", (migration.match(/create policy/giu) || []).length === 2 && !/for\s+(insert|update|delete)/iu.test(migration));
-check("authenticated tables are SELECT-only", (migration.match(/grant select on table public\.nutrition_off_/giu) || []).length === 2 && !/grant\s+(insert|update|delete|truncate|references|trigger)/iu.test(migration));
+check("authenticated catalog access is column-scoped SELECT-only", (migration.match(/grant select \(/giu) || []).length === 2 && !/grant\s+(insert|update|delete|truncate|references|trigger)/iu.test(migration));
+check("catalog audit fields are not client-granted", !/grant select \([\s\S]*?\b(release_id|off_revision|source_checksum|provenance|completeness|metadata|imported_at|refreshed_at)\b[\s\S]*?\) on table public\.nutrition_off_products/iu.test(migration));
 check("anon and PUBLIC are revoked", migration.includes("from anon") && migration.includes("from public"));
 check("service role has no direct OFF table grant", migration.includes("from service_role") && !/grant\s+.+\s+to\s+service_role/iu.test(migration));
 check("no trainer policy or grant", !/(create policy[^;]*trainer|grant[^;]*trainer)/iu.test(migration));
@@ -116,9 +118,13 @@ check("ranking branches are present in deterministic order", rankingOrder.every(
 check("every candidate branch is bounded", (migration.match(/_candidates as \(/gu) || []).length === 17 && (migration.match(/\n\s+limit (?:1|25|100|150|200)\r?\n/gu) || []).length === 15);
 check("global candidate cap is bounded", migration.includes("limit 1000"));
 check("page size is capped at 25", migration.includes("least(coalesce(p_page_size, 25), 25)"));
-check("keyset cursor is complete", migration.includes("complete catalog cursor required") && migration.includes("p_after_rank") && migration.includes("p_after_id"));
+check("keyset cursor is complete and source-typed", migration.includes("complete catalog cursor required") && migration.includes("p_after_rank") && migration.includes("p_after_source") && migration.includes("p_after_id"));
+check("cursor name normalization is symmetric", migration.includes("lower(btrim(h.display_name)) as page_name") && migration.includes("(lower(btrim(h.display_name)), h.result_type, h.source_id)") && !migration.includes("lower(h.display_name) as page_name") && !migration.includes("(lower(h.display_name), h.result_type, h.source_id)"));
 check("OFFSET pagination is absent", !/\boffset\b/iu.test(withoutComments));
 check("prefix and trigram indexes exist", migration.includes("text_pattern_ops") && migration.includes("gin_trgm_ops"));
+check("OFF prefix index follows the cross-language predicate", migration.includes("nutrition_off_product_names_active_prefix_idx\n  on public.nutrition_off_product_names(\n    normalized_name text_pattern_ops,\n    language_code"));
+check("trigram branches use indexable operators", (migration.match(/operator\(extensions\.%\) v_query/gu) || []).length === 2 && migration.includes("set pg_trgm.similarity_threshold = 0.3"));
+check("unused product trigram index is absent", !migration.includes("nutrition_off_products_active_search_trgm_idx"));
 check("exact GTIN B-tree path exists", migration.includes("nutrition_off_products_gtin_key"));
 
 check("local exact barcode RPC exists", migration.includes("fmz_phase4_lookup_off_product_by_barcode"));
@@ -139,8 +145,9 @@ check("verifier is one SELECT/CTE statement", /^with\b/iu.test(verifierWithoutCo
 check("verifier is read-only", !/^\s*(insert|update|delete|truncate|create|alter|drop|grant|revoke|comment|call)\b/imu.test(verifierWithoutComments));
 check("verifier executes no app RPC", !/select\s+public\.fmz_phase4_/iu.test(verifierWithoutComments));
 check("verifier checks overall pass", verifier.includes("'overall_pass', bool_and(pass)"));
+check("verifier rejects unexpected authenticated column ACL rows", verifier.includes("select count(*) = 2 from authenticated_column_state"));
 for (const verifierCheck of [
-  "off_release_forward_lifecycle", "off_odbl_metadata_contract", "off_gtin_and_identity_contract",
+  "off_release_forward_lifecycle", "off_release_audit_identity", "off_odbl_metadata_contract", "off_gtin_and_identity_contract",
   "off_gtin_uniqueness", "off_basis_and_macro_contract", "off_quality_and_archive_contract",
   "off_search_indexes", "off_rls_enabled", "off_select_policies_exact", "off_table_acl_least_privilege",
   "typed_unified_search_signature", "typed_unified_search_sources_separate",

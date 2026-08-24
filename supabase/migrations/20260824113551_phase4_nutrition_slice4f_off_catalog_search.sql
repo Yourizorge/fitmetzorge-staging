@@ -461,13 +461,6 @@ create index if not exists nutrition_off_products_active_brand_prefix_idx
     and quality_status in ('complete', 'reviewed')
     and normalized_brand is not null;
 
-create index if not exists nutrition_off_products_active_search_trgm_idx
-  on public.nutrition_off_products using gin (
-    (lower(coalesce(product_name_nl, '') || ' ' || product_name || ' ' || coalesce(brand, '')))
-    extensions.gin_trgm_ops
-  )
-  where lifecycle_status = 'active' and quality_status in ('complete', 'reviewed');
-
 create index if not exists nutrition_off_products_source_updated_idx
   on public.nutrition_off_products(source_updated_at desc, normalized_gtin14)
   where lifecycle_status = 'active';
@@ -496,8 +489,8 @@ create index if not exists nutrition_off_product_names_active_exact_idx
 
 create index if not exists nutrition_off_product_names_active_prefix_idx
   on public.nutrition_off_product_names(
-    language_code,
     normalized_name text_pattern_ops,
+    language_code,
     is_preferred desc,
     product_id,
     id
@@ -939,6 +932,7 @@ language plpgsql
 stable
 security invoker
 set search_path = pg_catalog, public, extensions, pg_temp
+set pg_trgm.similarity_threshold = 0.3
 as $$
 declare
   v_user_id uuid := auth.uid();
@@ -1080,7 +1074,9 @@ begin
       and p.quality_status in ('complete', 'reviewed')
       and (
         p.normalized_brand = v_query
-        or lower(btrim(coalesce(p.brand, '') || ' ' || coalesce(p.product_name_nl, p.product_name))) = v_query
+        or public.fmz_phase4_normalize_catalog_text(
+          coalesce(p.brand, '') || ' ' || coalesce(p.product_name_nl, p.product_name)
+        ) = v_query
       )
     order by p.quality_status desc, coalesce(p.product_name_nl, p.product_name), p.id
     limit 100
@@ -1163,6 +1159,7 @@ begin
     from public.nutrition_off_product_names n
     join public.nutrition_off_products p on p.id = n.product_id
     where char_length(v_query) >= 3
+      and n.normalized_name operator(extensions.%) v_query
       and extensions.similarity(n.normalized_name, v_query) >= 0.30
       and n.lifecycle_status = 'active'
       and n.quality_status in ('complete', 'reviewed')
@@ -1177,6 +1174,7 @@ begin
     from public.food_aliases a
     join public.foods f on f.id = a.food_id
     where char_length(v_query) >= 3
+      and a.normalized_alias operator(extensions.%) v_query
       and extensions.similarity(a.normalized_alias, v_query) >= 0.30
       and a.status = 'active'
       and a.review_status in ('reviewed', 'verified')
@@ -1293,7 +1291,7 @@ begin
   paged as (
     select
       h.*,
-      lower(h.display_name) as page_name,
+      lower(btrim(h.display_name)) as page_name,
       h.result_type as page_source,
       h.source_id as page_id
     from hydrated h
@@ -1306,7 +1304,7 @@ begin
        or (
          h.rank_tier = p_after_rank
          and h.rank_score = p_after_score
-         and (lower(h.display_name), h.result_type, h.source_id)
+         and (lower(btrim(h.display_name)), h.result_type, h.source_id)
            > (lower(btrim(p_after_name)), p_after_source, p_after_id)
        )
   )
@@ -1411,13 +1409,49 @@ revoke all on table public.nutrition_off_products from public;
 revoke all on table public.nutrition_off_products from anon;
 revoke all on table public.nutrition_off_products from authenticated;
 revoke all on table public.nutrition_off_products from service_role;
-grant select on table public.nutrition_off_products to authenticated;
+grant select (
+  id,
+  source_provider,
+  barcode_original,
+  normalized_gtin14,
+  product_name,
+  product_name_nl,
+  generic_name,
+  brand,
+  normalized_brand,
+  quantity_text,
+  serving_size_text,
+  nutrition_basis,
+  energy_kcal_100,
+  protein_grams_100,
+  carbohydrate_grams_100,
+  fat_grams_100,
+  fiber_grams_100,
+  license_code,
+  license_url,
+  attribution_text,
+  image_reference_url,
+  image_license_code,
+  image_attribution,
+  quality_status,
+  lifecycle_status
+) on table public.nutrition_off_products to authenticated;
 
 revoke all on table public.nutrition_off_product_names from public;
 revoke all on table public.nutrition_off_product_names from anon;
 revoke all on table public.nutrition_off_product_names from authenticated;
 revoke all on table public.nutrition_off_product_names from service_role;
-grant select on table public.nutrition_off_product_names to authenticated;
+grant select (
+  id,
+  product_id,
+  language_code,
+  name_type,
+  name,
+  normalized_name,
+  is_preferred,
+  quality_status,
+  lifecycle_status
+) on table public.nutrition_off_product_names to authenticated;
 
 revoke all on function public.fmz_phase4_normalize_gtin14(text) from public;
 revoke all on function public.fmz_phase4_normalize_gtin14(text) from anon;
