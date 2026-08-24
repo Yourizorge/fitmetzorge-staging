@@ -146,6 +146,8 @@ check("verifier is read-only", !/^\s*(insert|update|delete|truncate|create|alter
 check("verifier executes no app RPC", !/select\s+public\.fmz_phase4_/iu.test(verifierWithoutComments));
 check("verifier checks overall pass", verifier.includes("'overall_pass', bool_and(pass)"));
 check("verifier rejects unexpected authenticated column ACL rows", verifier.includes("select count(*) = 2 from authenticated_column_state"));
+check("verifier explodes nullable column ACLs row-wise", /pg_catalog\.aclexplode\(\s*a\.attacl\s*\) acl/iu.test(verifier));
+check("verifier avoids zero-dimensional empty ACL arrays", !verifier.includes("coalesce(a.attacl, '{}'::aclitem[])"));
 for (const verifierCheck of [
   "off_release_forward_lifecycle", "off_release_audit_identity", "off_odbl_metadata_contract", "off_gtin_and_identity_contract",
   "off_gtin_uniqueness", "off_basis_and_macro_contract", "off_quality_and_archive_contract",
@@ -158,7 +160,7 @@ for (const verifierCheck of [
 check("decision log locks separate ODbL domain", decisions.includes("separate ODbL catalog domain") && decisions.includes("nutrition_off_products"));
 check("architecture documents typed search", architecture.includes("fmz_phase4_search_nutrition_catalog"));
 check("master plan keeps Slice 4E frozen", masterPlan.includes("Slice 4E") && masterPlan.includes("frozen"));
-check("Slice 4F documentation locks no execution", slice4fDoc.includes("Migration executed: NO") && slice4fDoc.includes("OFF products imported: NO"));
+check("Slice 4F documentation records staging execution without import", slice4fDoc.includes("Migration executed on STAGING: YES") && slice4fDoc.includes("OFF products imported: NO"));
 
 const combined = `${migration}\n${verifier}`;
 check("no secret material", !/(eyJ[a-zA-Z0-9_-]{20,}|service[_-]?role[_-]?key\s*[:=]|supabase_service_role\s*[:=])/iu.test(combined));

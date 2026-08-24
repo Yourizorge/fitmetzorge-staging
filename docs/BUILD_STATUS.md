@@ -120,7 +120,7 @@ Summary: The simplified Vandaag composition, compact Trackers overview/details, 
 
 ### Phase 4 Nutrition Engine
 
-Status: IN PROGRESS; SCHEMA SLICE 1 COMPLETE / LIVE / VERIFIED; FUNCTIONAL SLICES 2-3 OWNER-TESTED / FROZEN; SLICES 4B-4C LIVE / VERIFIED; SLICE 4D OWNER-ACCEPTED / FROZEN; SLICE 4E ACCEPTED / FROZEN; SLICE 4F LOCAL FOUNDATION READY FOR MIGRATION REVIEW
+Status: IN PROGRESS; SCHEMA SLICE 1 COMPLETE / LIVE / VERIFIED; FUNCTIONAL SLICES 2-3 OWNER-TESTED / FROZEN; SLICES 4B-4C LIVE / VERIFIED; SLICE 4D OWNER-ACCEPTED / FROZEN; SLICE 4E ACCEPTED / FROZEN; SLICE 4F FOUNDATION LIVE / CORRECTED VERIFIER READY FOR RERUN
 
 Architecture audit: PASS.
 
@@ -158,11 +158,11 @@ Artifacts remain locked: foundation migration SHA-256 `A19FF1AA8DAEC57CD61A8DB5F
 
 ### Phase 4 Slice 4F - OFF Branded Catalog Foundation
 
-Status: LOCAL MIGRATION + VERIFIER + TESTS READY FOR OWNER MIGRATION REVIEW; NOT EXECUTED
+Status: MIGRATION LIVE ON STAGING; CORRECTED READ-ONLY VERIFIER READY FOR OWNER RERUN; OFF IMPORT NOT STARTED
 
-Summary: The owner-approved architecture keeps Open Food Facts in three separate ODbL tables and never merges it into `public.foods`. The local migration adds release-ledger, product, localized-name, deterministic UUIDv5/GTIN, quality, RLS/ACL, typed bounded unified-search, and exact local barcode-lookup contracts. The accepted 106,650 source / 24,458 eligible audit is documentation only; no OFF row or import artifact is included. The NL member presentation patch reads existing `metadata.dutch_display_label` without changing canonical identity, logs, calculations, or database data. No frontend or Edge deployment occurred.
+Summary: The owner-approved architecture keeps Open Food Facts in three separate ODbL tables and never merges it into `public.foods`. Migration `20260824113551` is live on staging and the three OFF tables, typed bounded unified search, exact local barcode lookup, GTIN normalization, RLS, policies, and column-scoped ACLs are present. The accepted 106,650 source / 24,458 eligible audit remains documentation only; all OFF tables remain empty. The first full verifier run stopped on PostgreSQL `22023` because its own column-ACL CTE manufactured a zero-dimensional empty `aclitem[]`; read-only live metadata proved the migration ACLs correct. The corrected verifier uses row-wise nullable `attacl` expansion and awaits the owner-authorized rerun. No frontend or Edge deployment occurred.
 
-Artifacts: final-review migration SHA-256 `606658F53EA29083E315F43546B507B40C9D0CF7D02FB074591B542E71D89AF4`; final read-only verifier SHA-256 `4772BF4550978572BE6DD0D595A42E145FB2DF7D29D7008FF3F87934A12F967D`; Slice 4F schema/static/security suite PASS, 125 checks. The previously reviewed hashes are invalidated by the explicit final-review hardening for indexable trigram search, symmetric keyset normalization, removal of an unused GIN index, column-scoped browser SELECT, and stricter live verifier coverage for release identity and exact column ACLs. The NL display-label runtime fix and focused runtime regressions are locally ready but intentionally not synchronized to the Pages-backed staging branch without a separate frontend deployment GO.
+Artifacts: migration SHA-256 unchanged at `606658F53EA29083E315F43546B507B40C9D0CF7D02FB074591B542E71D89AF4`; corrected read-only verifier SHA-256 `7E5D6CB7859A5BEE733E379ABAD5661FE08FBF680AC984F4D80C5F109B4DECD2`; prior verifier SHA-256 `4772BF4550978572BE6DD0D595A42E145FB2DF7D29D7008FF3F87934A12F967D` invalidated. Slice 4F schema/static/security suite PASS, 127 checks, including guards for nullable row-wise ACL expansion and against zero-dimensional empty ACL arrays. The NL display-label runtime fix remains local and undeployed.
 
 ### Production Migration
 

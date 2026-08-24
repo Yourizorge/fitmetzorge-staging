@@ -198,7 +198,7 @@ column_acl as (
   join pg_catalog.pg_namespace n on n.oid = c.relnamespace
   join pg_catalog.pg_attribute a on a.attrelid = c.oid
   cross join lateral pg_catalog.aclexplode(
-    coalesce(a.attacl, '{}'::aclitem[])
+    a.attacl
   ) acl
   left join pg_catalog.pg_roles r on r.oid = acl.grantee
   where n.nspname = 'public'

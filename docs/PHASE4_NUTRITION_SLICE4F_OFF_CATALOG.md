@@ -1,6 +1,6 @@
 # Phase 4 Nutrition Slice 4F - Open Food Facts Catalog Foundation
 
-Status: LOCAL FOUNDATION READY FOR MIGRATION REVIEW. No SQL execution, OFF import, frontend deployment, Edge change, scanner runtime, or production change has occurred.
+Status: FOUNDATION LIVE ON STAGING; CORRECTED READ-ONLY VERIFIER READY FOR RERUN. The migration is live on `mokxyyullfhkfalopbzd`. No OFF import, frontend deployment, Edge change, scanner runtime, or production change has occurred.
 
 ## Frozen Baseline
 
@@ -67,11 +67,11 @@ The local presentation-only fix uses `foods.metadata.dutch_display_label` in the
 - Migration: `supabase/migrations/20260824113551_phase4_nutrition_slice4f_off_catalog_search.sql`
 - Migration SHA-256: `606658F53EA29083E315F43546B507B40C9D0CF7D02FB074591B542E71D89AF4`
 - Verification: `supabase/verification/20260824113551_phase4_nutrition_slice4f_off_catalog_search_verification.sql`
-- Verification SHA-256: `4772BF4550978572BE6DD0D595A42E145FB2DF7D29D7008FF3F87934A12F967D`
+- Verification SHA-256: `7E5D6CB7859A5BEE733E379ABAD5661FE08FBF680AC984F4D80C5F109B4DECD2`
 - Static/security suite: `assets/phase4-nutrition-slice4f-static-check.js`
-- Static/security result: PASS, 125 checks. Final review replaced the old artifact hashes after adding indexable trigram predicates, aligning the cross-language prefix index, removing an unused product GIN index, making keyset name normalization symmetric, restricting authenticated catalog access to explicit safe columns, and strengthening release-identity and exact-ACL verification. Full PostgreSQL, PL/pgSQL, JavaScript, combined-browser parse, frozen regression, responsive browser, and security scans also pass. The Dutch label runtime and its focused regression changes remain local because pushing loaded runtime assets to the Pages-backed `main` branch would be a frontend deployment.
+- Static/security result: PASS, 127 checks. The original live verifier hash `4772BF4550978572BE6DD0D595A42E145FB2DF7D29D7008FF3F87934A12F967D` is invalidated because its column-ACL CTE converted `NULL` ACLs into a zero-dimensional empty `aclitem[]`, causing PostgreSQL `22023`. The corrected verifier explodes nullable `pg_attribute.attacl` values row-wise and preserves the exact least-privilege checks. Read-only live ACL diagnostics confirm RLS, policies, 34 intended authenticated column grants, four intended function grants, and no unexpected anon, PUBLIC, service-role, or trainer authority. Full frozen regression and security checks pass; the corrected full verifier still requires the separately authorized live rerun. The Dutch label runtime remains local because pushing loaded runtime assets to the Pages-backed `main` branch would be a frontend deployment.
 
-Migration executed: NO
+Migration executed on STAGING: YES
 
 OFF products imported: NO
 
