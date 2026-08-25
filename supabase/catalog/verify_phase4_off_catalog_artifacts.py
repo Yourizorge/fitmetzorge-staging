@@ -24,8 +24,31 @@ from generate_phase4_off_catalog import (
     SOURCE_FILE_SHA256,
     SOURCE_REVISION,
     gs1_mod10_valid,
-    normalize_catalog_text,
 )
+
+
+NORMALIZATION_CONTRACT_CASES = {
+    "trademark": ("A™ B", "a b"),
+    "ordinal": ("Penne Nº 41", "penne nº 41"),
+    "subscript": ("CO₂ test", "co test"),
+    "decomposed_accent": ("Mango dri\u0302nk", "mango dri nk"),
+    "precomposed_accent": ("Mango drînk", "mango drînk"),
+    "thai": ("ผงทำหมูแดง", "ผงทำหม แดง"),
+    "korean": ("ㅋㄴ타블러ㅣ", "ㅋㄴ타블러ㅣ"),
+    "punctuation": ("Red-Bull / Zero", "red bull zero"),
+    "multiple_whitespace": ("Red   Bull\tZero", "red bull zero"),
+    "leading_trailing": ("  Red Bull  ", "red bull"),
+    "mixed_unicode_ascii": ("Barkleys™ Nº5 CO₂", "barkleys nº5 co"),
+    "brand": ("Albert Heijn, AH Biologisch", "albert heijn ah biologisch"),
+    "product_name": ("Ben & Jerry's Glace 465ml", "ben jerry s glace 465ml"),
+}
+
+
+def postgres_catalog_text_oracle(value: str) -> str:
+    """Independent Python oracle for the locked PostgreSQL POSIX contract."""
+    lowered = str(value or "").lower().strip()
+    alphanumeric = "".join(char if char.isalpha() or char.isdecimal() else " " for char in lowered)
+    return re.sub(r"\s+", " ", alphanumeric).strip()
 
 
 def sha256_file(path: Path) -> str:
@@ -50,6 +73,10 @@ def main() -> None:
     args = parser.parse_args()
 
     checks = [0]
+    generator_source = Path(__file__).with_name("generate_phase4_off_catalog.py").read_text(encoding="utf-8")
+    require("unicodedata.normalize" not in generator_source, "generator_has_no_unicode_normalization", checks)
+    for case_id, (source, expected) in NORMALIZATION_CONTRACT_CASES.items():
+        require(postgres_catalog_text_oracle(source) == expected, f"postgres_normalization_fixture:{case_id}", checks)
     manifest_path = args.catalog_dir / "20260825_phase4_off_artifact_manifest.json"
     release_path = args.catalog_dir / "20260825_phase4_off_release.json"
     product_path = args.catalog_dir / "20260825_phase4_off_products.csv"
@@ -98,6 +125,7 @@ def main() -> None:
         require(row["license_code"] == LICENSE_CODE, f"product_license:{gtin14}", checks)
         require(row["is_netherlands_associated"] == "true" and "en:netherlands" in row["countries_tags"], f"netherlands_association:{gtin14}", checks)
         require(row["quality_status"] == "complete" and row["lifecycle_status"] == "active", f"loggable_state:{gtin14}", checks)
+        require(row["normalized_brand"] == postgres_catalog_text_oracle(row["brand"]), f"brand_normalization:{gtin14}", checks)
         require(re.fullmatch(r"[A-F0-9]{64}", row["source_checksum"]) is not None, f"source_checksum:{gtin14}", checks)
         bounds = {
             "energy_kcal_100": Decimal("900"),
@@ -127,7 +155,7 @@ def main() -> None:
     preferred = defaultdict(int)
     for row in names:
         require(row["product_id"] in ids, f"name_parent:{row['id']}", checks)
-        require(row["normalized_name"] == normalize_catalog_text(row["name"]), f"name_normalization:{row['id']}", checks)
+        require(row["normalized_name"] == postgres_catalog_text_oracle(row["name"]), f"name_normalization:{row['id']}", checks)
         identity = (row["product_id"], row["language_code"], row["name_type"], row["normalized_name"])
         expected_id = str(uuid.uuid5(PROVIDER_NAMESPACE, "open_food_facts_name:" + ":".join(identity)))
         require(row["id"] == expected_id, f"name_uuid:{row['id']}", checks)

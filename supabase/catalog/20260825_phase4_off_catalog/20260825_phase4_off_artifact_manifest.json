@@ -35,29 +35,34 @@
   },
   "execution_files": {
     "supabase/imports/20260825_phase4_off_catalog_import.psql": {
-      "bytes": 12334,
-      "sha256": "3927F0F007ED4CFA1D89A01D2AEBE68F7541E4C03951CA71AC4DF2C4FA5801CC",
+      "bytes": 13352,
+      "sha256": "9EEDC73E03FEDCA5ACF8FDFF2A3F77459C1589C710B903C12DFFB7E33EBAE506",
       "transaction_model": "single_transaction",
       "transport": "psql_file_copy"
     },
     "supabase/verification/20260825_phase4_nutrition_slice4f_off_catalog_import_verification.sql": {
-      "bytes": 8132,
+      "bytes": 8166,
       "mode": "read_only_select_cte",
-      "sha256": "A502967BD9B11C2830A9E311173CBC57B1B6FFB95EBF536340E29F4119FC1B12"
+      "sha256": "AC0BB83EB1140DCA69468C65832F57C694A833AA3A8E82536A6F4419FC2F902D"
+    },
+    "supabase/verification/20260825_phase4_off_normalization_contract_verification.sql": {
+      "bytes": 1840,
+      "mode": "read_only_postgresql_contract_select_cte",
+      "sha256": "44F18C290E1C5E76DF270F500B814E0A55CE218860F784337256791780F4F0AF"
     }
   },
   "files": {
     "20260825_phase4_off_product_names.csv": {
-      "bytes": 29700205,
-      "sha256": "AE2336D03F2BF055241BF81EF06A98937871CC79B9E67CBEF48D613E588A0132"
+      "bytes": 29700198,
+      "sha256": "04E56D0D237CABB77DE2A574D8CEC4A440C15D6824645820920CCB4B220FFAC6"
     },
     "20260825_phase4_off_products.csv": {
       "bytes": 32207889,
-      "sha256": "BA0AD94F3B83F15E48B0124E82B1C8027FDE2A97468446CCB8CB3D15453E1ABF"
+      "sha256": "BFB88DFC6C57E2EC4EDA05E29C5F19515E678B7509C0EC4D62BD9686C57F6A9D"
     },
     "20260825_phase4_off_release.json": {
-      "bytes": 2215,
-      "sha256": "281436E9EC5EDC31EC42814DA7237C85BFB41003865BF94CE0AABAB6740C8CEC"
+      "bytes": 2295,
+      "sha256": "06A53E9266160767828E1576F982C07CA90D8E74DEA3B20A9096B56507F21F88"
     },
     "20260825_phase4_off_search_fixtures.json": {
       "bytes": 1748,
@@ -69,7 +74,13 @@
     }
   },
   "generated_at": "2026-08-25T00:00:00Z",
-  "normalized_artifact_sha256": "CE35E7A30245430078D28687A0247B8E88B759149556D80CA88A2A7A42D2EC80",
+  "normalization_contract": {
+    "authority": "public.fmz_phase4_normalize_catalog_text(text)",
+    "character_class": "PostgreSQL POSIX [[:alnum:]]",
+    "compatibility_normalization": "none",
+    "supersedes_normalized_artifact_sha256": "CE35E7A30245430078D28687A0247B8E88B759149556D80CA88A2A7A42D2EC80"
+  },
+  "normalized_artifact_sha256": "3E826B252B484081CB6D271C73AFFEE70A4B177CAB10E228E46963C5BF63D07D",
   "nutrient_ranges": {
     "carbohydrate_grams_100": {
       "max": "100.000",

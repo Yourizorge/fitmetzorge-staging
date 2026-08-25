@@ -24,6 +24,16 @@ on commit drop;
 
 \copy fmz_off_names_stage (id,product_id,language_code,name_type,name,normalized_name,is_preferred,source_provider,source_revision,license_code,provenance,quality_status,lifecycle_status,metadata,created_at,updated_at,archived_at) from 'supabase/catalog/20260825_phase4_off_catalog/20260825_phase4_off_product_names.csv' with (format csv, header true, encoding 'UTF8');
 
+create unique index fmz_off_products_stage_id_idx on fmz_off_products_stage (id);
+create unique index fmz_off_products_stage_gtin_idx on fmz_off_products_stage (normalized_gtin14);
+create unique index fmz_off_products_stage_identity_idx on fmz_off_products_stage (provider_identity_name);
+create unique index fmz_off_names_stage_id_idx on fmz_off_names_stage (id);
+create index fmz_off_names_stage_product_idx on fmz_off_names_stage (product_id);
+create index fmz_off_names_stage_identity_idx
+  on fmz_off_names_stage (product_id, language_code, name_type, normalized_name);
+analyze fmz_off_products_stage;
+analyze fmz_off_names_stage;
+
 do $fmz_validate$
 declare
   v_product_count bigint;
@@ -110,50 +120,54 @@ begin
     raise exception 'Unexpected OFF predecessor/current release; new reviewed artifact required';
   end if;
 
-  insert into public.nutrition_off_catalog_releases (
-    id, source_provider, source_revision, source_snapshot_at, source_file_sha256,
-    normalized_artifact_sha256, license_code, license_url, attribution_text,
-    netherlands_source_count, eligible_product_count, imported_product_count,
-    mapping_version, predecessor_release_id, status, reviewed_by, reviewed_at,
-    imported_at, provenance, metadata, created_at, updated_at
-  ) values (
-    '4b487f4f-ac8e-5579-a2a2-d4164c4b368a'::uuid, 'open_food_facts', 'e544a38353692b2df59df78f47393990a578eb8e',
-    '2026-08-23T18:34:47Z'::timestamptz, '38D7A48D32F574812490024AA77FB064E84B041CB2687E46DF87AFCE441100C2',
-    'CE35E7A30245430078D28687A0247B8E88B759149556D80CA88A2A7A42D2EC80', 'ODbL-1.0', 'https://opendatacommons.org/licenses/odbl/1-0/',
-    'Open Food Facts contributors', 106650, 24458, 0,
-    'phase4_off_nl_v1', null, 'reviewed', 'FitMetZorge owner-reviewed Slice 4F pipeline',
-    '2026-08-25T00:00:00Z'::timestamptz, null,
-    $fmz_json${"dataset":"openfoodfacts/product-database","dataset_file":"food.parquet","filter":"countries_tags contains en:netherlands","immutable_revision":"e544a38353692b2df59df78f47393990a578eb8e","license":"ODbL-1.0","published_at":"2026-08-23T18:34:47Z","source_total_count":4692771}$fmz_json$::jsonb,
-    $fmz_json${"basis_counts":{"per_100_g":20355,"per_100_ml":4103},"dutch_product_name_count":18970,"image_policy":"references_not_imported","nutrient_ranges":{"carbohydrate_grams_100":{"max":"100.000","min":"0.000","present_count":24458},"energy_kcal_100":{"max":"900.000","min":"0.000","present_count":24458},"fat_grams_100":{"max":"100.000","min":"0.000","present_count":24458},"fiber_grams_100":{"max":"89.000","min":"0.000","present_count":17593},"protein_grams_100":{"max":"99.000","min":"0.000","present_count":24458}},"rejected_after_locked_eligibility":0}$fmz_json$::jsonb || jsonb_build_object(
-      'expected_name_count', 74184,
-      'product_manifest_sha256', 'BA0AD94F3B83F15E48B0124E82B1C8027FDE2A97468446CCB8CB3D15453E1ABF',
-      'names_manifest_sha256', 'AE2336D03F2BF055241BF81EF06A98937871CC79B9E67CBEF48D613E588A0132',
-      'frozen_counts', jsonb_build_object(
-        'usda_canonical_foods', (select count(*) from public.foods where catalog_scope = 'canonical' and source_provider = 'usda_fdc'),
-        'usda_aliases', (select count(*) from public.food_aliases where source_provider = 'usda_fdc'),
-        'custom_foods', (select count(*) from public.foods where catalog_scope = 'custom'),
-        'food_portions', (select count(*) from public.food_portions),
-        'food_logs', (select count(*) from public.food_logs),
-        'food_log_items', (select count(*) from public.food_log_items)
-      )
-    ),
-    '2026-08-25T00:00:00Z'::timestamptz, '2026-08-25T00:00:00Z'::timestamptz
-  )
-  on conflict (id) do nothing;
+  if not exists (
+    select 1 from public.nutrition_off_catalog_releases r
+    where r.id = '4b487f4f-ac8e-5579-a2a2-d4164c4b368a'::uuid
+  ) then
+    insert into public.nutrition_off_catalog_releases (
+      id, source_provider, source_revision, source_snapshot_at, source_file_sha256,
+      normalized_artifact_sha256, license_code, license_url, attribution_text,
+      netherlands_source_count, eligible_product_count, imported_product_count,
+      mapping_version, predecessor_release_id, status, reviewed_by, reviewed_at,
+      imported_at, provenance, metadata, created_at, updated_at
+    ) values (
+      '4b487f4f-ac8e-5579-a2a2-d4164c4b368a'::uuid, 'open_food_facts', 'e544a38353692b2df59df78f47393990a578eb8e',
+      '2026-08-23T18:34:47Z'::timestamptz, '38D7A48D32F574812490024AA77FB064E84B041CB2687E46DF87AFCE441100C2',
+      '3E826B252B484081CB6D271C73AFFEE70A4B177CAB10E228E46963C5BF63D07D', 'ODbL-1.0', 'https://opendatacommons.org/licenses/odbl/1-0/',
+      'Open Food Facts contributors', 106650, 24458, 0,
+      'phase4_off_nl_v1', null, 'reviewed', 'FitMetZorge owner-reviewed Slice 4F pipeline',
+      '2026-08-25T00:00:00Z'::timestamptz, null,
+      $fmz_json${"dataset":"openfoodfacts/product-database","dataset_file":"food.parquet","filter":"countries_tags contains en:netherlands","immutable_revision":"e544a38353692b2df59df78f47393990a578eb8e","license":"ODbL-1.0","published_at":"2026-08-23T18:34:47Z","source_total_count":4692771}$fmz_json$::jsonb,
+      $fmz_json${"basis_counts":{"per_100_g":20355,"per_100_ml":4103},"dutch_product_name_count":18970,"image_policy":"references_not_imported","normalization_contract":"public.fmz_phase4_normalize_catalog_text(text)","nutrient_ranges":{"carbohydrate_grams_100":{"max":"100.000","min":"0.000","present_count":24458},"energy_kcal_100":{"max":"900.000","min":"0.000","present_count":24458},"fat_grams_100":{"max":"100.000","min":"0.000","present_count":24458},"fiber_grams_100":{"max":"89.000","min":"0.000","present_count":17593},"protein_grams_100":{"max":"99.000","min":"0.000","present_count":24458}},"rejected_after_locked_eligibility":0}$fmz_json$::jsonb || jsonb_build_object(
+        'expected_name_count', 74184,
+        'product_manifest_sha256', 'BFB88DFC6C57E2EC4EDA05E29C5F19515E678B7509C0EC4D62BD9686C57F6A9D',
+        'names_manifest_sha256', '04E56D0D237CABB77DE2A574D8CEC4A440C15D6824645820920CCB4B220FFAC6',
+        'frozen_counts', jsonb_build_object(
+          'usda_canonical_foods', (select count(*) from public.foods where catalog_scope = 'canonical' and source_provider = 'usda_fdc'),
+          'usda_aliases', (select count(*) from public.food_aliases where source_provider = 'usda_fdc'),
+          'custom_foods', (select count(*) from public.foods where catalog_scope = 'custom'),
+          'food_portions', (select count(*) from public.food_portions),
+          'food_logs', (select count(*) from public.food_logs),
+          'food_log_items', (select count(*) from public.food_log_items)
+        )
+      ),
+      '2026-08-25T00:00:00Z'::timestamptz, '2026-08-25T00:00:00Z'::timestamptz
+    );
+  end if;
 
   if not exists (
     select 1 from public.nutrition_off_catalog_releases r
     where r.id = '4b487f4f-ac8e-5579-a2a2-d4164c4b368a'::uuid
       and r.source_revision = 'e544a38353692b2df59df78f47393990a578eb8e'
       and r.source_file_sha256 = '38D7A48D32F574812490024AA77FB064E84B041CB2687E46DF87AFCE441100C2'
-      and r.normalized_artifact_sha256 = 'CE35E7A30245430078D28687A0247B8E88B759149556D80CA88A2A7A42D2EC80'
+      and r.normalized_artifact_sha256 = '3E826B252B484081CB6D271C73AFFEE70A4B177CAB10E228E46963C5BF63D07D'
       and r.netherlands_source_count = 106650
       and r.eligible_product_count = 24458
       and r.mapping_version = 'phase4_off_nl_v1'
       and r.license_code = 'ODbL-1.0'
       and r.metadata ->> 'expected_name_count' = '74184'
-      and r.metadata ->> 'product_manifest_sha256' = 'BA0AD94F3B83F15E48B0124E82B1C8027FDE2A97468446CCB8CB3D15453E1ABF'
-      and r.metadata ->> 'names_manifest_sha256' = 'AE2336D03F2BF055241BF81EF06A98937871CC79B9E67CBEF48D613E588A0132'
+      and r.metadata ->> 'product_manifest_sha256' = 'BFB88DFC6C57E2EC4EDA05E29C5F19515E678B7509C0EC4D62BD9686C57F6A9D'
+      and r.metadata ->> 'names_manifest_sha256' = '04E56D0D237CABB77DE2A574D8CEC4A440C15D6824645820920CCB4B220FFAC6'
   ) then
     raise exception 'OFF release identity drift';
   end if;
@@ -200,16 +214,22 @@ do $fmz_finalize$
 begin
   if (select count(*) from public.nutrition_off_products where release_id = '4b487f4f-ac8e-5579-a2a2-d4164c4b368a'::uuid) <> 24458
      or (select count(*) from public.nutrition_off_product_names n join public.nutrition_off_products p on p.id = n.product_id where p.release_id = '4b487f4f-ac8e-5579-a2a2-d4164c4b368a'::uuid) <> 74184
-     or exists (
-       select 1 from public.nutrition_off_products p
-       left join fmz_off_products_stage s on s.id = p.id
-       where p.release_id = '4b487f4f-ac8e-5579-a2a2-d4164c4b368a'::uuid and s.id is null
+     or (
+       select array_agg(p.id order by p.id)
+       from public.nutrition_off_products p
+       where p.release_id = '4b487f4f-ac8e-5579-a2a2-d4164c4b368a'::uuid
+     ) is distinct from (
+       select array_agg(s.id order by s.id)
+       from fmz_off_products_stage s
      )
-     or exists (
-       select 1 from public.nutrition_off_product_names n
+     or (
+       select array_agg(n.id order by n.id)
+       from public.nutrition_off_product_names n
        join public.nutrition_off_products p on p.id = n.product_id
-       left join fmz_off_names_stage s on s.id = n.id
-       where p.release_id = '4b487f4f-ac8e-5579-a2a2-d4164c4b368a'::uuid and s.id is null
+       where p.release_id = '4b487f4f-ac8e-5579-a2a2-d4164c4b368a'::uuid
+     ) is distinct from (
+       select array_agg(s.id order by s.id)
+       from fmz_off_names_stage s
      ) then
     raise exception 'OFF finalization count or membership drift';
   end if;

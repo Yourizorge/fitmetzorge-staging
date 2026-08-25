@@ -13,6 +13,7 @@
     },
     "dutch_product_name_count": 18970,
     "image_policy": "references_not_imported",
+    "normalization_contract": "public.fmz_phase4_normalize_catalog_text(text)",
     "nutrient_ranges": {
       "carbohydrate_grams_100": {
         "max": "100.000",
@@ -42,10 +43,10 @@
     },
     "rejected_after_locked_eligibility": 0
   },
-  "names_manifest_sha256": "AE2336D03F2BF055241BF81EF06A98937871CC79B9E67CBEF48D613E588A0132",
+  "names_manifest_sha256": "04E56D0D237CABB77DE2A574D8CEC4A440C15D6824645820920CCB4B220FFAC6",
   "netherlands_source_count": 106650,
-  "normalized_artifact_sha256": "CE35E7A30245430078D28687A0247B8E88B759149556D80CA88A2A7A42D2EC80",
-  "product_manifest_sha256": "BA0AD94F3B83F15E48B0124E82B1C8027FDE2A97468446CCB8CB3D15453E1ABF",
+  "normalized_artifact_sha256": "3E826B252B484081CB6D271C73AFFEE70A4B177CAB10E228E46963C5BF63D07D",
+  "product_manifest_sha256": "BFB88DFC6C57E2EC4EDA05E29C5F19515E678B7509C0EC4D62BD9686C57F6A9D",
   "provenance": {
     "dataset": "openfoodfacts/product-database",
     "dataset_file": "food.parquet",

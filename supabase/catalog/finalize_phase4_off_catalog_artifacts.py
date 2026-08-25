@@ -70,6 +70,16 @@ on commit drop;
 
 \\copy fmz_off_names_stage (id,product_id,language_code,name_type,name,normalized_name,is_preferred,source_provider,source_revision,license_code,provenance,quality_status,lifecycle_status,metadata,created_at,updated_at,archived_at) from 'supabase/catalog/20260825_phase4_off_catalog/20260825_phase4_off_product_names.csv' with (format csv, header true, encoding 'UTF8');
 
+create unique index fmz_off_products_stage_id_idx on fmz_off_products_stage (id);
+create unique index fmz_off_products_stage_gtin_idx on fmz_off_products_stage (normalized_gtin14);
+create unique index fmz_off_products_stage_identity_idx on fmz_off_products_stage (provider_identity_name);
+create unique index fmz_off_names_stage_id_idx on fmz_off_names_stage (id);
+create index fmz_off_names_stage_product_idx on fmz_off_names_stage (product_id);
+create index fmz_off_names_stage_identity_idx
+  on fmz_off_names_stage (product_id, language_code, name_type, normalized_name);
+analyze fmz_off_products_stage;
+analyze fmz_off_names_stage;
+
 do $fmz_validate$
 declare
   v_product_count bigint;
@@ -156,36 +166,40 @@ begin
     raise exception 'Unexpected OFF predecessor/current release; new reviewed artifact required';
   end if;
 
-  insert into public.nutrition_off_catalog_releases (
-    id, source_provider, source_revision, source_snapshot_at, source_file_sha256,
-    normalized_artifact_sha256, license_code, license_url, attribution_text,
-    netherlands_source_count, eligible_product_count, imported_product_count,
-    mapping_version, predecessor_release_id, status, reviewed_by, reviewed_at,
-    imported_at, provenance, metadata, created_at, updated_at
-  ) values (
-    {sql_literal(release_id)}::uuid, 'open_food_facts', {sql_literal(release['source_revision'])},
-    {sql_literal(release['source_snapshot_at'])}::timestamptz, {sql_literal(release['source_file_sha256'])},
-    {sql_literal(normalized_sha)}, 'ODbL-1.0', {sql_literal(release['license_url'])},
-    {sql_literal(release['attribution_text'])}, 106650, 24458, 0,
-    {sql_literal(release['mapping_version'])}, null, 'reviewed', {sql_literal(release['reviewed_by'])},
-    {sql_literal(release['reviewed_at'])}::timestamptz, null,
-    $fmz_json${release_provenance}$fmz_json$::jsonb,
-    $fmz_json${release_metadata}$fmz_json$::jsonb || jsonb_build_object(
-      'expected_name_count', {expected_names},
-      'product_manifest_sha256', {sql_literal(product_sha)},
-      'names_manifest_sha256', {sql_literal(names_sha)},
-      'frozen_counts', jsonb_build_object(
-        'usda_canonical_foods', (select count(*) from public.foods where catalog_scope = 'canonical' and source_provider = 'usda_fdc'),
-        'usda_aliases', (select count(*) from public.food_aliases where source_provider = 'usda_fdc'),
-        'custom_foods', (select count(*) from public.foods where catalog_scope = 'custom'),
-        'food_portions', (select count(*) from public.food_portions),
-        'food_logs', (select count(*) from public.food_logs),
-        'food_log_items', (select count(*) from public.food_log_items)
-      )
-    ),
-    {sql_literal(release['reviewed_at'])}::timestamptz, {sql_literal(release['reviewed_at'])}::timestamptz
-  )
-  on conflict (id) do nothing;
+  if not exists (
+    select 1 from public.nutrition_off_catalog_releases r
+    where r.id = {sql_literal(release_id)}::uuid
+  ) then
+    insert into public.nutrition_off_catalog_releases (
+      id, source_provider, source_revision, source_snapshot_at, source_file_sha256,
+      normalized_artifact_sha256, license_code, license_url, attribution_text,
+      netherlands_source_count, eligible_product_count, imported_product_count,
+      mapping_version, predecessor_release_id, status, reviewed_by, reviewed_at,
+      imported_at, provenance, metadata, created_at, updated_at
+    ) values (
+      {sql_literal(release_id)}::uuid, 'open_food_facts', {sql_literal(release['source_revision'])},
+      {sql_literal(release['source_snapshot_at'])}::timestamptz, {sql_literal(release['source_file_sha256'])},
+      {sql_literal(normalized_sha)}, 'ODbL-1.0', {sql_literal(release['license_url'])},
+      {sql_literal(release['attribution_text'])}, 106650, 24458, 0,
+      {sql_literal(release['mapping_version'])}, null, 'reviewed', {sql_literal(release['reviewed_by'])},
+      {sql_literal(release['reviewed_at'])}::timestamptz, null,
+      $fmz_json${release_provenance}$fmz_json$::jsonb,
+      $fmz_json${release_metadata}$fmz_json$::jsonb || jsonb_build_object(
+        'expected_name_count', {expected_names},
+        'product_manifest_sha256', {sql_literal(product_sha)},
+        'names_manifest_sha256', {sql_literal(names_sha)},
+        'frozen_counts', jsonb_build_object(
+          'usda_canonical_foods', (select count(*) from public.foods where catalog_scope = 'canonical' and source_provider = 'usda_fdc'),
+          'usda_aliases', (select count(*) from public.food_aliases where source_provider = 'usda_fdc'),
+          'custom_foods', (select count(*) from public.foods where catalog_scope = 'custom'),
+          'food_portions', (select count(*) from public.food_portions),
+          'food_logs', (select count(*) from public.food_logs),
+          'food_log_items', (select count(*) from public.food_log_items)
+        )
+      ),
+      {sql_literal(release['reviewed_at'])}::timestamptz, {sql_literal(release['reviewed_at'])}::timestamptz
+    );
+  end if;
 
   if not exists (
     select 1 from public.nutrition_off_catalog_releases r
@@ -246,16 +260,22 @@ do $fmz_finalize$
 begin
   if (select count(*) from public.nutrition_off_products where release_id = {sql_literal(release_id)}::uuid) <> 24458
      or (select count(*) from public.nutrition_off_product_names n join public.nutrition_off_products p on p.id = n.product_id where p.release_id = {sql_literal(release_id)}::uuid) <> {expected_names}
-     or exists (
-       select 1 from public.nutrition_off_products p
-       left join fmz_off_products_stage s on s.id = p.id
-       where p.release_id = {sql_literal(release_id)}::uuid and s.id is null
+     or (
+       select array_agg(p.id order by p.id)
+       from public.nutrition_off_products p
+       where p.release_id = {sql_literal(release_id)}::uuid
+     ) is distinct from (
+       select array_agg(s.id order by s.id)
+       from fmz_off_products_stage s
      )
-     or exists (
-       select 1 from public.nutrition_off_product_names n
+     or (
+       select array_agg(n.id order by n.id)
+       from public.nutrition_off_product_names n
        join public.nutrition_off_products p on p.id = n.product_id
-       left join fmz_off_names_stage s on s.id = n.id
-       where p.release_id = {sql_literal(release_id)}::uuid and s.id is null
+       where p.release_id = {sql_literal(release_id)}::uuid
+     ) is distinct from (
+       select array_agg(s.id order by s.id)
+       from fmz_off_names_stage s
      ) then
     raise exception 'OFF finalization count or membership drift';
   end if;
@@ -349,7 +369,7 @@ policy_state as (
 ),
 checks as (
   select * from (values
-    ('release_identity', (select count(*) = 1 and bool_and(source_revision = e.source_revision and source_file_sha256 = e.source_sha and normalized_artifact_sha256 = e.artifact_sha and status = 'imported' and imported_product_count = e.product_count and eligible_product_count = e.product_count and netherlands_source_count = 106650 and license_code = 'ODbL-1.0' and metadata ->> 'product_manifest_sha256' = e.product_sha and metadata ->> 'names_manifest_sha256' = e.names_sha) from release_row r cross join expected e)),
+    ('release_identity', (select count(*) = 1 and bool_and(r.source_revision = e.source_revision and r.source_file_sha256 = e.source_sha and r.normalized_artifact_sha256 = e.artifact_sha and r.status = 'imported' and r.imported_product_count = e.product_count and r.eligible_product_count = e.product_count and r.netherlands_source_count = 106650 and r.license_code = 'ODbL-1.0' and r.metadata ->> 'product_manifest_sha256' = e.product_sha and r.metadata ->> 'names_manifest_sha256' = e.names_sha) from release_row r cross join expected e)),
     ('product_count', (select count(*) = max(e.product_count) from product_rows cross join expected e)),
     ('product_identity', (select count(distinct id) = 24458 and count(distinct normalized_gtin14) = 24458 and count(distinct provider_identity_name) = 24458 and bool_and(provider_identity_name = 'open_food_facts:' || normalized_gtin14 and id = public.fmz_phase4_provider_candidate_uuid_v5(provider_identity_name)) from product_rows)),
     ('product_market_quality', (select bool_and(is_netherlands_associated and countries_tags @> array['en:netherlands']::text[] and quality_status in ('complete','reviewed') and lifecycle_status = 'active' and license_code = 'ODbL-1.0' and source_checksum ~ '^[A-F0-9]{{64}}$') from product_rows)),
@@ -357,7 +377,7 @@ checks as (
     ('product_nutrients', (select bool_and(energy_kcal_100 between 0 and 900 and protein_grams_100 between 0 and 100 and carbohydrate_grams_100 between 0 and 100 and fat_grams_100 between 0 and 100 and (fiber_grams_100 is null or fiber_grams_100 between 0 and 100)) from product_rows)),
     ('product_images_absent', (select bool_and(image_reference_url is null and image_license_code is null and image_attribution is null) from product_rows)),
     ('name_count', (select count(*) = max(e.name_count) from name_rows cross join expected e)),
-    ('name_parent_and_normalization', (select bool_and(normalized_name = public.fmz_phase4_normalize_catalog_text(name) and source_revision = e.source_revision and license_code = 'ODbL-1.0' and quality_status in ('complete','reviewed') and lifecycle_status = 'active') from name_rows cross join expected e)),
+    ('name_parent_and_normalization', (select bool_and(n.normalized_name = public.fmz_phase4_normalize_catalog_text(n.name) and n.source_revision = e.source_revision and n.license_code = 'ODbL-1.0' and n.quality_status in ('complete','reviewed') and n.lifecycle_status = 'active') from name_rows n cross join expected e)),
     ('name_identity_unique', (select count(*) = count(distinct (product_id, language_code, name_type, normalized_name)) from name_rows)),
     ('name_preferred_unique', not exists (select 1 from name_rows where is_preferred group by product_id, language_code having count(*) > 1)),
     ('frozen_usda_foods', (select count(*) = (select (metadata #>> '{{frozen_counts,usda_canonical_foods}}')::bigint from release_row) from public.foods where catalog_scope = 'canonical' and source_provider = 'usda_fdc')),
@@ -388,6 +408,10 @@ select verification_result from result;
 """
     verifier_path.write_text(verifier, encoding="utf-8", newline="\n")
 
+    normalization_verifier_path = root / "supabase" / "verification" / "20260825_phase4_off_normalization_contract_verification.sql"
+    if not normalization_verifier_path.is_file():
+        raise SystemExit("PostgreSQL normalization contract verifier is missing")
+
     manifest["execution_files"] = {
         str(importer_path.relative_to(root)).replace("\\", "/"): {
             "sha256": sha256_file(importer_path),
@@ -400,8 +424,13 @@ select verification_result from result;
             "bytes": verifier_path.stat().st_size,
             "mode": "read_only_select_cte",
         },
+        str(normalization_verifier_path.relative_to(root)).replace("\\", "/"): {
+            "sha256": sha256_file(normalization_verifier_path),
+            "bytes": normalization_verifier_path.stat().st_size,
+            "mode": "read_only_postgresql_contract_select_cte",
+        },
     }
-    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8", newline="\n")
     print(canonical_json(manifest["execution_files"]))
 
 

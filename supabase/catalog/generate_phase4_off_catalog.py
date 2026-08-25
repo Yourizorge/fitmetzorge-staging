@@ -13,7 +13,6 @@ import hashlib
 import json
 import math
 import re
-import unicodedata
 import uuid
 from collections import Counter
 from datetime import datetime, timezone
@@ -38,6 +37,7 @@ EXPECTED_VOLUME_COUNT = 4_103
 EXPECTED_DUTCH_PRODUCT_COUNT = 18_970
 PROVIDER_NAMESPACE = uuid.UUID("23440733-7e58-4c21-ad15-591eae6ab8ac")
 MAPPING_VERSION = "phase4_off_nl_v1"
+NORMALIZATION_CONTRACT = "public.fmz_phase4_normalize_catalog_text(text)"
 GENERATED_AT = "2026-08-25T00:00:00Z"
 LICENSE_CODE = "ODbL-1.0"
 LICENSE_URL = "https://opendatacommons.org/licenses/odbl/1-0/"
@@ -192,8 +192,9 @@ def clean_text(value: Any, max_length: int) -> str | None:
 
 
 def normalize_catalog_text(value: Any) -> str:
-    text = unicodedata.normalize("NFKC", str(value or "")).lower().strip()
-    text = "".join(char if char.isalnum() else " " for char in text)
+    # Mirrors PostgreSQL lower/btrim plus POSIX [[:alnum:]] under UTF-8.
+    text = str(value or "").lower().strip()
+    text = "".join(char if char.isalpha() or char.isdecimal() else " " for char in text)
     return re.sub(r"\s+", " ", text).strip()
 
 
@@ -686,6 +687,7 @@ def main() -> None:
         "mapping_version": MAPPING_VERSION,
         "name_count": len(names),
         "names_sha256": names_sha,
+        "normalization_contract": NORMALIZATION_CONTRACT,
         "products_sha256": product_sha,
         "release_id": str(RELEASE_ID),
         "source_file_sha256": SOURCE_FILE_SHA256,
@@ -793,6 +795,7 @@ def main() -> None:
             "basis_counts": dict(sorted(basis.items())),
             "dutch_product_name_count": dutch_count,
             "image_policy": "references_not_imported",
+            "normalization_contract": NORMALIZATION_CONTRACT,
             "nutrient_ranges": nutrient_ranges,
             "rejected_after_locked_eligibility": 0,
         },
@@ -816,6 +819,12 @@ def main() -> None:
             "local_extract_bytes": args.source.stat().st_size,
         },
         "normalized_artifact_sha256": normalized_sha,
+        "normalization_contract": {
+            "authority": NORMALIZATION_CONTRACT,
+            "compatibility_normalization": "none",
+            "character_class": "PostgreSQL POSIX [[:alnum:]]",
+            "supersedes_normalized_artifact_sha256": "CE35E7A30245430078D28687A0247B8E88B759149556D80CA88A2A7A42D2EC80",
+        },
         "counts": {
             "products": len(products),
             "names": len(names),

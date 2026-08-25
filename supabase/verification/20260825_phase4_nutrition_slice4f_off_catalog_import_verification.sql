@@ -8,9 +8,9 @@ expected as (
     '4b487f4f-ac8e-5579-a2a2-d4164c4b368a'::uuid as release_id,
     'e544a38353692b2df59df78f47393990a578eb8e'::text as source_revision,
     '38D7A48D32F574812490024AA77FB064E84B041CB2687E46DF87AFCE441100C2'::text as source_sha,
-    'CE35E7A30245430078D28687A0247B8E88B759149556D80CA88A2A7A42D2EC80'::text as artifact_sha,
-    'BA0AD94F3B83F15E48B0124E82B1C8027FDE2A97468446CCB8CB3D15453E1ABF'::text as product_sha,
-    'AE2336D03F2BF055241BF81EF06A98937871CC79B9E67CBEF48D613E588A0132'::text as names_sha,
+    '3E826B252B484081CB6D271C73AFFEE70A4B177CAB10E228E46963C5BF63D07D'::text as artifact_sha,
+    'BFB88DFC6C57E2EC4EDA05E29C5F19515E678B7509C0EC4D62BD9686C57F6A9D'::text as product_sha,
+    '04E56D0D237CABB77DE2A574D8CEC4A440C15D6824645820920CCB4B220FFAC6'::text as names_sha,
     24458::bigint as product_count,
     74184::bigint as name_count
 ),
@@ -59,7 +59,7 @@ policy_state as (
 ),
 checks as (
   select * from (values
-    ('release_identity', (select count(*) = 1 and bool_and(source_revision = e.source_revision and source_file_sha256 = e.source_sha and normalized_artifact_sha256 = e.artifact_sha and status = 'imported' and imported_product_count = e.product_count and eligible_product_count = e.product_count and netherlands_source_count = 106650 and license_code = 'ODbL-1.0' and metadata ->> 'product_manifest_sha256' = e.product_sha and metadata ->> 'names_manifest_sha256' = e.names_sha) from release_row r cross join expected e)),
+    ('release_identity', (select count(*) = 1 and bool_and(r.source_revision = e.source_revision and r.source_file_sha256 = e.source_sha and r.normalized_artifact_sha256 = e.artifact_sha and r.status = 'imported' and r.imported_product_count = e.product_count and r.eligible_product_count = e.product_count and r.netherlands_source_count = 106650 and r.license_code = 'ODbL-1.0' and r.metadata ->> 'product_manifest_sha256' = e.product_sha and r.metadata ->> 'names_manifest_sha256' = e.names_sha) from release_row r cross join expected e)),
     ('product_count', (select count(*) = max(e.product_count) from product_rows cross join expected e)),
     ('product_identity', (select count(distinct id) = 24458 and count(distinct normalized_gtin14) = 24458 and count(distinct provider_identity_name) = 24458 and bool_and(provider_identity_name = 'open_food_facts:' || normalized_gtin14 and id = public.fmz_phase4_provider_candidate_uuid_v5(provider_identity_name)) from product_rows)),
     ('product_market_quality', (select bool_and(is_netherlands_associated and countries_tags @> array['en:netherlands']::text[] and quality_status in ('complete','reviewed') and lifecycle_status = 'active' and license_code = 'ODbL-1.0' and source_checksum ~ '^[A-F0-9]{64}$') from product_rows)),
@@ -67,7 +67,7 @@ checks as (
     ('product_nutrients', (select bool_and(energy_kcal_100 between 0 and 900 and protein_grams_100 between 0 and 100 and carbohydrate_grams_100 between 0 and 100 and fat_grams_100 between 0 and 100 and (fiber_grams_100 is null or fiber_grams_100 between 0 and 100)) from product_rows)),
     ('product_images_absent', (select bool_and(image_reference_url is null and image_license_code is null and image_attribution is null) from product_rows)),
     ('name_count', (select count(*) = max(e.name_count) from name_rows cross join expected e)),
-    ('name_parent_and_normalization', (select bool_and(normalized_name = public.fmz_phase4_normalize_catalog_text(name) and source_revision = e.source_revision and license_code = 'ODbL-1.0' and quality_status in ('complete','reviewed') and lifecycle_status = 'active') from name_rows cross join expected e)),
+    ('name_parent_and_normalization', (select bool_and(n.normalized_name = public.fmz_phase4_normalize_catalog_text(n.name) and n.source_revision = e.source_revision and n.license_code = 'ODbL-1.0' and n.quality_status in ('complete','reviewed') and n.lifecycle_status = 'active') from name_rows n cross join expected e)),
     ('name_identity_unique', (select count(*) = count(distinct (product_id, language_code, name_type, normalized_name)) from name_rows)),
     ('name_preferred_unique', not exists (select 1 from name_rows where is_preferred group by product_id, language_code having count(*) > 1)),
     ('frozen_usda_foods', (select count(*) = (select (metadata #>> '{frozen_counts,usda_canonical_foods}')::bigint from release_row) from public.foods where catalog_scope = 'canonical' and source_provider = 'usda_fdc')),

@@ -24,12 +24,15 @@ const namesPath = path.join(catalog, "20260825_phase4_off_product_names.csv");
 const fixturesPath = path.join(catalog, "20260825_phase4_off_search_fixtures.json");
 const importerPath = path.join(root, "supabase", "imports", "20260825_phase4_off_catalog_import.psql");
 const verifierPath = path.join(root, "supabase", "verification", "20260825_phase4_nutrition_slice4f_off_catalog_import_verification.sql");
+const normalizationVerifierPath = path.join(root, "supabase", "verification", "20260825_phase4_off_normalization_contract_verification.sql");
 const generatorPath = path.join(root, "supabase", "catalog", "generate_phase4_off_catalog.py");
 const extractorPath = path.join(root, "supabase", "catalog", "extract_phase4_off_netherlands.py");
 const finalizerPath = path.join(root, "supabase", "catalog", "finalize_phase4_off_catalog_artifacts.py");
 const artifactVerifierPath = path.join(root, "supabase", "catalog", "verify_phase4_off_catalog_artifacts.py");
+const correctionAuditorPath = path.join(root, "supabase", "catalog", "audit_phase4_off_normalization_correction.py");
+const postgresDryRunPath = path.join(root, "supabase", "catalog", "run_phase4_off_postgres_dry_run.py");
 
-for (const file of [manifestPath, releasePath, sourceLockPath, productsPath, namesPath, fixturesPath, importerPath, verifierPath, extractorPath, generatorPath, finalizerPath, artifactVerifierPath]) {
+for (const file of [manifestPath, releasePath, sourceLockPath, productsPath, namesPath, fixturesPath, importerPath, verifierPath, normalizationVerifierPath, extractorPath, generatorPath, finalizerPath, artifactVerifierPath, correctionAuditorPath, postgresDryRunPath]) {
   check(`artifact exists: ${path.basename(file)}`, fs.existsSync(file));
 }
 
@@ -39,10 +42,13 @@ if (checks.every((item) => item.condition)) {
   const sourceLock = JSON.parse(read(sourceLockPath));
   const importer = read(importerPath);
   const verifier = read(verifierPath);
+  const normalizationVerifier = read(normalizationVerifierPath);
   const extractor = read(extractorPath);
   const generator = read(generatorPath);
   const finalizer = read(finalizerPath);
   const artifactVerifier = read(artifactVerifierPath);
+  const correctionAuditor = read(correctionAuditorPath);
+  const postgresDryRun = read(postgresDryRunPath);
   const expectedSourceHash = "38D7A48D32F574812490024AA77FB064E84B041CB2687E46DF87AFCE441100C2";
   const expectedRevision = "e544a38353692b2df59df78f47393990a578eb8e";
 
@@ -74,6 +80,9 @@ if (checks.every((item) => item.condition)) {
 
   check("generator locks 24,458 products", generator.includes("ELIGIBLE_PRODUCT_COUNT = 24_458"));
   check("generator locks exact basis split", generator.includes("EXPECTED_MASS_COUNT = 20_355") && generator.includes("EXPECTED_VOLUME_COUNT = 4_103"));
+  check("PostgreSQL normalizer is authoritative", manifest.normalization_contract?.authority === "public.fmz_phase4_normalize_catalog_text(text)");
+  check("generator performs no Unicode normalization", !generator.includes("unicodedata.normalize") && !/NFK[CD]|NFC|NFD/u.test(generator));
+  check("generator mirrors POSIX alnum without compatibility folding", generator.includes("char.isalpha() or char.isdecimal()"));
   check("generator locks accepted source audit counts", generator.includes("NETHERLANDS_VALID_BARCODE_COUNT = 85_192") && generator.includes("NETHERLANDS_REQUIRED_MACROS_PRESENT_COUNT = 56_512") && generator.includes("NETHERLANDS_VALID_REQUIRED_MACROS_COUNT = 56_440"));
   check("generator verifies exact source extract", generator.includes("sha256_file(args.source) != SOURCE_EXTRACT_SHA256"));
   check("generator derives kcal from explicit kJ", generator.includes('"energy_kj_100g_div_4_184"') && generator.includes('/ Decimal("4.184")'));
@@ -92,6 +101,9 @@ if (checks.every((item) => item.condition)) {
   check("name CSV header matches copy contract", JSON.stringify(copyColumns.find(([type]) => type === "names")?.[1]) === JSON.stringify(nameHeader));
   check("import is one transaction", /^begin;$/imu.test(importer) && /commit;\s*$/iu.test(importer));
   check("import uses an advisory transaction lock", importer.includes("pg_advisory_xact_lock"));
+  check("import indexes and analyzes temporary staging rows", importer.includes("fmz_off_products_stage_id_idx") && importer.includes("fmz_off_names_stage_identity_idx") && importer.includes("analyze fmz_off_names_stage"));
+  check("import finalizes by exact sorted UUID membership", importer.includes("array_agg(p.id order by p.id)") && importer.includes("array_agg(n.id order by n.id)") && importer.includes("is distinct from"));
+  check("release replay bypasses the before-insert trigger safely", importer.includes(") then\n    insert into public.nutrition_off_catalog_releases") && !/insert into public\.nutrition_off_catalog_releases[\s\S]*?on conflict \(id\) do nothing;/iu.test(importer.slice(importer.indexOf("do $fmz_release$"), importer.indexOf("do $fmz_drift$"))));
   check("import is fail-on-drift", importer.includes("product drift") && importer.includes("name drift"));
   check("release finalizes after products and names", importer.indexOf("insert into public.nutrition_off_product_names") < importer.indexOf("set status = 'imported'"));
   check("import has no destructive removal", !/\b(delete|truncate)\b/iu.test(importer));
@@ -103,10 +115,17 @@ if (checks.every((item) => item.condition)) {
   check("verifier checks products and names", verifier.includes("'product_count'") && verifier.includes("'name_count'"));
   check("verifier checks frozen domains", verifier.includes("'frozen_usda_foods'") && verifier.includes("'frozen_member_items'"));
   check("artifact verifier recalculates UUIDs", artifactVerifier.includes("uuid.uuid5(PROVIDER_NAMESPACE, identity)"));
+  check("artifact verifier has independent normalizer oracle", artifactVerifier.includes("def postgres_catalog_text_oracle") && !artifactVerifier.includes("normalize_catalog_text,"));
+  check("correction auditor locks exact affected rows", correctionAuditor.includes("len(changed_products) != 1") && correctionAuditor.includes("len(changed_names) != 23") && correctionAuditor.includes("len(changed_name_uuids) != 23"));
+  check("correction auditor invalidates old hashes", correctionAuditor.includes("OLD_HASHES") && correctionAuditor.includes("An invalidated artifact hash was retained"));
+  check("PostgreSQL dry run refuses remote hosts", postgresDryRun.includes("Dry run refuses every non-local PostgreSQL host"));
+  check("PostgreSQL dry run covers rollback and replay", postgresDryRun.includes("Rollback dry run changed local persistent state") && postgresDryRun.includes("Idempotent replay changed local catalog state"));
+  check("normalization verifier is read-only CTE", normalizationVerifier.replace(/^\s*--.*$/gmu, "").trimStart().toLowerCase().startsWith("with"));
+  check("normalization verifier covers Unicode drift classes", ["trademark", "ordinal", "subscript", "decomposed_accent", "precomposed_accent", "thai", "korean", "brand", "product_name"].every((item) => normalizationVerifier.includes(`'${item}'`)));
   check("artifact verifier validates macros", artifactVerifier.includes("macro_bounds"));
   check("artifact verifier checks replay and drift", artifactVerifier.includes("importer_replay_path") && artifactVerifier.includes("importer_fail_on_drift"));
 
-  const combined = `${generator}\n${finalizer}\n${artifactVerifier}\n${importer}\n${verifier}`;
+  const combined = `${generator}\n${finalizer}\n${artifactVerifier}\n${correctionAuditor}\n${postgresDryRun}\n${importer}\n${verifier}\n${normalizationVerifier}`;
   check("no production project ref", !combined.includes("hgoygcviutmynaihcvpd"));
   check("no service-role secret", !/(service[_-]?role[_-]?key\s*[:=]|eyJ[a-zA-Z0-9_-]{40,})/u.test(combined));
   check("no provider network call during import", !/(world\.openfoodfacts\.org|fetch\(|http_request)/iu.test(importer));

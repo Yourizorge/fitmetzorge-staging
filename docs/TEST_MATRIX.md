@@ -571,8 +571,12 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | GS1 GTIN-14 and UUIDv5 identities | PASS - 24,458 unique of each |
 | Source-derived localized/search names | PASS - 74,184 rows; 18,970 Dutch product names; no fabricated translations |
 | Product/name/release/import/verifier hashes | PASS - byte-locked in artifact manifest |
-| Row-level artifact verifier | PASS - 755,433 checks |
-| Bulk artifact static/security suite | PASS - 75 checks |
+| PostgreSQL normalization authority | PASS - existing `fmz_phase4_normalize_catalog_text` mirrored without Unicode compatibility normalization or transliteration |
+| Independent normalization fixtures | PASS - 13 PostgreSQL cases covering symbols, accents, Thai, Korean, punctuation, whitespace, brands and names |
+| Normalization correction scope | PASS - 1 product / 1 brand / 23 names and name UUIDs; 24,458 product UUIDs unchanged |
+| Row-level artifact verifier | PASS - 779,905 checks |
+| Bulk artifact static/security suite | PASS - 93 checks |
+| Schema-equivalent PostgreSQL dry run | PASS - rollback, import, post-verifier and idempotent replay |
 | One-transaction file importer | PASS - two `\copy` loads, advisory lock, fail-on-drift, replay-safe, finalization last |
 | 24,458-product import | READY FOR OWNER ARTIFACT REVIEW / NOT EXECUTED |
 | Migration execution | PASS - LIVE ON STAGING `mokxyyullfhkfalopbzd` |

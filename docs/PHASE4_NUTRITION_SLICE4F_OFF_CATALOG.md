@@ -1,6 +1,6 @@
 # Phase 4 Nutrition Slice 4F - Open Food Facts Catalog Foundation
 
-Status: FOUNDATION LIVE AND VERIFIED ON STAGING; 24,458-PRODUCT IMPORT ARTIFACT BUILT AND LOCALLY VERIFIED / NOT EXECUTED. The migration and corrected read-only verifier passed on `mokxyyullfhkfalopbzd` with `overall_pass = true`, 26 PASS and 0 FAIL. The deterministic file-based catalog bundle passes 755,433 independent row/data checks and 75 static/security checks. No OFF import, frontend deployment, Edge change, scanner runtime, or production change has occurred.
+Status: FOUNDATION LIVE AND VERIFIED ON STAGING; NORMALIZATION-CORRECTED 24,458-PRODUCT IMPORT ARTIFACT BUILT AND LOCALLY VERIFIED / NOT EXECUTED. The migration and corrected read-only verifier passed on `mokxyyullfhkfalopbzd` with `overall_pass = true`, 26 PASS and 0 FAIL. The corrected deterministic bundle passes 779,905 independent artifact checks, 93 static/security checks, 13 PostgreSQL normalization-contract checks, and a schema-equivalent PostgreSQL rollback/import/verifier/replay dry run. No OFF import, frontend deployment, Edge change, scanner runtime, or production change has occurred.
 
 ## Frozen Baseline
 
@@ -52,6 +52,8 @@ The future deterministic flow is pinned OFF snapshot -> Netherlands filter -> fo
 
 The accepted source audit found 106,650 Netherlands-associated rows and exactly 24,458 eligible branded products. The reviewed local artifact contains 24,458 unique GS1-valid GTIN-14 identities, 24,458 deterministic UUIDv5 product identities, 20,355 `per_100_g` products, 4,103 `per_100_ml` products, 18,970 Dutch product names, and 74,184 truthful source-derived name/search rows. No synthetic padding, fabricated translation, image download, duplicate identity, or post-filter macro rejection is present. A count change requires a documented source or transformation change and a new review.
 
+Catalog text normalization is owned by the already-live PostgreSQL function `public.fmz_phase4_normalize_catalog_text(text)`: lowercase, boundary trim, replacement of non-POSIX-alphanumeric runs by a space, whitespace collapse, and final trim. Generation performs no NFC/NFD/NFKC/NFKD normalization and no transliteration. Independent fixtures cover trademark and ordinal symbols, subscripts, composed/decomposed accents, Thai, Korean, punctuation, whitespace, mixed strings, brands, and names. Correcting the former Python compatibility-normalization mismatch changed one product row, one normalized brand and 23 name rows/name UUIDs. All 24,458 product UUIDs and GTIN identities remain byte-for-byte stable; total name count remains 74,184.
+
 The approved bulk-import transport is file-based and hash-gated. It uses one deterministic product CSV, one deterministic source-derived names CSV, and one reviewed `psql` importer. `psql` loads both files into temporary staging tables inside one transaction, validates the exact source/release/count/GTIN/UUID/macro/name contracts, blocks identity drift, inserts only exact missing identities, and changes the release from `reviewed` to `imported` only after the complete product and name sets validate. A failure rolls back the release, products, and names together. An exact replay is safe; an unequal replay fails. No manual SQL chunks, remote calls, removal statements, custom-food writes, USDA writes, member-log writes, image downloads, or production references are permitted.
 
 The pinned input is `food.parquet` at immutable revision `e544a38353692b2df59df78f47393990a578eb8e`, published `2026-08-23T18:34:47Z`, byte size `7,797,955,269`, and SHA-256 `38D7A48D32F574812490024AA77FB064E84B041CB2687E46DF87AFCE441100C2`. The immutable Hugging Face commit-tree LFS object metadata is the source identity gate. The reproducible local extractor additionally requires the complete local source file to match the exact byte size and SHA-256 before transformation, pins DuckDB 1.4.1, and produces the locked 106,650-row Netherlands extract. Transformation uses only `countries_tags` association and the accepted Slice 4F eligibility contract; barcode prefix 87 is never inclusion authority.
@@ -83,14 +85,16 @@ The local presentation-only fix uses `foods.metadata.dutch_display_label` in the
 
 - Source extractor: `supabase/catalog/extract_phase4_off_netherlands.py`
 - Deterministic generator: `supabase/catalog/generate_phase4_off_catalog.py`
-- Product CSV: `supabase/catalog/20260825_phase4_off_catalog/20260825_phase4_off_products.csv`; SHA-256 `BA0AD94F3B83F15E48B0124E82B1C8027FDE2A97468446CCB8CB3D15453E1ABF`
-- Name CSV: `supabase/catalog/20260825_phase4_off_catalog/20260825_phase4_off_product_names.csv`; SHA-256 `AE2336D03F2BF055241BF81EF06A98937871CC79B9E67CBEF48D613E588A0132`
-- Release artifact: `supabase/catalog/20260825_phase4_off_catalog/20260825_phase4_off_release.json`; release UUID `4b487f4f-ac8e-5579-a2a2-d4164c4b368a`; SHA-256 `281436E9EC5EDC31EC42814DA7237C85BFB41003865BF94CE0AABAB6740C8CEC`
-- Normalized artifact SHA-256: `CE35E7A30245430078D28687A0247B8E88B759149556D80CA88A2A7A42D2EC80`
-- File importer: `supabase/imports/20260825_phase4_off_catalog_import.psql`; SHA-256 `3927F0F007ED4CFA1D89A01D2AEBE68F7541E4C03951CA71AC4DF2C4FA5801CC`
-- Post-import verifier: `supabase/verification/20260825_phase4_nutrition_slice4f_off_catalog_import_verification.sql`; SHA-256 `A502967BD9B11C2830A9E311173CBC57B1B6FFB95EBF536340E29F4119FC1B12`
+- Product CSV: `supabase/catalog/20260825_phase4_off_catalog/20260825_phase4_off_products.csv`; SHA-256 `BFB88DFC6C57E2EC4EDA05E29C5F19515E678B7509C0EC4D62BD9686C57F6A9D`
+- Name CSV: `supabase/catalog/20260825_phase4_off_catalog/20260825_phase4_off_product_names.csv`; SHA-256 `04E56D0D237CABB77DE2A574D8CEC4A440C15D6824645820920CCB4B220FFAC6`
+- Release artifact: `supabase/catalog/20260825_phase4_off_catalog/20260825_phase4_off_release.json`; release UUID `4b487f4f-ac8e-5579-a2a2-d4164c4b368a`; SHA-256 `06A53E9266160767828E1576F982C07CA90D8E74DEA3B20A9096B56507F21F88`
+- Artifact manifest: `supabase/catalog/20260825_phase4_off_catalog/20260825_phase4_off_artifact_manifest.json`; SHA-256 `473BDAA8E8611F39C3D20E366FEEF6FD5B165456F50DCFFBEDBFA5EA7B272BAC`
+- Normalized artifact SHA-256: `3E826B252B484081CB6D271C73AFFEE70A4B177CAB10E228E46963C5BF63D07D`
+- File importer: `supabase/imports/20260825_phase4_off_catalog_import.psql`; SHA-256 `9EEDC73E03FEDCA5ACF8FDFF2A3F77459C1589C710B903C12DFFB7E33EBAE506`
+- Post-import verifier: `supabase/verification/20260825_phase4_nutrition_slice4f_off_catalog_import_verification.sql`; SHA-256 `AC0BB83EB1140DCA69468C65832F57C694A833AA3A8E82536A6F4419FC2F902D`
+- PostgreSQL normalization verifier: `supabase/verification/20260825_phase4_off_normalization_contract_verification.sql`; SHA-256 `44F18C290E1C5E76DF270F500B814E0A55CE218860F784337256791780F4F0AF`
 - Import model: one `psql` transaction, two `\copy` operations into temporary tables, exact-count and identity validation, advisory transaction lock, fail-on-drift, exact replay, and release finalization last. There are no manual chunks.
-- Local verification: PASS, 755,433 row/data-quality checks and 75 artifact static/security checks. Import execution and live performance measurement remain separate owner gates.
+- Local verification: PASS, 779,905 artifact checks, 93 artifact static/security checks, 13 PostgreSQL normalization checks, and an isolated PostgreSQL 17 rollback/import/post-verifier/idempotent-replay run. The former release replay trigger failure was corrected by skipping the insert path only after exact existing-release validation. All old bulk artifact hashes are invalidated. Staging import execution and live performance measurement remain separate owner gates.
 
 Migration executed on STAGING: YES
 
