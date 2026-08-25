@@ -1,0 +1,65 @@
+{
+  "attribution_text": "Open Food Facts contributors",
+  "eligible_product_count": 24458,
+  "expected_name_count": 74184,
+  "id": "4b487f4f-ac8e-5579-a2a2-d4164c4b368a",
+  "license_code": "ODbL-1.0",
+  "license_url": "https://opendatacommons.org/licenses/odbl/1-0/",
+  "mapping_version": "phase4_off_nl_v1",
+  "metadata": {
+    "basis_counts": {
+      "per_100_g": 20355,
+      "per_100_ml": 4103
+    },
+    "dutch_product_name_count": 18970,
+    "image_policy": "references_not_imported",
+    "nutrient_ranges": {
+      "carbohydrate_grams_100": {
+        "max": "100.000",
+        "min": "0.000",
+        "present_count": 24458
+      },
+      "energy_kcal_100": {
+        "max": "900.000",
+        "min": "0.000",
+        "present_count": 24458
+      },
+      "fat_grams_100": {
+        "max": "100.000",
+        "min": "0.000",
+        "present_count": 24458
+      },
+      "fiber_grams_100": {
+        "max": "89.000",
+        "min": "0.000",
+        "present_count": 17593
+      },
+      "protein_grams_100": {
+        "max": "99.000",
+        "min": "0.000",
+        "present_count": 24458
+      }
+    },
+    "rejected_after_locked_eligibility": 0
+  },
+  "names_manifest_sha256": "AE2336D03F2BF055241BF81EF06A98937871CC79B9E67CBEF48D613E588A0132",
+  "netherlands_source_count": 106650,
+  "normalized_artifact_sha256": "CE35E7A30245430078D28687A0247B8E88B759149556D80CA88A2A7A42D2EC80",
+  "product_manifest_sha256": "BA0AD94F3B83F15E48B0124E82B1C8027FDE2A97468446CCB8CB3D15453E1ABF",
+  "provenance": {
+    "dataset": "openfoodfacts/product-database",
+    "dataset_file": "food.parquet",
+    "filter": "countries_tags contains en:netherlands",
+    "immutable_revision": "e544a38353692b2df59df78f47393990a578eb8e",
+    "license": "ODbL-1.0",
+    "published_at": "2026-08-23T18:34:47Z",
+    "source_total_count": 4692771
+  },
+  "reviewed_at": "2026-08-25T00:00:00Z",
+  "reviewed_by": "FitMetZorge owner-reviewed Slice 4F pipeline",
+  "source_file_sha256": "38D7A48D32F574812490024AA77FB064E84B041CB2687E46DF87AFCE441100C2",
+  "source_file_size": 7797955269,
+  "source_provider": "open_food_facts",
+  "source_revision": "e544a38353692b2df59df78f47393990a578eb8e",
+  "source_snapshot_at": "2026-08-23T18:34:47Z"
+}

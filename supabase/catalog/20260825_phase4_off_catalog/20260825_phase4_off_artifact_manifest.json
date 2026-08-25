@@ -1,0 +1,113 @@
+{
+  "brand_coverage": {
+    "ah": 527,
+    "albert heijn": 3646,
+    "albert heijn / ah": 4138,
+    "alpro": 69,
+    "arla": 38,
+    "campina": 103,
+    "coca cola": 49,
+    "danone": 61,
+    "jumbo": 3829,
+    "lidl": 496,
+    "melkunie": 81,
+    "optimel": 40,
+    "plus": 480,
+    "red bull": 15
+  },
+  "concept_coverage": {
+    "bread": 1001,
+    "cereals": 2265,
+    "kwark": 153,
+    "protein bar": 135,
+    "protein pudding": 12,
+    "sauces": 1262,
+    "skyr": 110,
+    "snacks": 3594,
+    "soft drinks": 371
+  },
+  "counts": {
+    "dutch_product_names": 18970,
+    "names": 74184,
+    "per_100_g": 20355,
+    "per_100_ml": 4103,
+    "products": 24458
+  },
+  "execution_files": {
+    "supabase/imports/20260825_phase4_off_catalog_import.psql": {
+      "bytes": 12334,
+      "sha256": "3927F0F007ED4CFA1D89A01D2AEBE68F7541E4C03951CA71AC4DF2C4FA5801CC",
+      "transaction_model": "single_transaction",
+      "transport": "psql_file_copy"
+    },
+    "supabase/verification/20260825_phase4_nutrition_slice4f_off_catalog_import_verification.sql": {
+      "bytes": 8132,
+      "mode": "read_only_select_cte",
+      "sha256": "A502967BD9B11C2830A9E311173CBC57B1B6FFB95EBF536340E29F4119FC1B12"
+    }
+  },
+  "files": {
+    "20260825_phase4_off_product_names.csv": {
+      "bytes": 29700205,
+      "sha256": "AE2336D03F2BF055241BF81EF06A98937871CC79B9E67CBEF48D613E588A0132"
+    },
+    "20260825_phase4_off_products.csv": {
+      "bytes": 32207889,
+      "sha256": "BA0AD94F3B83F15E48B0124E82B1C8027FDE2A97468446CCB8CB3D15453E1ABF"
+    },
+    "20260825_phase4_off_release.json": {
+      "bytes": 2215,
+      "sha256": "281436E9EC5EDC31EC42814DA7237C85BFB41003865BF94CE0AABAB6740C8CEC"
+    },
+    "20260825_phase4_off_search_fixtures.json": {
+      "bytes": 1748,
+      "sha256": "ADFB8A79C4E1D22213E51223F18244CC87F08C62A7E285712216E4E9AD56EE42"
+    },
+    "20260825_phase4_off_source_lock.json": {
+      "bytes": 1230,
+      "sha256": "D4BDEF169BD77527B7682F121487DBF818883697FAA5532BEAB0BED7A0149EB4"
+    }
+  },
+  "generated_at": "2026-08-25T00:00:00Z",
+  "normalized_artifact_sha256": "CE35E7A30245430078D28687A0247B8E88B759149556D80CA88A2A7A42D2EC80",
+  "nutrient_ranges": {
+    "carbohydrate_grams_100": {
+      "max": "100.000",
+      "min": "0.000",
+      "present_count": 24458
+    },
+    "energy_kcal_100": {
+      "max": "900.000",
+      "min": "0.000",
+      "present_count": 24458
+    },
+    "fat_grams_100": {
+      "max": "100.000",
+      "min": "0.000",
+      "present_count": 24458
+    },
+    "fiber_grams_100": {
+      "max": "89.000",
+      "min": "0.000",
+      "present_count": 17593
+    },
+    "protein_grams_100": {
+      "max": "99.000",
+      "min": "0.000",
+      "present_count": 24458
+    }
+  },
+  "release_id": "4b487f4f-ac8e-5579-a2a2-d4164c4b368a",
+  "schema_version": 1,
+  "source": {
+    "file_sha256": "38D7A48D32F574812490024AA77FB064E84B041CB2687E46DF87AFCE441100C2",
+    "file_size": 7797955269,
+    "local_extract_bytes": 6709044,
+    "local_extract_filename": "off-nl-normalization-source.parquet",
+    "local_extract_sha256": "FF6ED35C50B134E6EAEF0A23E62EC2DC6CBF981DB55D0F33E0BBF125BABEF27C",
+    "netherlands_count": 106650,
+    "revision": "e544a38353692b2df59df78f47393990a578eb8e",
+    "snapshot_at": "2026-08-23T18:34:47Z",
+    "total_count": 4692771
+  }
+}

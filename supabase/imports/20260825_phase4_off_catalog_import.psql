@@ -1,0 +1,240 @@
+-- FitMetZorge Phase 4 Slice 4F - 24,458 Dutch OFF products
+-- STAGING ONLY: mokxyyullfhkfalopbzd
+-- Execute from the repository root with psql after byte-exact hash review.
+-- One transaction, fail-on-drift, replay-safe. No remote calls or frozen-domain writes.
+
+\set ON_ERROR_STOP on
+\echo 'FitMetZorge Slice 4F OFF catalog import: hash-gated files must already be verified.'
+
+begin;
+
+select pg_catalog.pg_advisory_xact_lock(
+  pg_catalog.hashtextextended('fmz_phase4_off_catalog_import:4b487f4f-ac8e-5579-a2a2-d4164c4b368a', 0)
+);
+
+create temporary table fmz_off_products_stage
+(like public.nutrition_off_products including defaults)
+on commit drop;
+
+create temporary table fmz_off_names_stage
+(like public.nutrition_off_product_names including defaults)
+on commit drop;
+
+\copy fmz_off_products_stage (id,release_id,source_provider,off_code,barcode_original,normalized_gtin14,provider_identity_name,product_name,product_name_nl,generic_name,brand,normalized_brand,quantity_text,serving_size_text,nutrition_basis,energy_kcal_100,protein_grams_100,carbohydrate_grams_100,fat_grams_100,fiber_grams_100,countries_tags,is_netherlands_associated,off_revision,source_updated_at,source_checksum,provenance,license_code,license_url,attribution_text,image_reference_url,image_license_code,image_attribution,completeness,quality_status,lifecycle_status,imported_at,refreshed_at,metadata,created_at,updated_at,archived_at) from 'supabase/catalog/20260825_phase4_off_catalog/20260825_phase4_off_products.csv' with (format csv, header true, encoding 'UTF8');
+
+\copy fmz_off_names_stage (id,product_id,language_code,name_type,name,normalized_name,is_preferred,source_provider,source_revision,license_code,provenance,quality_status,lifecycle_status,metadata,created_at,updated_at,archived_at) from 'supabase/catalog/20260825_phase4_off_catalog/20260825_phase4_off_product_names.csv' with (format csv, header true, encoding 'UTF8');
+
+do $fmz_validate$
+declare
+  v_product_count bigint;
+  v_name_count bigint;
+begin
+  select count(*) into v_product_count from fmz_off_products_stage;
+  select count(*) into v_name_count from fmz_off_names_stage;
+  if v_product_count <> 24458 then
+    raise exception 'OFF product artifact count drift: %', v_product_count;
+  end if;
+  if v_name_count <> 74184 then
+    raise exception 'OFF name artifact count drift: %', v_name_count;
+  end if;
+  if (select count(distinct id) from fmz_off_products_stage) <> 24458
+     or (select count(distinct normalized_gtin14) from fmz_off_products_stage) <> 24458
+     or (select count(distinct provider_identity_name) from fmz_off_products_stage) <> 24458 then
+    raise exception 'OFF product identity drift';
+  end if;
+  if exists (
+    select 1 from fmz_off_products_stage p
+    where p.release_id <> '4b487f4f-ac8e-5579-a2a2-d4164c4b368a'::uuid
+       or p.source_provider <> 'open_food_facts'
+       or p.off_revision <> 'e544a38353692b2df59df78f47393990a578eb8e'
+       or p.normalized_gtin14 <> public.fmz_phase4_normalize_gtin14(p.barcode_original)
+       or p.provider_identity_name <> 'open_food_facts:' || p.normalized_gtin14
+       or p.id <> public.fmz_phase4_provider_candidate_uuid_v5(p.provider_identity_name)
+       or p.quality_status <> 'complete'
+       or p.lifecycle_status <> 'active'
+       or p.nutrition_basis not in ('per_100_g', 'per_100_ml')
+       or p.energy_kcal_100 is null or p.energy_kcal_100 not between 0 and 900
+       or p.protein_grams_100 is null or p.protein_grams_100 not between 0 and 100
+       or p.carbohydrate_grams_100 is null or p.carbohydrate_grams_100 not between 0 and 100
+       or p.fat_grams_100 is null or p.fat_grams_100 not between 0 and 100
+       or (p.fiber_grams_100 is not null and p.fiber_grams_100 not between 0 and 100)
+       or not p.is_netherlands_associated
+       or not (p.countries_tags @> array['en:netherlands']::text[])
+       or p.license_code <> 'ODbL-1.0'
+       or p.image_reference_url is not null
+       or p.image_license_code is not null
+       or p.image_attribution is not null
+  ) then
+    raise exception 'OFF product validation drift';
+  end if;
+  if (select count(*) from fmz_off_products_stage where nutrition_basis = 'per_100_g') <> 20355
+     or (select count(*) from fmz_off_products_stage where nutrition_basis = 'per_100_ml') <> 4103 then
+    raise exception 'OFF basis split drift';
+  end if;
+  if (select count(distinct id) from fmz_off_names_stage) <> 74184
+     or exists (
+       select 1 from fmz_off_names_stage n
+       left join fmz_off_products_stage p on p.id = n.product_id
+       where p.id is null
+          or n.source_provider <> 'open_food_facts'
+          or n.source_revision <> 'e544a38353692b2df59df78f47393990a578eb8e'
+          or n.license_code <> 'ODbL-1.0'
+          or n.normalized_name <> public.fmz_phase4_normalize_catalog_text(n.name)
+          or n.quality_status <> 'complete'
+          or n.lifecycle_status <> 'active'
+     ) then
+    raise exception 'OFF name validation drift';
+  end if;
+  if exists (
+    select 1 from fmz_off_names_stage
+    where lifecycle_status = 'active'
+    group by product_id, language_code, name_type, normalized_name
+    having count(*) > 1
+  ) or exists (
+    select 1 from fmz_off_names_stage
+    where lifecycle_status = 'active' and quality_status in ('complete', 'reviewed') and is_preferred
+    group by product_id, language_code
+    having count(*) > 1
+  ) then
+    raise exception 'OFF name uniqueness drift';
+  end if;
+end
+$fmz_validate$;
+
+do $fmz_release$
+begin
+  if exists (
+    select 1 from public.nutrition_off_catalog_releases r
+    where r.source_provider = 'open_food_facts' and r.id <> '4b487f4f-ac8e-5579-a2a2-d4164c4b368a'::uuid
+  ) then
+    raise exception 'Unexpected OFF predecessor/current release; new reviewed artifact required';
+  end if;
+
+  insert into public.nutrition_off_catalog_releases (
+    id, source_provider, source_revision, source_snapshot_at, source_file_sha256,
+    normalized_artifact_sha256, license_code, license_url, attribution_text,
+    netherlands_source_count, eligible_product_count, imported_product_count,
+    mapping_version, predecessor_release_id, status, reviewed_by, reviewed_at,
+    imported_at, provenance, metadata, created_at, updated_at
+  ) values (
+    '4b487f4f-ac8e-5579-a2a2-d4164c4b368a'::uuid, 'open_food_facts', 'e544a38353692b2df59df78f47393990a578eb8e',
+    '2026-08-23T18:34:47Z'::timestamptz, '38D7A48D32F574812490024AA77FB064E84B041CB2687E46DF87AFCE441100C2',
+    'CE35E7A30245430078D28687A0247B8E88B759149556D80CA88A2A7A42D2EC80', 'ODbL-1.0', 'https://opendatacommons.org/licenses/odbl/1-0/',
+    'Open Food Facts contributors', 106650, 24458, 0,
+    'phase4_off_nl_v1', null, 'reviewed', 'FitMetZorge owner-reviewed Slice 4F pipeline',
+    '2026-08-25T00:00:00Z'::timestamptz, null,
+    $fmz_json${"dataset":"openfoodfacts/product-database","dataset_file":"food.parquet","filter":"countries_tags contains en:netherlands","immutable_revision":"e544a38353692b2df59df78f47393990a578eb8e","license":"ODbL-1.0","published_at":"2026-08-23T18:34:47Z","source_total_count":4692771}$fmz_json$::jsonb,
+    $fmz_json${"basis_counts":{"per_100_g":20355,"per_100_ml":4103},"dutch_product_name_count":18970,"image_policy":"references_not_imported","nutrient_ranges":{"carbohydrate_grams_100":{"max":"100.000","min":"0.000","present_count":24458},"energy_kcal_100":{"max":"900.000","min":"0.000","present_count":24458},"fat_grams_100":{"max":"100.000","min":"0.000","present_count":24458},"fiber_grams_100":{"max":"89.000","min":"0.000","present_count":17593},"protein_grams_100":{"max":"99.000","min":"0.000","present_count":24458}},"rejected_after_locked_eligibility":0}$fmz_json$::jsonb || jsonb_build_object(
+      'expected_name_count', 74184,
+      'product_manifest_sha256', 'BA0AD94F3B83F15E48B0124E82B1C8027FDE2A97468446CCB8CB3D15453E1ABF',
+      'names_manifest_sha256', 'AE2336D03F2BF055241BF81EF06A98937871CC79B9E67CBEF48D613E588A0132',
+      'frozen_counts', jsonb_build_object(
+        'usda_canonical_foods', (select count(*) from public.foods where catalog_scope = 'canonical' and source_provider = 'usda_fdc'),
+        'usda_aliases', (select count(*) from public.food_aliases where source_provider = 'usda_fdc'),
+        'custom_foods', (select count(*) from public.foods where catalog_scope = 'custom'),
+        'food_portions', (select count(*) from public.food_portions),
+        'food_logs', (select count(*) from public.food_logs),
+        'food_log_items', (select count(*) from public.food_log_items)
+      )
+    ),
+    '2026-08-25T00:00:00Z'::timestamptz, '2026-08-25T00:00:00Z'::timestamptz
+  )
+  on conflict (id) do nothing;
+
+  if not exists (
+    select 1 from public.nutrition_off_catalog_releases r
+    where r.id = '4b487f4f-ac8e-5579-a2a2-d4164c4b368a'::uuid
+      and r.source_revision = 'e544a38353692b2df59df78f47393990a578eb8e'
+      and r.source_file_sha256 = '38D7A48D32F574812490024AA77FB064E84B041CB2687E46DF87AFCE441100C2'
+      and r.normalized_artifact_sha256 = 'CE35E7A30245430078D28687A0247B8E88B759149556D80CA88A2A7A42D2EC80'
+      and r.netherlands_source_count = 106650
+      and r.eligible_product_count = 24458
+      and r.mapping_version = 'phase4_off_nl_v1'
+      and r.license_code = 'ODbL-1.0'
+      and r.metadata ->> 'expected_name_count' = '74184'
+      and r.metadata ->> 'product_manifest_sha256' = 'BA0AD94F3B83F15E48B0124E82B1C8027FDE2A97468446CCB8CB3D15453E1ABF'
+      and r.metadata ->> 'names_manifest_sha256' = 'AE2336D03F2BF055241BF81EF06A98937871CC79B9E67CBEF48D613E588A0132'
+  ) then
+    raise exception 'OFF release identity drift';
+  end if;
+end
+$fmz_release$;
+
+do $fmz_drift$
+begin
+  if exists (
+    select 1 from fmz_off_products_stage s
+    join public.nutrition_off_products p
+      on p.id = s.id or p.normalized_gtin14 = s.normalized_gtin14 or p.provider_identity_name = s.provider_identity_name
+    where to_jsonb(p) is distinct from to_jsonb(s)
+  ) then
+    raise exception 'OFF product drift against existing identity';
+  end if;
+  if exists (
+    select 1 from fmz_off_names_stage s
+    join public.nutrition_off_product_names n
+      on n.id = s.id
+      or (
+        n.lifecycle_status = 'active'
+        and n.product_id = s.product_id
+        and n.language_code = s.language_code
+        and n.name_type = s.name_type
+        and n.normalized_name = s.normalized_name
+      )
+    where to_jsonb(n) is distinct from to_jsonb(s)
+  ) then
+    raise exception 'OFF name drift against existing identity';
+  end if;
+end
+$fmz_drift$;
+
+insert into public.nutrition_off_products
+select * from fmz_off_products_stage
+on conflict (id) do nothing;
+
+insert into public.nutrition_off_product_names
+select * from fmz_off_names_stage
+on conflict (id) do nothing;
+
+do $fmz_finalize$
+begin
+  if (select count(*) from public.nutrition_off_products where release_id = '4b487f4f-ac8e-5579-a2a2-d4164c4b368a'::uuid) <> 24458
+     or (select count(*) from public.nutrition_off_product_names n join public.nutrition_off_products p on p.id = n.product_id where p.release_id = '4b487f4f-ac8e-5579-a2a2-d4164c4b368a'::uuid) <> 74184
+     or exists (
+       select 1 from public.nutrition_off_products p
+       left join fmz_off_products_stage s on s.id = p.id
+       where p.release_id = '4b487f4f-ac8e-5579-a2a2-d4164c4b368a'::uuid and s.id is null
+     )
+     or exists (
+       select 1 from public.nutrition_off_product_names n
+       join public.nutrition_off_products p on p.id = n.product_id
+       left join fmz_off_names_stage s on s.id = n.id
+       where p.release_id = '4b487f4f-ac8e-5579-a2a2-d4164c4b368a'::uuid and s.id is null
+     ) then
+    raise exception 'OFF finalization count or membership drift';
+  end if;
+end
+$fmz_finalize$;
+
+update public.nutrition_off_catalog_releases
+set status = 'imported',
+    imported_product_count = 24458,
+    imported_at = '2026-08-25T00:00:00Z'::timestamptz,
+    updated_at = '2026-08-25T00:00:00Z'::timestamptz
+where id = '4b487f4f-ac8e-5579-a2a2-d4164c4b368a'::uuid
+  and status = 'reviewed';
+
+do $fmz_commit_gate$
+begin
+  if not exists (
+    select 1 from public.nutrition_off_catalog_releases
+    where id = '4b487f4f-ac8e-5579-a2a2-d4164c4b368a'::uuid
+      and status = 'imported'
+      and imported_product_count = 24458
+  ) then
+    raise exception 'OFF release finalization gate failed';
+  end if;
+end
+$fmz_commit_gate$;
+
+commit;

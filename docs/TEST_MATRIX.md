@@ -50,7 +50,7 @@ This matrix records the required functional, security, entitlement, AI, migratio
 | Phase 4 | USDA Provider Edge Function | Dedicated UUIDv5 identity, auth, CORS, cache, signed lookup, rate/circuit, normalization, no canonical write or secret | PROVIDER GATE | PASS - SEARCH/LOOKUP LIVE + AUTHENTICATED STAGING SMOKE |
 | Phase 4 | Slice 4D transient provider logging | Gram-only signed-candidate log, nullable food identity, immutable snapshots, service-role-only RPC, atomic replacement, no canonical promotion | OWNER ACCEPTANCE GATE | PASS - LIVE / VERIFIED / OWNER-ACCEPTED / FROZEN |
 | Phase 4 | Slice 4E Dutch generic catalog | 64 reviewed USDA foods, 197 Dutch/provider aliases, deterministic identity, local quality-gated search | CATALOG FREEZE GATE | PASS - ACCEPTED / FROZEN |
-| Phase 4 | Slice 4F OFF branded foundation | Separate ODbL release/product/name domain, GTIN/UUIDv5, typed bounded local search, exact local barcode lookup, read-only member ACL | LIVE VERIFICATION GATE | MIGRATION LIVE / CORRECTED VERIFIER READY / NOT IMPORTED |
+| Phase 4 | Slice 4F OFF branded foundation | Separate ODbL release/product/name domain, GTIN/UUIDv5, typed bounded local search, exact local barcode lookup, read-only member ACL | LIVE VERIFICATION GATE | PASS - LIVE / 26 OF 26 VERIFIED / NOT IMPORTED |
 | Phase 4 | Nutrition Pro | Full kcal/protein/carbs/fat goals, saved meals, recipes, copy meal/day | BLOCKING GATE | PLANNED |
 | Phase 4 | Barcode | Barcode behind entitlement and feature flag | BLOCKING GATE | PLANNED |
 | Phase 4 | Consumer boundaries | Invoices do not appear in consumer nutrition | BLOCKING GATE | PLANNED |
@@ -560,12 +560,20 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | Authenticated OFF reads limited to explicit safe catalog columns | PASS |
 | Exact local barcode lookup; no provider/network call | PASS |
 | Original live verifier execution | STOPPED - verifier-only PostgreSQL `22023` on zero-dimensional empty column ACL array |
-| Corrected read-only verifier with individual checks and `overall_pass` | PASS - LOCAL ARTIFACT / LIVE RERUN PENDING |
+| Corrected read-only verifier with individual checks and `overall_pass` | PASS - LIVE STAGING, 26 PASS / 0 FAIL |
 | Corrected row-wise ACL metadata probe | PASS - 34 intended authenticated column SELECT grants; no unexpected client/service-role grants |
 | NL Dutch display label with canonical fallback | PASS - LOCAL ONLY / NOT DEPLOYED |
 | Visible-day label hydration bounded to 200 IDs with duplicate suppression | PASS |
 | Future immutable OFF snapshot and unknown-barcode path | PASS - ARCHITECTURE ONLY |
 | ODbL attribution/export and separate image-licence policy | PASS - DOCUMENTED; PRODUCTION LEGAL REVIEW STILL REQUIRED |
-| 24,458-product import | NOT CREATED / NOT EXECUTED |
+| Pinned source/revision and exact Netherlands extract | PASS - SHA/size/revision locked; 106,650 rows |
+| Exact eligible catalog and basis split | PASS - 24,458 products; 20,355 per 100 g; 4,103 per 100 ml |
+| GS1 GTIN-14 and UUIDv5 identities | PASS - 24,458 unique of each |
+| Source-derived localized/search names | PASS - 74,184 rows; 18,970 Dutch product names; no fabricated translations |
+| Product/name/release/import/verifier hashes | PASS - byte-locked in artifact manifest |
+| Row-level artifact verifier | PASS - 755,433 checks |
+| Bulk artifact static/security suite | PASS - 75 checks |
+| One-transaction file importer | PASS - two `\copy` loads, advisory lock, fail-on-drift, replay-safe, finalization last |
+| 24,458-product import | READY FOR OWNER ARTIFACT REVIEW / NOT EXECUTED |
 | Migration execution | PASS - LIVE ON STAGING `mokxyyullfhkfalopbzd` |
 | Frontend deployment / Edge deployment | NOT PERFORMED |
