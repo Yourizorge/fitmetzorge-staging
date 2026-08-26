@@ -50,7 +50,9 @@ This matrix records the required functional, security, entitlement, AI, migratio
 | Phase 4 | USDA Provider Edge Function | Dedicated UUIDv5 identity, auth, CORS, cache, signed lookup, rate/circuit, normalization, no canonical write or secret | PROVIDER GATE | PASS - SEARCH/LOOKUP LIVE + AUTHENTICATED STAGING SMOKE |
 | Phase 4 | Slice 4D transient provider logging | Gram-only signed-candidate log, nullable food identity, immutable snapshots, service-role-only RPC, atomic replacement, no canonical promotion | OWNER ACCEPTANCE GATE | PASS - LIVE / VERIFIED / OWNER-ACCEPTED / FROZEN |
 | Phase 4 | Slice 4E Dutch generic catalog | 64 reviewed USDA foods, 197 Dutch/provider aliases, deterministic identity, local quality-gated search | CATALOG FREEZE GATE | PASS - ACCEPTED / FROZEN |
-| Phase 4 | Slice 4F OFF branded foundation | Separate ODbL release/product/name domain, GTIN/UUIDv5, typed bounded local search, exact local barcode lookup, read-only member ACL | LIVE VERIFICATION GATE | PASS - LIVE / 26 OF 26 VERIFIED / NOT IMPORTED |
+| Phase 4 | Package 4F-A OFF catalog/performance | Separate ODbL release/product/name domain, 24,458 products, 74,184 names, typed bounded search, local barcode, p95 gate | OWNER ACCEPTANCE GATE | PASS - COMPLETE / FROZEN |
+| Phase 4 | Package 4F-B Dutch branded search UX | Dutch display labels, OFF-branded unified search, explicit selection and source attribution | OWNER ACCEPTANCE GATE | PASS - OWNER-ACCEPTED / FROZEN |
+| Phase 4 | Package 4F-C OFF authoritative logging | Server-resolved ODbL snapshot, g/ml basis isolation, authoritative totals, retry/edit/archive | STAGING MIGRATION + E2E GATE | LOCAL PASS / STAGING GO REQUIRED |
 | Phase 4 | Nutrition Pro | Full kcal/protein/carbs/fat goals, saved meals, recipes, copy meal/day | BLOCKING GATE | PLANNED |
 | Phase 4 | Barcode | Barcode behind entitlement and feature flag | BLOCKING GATE | PLANNED |
 | Phase 4 | Consumer boundaries | Invoices do not appear in consumer nutrition | BLOCKING GATE | PLANNED |
@@ -580,4 +582,24 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | One-transaction file importer | PASS - two `\copy` loads, advisory lock, fail-on-drift, replay-safe, finalization last |
 | 24,458-product import | READY FOR OWNER ARTIFACT REVIEW / NOT EXECUTED |
 | Migration execution | PASS - LIVE ON STAGING `mokxyyullfhkfalopbzd` |
-| Frontend deployment / Edge deployment | NOT PERFORMED |
+| Frontend deployment / Edge deployment | 4F-B FRONTEND OWNER-ACCEPTED / FROZEN; 4F-C NOT DEPLOYED; EDGE UNCHANGED |
+
+## Phase 4 Package 4F-C OFF Authoritative Logging Local Checks
+
+| Check | Result |
+| --- | --- |
+| 4F-B owner acceptance | PASS - COMPLETE / FROZEN |
+| Existing log/day/history/archive architecture reused | PASS |
+| Server resolves current imported active OFF product | PASS |
+| Browser supplies no nutrient authority | PASS |
+| `per_100_g` and `per_100_ml` remain isolated | PASS - NO DENSITY OR ML=G |
+| Immutable ODbL identity, release, licence, attribution and derivation snapshot | PASS |
+| Stable request/item identities and equality replay | PASS |
+| Same-product and changed-OFF-product atomic replacement | PASS |
+| Optimistic timestamp conflict and authoritative reload | PASS |
+| Existing generic/custom/USDA logging and archive preserved | PASS |
+| Additive migration/static/security suite | PASS - 96 CHECKS |
+| Nutrition browser vertical-slice suite | PASS - 121 CHECKS |
+| Phase 1 / Phase 2 / Phase 3 / Member UX frozen suites | PASS - 75 / 46 / 222 / 56 |
+| Slice 2 / member navigation browser suites | PASS - 46 / 45 |
+| Migration execution / live verifier / staging E2E | NOT STARTED - OWNER GO REQUIRED |

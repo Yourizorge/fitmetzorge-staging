@@ -1,6 +1,6 @@
 # Phase 4 Nutrition Slice 4F - Open Food Facts Catalog Foundation
 
-Status: FOUNDATION LIVE AND VERIFIED ON STAGING; NORMALIZATION-CORRECTED 24,458-PRODUCT IMPORT ARTIFACT BUILT AND LOCALLY VERIFIED / NOT EXECUTED. The migration and corrected read-only verifier passed on `mokxyyullfhkfalopbzd` with `overall_pass = true`, 26 PASS and 0 FAIL. The corrected deterministic bundle passes 779,905 independent artifact checks, 93 static/security checks, 13 PostgreSQL normalization-contract checks, and a schema-equivalent PostgreSQL rollback/import/verifier/replay dry run. No OFF import, frontend deployment, Edge change, scanner runtime, or production change has occurred.
+Status: 4F-A COMPLETE / FROZEN; 4F-B OWNER-ACCEPTED / FROZEN; 4F-C LOCALLY READY / STAGING GATE REQUIRED. The isolated catalog contains exactly 24,458 products and 74,184 source-derived names. Unified search performance and the Dutch branded selection UX are accepted. Authoritative OFF logging/edit/archive is implemented locally without deploying its additive function migration or frontend runtime. Production remains untouched.
 
 ## Frozen Baseline
 
@@ -40,9 +40,11 @@ The frozen `fmz_phase4_search_foods` RPC is unchanged. The new `fmz_phase4_searc
 
 `fmz_phase4_lookup_off_product_by_barcode` performs authenticated local exact lookup only. It makes no network request, creates no member row, and returns only active complete/reviewed OFF nutrition. Camera scanning and feature-entitlement UI remain later work.
 
-## Future Logging
+## Package 4F-C Authoritative Logging
 
-OFF logging is not implemented here. The future trusted flow is member selection -> authenticated backend resolution of the current active OFF row -> quality and basis validation -> server-authored immutable snapshot -> member log. The snapshot must retain product name, brand, original and normalized barcode, basis, nutrients, provider, licence, attribution, OFF revision, source checksum, and derivation. Historical truth must never depend on later OFF refreshes.
+The reviewed 4F-C flow is member selection -> authenticated database RPC -> server-side resolution from the current imported, active, complete/reviewed OFF product -> exact `per_100_g` or `per_100_ml` validation -> immutable nutrition and ODbL snapshot -> authoritative day payload. The browser sends only OFF identity, quantity/unit and normal log controls; it never supplies nutrients, density or licence authority. Historical truth therefore does not depend on a future OFF refresh.
+
+4F-C reuses `food_logs`, `food_log_items`, `fmz_phase4_day_payload`, the existing archive RPC, Free seven-day history, Pro/AI/PT entitlement behavior and the established request/object advisory-lock namespaces. It adds no table, no policy, no trainer route and no parallel logging model. Same-product and changed-OFF-product edits insert a new immutable row and archive the original in one transaction with optimistic `updated_at` conflict protection and equality replay.
 
 An unknown barcode will later follow local miss -> backend exact OFF lookup -> validation -> optional reviewed ODbL ingestion/cache -> typed result. A provider miss routes to private custom-product creation. It does not promote a community record into `public.foods`.
 
@@ -94,13 +96,13 @@ The local presentation-only fix uses `foods.metadata.dutch_display_label` in the
 - Post-import verifier: `supabase/verification/20260825_phase4_nutrition_slice4f_off_catalog_import_verification.sql`; SHA-256 `AC0BB83EB1140DCA69468C65832F57C694A833AA3A8E82536A6F4419FC2F902D`
 - PostgreSQL normalization verifier: `supabase/verification/20260825_phase4_off_normalization_contract_verification.sql`; SHA-256 `44F18C290E1C5E76DF270F500B814E0A55CE218860F784337256791780F4F0AF`
 - Import model: one `psql` transaction, two `\copy` operations into temporary tables, exact-count and identity validation, advisory transaction lock, fail-on-drift, exact replay, and release finalization last. There are no manual chunks.
-- Local verification: PASS, 779,905 artifact checks, 93 artifact static/security checks, 13 PostgreSQL normalization checks, and an isolated PostgreSQL 17 rollback/import/post-verifier/idempotent-replay run. The former release replay trigger failure was corrected by skipping the insert path only after exact existing-release validation. All old bulk artifact hashes are invalidated. Staging import execution and live performance measurement remain separate owner gates.
+- Local verification and staging execution: PASS. The corrected artifact passed 779,905 artifact checks, 93 artifact static/security checks, 13 PostgreSQL normalization checks, hash-gated staging import, post-import/normalization verification and the corrected unified-search performance gate. Package 4F-A is complete and frozen.
 
 Migration executed on STAGING: YES
 
-OFF products imported: NO
+OFF products imported: YES - 24,458
 
-Frontend deployed: NO
+Frontend deployed: YES FOR 4F-B / NO FOR 4F-C
 
 Edge Function changed: NO
 
