@@ -317,6 +317,13 @@
     return value;
   }
 
+  function phase4FoodDisplayName(food, fallback = "-", locale = phase4Language()) {
+    const canonicalName = String(food?.name || food?.food_name_snapshot || "").trim();
+    const dutchLabel = String(food?.metadata?.dutch_display_label || "").trim();
+    if (locale === "nl" && dutchLabel) return dutchLabel;
+    return canonicalName || fallback;
+  }
+
   function phase4FormatNumber(value, digits = 0) {
     const parsed = Number(value);
     if (!Number.isFinite(parsed)) return "-";
@@ -805,7 +812,7 @@
       <article class="phase4-food-card ${isArchived ? "archived" : ""}">
         <div class="phase4-card-head">
           <div class="phase4-food-title">
-            <strong>${escapeHTML(food.name || "-")}</strong>
+            <strong>${escapeHTML(phase4FoodDisplayName(food))}</strong>
             ${food.brand ? `<small>${escapeHTML(food.brand)}</small>` : ""}
           </div>
           ${options.management ? `<span class="phase4-status ${isArchived ? "" : "active"}">${escapeHTML(phase4Text(isArchived ? "archived" : "active"))}</span>` : ""}
@@ -1005,7 +1012,7 @@
     const source = food.catalog_scope === "custom" ? phase4Text("customFood") : (food.source_provider || phase4Text("canonicalFood"));
     const body = `
       <div class="phase4-detail-grid">
-        <div class="wide"><span>${escapeHTML(phase4Text("name"))}</span><strong>${escapeHTML(food.name || "-")}</strong></div>
+        <div class="wide"><span>${escapeHTML(phase4Text("name"))}</span><strong>${escapeHTML(phase4FoodDisplayName(food))}</strong></div>
         ${food.brand ? `<div class="wide"><span>${escapeHTML(phase4Text("brand"))}</span><strong>${escapeHTML(food.brand)}</strong></div>` : ""}
         <div><span>${escapeHTML(phase4Text("referenceAmount"))}</span><strong>${escapeHTML(phase4FoodReference(food))}</strong></div>
         <div><span>${escapeHTML(phase4Text("source"))}</span><strong>${escapeHTML(source)}</strong></div>
@@ -1021,7 +1028,7 @@
         <button class="secondary-btn" data-phase4-back-foods type="button">${escapeHTML(phase4Text("close"))}</button>
       </div>
     `;
-    return phase4DialogFrame(food.name || phase4Text("details"), body, { eyebrow: phase4Text("details") });
+    return phase4DialogFrame(phase4FoodDisplayName(food, phase4Text("details")), body, { eyebrow: phase4Text("details") });
   }
 
   function phase4CustomFoodDialog() {
@@ -1199,7 +1206,7 @@
     const food = phase4State.portal.food || {};
     const body = `
       <p>${escapeHTML(phase4Text("archiveBody"))}</p>
-      <strong>${escapeHTML(food.name || "-")}</strong>
+      <strong>${escapeHTML(phase4FoodDisplayName(food))}</strong>
       ${phase4FeedbackMarkup()}
       <div class="phase4-dialog-actions">
         <button class="phase4-gold-action" data-phase4-confirm-archive type="button">${escapeHTML(phase4Text("confirmArchive"))}</button>
@@ -1374,6 +1381,7 @@
     searchPageSize: PHASE4_SEARCH_PAGE_SIZE,
     customPageSize: PHASE4_CUSTOM_PAGE_SIZE,
     freeCustomFoodLimit: PHASE4_CUSTOM_FOOD_FREE_LIMIT,
+    displayFoodName: (food, fallback = "-", locale = phase4Language()) => phase4FoodDisplayName(food, fallback, locale),
     validateTarget: (payload) => phase4ValidateTarget({ ...payload }),
     validateCustomFood: (payload) => phase4ValidateCustom({ ...payload }),
     state: () => ({

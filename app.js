@@ -59,14 +59,14 @@
   }
   const phase3PatchSource = await phase3PatchResponse.text();
 
-  const phase4NutritionPatchUrl = new URL("assets/phase4-nutrition-slice2.js?v=20260819-phase4-nutrition-slice3-1", document.baseURI);
+  const phase4NutritionPatchUrl = new URL("assets/phase4-nutrition-slice2.js?v=20260826-phase4f-b1", document.baseURI);
   const phase4NutritionPatchResponse = await fetch(phase4NutritionPatchUrl, { cache: "no-cache" });
   if (!phase4NutritionPatchResponse.ok) {
     throw new Error(`Phase 4 Nutrition Slice 2 laden mislukt: ${phase4NutritionPatchResponse.status}`);
   }
   const phase4NutritionPatchSource = await phase4NutritionPatchResponse.text();
 
-  const phase4NutritionSlice3PatchUrl = new URL("assets/phase4-nutrition-slice3.js?v=20260821-phase4-unified-search-stability1", document.baseURI);
+  const phase4NutritionSlice3PatchUrl = new URL("assets/phase4-nutrition-slice3.js?v=20260826-phase4f-b1", document.baseURI);
   const phase4NutritionSlice3PatchResponse = await fetch(phase4NutritionSlice3PatchUrl, { cache: "no-cache" });
   if (!phase4NutritionSlice3PatchResponse.ok) {
     throw new Error(`Phase 4 Nutrition Slice 3 laden mislukt: ${phase4NutritionSlice3PatchResponse.status}`);

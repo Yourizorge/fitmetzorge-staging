@@ -2,7 +2,7 @@
   if (window.FMZ_PHASE4_NUTRITION_SLICE3_LOADED) return;
   window.FMZ_PHASE4_NUTRITION_SLICE3_LOADED = true;
 
-  const PHASE4_SLICE3_VERSION = "20260821-phase4-unified-search-stability1";
+  const PHASE4_SLICE3_VERSION = "20260826-phase4f-b-unified-catalog1";
   const PHASE4_SLICE3_SEARCH_PAGE_SIZE = 25;
   const PHASE4_SLICE3_FREE_HISTORY_DAYS = 7;
   const PHASE4_SLICE3_MEALS = ["breakfast", "lunch", "dinner", "snacks"];
@@ -48,6 +48,7 @@
       search: "Zoeken",
       results: "Resultaten",
       myFoodsResults: "Mijn voedingsmiddelen",
+      productResults: "Producten",
       catalogResults: "Voedingsmiddelen",
       searchLoading: "Voedingsmiddelen laden...",
       searchFailed: "Zoeken is niet gelukt.",
@@ -59,6 +60,14 @@
       providerLookupLoading: "Voedingsmiddel controleren...",
       providerSource: "USDA FoodData Central",
       providerAttribution: "Bron: USDA FoodData Central (CC0)",
+      offSource: "Open Food Facts",
+      offAttribution: "Productgegevens: Open Food Facts-bijdragers (ODbL)",
+      offInspect: "Bekijken",
+      offInspectTitle: "Product bekijken",
+      offLoggingPending: "Dit merkproduct is veilig geselecteerd, maar kan pas vanaf 4F-C worden gelogd. Er is niets aan je voedingsdag toegevoegd.",
+      unexpectedResult: "Een onveilig of onvolledig zoekresultaat is niet getoond.",
+      per100g: "Voedingswaarden per 100 g",
+      per100ml: "Voedingswaarden per 100 ml",
       providerGramsOnly: "Dit voedingsmiddel wordt in gram gelogd.",
       providerAuthRequired: "Je sessie is verlopen. Log opnieuw in en probeer het daarna nog eens.",
       providerRateLimited: "De aanvullende zoekdienst is tijdelijk druk. Probeer het later opnieuw.",
@@ -160,6 +169,7 @@
       search: "Search",
       results: "Results",
       myFoodsResults: "My foods",
+      productResults: "Products",
       catalogResults: "Foods",
       searchLoading: "Loading foods...",
       searchFailed: "Search failed.",
@@ -171,6 +181,14 @@
       providerLookupLoading: "Checking food...",
       providerSource: "USDA FoodData Central",
       providerAttribution: "Source: USDA FoodData Central (CC0)",
+      offSource: "Open Food Facts",
+      offAttribution: "Product data: Open Food Facts contributors (ODbL)",
+      offInspect: "View",
+      offInspectTitle: "View product",
+      offLoggingPending: "This branded product is safely selected, but logging starts in 4F-C. Nothing was added to your Nutrition day.",
+      unexpectedResult: "An unsafe or incomplete search result was not shown.",
+      per100g: "Nutrition per 100 g",
+      per100ml: "Nutrition per 100 ml",
       providerGramsOnly: "This food is logged in grams.",
       providerAuthRequired: "Your session has expired. Sign in again and then retry.",
       providerRateLimited: "The additional food search is temporarily busy. Try again later.",
@@ -272,6 +290,7 @@
       search: "Suchen",
       results: "Ergebnisse",
       myFoodsResults: "Meine Lebensmittel",
+      productResults: "Produkte",
       catalogResults: "Lebensmittel",
       searchLoading: "Lebensmittel werden geladen...",
       searchFailed: "Die Suche ist fehlgeschlagen.",
@@ -283,6 +302,14 @@
       providerLookupLoading: "Lebensmittel wird geprueft...",
       providerSource: "USDA FoodData Central",
       providerAttribution: "Quelle: USDA FoodData Central (CC0)",
+      offSource: "Open Food Facts",
+      offAttribution: "Produktdaten: Open Food Facts-Mitwirkende (ODbL)",
+      offInspect: "Ansehen",
+      offInspectTitle: "Produkt ansehen",
+      offLoggingPending: "Dieses Markenprodukt ist sicher ausgewaehlt, kann aber erst ab 4F-C protokolliert werden. Deinem Ernaehrungstag wurde nichts hinzugefuegt.",
+      unexpectedResult: "Ein unsicheres oder unvollstaendiges Suchergebnis wurde nicht angezeigt.",
+      per100g: "Naehrwerte pro 100 g",
+      per100ml: "Naehrwerte pro 100 ml",
       providerGramsOnly: "Dieses Lebensmittel wird in Gramm protokolliert.",
       providerAuthRequired: "Deine Sitzung ist abgelaufen. Melde dich erneut an und versuche es danach noch einmal.",
       providerRateLimited: "Die zusaetzliche Lebensmittelsuche ist voruebergehend ausgelastet. Versuche es spaeter erneut.",
@@ -360,13 +387,17 @@
     day: { status: "idle", value: null, error: "", requestToken: 0 },
     notice: "",
     portal: { type: "", opener: null, meal: "breakfast", food: null, item: null, providerCandidate: null, candidateToken: "", feedback: "", feedbackType: "" },
-    search: { status: "idle", query: "", items: [], afterName: null, afterId: null, hasMore: false, error: "", requestToken: 0 },
+    search: { status: "idle", query: "", items: [], afterRank: null, afterScore: null, afterName: null, afterSource: null, afterId: null, hasMore: false, error: "", rejectedCount: 0, requestToken: 0 },
     providerSearch: { status: "idle", query: "", items: [], page: 1, hasMore: false, error: "", requestToken: 0, requestId: "", submittedFingerprint: "", lookupStatus: "idle", lookupCandidateId: "", lookupRequestId: "" },
     portions: { status: "idle", items: [], error: "", requestToken: 0 },
     submission: { kind: "", itemId: "", requestId: "", submittedFingerprint: "", inFlight: false },
-    customDraft: { foodId: "", submittedFingerprint: "" }
+    customDraft: { foodId: "", submittedFingerprint: "" },
+    dutchDisplayLabels: new Map(),
+    dutchDisplayLabelsLoading: new Set(),
+    displayLabelsRequestToken: 0
   };
-  const PHASE4_LOCAL_SEARCH_DEBOUNCE_MS = 150;
+  const PHASE4_LOCAL_SEARCH_DEBOUNCE_MS = 240;
+  const PHASE4_LOCAL_RESULTS_BEFORE_PROVIDER = 5;
   const PHASE4_PROVIDER_SEARCH_DEBOUNCE_MS = 400;
   let localSearchDebounceTimer = null;
   let providerSearchDebounceTimer = null;
@@ -382,6 +413,48 @@
       value = value.split(`{${name}}`).join(String(replacement ?? ""));
     });
     return value;
+  }
+
+  function displayFoodName(food, fallback = "-") {
+    const mappedLabel = food?.food_id ? slice3State.dutchDisplayLabels.get(food.food_id) : "";
+    const displayFood = mappedLabel
+      ? { ...food, name: food?.name || food?.food_name_snapshot, metadata: { ...(food?.metadata || {}), dutch_display_label: mappedLabel } }
+      : food;
+    const displayHelper = window.FMZ_PHASE4_NUTRITION_SLICE2?.displayFoodName;
+    if (typeof displayHelper === "function") return displayHelper(displayFood, fallback, language());
+    const canonicalName = String(displayFood?.name || displayFood?.food_name_snapshot || "").trim();
+    const dutchLabel = String(displayFood?.metadata?.dutch_display_label || "").trim();
+    return language() === "nl" && dutchLabel ? dutchLabel : (canonicalName || fallback);
+  }
+
+  async function hydrateDutchDisplayLabels(day) {
+    if (language() !== "nl" || !supabaseClient || !slice3State.userId) return;
+    const foodIds = Array.from(new Set(
+      (day?.items || [])
+        .filter((item) => item?.status === "active" && item?.food_id)
+        .map((item) => item.food_id)
+    )).filter((foodId) => !slice3State.dutchDisplayLabels.has(foodId) && !slice3State.dutchDisplayLabelsLoading.has(foodId)).slice(0, 200);
+    if (!foodIds.length) return;
+    foodIds.forEach((foodId) => slice3State.dutchDisplayLabelsLoading.add(foodId));
+    const userId = slice3State.userId;
+    const requestToken = slice3State.displayLabelsRequestToken + 1;
+    slice3State.displayLabelsRequestToken = requestToken;
+    try {
+      const { data, error } = await supabaseClient
+        .from("foods")
+        .select("id,name,metadata")
+        .in("id", foodIds);
+      if (error) throw error;
+      if (slice3State.userId !== userId || slice3State.displayLabelsRequestToken !== requestToken) return;
+      const labelsById = new Map((Array.isArray(data) ? data : []).map((food) => [food.id, String(food?.metadata?.dutch_display_label || "").trim()]));
+      foodIds.forEach((foodId) => slice3State.dutchDisplayLabels.set(foodId, labelsById.get(foodId) || ""));
+      renderRoot();
+    } catch (_error) {
+      if (slice3State.userId !== userId || slice3State.displayLabelsRequestToken !== requestToken) return;
+      foodIds.forEach((foodId) => slice3State.dutchDisplayLabels.set(foodId, ""));
+    } finally {
+      foodIds.forEach((foodId) => slice3State.dutchDisplayLabelsLoading.delete(foodId));
+    }
   }
 
   function formatNumber(value, digits = 1) {
@@ -451,11 +524,14 @@
     slice3State.timezone = { status: "idle", error: "", requestToken: slice3State.timezone.requestToken + 1 };
     slice3State.day = { status: "idle", value: null, error: "", requestToken: slice3State.day.requestToken + 1 };
     slice3State.notice = "";
-    slice3State.search = { status: "idle", query: "", items: [], afterName: null, afterId: null, hasMore: false, error: "", requestToken: slice3State.search.requestToken + 1 };
+    slice3State.search = { status: "idle", query: "", items: [], afterRank: null, afterScore: null, afterName: null, afterSource: null, afterId: null, hasMore: false, error: "", rejectedCount: 0, requestToken: slice3State.search.requestToken + 1 };
     slice3State.providerSearch = { status: "idle", query: "", items: [], page: 1, hasMore: false, error: "", requestToken: slice3State.providerSearch.requestToken + 1, requestId: "", submittedFingerprint: "", lookupStatus: "idle", lookupCandidateId: "", lookupRequestId: "" };
     slice3State.portions = { status: "idle", items: [], error: "", requestToken: slice3State.portions.requestToken + 1 };
     slice3State.submission = { kind: "", itemId: "", requestId: "", submittedFingerprint: "", inFlight: false };
     slice3State.customDraft = { foodId: "", submittedFingerprint: "" };
+    slice3State.dutchDisplayLabels = new Map();
+    slice3State.dutchDisplayLabelsLoading = new Set();
+    slice3State.displayLabelsRequestToken += 1;
   }
 
   function installStyles() {
@@ -514,6 +590,9 @@
       .phase4-s3-search-row { display:grid; gap:6px; padding:11px 0; border-bottom:1px solid var(--line); }
       .phase4-s3-search-row strong, .phase4-s3-search-row small { overflow-wrap:anywhere; }
       .phase4-s3-search-head { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
+      .phase4-s3-search-meta { display:flex; flex-wrap:wrap; gap:5px 12px; color:var(--muted); }
+      .phase4-s3-source-label { color:var(--muted); font-size:12px; font-weight:800; }
+      .phase4-s3-off-note { padding:10px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); color:var(--muted); }
       .phase4-s3-provider { display:grid; gap:10px; padding-top:12px; border-top:1px solid var(--line); }
       .phase4-s3-provider-head { display:flex; align-items:center; justify-content:space-between; gap:10px; }
       .phase4-s3-provider-source { color:var(--muted); font-size:12px; font-weight:700; }
@@ -627,7 +706,7 @@
     return `
       <button class="phase4-s3-item-row" data-phase4-s3-item="${escapeHTML(item.id)}" type="button" aria-haspopup="dialog">
         <span class="phase4-s3-item-main">
-          <strong>${escapeHTML(item.food_name_snapshot || "-")}</strong>
+          <strong>${escapeHTML(displayFoodName(item))}</strong>
           <small>${escapeHTML(`${formatNumber(item.consumed_quantity, 3)} ${unitLabel(item.consumed_unit)} | P ${formatNumber(item.protein_grams_snapshot, 1)}g | C ${formatNumber(item.carbohydrate_grams_snapshot, 1)}g | F ${formatNumber(item.fat_grams_snapshot, 1)}g`)}</small>
           ${providerSource}
         </span>
@@ -696,6 +775,7 @@
     if (context.isOnline && context.canHydrate) {
       if (slice3State.timezone.status === "idle") ensureTimezone();
       else if (slice3State.timezone.status === "ready" && slice3State.day.status === "idle") loadDay();
+      else if (slice3State.day.status === "ready") void hydrateDutchDisplayLabels(slice3State.day.value);
     }
     return true;
   }
@@ -751,6 +831,7 @@
       slice3State.day.error = errorMessage(error, "day");
     }
     renderRoot();
+    if (slice3State.day.status === "ready") void hydrateDutchDisplayLabels(slice3State.day.value);
   }
 
   function errorMessage(error, context = "") {
@@ -942,6 +1023,7 @@
       document.body.appendChild(portal);
     }
     if (slice3State.portal.type === "search") portal.innerHTML = searchDialog();
+    if (slice3State.portal.type === "off") portal.innerHTML = offProductDialog();
     if (slice3State.portal.type === "entry") portal.innerHTML = entryDialog();
     if (slice3State.portal.type === "item") portal.innerHTML = itemDialog();
     if (slice3State.portal.type === "remove") portal.innerHTML = removeDialog();
@@ -950,7 +1032,7 @@
   }
 
   function openSearch(meal, opener, item = null) {
-    slice3State.search = { status: "idle", query: "", items: [], afterName: null, afterId: null, hasMore: false, error: "", requestToken: slice3State.search.requestToken + 1 };
+    slice3State.search = { status: "idle", query: "", items: [], afterRank: null, afterScore: null, afterName: null, afterSource: null, afterId: null, hasMore: false, error: "", rejectedCount: 0, requestToken: slice3State.search.requestToken + 1 };
     resetProviderSearch();
     openPortal("search", opener, { meal, item });
     searchFoods({ reset: true });
@@ -958,6 +1040,79 @@
 
   function providerSearchAllowed() {
     return !slice3State.portal.item || isProviderSnapshot(slice3State.portal.item);
+  }
+
+  function searchResultKey(food) {
+    return `${food?.result_type || "unknown"}:${food?.source_id || food?.id || ""}`;
+  }
+
+  function isSafeUnifiedSearchResult(row) {
+    const resultType = String(row?.result_type || "");
+    const sourceId = String(row?.source_id || "");
+    const displayName = String(row?.display_name || "").trim();
+    const basis = String(row?.nutrition_basis || "");
+    const referenceAmount = Number(row?.reference_amount);
+    const referenceUnit = String(row?.reference_unit || "");
+    const rankTier = Number(row?.rank_tier);
+    const rankScore = Number(row?.rank_score);
+    const nutrientValues = [row?.energy_kcal_reference, row?.protein_grams_reference, row?.carbohydrate_grams_reference, row?.fat_grams_reference]
+      .map(Number);
+    if (!['custom_food', 'generic_food', 'off_branded_food'].includes(resultType) || !sourceId || !displayName || row?.loggable !== true) return false;
+    if (!Number.isFinite(referenceAmount) || referenceAmount <= 0 || !PHASE4_SLICE3_UNITS.includes(referenceUnit)) return false;
+    if (!Number.isInteger(rankTier) || !Number.isFinite(rankScore) || !row?.cursor_name || !row?.cursor_source || !row?.cursor_id) return false;
+    if (nutrientValues.some((value) => !Number.isFinite(value) || value < 0)) return false;
+    if (resultType === 'generic_food' && !['reviewed', 'verified'].includes(String(row?.quality_status || ''))) return false;
+    if (resultType === 'off_branded_food') {
+      if (String(row?.source_provider || '') !== 'open_food_facts') return false;
+      if (!['complete', 'reviewed'].includes(String(row?.quality_status || ''))) return false;
+      if (!['per_100_g', 'per_100_ml'].includes(basis) || referenceAmount !== 100) return false;
+      if ((basis === 'per_100_g' && referenceUnit !== 'g') || (basis === 'per_100_ml' && referenceUnit !== 'ml')) return false;
+    }
+    return true;
+  }
+
+  function mapUnifiedSearchResult(row) {
+    if (!isSafeUnifiedSearchResult(row)) return null;
+    const resultType = String(row.result_type);
+    return {
+      result_type: resultType,
+      source_id: String(row.source_id),
+      id: String(row.source_id),
+      source_provider: String(row.source_provider || ''),
+      barcode: row.barcode || null,
+      display_name: String(row.display_name).trim(),
+      name: String(row.display_name).trim(),
+      brand: String(row.brand || '').trim() || null,
+      catalog_scope: resultType === 'custom_food' ? 'custom' : resultType === 'generic_food' ? 'canonical' : 'off_branded',
+      nutrition_basis: String(row.nutrition_basis || ''),
+      reference_amount: Number(row.reference_amount),
+      reference_unit: String(row.reference_unit),
+      reference_mass_grams: null,
+      reference_volume_ml: null,
+      density_g_per_ml: null,
+      energy_kcal: Number(row.energy_kcal_reference),
+      protein_grams: Number(row.protein_grams_reference),
+      carbohydrate_grams: Number(row.carbohydrate_grams_reference),
+      fat_grams: Number(row.fat_grams_reference),
+      fiber_grams: row.fiber_grams_reference === null || row.fiber_grams_reference === undefined ? null : Number(row.fiber_grams_reference),
+      quality_status: String(row.quality_status || ''),
+      loggable: true,
+      status: 'active',
+      metadata: resultType === 'generic_food' && language() === 'nl' ? { dutch_display_label: String(row.display_name).trim() } : {},
+      rank_tier: Number(row.rank_tier),
+      rank_score: Number(row.rank_score),
+      cursor_name: String(row.cursor_name || ''),
+      cursor_source: String(row.cursor_source || resultType),
+      cursor_id: String(row.cursor_id || row.source_id)
+    };
+  }
+
+  function shouldSupplementProvider(query, items = slice3State.search.items) {
+    const normalizedQuery = normalizedSearchQuery(query);
+    return providerSearchAllowed()
+      && normalizedQuery.length >= 3
+      && normalizedQuery.length <= 80
+      && items.length < PHASE4_LOCAL_RESULTS_BEFORE_PROVIDER;
   }
 
   function providerResultRow(candidate) {
@@ -1006,15 +1161,18 @@
     const provider = slice3State.providerSearch;
     const query = normalizedSearchQuery(search.query);
     const queryReady = query.length >= 3 && query.length <= 80 && providerSearchAllowed();
-    const providerSettled = !queryReady || provider.status === "ready" || provider.status === "error";
+    const providerExpected = queryReady && shouldSupplementProvider(query);
+    const providerSettled = !providerExpected || provider.status === "ready" || provider.status === "error";
     const combinedEmpty = search.status === "ready" && !search.items.length && providerSettled && !provider.items.length;
     let results = "";
     if (search.status === "loading" && !search.items.length) results = `<div class="phase4-s3-state" aria-live="polite">${escapeHTML(text("searchLoading"))}</div>`;
     else if (search.status === "error" && !search.items.length) results = `<div class="phase4-s3-state error" aria-live="polite"><span>${escapeHTML(search.error)}</span><button class="secondary-btn" data-phase4-s3-retry-search type="button">${escapeHTML(text("retry"))}</button></div>`;
     else if (combinedEmpty) results = `<div class="phase4-s3-state" aria-live="polite"><strong>${escapeHTML(text("noFoods"))}</strong></div>`;
     else if (search.items.length) results = `
-      ${searchResultGroup(text("myFoodsResults"), search.items.filter((food) => food.catalog_scope === "custom"))}
-      ${searchResultGroup(text("catalogResults"), search.items.filter((food) => food.catalog_scope !== "custom"))}
+      ${searchResultGroup(text("myFoodsResults"), search.items.filter((food) => food.result_type === "custom_food"))}
+      ${searchResultGroup(text("productResults"), search.items.filter((food) => food.result_type === "off_branded_food"))}
+      ${searchResultGroup(text("catalogResults"), search.items.filter((food) => food.result_type === "generic_food"))}
+      ${search.rejectedCount ? `<p class="phase4-s3-feedback error">${escapeHTML(text("unexpectedResult"))}</p>` : ""}
       ${search.status === "error" ? `<p class="phase4-s3-feedback error">${escapeHTML(search.error)}</p>` : ""}
       ${search.hasMore || search.status === "loading" ? `<button class="secondary-btn" data-phase4-s3-more-search type="button" ${search.status === "loading" ? "disabled" : ""}>${escapeHTML(search.status === "loading" ? text("searchLoading") : text("loadMore"))}</button>` : ""}
     `;
@@ -1052,10 +1210,13 @@
   }
 
   function searchRow(food) {
+    const offProduct = food.result_type === "off_branded_food";
+    const basis = food.nutrition_basis === "per_100_ml" ? text("per100ml") : food.nutrition_basis === "per_100_g" ? text("per100g") : text("reference", { amount: formatNumber(food.reference_amount, 3), unit: unitLabel(food.reference_unit) });
+    const action = offProduct ? text("offInspect") : text("select");
     return `
-      <article class="phase4-s3-search-row">
-        <div class="phase4-s3-search-head"><div><strong>${escapeHTML(food.name || "-")}</strong>${food.brand ? `<br><small>${escapeHTML(food.brand)}</small>` : ""}</div><button class="phase4-s3-gold" data-phase4-s3-select-food="${escapeHTML(food.id)}" type="button">${escapeHTML(text("select"))}</button></div>
-        <small>${escapeHTML(text("reference", { amount: formatNumber(food.reference_amount, 3), unit: unitLabel(food.reference_unit) }))}</small>
+      <article class="phase4-s3-search-row${offProduct ? " off" : ""}">
+        <div class="phase4-s3-search-head"><div><strong>${escapeHTML(displayFoodName(food))}</strong>${food.brand ? `<br><small>${escapeHTML(food.brand)}</small>` : ""}</div><button class="phase4-s3-gold" data-phase4-s3-select-food="${escapeHTML(searchResultKey(food))}" type="button">${escapeHTML(action)}</button></div>
+        <div class="phase4-s3-search-meta"><small>${escapeHTML(basis)}</small>${offProduct ? `<small class="phase4-s3-source-label">${escapeHTML(text("offSource"))}</small>` : ""}</div>
         <small>${escapeHTML(`${formatNumber(food.energy_kcal, 1)} kcal | P ${formatNumber(food.protein_grams, 1)}g | C ${formatNumber(food.carbohydrate_grams, 1)}g | F ${formatNumber(food.fat_grams, 1)}g`)}</small>
       </article>
     `;
@@ -1076,33 +1237,48 @@
     search.status = "loading";
     search.error = "";
     if (reset) {
+      search.afterRank = null;
+      search.afterScore = null;
       search.afterName = null;
+      search.afterSource = null;
       search.afterId = null;
       search.hasMore = false;
+      search.rejectedCount = 0;
     }
     renderPortal({ preserveSearchFocus });
     try {
-      const { data, error } = await supabaseClient.rpc("fmz_phase4_search_foods", {
+      const { data, error } = await supabaseClient.rpc("fmz_phase4_search_nutrition_catalog", {
         p_query: requestQuery || null,
+        p_locale: language(),
         p_page_size: PHASE4_SLICE3_SEARCH_PAGE_SIZE,
+        p_after_rank: reset ? null : search.afterRank,
+        p_after_score: reset ? null : search.afterScore,
         p_after_name: reset ? null : search.afterName,
+        p_after_source: reset ? null : search.afterSource,
         p_after_id: reset ? null : search.afterId
       });
       if (error) throw error;
       if (search.requestToken !== requestToken || slice3State.portal.type !== "search" || normalizedSearchQuery(search.query) !== requestQuery) return;
       const rows = Array.isArray(data) ? data : [];
-      const map = new Map((reset ? [] : search.items).map((food) => [food.id, food]));
-      rows.forEach((food) => map.set(food.id, food));
+      const safeRows = rows.map(mapUnifiedSearchResult).filter(Boolean);
+      const map = new Map((reset ? [] : search.items).map((food) => [searchResultKey(food), food]));
+      safeRows.forEach((food) => map.set(searchResultKey(food), food));
       search.items = Array.from(map.values());
+      search.rejectedCount += rows.length - safeRows.length;
       const last = rows[rows.length - 1];
-      search.afterName = last?.name || null;
-      search.afterId = last?.id || null;
+      search.afterRank = last?.rank_tier ?? null;
+      search.afterScore = last?.rank_score ?? null;
+      search.afterName = last?.cursor_name || null;
+      search.afterSource = last?.cursor_source || null;
+      search.afterId = last?.cursor_id || null;
       search.hasMore = rows.length === PHASE4_SLICE3_SEARCH_PAGE_SIZE;
       search.status = "ready";
+      if (reset && shouldSupplementProvider(requestQuery, search.items)) scheduleProviderSearch(requestQuery);
     } catch (error) {
       if (search.requestToken !== requestToken || slice3State.portal.type !== "search" || normalizedSearchQuery(search.query) !== requestQuery) return;
       search.status = "error";
       search.error = errorMessage(error, "search");
+      if (reset && shouldSupplementProvider(requestQuery, [])) scheduleProviderSearch(requestQuery);
     }
     renderPortal({ preserveSearchFocus });
   }
@@ -1212,10 +1388,32 @@
     }
   }
 
-  function selectSearchFood(foodId) {
-    const food = slice3State.search.items.find((entry) => entry.id === foodId);
+  function selectSearchFood(resultKey) {
+    const food = slice3State.search.items.find((entry) => searchResultKey(entry) === resultKey);
     if (!food) return;
+    if (food.result_type === "off_branded_food") {
+      openPortal("off", slice3State.portal.opener, { food, meal: slice3State.portal.meal, item: slice3State.portal.item });
+      return;
+    }
     openEntry(food, slice3State.portal.meal, slice3State.portal.opener, slice3State.portal.item);
+  }
+
+  function offProductDialog() {
+    const food = slice3State.portal.food || {};
+    const basis = food.nutrition_basis === "per_100_ml" ? text("per100ml") : text("per100g");
+    const body = `
+      <div><strong>${escapeHTML(displayFoodName(food))}</strong>${food.brand ? `<br><small class="phase4-s3-muted">${escapeHTML(food.brand)}</small>` : ""}</div>
+      <div class="phase4-s3-detail-grid">
+        <div><span>${escapeHTML(basis)}</span><strong>${escapeHTML(`${formatNumber(food.energy_kcal, 1)} kcal`)}</strong></div>
+        <div><span>${escapeHTML(text("protein"))}</span><strong>${escapeHTML(`${formatNumber(food.protein_grams, 1)} g`)}</strong></div>
+        <div><span>${escapeHTML(text("carbohydrate"))}</span><strong>${escapeHTML(`${formatNumber(food.carbohydrate_grams, 1)} g`)}</strong></div>
+        <div><span>${escapeHTML(text("fat"))}</span><strong>${escapeHTML(`${formatNumber(food.fat_grams, 1)} g`)}</strong></div>
+      </div>
+      <p class="phase4-s3-source-label">${escapeHTML(text("offAttribution"))}</p>
+      <p class="phase4-s3-off-note" aria-live="polite">${escapeHTML(text("offLoggingPending"))}</p>
+      <div class="phase4-s3-dialog-actions"><button class="phase4-s3-gold" data-phase4-s3-back-off type="button">${escapeHTML(text("back"))}</button><button class="secondary-btn" data-phase4-s3-close type="button">${escapeHTML(text("close"))}</button></div>
+    `;
+    return dialogFrame(text("offInspectTitle"), body, text("offSource"));
   }
 
   function unitLabel(unit) {
@@ -1288,7 +1486,7 @@
     const candidate = slice3State.portal.providerCandidate;
     const providerEntry = Boolean(candidate) || isProviderSnapshot(item);
     if (providerEntry) {
-      const name = candidate?.name || item?.food_name_snapshot || "-";
+      const name = candidate?.name || displayFoodName(item);
       const brand = candidate?.brand || item?.brand_snapshot || "";
       const body = `
         <div><strong>${escapeHTML(name)}</strong>${brand ? `<br><small class="phase4-s3-muted">${escapeHTML(brand)}</small>` : ""}</div>
@@ -1313,7 +1511,7 @@
     const unitOptions = directUnits(food).map((unit) => `<option value="direct:${escapeHTML(unit)}" ${selection === `direct:${unit}` ? "selected" : ""}>${escapeHTML(text("directUnit", { unit: unitLabel(unit) }))}</option>`).join("");
     const portionOptions = slice3State.portions.items.map((portion) => `<option value="portion:${escapeHTML(portion.id)}" ${selection === `portion:${portion.id}` ? "selected" : ""}>${escapeHTML(text("portion", { label: portion.label, amount: formatNumber(portion.amount, 3), unit: unitLabel(portion.unit) }))}</option>`).join("");
     const body = `
-      <div><strong>${escapeHTML(food.name || item?.food_name_snapshot || "-")}</strong>${food.brand ? `<br><small class="phase4-s3-muted">${escapeHTML(food.brand)}</small>` : ""}</div>
+      <div><strong>${escapeHTML(food?.id ? displayFoodName(food) : displayFoodName(item))}</strong>${food.brand ? `<br><small class="phase4-s3-muted">${escapeHTML(food.brand)}</small>` : ""}</div>
       <form id="phase4Slice3EntryForm" class="phase4-s3-form" novalidate>
         <div class="phase4-s3-form-grid">
           <label class="field"><span>${escapeHTML(text("meal"))}</span><select name="meal">${PHASE4_SLICE3_MEALS.map((meal) => `<option value="${meal}" ${meal === (item?.meal_moment || slice3State.portal.meal) ? "selected" : ""}>${escapeHTML(text(meal))}</option>`).join("")}</select></label>
@@ -1388,6 +1586,7 @@
     slice3State.submission = { kind: "", itemId: "", requestId: "", submittedFingerprint: "", inFlight: false };
     closePortal();
     renderRoot();
+    void hydrateDutchDisplayLabels(day);
   }
 
   async function saveProviderEntry(form, payload, original) {
@@ -1514,7 +1713,7 @@
     const source = isProviderSnapshot(item) ? text("providerSource") : (item.source_provider_snapshot || "-");
     const body = `
       <div class="phase4-s3-detail-grid">
-        <div class="wide"><span>${escapeHTML(text("name"))}</span><strong>${escapeHTML(item.food_name_snapshot || "-")}</strong></div>
+        <div class="wide"><span>${escapeHTML(text("name"))}</span><strong>${escapeHTML(displayFoodName(item))}</strong></div>
         ${item.brand_snapshot ? `<div class="wide"><span>${escapeHTML(text("brand"))}</span><strong>${escapeHTML(item.brand_snapshot)}</strong></div>` : ""}
         <div><span>${escapeHTML(text("meal"))}</span><strong>${escapeHTML(text(item.meal_moment))}</strong></div>
         <div><span>${escapeHTML(text("amount"))}</span><strong>${escapeHTML(`${formatNumber(item.consumed_quantity, 3)} ${unitLabel(item.consumed_unit)}`)}</strong></div>
@@ -1529,12 +1728,12 @@
       ${feedbackMarkup()}
       <div class="phase4-s3-dialog-actions"><button class="phase4-s3-gold" data-phase4-s3-edit-item type="button">${escapeHTML(text("edit"))}</button><button class="secondary-btn" data-phase4-s3-remove-item type="button">${escapeHTML(text("remove"))}</button><button class="secondary-btn" data-phase4-s3-close type="button">${escapeHTML(text("close"))}</button></div>
     `;
-    return dialogFrame(item.food_name_snapshot || text("details"), body, text("details"));
+    return dialogFrame(displayFoodName(item, text("details")), body, text("details"));
   }
 
   function removeDialog() {
     const item = slice3State.portal.item || {};
-    const body = `<p>${escapeHTML(text("removeBody"))}</p><strong>${escapeHTML(item.food_name_snapshot || "-")}</strong>${feedbackMarkup()}<div class="phase4-s3-dialog-actions"><button class="phase4-s3-gold" data-phase4-s3-confirm-remove type="button">${escapeHTML(text("confirmRemove"))}</button><button class="secondary-btn" data-phase4-s3-back-item type="button">${escapeHTML(text("cancel"))}</button></div>`;
+    const body = `<p>${escapeHTML(text("removeBody"))}</p><strong>${escapeHTML(displayFoodName(item))}</strong>${feedbackMarkup()}<div class="phase4-s3-dialog-actions"><button class="phase4-s3-gold" data-phase4-s3-confirm-remove type="button">${escapeHTML(text("confirmRemove"))}</button><button class="secondary-btn" data-phase4-s3-back-item type="button">${escapeHTML(text("cancel"))}</button></div>`;
     return dialogFrame(text("removeTitle"), body, text("nutrition"));
   }
 
@@ -1700,6 +1899,7 @@
     if (button.dataset.phase4S3ProviderMore !== undefined) return searchProviderFoods({ reset: false });
     if (button.dataset.phase4S3SelectProvider) return selectProviderFood(button.dataset.phase4S3SelectProvider);
     if (button.dataset.phase4S3SelectFood) return selectSearchFood(button.dataset.phase4S3SelectFood);
+    if (button.dataset.phase4S3BackOff !== undefined) return openPortal("search", slice3State.portal.opener || button, { meal: slice3State.portal.meal, item: slice3State.portal.item });
     if (button.dataset.phase4S3Custom !== undefined) {
       slice3State.customDraft = { foodId: uuid(), submittedFingerprint: "" };
       return openPortal("custom", slice3State.portal.opener || button, { meal: slice3State.portal.meal, item: slice3State.portal.item });
@@ -1725,7 +1925,6 @@
     }
     if (forceLocal) searchFoods({ reset: true, preserveSearchFocus: true });
     else if (providerQueryChanged) scheduleLocalSearch(query);
-    if (providerQueryChanged || forceLocal) scheduleProviderSearch(query);
   }
 
   function handleInput(event) {
@@ -1781,6 +1980,10 @@
       dayStatus: slice3State.day.status,
       portalType: slice3State.portal.type,
       activeItemCount: (slice3State.day.value?.items || []).length,
+      localSearchStatus: slice3State.search.status,
+      localResultCount: slice3State.search.items.length,
+      localRejectedCount: slice3State.search.rejectedCount,
+      selectedResultType: slice3State.portal.food?.result_type || "",
       providerSearchStatus: slice3State.providerSearch.status,
       providerResultCount: slice3State.providerSearch.items.length
     })

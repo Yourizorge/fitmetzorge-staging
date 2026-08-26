@@ -163,7 +163,7 @@ for (const name of [
 const localRender = phase4Frontend.indexOf("localResults.innerHTML = localSearchResultsMarkup()");
 const providerRender = phase4Frontend.indexOf("providerResults.innerHTML = providerSearchMarkup()");
 check("member UX renders local aliases before provider supplements", localRender >= 0 && providerRender > localRender);
-check("frozen Phase 4 member frontend hash", sha256(Buffer.from(phase4Frontend)) === "525538DD4A9D57A4321BFFC3FA9D396937F6E8BA8FC438D85F15C32BD0A16F26");
+check("frozen Phase 4 behavior plus approved 4F-B unified search hash", sha256(Buffer.from(phase4Frontend)) === "C82BEAB87AE97D9B178DD8C35580F7CC42698A12E8EC94B8863BB52F69E0FD62");
 check("generator pins all three official archive hashes", manifest.source_archives.every((source) => generator.includes(source.archive_sha256)));
 check("generator uses exact provider UUID identity", generator.includes('f"usda_fdc:{selection.fdc_id}"') && !generator.includes("PHASE3_EXERCISE_UUID_NAMESPACE"));
 check("generator does not estimate missing fiber", generator.includes('result["fiber"] = None'));

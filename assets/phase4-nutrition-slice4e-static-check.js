@@ -256,7 +256,7 @@ check("Slice 4B migration remains frozen", sha256(slice4b) === "4C0E63DC09A8CC1D
 check("Slice 4C migration remains frozen", sha256(slice4c) === "0A2D2CA5B4CAAD30A17B73F66C018A742DC1D9326335AA7C9307D0021CF0AE2F");
 check("Slice 4D provider migration remains frozen", sha256(slice4d) === "10228D7CDEC07341C85BFF80D2464ED4F46995FB732976F3045DFB2CB72F9DD0");
 check("Slice 4D resolver migration remains frozen", sha256(resolver) === "2B28BA69D89892D9CD52E852DB7F6E12D9849977C646C2E596C5464EA39F44CD");
-check("Slice 4D frontend remains frozen", sha256(phase4Frontend) === "525538DD4A9D57A4321BFFC3FA9D396937F6E8BA8FC438D85F15C32BD0A16F26");
+check("Slice 4D behavior stays frozen through approved 4F-B unified search patch", sha256(phase4Frontend) === "C82BEAB87AE97D9B178DD8C35580F7CC42698A12E8EC94B8863BB52F69E0FD62");
 check("architecture records staging migration live and catalog import blocked", architecture.includes("Catalog imported: NO") && architecture.includes("Migration executed: YES - STAGING ONLY"));
 check("decision log locks Slice 4E authority", /Decision 0025[\s\S]*Slice 4E/i.test(decisions));
 check("master plan records verified Slice 4E foundation and import gate", /Slice 4E[\s\S]*foundation is LIVE \/ VERIFIED[\s\S]*have not been executed/i.test(masterPlan));
