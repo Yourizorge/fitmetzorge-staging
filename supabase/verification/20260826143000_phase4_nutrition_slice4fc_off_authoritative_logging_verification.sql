@@ -116,7 +116,7 @@ checks(check_name, passed, details) as (
       and resolver_def like '%char_length(p.off_revision)between1and120%'
       and resolver_def like '%p.license_code=''odbl-1.0''%'
       and resolver_def not like '%auth.uid()%'
-      and resolver_def not like '%p_energy_%',
+      and position('p_energy_' in resolver_def) = 0,
     jsonb_build_object('server_resolver', true)
   from definitions
 
