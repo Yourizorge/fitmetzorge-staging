@@ -138,6 +138,8 @@ function harnessSource() {
       archivedItems: [],
       requests: new Map(),
       replacementRequests: new Map(),
+      offRequests: new Map(),
+      offReplacementRequests: new Map(),
       failLogNetworkOnce: false,
       failReplaceNetworkOnce: false,
       failReplaceConflictOnce: false,
@@ -152,6 +154,9 @@ function harnessSource() {
       providerLogCommitThenNetworkOnce: false,
       providerCommitThenNetworkOnce: false,
       providerReplaceStaleOnce: false,
+      offLogCommitThenNetworkOnce: false,
+      offReplaceCommitThenNetworkOnce: false,
+      offReplaceStaleOnce: false,
       timezone: "UTC"
     };
     function totals(items) {
@@ -245,6 +250,50 @@ function harnessSource() {
         metadata: { operation, ...(original ? { replaces_item_id: original.id } : {}) }
       };
     }
+    function offItemFromArgs(args, product, original = null) {
+      const factor = Number(args.p_consumed_quantity) / 100;
+      const operation = original ? "off_replace" : "off_log";
+      return {
+        id: original ? args.p_replacement_item_id : args.p_item_id,
+        user_id: onlineProfile.id,
+        food_log_id: original?.food_log_id || "20000000-0000-4000-8000-000000000001",
+        food_id: null,
+        food_portion_id: null,
+        meal_moment: args.p_meal_moment,
+        sort_order: original?.sort_order || window.__mock.activeItems.filter((item) => item.meal_moment === args.p_meal_moment).length,
+        consumed_quantity: args.p_consumed_quantity,
+        consumed_unit: product.reference_unit,
+        food_name_snapshot: product.display_name,
+        brand_snapshot: product.brand,
+        reference_amount_snapshot: 100,
+        reference_unit_snapshot: product.reference_unit,
+        calculation_basis: "direct_reference",
+        energy_kcal_snapshot: Number((product.energy_kcal_reference * factor).toFixed(3)),
+        protein_grams_snapshot: Number((product.protein_grams_reference * factor).toFixed(3)),
+        carbohydrate_grams_snapshot: Number((product.carbohydrate_grams_reference * factor).toFixed(3)),
+        fat_grams_snapshot: Number((product.fat_grams_reference * factor).toFixed(3)),
+        fiber_grams_snapshot: product.fiber_grams_reference === null ? null : Number((product.fiber_grams_reference * factor).toFixed(3)),
+        source_provider_snapshot: "open_food_facts",
+        provider_food_id_snapshot: product.barcode.padStart(14, "0"),
+        source_version_snapshot: "e544a38353692b2df59df78f47393990a578eb8e",
+        provenance_snapshot: { provider: "open_food_facts", candidate_id: product.source_id, reference_basis: product.nutrition_basis, license_code: "ODbL-1.0" },
+        notes: args.p_notes || null,
+        status: "active",
+        request_id: original ? args.p_replacement_request_id : args.p_request_id,
+        consumed_at: original?.consumed_at || args.p_consumed_at,
+        updated_at: original ? "2026-08-26T12:34:56.234567+00:00" : "2026-08-26T12:34:56.123456+00:00",
+        archived_at: null,
+        log_date: original?.log_date || args.p_log_date,
+        metadata: {
+          operation,
+          off_product_id: product.source_id,
+          candidate_id: product.source_id,
+          reference_basis: product.nutrition_basis,
+          display_name_nl: product.display_name,
+          ...(original ? { replaces_item_id: original.id } : {})
+        }
+      };
+    }
     function jsonResponse(status, value) {
       return new Response(JSON.stringify(value), { status, headers: { "content-type": "application/json" } });
     }
@@ -309,6 +358,24 @@ function harnessSource() {
           window.__mock.requests.set(args.p_request_id, { fingerprint, item });
           return { data: { item: { ...item }, day: dayPayload(args.p_log_date), idempotent_replay: false }, error: null };
         }
+        if (name === "fmz_phase4_log_off_food_item") {
+          const fingerprint = requestFingerprint(args);
+          const existing = window.__mock.offRequests.get(args.p_request_id);
+          if (existing) {
+            if (existing.fingerprint !== fingerprint) return { data: null, error: { code: "23505", message: "OFF request UUID was already used with a different payload" } };
+            return { data: { item: { ...existing.item }, day: dayPayload(existing.item.log_date), idempotent_replay: true }, error: null };
+          }
+          const product = offProducts.find((entry) => entry.source_id === args.p_off_product_id);
+          if (!product || product.reference_unit !== args.p_consumed_unit) return { data: null, error: { code: "22023", message: "OFF quantity unit must match the catalog nutrition basis" } };
+          const item = offItemFromArgs(args, product);
+          window.__mock.activeItems.push(item);
+          window.__mock.offRequests.set(args.p_request_id, { fingerprint, item });
+          if (window.__mock.offLogCommitThenNetworkOnce) {
+            window.__mock.offLogCommitThenNetworkOnce = false;
+            return { data: null, error: { message: "network unavailable after commit" } };
+          }
+          return { data: { item: { ...item }, day: dayPayload(args.p_log_date), idempotent_replay: false }, error: null };
+        }
         if (name === "fmz_phase4_replace_food_log_item") {
           const fingerprint = requestFingerprint(args);
           const existing = window.__mock.replacementRequests.get(args.p_replacement_request_id);
@@ -339,6 +406,35 @@ function harnessSource() {
           window.__mock.archivedItems.push({ ...original });
           window.__mock.activeItems.splice(index, 1, replacementItem);
           window.__mock.replacementRequests.set(args.p_replacement_request_id, { fingerprint, item: replacementItem, original });
+          return { data: { replacement_item: { ...replacementItem }, archived_original: { id: original.id, status: "archived" }, day: dayPayload(replacementItem.log_date), idempotent_replay: false }, error: null };
+        }
+        if (name === "fmz_phase4_replace_off_food_log_item") {
+          const fingerprint = requestFingerprint(args);
+          const existing = window.__mock.offReplacementRequests.get(args.p_replacement_request_id);
+          if (existing) {
+            if (existing.fingerprint !== fingerprint) return { data: null, error: { code: "23505", message: "OFF replacement request UUID was already used with a different payload" } };
+            return { data: { replacement_item: { ...existing.item }, archived_original: { id: existing.original.id, status: "archived" }, day: dayPayload(existing.item.log_date), idempotent_replay: true }, error: null };
+          }
+          if (window.__mock.offReplaceStaleOnce) {
+            window.__mock.offReplaceStaleOnce = false;
+            return { data: null, error: { code: "40001", message: "food log item changed; refresh before replacing" } };
+          }
+          const index = window.__mock.activeItems.findIndex((item) => item.id === args.p_original_item_id && item.status === "active");
+          if (index < 0) return { data: null, error: { code: "40001", message: "food log item changed; refresh before replacing" } };
+          const original = window.__mock.activeItems[index];
+          if (original.updated_at !== args.p_expected_original_updated_at) return { data: null, error: { code: "40001", message: "food log item changed; refresh before replacing" } };
+          const product = offProducts.find((entry) => entry.source_id === args.p_off_product_id);
+          if (!product || product.reference_unit !== args.p_consumed_unit) return { data: null, error: { code: "22023", message: "OFF quantity unit must match the catalog nutrition basis" } };
+          const replacementItem = offItemFromArgs(args, product, original);
+          original.status = "archived";
+          original.archived_at = "2026-08-26T13:00:00Z";
+          window.__mock.archivedItems.push({ ...original });
+          window.__mock.activeItems.splice(index, 1, replacementItem);
+          window.__mock.offReplacementRequests.set(args.p_replacement_request_id, { fingerprint, item: replacementItem, original });
+          if (window.__mock.offReplaceCommitThenNetworkOnce) {
+            window.__mock.offReplaceCommitThenNetworkOnce = false;
+            return { data: null, error: { message: "network unavailable after commit" } };
+          }
           return { data: { replacement_item: { ...replacementItem }, archived_original: { id: original.id, status: "archived" }, day: dayPayload(replacementItem.log_date), idempotent_replay: false }, error: null };
         }
         if (name === "fmz_phase4_archive_food_log_item") {
@@ -756,11 +852,58 @@ async function run() {
   const providerCallsBeforeOffInspect = await page.evaluate(() => window.__mock.providerCalls.length);
   await page.locator('[data-phase4-s3-select-food="off_branded_food:30000000-0000-4000-8000-000000000001"]').click();
   await page.getByRole("heading", { name: "Product bekijken" }).waitFor();
-  check("OFF selection is inspect-only until 4F-C", await page.getByText(/4F-C/).count() === 1 && await page.locator("#phase4Slice3EntryForm").count() === 0);
-  check("OFF inspect performs no provider or logging mutation", await page.evaluate((before) => window.__mock.providerCalls.length === before, providerCallsBeforeOffInspect));
-  await page.locator("[data-phase4-s3-back-off]").click();
+  check("OFF detail is explicit before logging", await page.locator("#phase4Slice3EntryForm").count() === 0 && await page.getByRole("button", { name: "Product toevoegen" }).count() === 1);
+  check("OFF detail performs no provider or logging mutation", await page.evaluate((before) => window.__mock.providerCalls.length === before, providerCallsBeforeOffInspect));
+  await page.getByRole("button", { name: "Product toevoegen" }).click();
+  await page.waitForSelector('#phase4Slice3EntryForm[data-off-entry="true"]');
+  check("OFF 100 ml product is quantity-safe", await page.locator('#phase4Slice3EntryForm input[name="selection"][value="direct:ml"]').count() === 1 && await page.getByText(/nooit onderling gelijkgesteld/).count() === 1);
+  await page.locator('#phase4Slice3EntryForm input[name="quantity"]').fill("250");
+  await page.evaluate(() => { window.__mock.offLogCommitThenNetworkOnce = true; });
+  await page.getByRole("button", { name: "Toevoegen", exact: true }).click();
+  await page.waitForFunction(() => document.querySelector("#phase4Slice3Portal .phase4-s3-feedback.error"));
+  const offLogFirst = await page.evaluate(() => window.__calls.filter((call) => call.name === "fmz_phase4_log_off_food_item").at(-1).args);
+  await page.getByRole("button", { name: "Toevoegen", exact: true }).click();
+  await page.waitForFunction(() => !document.getElementById("phase4Slice3Portal"));
+  const offLogReplay = await page.evaluate(() => window.__calls.filter((call) => call.name === "fmz_phase4_log_off_food_item").at(-1).args);
+  check("OFF log retry preserves stable identities", offLogFirst.p_item_id === offLogReplay.p_item_id && offLogFirst.p_request_id === offLogReplay.p_request_id);
+  check("OFF log sends only product identity and no browser nutrients", offLogReplay.p_off_product_id === "30000000-0000-4000-8000-000000000001" && !Object.keys(offLogReplay).some((key) => /kcal|protein|carbohydrate|fat|fiber|energy/.test(key)));
+  check("OFF authoritative ml snapshot updates day total", await page.getByText("113 kcal", { exact: true }).count() >= 1 && await page.getByText("Red Bull Energy Drink", { exact: true }).count() === 1);
+
+  await openFirstItem(page);
+  check("OFF historical detail preserves source and attribution", await page.getByText("Open Food Facts", { exact: true }).count() >= 1 && await page.getByText(/historische bron/).count() === 1);
+  await page.getByRole("button", { name: "Bewerken" }).click();
+  await page.waitForSelector('#phase4Slice3EntryForm[data-off-entry="true"]');
+  await page.locator('#phase4Slice3EntryForm input[name="quantity"]').fill("200");
+  await page.evaluate(() => { window.__mock.offReplaceCommitThenNetworkOnce = true; });
+  await page.getByRole("button", { name: "Wijziging opslaan" }).click();
+  await page.waitForFunction(() => document.querySelector("#phase4Slice3Portal .phase4-s3-feedback.error"));
+  const offReplaceFirst = await page.evaluate(() => window.__calls.filter((call) => call.name === "fmz_phase4_replace_off_food_log_item").at(-1).args);
+  await page.getByRole("button", { name: "Wijziging opslaan" }).click();
+  await page.waitForFunction(() => !document.getElementById("phase4Slice3Portal"));
+  const offReplaceReplay = await page.evaluate(() => window.__calls.filter((call) => call.name === "fmz_phase4_replace_off_food_log_item").at(-1).args);
+  check("same OFF product edit is atomic and idempotent", offReplaceFirst.p_replacement_item_id === offReplaceReplay.p_replacement_item_id && offReplaceFirst.p_replacement_request_id === offReplaceReplay.p_replacement_request_id && await page.getByText("90 kcal", { exact: true }).count() >= 1);
+
+  await startEdit(page);
+  await page.getByRole("button", { name: "Ander voedingsmiddel" }).click();
+  await page.waitForSelector("#phase4Slice3SearchForm");
+  await page.locator('#phase4Slice3SearchForm input[name="query"]').fill("red bull");
   await page.waitForFunction(() => document.querySelectorAll('[data-phase4-s3-select-food^="off_branded_food:"]').length === 5);
-  check("OFF detail back preserves unified search draft", await unifiedSearchInput.inputValue() === "red bull");
+  await page.locator('[data-phase4-s3-select-food="off_branded_food:30000000-0000-4000-8000-000000000002"]').click();
+  await page.getByRole("button", { name: "Product toevoegen" }).click();
+  await page.waitForSelector('#phase4Slice3EntryForm[data-off-entry="true"]');
+  await page.getByRole("button", { name: "Wijziging opslaan" }).click();
+  await page.waitForFunction(() => !document.getElementById("phase4Slice3Portal"));
+  const changedOffCall = await page.evaluate(() => window.__calls.filter((call) => call.name === "fmz_phase4_replace_off_food_log_item").at(-1).args);
+  check("changing OFF product uses atomic replacement", changedOffCall.p_off_product_id === "30000000-0000-4000-8000-000000000002" && await page.getByText("Red Bull Zero 2", { exact: true }).count() === 1);
+
+  await openFirstItem(page);
+  await page.getByRole("button", { name: "Verwijderen" }).click();
+  await page.getByRole("button", { name: "Verwijderen", exact: true }).click();
+  await page.waitForFunction(() => !document.getElementById("phase4Slice3Portal"));
+  check("OFF archive removes active intake but preserves history", await page.evaluate(() => window.__mock.activeItems.filter((item) => item.source_provider_snapshot === "open_food_facts").length === 0 && window.__mock.archivedItems.filter((item) => item.source_provider_snapshot === "open_food_facts").length >= 3));
+
+  await page.getByRole("button", { name: "Voeding toevoegen" }).first().click();
+  await page.waitForSelector("#phase4Slice3SearchForm");
   await providerSearchForm.locator('input[name="query"]').fill("chicken breast");
   await page.waitForSelector('[data-phase4-s3-select-provider="81000000-0000-5000-8000-000000000001"]');
   await page.locator('[data-phase4-s3-select-provider="81000000-0000-5000-8000-000000000001"]').click();

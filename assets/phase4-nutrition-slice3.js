@@ -2,7 +2,7 @@
   if (window.FMZ_PHASE4_NUTRITION_SLICE3_LOADED) return;
   window.FMZ_PHASE4_NUTRITION_SLICE3_LOADED = true;
 
-  const PHASE4_SLICE3_VERSION = "20260826-phase4f-b-unified-catalog1";
+  const PHASE4_SLICE3_VERSION = "20260826-phase4f-c-off-logging1";
   const PHASE4_SLICE3_SEARCH_PAGE_SIZE = 25;
   const PHASE4_SLICE3_FREE_HISTORY_DAYS = 7;
   const PHASE4_SLICE3_MEALS = ["breakfast", "lunch", "dinner", "snacks"];
@@ -62,9 +62,12 @@
       providerAttribution: "Bron: USDA FoodData Central (CC0)",
       offSource: "Open Food Facts",
       offAttribution: "Productgegevens: Open Food Facts-bijdragers (ODbL)",
-      offInspect: "Bekijken",
+      offInspect: "Kiezen",
       offInspectTitle: "Product bekijken",
-      offLoggingPending: "Dit merkproduct is veilig geselecteerd, maar kan pas vanaf 4F-C worden gelogd. Er is niets aan je voedingsdag toegevoegd.",
+      offUseProduct: "Product toevoegen",
+      offUnitOnly: "Dit product wordt uitsluitend in {unit} gelogd. Gram en milliliter worden nooit onderling gelijkgesteld.",
+      offHistorical: "Opgeslagen Open Food Facts-waarden blijven de historische bron voor deze invoer.",
+      offUnavailable: "Dit Open Food Facts-product is niet meer actief of logbaar. Kies het product opnieuw.",
       unexpectedResult: "Een onveilig of onvolledig zoekresultaat is niet getoond.",
       per100g: "Voedingswaarden per 100 g",
       per100ml: "Voedingswaarden per 100 ml",
@@ -183,9 +186,12 @@
       providerAttribution: "Source: USDA FoodData Central (CC0)",
       offSource: "Open Food Facts",
       offAttribution: "Product data: Open Food Facts contributors (ODbL)",
-      offInspect: "View",
+      offInspect: "Select",
       offInspectTitle: "View product",
-      offLoggingPending: "This branded product is safely selected, but logging starts in 4F-C. Nothing was added to your Nutrition day.",
+      offUseProduct: "Add product",
+      offUnitOnly: "This product is logged only in {unit}. Grams and millilitres are never treated as equal.",
+      offHistorical: "Saved Open Food Facts values remain the historical source for this entry.",
+      offUnavailable: "This Open Food Facts product is no longer active or loggable. Select the product again.",
       unexpectedResult: "An unsafe or incomplete search result was not shown.",
       per100g: "Nutrition per 100 g",
       per100ml: "Nutrition per 100 ml",
@@ -304,9 +310,12 @@
       providerAttribution: "Quelle: USDA FoodData Central (CC0)",
       offSource: "Open Food Facts",
       offAttribution: "Produktdaten: Open Food Facts-Mitwirkende (ODbL)",
-      offInspect: "Ansehen",
+      offInspect: "Auswaehlen",
       offInspectTitle: "Produkt ansehen",
-      offLoggingPending: "Dieses Markenprodukt ist sicher ausgewaehlt, kann aber erst ab 4F-C protokolliert werden. Deinem Ernaehrungstag wurde nichts hinzugefuegt.",
+      offUseProduct: "Produkt hinzufuegen",
+      offUnitOnly: "Dieses Produkt wird nur in {unit} protokolliert. Gramm und Milliliter werden niemals gleichgesetzt.",
+      offHistorical: "Gespeicherte Open-Food-Facts-Werte bleiben die historische Quelle fuer diesen Eintrag.",
+      offUnavailable: "Dieses Open-Food-Facts-Produkt ist nicht mehr aktiv oder protokollierbar. Waehle das Produkt erneut aus.",
       unexpectedResult: "Ein unsicheres oder unvollstaendiges Suchergebnis wurde nicht angezeigt.",
       per100g: "Naehrwerte pro 100 g",
       per100ml: "Naehrwerte pro 100 ml",
@@ -386,7 +395,7 @@
     timezone: { status: "idle", error: "", requestToken: 0 },
     day: { status: "idle", value: null, error: "", requestToken: 0 },
     notice: "",
-    portal: { type: "", opener: null, meal: "breakfast", food: null, item: null, providerCandidate: null, candidateToken: "", feedback: "", feedbackType: "" },
+    portal: { type: "", opener: null, meal: "breakfast", food: null, item: null, offProduct: false, providerCandidate: null, candidateToken: "", feedback: "", feedbackType: "" },
     search: { status: "idle", query: "", items: [], afterRank: null, afterScore: null, afterName: null, afterSource: null, afterId: null, hasMore: false, error: "", rejectedCount: 0, requestToken: 0 },
     providerSearch: { status: "idle", query: "", items: [], page: 1, hasMore: false, error: "", requestToken: 0, requestId: "", submittedFingerprint: "", lookupStatus: "idle", lookupCandidateId: "", lookupRequestId: "" },
     portions: { status: "idle", items: [], error: "", requestToken: 0 },
@@ -417,9 +426,14 @@
 
   function displayFoodName(food, fallback = "-") {
     const mappedLabel = food?.food_id ? slice3State.dutchDisplayLabels.get(food.food_id) : "";
+    const offDutchLabel = food?.source_provider_snapshot === "open_food_facts"
+      ? String(food?.metadata?.display_name_nl || "").trim()
+      : "";
     const displayFood = mappedLabel
       ? { ...food, name: food?.name || food?.food_name_snapshot, metadata: { ...(food?.metadata || {}), dutch_display_label: mappedLabel } }
-      : food;
+      : offDutchLabel
+        ? { ...food, name: food?.name || food?.food_name_snapshot, metadata: { ...(food?.metadata || {}), dutch_display_label: offDutchLabel } }
+        : food;
     const displayHelper = window.FMZ_PHASE4_NUTRITION_SLICE2?.displayFoodName;
     if (typeof displayHelper === "function") return displayHelper(displayFood, fallback, language());
     const canonicalName = String(displayFood?.name || displayFood?.food_name_snapshot || "").trim();
@@ -842,6 +856,7 @@
     if (message.includes("seven local calendar days")) return text("freeHistory");
     if (message.includes("future nutrition")) return text("futureDay");
     if (message.includes("maximum 10 active custom foods") || message.includes("free nutrition limit")) return text("customLimitReached");
+    if (message.includes("active loggable off product not found") || message.includes("off quantity unit")) return text("offUnavailable");
     if (message.includes("network") || message.includes("fetch") || message.includes("connection")) return text("networkRetry");
     if (context === "search") return text("searchFailed");
     if (context === "timezone") return text("timezoneFailed");
@@ -851,6 +866,15 @@
 
   function isProviderSnapshot(item) {
     return Boolean(item && item.food_id === null && item.source_provider_snapshot === "usda_fdc");
+  }
+
+  function isOffSnapshot(item) {
+    return Boolean(
+      item
+      && item.food_id === null
+      && item.source_provider_snapshot === "open_food_facts"
+      && ["off_log", "off_replace"].includes(String(item?.metadata?.operation || ""))
+    );
   }
 
   function providerCountryCode() {
@@ -989,6 +1013,7 @@
       meal: options.meal || previous.meal || "breakfast",
       food: options.food || null,
       item: options.item || null,
+      offProduct: options.offProduct === true,
       providerCandidate: options.providerCandidate || null,
       candidateToken: options.candidateToken || "",
       feedback: options.feedback || "",
@@ -1004,7 +1029,7 @@
     const opener = slice3State.portal?.opener;
     document.getElementById("phase4Slice3Portal")?.remove();
     document.body.classList.remove("phase4-s3-dialog-open");
-    slice3State.portal = { type: "", opener: null, meal: "breakfast", food: null, item: null, providerCandidate: null, candidateToken: "", feedback: "", feedbackType: "" };
+    slice3State.portal = { type: "", opener: null, meal: "breakfast", food: null, item: null, offProduct: false, providerCandidate: null, candidateToken: "", feedback: "", feedbackType: "" };
     if (restoreFocus) opener?.focus?.();
   }
 
@@ -1410,8 +1435,8 @@
         <div><span>${escapeHTML(text("fat"))}</span><strong>${escapeHTML(`${formatNumber(food.fat_grams, 1)} g`)}</strong></div>
       </div>
       <p class="phase4-s3-source-label">${escapeHTML(text("offAttribution"))}</p>
-      <p class="phase4-s3-off-note" aria-live="polite">${escapeHTML(text("offLoggingPending"))}</p>
-      <div class="phase4-s3-dialog-actions"><button class="phase4-s3-gold" data-phase4-s3-back-off type="button">${escapeHTML(text("back"))}</button><button class="secondary-btn" data-phase4-s3-close type="button">${escapeHTML(text("close"))}</button></div>
+      <p class="phase4-s3-off-note">${escapeHTML(text("offUnitOnly", { unit: unitLabel(food.reference_unit) }))}</p>
+      <div class="phase4-s3-dialog-actions"><button class="phase4-s3-gold" data-phase4-s3-use-off type="button">${escapeHTML(text("offUseProduct"))}</button><button class="secondary-btn" data-phase4-s3-back-off type="button">${escapeHTML(text("back"))}</button><button class="secondary-btn" data-phase4-s3-close type="button">${escapeHTML(text("close"))}</button></div>
     `;
     return dialogFrame(text("offInspectTitle"), body, text("offSource"));
   }
@@ -1452,6 +1477,12 @@
     });
   }
 
+  function openOffEntry(food, meal, opener, item = null) {
+    resetSubmission(item ? "off-edit" : "off-new");
+    slice3State.portions = { status: "ready", items: [], error: "", requestToken: slice3State.portions.requestToken + 1 };
+    openPortal("entry", opener, { food, meal, item, offProduct: true });
+  }
+
   async function loadPortions(foodId) {
     if (!supabaseClient || !foodId) return;
     const requestToken = slice3State.portions.requestToken + 1;
@@ -1484,7 +1515,31 @@
     const food = slice3State.portal.food || {};
     const item = slice3State.portal.item;
     const candidate = slice3State.portal.providerCandidate;
+    const offEntry = slice3State.portal.offProduct || isOffSnapshot(item);
     const providerEntry = Boolean(candidate) || isProviderSnapshot(item);
+    if (offEntry) {
+      const name = food?.id ? displayFoodName(food) : displayFoodName(item);
+      const brand = food?.brand || item?.brand_snapshot || "";
+      const unit = food?.reference_unit || item?.reference_unit_snapshot || item?.consumed_unit || "g";
+      const body = `
+        <div><strong>${escapeHTML(name)}</strong>${brand ? `<br><small class="phase4-s3-muted">${escapeHTML(brand)}</small>` : ""}</div>
+        <form id="phase4Slice3EntryForm" class="phase4-s3-form" novalidate data-off-entry="true">
+          <div class="phase4-s3-form-grid">
+            <label class="field"><span>${escapeHTML(text("meal"))}</span><select name="meal">${PHASE4_SLICE3_MEALS.map((meal) => `<option value="${meal}" ${meal === (item?.meal_moment || slice3State.portal.meal) ? "selected" : ""}>${escapeHTML(text(meal))}</option>`).join("")}</select></label>
+            <label class="field"><span>${escapeHTML(text("amount"))}</span><span class="phase4-s3-search-form"><input name="quantity" type="number" inputmode="decimal" min="0.001" max="100000" step="0.001" required value="${escapeHTML(item?.consumed_quantity ?? 100)}" autocomplete="off"><strong aria-hidden="true">${escapeHTML(unitLabel(unit))}</strong></span></label>
+            <input name="selection" type="hidden" value="direct:${escapeHTML(unit)}">
+            <label class="field wide"><span>${escapeHTML(text("notes"))}</span><textarea name="notes" maxlength="1000" rows="3">${escapeHTML(item?.notes || "")}</textarea></label>
+          </div>
+          <p class="phase4-s3-muted">${escapeHTML(text("offUnitOnly", { unit: unitLabel(unit) }))}</p>
+          <p class="phase4-s3-provider-source">${escapeHTML(text("offAttribution"))}</p>
+          ${isOffSnapshot(item) ? `<p class="phase4-s3-muted">${escapeHTML(text("offHistorical"))}</p>` : ""}
+          <p class="phase4-s3-muted">${escapeHTML(text("serverCalculated"))}</p>
+          ${feedbackMarkup()}
+          <div class="phase4-s3-dialog-actions"><button class="phase4-s3-gold" type="submit">${escapeHTML(text(item ? "saveEdit" : "saveEntry"))}</button><button class="secondary-btn" data-phase4-s3-change-food type="button">${escapeHTML(text("changeFood"))}</button><button class="secondary-btn" data-phase4-s3-close type="button">${escapeHTML(text("cancel"))}</button></div>
+        </form>
+      `;
+      return dialogFrame(text(item ? "editEntryTitle" : "entryTitle"), body, text(item?.meal_moment || slice3State.portal.meal));
+    }
     if (providerEntry) {
       const name = candidate?.name || displayFoodName(item);
       const brand = candidate?.brand || item?.brand_snapshot || "";
@@ -1579,6 +1634,17 @@
     ]);
   }
 
+  function offEntryFingerprint(payload, original, food) {
+    return JSON.stringify([
+      original?.id || null,
+      food?.source_id || food?.id || original?.metadata?.off_product_id || null,
+      payload.meal,
+      payload.quantity,
+      payload.consumedUnit,
+      payload.notes || null
+    ]);
+  }
+
   function acceptAuthoritativeDay(day, noticeKey) {
     if (!day || day.log_date !== slice3State.selectedDate || !Array.isArray(day.items) || !day.totals) throw new Error("authoritative Nutrition day payload unavailable");
     slice3State.day = { status: "ready", value: day, error: "", requestToken: slice3State.day.requestToken + 1 };
@@ -1645,6 +1711,58 @@
     }
   }
 
+  async function saveOffEntry(form, payload, original) {
+    const food = slice3State.portal.food || {};
+    const offProductId = food.source_id || food.id || original?.metadata?.off_product_id;
+    const expectedUnit = food.reference_unit || original?.reference_unit_snapshot;
+    if (!offProductId || !["g", "ml"].includes(expectedUnit) || payload.consumedUnit !== expectedUnit) {
+      showFeedback(text("offUnavailable"), "error");
+      return;
+    }
+    const kind = original ? "off-edit" : "off-new";
+    const fingerprint = offEntryFingerprint(payload, original, { ...food, source_id: offProductId });
+    prepareSubmission(kind, fingerprint);
+    if (slice3State.submission.inFlight) return;
+    setSubmissionBusy(form, true);
+    showFeedback(text("saving"));
+    try {
+      const response = original
+        ? await supabaseClient.rpc("fmz_phase4_replace_off_food_log_item", {
+            p_original_item_id: original.id,
+            p_replacement_item_id: slice3State.submission.itemId,
+            p_replacement_request_id: slice3State.submission.requestId,
+            p_expected_original_updated_at: original.updated_at,
+            p_meal_moment: payload.meal,
+            p_off_product_id: offProductId,
+            p_consumed_quantity: payload.quantity,
+            p_consumed_unit: expectedUnit,
+            p_notes: payload.notes || null
+          })
+        : await supabaseClient.rpc("fmz_phase4_log_off_food_item", {
+            p_item_id: slice3State.submission.itemId,
+            p_request_id: slice3State.submission.requestId,
+            p_log_date: slice3State.selectedDate,
+            p_timezone_name: slice3State.timezoneName,
+            p_timezone_offset_minutes: timezoneOffsetMinutes(slice3State.selectedDate),
+            p_meal_moment: payload.meal,
+            p_off_product_id: offProductId,
+            p_consumed_quantity: payload.quantity,
+            p_consumed_unit: expectedUnit,
+            p_notes: payload.notes || null,
+            p_consumed_at: localConsumedAt(slice3State.selectedDate)
+          });
+      if (response.error) throw response.error;
+      acceptAuthoritativeDay(response.data?.day, original ? "edited" : "saved");
+    } catch (error) {
+      const code = String(error?.code || "");
+      if (code === "23505") resetSubmission(kind);
+      showFeedback(errorMessage(error), "error");
+      if (code === "40001") await loadDay(true);
+    } finally {
+      if (slice3State.portal.type === "entry") setSubmissionBusy(form, false);
+    }
+  }
+
   async function saveEntry(form) {
     const food = slice3State.portal.food;
     const original = slice3State.portal.item;
@@ -1655,7 +1773,8 @@
       showFeedback(errors.join(" "), "error");
       return;
     }
-    if (slice3State.portal.providerCandidate || isProviderSnapshot(original)) return saveProviderEntry(form, payload, original);
+    if (slice3State.portal.offProduct) return saveOffEntry(form, payload, original);
+    if (slice3State.portal.providerCandidate || (isProviderSnapshot(original) && !food?.id)) return saveProviderEntry(form, payload, original);
     if (!food?.id) return;
     const kind = original ? "edit" : "new";
     const fingerprint = entryFingerprint(payload, food.id, original?.id || null);
@@ -1710,7 +1829,11 @@
 
   function itemDialog() {
     const item = slice3State.portal.item || {};
-    const source = isProviderSnapshot(item) ? text("providerSource") : (item.source_provider_snapshot || "-");
+    const source = isProviderSnapshot(item)
+      ? text("providerSource")
+      : isOffSnapshot(item)
+        ? text("offSource")
+        : (item.source_provider_snapshot || "-");
     const body = `
       <div class="phase4-s3-detail-grid">
         <div class="wide"><span>${escapeHTML(text("name"))}</span><strong>${escapeHTML(displayFoodName(item))}</strong></div>
@@ -1725,6 +1848,7 @@
         <div class="wide"><span>${escapeHTML(text("sourceSnapshot"))}</span><strong>${escapeHTML(source)}</strong></div>
       </div>
       ${isProviderSnapshot(item) ? `<p class="phase4-s3-muted">${escapeHTML(text("providerHistorical"))}</p>` : ""}
+      ${isOffSnapshot(item) ? `<p class="phase4-s3-provider-source">${escapeHTML(text("offAttribution"))}</p><p class="phase4-s3-muted">${escapeHTML(text("offHistorical"))}</p>` : ""}
       ${feedbackMarkup()}
       <div class="phase4-s3-dialog-actions"><button class="phase4-s3-gold" data-phase4-s3-edit-item type="button">${escapeHTML(text("edit"))}</button><button class="secondary-btn" data-phase4-s3-remove-item type="button">${escapeHTML(text("remove"))}</button><button class="secondary-btn" data-phase4-s3-close type="button">${escapeHTML(text("close"))}</button></div>
     `;
@@ -1758,6 +1882,22 @@
   async function loadFoodForEdit(item, opener) {
     if (isProviderSnapshot(item)) {
       openProviderEntry(null, "", item.meal_moment, opener, item);
+      return;
+    }
+    if (isOffSnapshot(item)) {
+      openOffEntry({
+        id: item.metadata?.off_product_id,
+        source_id: item.metadata?.off_product_id,
+        result_type: "off_branded_food",
+        source_provider: "open_food_facts",
+        display_name: item.food_name_snapshot,
+        name: item.food_name_snapshot,
+        brand: item.brand_snapshot,
+        reference_amount: item.reference_amount_snapshot,
+        reference_unit: item.reference_unit_snapshot,
+        nutrition_basis: item.metadata?.reference_basis,
+        metadata: { dutch_display_label: item.metadata?.display_name_nl || "" }
+      }, item.meal_moment, opener, item);
       return;
     }
     if (!item?.food_id || !supabaseClient) return;
@@ -1899,6 +2039,7 @@
     if (button.dataset.phase4S3ProviderMore !== undefined) return searchProviderFoods({ reset: false });
     if (button.dataset.phase4S3SelectProvider) return selectProviderFood(button.dataset.phase4S3SelectProvider);
     if (button.dataset.phase4S3SelectFood) return selectSearchFood(button.dataset.phase4S3SelectFood);
+    if (button.dataset.phase4S3UseOff !== undefined) return openOffEntry(slice3State.portal.food, slice3State.portal.meal, slice3State.portal.opener || button, slice3State.portal.item);
     if (button.dataset.phase4S3BackOff !== undefined) return openPortal("search", slice3State.portal.opener || button, { meal: slice3State.portal.meal, item: slice3State.portal.item });
     if (button.dataset.phase4S3Custom !== undefined) {
       slice3State.customDraft = { foodId: uuid(), submittedFingerprint: "" };
