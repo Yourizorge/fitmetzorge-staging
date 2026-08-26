@@ -1,6 +1,6 @@
 # Phase 4 Nutrition Package 4F-C - OFF Authoritative Logging
 
-Status: LOCALLY IMPLEMENTED / FINAL REVIEW PASS / STAGING EXECUTION GO REQUIRED
+Status: COMPLETE / LIVE / VERIFIED / FROZEN ON STAGING
 
 Package 4F-B is owner-accepted and frozen. Package 4F-C connects its selected `off_branded_food` result to the existing normalized Nutrition day architecture without making the browser a nutrient authority.
 
@@ -28,13 +28,19 @@ Both write RPCs derive ownership from `auth.uid()` and expose no user/role/entit
 - Read-only verifier: `supabase/verification/20260826143000_phase4_nutrition_slice4fc_off_authoritative_logging_verification.sql`
 - Verifier SHA-256: `E48E4FDFCA17928BB85DE4D478002E3DCE92996210BF8E7CC916870FE1747375`
 - Supersedes verifier `271EF1A161829574D7C420C1209A896CD56B5110696395D31046268F364D4E40`; its SQL `LIKE` underscore wildcard produced a read-only source-inspection false-negative for the otherwise verified server resolver.
-- Verifier SHA-256: `271EF1A161829574D7C420C1209A896CD56B5110696395D31046268F364D4E40`
-- Prepared runtime SHA-256: `AF1CCCCEDF762E1E36D1813441363CA6B1E502E94B4C8B8D9C065DD1B1BB0801`
-- Static/security: PASS, 96 checks
+- Live runtime SHA-256: `AF1CCCCEDF762E1E36D1813441363CA6B1E502E94B4C8B8D9C065DD1B1BB0801`
+- Frontend commit: `ebd0fc61652ed624f82cfda35fb96e16141b8a9e`
+- Cache version: `20260826-phase4f-c1`
+- Static/security: PASS, 98 checks
 - Browser vertical slice: PASS, 121 checks
+- Live read-only verifier: PASS, 18/18 checks, `overall_pass = true`
+- Controlled authenticated staging E2E: PASS for g/ml log, idempotent replay, same/changing product edit, atomic replace, stale conflict, authoritative totals, history and archive
+- E2E persistence: mandatory `ROLLBACK`; postcheck found zero controlled rows
 
-Migration executed: NO
+Migration executed: YES - STAGING ONLY
 
-Frontend deployed: NO
+Frontend deployed: YES - STAGING ONLY
 
 Production touched: NO
+
+Next package: 4F-D barcode scanner and unknown-product flow. Not started.

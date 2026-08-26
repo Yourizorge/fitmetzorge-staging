@@ -52,7 +52,7 @@ This matrix records the required functional, security, entitlement, AI, migratio
 | Phase 4 | Slice 4E Dutch generic catalog | 64 reviewed USDA foods, 197 Dutch/provider aliases, deterministic identity, local quality-gated search | CATALOG FREEZE GATE | PASS - ACCEPTED / FROZEN |
 | Phase 4 | Package 4F-A OFF catalog/performance | Separate ODbL release/product/name domain, 24,458 products, 74,184 names, typed bounded search, local barcode, p95 gate | OWNER ACCEPTANCE GATE | PASS - COMPLETE / FROZEN |
 | Phase 4 | Package 4F-B Dutch branded search UX | Dutch display labels, OFF-branded unified search, explicit selection and source attribution | OWNER ACCEPTANCE GATE | PASS - OWNER-ACCEPTED / FROZEN |
-| Phase 4 | Package 4F-C OFF authoritative logging | Server-resolved ODbL snapshot, g/ml basis isolation, authoritative totals, retry/edit/archive | STAGING MIGRATION + E2E GATE | LOCAL PASS / STAGING GO REQUIRED |
+| Phase 4 | Package 4F-C OFF authoritative logging | Server-resolved ODbL snapshot, g/ml basis isolation, authoritative totals, retry/edit/archive | STAGING MIGRATION + E2E GATE | PASS - COMPLETE / FROZEN |
 | Phase 4 | Nutrition Pro | Full kcal/protein/carbs/fat goals, saved meals, recipes, copy meal/day | BLOCKING GATE | PLANNED |
 | Phase 4 | Barcode | Barcode behind entitlement and feature flag | BLOCKING GATE | PLANNED |
 | Phase 4 | Consumer boundaries | Invoices do not appear in consumer nutrition | BLOCKING GATE | PLANNED |
@@ -582,9 +582,9 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | One-transaction file importer | PASS - two `\copy` loads, advisory lock, fail-on-drift, replay-safe, finalization last |
 | 24,458-product import | READY FOR OWNER ARTIFACT REVIEW / NOT EXECUTED |
 | Migration execution | PASS - LIVE ON STAGING `mokxyyullfhkfalopbzd` |
-| Frontend deployment / Edge deployment | 4F-B FRONTEND OWNER-ACCEPTED / FROZEN; 4F-C NOT DEPLOYED; EDGE UNCHANGED |
+| Frontend deployment / Edge deployment | 4F-B FRONTEND OWNER-ACCEPTED / FROZEN; 4F-C FRONTEND LIVE / VERIFIED / FROZEN; EDGE UNCHANGED |
 
-## Phase 4 Package 4F-C OFF Authoritative Logging Local Checks
+## Phase 4 Package 4F-C OFF Authoritative Logging Checks
 
 | Check | Result |
 | --- | --- |
@@ -598,8 +598,12 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | Same-product and changed-OFF-product atomic replacement | PASS |
 | Optimistic timestamp conflict and authoritative reload | PASS |
 | Existing generic/custom/USDA logging and archive preserved | PASS |
-| Additive migration/static/security suite | PASS - 96 CHECKS |
+| Additive migration/static/security suite | PASS - 98 CHECKS |
 | Nutrition browser vertical-slice suite | PASS - 121 CHECKS |
 | Phase 1 / Phase 2 / Phase 3 / Member UX frozen suites | PASS - 75 / 46 / 222 / 56 |
 | Slice 2 / member navigation browser suites | PASS - 46 / 45 |
-| Migration execution / live verifier / staging E2E | NOT STARTED - OWNER GO REQUIRED |
+| Corrected migration execution | PASS - STAGING ONLY; SHA-256 `15C3ABAFDB7D77E85397006BA1D62C9221DA0820C1052AF284911B9EDF2DFF45` |
+| Corrected read-only live verifier | PASS - 18/18; `overall_pass = true`; SHA-256 `E48E4FDFCA17928BB85DE4D478002E3DCE92996210BF8E7CC916870FE1747375` |
+| Controlled authenticated staging E2E | PASS - g/ml log, replay, edit, replace, stale conflict, totals, history, archive |
+| Controlled E2E cleanup | PASS - transaction `ROLLBACK`; postcheck controlled rows `0` |
+| Live frontend | PASS - commit `ebd0fc61652ed624f82cfda35fb96e16141b8a9e`; cache `20260826-phase4f-c1`; runtime SHA-256 `AF1CCCCEDF762E1E36D1813441363CA6B1E502E94B4C8B8D9C065DD1B1BB0801` |
