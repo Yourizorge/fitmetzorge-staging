@@ -231,7 +231,12 @@ begin
             is distinct from new.metadata ->> 'off_product_id'
          or new.metadata ->> 'mapping_version' is null
          or new.metadata ->> 'reference_basis'
-            is distinct from case when new.reference_unit_snapshot = 'ml' then 'per_100_ml' else 'per_100_g' end
+            is distinct from (
+              case
+                when new.reference_unit_snapshot = 'ml' then 'per_100_ml'
+                else 'per_100_g'
+              end
+            )
          or new.provenance_snapshot ->> 'provider' is distinct from 'open_food_facts'
          or new.provenance_snapshot ->> 'provider_food_id'
             is distinct from new.provider_food_id_snapshot

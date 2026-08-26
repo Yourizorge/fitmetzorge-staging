@@ -23,7 +23,8 @@ Both write RPCs derive ownership from `auth.uid()` and expose no user/role/entit
 ## Artifacts
 
 - Migration: `supabase/migrations/20260826143000_phase4_nutrition_slice4fc_off_authoritative_logging.sql`
-- Migration SHA-256: `E5203453E40CF429A5EB0839E8748F1853D3E4099B1ADE6F43FBED8FC01C58EA`
+- Migration SHA-256: `15C3ABAFDB7D77E85397006BA1D62C9221DA0820C1052AF284911B9EDF2DFF45`
+- Supersedes the pre-execution `E5203453E40CF429A5EB0839E8748F1853D3E4099B1ADE6F43FBED8FC01C58EA` artifact after a parser-only parenthesization correction. The failed first execution was transactionally rolled back before this corrected artifact was reviewed.
 - Read-only verifier: `supabase/verification/20260826143000_phase4_nutrition_slice4fc_off_authoritative_logging_verification.sql`
 - Verifier SHA-256: `271EF1A161829574D7C420C1209A896CD56B5110696395D31046268F364D4E40`
 - Prepared runtime SHA-256: `AF1CCCCEDF762E1E36D1813441363CA6B1E502E94B4C8B8D9C065DD1B1BB0801`
