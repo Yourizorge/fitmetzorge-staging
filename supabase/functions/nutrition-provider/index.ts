@@ -387,7 +387,7 @@ const usda: UsdaClient = {
 const off: OffClient = {
   lookupBarcode(input) {
     const url = new URL(
-      `${OFF_API_BASE_URL}/${encodeURIComponent(input.normalizedGtin14)}`,
+      `${OFF_API_BASE_URL}/${encodeURIComponent(input.normalizedGtin14)}.json`,
     );
     url.searchParams.set(
       "fields",

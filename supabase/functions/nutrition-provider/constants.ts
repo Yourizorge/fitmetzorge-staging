@@ -10,7 +10,7 @@ export const MAPPING_VERSION = "phase4_usda_v1";
 
 export const OFF_PROVIDER_CODE = "open_food_facts";
 export const OFF_PROVIDER_LABEL = "Open Food Facts";
-export const OFF_API_BASE_URL = "https://world.openfoodfacts.org/api/v3.6/product";
+export const OFF_API_BASE_URL = "https://world.openfoodfacts.org/api/v2/product";
 export const OFF_USER_AGENT = "FitMetZorge/4F-D (https://fitmetzorge.nl)";
 export const OFF_MAPPING_VERSION = "phase4_off_barcode_v1";
 export const OFF_DATA_TYPE = "off_branded";
