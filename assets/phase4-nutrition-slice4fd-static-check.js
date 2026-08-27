@@ -91,6 +91,8 @@ check("OFF nutrition basis is explicit", normalization.includes("per_100_g") && 
 check("OFF quantity fallback remains explicit", edgeIndex.includes('"nutrition_data_per"') && normalization.includes('nutritionDataPer === "100g"') && normalization.includes('nutritionDataPer === "100ml"'));
 check("OFF quantity sources cannot conflict", normalization.includes('off_product_unit_conflict') && normalization.includes('quantityUnit !== nutritionUnit'));
 check("missing macros are not zero-filled", normalization.includes("off_product_incomplete") && normalization.includes("boundedNutrient(nutriments.proteins_100g, 100, true)") && !/\?\?\s*0/iu.test(normalization));
+check("unusable exact packages expose only a bounded catalog suggestion", normalization.includes("suggested_query") && handler.includes("safeSuggestedCatalogQuery") && handler.includes("details: { suggested_query: suggestedQuery }"));
+check("negative OFF cache preserves safe suggestions without nutrient authority", handler.includes("suggestedQueryValue") && handler.includes("transient_off_negative") && !/suggested_query[\s\S]{0,300}(kcal|protein|carbohydrate|fat)/iu.test(handler));
 check("remote OFF candidate is signed", handler.includes("signOffCandidateToken") && cryptoSource.includes("signOffCandidateToken"));
 check("OFF and USDA token sources cannot cross", cryptoSource.includes("candidate-token-v1") && cryptoSource.includes("candidate-token-v2-off") && cryptoSource.includes("parsed.provider !== OFF_PROVIDER_CODE"));
 check("dedicated provider namespace remains locked", edgeConstants.includes("23440733-7e58-4c21-ad15-591eae6ab8ac") && cryptoSource.includes("createOffCandidateId") && cryptoSource.includes("PHASE4_PROVIDER_CANDIDATE_UUID_NAMESPACE") && !/createOffCandidateId[\s\S]{0,300}PHASE3_EXERCISE_UUID_NAMESPACE/u.test(cryptoSource));
@@ -103,16 +105,21 @@ check("Edge admin RPCs are server-side only", edgeIndex.includes("fmz_phase4_log
 
 check("scanner is contextual in add-food", runtime.includes("data-phase4-s3-scan-barcode") && runtime.includes("openScanner"));
 check("scanner uses native BarcodeDetector first", runtime.includes("window.BarcodeDetector") && runtime.includes("startNativeBarcodeScanner"));
-check("scanner has reviewed ZXing fallback", runtime.includes("ZXingBrowser?.BrowserMultiFormatReader") && index.includes("zxing-browser-0.2.1.min.js"));
+check("scanner has reviewed one-dimensional ZXing fallback", runtime.includes("ZXingBrowser?.BrowserMultiFormatOneDReader") && index.includes("zxing-browser-0.2.1.min.js"));
 check("ZXing bundle hash is locked", vendorHash === "066BC34EDFCDD4A33F0964AEEC967752A0DEA1CCAF36E58E319AC9FCB5070F6A");
 check("ZXing licence is MIT", /MIT License/iu.test(license));
+check("fallback decoder is EAN-first and low-latency", runtime.includes("delayBetweenScanAttempts: 120") && runtime.includes("formats.EAN_13") && runtime.includes("formats.EAN_8") && runtime.includes("formats.UPC_A") && runtime.includes("formats.ITF"));
+check("camera requests bounded HD rear-camera constraints", runtime.includes('facingMode: { ideal: "environment" }') && runtime.includes("width: { ideal: 1280, max: 1920 }") && runtime.includes("height: { ideal: 720, max: 1080 }"));
+check("continuous autofocus is best effort", runtime.includes("applyContinuousBarcodeFocus") && runtime.includes('focusMode.includes("continuous")'));
 check("camera starts only from explicit action", runtime.includes("data-phase4-s3-start-camera") && runtime.includes("return startBarcodeScanner()"));
 check("camera frames stay local", !/(canvas\.toDataURL|toBlob|image_data|video_frame)/iu.test(runtime));
-check("only barcode string reaches OFF route", runtime.includes('providerRequest("off-barcode", { barcode: original, request_id:'));
+check("only canonical barcode string reaches OFF route", runtime.includes('providerRequest("off-barcode", { barcode: normalized, request_id:'));
 check("scanner stops all media tracks", runtime.includes("getTracks().forEach((track) => track.stop())"));
-check("scanner never auto-logs", decodedBarcodeHandler.includes("await lookupBarcode(value)") && !/(off-log|saveEntry|saveTransientOffEntry)/iu.test(decodedBarcodeHandler));
+check("scanner never auto-logs", decodedBarcodeHandler.includes("await lookupBarcode(normalized)") && !/(off-log|saveEntry|saveTransientOffEntry)/iu.test(decodedBarcodeHandler));
 check("duplicate scanner events are suppressed", runtime.includes("barcodeScannerLocked") && runtime.includes('slice3State.scanner.status === "lookup"'));
 check("manual barcode uses the same lookup path", runtime.includes("phase4Slice3BarcodeForm") && runtime.includes('lookupBarcode(new FormData(event.target).get("barcode"))'));
+check("barcode normalization contract is testable without numeric coercion", runtime.includes("normalizeBarcode: (value) => normalizeGtin14(value)") && !/Number\([^)]*barcode/iu.test(runtime));
+check("unusable exact package routes to trusted local alternatives", runtime.includes("barcodeAlternativeResults") && runtime.includes("error?.details?.suggested_query") && runtime.includes("{ query: suggestedQuery"));
 check("local barcode hit reuses frozen flows", runtime.includes('data?.source === "local"') && runtime.includes("openEntry(food") && runtime.includes('openPortal("off"'));
 check("transient OFF log uses Edge route", runtime.includes('providerRequest(original ? "off-replace" : "off-log"'));
 check("transient UI sends no nutrient fields", !/(candidate_token[\s\S]{0,500}(energy_kcal|protein_grams|carbohydrate_grams|fat_grams))/iu.test(runtime));
@@ -121,7 +128,7 @@ check("unknown barcode offers private custom fallback", runtime.includes("create
 check("custom barcode is normalized before save", runtime.includes("barcode: normalizeGtin14"));
 check("scanner layout is mobile-first", runtime.includes("phase4-s3-scan-sheet") && runtime.includes("94dvh") && runtime.includes("@media (max-width:359px)"));
 check("scanner copy exists in NL EN DE", (runtime.match(/scanBarcodeTitle:/gu) || []).length === 3);
-check("new cache version is wired", index.includes("20260827-phase4fd-barcode1") && app.includes("20260827-phase4fd-barcode1") && runtime.includes("20260827-phase4fd-barcode1"));
+check("new cache version is wired", index.includes("20260827-phase4fd-owner-barcode1") && app.includes("20260827-phase4fd-owner-barcode1") && runtime.includes("20260827-phase4fd-owner-barcode1"));
 check("no service-role frontend exposure", !/(service[_-]?role|SUPABASE_SERVICE)/iu.test(runtime + app + index));
 check("no production project reference", !/(fitmetzorge-production|prod[_-]?supabase|production\.supabase)/iu.test(runtime + app + index + migration));
 check("no polling or MutationObserver", !/(MutationObserver|setInterval\s*\()/u.test(runtime));

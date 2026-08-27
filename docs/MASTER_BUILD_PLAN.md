@@ -45,6 +45,8 @@ The goal is not just to create a fitness logger. FitMetZorge must help users rea
 - Locked feature clicks should show a calm, clear upgrade explanation.
 - Upgrade messaging should be clear enough to convert without becoming aggressive or irritating.
 
+The owner-approved app-wide visual direction is intentionally deferred to one later design-system and visual-polish phase. Individual functional packages must not redesign tabs piecemeal. The future phase will apply one coherent system for tokens, colors, surfaces, elevation, layered/floating composition, navigation, buttons, inputs, typography, spacing, animation, transitions, loading states, charts, modals and bottom sheets across the application. Until that explicit phase starts, only acceptance-critical local UX polish is allowed.
+
 ## Responsive Product Strategy
 
 FitMetZorge has two deliberate responsive priorities. These priorities apply to design, implementation, acceptance criteria, automated responsive coverage, and owner testing in every current and future phase.

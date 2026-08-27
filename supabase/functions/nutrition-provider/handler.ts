@@ -106,15 +106,26 @@ function errorResponse(error: ProviderError, origin: string | null): Response {
   const extra = error.status === 429 && typeof error.details?.retry_after_seconds === "number"
     ? { "retry-after": String(error.details.retry_after_seconds) }
     : undefined;
+  const suggestedQuery = safeSuggestedCatalogQuery(error.details?.suggested_query);
   return jsonResponse(
     error.status,
     {
       ok: false,
-      error: { code: error.code, message: error.message },
+      error: {
+        code: error.code,
+        message: error.message,
+        ...(suggestedQuery ? { details: { suggested_query: suggestedQuery } } : {}),
+      },
     },
     origin,
     extra,
   );
+}
+
+function safeSuggestedCatalogQuery(value: unknown): string | null {
+  if (typeof value !== "string") return null;
+  const normalized = value.replace(/[\u0000-\u001f\u007f]/gu, " ").replace(/\s+/gu, " ").trim();
+  return normalized && normalized.length <= 160 ? normalized : null;
 }
 
 function routeFromUrl(url: URL): RouteName {
@@ -682,7 +693,7 @@ async function validRejectedOffFoodCache(
   row: FoodCacheRow | null,
   expectedGtin14: string,
   now: Date,
-): Promise<string | null> {
+): Promise<{ rejectionCode: string; suggestedQuery: string | null } | null> {
   if (
     !row || !isFresh(row.expires_at, now) || row.provider_code !== OFF_PROVIDER_CODE ||
     row.provider_food_id !== expectedGtin14 || row.provider_data_type !== OFF_DATA_TYPE ||
@@ -691,17 +702,20 @@ async function validRejectedOffFoodCache(
     !row.rejection_code || !/^[a-z0-9-]{1,80}$/u.test(row.rejection_code)
   ) return null;
   if (await sha256Hex(row.normalized_payload) !== row.payload_checksum) return null;
-  const payload = exactRecord(row.normalized_payload, [
+  const baseKeys = [
     "data_type",
     "mapping_version",
     "provider",
     "provider_food_id",
     "rejection_code",
-  ]);
+  ];
+  const payload = exactRecord(row.normalized_payload, baseKeys) ??
+    exactRecord(row.normalized_payload, [...baseKeys, "suggested_query"]);
+  const suggestedQuery = safeSuggestedCatalogQuery(payload?.suggested_query);
   return payload && payload.provider === OFF_PROVIDER_CODE &&
       payload.provider_food_id === expectedGtin14 && payload.data_type === OFF_DATA_TYPE &&
       payload.mapping_version === OFF_MAPPING_VERSION && payload.rejection_code === row.rejection_code
-    ? row.rejection_code
+    ? { rejectionCode: row.rejection_code, suggestedQuery }
     : null;
 }
 
@@ -1182,14 +1196,17 @@ async function putRejectedOffCache(
   normalizedGtin14: string,
   rejectionCode: string,
   now: Date,
+  suggestedQueryValue: unknown = null,
 ): Promise<void> {
   const normalizedCode = rejectionCode.replaceAll("_", "-").slice(0, 80);
+  const suggestedQuery = safeSuggestedCatalogQuery(suggestedQueryValue);
   const payload = {
     provider: OFF_PROVIDER_CODE,
     provider_food_id: normalizedGtin14,
     data_type: OFF_DATA_TYPE,
     mapping_version: OFF_MAPPING_VERSION,
     rejection_code: normalizedCode,
+    ...(suggestedQuery ? { suggested_query: suggestedQuery } : {}),
   };
   await dependencies.store.putFoodCache({
     provider_code: OFF_PROVIDER_CODE,
@@ -1269,11 +1286,22 @@ async function handleOffBarcode(
       ),
     };
   }
-  if (await validRejectedOffFoodCache(cacheRow, input.normalizedGtin14, now)) {
+  const rejectedCache = await validRejectedOffFoodCache(cacheRow, input.normalizedGtin14, now);
+  const recoverableHintCodes = new Set([
+    "off-product-market-unsupported",
+    "off-product-incomplete",
+    "off-product-nutrition-invalid",
+    "off-product-energy-conflict",
+    "off-product-unit-conflict",
+  ]);
+  if (rejectedCache && (rejectedCache.suggestedQuery || !recoverableHintCodes.has(rejectedCache.rejectionCode))) {
     throw new ProviderError(
       "off_product_unavailable",
       "No usable Open Food Facts product was found for this barcode.",
       404,
+      rejectedCache.suggestedQuery
+        ? { suggested_query: rejectedCache.suggestedQuery }
+        : undefined,
     );
   }
 
@@ -1344,7 +1372,13 @@ async function handleOffBarcode(
       errorClass: error instanceof ProviderError ? error.code.replaceAll("_", "-") : "upstream-payload-invalid",
     });
     if (error instanceof ProviderError && error.status >= 400 && error.status < 500) {
-      await putRejectedOffCache(dependencies, input.normalizedGtin14, error.code, now);
+      await putRejectedOffCache(
+        dependencies,
+        input.normalizedGtin14,
+        error.code,
+        now,
+        error.details?.suggested_query,
+      );
     }
     throw error;
   }

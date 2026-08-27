@@ -29,6 +29,19 @@ function boundedText(value: unknown, maxLength: number): string | null {
   return normalized && normalized.length <= maxLength ? normalized : null;
 }
 
+function catalogSuggestion(name: string | null, brand: string | null): string | null {
+  return brand || name;
+}
+
+function withCatalogSuggestion(error: unknown, suggestedQuery: string | null): never {
+  if (error instanceof ProviderError && suggestedQuery && !error.details?.suggested_query) {
+    throw new ProviderError(error.code, error.message, error.status, {
+      suggested_query: suggestedQuery,
+    });
+  }
+  throw error;
+}
+
 function finiteNumber(value: unknown): number | null {
   const parsed = typeof value === "number"
     ? value
@@ -128,19 +141,26 @@ export async function normalizeOffProductPayload(
     throw new ProviderError("off_product_identity_mismatch", "OFF barcode identity does not match.", 409);
   }
 
-  const countriesTags = Array.isArray(product.countries_tags)
-    ? [...new Set(product.countries_tags.filter((value): value is string => typeof value === "string"))]
-        .sort()
-    : [];
-  if (!countriesTags.includes("en:netherlands")) {
-    throw new ProviderError("off_product_market_unsupported", "OFF product is not associated with the Netherlands.", 422);
-  }
   const originalBarcode = boundedText(product.code ?? payload.code, 14);
   const name = boundedText(
     product.product_name_nl ?? product.product_name ?? product.product_name_en,
     240,
   );
   const brand = boundedText(product.brands, 160);
+  const suggestedQuery = catalogSuggestion(name, brand);
+
+  const countriesTags = Array.isArray(product.countries_tags)
+    ? [...new Set(product.countries_tags.filter((value): value is string => typeof value === "string"))]
+        .sort()
+    : [];
+  if (!countriesTags.includes("en:netherlands")) {
+    throw new ProviderError(
+      "off_product_market_unsupported",
+      "OFF product is not associated with the Netherlands.",
+      422,
+      suggestedQuery ? { suggested_query: suggestedQuery } : undefined,
+    );
+  }
   const quantityUnit = boundedText(product.product_quantity_unit, 8)?.toLowerCase();
   const nutritionDataPer = boundedText(product.nutrition_data_per, 16)
     ?.toLowerCase()
@@ -159,18 +179,37 @@ export async function normalizeOffProductPayload(
     ? quantityUnit
     : nutritionUnit;
   if (!originalBarcode || !name || !brand || !referenceUnit) {
-    throw new ProviderError("off_product_incomplete", "OFF product identity is incomplete.", 422);
+    throw new ProviderError(
+      "off_product_incomplete",
+      "OFF product identity is incomplete.",
+      422,
+      suggestedQuery ? { suggested_query: suggestedQuery } : undefined,
+    );
   }
   const nutritionBasis = referenceUnit === "ml" ? "per_100_ml" : "per_100_g";
   const nutriments = record(product.nutriments);
   if (!nutriments) {
-    throw new ProviderError("off_product_incomplete", "OFF nutrition is unavailable.", 422);
+    throw new ProviderError(
+      "off_product_incomplete",
+      "OFF nutrition is unavailable.",
+      422,
+      suggestedQuery ? { suggested_query: suggestedQuery } : undefined,
+    );
   }
-  const energy = energyKcal(nutriments);
-  const protein = boundedNutrient(nutriments.proteins_100g, 100, true) as number;
-  const carbohydrates = boundedNutrient(nutriments.carbohydrates_100g, 100, true) as number;
-  const fat = boundedNutrient(nutriments.fat_100g, 100, true) as number;
-  const fiber = boundedNutrient(nutriments.fiber_100g, 100, false);
+  let energy: { value: number; derivation: string };
+  let protein: number;
+  let carbohydrates: number;
+  let fat: number;
+  let fiber: number | null;
+  try {
+    energy = energyKcal(nutriments);
+    protein = boundedNutrient(nutriments.proteins_100g, 100, true) as number;
+    carbohydrates = boundedNutrient(nutriments.carbohydrates_100g, 100, true) as number;
+    fat = boundedNutrient(nutriments.fat_100g, 100, true) as number;
+    fiber = boundedNutrient(nutriments.fiber_100g, 100, false);
+  } catch (error) {
+    withCatalogSuggestion(error, suggestedQuery);
+  }
   const revision = sourceRevision(product);
   const sourceUpdatedAt = sourceTimestamp(product);
   const sourceFields = {

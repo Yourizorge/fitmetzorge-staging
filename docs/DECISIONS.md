@@ -400,3 +400,19 @@ The accepted audit baseline is 106,650 Netherlands-associated source rows and 24
 Rationale:
 
 The separate domain keeps ODbL content technically and operationally distinguishable from CC0 USDA foods, private custom foods, immutable member logs, and proprietary FitMetZorge data. Typed local search still gives members one fast discovery surface without weakening provenance, licensing, quality, or future refresh controls.
+
+## Decision 0028: App-wide visual redesign is one deferred design-system phase
+
+Status: APPROVED / LOCKED / DEFERRED
+
+Date: 2026-08-27
+
+Decision:
+
+Do not redesign individual tabs piecemeal during functional Phase 4 packages. The owner-approved future direction is a smoother, less static, premium, futuristic and more color-neutral application with layered surfaces and fluid interactions. That direction will be implemented later as one app-wide design-system and visual-polish phase across all member and trainer surfaces.
+
+The future phase must define and apply shared design tokens, colors, surfaces, elevation, floating-card language, navigation, buttons, inputs, typography, spacing, animation, transitions, loading states, charts, modals and bottom sheets. Until that phase is explicitly started, focused functional packages may make only the minimum usability polish required by their acceptance criteria and must preserve the current frozen baselines.
+
+Rationale:
+
+A single shared visual system prevents inconsistent tab-by-tab styling, avoids repeated rework, and lets functionality, accessibility, mobile performance and regression safety remain the priority during current packages.

@@ -89,6 +89,17 @@ function harnessSource() {
       cursor_source: "off_branded_food",
       cursor_id: "30000000-0000-4000-8000-" + String(index + 1).padStart(12, "0")
     }));
+    const spaProduct = {
+      ...offProducts[0],
+      source_id: "30000000-0000-4000-8000-000000000099",
+      barcode: "5410013104766",
+      display_name: "spa reine blauw",
+      brand: "SPA",
+      energy_kcal_reference: 0,
+      carbohydrate_grams_reference: 0,
+      cursor_name: "spa reine blauw",
+      cursor_id: "30000000-0000-4000-8000-000000000099"
+    };
     function unifiedFood(food, index = 0) {
       const resultType = food.catalog_scope === "custom" ? "custom_food" : "generic_food";
       return {
@@ -393,6 +404,7 @@ function harnessSource() {
           if (delay > 0) await new Promise((resolve) => setTimeout(resolve, delay));
           let rows = query.includes("empty") ? [] : window.__mock.foods.map(unifiedFood);
           if (query.includes("red bull")) rows = offProducts;
+          if (query.includes("spa reine")) rows = [spaProduct];
           if (query.includes("mixed")) rows = [unifiedFood(customSearchFood), offProducts[0], unifiedFood(window.__mock.foods[0], 1)];
           return { data: rows.slice(0, args.p_page_size).map((food) => ({ ...food })), error: null };
         }
@@ -562,11 +574,12 @@ function harnessSource() {
       }
       if (route === "off-barcode") {
         if (window.__mock.offBarcodeDelay) await new Promise((resolve) => setTimeout(resolve, window.__mock.offBarcodeDelay));
-        if (body.barcode === "036000291452") {
+        if (body.barcode === "00036000291452") {
           const food = window.__mock.foods[0];
           return jsonResponse(200, { ok: true, data: { cache: "not_checked", source: "local", result: { ...unifiedFood(food), id: food.id, name: food.name, metadata: food.metadata, energy_kcal: food.energy_kcal, protein_grams: food.protein_grams, carbohydrate_grams: food.carbohydrate_grams, fat_grams: food.fat_grams, fiber_grams: food.fiber_grams } } });
         }
-        if (body.barcode === "96385074") return jsonResponse(404, { ok: false, error: { code: "off_product_not_found", message: "No product found." } });
+        if (body.barcode === "05410013128298") return jsonResponse(422, { ok: false, error: { code: "off_product_market_unsupported", message: "Product is not eligible.", details: { suggested_query: "SPA Reine" } } });
+        if (body.barcode === "00000096385074") return jsonResponse(404, { ok: false, error: { code: "off_product_not_found", message: "No product found." } });
         return jsonResponse(200, { ok: true, data: { cache: "miss", source: "open_food_facts", result: { ...transientOffCandidate }, provider: "open_food_facts" } });
       }
       if (route === "off-log") {
@@ -729,6 +742,13 @@ async function run() {
     const calls = window.__calls.filter((call) => call.type === "rpc");
     return calls.findIndex((call) => call.name === "fmz_phase4_set_nutrition_timezone") < calls.findIndex((call) => call.name === "fmz_phase4_get_nutrition_day");
   }));
+  check("EAN-8 UPC-A EAN-13 and GTIN-14 normalize as strings", await page.evaluate(() => {
+    const normalize = window.FMZ_PHASE4_NUTRITION_SLICE3.normalizeBarcode;
+    return normalize("96385074") === "00000096385074"
+      && normalize("036000291452") === "00036000291452"
+      && normalize("4006381333931") === "04006381333931"
+      && normalize("04006381333931") === "04006381333931";
+  }));
 
   await page.getByRole("button", { name: "Dagdoel instellen" }).click();
   await page.waitForTimeout(50);
@@ -751,10 +771,10 @@ async function run() {
   await page.locator('#phase4Slice3BarcodeForm input[name="barcode"]').fill("123");
   await page.locator("#phase4Slice3BarcodeForm").evaluate((form) => form.requestSubmit());
   check("invalid barcode is rejected before Edge request", await page.getByText(/geldige EAN-8/).count() === 1 && await page.evaluate(() => window.__mock.providerCalls.filter((call) => call.route === "off-barcode").length === 0));
-  await page.locator('#phase4Slice3BarcodeForm input[name="barcode"]').fill("036000291452");
+  await page.locator('#phase4Slice3BarcodeForm input[name="barcode"]').fill(" 0360 0029 1452 ");
   await page.locator("#phase4Slice3BarcodeForm").evaluate((form) => form.requestSubmit());
   await page.waitForSelector("#phase4Slice3EntryForm");
-  check("known local barcode reuses frozen local entry flow", await page.getByText("Havermout", { exact: true }).count() >= 1 && await page.evaluate(() => window.__mock.providerCalls.filter((call) => call.route === "off-barcode" && call.body.barcode === "036000291452").length === 1));
+  check("manual barcode strips harmless spacing and sends canonical GTIN-14 once", await page.getByText("Havermout", { exact: true }).count() >= 1 && await page.evaluate(() => window.__mock.providerCalls.filter((call) => call.route === "off-barcode" && call.body.barcode === "00036000291452").length === 1));
   await page.locator("#phase4Slice3Portal .phase4-s3-close").click();
 
   await page.locator('[data-phase4-s3-add="breakfast"]').click();
@@ -763,7 +783,7 @@ async function run() {
   await page.locator('#phase4Slice3BarcodeForm input[name="barcode"]').fill("4006381333931");
   await page.locator("#phase4Slice3BarcodeForm").evaluate((form) => { form.requestSubmit(); form.requestSubmit(); });
   await page.getByRole("heading", { name: "Product bekijken" }).waitFor();
-  check("duplicate barcode submits create one lookup", await page.evaluate(() => window.__mock.providerCalls.filter((call) => call.route === "off-barcode" && call.body.barcode === "4006381333931").length === 1));
+  check("duplicate barcode submits create one canonical lookup", await page.evaluate(() => window.__mock.providerCalls.filter((call) => call.route === "off-barcode" && call.body.barcode === "04006381333931").length === 1));
   check("transient OFF result renders trusted product preview", await page.getByText("Barcode test drink", { exact: true }).count() === 1 && await page.getByText(/Open Food Facts-bijdragers/).count() >= 1);
   await page.getByRole("button", { name: "Product toevoegen" }).click();
   await page.waitForSelector('#phase4Slice3EntryForm[data-off-entry="true"]');
@@ -772,6 +792,15 @@ async function run() {
     const form = document.querySelector("#phase4Slice3EntryForm");
     return form?.dataset.offEntry === "true" && !form.querySelector('[name="energy"], [name="protein"], [name="carbohydrate"], [name="fat"]');
   }));
+  await page.locator("#phase4Slice3Portal .phase4-s3-close").click();
+
+  await page.locator('[data-phase4-s3-add="breakfast"]').click();
+  await page.getByRole("button", { name: "Barcode scannen" }).click();
+  await page.locator('#phase4Slice3BarcodeForm input[name="barcode"]').fill("5410013128298");
+  await page.locator("#phase4Slice3BarcodeForm").evaluate((form) => form.requestSubmit());
+  await page.getByText("spa reine blauw", { exact: true }).waitFor();
+  check("unusable exact SPA package opens trusted local alternatives", await page.locator('#phase4Slice3SearchForm input[name="query"]').inputValue() === "SPA Reine" && await page.getByText(/exacte verpakking heeft geen complete voedingswaarden/).count() === 1);
+  check("SPA alternative remains selectable through frozen OFF catalog flow", await page.locator('[data-phase4-s3-select-food="off_branded_food:30000000-0000-4000-8000-000000000099"]').count() === 1);
   await page.locator("#phase4Slice3Portal .phase4-s3-close").click();
 
   await page.locator('[data-phase4-s3-add="breakfast"]').click();

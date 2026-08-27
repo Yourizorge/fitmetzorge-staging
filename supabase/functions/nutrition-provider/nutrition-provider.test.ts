@@ -1564,12 +1564,17 @@ test("OFF GTIN normalization and explicit g/ml contracts reject unsafe products"
       NOW,
     )
   );
-  await assert.rejects(() =>
-    normalizeOffProductPayload(
-      offFood({ product: { countries_tags: ["en:belgium"] } }),
-      OFF_GTIN14,
-      NOW,
-    )
+  await assert.rejects(
+    () =>
+      normalizeOffProductPayload(
+        offFood({ product: { countries_tags: ["en:belgium"] } }),
+        OFF_GTIN14,
+        NOW,
+      ),
+    (error: unknown) =>
+      error instanceof ProviderError &&
+      error.code === "off_product_market_unsupported" &&
+      error.details?.suggested_query === "Testmerk",
   );
   await assert.rejects(() =>
     normalizeOffProductPayload(
@@ -1578,6 +1583,39 @@ test("OFF GTIN normalization and explicit g/ml contracts reject unsafe products"
       NOW,
     )
   );
+});
+
+test("OFF unusable package returns only a safe local-catalog suggestion and caches it", async () => {
+  const store = new MemoryStore();
+  const { deps, calls } = dependencies(store);
+  deps.off.lookupBarcode = async () => {
+    calls.offLookup += 1;
+    return upstream(200, offFood({
+      product: {
+        product_name_nl: "Mineraalwater",
+        brands: "SPA Reine",
+        countries_tags: ["en:belgium"],
+      },
+    }));
+  };
+  const handler = createNutritionProviderHandler(deps);
+  const first = await handler(request("off-barcode", {
+    barcode: OFF_BARCODE,
+    request_id: REQUEST_ID,
+  }));
+  const firstBody = await first.json();
+  assert.equal(first.status, 422);
+  assert.deepEqual(firstBody.error.details, { suggested_query: "SPA Reine" });
+  assert.equal(calls.offLookup, 1);
+
+  const second = await handler(request("off-barcode", {
+    barcode: OFF_BARCODE,
+    request_id: "77777777-7777-4777-8777-777777777777",
+  }));
+  const secondBody = await second.json();
+  assert.equal(second.status, 404);
+  assert.deepEqual(secondBody.error.details, { suggested_query: "SPA Reine" });
+  assert.equal(calls.offLookup, 1);
 });
 
 test("OFF barcode lookup is local-first and never calls remote for a trusted local hit", async () => {
