@@ -2,7 +2,7 @@
   if (window.FMZ_PHASE4_NUTRITION_SLICE3_LOADED) return;
   window.FMZ_PHASE4_NUTRITION_SLICE3_LOADED = true;
 
-  const PHASE4_SLICE3_VERSION = "20260826-phase4f-c-off-logging1";
+  const PHASE4_SLICE3_VERSION = "20260827-phase4fd-barcode1";
   const PHASE4_SLICE3_SEARCH_PAGE_SIZE = 25;
   const PHASE4_SLICE3_FREE_HISTORY_DAYS = 7;
   const PHASE4_SLICE3_MEALS = ["breakfast", "lunch", "dinner", "snacks"];
@@ -42,6 +42,25 @@
       emptyMeal: "Nog niets toegevoegd.",
       emptyDay: "Nog geen voeding gelogd op deze dag.",
       addFood: "Voeding toevoegen",
+      scanBarcode: "Barcode scannen",
+      scanBarcodeTitle: "Barcode zoeken",
+      scanBarcodeIntro: "Scan de barcode of voer hem handmatig in. Er wordt nooit automatisch voeding gelogd.",
+      startCamera: "Camera starten",
+      stopCamera: "Camera stoppen",
+      cameraLoading: "Camera starten...",
+      cameraReady: "Houd de barcode rustig en volledig in beeld.",
+      cameraDenied: "Cameratoegang is geweigerd. Gebruik de handmatige barcode-invoer.",
+      cameraUnsupported: "Deze browser ondersteunt geen veilige camerascan. Gebruik de handmatige barcode-invoer.",
+      manualBarcode: "Barcode handmatig invoeren",
+      barcodePlaceholder: "EAN, UPC of GTIN",
+      lookupBarcode: "Product zoeken",
+      barcodeLookingUp: "Barcode controleren...",
+      barcodeInvalid: "Voer een geldige EAN-8, UPC-A, EAN-13 of GTIN-14 in.",
+      barcodeNotFound: "Geen bruikbaar product gevonden. Je kunt een eigen voedingsmiddel met deze barcode maken.",
+      barcodeUnavailable: "Barcode zoeken is tijdelijk niet beschikbaar. Probeer het opnieuw of maak een eigen voedingsmiddel.",
+      createCustomWithBarcode: "Eigen product met barcode maken",
+      barcodeLabel: "Barcode",
+      scanAgain: "Opnieuw scannen",
       manageFoods: "Voedingsmiddelen beheren",
       searchFood: "Voedingsmiddel zoeken",
       searchPlaceholder: "Zoek op naam, merk of barcode",
@@ -166,6 +185,25 @@
       emptyMeal: "Nothing added yet.",
       emptyDay: "No food has been logged for this day.",
       addFood: "Add food",
+      scanBarcode: "Scan barcode",
+      scanBarcodeTitle: "Find by barcode",
+      scanBarcodeIntro: "Scan the barcode or enter it manually. Food is never logged automatically.",
+      startCamera: "Start camera",
+      stopCamera: "Stop camera",
+      cameraLoading: "Starting camera...",
+      cameraReady: "Hold the complete barcode steady inside the camera view.",
+      cameraDenied: "Camera access was denied. Use manual barcode entry.",
+      cameraUnsupported: "This browser does not support safe camera scanning. Use manual barcode entry.",
+      manualBarcode: "Enter barcode manually",
+      barcodePlaceholder: "EAN, UPC, or GTIN",
+      lookupBarcode: "Find product",
+      barcodeLookingUp: "Checking barcode...",
+      barcodeInvalid: "Enter a valid EAN-8, UPC-A, EAN-13, or GTIN-14.",
+      barcodeNotFound: "No usable product was found. You can create a custom food with this barcode.",
+      barcodeUnavailable: "Barcode lookup is temporarily unavailable. Retry or create a custom food.",
+      createCustomWithBarcode: "Create custom food with barcode",
+      barcodeLabel: "Barcode",
+      scanAgain: "Scan again",
       manageFoods: "Manage foods",
       searchFood: "Search food",
       searchPlaceholder: "Search by name, brand, or barcode",
@@ -290,6 +328,25 @@
       emptyMeal: "Noch nichts hinzugefuegt.",
       emptyDay: "Fuer diesen Tag wurde noch nichts protokolliert.",
       addFood: "Lebensmittel hinzufuegen",
+      scanBarcode: "Barcode scannen",
+      scanBarcodeTitle: "Per Barcode suchen",
+      scanBarcodeIntro: "Scanne den Barcode oder gib ihn manuell ein. Lebensmittel werden nie automatisch protokolliert.",
+      startCamera: "Kamera starten",
+      stopCamera: "Kamera stoppen",
+      cameraLoading: "Kamera wird gestartet...",
+      cameraReady: "Halte den vollstaendigen Barcode ruhig im Kamerabild.",
+      cameraDenied: "Der Kamerazugriff wurde verweigert. Nutze die manuelle Barcode-Eingabe.",
+      cameraUnsupported: "Dieser Browser unterstuetzt keinen sicheren Kamerascan. Nutze die manuelle Barcode-Eingabe.",
+      manualBarcode: "Barcode manuell eingeben",
+      barcodePlaceholder: "EAN, UPC oder GTIN",
+      lookupBarcode: "Produkt suchen",
+      barcodeLookingUp: "Barcode wird geprueft...",
+      barcodeInvalid: "Gib eine gueltige EAN-8, UPC-A, EAN-13 oder GTIN-14 ein.",
+      barcodeNotFound: "Kein nutzbares Produkt gefunden. Du kannst ein eigenes Lebensmittel mit diesem Barcode erstellen.",
+      barcodeUnavailable: "Die Barcode-Suche ist voruebergehend nicht verfuegbar. Versuche es erneut oder erstelle ein eigenes Lebensmittel.",
+      createCustomWithBarcode: "Eigenes Produkt mit Barcode erstellen",
+      barcodeLabel: "Barcode",
+      scanAgain: "Erneut scannen",
       manageFoods: "Lebensmittel verwalten",
       searchFood: "Lebensmittel suchen",
       searchPlaceholder: "Nach Name, Marke oder Barcode suchen",
@@ -395,12 +452,13 @@
     timezone: { status: "idle", error: "", requestToken: 0 },
     day: { status: "idle", value: null, error: "", requestToken: 0 },
     notice: "",
-    portal: { type: "", opener: null, meal: "breakfast", food: null, item: null, offProduct: false, providerCandidate: null, candidateToken: "", feedback: "", feedbackType: "" },
+    portal: { type: "", opener: null, meal: "breakfast", food: null, item: null, offProduct: false, transientOff: false, providerCandidate: null, candidateToken: "", feedback: "", feedbackType: "" },
     search: { status: "idle", query: "", items: [], afterRank: null, afterScore: null, afterName: null, afterSource: null, afterId: null, hasMore: false, error: "", rejectedCount: 0, requestToken: 0 },
     providerSearch: { status: "idle", query: "", items: [], page: 1, hasMore: false, error: "", requestToken: 0, requestId: "", submittedFingerprint: "", lookupStatus: "idle", lookupCandidateId: "", lookupRequestId: "" },
     portions: { status: "idle", items: [], error: "", requestToken: 0 },
     submission: { kind: "", itemId: "", requestId: "", submittedFingerprint: "", inFlight: false },
-    customDraft: { foodId: "", submittedFingerprint: "" },
+    customDraft: { foodId: "", submittedFingerprint: "", barcode: "" },
+    scanner: { status: "idle", error: "", barcode: "", lastDecoded: "", requestId: "", submittedBarcode: "", allowCustom: false },
     dutchDisplayLabels: new Map(),
     dutchDisplayLabelsLoading: new Set(),
     displayLabelsRequestToken: 0
@@ -410,6 +468,10 @@
   const PHASE4_PROVIDER_SEARCH_DEBOUNCE_MS = 400;
   let localSearchDebounceTimer = null;
   let providerSearchDebounceTimer = null;
+  let barcodeScannerStream = null;
+  let barcodeScannerControls = null;
+  let barcodeScannerFrame = 0;
+  let barcodeScannerLocked = false;
 
   function language() {
     const current = state?.accountSettings?.language || "nl";
@@ -542,7 +604,8 @@
     slice3State.providerSearch = { status: "idle", query: "", items: [], page: 1, hasMore: false, error: "", requestToken: slice3State.providerSearch.requestToken + 1, requestId: "", submittedFingerprint: "", lookupStatus: "idle", lookupCandidateId: "", lookupRequestId: "" };
     slice3State.portions = { status: "idle", items: [], error: "", requestToken: slice3State.portions.requestToken + 1 };
     slice3State.submission = { kind: "", itemId: "", requestId: "", submittedFingerprint: "", inFlight: false };
-    slice3State.customDraft = { foodId: "", submittedFingerprint: "" };
+    slice3State.customDraft = { foodId: "", submittedFingerprint: "", barcode: "" };
+    slice3State.scanner = { status: "idle", error: "", barcode: "", lastDecoded: "", requestId: "", submittedBarcode: "", allowCustom: false };
     slice3State.dutchDisplayLabels = new Map();
     slice3State.dutchDisplayLabelsLoading = new Set();
     slice3State.displayLabelsRequestToken += 1;
@@ -610,6 +673,16 @@
       .phase4-s3-provider { display:grid; gap:10px; padding-top:12px; border-top:1px solid var(--line); }
       .phase4-s3-provider-head { display:flex; align-items:center; justify-content:space-between; gap:10px; }
       .phase4-s3-provider-source { color:var(--muted); font-size:12px; font-weight:700; }
+      .phase4-s3-scan-sheet { grid-template-rows:auto minmax(0,1fr); }
+      .phase4-s3-scanner { display:grid; gap:14px; min-width:0; }
+      .phase4-s3-camera { position:relative; width:100%; aspect-ratio:4 / 3; max-height:44dvh; overflow:hidden; border:1px solid var(--line); border-radius:8px; background:#05070a; }
+      .phase4-s3-camera[hidden] { display:none; }
+      .phase4-s3-camera video { width:100%; height:100%; object-fit:cover; display:block; }
+      .phase4-s3-camera-guide { pointer-events:none; position:absolute; inset:20%; border:2px solid #c89312; border-radius:8px; box-shadow:0 0 0 999px rgba(0,0,0,.28); }
+      .phase4-s3-camera-actions { display:flex; flex-wrap:wrap; gap:8px; }
+      .phase4-s3-manual { display:grid; gap:10px; padding-top:12px; border-top:1px solid var(--line); }
+      .phase4-s3-manual-row { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; }
+      .phase4-s3-manual-row input { min-width:0; min-height:44px; }
       .phase4-s3-feedback { min-height:22px; margin:0; color:var(--muted); }
       .phase4-s3-feedback.error { color:#ffb0b0; }
       .phase4-s3-feedback.ok { color:#8bd8b8; }
@@ -620,6 +693,7 @@
       @media (max-width:719px) {
         .phase4-s3-search-sheet { height:94dvh; max-height:94dvh; overflow:hidden; grid-template-rows:auto auto minmax(0,1fr) auto; }
         .phase4-s3-search-results { min-height:0; overflow-y:auto; overscroll-behavior:contain; }
+        .phase4-s3-scan-sheet { height:94dvh; max-height:94dvh; overflow:auto; }
       }
       @media (min-width:720px) {
         .phase4-s3-shell { max-width:920px; }
@@ -631,6 +705,7 @@
         .phase4-s3-progress-grid, .phase4-s3-form-grid, .phase4-s3-detail-grid { grid-template-columns:1fr; }
         .phase4-s3-form-grid .wide { grid-column:auto; }
         .phase4-s3-search-form { grid-template-columns:1fr; }
+        .phase4-s3-manual-row { grid-template-columns:1fr; }
         .phase4-s3-summary-head, .phase4-s3-meal-head { align-items:stretch; flex-direction:column; }
       }
     `;
@@ -868,12 +943,21 @@
     return Boolean(item && item.food_id === null && item.source_provider_snapshot === "usda_fdc");
   }
 
+  function isTransientOffSnapshot(item) {
+    return Boolean(
+      item
+      && item.food_id === null
+      && item.source_provider_snapshot === "open_food_facts"
+      && ["transient_off_log", "transient_off_replace"].includes(String(item?.metadata?.operation || ""))
+    );
+  }
+
   function isOffSnapshot(item) {
     return Boolean(
       item
       && item.food_id === null
       && item.source_provider_snapshot === "open_food_facts"
-      && ["off_log", "off_replace"].includes(String(item?.metadata?.operation || ""))
+      && ["off_log", "off_replace", "transient_off_log", "transient_off_replace"].includes(String(item?.metadata?.operation || ""))
     );
   }
 
@@ -945,6 +1029,267 @@
     return payload.data;
   }
 
+  function normalizeGtin14(value) {
+    const digits = String(value || "").replace(/[^0-9]/g, "");
+    if (![8, 12, 13, 14].includes(digits.length)) return "";
+    const body = digits.slice(0, -1);
+    const check = Number(digits.at(-1));
+    const sum = Array.from(body).reverse().reduce((total, digit, index) => (
+      total + Number(digit) * (index % 2 === 0 ? 3 : 1)
+    ), 0);
+    if ((10 - (sum % 10)) % 10 !== check) return "";
+    return digits.padStart(14, "0");
+  }
+
+  function scannerStatusMessage() {
+    if (slice3State.scanner.status === "loading") return text("cameraLoading");
+    if (slice3State.scanner.status === "ready") return text("cameraReady");
+    if (slice3State.scanner.status === "lookup") return text("barcodeLookingUp");
+    return slice3State.scanner.error || "";
+  }
+
+  function updateScannerStatus() {
+    const portal = document.getElementById("phase4Slice3Portal");
+    const status = portal?.querySelector("[data-phase4-s3-scanner-status]");
+    if (status) {
+      status.textContent = scannerStatusMessage();
+      status.classList.toggle("error", slice3State.scanner.status === "error");
+    }
+    const start = portal?.querySelector("[data-phase4-s3-start-camera]");
+    const stop = portal?.querySelector("[data-phase4-s3-stop-camera]");
+    if (start) start.hidden = ["loading", "ready", "lookup"].includes(slice3State.scanner.status);
+    if (stop) stop.hidden = !["loading", "ready"].includes(slice3State.scanner.status);
+  }
+
+  function stopBarcodeScanner({ update = false } = {}) {
+    if (barcodeScannerFrame) window.cancelAnimationFrame(barcodeScannerFrame);
+    barcodeScannerFrame = 0;
+    try { barcodeScannerControls?.stop?.(); } catch { /* scanner cleanup is best effort */ }
+    barcodeScannerControls = null;
+    if (barcodeScannerStream) barcodeScannerStream.getTracks().forEach((track) => track.stop());
+    barcodeScannerStream = null;
+    const video = document.getElementById("phase4Slice3ScannerVideo");
+    if (video) {
+      try { video.pause(); } catch { /* no-op */ }
+      video.srcObject = null;
+    }
+    barcodeScannerLocked = false;
+    if (update && slice3State.portal.type === "scanner") {
+      slice3State.scanner.status = "idle";
+      slice3State.scanner.error = "";
+      renderPortal();
+    }
+  }
+
+  async function handleDecodedBarcode(value) {
+    if (barcodeScannerLocked || slice3State.scanner.status === "lookup" || slice3State.portal.type !== "scanner") return;
+    const normalized = normalizeGtin14(value);
+    if (!normalized || normalized === slice3State.scanner.lastDecoded) return;
+    barcodeScannerLocked = true;
+    slice3State.scanner.lastDecoded = normalized;
+    await lookupBarcode(value);
+  }
+
+  async function startNativeBarcodeScanner(video) {
+    const supported = typeof window.BarcodeDetector?.getSupportedFormats === "function"
+      ? await window.BarcodeDetector.getSupportedFormats()
+      : ["ean_8", "ean_13", "upc_a", "upc_e"];
+    const formats = ["ean_8", "ean_13", "upc_a", "upc_e"].filter((format) => supported.includes(format));
+    if (!formats.length) throw new Error("native barcode formats unavailable");
+    barcodeScannerStream = await navigator.mediaDevices.getUserMedia({
+      audio: false,
+      video: { facingMode: { ideal: "environment" }, width: { ideal: 1280 }, height: { ideal: 720 } }
+    });
+    video.srcObject = barcodeScannerStream;
+    await video.play();
+    const detector = new window.BarcodeDetector({ formats });
+    const detect = async () => {
+      if (!barcodeScannerStream || slice3State.portal.type !== "scanner") return;
+      try {
+        const results = await detector.detect(video);
+        if (results[0]?.rawValue) await handleDecodedBarcode(results[0].rawValue);
+      } catch { /* individual undecodable frames are expected */ }
+      if (barcodeScannerStream && slice3State.portal.type === "scanner" && !barcodeScannerLocked) {
+        barcodeScannerFrame = window.requestAnimationFrame(detect);
+      }
+    };
+    barcodeScannerFrame = window.requestAnimationFrame(detect);
+  }
+
+  async function startZxingBarcodeScanner(video) {
+    const Reader = window.ZXingBrowser?.BrowserMultiFormatReader;
+    if (typeof Reader !== "function") throw new Error("barcode decoder unavailable");
+    const reader = new Reader();
+    barcodeScannerControls = await reader.decodeFromConstraints(
+      { audio: false, video: { facingMode: { ideal: "environment" } } },
+      video,
+      (result, _error, controls) => {
+        if (controls) barcodeScannerControls = controls;
+        const value = result?.getText?.() || result?.text || "";
+        if (value) void handleDecodedBarcode(value);
+      }
+    );
+    barcodeScannerStream = window.MediaStream && video.srcObject instanceof window.MediaStream ? video.srcObject : null;
+  }
+
+  async function startBarcodeScanner() {
+    if (slice3State.portal.type !== "scanner" || slice3State.scanner.status === "loading") return;
+    if (!window.isSecureContext || !navigator.mediaDevices?.getUserMedia) {
+      slice3State.scanner.status = "error";
+      slice3State.scanner.error = text("cameraUnsupported");
+      renderPortal();
+      return;
+    }
+    stopBarcodeScanner();
+    slice3State.scanner.status = "loading";
+    slice3State.scanner.error = "";
+    renderPortal();
+    const video = document.getElementById("phase4Slice3ScannerVideo");
+    if (!video) return;
+    try {
+      if (typeof window.BarcodeDetector === "function") {
+        try {
+          await startNativeBarcodeScanner(video);
+        } catch (nativeError) {
+          const denied = ["NotAllowedError", "SecurityError", "PermissionDeniedError"].includes(String(nativeError?.name || ""));
+          if (denied) throw nativeError;
+          stopBarcodeScanner();
+          await startZxingBarcodeScanner(video);
+        }
+      } else await startZxingBarcodeScanner(video);
+      slice3State.scanner.status = "ready";
+      updateScannerStatus();
+    } catch (error) {
+      stopBarcodeScanner();
+      const denied = ["NotAllowedError", "SecurityError", "PermissionDeniedError"].includes(String(error?.name || ""));
+      slice3State.scanner.status = "error";
+      slice3State.scanner.error = text(denied ? "cameraDenied" : "cameraUnsupported");
+      renderPortal();
+    }
+  }
+
+  function mapLocalBarcodeResult(result) {
+    if (result?.result_type === "off_branded_food") {
+      return {
+        result_type: "off_branded_food",
+        source_provider: "open_food_facts",
+        source_id: String(result.source_id || ""),
+        id: String(result.source_id || ""),
+        display_name: String(result.display_name || ""),
+        name: String(result.display_name || ""),
+        brand: String(result.brand || ""),
+        nutrition_basis: String(result.nutrition_basis || ""),
+        reference_amount: Number(result.reference_amount),
+        reference_unit: String(result.reference_unit || ""),
+        energy_kcal: Number(result.energy_kcal_reference),
+        protein_grams: Number(result.protein_grams_reference),
+        carbohydrate_grams: Number(result.carbohydrate_grams_reference),
+        fat_grams: Number(result.fat_grams_reference),
+        fiber_grams: result.fiber_grams_reference === null ? null : Number(result.fiber_grams_reference),
+        quality_status: String(result.quality_status || ""),
+        loggable: result.loggable === true
+      };
+    }
+    if (!["custom_food", "generic_food"].includes(String(result?.result_type || ""))) return null;
+    return { ...result, id: String(result.id || result.source_id || ""), name: String(result.name || result.display_name || "") };
+  }
+
+  function isSafeTransientOffCandidate(candidate) {
+    return Boolean(
+      candidate?.provider === "open_food_facts"
+      && candidate?.candidate_id
+      && candidate?.candidate_token
+      && normalizeGtin14(candidate?.barcode) === candidate?.barcode
+      && ["g", "ml"].includes(candidate?.reference_unit)
+      && candidate?.reference_amount === 100
+      && [candidate?.kcal, candidate?.protein, candidate?.carbohydrates, candidate?.fat]
+        .every((value) => Number.isFinite(Number(value)) && Number(value) >= 0)
+    );
+  }
+
+  function transientCandidateFood(candidate) {
+    return {
+      result_type: "transient_off_food",
+      source_provider: "open_food_facts",
+      source_id: candidate.candidate_id,
+      id: candidate.candidate_id,
+      display_name: candidate.name,
+      name: candidate.name,
+      brand: candidate.brand,
+      barcode: candidate.barcode,
+      nutrition_basis: candidate.nutrition_basis,
+      reference_amount: 100,
+      reference_unit: candidate.reference_unit,
+      energy_kcal: candidate.kcal,
+      protein_grams: candidate.protein,
+      carbohydrate_grams: candidate.carbohydrates,
+      fat_grams: candidate.fat,
+      fiber_grams: candidate.fiber,
+      metadata: { transient_off: true }
+    };
+  }
+
+  function openScanner(meal, opener, item = null) {
+    stopBarcodeScanner();
+    slice3State.scanner = { status: "idle", error: "", barcode: "", lastDecoded: "", requestId: "", submittedBarcode: "", allowCustom: false };
+    openPortal("scanner", opener, { meal, item });
+  }
+
+  async function lookupBarcode(value) {
+    if (slice3State.portal.type !== "scanner") return;
+    const original = String(value || "").trim();
+    const normalized = normalizeGtin14(original);
+    if (!normalized) {
+      barcodeScannerLocked = false;
+      slice3State.scanner.status = "error";
+      slice3State.scanner.error = text("barcodeInvalid");
+      slice3State.scanner.allowCustom = false;
+      renderPortal();
+      return;
+    }
+    if (slice3State.scanner.status === "lookup" && slice3State.scanner.submittedBarcode === normalized) return;
+    if (!slice3State.scanner.requestId || slice3State.scanner.submittedBarcode !== normalized) {
+      slice3State.scanner.requestId = uuid();
+    }
+    slice3State.scanner.barcode = original;
+    slice3State.scanner.submittedBarcode = normalized;
+    slice3State.scanner.status = "lookup";
+    slice3State.scanner.error = "";
+    slice3State.scanner.allowCustom = false;
+    stopBarcodeScanner();
+    renderPortal();
+    try {
+      const data = await providerRequest("off-barcode", { barcode: original, request_id: slice3State.scanner.requestId });
+      if (slice3State.portal.type !== "scanner") return;
+      if (data?.source === "local") {
+        const food = mapLocalBarcodeResult(data.result);
+        if (!food?.id) throw new Error("local barcode result invalid");
+        if (food.result_type === "off_branded_food") openPortal("off", slice3State.portal.opener, { food, meal: slice3State.portal.meal, item: slice3State.portal.item });
+        else openEntry(food, slice3State.portal.meal, slice3State.portal.opener, slice3State.portal.item);
+        return;
+      }
+      if (data?.source !== "open_food_facts" || !isSafeTransientOffCandidate(data?.result)) throw new Error("transient OFF result invalid");
+      const candidate = data.result;
+      openPortal("off", slice3State.portal.opener, {
+        food: transientCandidateFood(candidate),
+        meal: slice3State.portal.meal,
+        item: slice3State.portal.item,
+        transientOff: true,
+        providerCandidate: candidate,
+        candidateToken: candidate.candidate_token
+      });
+    } catch (error) {
+      if (slice3State.portal.type !== "scanner") return;
+      const code = String(error?.code || "");
+      const unavailableProduct = Number(error?.status || 0) === 404 || code.startsWith("off_product_");
+      barcodeScannerLocked = false;
+      slice3State.scanner.status = "error";
+      slice3State.scanner.error = text(unavailableProduct ? "barcodeNotFound" : "barcodeUnavailable");
+      slice3State.scanner.allowCustom = unavailableProduct;
+      renderPortal();
+    }
+  }
+
   function cancelProviderSearchDebounce() {
     if (providerSearchDebounceTimer !== null) window.clearTimeout(providerSearchDebounceTimer);
     providerSearchDebounceTimer = null;
@@ -1014,6 +1359,7 @@
       food: options.food || null,
       item: options.item || null,
       offProduct: options.offProduct === true,
+      transientOff: options.transientOff === true,
       providerCandidate: options.providerCandidate || null,
       candidateToken: options.candidateToken || "",
       feedback: options.feedback || "",
@@ -1027,9 +1373,10 @@
     cancelLocalSearchDebounce();
     cancelProviderSearchDebounce();
     const opener = slice3State.portal?.opener;
+    stopBarcodeScanner();
     document.getElementById("phase4Slice3Portal")?.remove();
     document.body.classList.remove("phase4-s3-dialog-open");
-    slice3State.portal = { type: "", opener: null, meal: "breakfast", food: null, item: null, offProduct: false, providerCandidate: null, candidateToken: "", feedback: "", feedbackType: "" };
+    slice3State.portal = { type: "", opener: null, meal: "breakfast", food: null, item: null, offProduct: false, transientOff: false, providerCandidate: null, candidateToken: "", feedback: "", feedbackType: "" };
     if (restoreFocus) opener?.focus?.();
   }
 
@@ -1048,6 +1395,7 @@
       document.body.appendChild(portal);
     }
     if (slice3State.portal.type === "search") portal.innerHTML = searchDialog();
+    if (slice3State.portal.type === "scanner") portal.innerHTML = scannerDialog();
     if (slice3State.portal.type === "off") portal.innerHTML = offProductDialog();
     if (slice3State.portal.type === "entry") portal.innerHTML = entryDialog();
     if (slice3State.portal.type === "item") portal.innerHTML = itemDialog();
@@ -1215,9 +1563,36 @@
         <div id="phase4Slice3LocalSearchResults">${localSearchResultsMarkup()}</div>
         <div id="phase4Slice3ProviderSearchResults">${providerSearchMarkup()}</div>
       </div>
-      <div class="phase4-s3-dialog-actions"><button class="secondary-btn" data-phase4-s3-custom type="button">${escapeHTML(text("createCustom"))}</button></div>
+      <div class="phase4-s3-dialog-actions"><button class="phase4-s3-gold" data-phase4-s3-scan-barcode type="button">${escapeHTML(text("scanBarcode"))}</button><button class="secondary-btn" data-phase4-s3-custom type="button">${escapeHTML(text("createCustom"))}</button></div>
     `;
     return dialogFrame(text("searchFood"), body, text(slice3State.portal.meal), "phase4-s3-search-sheet");
+  }
+
+  function scannerDialog() {
+    const scanner = slice3State.scanner;
+    const cameraVisible = ["loading", "ready"].includes(scanner.status);
+    const customAction = scanner.allowCustom
+      ? `<button class="phase4-s3-gold" data-phase4-s3-custom-barcode type="button">${escapeHTML(text("createCustomWithBarcode"))}</button>`
+      : "";
+    const body = `
+      <div class="phase4-s3-scanner">
+        <p class="phase4-s3-muted">${escapeHTML(text("scanBarcodeIntro"))}</p>
+        <div class="phase4-s3-camera" ${cameraVisible ? "" : "hidden"}>
+          <video id="phase4Slice3ScannerVideo" playsinline muted aria-label="${escapeHTML(text("scanBarcode"))}"></video>
+          <span class="phase4-s3-camera-guide" aria-hidden="true"></span>
+        </div>
+        <p class="phase4-s3-feedback ${scanner.status === "error" ? "error" : ""}" data-phase4-s3-scanner-status aria-live="polite">${escapeHTML(scannerStatusMessage())}</p>
+        <div class="phase4-s3-camera-actions">
+          <button class="phase4-s3-gold" data-phase4-s3-start-camera type="button" ${["loading", "ready", "lookup"].includes(scanner.status) ? "hidden" : ""}>${escapeHTML(text("startCamera"))}</button>
+          <button class="secondary-btn" data-phase4-s3-stop-camera type="button" ${["loading", "ready"].includes(scanner.status) ? "" : "hidden"}>${escapeHTML(text("stopCamera"))}</button>
+        </div>
+        <form id="phase4Slice3BarcodeForm" class="phase4-s3-manual" novalidate>
+          <label class="field"><span>${escapeHTML(text("manualBarcode"))}</span><span class="phase4-s3-manual-row"><input name="barcode" inputmode="numeric" maxlength="18" value="${escapeHTML(scanner.barcode)}" placeholder="${escapeHTML(text("barcodePlaceholder"))}" autocomplete="off" required><button class="secondary-btn" type="submit" ${scanner.status === "lookup" ? "disabled" : ""}>${escapeHTML(text("lookupBarcode"))}</button></span></label>
+        </form>
+        <div class="phase4-s3-dialog-actions">${customAction}<button class="secondary-btn" data-phase4-s3-back-search type="button">${escapeHTML(text("back"))}</button><button class="secondary-btn" data-phase4-s3-close type="button">${escapeHTML(text("close"))}</button></div>
+      </div>
+    `;
+    return dialogFrame(text("scanBarcodeTitle"), body, text(slice3State.portal.meal), "phase4-s3-scan-sheet");
   }
 
   function renderSearchResults() {
@@ -1483,6 +1858,33 @@
     openPortal("entry", opener, { food, meal, item, offProduct: true });
   }
 
+  function openTransientOffEntry(candidate, candidateToken, meal, opener, item = null) {
+    resetSubmission(item ? "transient-off-edit" : "transient-off-new");
+    slice3State.portions = { status: "ready", items: [], error: "", requestToken: slice3State.portions.requestToken + 1 };
+    const food = candidate ? transientCandidateFood(candidate) : {
+      result_type: "transient_off_food",
+      source_provider: "open_food_facts",
+      source_id: item?.metadata?.candidate_id || item?.provider_food_id_snapshot || "",
+      id: item?.metadata?.candidate_id || item?.provider_food_id_snapshot || "",
+      display_name: item?.food_name_snapshot || "",
+      name: item?.food_name_snapshot || "",
+      brand: item?.brand_snapshot || "",
+      reference_amount: item?.reference_amount_snapshot || 100,
+      reference_unit: item?.reference_unit_snapshot || item?.consumed_unit || "g",
+      nutrition_basis: item?.metadata?.reference_basis || (item?.reference_unit_snapshot === "ml" ? "per_100_ml" : "per_100_g"),
+      metadata: { transient_off: true }
+    };
+    openPortal("entry", opener, {
+      food,
+      meal,
+      item,
+      offProduct: true,
+      transientOff: true,
+      providerCandidate: candidate || null,
+      candidateToken: candidateToken || ""
+    });
+  }
+
   async function loadPortions(foodId) {
     if (!supabaseClient || !foodId) return;
     const requestToken = slice3State.portions.requestToken + 1;
@@ -1637,7 +2039,7 @@
   function offEntryFingerprint(payload, original, food) {
     return JSON.stringify([
       original?.id || null,
-      food?.source_id || food?.id || original?.metadata?.off_product_id || null,
+      food?.source_id || food?.id || original?.metadata?.candidate_id || original?.metadata?.off_product_id || null,
       payload.meal,
       payload.quantity,
       payload.consumedUnit,
@@ -1712,6 +2114,9 @@
   }
 
   async function saveOffEntry(form, payload, original) {
+    if (slice3State.portal.transientOff || isTransientOffSnapshot(original)) {
+      return saveTransientOffEntry(form, payload, original);
+    }
     const food = slice3State.portal.food || {};
     const offProductId = food.source_id || food.id || original?.metadata?.off_product_id;
     const expectedUnit = food.reference_unit || original?.reference_unit_snapshot;
@@ -1758,6 +2163,66 @@
       if (code === "23505") resetSubmission(kind);
       showFeedback(errorMessage(error), "error");
       if (code === "40001") await loadDay(true);
+    } finally {
+      if (slice3State.portal.type === "entry") setSubmissionBusy(form, false);
+    }
+  }
+
+  async function saveTransientOffEntry(form, payload, original) {
+    const candidate = slice3State.portal.providerCandidate;
+    const candidateToken = slice3State.portal.candidateToken;
+    const expectedUnit = candidate?.reference_unit || slice3State.portal.food?.reference_unit || original?.reference_unit_snapshot;
+    if (!isTransientOffSnapshot(original) && original && !candidateToken) {
+      showFeedback(text("providerCandidateInvalid"), "error");
+      return;
+    }
+    if (!original && (!candidate || !candidateToken)) {
+      showFeedback(text("providerCandidateInvalid"), "error");
+      return;
+    }
+    if (!["g", "ml"].includes(expectedUnit) || payload.consumedUnit !== expectedUnit) {
+      showFeedback(text("offUnavailable"), "error");
+      return;
+    }
+    const kind = original ? "transient-off-edit" : "transient-off-new";
+    const fingerprint = offEntryFingerprint(payload, original, slice3State.portal.food || {});
+    prepareSubmission(kind, fingerprint);
+    if (slice3State.submission.inFlight) return;
+    setSubmissionBusy(form, true);
+    showFeedback(text("saving"));
+    try {
+      const body = original
+        ? {
+            ...(candidateToken ? { candidate_token: candidateToken } : {}),
+            original_item_id: original.id,
+            replacement_item_id: slice3State.submission.itemId,
+            request_id: slice3State.submission.requestId,
+            expected_original_updated_at: original.updated_at,
+            meal_moment: payload.meal,
+            consumed_quantity: payload.quantity,
+            consumed_unit: expectedUnit,
+            notes: payload.notes || null
+          }
+        : {
+            candidate_token: candidateToken,
+            item_id: slice3State.submission.itemId,
+            request_id: slice3State.submission.requestId,
+            log_date: slice3State.selectedDate,
+            timezone_name: slice3State.timezoneName,
+            timezone_offset_minutes: timezoneOffsetMinutes(slice3State.selectedDate),
+            meal_moment: payload.meal,
+            consumed_quantity: payload.quantity,
+            consumed_unit: expectedUnit,
+            notes: payload.notes || null,
+            consumed_at: localConsumedAt(slice3State.selectedDate)
+          };
+      const data = await providerRequest(original ? "off-replace" : "off-log", body);
+      acceptAuthoritativeDay(data?.result?.day, original ? "edited" : "saved");
+    } catch (error) {
+      const code = String(error?.code || "");
+      if (code.includes("request_conflict")) resetSubmission(kind);
+      showFeedback(providerErrorMessage(error), "error");
+      if (code.includes("stale")) await loadDay(true);
     } finally {
       if (slice3State.portal.type === "entry") setSubmissionBusy(form, false);
     }
@@ -1884,6 +2349,10 @@
       openProviderEntry(null, "", item.meal_moment, opener, item);
       return;
     }
+    if (isTransientOffSnapshot(item)) {
+      openTransientOffEntry(null, "", item.meal_moment, opener, item);
+      return;
+    }
     if (isOffSnapshot(item)) {
       openOffEntry({
         id: item.metadata?.off_product_id,
@@ -1915,12 +2384,16 @@
 
   function customDialog() {
     const unitOptions = PHASE4_SLICE3_UNITS.map((unit) => `<option value="${unit}">${escapeHTML(unitLabel(unit))}</option>`).join("");
+    const barcodeField = slice3State.customDraft.barcode
+      ? `<label class="field wide"><span>${escapeHTML(text("barcodeLabel"))}</span><input name="barcode" value="${escapeHTML(slice3State.customDraft.barcode)}" readonly></label>`
+      : "";
     const body = `
       <form id="phase4Slice3CustomForm" class="phase4-s3-form" novalidate>
         <p class="phase4-s3-muted">${escapeHTML(text("customIntro"))}</p>
         <div class="phase4-s3-form-grid">
           <label class="field wide"><span>${escapeHTML(text("name"))}</span><input name="name" maxlength="240" required autocomplete="off"></label>
           <label class="field wide"><span>${escapeHTML(text("brand"))}</span><input name="brand" maxlength="160" autocomplete="off"></label>
+          ${barcodeField}
           <label class="field"><span>${escapeHTML(text("referenceAmount"))}</span><input name="referenceAmount" type="number" inputmode="decimal" min="0.001" max="100000" step="0.001" value="100" required autocomplete="off"></label>
           <label class="field"><span>${escapeHTML(text("referenceUnit"))}</span><select name="referenceUnit">${unitOptions}</select></label>
           <label class="field" data-phase4-s3-conversion hidden><span>${escapeHTML(text("conversionAmount"))}</span><input name="conversionAmount" type="number" inputmode="decimal" min="0.001" max="100000" step="0.001" autocomplete="off"></label>
@@ -1950,6 +2423,7 @@
     return {
       name: String(data.get("name") || "").trim(),
       brand: String(data.get("brand") || "").trim(),
+      barcode: normalizeGtin14(data.get("barcode") || slice3State.customDraft.barcode),
       referenceAmount,
       referenceUnit: unit,
       referenceMass: unit === "g" || (needsConversion && conversionUnit === "g") ? explicitAmount : null,
@@ -1979,7 +2453,7 @@
   }
 
   function customFingerprint(payload) {
-    return JSON.stringify([payload.name, payload.brand, payload.referenceAmount, payload.referenceUnit, payload.referenceMass, payload.referenceVolume, payload.energy, payload.protein, payload.carbohydrate, payload.fat, payload.fiber]);
+    return JSON.stringify([payload.name, payload.brand, payload.barcode || null, payload.referenceAmount, payload.referenceUnit, payload.referenceMass, payload.referenceVolume, payload.energy, payload.protein, payload.carbohydrate, payload.fat, payload.fiber]);
   }
 
   async function saveCustom(form) {
@@ -1994,10 +2468,12 @@
     slice3State.customDraft.submittedFingerprint = fingerprint;
     showFeedback(text("saving"));
     try {
-      const { data, error } = await supabaseClient.rpc("fmz_phase4_upsert_custom_food", {
+      const rpcName = payload.barcode ? "fmz_phase4_upsert_custom_food_with_barcode" : "fmz_phase4_upsert_custom_food";
+      const rpcPayload = {
         p_food_id: slice3State.customDraft.foodId,
         p_name: payload.name,
         p_brand: payload.brand || null,
+        ...(payload.barcode ? { p_barcode: payload.barcode } : {}),
         p_reference_amount: payload.referenceAmount,
         p_reference_unit: payload.referenceUnit,
         p_reference_mass_grams: payload.referenceMass,
@@ -2009,10 +2485,11 @@
         p_fat_grams: payload.fat,
         p_fiber_grams: payload.fiber,
         p_expected_updated_at: null
-      });
+      };
+      const { data, error } = await supabaseClient.rpc(rpcName, rpcPayload);
       if (error) throw error;
       if (!data?.id) throw new Error("custom food result unavailable");
-      slice3State.customDraft = { foodId: "", submittedFingerprint: "" };
+      slice3State.customDraft = { foodId: "", submittedFingerprint: "", barcode: "" };
       openEntry(data, slice3State.portal.meal, slice3State.portal.opener, slice3State.portal.item);
     } catch (error) {
       showFeedback(errorMessage(error), "error");
@@ -2039,10 +2516,20 @@
     if (button.dataset.phase4S3ProviderMore !== undefined) return searchProviderFoods({ reset: false });
     if (button.dataset.phase4S3SelectProvider) return selectProviderFood(button.dataset.phase4S3SelectProvider);
     if (button.dataset.phase4S3SelectFood) return selectSearchFood(button.dataset.phase4S3SelectFood);
-    if (button.dataset.phase4S3UseOff !== undefined) return openOffEntry(slice3State.portal.food, slice3State.portal.meal, slice3State.portal.opener || button, slice3State.portal.item);
+    if (button.dataset.phase4S3ScanBarcode !== undefined) return openScanner(slice3State.portal.meal, slice3State.portal.opener || button, slice3State.portal.item);
+    if (button.dataset.phase4S3StartCamera !== undefined) return startBarcodeScanner();
+    if (button.dataset.phase4S3StopCamera !== undefined) return stopBarcodeScanner({ update: true });
+    if (button.dataset.phase4S3UseOff !== undefined) {
+      if (slice3State.portal.transientOff) return openTransientOffEntry(slice3State.portal.providerCandidate, slice3State.portal.candidateToken, slice3State.portal.meal, slice3State.portal.opener || button, slice3State.portal.item);
+      return openOffEntry(slice3State.portal.food, slice3State.portal.meal, slice3State.portal.opener || button, slice3State.portal.item);
+    }
     if (button.dataset.phase4S3BackOff !== undefined) return openPortal("search", slice3State.portal.opener || button, { meal: slice3State.portal.meal, item: slice3State.portal.item });
     if (button.dataset.phase4S3Custom !== undefined) {
-      slice3State.customDraft = { foodId: uuid(), submittedFingerprint: "" };
+      slice3State.customDraft = { foodId: uuid(), submittedFingerprint: "", barcode: "" };
+      return openPortal("custom", slice3State.portal.opener || button, { meal: slice3State.portal.meal, item: slice3State.portal.item });
+    }
+    if (button.dataset.phase4S3CustomBarcode !== undefined) {
+      slice3State.customDraft = { foodId: uuid(), submittedFingerprint: "", barcode: slice3State.scanner.submittedBarcode };
       return openPortal("custom", slice3State.portal.opener || button, { meal: slice3State.portal.meal, item: slice3State.portal.item });
     }
     if (button.dataset.phase4S3BackSearch !== undefined || button.dataset.phase4S3ChangeFood !== undefined) return openSearch(slice3State.portal.meal, slice3State.portal.opener || button, slice3State.portal.item);
@@ -2069,6 +2556,10 @@
   }
 
   function handleInput(event) {
+    if (event.target?.matches?.('#phase4Slice3BarcodeForm input[name="barcode"]')) {
+      slice3State.scanner.barcode = event.target.value;
+      return;
+    }
     if (!event.target?.matches?.('#phase4Slice3SearchForm input[name="query"]')) return;
     runUnifiedSearch(event.target.value);
   }
@@ -2081,6 +2572,10 @@
     if (event.target?.id === "phase4Slice3EntryForm") {
       event.preventDefault();
       saveEntry(event.target);
+    }
+    if (event.target?.id === "phase4Slice3BarcodeForm") {
+      event.preventDefault();
+      lookupBarcode(new FormData(event.target).get("barcode"));
     }
     if (event.target?.id === "phase4Slice3CustomForm") {
       event.preventDefault();

@@ -112,9 +112,9 @@ check("trigger function is not directly executable", migration.includes("fmz_pha
 check("only OFF write RPCs are granted authenticated", migration.includes("fmz_phase4_log_off_food_item(") && migration.includes("fmz_phase4_replace_off_food_log_item(") && (migration.match(/\) to authenticated;/g) || []).length === 2);
 check("anon PUBLIC service role are revoked", ["from public;", "from anon;", "from service_role;"].every((clause) => migration.includes(clause)));
 
-check("runtime uses 4F-C version", runtime.includes('PHASE4_SLICE3_VERSION = "20260826-phase4f-c-off-logging1"'));
-check("index serves the 4F-C cache", index.includes('app.js?v=20260826-phase4f-c1'));
-check("app loads the 4F-C runtime cache", app.includes('assets/phase4-nutrition-slice3.js?v=20260826-phase4f-c1'));
+check("runtime preserves 4F-C under the 4F-D successor", runtime.includes('PHASE4_SLICE3_VERSION = "20260827-phase4fd-barcode1"'));
+check("index serves the reviewed 4F-D cache", index.includes('app.js?v=20260827-phase4fd-barcode1'));
+check("app loads the reviewed 4F-D runtime cache", app.includes('assets/phase4-nutrition-slice3.js?v=20260827-phase4fd-barcode1'));
 check("runtime recognizes OFF snapshots separately", runtime.includes("function isOffSnapshot(") && runtime.includes('source_provider_snapshot === "open_food_facts"'));
 check("OFF detail keeps explicit selection", runtime.includes("data-phase4-s3-use-off") && runtime.includes("function openOffEntry("));
 check("OFF entry respects product unit", entryDialog.includes("food?.reference_unit || item?.reference_unit_snapshot") && entryDialog.includes("offUnitOnly"));
@@ -151,7 +151,7 @@ check("verifier checks frozen logging", verification.includes("frozen_logging_fu
 
 check("no browser service role", !/service[_-]?role/i.test(runtime));
 check("no production reference", !/(?:hgoygcviutmynaihcvpd|wzsupwcfkkiguuobfevx)/i.test(runtime + migration + verification));
-check("no AI or provider call added", !/(?:openai|anthropic|gemini|youri[_-]?ai)/i.test(runtime) && !/providerRequest\(["'](?:off|off_log)/.test(runtime));
+check("no AI or direct upstream provider call added", !/(?:openai|anthropic|gemini|youri[_-]?ai)/i.test(runtime) && !/(?:api\.openfoodfacts|world\.openfoodfacts|api\.nal\.usda)/i.test(runtime));
 check("no MutationObserver", !runtime.includes("MutationObserver"));
 check("no polling", !/setInterval\s*\(/.test(runtime));
 

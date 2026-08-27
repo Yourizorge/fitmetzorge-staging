@@ -39,8 +39,8 @@ const offDialog = functionBody(runtime, "offProductDialog");
 const renderResults = functionBody(runtime, "renderSearchResults");
 const renderPortal = runtime.slice(runtime.indexOf("function renderPortal("), runtime.indexOf("function openSearch("));
 
-check("4F-B runtime remains present in the 4F-C successor", runtime.includes('PHASE4_SLICE3_VERSION = "20260826-phase4f-c-off-logging1"'));
-check("4F-B runtime is preserved under the 4F-C cache", index.includes("app.js?v=20260826-phase4f-c1") && app.includes("phase4-nutrition-slice3.js?v=20260826-phase4f-c1"));
+check("4F-B runtime remains present in the 4F-D successor", runtime.includes('PHASE4_SLICE3_VERSION = "20260827-phase4fd-barcode1"'));
+check("4F-B runtime is preserved under the 4F-D cache", index.includes("app.js?v=20260827-phase4fd-barcode1") && app.includes("phase4-nutrition-slice3.js?v=20260827-phase4fd-barcode1"));
 check("unified catalog RPC is used", searchFoods.includes('rpc("fmz_phase4_search_nutrition_catalog"'));
 check("legacy local-only search RPC is removed", !runtime.includes('rpc("fmz_phase4_search_foods"'));
 check("unified search is bounded", runtime.includes("PHASE4_SLICE3_SEARCH_PAGE_SIZE = 25") && searchFoods.includes("p_page_size: PHASE4_SLICE3_SEARCH_PAGE_SIZE"));

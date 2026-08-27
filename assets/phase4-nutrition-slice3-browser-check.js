@@ -130,6 +130,30 @@ function harnessSource() {
       provider_food_id: "171496", name: "Turkey breast, roasted", kcal: 147, protein: 30.1, fat: 2.1,
       provenance: { ...providerCandidate1.provenance, provider_food_id: "171496" }
     };
+    const transientOffCandidate = {
+      candidate_id: "82000000-0000-5000-8000-000000000001",
+      candidate_token: "signed-off-candidate-token-1",
+      provider: "open_food_facts",
+      provider_label: "Open Food Facts",
+      provider_food_id: "04006381333931",
+      barcode: "04006381333931",
+      barcode_original: "4006381333931",
+      name: "Barcode test drink",
+      brand: "Test brand",
+      data_type: "off_branded",
+      mapping_version: "phase4_off_barcode_v1",
+      reference_amount: 100,
+      reference_unit: "ml",
+      nutrition_basis: "per_100_ml",
+      kcal: 42,
+      protein: 0,
+      carbohydrates: 10.5,
+      fat: 0,
+      fiber: null,
+      quality: "candidate",
+      attribution: { label: "Open Food Facts contributors", license: "ODbL-1.0", url: "https://world.openfoodfacts.org/" },
+      provenance: { provider: "open_food_facts", provider_food_id: "04006381333931", reference_basis: "per_100_ml", source_revision: "off_rev:1", source_checksum: "a".repeat(64), retrieved_at: "2026-08-27T10:00:00.000Z" }
+    };
     window.__mock = {
       target: null,
       foods: [food1, food2],
@@ -157,6 +181,9 @@ function harnessSource() {
       offLogCommitThenNetworkOnce: false,
       offReplaceCommitThenNetworkOnce: false,
       offReplaceStaleOnce: false,
+      transientOffRequests: new Map(),
+      transientOffReplacementRequests: new Map(),
+      offBarcodeDelay: 0,
       timezone: "UTC"
     };
     function totals(items) {
@@ -294,6 +321,47 @@ function harnessSource() {
         }
       };
     }
+    function transientOffItemFromBody(body, candidate, original = null) {
+      const factor = Number(body.consumed_quantity) / 100;
+      return {
+        id: original ? body.replacement_item_id : body.item_id,
+        user_id: onlineProfile.id,
+        food_log_id: original?.food_log_id || "20000000-0000-4000-8000-000000000001",
+        food_id: null,
+        food_portion_id: null,
+        meal_moment: body.meal_moment,
+        sort_order: original?.sort_order || window.__mock.activeItems.filter((item) => item.meal_moment === body.meal_moment).length,
+        consumed_quantity: body.consumed_quantity,
+        consumed_unit: candidate.reference_unit,
+        food_name_snapshot: candidate.name,
+        brand_snapshot: candidate.brand,
+        reference_amount_snapshot: 100,
+        reference_unit_snapshot: candidate.reference_unit,
+        calculation_basis: "direct_reference",
+        energy_kcal_snapshot: Number((candidate.kcal * factor).toFixed(3)),
+        protein_grams_snapshot: Number((candidate.protein * factor).toFixed(3)),
+        carbohydrate_grams_snapshot: Number((candidate.carbohydrates * factor).toFixed(3)),
+        fat_grams_snapshot: Number((candidate.fat * factor).toFixed(3)),
+        fiber_grams_snapshot: candidate.fiber === null ? null : Number((candidate.fiber * factor).toFixed(3)),
+        source_provider_snapshot: "open_food_facts",
+        provider_food_id_snapshot: candidate.provider_food_id,
+        source_version_snapshot: candidate.provenance.source_revision,
+        provenance_snapshot: { ...candidate.provenance },
+        notes: body.notes || null,
+        status: "active",
+        request_id: body.request_id,
+        consumed_at: original?.consumed_at || body.consumed_at,
+        updated_at: original ? "2026-08-27T12:34:56.234567+00:00" : "2026-08-27T12:34:56.123456+00:00",
+        archived_at: null,
+        log_date: original?.log_date || body.log_date,
+        metadata: {
+          operation: original ? "transient_off_replace" : "transient_off_log",
+          candidate_id: candidate.candidate_id,
+          reference_basis: candidate.nutrition_basis,
+          ...(original ? { replaces_item_id: original.id } : {})
+        }
+      };
+    }
     function jsonResponse(status, value) {
       return new Response(JSON.stringify(value), { status, headers: { "content-type": "application/json" } });
     }
@@ -328,9 +396,10 @@ function harnessSource() {
           if (query.includes("mixed")) rows = [unifiedFood(customSearchFood), offProducts[0], unifiedFood(window.__mock.foods[0], 1)];
           return { data: rows.slice(0, args.p_page_size).map((food) => ({ ...food })), error: null };
         }
-        if (name === "fmz_phase4_upsert_custom_food") {
+        if (name === "fmz_phase4_upsert_custom_food" || name === "fmz_phase4_upsert_custom_food_with_barcode") {
           const food = {
             id: args.p_food_id, catalog_scope: "custom", name: args.p_name, brand: args.p_brand,
+            barcode: args.p_barcode || null,
             reference_amount: args.p_reference_amount, reference_unit: args.p_reference_unit,
             reference_mass_grams: args.p_reference_mass_grams, reference_volume_ml: args.p_reference_volume_ml,
             density_g_per_ml: null, energy_kcal: args.p_energy_kcal, protein_grams: args.p_protein_grams,
@@ -491,6 +560,36 @@ function harnessSource() {
       if (init.method !== "POST" || init.headers?.Authorization !== "Bearer test-member-jwt" || init.headers?.apikey !== SUPABASE_ANON_KEY) {
         return jsonResponse(401, { ok: false, error: { code: "unauthorized", message: "Authentication is required." } });
       }
+      if (route === "off-barcode") {
+        if (window.__mock.offBarcodeDelay) await new Promise((resolve) => setTimeout(resolve, window.__mock.offBarcodeDelay));
+        if (body.barcode === "036000291452") {
+          const food = window.__mock.foods[0];
+          return jsonResponse(200, { ok: true, data: { cache: "not_checked", source: "local", result: { ...unifiedFood(food), id: food.id, name: food.name, metadata: food.metadata, energy_kcal: food.energy_kcal, protein_grams: food.protein_grams, carbohydrate_grams: food.carbohydrate_grams, fat_grams: food.fat_grams, fiber_grams: food.fiber_grams } } });
+        }
+        if (body.barcode === "96385074") return jsonResponse(404, { ok: false, error: { code: "off_product_not_found", message: "No product found." } });
+        return jsonResponse(200, { ok: true, data: { cache: "miss", source: "open_food_facts", result: { ...transientOffCandidate }, provider: "open_food_facts" } });
+      }
+      if (route === "off-log") {
+        if (body.candidate_token !== transientOffCandidate.candidate_token) return jsonResponse(409, { ok: false, error: { code: "off_candidate_token_invalid", message: "Candidate token invalid." } });
+        const fingerprint = requestFingerprint(body);
+        const existing = window.__mock.transientOffRequests.get(body.request_id);
+        if (existing) return jsonResponse(200, { ok: true, data: { cache: "hit", result: { item: { ...existing.item }, day: dayPayload(existing.item.log_date), idempotent_replay: true } } });
+        const item = transientOffItemFromBody(body, transientOffCandidate);
+        window.__mock.activeItems.push(item);
+        window.__mock.transientOffRequests.set(body.request_id, { fingerprint, item });
+        return jsonResponse(200, { ok: true, data: { cache: "hit", result: { item: { ...item }, day: dayPayload(item.log_date), idempotent_replay: false } } });
+      }
+      if (route === "off-replace") {
+        const index = window.__mock.activeItems.findIndex((item) => item.id === body.original_item_id && item.status === "active");
+        if (index < 0) return jsonResponse(403, { ok: false, error: { code: "off_replace_forbidden", message: "Replacement is unavailable." } });
+        const original = window.__mock.activeItems[index];
+        if (original.updated_at !== body.expected_original_updated_at) return jsonResponse(409, { ok: false, error: { code: "off_replace_stale", message: "Item changed." } });
+        const item = transientOffItemFromBody(body, transientOffCandidate, original);
+        original.status = "archived";
+        window.__mock.archivedItems.push({ ...original });
+        window.__mock.activeItems.splice(index, 1, item);
+        return jsonResponse(200, { ok: true, data: { cache: body.candidate_token ? "hit" : "not_checked", result: { replacement_item: { ...item }, archived_original: { id: original.id, status: "archived" }, day: dayPayload(item.log_date), idempotent_replay: false } } });
+      }
       if (route === "search") {
         if (window.__mock.providerSearchFailure === "rate") return jsonResponse(429, { ok: false, error: { code: "provider_rate_limited", message: "Provider is temporarily rate limited." } });
         if (window.__mock.providerSearchFailure === "unavailable") return jsonResponse(503, { ok: false, error: { code: "provider_unavailable", message: "Provider is temporarily unavailable." } });
@@ -643,6 +742,58 @@ async function run() {
   await page.getByRole("button", { name: "Doelen opslaan" }).click();
   await page.waitForFunction(() => !document.getElementById("phase4NutritionPortal"));
   check("Slice 2 target authority updates Slice 3", await page.locator(".phase4-s3-progress").first().getByText("2.200 kcal", { exact: true }).count() === 1 && await page.getByRole("button", { name: "Dagdoel aanpassen" }).count() === 1);
+
+  await page.locator('[data-phase4-s3-add="breakfast"]').click();
+  await page.getByRole("button", { name: "Barcode scannen" }).click();
+  check("barcode scanner is contextual inside add-food", await page.getByRole("heading", { name: "Barcode zoeken" }).count() === 1);
+  await page.getByRole("button", { name: "Camera starten" }).click();
+  check("camera unavailable keeps manual fallback visible", await page.locator('#phase4Slice3BarcodeForm input[name="barcode"]').count() === 1 && await page.getByText(/handmatige barcode-invoer/).count() === 1);
+  await page.locator('#phase4Slice3BarcodeForm input[name="barcode"]').fill("123");
+  await page.locator("#phase4Slice3BarcodeForm").evaluate((form) => form.requestSubmit());
+  check("invalid barcode is rejected before Edge request", await page.getByText(/geldige EAN-8/).count() === 1 && await page.evaluate(() => window.__mock.providerCalls.filter((call) => call.route === "off-barcode").length === 0));
+  await page.locator('#phase4Slice3BarcodeForm input[name="barcode"]').fill("036000291452");
+  await page.locator("#phase4Slice3BarcodeForm").evaluate((form) => form.requestSubmit());
+  await page.waitForSelector("#phase4Slice3EntryForm");
+  check("known local barcode reuses frozen local entry flow", await page.getByText("Havermout", { exact: true }).count() >= 1 && await page.evaluate(() => window.__mock.providerCalls.filter((call) => call.route === "off-barcode" && call.body.barcode === "036000291452").length === 1));
+  await page.locator("#phase4Slice3Portal .phase4-s3-close").click();
+
+  await page.locator('[data-phase4-s3-add="breakfast"]').click();
+  await page.getByRole("button", { name: "Barcode scannen" }).click();
+  await page.evaluate(() => { window.__mock.offBarcodeDelay = 40; });
+  await page.locator('#phase4Slice3BarcodeForm input[name="barcode"]').fill("4006381333931");
+  await page.locator("#phase4Slice3BarcodeForm").evaluate((form) => { form.requestSubmit(); form.requestSubmit(); });
+  await page.getByRole("heading", { name: "Product bekijken" }).waitFor();
+  check("duplicate barcode submits create one lookup", await page.evaluate(() => window.__mock.providerCalls.filter((call) => call.route === "off-barcode" && call.body.barcode === "4006381333931").length === 1));
+  check("transient OFF result renders trusted product preview", await page.getByText("Barcode test drink", { exact: true }).count() === 1 && await page.getByText(/Open Food Facts-bijdragers/).count() >= 1);
+  await page.getByRole("button", { name: "Product toevoegen" }).click();
+  await page.waitForSelector('#phase4Slice3EntryForm[data-off-entry="true"]');
+  check("per-100-ml transient result preserves millilitre-only flow", await page.locator('#phase4Slice3EntryForm input[name="selection"]').getAttribute("value") === "direct:ml");
+  check("transient provider logging is initialized without browser nutrients", await page.evaluate(() => {
+    const form = document.querySelector("#phase4Slice3EntryForm");
+    return form?.dataset.offEntry === "true" && !form.querySelector('[name="energy"], [name="protein"], [name="carbohydrate"], [name="fat"]');
+  }));
+  await page.locator("#phase4Slice3Portal .phase4-s3-close").click();
+
+  await page.locator('[data-phase4-s3-add="breakfast"]').click();
+  await page.getByRole("button", { name: "Barcode scannen" }).click();
+  await page.locator('#phase4Slice3BarcodeForm input[name="barcode"]').fill("96385074");
+  await page.locator("#phase4Slice3BarcodeForm").evaluate((form) => form.requestSubmit());
+  await page.getByRole("button", { name: "Eigen product met barcode maken" }).waitFor();
+  check("unknown OFF product offers private custom fallback", await page.getByText(/Geen bruikbaar product gevonden/).count() === 1);
+  await page.getByRole("button", { name: "Eigen product met barcode maken" }).click();
+  check("custom fallback prefills normalized barcode", await page.locator('#phase4Slice3CustomForm input[name="barcode"]').inputValue() === "00000096385074");
+  await page.locator("#phase4Slice3Portal .phase4-s3-close").click();
+
+  for (const viewport of [{ width: 390, height: 844 }, { width: 320, height: 700 }]) {
+    await page.setViewportSize(viewport);
+    await page.locator('[data-phase4-s3-add="breakfast"]').click();
+    await page.getByRole("button", { name: "Barcode scannen" }).click();
+    const scannerLayout = await page.evaluate(() => ({ viewport: document.documentElement.clientWidth, scroll: document.documentElement.scrollWidth, sheetBottom: document.querySelector(".phase4-s3-scan-sheet")?.getBoundingClientRect().bottom || 0, height: innerHeight }));
+    check(`scanner ${viewport.width}x${viewport.height} has no horizontal overflow`, scannerLayout.scroll <= scannerLayout.viewport);
+    check(`scanner ${viewport.width}x${viewport.height} remains vertically reachable`, scannerLayout.sheetBottom <= scannerLayout.height + 1);
+    await page.locator("#phase4Slice3Portal .phase4-s3-close").click();
+  }
+  await page.setViewportSize({ width: 390, height: 844 });
 
   await page.locator('[data-phase4-s3-add="breakfast"]').click();
   await page.waitForFunction(() => document.querySelectorAll(".phase4-s3-search-row").length === 2);
