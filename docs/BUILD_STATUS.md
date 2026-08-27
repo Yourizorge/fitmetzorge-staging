@@ -1,6 +1,6 @@
 # FitMetZorge Build Status
 
-Last updated: 2026-08-19
+Last updated: 2026-08-27
 
 - Baseline audit: COMPLETE
 - Phase 0A Governance: COMPLETE
@@ -14,10 +14,10 @@ Last updated: 2026-08-19
 - Phase 0B Storage verification: COMPLETE
 - Master Plan Specification: COMPLETE
 - Master Plan Final Review: COMPLETE
-- Implementation: PHASE 4 IN PROGRESS / SCHEMA SLICE 1 COMPLETE, LIVE, AND VERIFIED / FUNCTIONAL SLICE 2 OWNER-TESTED AND FROZEN / ATOMIC REPLACEMENT RPC LIVE AND VERIFIED / FUNCTIONAL SLICE 3 OWNER-TESTED, COMPLETE, AND FROZEN / SLICE 4A LOCKED / SLICE 4B LIVE AND COMPLETE / SLICE 4C LIVE AND VERIFIED / USDA SEARCH+LOOKUP EDGE LIVE AND SMOKE-VERIFIED / SLICE 4D MIGRATION LIVE, CORRECTED VERIFIER READY FOR RERUN, EDGE EXTENSION NOT DEPLOYED
+- Implementation: PHASE 4 IN PROGRESS / SLICES 1-3 COMPLETE AND FROZEN / SLICES 4B-4E LIVE AND VERIFIED / 4F-A COMPLETE AND FROZEN / 4F-B OWNER-ACCEPTED AND FROZEN / 4F-C COMPLETE AND FROZEN / 4F-D OWNER BARCODE HOTFIX LIVE, REAL-PHONE RETEST PENDING
 - Production Migration: NOT STARTED
 
-Current next step: run the corrected Slice 4D read-only verifier on staging `mokxyyullfhkfalopbzd`. Search/lookup is already deployed and smoke-verified; Slice 4D `/log`/`/replace` Edge deployment and frontend wiring remain separate later gates. No catalog import, legacy migration, AI, trainer access, or production change is authorized by this status.
+Current next step: owner real-phone retest of the focused 4F-D barcode hotfix on staging `mokxyyullfhkfalopbzd`. Phase 4F-D may return to COMPLETE / FROZEN only after the camera-acquisition and SPA fallback paths pass that test. No Phase 4F-E, legacy migration, AI, trainer access, or production change is authorized by this status.
 
 ## Environment Guardrail
 
@@ -120,7 +120,7 @@ Summary: The simplified Vandaag composition, compact Trackers overview/details, 
 
 ### Phase 4 Nutrition Engine
 
-Status: IN PROGRESS; SCHEMA SLICE 1 COMPLETE / LIVE / VERIFIED; FUNCTIONAL SLICES 2-3 OWNER-TESTED / FROZEN; SLICES 4B-4C LIVE / VERIFIED; SLICE 4D OWNER-ACCEPTED / FROZEN; SLICE 4E ACCEPTED / FROZEN; 4F-A COMPLETE / FROZEN; 4F-B OWNER-ACCEPTED / FROZEN; 4F-C COMPLETE / FROZEN; 4F-D COMPLETE / LIVE / VERIFIED / FROZEN
+Status: IN PROGRESS; SCHEMA SLICE 1 COMPLETE / LIVE / VERIFIED; FUNCTIONAL SLICES 2-3 OWNER-TESTED / FROZEN; SLICES 4B-4E LIVE / VERIFIED / FROZEN; 4F-A COMPLETE / FROZEN; 4F-B OWNER-ACCEPTED / FROZEN; 4F-C COMPLETE / FROZEN; 4F-D OWNER BARCODE HOTFIX LIVE / REAL-PHONE RETEST PENDING
 
 Architecture audit: PASS.
 
@@ -158,7 +158,7 @@ Artifacts remain locked: foundation migration SHA-256 `A19FF1AA8DAEC57CD61A8DB5F
 
 ### Phase 4 Slice 4F - OFF Branded Catalog Foundation
 
-Status: FOUNDATION + 24,458-PRODUCT IMPORT + SEARCH PERFORMANCE LIVE / VERIFIED; 4F-A COMPLETE / FROZEN; 4F-B OWNER-ACCEPTED / FROZEN; 4F-C COMPLETE / FROZEN; 4F-D COMPLETE / LIVE / VERIFIED / FROZEN
+Status: FOUNDATION + 24,458-PRODUCT IMPORT + SEARCH PERFORMANCE LIVE / VERIFIED; 4F-A COMPLETE / FROZEN; 4F-B OWNER-ACCEPTED / FROZEN; 4F-C COMPLETE / FROZEN; 4F-D OWNER BARCODE HOTFIX LIVE / REAL-PHONE RETEST PENDING
 
 Summary: The ODbL domain remains separate from `public.foods`. Package 4F-A imported and verified exactly 24,458 OFF products and 74,184 source-derived names, with 20,355 `per_100_g` and 4,103 `per_100_ml` products; its corrected unified-search performance package is complete and frozen. Package 4F-B deployed Dutch display labels and the branded unified-search selection UX to staging at commit `acc1c6bfbda3109c4af7a129e5979c42a46ce648` and passed owner acceptance. Package 4F-C is live at frontend commit `ebd0fc61652ed624f82cfda35fb96e16141b8a9e` using the existing `food_logs`/`food_log_items` history and day-total architecture plus two focused authenticated RPCs. Nutrition and ODbL provenance resolve server-side; browser nutrients, density conversion, parallel log tables, trainer expansion and canonical promotion are absent. The live verifier passed 18/18 checks and the controlled authenticated g/ml E2E passed log, replay, edit, atomic replacement, stale conflict, totals, history and archive before a full rollback.
 
@@ -166,9 +166,9 @@ Artifacts: migration SHA-256 unchanged at `606658F53EA29083E315F43546B507B40C9D0
 
 4F-C artifacts: migration SHA-256 `15C3ABAFDB7D77E85397006BA1D62C9221DA0820C1052AF284911B9EDF2DFF45`; verifier SHA-256 `E48E4FDFCA17928BB85DE4D478002E3DCE92996210BF8E7CC916870FE1747375`; live runtime SHA-256 `AF1CCCCEDF762E1E36D1813441363CA6B1E502E94B4C8B8D9C065DD1B1BB0801`. The migration hash supersedes the pre-execution artifact after a parser-only parenthesization correction; the failed first execution rolled back fully before this corrected artifact was reviewed. The verifier hash supersedes `271EF1A161829574D7C420C1209A896CD56B5110696395D31046268F364D4E40` after a read-only SQL `LIKE` underscore false-negative was replaced by a literal parameter-name check. 4F-C static/security checks PASS, 98 checks; Nutrition browser vertical-slice checks PASS, 121 checks; live verifier PASS, 18/18; post-E2E rollback/count guard PASS. Database changed for 4F-C: YES on STAGING. Frontend deployed for 4F-C: YES on STAGING. Production touched: NO.
 
-4F-D status: COMPLETE / LIVE / VERIFIED / FROZEN on staging. The owner-selected unknown-barcode architecture is local-first exact GTIN lookup, followed on a miss by a server-only exact Open Food Facts lookup and a short-lived source-bound candidate. Logging writes an immutable transient ODbL snapshot and never inserts the runtime product into `nutrition_off_products`, `nutrition_off_product_names`, `nutrition_off_catalog_releases`, or `public.foods`. The live parser-corrected migration is `20260827_phase4_nutrition_slice4fd_transient_off_barcode.sql` SHA-256 `476F829A2C669C029B87BEC9F24459F7E1F5430D02FB32559C50CD9C418C2A2B`; the metadata-robust read-only verifier SHA-256 is `5D1DED2671AF128FF3C2024B41321162211C5FCCE4D72EA0047BB45D41115C59`. The focused parent-context correction migration SHA-256 is `80EB696450ADC81A38BE12EBEC1631F660C85425CC8453E836047815BE3EA0BF`; its read-only verifier SHA-256 is `96A7FCCF598463E4098AEF56A6D59F238FAA9212C9599597D58607D46E5C9913` and passed 12/12 checks. The first execution failed before commit and was read-only verified as fully rolled back.
+4F-D status: OWNER BARCODE HOTFIX LIVE / REAL-PHONE RETEST PENDING on staging. The owner-selected unknown-barcode architecture remains local-first exact GTIN lookup, followed on a miss by a server-only exact Open Food Facts lookup and a short-lived source-bound candidate. Logging writes an immutable transient ODbL snapshot and never inserts the runtime product into `nutrition_off_products`, `nutrition_off_product_names`, `nutrition_off_catalog_releases`, or `public.foods`. The live parser-corrected migration is `20260827_phase4_nutrition_slice4fd_transient_off_barcode.sql` SHA-256 `476F829A2C669C029B87BEC9F24459F7E1F5430D02FB32559C50CD9C418C2A2B`; the metadata-robust read-only verifier SHA-256 is `5D1DED2671AF128FF3C2024B41321162211C5FCCE4D72EA0047BB45D41115C59`. The focused parent-context correction migration SHA-256 is `80EB696450ADC81A38BE12EBEC1631F660C85425CC8453E836047815BE3EA0BF`; its read-only verifier SHA-256 is `96A7FCCF598463E4098AEF56A6D59F238FAA9212C9599597D58607D46E5C9913` and passed 12/12 checks. The first execution failed before commit and was read-only verified as fully rolled back.
 
-4F-D controlled authenticated staging E2E passed local and transient barcode resolution, 100 g and 100 ml authority, immutable ODbL snapshots, log and replace replay, same-product and changed-product edit, archive, custom fallback isolation, and cleanup. All eight controlled rows from the two completed diagnostic runs are archived and zero remain active. Persistent counts remain exactly 24,458 OFF products, 74,184 OFF names, 64 canonical foods and 197 aliases; no transient fixture was promoted. Edge `nutrition-provider` v8 remains JWT-protected. Scanner frontend commit `bb1f7e4` is live with cache `20260827-phase4fd-barcode1`; the runtime, ZXing MIT bundle and licence are byte-identical to the commit. Browser checks PASS 135/135 and 4F-D static/security checks PASS 93/93. Production touched: NO.
+4F-D controlled authenticated staging E2E passed local and transient barcode resolution, 100 g and 100 ml authority, immutable ODbL snapshots, log and replace replay, same-product and changed-product edit, archive, custom fallback isolation, and cleanup. All eight controlled rows from the two completed diagnostic runs are archived and zero remain active. Persistent counts remain exactly 24,458 OFF products, 74,184 OFF names, 64 canonical foods and 197 aliases; no transient fixture was promoted. The focused owner hotfix is live at commit `36b29a0` with cache `20260827-phase4fd-owner-barcode1` and Edge `nutrition-provider` v9, with JWT verification enabled. It canonicalizes manual/scanned GTIN input, narrows camera decoding to supported one-dimensional formats, uses a faster bounded ZXing cadence, requests rear-camera HD/autofocus where supported, and routes an exact but incomplete SPA package to trusted local SPA catalog alternatives without inventing nutrients or mutating the catalog. Live runtime files and the unchanged vendored ZXing MIT bundle are byte-identical to the commit. Edge tests PASS 50/50, 4F-D static/security PASS 100/100, Nutrition browser checks PASS 138/138, and the five-fixture decoder benchmark passed 100/100 samples with 6.0 ms median and 8.7 ms p95. Real hardware camera acquisition remains the explicit owner retest gate. Production touched: NO.
 
 ### Production Migration
 
