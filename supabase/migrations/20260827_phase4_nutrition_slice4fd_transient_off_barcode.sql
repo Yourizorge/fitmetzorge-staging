@@ -1242,10 +1242,10 @@ begin
      or v_item.protein_grams_snapshot is distinct from round((v_candidate ->> 'protein_grams_per_100')::numeric * v_factor, 3)
      or v_item.carbohydrate_grams_snapshot is distinct from round((v_candidate ->> 'carbohydrate_grams_per_100')::numeric * v_factor, 3)
      or v_item.fat_grams_snapshot is distinct from round((v_candidate ->> 'fat_grams_per_100')::numeric * v_factor, 3)
-     or v_item.fiber_grams_snapshot is distinct from case
+     or v_item.fiber_grams_snapshot is distinct from (case
        when v_candidate -> 'fiber_grams_per_100' = 'null'::jsonb then null
        else round((v_candidate ->> 'fiber_grams_per_100')::numeric * v_factor, 3)
-     end then
+     end) then
     raise exception 'historical transient OFF snapshot failed immutable identity validation' using errcode = '22023';
   end if;
   return v_candidate;

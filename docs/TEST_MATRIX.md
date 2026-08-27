@@ -629,5 +629,5 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | 4F-D static/security checks | PASS - 80 |
 | Nutrition browser vertical-slice checks | PASS - 135 |
 | Phase 1 / Phase 2 / Phase 3 / Member UX frozen suites | PASS - 75 / 46 / 222 / 56 |
-| Migration/verifier | LOCAL REVIEWED - `C0D46B78A17837C48E3C324078F8977E1C4DEAEA265A7C4E1A483B189737ED91` / `FFB728379BDF41CAF1CE92D9D56CB2E31578839302D9A517EC469DE29159AF40` |
+| Migration/verifier | PARSER-CORRECTED / REVIEWED - `476F829A2C669C029B87BEC9F24459F7E1F5430D02FB32559C50CD9C418C2A2B` / `FFB728379BDF41CAF1CE92D9D56CB2E31578839302D9A517EC469DE29159AF40`; failed first execution fully rolled back |
 | Database / Edge staging / frontend staging / production | UNCHANGED / UNCHANGED / UNCHANGED / UNTOUCHED |

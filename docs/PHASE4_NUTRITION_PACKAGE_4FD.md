@@ -15,7 +15,7 @@ The member starts the camera explicitly. Native `BarcodeDetector` is preferred; 
 ## Reviewed Artifacts
 
 - Migration: `supabase/migrations/20260827_phase4_nutrition_slice4fd_transient_off_barcode.sql`
-- Migration SHA-256: `C0D46B78A17837C48E3C324078F8977E1C4DEAEA265A7C4E1A483B189737ED91`
+- Migration SHA-256: `476F829A2C669C029B87BEC9F24459F7E1F5430D02FB32559C50CD9C418C2A2B`
 - Read-only verifier: `supabase/verification/20260827_phase4_nutrition_slice4fd_transient_off_barcode_verification.sql`
 - Verifier SHA-256: `FFB728379BDF41CAF1CE92D9D56CB2E31578839302D9A517EC469DE29159AF40`
 - Edge routes: `off-barcode`, `off-log`, `off-replace`
