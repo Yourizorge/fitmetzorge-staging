@@ -53,7 +53,7 @@ This matrix records the required functional, security, entitlement, AI, migratio
 | Phase 4 | Package 4F-A OFF catalog/performance | Separate ODbL release/product/name domain, 24,458 products, 74,184 names, typed bounded search, local barcode, p95 gate | OWNER ACCEPTANCE GATE | PASS - COMPLETE / FROZEN |
 | Phase 4 | Package 4F-B Dutch branded search UX | Dutch display labels, OFF-branded unified search, explicit selection and source attribution | OWNER ACCEPTANCE GATE | PASS - OWNER-ACCEPTED / FROZEN |
 | Phase 4 | Package 4F-C OFF authoritative logging | Server-resolved ODbL snapshot, g/ml basis isolation, authoritative totals, retry/edit/archive | STAGING MIGRATION + E2E GATE | PASS - COMPLETE / FROZEN |
-| Phase 4 | Package 4F-D transient unknown barcode | Local-first GTIN, exact OFF validation, signed transient snapshot, scanner/manual input, custom fallback | CONSOLIDATED STAGING MIGRATION + EDGE + FRONTEND E2E GATE | PASS - LOCAL REVIEW; STAGING GO PENDING |
+| Phase 4 | Package 4F-D transient unknown barcode | Local-first GTIN, exact OFF validation, signed transient snapshot, scanner/manual input, custom fallback | CONSOLIDATED STAGING MIGRATION + EDGE + FRONTEND E2E GATE | PASS - COMPLETE / LIVE / VERIFIED / FROZEN |
 | Phase 4 | Nutrition Pro | Full kcal/protein/carbs/fat goals, saved meals, recipes, copy meal/day | BLOCKING GATE | PLANNED |
 | Phase 4 | Barcode | Barcode behind entitlement and feature flag | BLOCKING GATE | PLANNED |
 | Phase 4 | Consumer boundaries | Invoices do not appear in consumer nutrition | BLOCKING GATE | PLANNED |
@@ -626,8 +626,11 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | Manual barcode uses identical lookup path | PASS |
 | Native BarcodeDetector + vendored MIT ZXing fallback | PASS - ZXING SHA-256 `066BC34EDFCDD4A33F0964AEEC967752A0DEA1CCAF36E58E319AC9FCB5070F6A` |
 | Edge unit/contract tests | PASS - 49 |
-| 4F-D static/security checks | PASS - 80 |
+| 4F-D static/security checks | PASS - 93 |
 | Nutrition browser vertical-slice checks | PASS - 135 |
 | Phase 1 / Phase 2 / Phase 3 / Member UX frozen suites | PASS - 75 / 46 / 222 / 56 |
-| Migration/verifier | MIGRATION LIVE / METADATA-ROBUST VERIFIER READY - `476F829A2C669C029B87BEC9F24459F7E1F5430D02FB32559C50CD9C418C2A2B` / `5D1DED2671AF128FF3C2024B41321162211C5FCCE4D72EA0047BB45D41115C59`; failed first execution fully rolled back |
-| Database / Edge staging / frontend staging / production | UNCHANGED / UNCHANGED / UNCHANGED / UNTOUCHED |
+| Migration/verifier | PASS - main migration/verifier live; parent-context correction `80EB696450ADC81A38BE12EBEC1631F660C85425CC8453E836047815BE3EA0BF` and verifier `96A7FCCF598463E4098AEF56A6D59F238FAA9212C9599597D58607D46E5C9913`; correction verifier PASS 12/12 |
+| Controlled authenticated staging E2E | PASS - local hit, transient OFF, 100 g/ml, log/replay, same/changing-product edit, archive, immutable history and cleanup |
+| Catalog/member preservation | PASS - 24,458 products, 74,184 names, 64 canonical foods, 197 aliases; zero transient promotion; zero active controlled rows |
+| Live frontend | PASS - commit `bb1f7e4`; cache `20260827-phase4fd-barcode1`; runtime and vendored ZXing byte-identical |
+| Database / Edge staging / frontend staging / production | APPROVED ADDITIVE MIGRATIONS LIVE / EDGE V8 LIVE / DEPLOYED / UNTOUCHED |
