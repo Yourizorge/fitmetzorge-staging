@@ -10,6 +10,8 @@ const check = (name, condition) => checks.push({ name, condition: Boolean(condit
 
 const migration = read("supabase/migrations/20260827_phase4_nutrition_slice4fd_transient_off_barcode.sql");
 const verifier = read("supabase/verification/20260827_phase4_nutrition_slice4fd_transient_off_barcode_verification.sql");
+const parentContextFix = read("supabase/migrations/20260827165426_phase4_nutrition_slice4fd_transient_off_parent_context_fix.sql");
+const parentContextVerifier = read("supabase/verification/20260827165426_phase4_nutrition_slice4fd_transient_off_parent_context_fix_verification.sql");
 const handler = read("supabase/functions/nutrition-provider/handler.ts");
 const edgeIndex = read("supabase/functions/nutrition-provider/index.ts");
 const cryptoSource = read("supabase/functions/nutrition-provider/crypto.ts");
@@ -24,6 +26,9 @@ const vendorHash = crypto.createHash("sha256").update(bytes("assets/vendor/zxing
 const sql = migration.replace(/^--.*$/gmu, "");
 const verifierSql = verifier.replace(/^--.*$/gmu, "").trim();
 const verifierExecutable = verifierSql.replace(/'(?:''|[^'])*'/gsu, "''");
+const parentContextSql = parentContextFix.replace(/^--.*$/gmu, "");
+const parentContextVerifierSql = parentContextVerifier.replace(/^--.*$/gmu, "").trim();
+const parentContextVerifierExecutable = parentContextVerifierSql.replace(/'(?:''|[^'])*'/gsu, "''");
 const localResolver = migration.slice(
   migration.indexOf("create or replace function public.fmz_phase4_resolve_member_barcode"),
   migration.indexOf("create or replace function public.fmz_phase4_upsert_custom_food_with_barcode")
@@ -66,6 +71,14 @@ check("historical resolver is active-own-item only", migration.includes("active 
 check("historical resolver revalidates immutable totals", migration.includes("historical transient OFF snapshot failed immutable identity validation") && migration.includes("energy_kcal_snapshot is distinct from round"));
 check("service-only transient mutations", ["fmz_phase4_log_transient_off_food_item", "fmz_phase4_replace_transient_off_food_item", "fmz_phase4_resolve_transient_off_food_log_item"].every((name) => migration.includes(`grant execute on function public.${name}`)) && !/grant execute on function public\.fmz_phase4_(?:log|replace|resolve)_transient_off[^;]+to authenticated/isu.test(migration));
 check("internal candidate and mutation functions are non-executable", migration.includes("fmz_phase4_validate_transient_off_candidate(jsonb) from service_role") && migration.includes("fmz_phase4_transient_off_food_item_mutation") && !/grant execute on function public\.fmz_phase4_(?:validate_transient|transient_off_food_item_mutation)/iu.test(migration));
+check("parent-context fix is one transaction", /^\s*begin;/iu.test(parentContextSql) && /commit;\s*$/iu.test(parentContextSql));
+check("parent-context fix has exact staging guard", parentContextFix.includes("STAGING ONLY: mokxyyullfhkfalopbzd"));
+check("parent-context fix changes functions only", !/\b(?:alter|create|drop|truncate)\s+table\b/iu.test(parentContextSql) && !/\b(?:insert\s+into|update|delete\s+from)\s+public\./iu.test(parentContextSql));
+check("parent food-log guard accepts transient context", parentContextFix.includes("fmz.phase4_transient_off_snapshot_user_id") && parentContextFix.includes("v_transient_off_user_id is distinct from v_user_id"));
+check("all populated owner contexts must agree", parentContextFix.includes("v_authenticated_user_id is distinct from v_user_id") && parentContextFix.includes("v_internal_user_id is distinct from v_user_id") && parentContextFix.includes("v_transient_off_user_id is distinct from v_user_id"));
+check("transient wrapper establishes context before mutation", parentContextFix.indexOf("fmz.phase4_transient_off_snapshot_user_id") < parentContextFix.lastIndexOf("fmz_phase4_transient_off_food_item_mutation("));
+check("transient wrapper remains service-role only", parentContextFix.includes(") to service_role;") && !/grant\s+execute[\s\S]*?fmz_phase4_log_transient_off_food_item[\s\S]*?to\s+(?:public|anon|authenticated)/iu.test(parentContextFix));
+check("parent-context fix preserves trigger immutability", parentContextFix.includes("food log identity and target snapshots are immutable") && parentContextFix.includes("member food log source is fixed server-side"));
 
 check("Edge exposes exact OFF routes", ["off-barcode", "off-log", "off-replace"].every((route) => handler.includes(`route === \"${route}\"`) || edgeTypes.includes(`\"${route}\"`)));
 check("Edge is local-first", handler.indexOf("resolveLocalBarcode") < handler.indexOf("dependencies.off.lookupBarcode"));
@@ -118,6 +131,9 @@ check("verifier has no DDL or DML", !/\b(insert|update|delete|alter|create|drop|
 check("verifier checks persistent catalog non-mutation", verifier.includes("no_persistent_catalog_mutation"));
 check("verifier checks operational isolation", verifier.includes("operational_table_acl_isolated"));
 check("verifier checks frozen RLS", verifier.includes("rls_preserved"));
+check("parent-context verifier is one read-only SELECT/CTE", /^(with\b|select\b)/iu.test(parentContextVerifierSql) && /;\s*$/u.test(parentContextVerifierSql) && (parentContextVerifierExecutable.match(/;/gu) || []).length === 1);
+check("parent-context verifier has no DDL or DML", !/\b(insert|update|delete|alter|create|drop|truncate|grant|revoke|call)\b/iu.test(parentContextVerifierExecutable));
+check("parent-context verifier covers ACL and frozen guards", parentContextVerifier.includes("transient_log_wrapper_service_role_only") && parentContextVerifier.includes("frozen_tables_present_with_rls") && parentContextVerifier.includes("no_delete_or_trainer_policy_expansion"));
 
 const failed = checks.filter((entry) => !entry.condition);
 for (const entry of checks) console.log(`${entry.condition ? "PASS" : "FAIL"} - ${entry.name}`);
