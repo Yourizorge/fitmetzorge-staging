@@ -80,6 +80,7 @@ function offFood(overrides: Record<string, unknown> = {}) {
       brands: "Testmerk",
       countries_tags: ["en:netherlands"],
       product_quantity_unit: "g",
+      nutrition_data_per: "100g",
       rev: 42,
       last_updated_t: 1_777_000_000,
       nutriments: {
@@ -1538,12 +1539,31 @@ test("OFF GTIN normalization and explicit g/ml contracts reject unsafe products"
   assert.equal(grams.candidate_id, await createOffCandidateId(OFF_GTIN14));
 
   const millilitres = await normalizeOffProductPayload(
-    offFood({ product: { product_quantity_unit: "ml" } }),
+    offFood({ product: { product_quantity_unit: "ml", nutrition_data_per: "100ml" } }),
     OFF_GTIN14,
     NOW,
   );
   assert.equal(millilitres.reference_unit, "ml");
   assert.equal(millilitres.nutrition_basis, "per_100_ml");
+  const gramsFromNutritionBasis = await normalizeOffProductPayload(
+    offFood({ product: { product_quantity_unit: undefined, nutrition_data_per: "100g" } }),
+    OFF_GTIN14,
+    NOW,
+  );
+  assert.equal(gramsFromNutritionBasis.reference_unit, "g");
+  const millilitresFromNutritionBasis = await normalizeOffProductPayload(
+    offFood({ product: { product_quantity_unit: undefined, nutrition_data_per: "100ml" } }),
+    OFF_GTIN14,
+    NOW,
+  );
+  assert.equal(millilitresFromNutritionBasis.reference_unit, "ml");
+  await assert.rejects(() =>
+    normalizeOffProductPayload(
+      offFood({ product: { product_quantity_unit: "g", nutrition_data_per: "100ml" } }),
+      OFF_GTIN14,
+      NOW,
+    )
+  );
   await assert.rejects(() =>
     normalizeOffProductPayload(
       offFood({ product: { countries_tags: ["en:belgium"] } }),
@@ -1641,10 +1661,14 @@ test("transient OFF logging uses trusted cache snapshot and idempotent gram requ
 
 test("transient OFF logging never assumes ml equals g", async () => {
   const store = new MemoryStore();
-  store.foodCache = await validOffFoodCache({ product: { product_quantity_unit: "ml" } });
+  store.foodCache = await validOffFoodCache({
+    product: { product_quantity_unit: "ml", nutrition_data_per: "100ml" },
+  });
   const { deps } = dependencies(store);
   const handler = createNutritionProviderHandler(deps);
-  const token = await offCandidateToken({ product: { product_quantity_unit: "ml" } });
+  const token = await offCandidateToken({
+    product: { product_quantity_unit: "ml", nutrition_data_per: "100ml" },
+  });
   assert.equal((await handler(request("off-log", offLogBody(token)))).status, 400);
   assert.equal((await handler(request("off-log", offLogBody(token, {
     consumed_unit: "ml",

@@ -75,6 +75,8 @@ check("OFF request sends no member identity", !/lookupBarcode\([^)]*user/iu.test
 check("GTIN Mod-10 is server-validated", normalization.includes("normalizeGtin14") && normalization.includes("mod10Valid"));
 check("OFF product identity must match exact GTIN", normalization.includes("off_product_identity_mismatch") && normalization.includes("expectedGtin14"));
 check("OFF nutrition basis is explicit", normalization.includes("per_100_g") && normalization.includes("per_100_ml"));
+check("OFF quantity fallback remains explicit", edgeIndex.includes('"nutrition_data_per"') && normalization.includes('nutritionDataPer === "100g"') && normalization.includes('nutritionDataPer === "100ml"'));
+check("OFF quantity sources cannot conflict", normalization.includes('off_product_unit_conflict') && normalization.includes('quantityUnit !== nutritionUnit'));
 check("missing macros are not zero-filled", normalization.includes("off_product_incomplete") && normalization.includes("boundedNutrient(nutriments.proteins_100g, 100, true)") && !/\?\?\s*0/iu.test(normalization));
 check("remote OFF candidate is signed", handler.includes("signOffCandidateToken") && cryptoSource.includes("signOffCandidateToken"));
 check("OFF and USDA token sources cannot cross", cryptoSource.includes("candidate-token-v1") && cryptoSource.includes("candidate-token-v2-off") && cryptoSource.includes("parsed.provider !== OFF_PROVIDER_CODE"));

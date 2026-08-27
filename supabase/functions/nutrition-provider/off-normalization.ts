@@ -142,11 +142,26 @@ export async function normalizeOffProductPayload(
   );
   const brand = boundedText(product.brands, 160);
   const quantityUnit = boundedText(product.product_quantity_unit, 8)?.toLowerCase();
-  if (!originalBarcode || !name || !brand || (quantityUnit !== "g" && quantityUnit !== "ml")) {
+  const nutritionDataPer = boundedText(product.nutrition_data_per, 16)
+    ?.toLowerCase()
+    .replace(/\s+/gu, "");
+  const nutritionUnit = nutritionDataPer === "100g"
+    ? "g"
+    : nutritionDataPer === "100ml"
+    ? "ml"
+    : null;
+  if (
+    quantityUnit && nutritionUnit && quantityUnit !== nutritionUnit
+  ) {
+    throw new ProviderError("off_product_unit_conflict", "OFF nutrition units conflict.", 422);
+  }
+  const referenceUnit = quantityUnit === "g" || quantityUnit === "ml"
+    ? quantityUnit
+    : nutritionUnit;
+  if (!originalBarcode || !name || !brand || !referenceUnit) {
     throw new ProviderError("off_product_incomplete", "OFF product identity is incomplete.", 422);
   }
-  const nutritionBasis = quantityUnit === "ml" ? "per_100_ml" : "per_100_g";
-  const referenceUnit = quantityUnit === "ml" ? "ml" : "g";
+  const nutritionBasis = referenceUnit === "ml" ? "per_100_ml" : "per_100_g";
   const nutriments = record(product.nutriments);
   if (!nutriments) {
     throw new ProviderError("off_product_incomplete", "OFF nutrition is unavailable.", 422);
@@ -165,6 +180,8 @@ export async function normalizeOffProductPayload(
     brand,
     countries_tags: countriesTags,
     product_quantity_unit: quantityUnit,
+    nutrition_data_per: nutritionDataPer,
+    reference_unit_source: quantityUnit ? "product_quantity_unit" : "nutrition_data_per",
     nutrition_basis: nutritionBasis,
     energy_kcal_100: energy.value,
     protein_grams_100: protein,
@@ -193,7 +210,7 @@ export async function normalizeOffProductPayload(
     attribution: { label: "Open Food Facts contributors", url: OFF_ATTRIBUTION_URL },
     derivation: {
       energy: energy.derivation,
-      nutrients: "OFF nutriments *_100g interpreted using explicit product_quantity_unit",
+      nutrients: "OFF nutriments *_100g interpreted using explicit product_quantity_unit or nutrition_data_per",
       no_density_conversion: true,
     },
   };

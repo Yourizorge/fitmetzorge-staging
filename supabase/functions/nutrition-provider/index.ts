@@ -399,6 +399,7 @@ const off: OffClient = {
         "brands",
         "countries_tags",
         "product_quantity_unit",
+        "nutrition_data_per",
         "nutriments",
         "rev",
         "last_updated_t",
