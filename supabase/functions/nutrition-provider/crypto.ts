@@ -1,17 +1,22 @@
 import {
   CANDIDATE_TOKEN_TTL_SECONDS,
   MAPPING_VERSION,
+  OFF_DATA_TYPE,
+  OFF_MAPPING_VERSION,
+  OFF_PROVIDER_CODE,
   PHASE4_PROVIDER_CANDIDATE_UUID_NAMESPACE,
   PROVIDER_CODE,
 } from "./constants.ts";
 import type { AcceptedDataType } from "./constants.ts";
-import type { CandidateTokenPayload } from "./types.ts";
+import type { CandidateTokenPayload, OffCandidateTokenPayload, OffSafeCandidate } from "./types.ts";
 import { ProviderError } from "./types.ts";
 
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const FDC_ID_PATTERN = /^[1-9][0-9]{0,15}$/;
+const GTIN14_PATTERN = /^[0-9]{14}$/;
+const SHA256_PATTERN = /^[0-9a-f]{64}$/;
 
 function bytesToHex(bytes: Uint8Array): string {
   return Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
@@ -137,6 +142,20 @@ export function createCandidateId(providerFoodId: string): Promise<string> {
   );
 }
 
+export function offCandidateIdentityName(normalizedGtin14: string): string {
+  if (!GTIN14_PATTERN.test(normalizedGtin14)) {
+    throw new ProviderError("off_candidate_invalid", "OFF candidate identity is invalid.", 404);
+  }
+  return `${OFF_PROVIDER_CODE}:${normalizedGtin14}`;
+}
+
+export function createOffCandidateId(normalizedGtin14: string): Promise<string> {
+  return uuidV5(
+    PHASE4_PROVIDER_CANDIDATE_UUID_NAMESPACE,
+    offCandidateIdentityName(normalizedGtin14),
+  );
+}
+
 function timingSafeEqual(left: Uint8Array, right: Uint8Array): boolean {
   let mismatch = left.length ^ right.length;
   const length = Math.max(left.length, right.length);
@@ -238,4 +257,109 @@ export async function verifyCandidateToken(
     );
   }
   return parsed as unknown as CandidateTokenPayload;
+}
+
+export async function signOffCandidateToken(
+  hmacKey: string,
+  candidate: OffSafeCandidate,
+  payloadChecksum: string,
+  now: Date,
+): Promise<string> {
+  if (!SHA256_PATTERN.test(payloadChecksum)) {
+    throw new ProviderError("off_candidate_invalid", "OFF candidate checksum is invalid.", 500);
+  }
+  const payload: OffCandidateTokenPayload = {
+    version: 2,
+    provider: OFF_PROVIDER_CODE,
+    provider_food_id: candidate.provider_food_id,
+    data_type: OFF_DATA_TYPE,
+    mapping_version: OFF_MAPPING_VERSION,
+    candidate_id: candidate.candidate_id,
+    reference_basis: candidate.nutrition_basis,
+    payload_checksum: payloadChecksum,
+    expires_at: Math.floor(now.getTime() / 1000) + CANDIDATE_TOKEN_TTL_SECONDS,
+  };
+  const encodedPayload = bytesToBase64Url(encoder.encode(stableJson(payload)));
+  const signature = bytesToBase64Url(
+    await hmacBytes(hmacKey, `candidate-token-v2-off\u0000${encodedPayload}`),
+  );
+  return `${encodedPayload}.${signature}`;
+}
+
+export async function verifyOffCandidateToken(
+  hmacKey: string,
+  token: string,
+  now: Date,
+): Promise<OffCandidateTokenPayload> {
+  if (typeof token !== "string" || token.length < 40 || token.length > 3072) {
+    throw new ProviderError("off_candidate_token_invalid", "OFF candidate token is invalid.", 409);
+  }
+  const parts = token.split(".");
+  if (parts.length !== 2) {
+    throw new ProviderError("off_candidate_token_invalid", "OFF candidate token is invalid.", 409);
+  }
+  const expectedSignature = await hmacBytes(
+    hmacKey,
+    `candidate-token-v2-off\u0000${parts[0]}`,
+  );
+  const actualSignature = base64UrlToBytes(parts[1]);
+  if (!timingSafeEqual(expectedSignature, actualSignature)) {
+    throw new ProviderError("off_candidate_token_invalid", "OFF candidate token is invalid.", 409);
+  }
+
+  let payload: unknown;
+  try {
+    payload = JSON.parse(decoder.decode(base64UrlToBytes(parts[0])));
+  } catch {
+    throw new ProviderError("off_candidate_token_invalid", "OFF candidate token is invalid.", 409);
+  }
+  if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
+    throw new ProviderError("off_candidate_token_invalid", "OFF candidate token is invalid.", 409);
+  }
+  const parsed = payload as Record<string, unknown>;
+  const exactKeys = [
+    "candidate_id",
+    "data_type",
+    "expires_at",
+    "mapping_version",
+    "payload_checksum",
+    "provider",
+    "provider_food_id",
+    "reference_basis",
+    "version",
+  ];
+  if (Object.keys(parsed).sort().join("|") !== exactKeys.join("|")) {
+    throw new ProviderError("off_candidate_token_invalid", "OFF candidate token is invalid.", 409);
+  }
+  if (
+    parsed.version !== 2 ||
+    parsed.provider !== OFF_PROVIDER_CODE ||
+    parsed.data_type !== OFF_DATA_TYPE ||
+    parsed.mapping_version !== OFF_MAPPING_VERSION ||
+    typeof parsed.provider_food_id !== "string" ||
+    !GTIN14_PATTERN.test(parsed.provider_food_id) ||
+    typeof parsed.candidate_id !== "string" ||
+    (parsed.reference_basis !== "per_100_g" && parsed.reference_basis !== "per_100_ml") ||
+    typeof parsed.payload_checksum !== "string" ||
+    !SHA256_PATTERN.test(parsed.payload_checksum) ||
+    typeof parsed.expires_at !== "number" ||
+    !Number.isSafeInteger(parsed.expires_at)
+  ) {
+    throw new ProviderError("off_candidate_token_invalid", "OFF candidate token is invalid.", 409);
+  }
+  const nowSeconds = Math.floor(now.getTime() / 1000);
+  if (
+    parsed.expires_at <= nowSeconds ||
+    parsed.expires_at > nowSeconds + CANDIDATE_TOKEN_TTL_SECONDS
+  ) {
+    throw new ProviderError("off_candidate_token_expired", "OFF candidate token is expired.", 409);
+  }
+  if (parsed.candidate_id !== await createOffCandidateId(parsed.provider_food_id)) {
+    throw new ProviderError(
+      "off_candidate_token_mismatch",
+      "OFF candidate token identity does not match.",
+      409,
+    );
+  }
+  return parsed as unknown as OffCandidateTokenPayload;
 }

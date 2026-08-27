@@ -8,6 +8,18 @@ export const PROVIDER_ATTRIBUTION_URL = "https://fdc.nal.usda.gov/";
 export const USDA_API_BASE_URL = "https://api.nal.usda.gov/fdc/v1";
 export const MAPPING_VERSION = "phase4_usda_v1";
 
+export const OFF_PROVIDER_CODE = "open_food_facts";
+export const OFF_PROVIDER_LABEL = "Open Food Facts";
+export const OFF_API_BASE_URL = "https://world.openfoodfacts.org/api/v3.6/product";
+export const OFF_USER_AGENT = "FitMetZorge/4F-D (https://fitmetzorge.nl)";
+export const OFF_MAPPING_VERSION = "phase4_off_barcode_v1";
+export const OFF_DATA_TYPE = "off_branded";
+export const OFF_ATTRIBUTION_URL = "https://world.openfoodfacts.org/";
+export const OFF_LICENSE_CODE = "ODbL-1.0";
+export const OFF_LICENSE_URL = "https://opendatacommons.org/licenses/odbl/1-0/";
+export const OFF_FOOD_CACHE_TTL_SECONDS = 30 * 24 * 60 * 60;
+export const OFF_NEGATIVE_CACHE_TTL_SECONDS = 15 * 60;
+
 export const ACCEPTED_DATA_TYPES = [
   "Foundation",
   "Survey (FNDDS)",

@@ -53,6 +53,7 @@ This matrix records the required functional, security, entitlement, AI, migratio
 | Phase 4 | Package 4F-A OFF catalog/performance | Separate ODbL release/product/name domain, 24,458 products, 74,184 names, typed bounded search, local barcode, p95 gate | OWNER ACCEPTANCE GATE | PASS - COMPLETE / FROZEN |
 | Phase 4 | Package 4F-B Dutch branded search UX | Dutch display labels, OFF-branded unified search, explicit selection and source attribution | OWNER ACCEPTANCE GATE | PASS - OWNER-ACCEPTED / FROZEN |
 | Phase 4 | Package 4F-C OFF authoritative logging | Server-resolved ODbL snapshot, g/ml basis isolation, authoritative totals, retry/edit/archive | STAGING MIGRATION + E2E GATE | PASS - COMPLETE / FROZEN |
+| Phase 4 | Package 4F-D transient unknown barcode | Local-first GTIN, exact OFF validation, signed transient snapshot, scanner/manual input, custom fallback | CONSOLIDATED STAGING MIGRATION + EDGE + FRONTEND E2E GATE | PASS - LOCAL REVIEW; STAGING GO PENDING |
 | Phase 4 | Nutrition Pro | Full kcal/protein/carbs/fat goals, saved meals, recipes, copy meal/day | BLOCKING GATE | PLANNED |
 | Phase 4 | Barcode | Barcode behind entitlement and feature flag | BLOCKING GATE | PLANNED |
 | Phase 4 | Consumer boundaries | Invoices do not appear in consumer nutrition | BLOCKING GATE | PLANNED |
@@ -607,3 +608,26 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | Controlled authenticated staging E2E | PASS - g/ml log, replay, edit, replace, stale conflict, totals, history, archive |
 | Controlled E2E cleanup | PASS - transaction `ROLLBACK`; postcheck controlled rows `0` |
 | Live frontend | PASS - commit `ebd0fc61652ed624f82cfda35fb96e16141b8a9e`; cache `20260826-phase4f-c1`; runtime SHA-256 `AF1CCCCEDF762E1E36D1813441363CA6B1E502E94B4C8B8D9C065DD1B1BB0801` |
+
+## Phase 4 Package 4F-D Transient OFF Barcode Local Checks
+
+| Check | Result |
+| --- | --- |
+| Persistent OFF catalog runtime mutation | PASS - ABSENT |
+| Exact local-first barcode resolver | PASS |
+| Exact OFF product endpoint and server normalization | PASS |
+| GTIN Mod-10 and source-bound UUID/token | PASS |
+| Explicit 100 g / 100 ml, no density conversion | PASS |
+| Immutable transient ODbL snapshot log/replace/archive | PASS |
+| Historical same-product edit without expired token | PASS |
+| Fresh-candidate changed-product atomic replacement | PASS |
+| Custom fallback with normalized barcode | PASS |
+| Camera privacy, explicit start, stop and duplicate suppression | PASS |
+| Manual barcode uses identical lookup path | PASS |
+| Native BarcodeDetector + vendored MIT ZXing fallback | PASS - ZXING SHA-256 `066BC34EDFCDD4A33F0964AEEC967752A0DEA1CCAF36E58E319AC9FCB5070F6A` |
+| Edge unit/contract tests | PASS - 49 |
+| 4F-D static/security checks | PASS - 80 |
+| Nutrition browser vertical-slice checks | PASS - 135 |
+| Phase 1 / Phase 2 / Phase 3 / Member UX frozen suites | PASS - 75 / 46 / 222 / 56 |
+| Migration/verifier | LOCAL REVIEWED - `C0D46B78A17837C48E3C324078F8977E1C4DEAEA265A7C4E1A483B189737ED91` / `FFB728379BDF41CAF1CE92D9D56CB2E31578839302D9A517EC469DE29159AF40` |
+| Database / Edge staging / frontend staging / production | UNCHANGED / UNCHANGED / UNCHANGED / UNTOUCHED |

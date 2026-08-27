@@ -3,24 +3,32 @@ import test from "node:test";
 import {
   ACCEPTED_DATA_TYPES,
   MAPPING_VERSION,
+  OFF_MAPPING_VERSION,
+  OFF_PROVIDER_CODE,
   PHASE3_EXERCISE_UUID_NAMESPACE,
   PHASE4_PROVIDER_CANDIDATE_UUID_NAMESPACE,
 } from "./constants.ts";
 import {
   candidateIdentityName,
   createCandidateId,
+  createOffCandidateId,
   sha256Hex,
   signCandidateToken,
+  signOffCandidateToken,
   uuidV5,
 } from "./crypto.ts";
 import { createNutritionProviderHandler } from "./handler.ts";
 import { normalizeUsdaFood } from "./normalization.ts";
+import { normalizeGtin14, normalizeOffProductPayload } from "./off-normalization.ts";
 import { ActiveProviderItemUnavailableError, ProviderError } from "./types.ts";
 import type {
   FoodCacheKey,
   FoodCacheRow,
   HistoricalProviderIdentity,
   NutritionProviderDependencies,
+  OffLogMutation,
+  OffReplaceMutation,
+  OffSnapshotCandidate,
   OperationalStore,
   ProviderLogMutation,
   ProviderReplaceMutation,
@@ -38,6 +46,8 @@ const REQUEST_ID = "22222222-2222-4222-8222-222222222222";
 const ORIGINAL_ITEM_ID = "33333333-3333-4333-8333-333333333333";
 const REPLACEMENT_ITEM_ID = "44444444-4444-4444-8444-444444444444";
 const HMAC_KEY = "test-only-key-with-at-least-thirty-two-characters";
+const OFF_BARCODE = "8710398520395";
+const OFF_GTIN14 = "08710398520395";
 
 function usdaFood(overrides: Record<string, unknown> = {}) {
   return {
@@ -58,6 +68,30 @@ function usdaFood(overrides: Record<string, unknown> = {}) {
       { amount: 1, modifier: "missing gram weight" },
     ],
     ...overrides,
+  };
+}
+
+function offFood(overrides: Record<string, unknown> = {}) {
+  return {
+    code: OFF_BARCODE,
+    product: {
+      code: OFF_BARCODE,
+      product_name_nl: "Kipfilet naturel",
+      brands: "Testmerk",
+      countries_tags: ["en:netherlands"],
+      product_quantity_unit: "g",
+      rev: 42,
+      last_updated_t: 1_777_000_000,
+      nutriments: {
+        "energy-kcal_100g": 110,
+        proteins_100g: 23,
+        carbohydrates_100g: 0.5,
+        fat_100g: 2,
+        fiber_100g: null,
+      },
+      ...(overrides.product as Record<string, unknown> ?? {}),
+    },
+    ...Object.fromEntries(Object.entries(overrides).filter(([key]) => key !== "product")),
   };
 }
 
@@ -85,6 +119,12 @@ class MemoryStore implements OperationalStore {
   providerReplacementRows = new Set<string>();
   providerLogRequests = new Map<string, string>();
   providerReplaceRequests = new Map<string, string>();
+  localBarcodeResult: Record<string, unknown> | null = null;
+  offLogCalls: OffLogMutation[] = [];
+  offReplaceCalls: OffReplaceMutation[] = [];
+  offLogRequests = new Map<string, string>();
+  offReplaceRequests = new Map<string, string>();
+  offHistoricalSnapshot: OffSnapshotCandidate | null = null;
   resolverCalls: Array<{ userId: string; originalItemId: string }> = [];
   resolverFailures = new Map<string, Error>();
   resolverOwners = new Map<string, string>();
@@ -111,7 +151,7 @@ class MemoryStore implements OperationalStore {
     this.foodCache = row;
     this.foodWrites += 1;
   }
-  async consumeRateLimit(_subject: string, requestId: string) {
+  async consumeRateLimit(_providerCode: "usda_fdc" | "open_food_facts", _subject: string, requestId: string) {
     this.rateCalls += 1;
     const replayed = this.rateRequestIds.includes(requestId);
     this.rateRequestIds.push(requestId);
@@ -119,11 +159,14 @@ class MemoryStore implements OperationalStore {
       ? { allowed: true, replayed }
       : { allowed: false, replayed: false, retry_after_seconds: 37 };
   }
-  async beginProbe() {
+  async beginProbe(_providerCode: "usda_fdc" | "open_food_facts") {
     this.probeCalls += 1;
     return { probe_allowed: this.probeAllowed };
   }
-  async transitionRuntime(input: RuntimeTransitionInput) {
+  async transitionRuntime(
+    _providerCode: "usda_fdc" | "open_food_facts",
+    input: RuntimeTransitionInput,
+  ) {
     this.transitions.push(input);
   }
   async resolveProviderFoodLogItem(userId: string, originalItemId: string) {
@@ -208,15 +251,71 @@ class MemoryStore implements OperationalStore {
       idempotent_replay: false,
     };
   }
+  async resolveLocalBarcode(_userId: string, _normalizedGtin14: string) {
+    return this.localBarcodeResult;
+  }
+  async resolveTransientOffFoodLogItem(userId: string, originalItemId: string) {
+    this.resolverCalls.push({ userId, originalItemId });
+    const failure = this.resolverFailures.get(originalItemId);
+    if (failure) throw failure;
+    const owner = this.resolverOwners.get(originalItemId);
+    if (
+      !this.offHistoricalSnapshot || (owner && owner !== userId) ||
+      this.archivedResolverItems.has(originalItemId)
+    ) throw new ActiveProviderItemUnavailableError();
+    return this.offHistoricalSnapshot;
+  }
+  async logTransientOffFoodItem(input: OffLogMutation) {
+    const payload = JSON.stringify(input);
+    const existing = this.offLogRequests.get(input.input.requestId);
+    if (existing && existing !== payload) {
+      throw new ProviderError("provider_log_request_conflict", "Request conflict.", 409);
+    }
+    this.offLogRequests.set(input.input.requestId, payload);
+    this.offLogCalls.push(input);
+    return {
+      item: {
+        id: input.input.itemId,
+        food_id: null,
+        source_provider_snapshot: OFF_PROVIDER_CODE,
+        consumed_quantity: input.input.consumedQuantity,
+        consumed_unit: input.input.consumedUnit,
+      },
+      day: { log_date: input.input.logDate },
+      idempotent_replay: this.offLogCalls.length > 1,
+    };
+  }
+  async replaceTransientOffFoodItem(input: OffReplaceMutation) {
+    const payload = JSON.stringify(input);
+    const existing = this.offReplaceRequests.get(input.input.requestId);
+    if (existing && existing !== payload) {
+      throw new ProviderError("provider_replace_request_conflict", "Request conflict.", 409);
+    }
+    this.offReplaceRequests.set(input.input.requestId, payload);
+    this.offReplaceCalls.push(input);
+    this.archivedResolverItems.add(input.input.originalItemId);
+    this.resolverOwners.set(input.input.replacementItemId, input.userId);
+    return {
+      replacement_item: {
+        id: input.input.replacementItemId,
+        food_id: null,
+        source_provider_snapshot: OFF_PROVIDER_CODE,
+        status: "active",
+      },
+      archived_original: { id: input.input.originalItemId, status: "archived" },
+      day: { log_date: "2026-08-19" },
+      idempotent_replay: Boolean(existing),
+    };
+  }
 }
 
 function dependencies(store = new MemoryStore(), searchResponse?: UpstreamResponse): {
   deps: NutritionProviderDependencies;
   logs: StructuredLogEvent[];
-  calls: { search: number; lookup: number };
+  calls: { search: number; lookup: number; offLookup: number };
 } {
   const logs: StructuredLogEvent[] = [];
-  const calls = { search: 0, lookup: 0 };
+  const calls = { search: 0, lookup: 0, offLookup: 0 };
   return {
     deps: {
       auth: {
@@ -234,6 +333,12 @@ function dependencies(store = new MemoryStore(), searchResponse?: UpstreamRespon
           return upstream(200, usdaFood());
         },
       },
+      off: {
+        async lookupBarcode() {
+          calls.offLookup += 1;
+          return upstream(200, offFood());
+        },
+      },
       logger: { write: (event) => logs.push(event) },
       hmacKey: HMAC_KEY,
       clock: { now: () => new Date(NOW) },
@@ -245,7 +350,7 @@ function dependencies(store = new MemoryStore(), searchResponse?: UpstreamRespon
 }
 
 function request(
-  route: "search" | "lookup" | "log" | "replace",
+  route: "search" | "lookup" | "log" | "replace" | "off-barcode" | "off-log" | "off-replace",
   body: unknown,
   options: { token?: string; origin?: string } = {},
 ) {
@@ -282,6 +387,68 @@ async function validFoodCache(): Promise<FoodCacheRow> {
     metadata: {},
     fetched_at: NOW.toISOString(),
     expires_at: new Date(NOW.getTime() + 60_000).toISOString(),
+  };
+}
+
+async function validOffFoodCache(overrides: Record<string, unknown> = {}): Promise<FoodCacheRow> {
+  const candidate = await normalizeOffProductPayload(offFood(overrides), OFF_GTIN14, NOW);
+  return {
+    provider_code: OFF_PROVIDER_CODE,
+    provider_food_id: OFF_GTIN14,
+    provider_data_type: "off_branded",
+    mapping_version: OFF_MAPPING_VERSION,
+    candidate_id: candidate.candidate_id,
+    normalized_payload: candidate,
+    payload_checksum: await sha256Hex(candidate),
+    quality_state: "validated",
+    rejection_code: null,
+    source_version: candidate.provenance.source_revision,
+    source_updated_at: candidate.provenance.source_updated_at,
+    provenance: candidate.provenance,
+    metadata: { cache_kind: "transient_off_exact_barcode" },
+    fetched_at: NOW.toISOString(),
+    expires_at: new Date(NOW.getTime() + 60_000).toISOString(),
+  };
+}
+
+async function offCandidateToken(overrides: Record<string, unknown> = {}) {
+  const candidate = await normalizeOffProductPayload(offFood(overrides), OFF_GTIN14, NOW);
+  return await signOffCandidateToken(
+    HMAC_KEY,
+    candidate,
+    candidate.provenance.source_checksum,
+    NOW,
+  );
+}
+
+function offLogBody(candidateToken: string, overrides: Record<string, unknown> = {}) {
+  return {
+    candidate_token: candidateToken,
+    item_id: ORIGINAL_ITEM_ID,
+    request_id: REQUEST_ID,
+    log_date: "2026-08-19",
+    timezone_name: "Europe/Amsterdam",
+    timezone_offset_minutes: 120,
+    meal_moment: "lunch",
+    consumed_quantity: 125,
+    consumed_unit: "g",
+    notes: "Scanned product",
+    consumed_at: "2026-08-19T10:00:00.000Z",
+    ...overrides,
+  };
+}
+
+function offReplaceBody(overrides: Record<string, unknown> = {}) {
+  return {
+    original_item_id: ORIGINAL_ITEM_ID,
+    replacement_item_id: REPLACEMENT_ITEM_ID,
+    request_id: REQUEST_ID,
+    expected_original_updated_at: "2026-08-20T10:12:34.123456Z",
+    meal_moment: "dinner",
+    consumed_quantity: 175,
+    consumed_unit: "g",
+    notes: "Updated scanned product",
+    ...overrides,
   };
 }
 
@@ -1359,4 +1526,178 @@ test("oversized bodies are rejected before provider use", async () => {
   ));
   assert.equal(response.status, 400);
   assert.equal(calls.search, 0);
+});
+
+test("OFF GTIN normalization and explicit g/ml contracts reject unsafe products", async () => {
+  assert.equal(normalizeGtin14(OFF_BARCODE), OFF_GTIN14);
+  assert.equal(normalizeGtin14("8710398520396"), null);
+  const grams = await normalizeOffProductPayload(offFood(), OFF_GTIN14, NOW);
+  assert.equal(grams.reference_unit, "g");
+  assert.equal(grams.nutrition_basis, "per_100_g");
+  assert.equal(grams.provider, OFF_PROVIDER_CODE);
+  assert.equal(grams.candidate_id, await createOffCandidateId(OFF_GTIN14));
+
+  const millilitres = await normalizeOffProductPayload(
+    offFood({ product: { product_quantity_unit: "ml" } }),
+    OFF_GTIN14,
+    NOW,
+  );
+  assert.equal(millilitres.reference_unit, "ml");
+  assert.equal(millilitres.nutrition_basis, "per_100_ml");
+  await assert.rejects(() =>
+    normalizeOffProductPayload(
+      offFood({ product: { countries_tags: ["en:belgium"] } }),
+      OFF_GTIN14,
+      NOW,
+    )
+  );
+  await assert.rejects(() =>
+    normalizeOffProductPayload(
+      offFood({ product: { nutriments: { "energy-kcal_100g": 110 } } }),
+      OFF_GTIN14,
+      NOW,
+    )
+  );
+});
+
+test("OFF barcode lookup is local-first and never calls remote for a trusted local hit", async () => {
+  const store = new MemoryStore();
+  store.localBarcodeResult = {
+    result_type: "off_branded_food",
+    source_provider: OFF_PROVIDER_CODE,
+    source_id: "55555555-5555-4555-8555-555555555555",
+    normalized_gtin14: OFF_GTIN14,
+  };
+  const { deps, calls } = dependencies(store);
+  const response = await createNutritionProviderHandler(deps)(request("off-barcode", {
+    barcode: OFF_BARCODE,
+    request_id: REQUEST_ID,
+  }));
+  const body = await response.json();
+  assert.equal(response.status, 200);
+  assert.equal(body.data.source, "local");
+  assert.equal(calls.offLookup, 0);
+  assert.equal(store.rateCalls, 0);
+});
+
+test("OFF remote exact lookup validates, signs, caches and suppresses repeated provider calls", async () => {
+  const store = new MemoryStore();
+  const { deps, calls } = dependencies(store);
+  const handler = createNutritionProviderHandler(deps);
+  const first = await handler(request("off-barcode", {
+    barcode: OFF_BARCODE,
+    request_id: REQUEST_ID,
+  }));
+  const firstBody = await first.json();
+  assert.equal(first.status, 200);
+  assert.equal(firstBody.data.source, OFF_PROVIDER_CODE);
+  assert.equal(firstBody.data.cache, "miss");
+  assert.equal(firstBody.data.result.provider_food_id, OFF_GTIN14);
+  assert.equal(typeof firstBody.data.result.candidate_token, "string");
+  assert.equal(calls.offLookup, 1);
+  assert.equal(store.foodWrites, 1);
+
+  const second = await handler(request("off-barcode", {
+    barcode: OFF_BARCODE,
+    request_id: "55555555-5555-4555-8555-555555555555",
+  }));
+  const secondBody = await second.json();
+  assert.equal(second.status, 200);
+  assert.equal(secondBody.data.cache, "hit");
+  assert.equal(calls.offLookup, 1);
+});
+
+test("OFF token is tamper-evident and cannot cross USDA/OFF source boundaries", async () => {
+  const store = new MemoryStore();
+  store.foodCache = await validOffFoodCache();
+  const { deps } = dependencies(store);
+  const handler = createNutritionProviderHandler(deps);
+  const token = await offCandidateToken();
+  const tampered = `${token.slice(0, -1)}${token.endsWith("a") ? "b" : "a"}`;
+  assert.equal((await handler(request("off-log", offLogBody(tampered)))).status, 409);
+  assert.equal((await handler(request("off-log", offLogBody(await providerToken())))).status, 409);
+  assert.equal((await handler(request("lookup", {
+    candidate_token: token,
+    request_id: REQUEST_ID,
+  }))).status, 409);
+  assert.equal(store.offLogCalls.length, 0);
+});
+
+test("transient OFF logging uses trusted cache snapshot and idempotent gram requests", async () => {
+  const store = new MemoryStore();
+  store.foodCache = await validOffFoodCache();
+  const { deps } = dependencies(store);
+  const handler = createNutritionProviderHandler(deps);
+  const body = offLogBody(await offCandidateToken());
+  const first = await handler(request("off-log", body));
+  const second = await handler(request("off-log", body));
+  assert.equal(first.status, 200);
+  assert.equal(second.status, 200);
+  assert.equal((await second.json()).data.result.idempotent_replay, true);
+  assert.equal(store.offLogCalls[0].candidate.reference_unit, "g");
+  assert.equal(store.offLogCalls[0].candidate.source_checksum.length, 64);
+  assert.equal(store.offLogCalls[0].candidate.provenance.license_code, "ODbL-1.0");
+});
+
+test("transient OFF logging never assumes ml equals g", async () => {
+  const store = new MemoryStore();
+  store.foodCache = await validOffFoodCache({ product: { product_quantity_unit: "ml" } });
+  const { deps } = dependencies(store);
+  const handler = createNutritionProviderHandler(deps);
+  const token = await offCandidateToken({ product: { product_quantity_unit: "ml" } });
+  assert.equal((await handler(request("off-log", offLogBody(token)))).status, 400);
+  assert.equal((await handler(request("off-log", offLogBody(token, {
+    consumed_unit: "ml",
+  })))).status, 200);
+  assert.equal(store.offLogCalls.at(-1)?.candidate.reference_unit, "ml");
+});
+
+test("historical transient OFF edit uses immutable server snapshot without an expired token", async () => {
+  const store = new MemoryStore();
+  const candidate = await normalizeOffProductPayload(offFood(), OFF_GTIN14, NOW);
+  store.offHistoricalSnapshot = {
+    provider: OFF_PROVIDER_CODE,
+    provider_food_id: candidate.provider_food_id,
+    candidate_id: candidate.candidate_id,
+    mapping_version: OFF_MAPPING_VERSION,
+    provider_data_type: "off_branded",
+    food_name: candidate.name,
+    brand: candidate.brand,
+    barcode_original: candidate.barcode_original,
+    normalized_gtin14: candidate.barcode,
+    reference_amount: 100,
+    reference_unit: candidate.reference_unit,
+    energy_kcal_per_100: candidate.kcal,
+    protein_grams_per_100: candidate.protein,
+    carbohydrate_grams_per_100: candidate.carbohydrates,
+    fat_grams_per_100: candidate.fat,
+    fiber_grams_per_100: candidate.fiber,
+    source_version: candidate.provenance.source_revision,
+    source_checksum: candidate.provenance.source_checksum,
+    retrieved_at: candidate.provenance.retrieved_at,
+    source_updated_at: candidate.provenance.source_updated_at,
+    provenance: candidate.provenance,
+  };
+  store.resolverOwners.set(ORIGINAL_ITEM_ID, USER_ID);
+  const { deps } = dependencies(store);
+  const response = await createNutritionProviderHandler(deps)(
+    request("off-replace", offReplaceBody()),
+  );
+  assert.equal(response.status, 200);
+  assert.equal(store.offReplaceCalls.length, 1);
+  assert.equal(store.offReplaceCalls[0].candidate.source_checksum, candidate.provenance.source_checksum);
+  assert.equal(store.foodWrites, 0);
+});
+
+test("OFF provider rate denial never calls upstream or creates a transient log", async () => {
+  const store = new MemoryStore();
+  store.rateAllowed = false;
+  const { deps, calls } = dependencies(store);
+  const response = await createNutritionProviderHandler(deps)(request("off-barcode", {
+    barcode: OFF_BARCODE,
+    request_id: REQUEST_ID,
+  }));
+  assert.equal(response.status, 429);
+  assert.equal(calls.offLookup, 0);
+  assert.equal(store.offLogCalls.length, 0);
 });

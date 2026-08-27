@@ -387,6 +387,14 @@ Use permanent provider namespace `23440733-7e58-4c21-ad15-591eae6ab8ac` and exac
 
 The OFF domain keeps ODbL 1.0 provenance, attribution, release hashes, and exportability. Product images remain optional separately licensed references and are not bulk downloaded. Authenticated clients receive read-only active catalog access; no trainer-special write route, browser service-role, automatic canonical promotion, barcode scanner, import, or production action is authorized by this decision.
 
+## Decision 0027: Unknown barcodes use transient trusted OFF snapshots
+
+Status: ACCEPTED / LOCAL IMPLEMENTATION REVIEWED / STAGING EXECUTION PENDING
+
+An unknown local barcode does not mutate the pinned Open Food Facts release catalog and does not automatically become a private custom food. The server performs an exact OFF barcode lookup, validates exact GTIN identity, Dutch relevance, product/brand identity, an explicit `per_100_g` or `per_100_ml` basis, required bounded macros, revision, checksum and ODbL provenance, then signs a short-lived candidate under the permanent Phase 4 provider namespace using `open_food_facts:<normalized_gtin14>`.
+
+The browser supplies barcode, normal meal controls and quantity only. It never supplies nutrition or licence authority. Trusted log and replace paths create immutable transient OFF snapshots with `food_id` and `food_portion_id` null, preserve g/ml separation, use existing request/object locks, stale guards, archive history and authoritative day totals, and never promote the scanned product into `nutrition_off_products`, `nutrition_off_product_names`, `nutrition_off_catalog_releases`, or `public.foods`. Historical same-product edits resolve the saved immutable snapshot server-side; a fresh signed candidate is required when changing to another transient OFF product. Camera frames remain local.
+
 The accepted audit baseline is 106,650 Netherlands-associated source rows and 24,458 eligible products. A later pinned, deterministic, hash-reviewed import artifact and post-import verifier are mandatory before those rows may be loaded.
 
 Rationale:

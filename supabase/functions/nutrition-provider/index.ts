@@ -1,6 +1,10 @@
 import { createClient } from "npm:@supabase/supabase-js@2.95.0";
 import {
   MAX_SEARCH_RESULTS,
+  OFF_API_BASE_URL,
+  OFF_MAPPING_VERSION,
+  OFF_PROVIDER_CODE,
+  OFF_USER_AGENT,
   PROVIDER_CODE,
   QUERY_DATA_TYPE_FILTER,
   USDA_API_BASE_URL,
@@ -12,7 +16,10 @@ import type {
   FoodCacheKey,
   FoodCacheRow,
   HistoricalProviderIdentity,
+  OffClient,
+  OffSnapshotCandidate,
   OperationalStore,
+  ProviderCode,
   ProviderLogger,
   QueryCacheKey,
   QueryCacheRow,
@@ -200,35 +207,40 @@ const store: OperationalStore = {
     });
     if (error) failDatabase("food cache write", error);
   },
-  async consumeRateLimit(userSubjectHmac, requestId) {
+  async consumeRateLimit(providerCode, userSubjectHmac, requestId) {
     const { data, error } = await admin.rpc("fmz_phase4_provider_consume_rate_limits", {
-      p_provider_code: PROVIDER_CODE,
+      p_provider_code: providerCode,
       p_user_subject_hmac: userSubjectHmac,
       p_request_id: requestId,
     });
     if (error) failDatabase("rate limit", error);
     return data;
   },
-  async beginProbe() {
+  async beginProbe(providerCode) {
     const { data, error } = await admin.rpc("fmz_phase4_provider_transition_runtime_state", {
-      p_provider_code: PROVIDER_CODE,
+      p_provider_code: providerCode,
       p_event: "begin_probe",
-      p_metadata: { caller: "nutrition-provider", mapping_version: "phase4_usda_v1" },
+      p_metadata: {
+        caller: "nutrition-provider",
+        mapping_version: providerCode === OFF_PROVIDER_CODE ? OFF_MAPPING_VERSION : "phase4_usda_v1",
+      },
     });
     if (error) failDatabase("circuit probe", error);
     return data;
   },
-  async transitionRuntime(input: RuntimeTransitionInput) {
+  async transitionRuntime(providerCode: ProviderCode, input: RuntimeTransitionInput) {
     const { error } = await admin.rpc("fmz_phase4_provider_transition_runtime_state", {
-      p_provider_code: PROVIDER_CODE,
+      p_provider_code: providerCode,
       p_event: input.event,
       p_retry_after_seconds: input.retryAfterSeconds ?? null,
       p_error_class: input.errorClass ?? null,
       p_upstream_limit: input.upstreamLimit ?? null,
       p_upstream_remaining: input.upstreamRemaining ?? null,
       p_upstream_reset_at: input.upstreamResetAt ?? null,
-      p_metadata: input.metadata ??
-        { caller: "nutrition-provider", mapping_version: "phase4_usda_v1" },
+      p_metadata: input.metadata ?? {
+        caller: "nutrition-provider",
+        mapping_version: providerCode === OFF_PROVIDER_CODE ? OFF_MAPPING_VERSION : "phase4_usda_v1",
+      },
     });
     if (error) failDatabase("circuit transition", error);
   },
@@ -280,6 +292,61 @@ const store: OperationalStore = {
     if (error) failProviderMutation("replace", error);
     return providerMutationResult("replace", data);
   },
+  async resolveLocalBarcode(userId, normalizedGtin14) {
+    const { data, error } = await admin.rpc("fmz_phase4_resolve_member_barcode", {
+      p_user_id: userId,
+      p_normalized_gtin14: normalizedGtin14,
+    });
+    if (error) failDatabase("local barcode resolution", error);
+    if (data === null) return null;
+    if (!data || typeof data !== "object" || Array.isArray(data)) {
+      throw new ProviderError("local_barcode_response_invalid", "Local barcode result is invalid.", 500);
+    }
+    return data as Record<string, unknown>;
+  },
+  async resolveTransientOffFoodLogItem(userId, originalItemId) {
+    const { data, error } = await admin.rpc("fmz_phase4_resolve_transient_off_food_log_item", {
+      p_user_id: userId,
+      p_original_item_id: originalItemId,
+    });
+    if (error?.code === "42501") throw new ActiveProviderItemUnavailableError();
+    if (error) failProviderMutation("replace", error);
+    return data as OffSnapshotCandidate;
+  },
+  async logTransientOffFoodItem({ userId, input, candidate }) {
+    const { data, error } = await admin.rpc("fmz_phase4_log_transient_off_food_item", {
+      p_user_id: userId,
+      p_item_id: input.itemId,
+      p_request_id: input.requestId,
+      p_log_date: input.logDate,
+      p_timezone_name: input.timezoneName,
+      p_timezone_offset_minutes: input.timezoneOffsetMinutes,
+      p_meal_moment: input.mealMoment,
+      p_consumed_quantity: input.consumedQuantity,
+      p_consumed_unit: input.consumedUnit,
+      p_notes: input.notes,
+      p_consumed_at: input.consumedAt,
+      p_candidate: candidate,
+    });
+    if (error) failProviderMutation("log", error);
+    return providerMutationResult("log", data);
+  },
+  async replaceTransientOffFoodItem({ userId, input, candidate }) {
+    const { data, error } = await admin.rpc("fmz_phase4_replace_transient_off_food_item", {
+      p_user_id: userId,
+      p_original_item_id: input.originalItemId,
+      p_replacement_item_id: input.replacementItemId,
+      p_replacement_request_id: input.requestId,
+      p_expected_original_updated_at: input.expectedOriginalUpdatedAt,
+      p_meal_moment: input.mealMoment,
+      p_consumed_quantity: input.consumedQuantity,
+      p_consumed_unit: input.consumedUnit,
+      p_notes: input.notes,
+      p_candidate: candidate,
+    });
+    if (error) failProviderMutation("replace", error);
+    return providerMutationResult("replace", data);
+  },
 };
 
 async function fetchUsda(
@@ -317,6 +384,38 @@ const usda: UsdaClient = {
   },
 };
 
+const off: OffClient = {
+  lookupBarcode(input) {
+    const url = new URL(
+      `${OFF_API_BASE_URL}/${encodeURIComponent(input.normalizedGtin14)}`,
+    );
+    url.searchParams.set(
+      "fields",
+      [
+        "code",
+        "product_name_nl",
+        "product_name",
+        "product_name_en",
+        "brands",
+        "countries_tags",
+        "product_quantity_unit",
+        "nutriments",
+        "rev",
+        "last_updated_t",
+        "last_modified_t",
+      ].join(","),
+    );
+    return fetchUsda(url, {
+      method: "GET",
+      signal: input.signal,
+      headers: {
+        accept: "application/json",
+        "user-agent": OFF_USER_AGENT,
+      },
+    });
+  },
+};
+
 const logger: ProviderLogger = {
   write(event) {
     console.info(JSON.stringify({ component: "nutrition-provider", ...event }));
@@ -327,6 +426,7 @@ const handler = createNutritionProviderHandler({
   auth,
   store,
   usda,
+  off,
   logger,
   hmacKey: providerHmacKey,
 });

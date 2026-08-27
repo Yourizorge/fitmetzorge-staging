@@ -7,6 +7,11 @@ import {
   MAPPING_VERSION,
   MAX_RETRY_AFTER_SECONDS,
   MAX_SEARCH_RESULTS,
+  OFF_DATA_TYPE,
+  OFF_FOOD_CACHE_TTL_SECONDS,
+  OFF_MAPPING_VERSION,
+  OFF_NEGATIVE_CACHE_TTL_SECONDS,
+  OFF_PROVIDER_CODE,
   PROVIDER_ATTRIBUTION_URL,
   PROVIDER_CODE,
   PROVIDER_LABEL,
@@ -18,21 +23,33 @@ import {
 } from "./constants.ts";
 import {
   createCandidateId,
+  createOffCandidateId,
   hmacHex,
   hmacRequestUuid,
   sha256Hex,
   signCandidateToken,
+  signOffCandidateToken,
   stableJson,
   verifyCandidateToken,
+  verifyOffCandidateToken,
 } from "./crypto.ts";
 import { normalizeUsdaFood, normalizeUsdaSearchPayload } from "./normalization.ts";
+import { normalizeGtin14, normalizeOffProductPayload, validateOffCandidate } from "./off-normalization.ts";
 import type {
   CandidateTokenPayload,
   FoodCacheRow,
   HistoricalProviderIdentity,
   LookupInput,
   MemberSafeCandidate,
+  MemberOffSafeCandidate,
   NutritionProviderDependencies,
+  OffBarcodeInput,
+  OffCandidateTokenPayload,
+  OffLogInput,
+  OffReplaceInput,
+  OffSafeCandidate,
+  OffSnapshotCandidate,
+  ProviderCode,
   ProviderLogInput,
   ProviderReplaceInput,
   ProviderSnapshotCandidate,
@@ -49,6 +66,7 @@ import { ActiveProviderItemUnavailableError, ProviderError } from "./types.ts";
 
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu;
 const PROVIDER_FOOD_ID_PATTERN = /^[1-9][0-9]{0,15}$/u;
+const GTIN14_PATTERN = /^[0-9]{14}$/u;
 const COUNTRY_PATTERN = /^[A-Z]{2}$/u;
 // deno-lint-ignore no-control-regex -- control characters are intentionally rejected at the boundary.
 const SAFE_QUERY = /^[^\u0000-\u001f\u007f]{3,80}$/u;
@@ -101,7 +119,10 @@ function errorResponse(error: ProviderError, origin: string | null): Response {
 
 function routeFromUrl(url: URL): RouteName {
   const route = url.pathname.split("/").filter(Boolean).at(-1);
-  if (route === "search" || route === "lookup" || route === "log" || route === "replace") {
+  if (
+    route === "search" || route === "lookup" || route === "log" || route === "replace" ||
+    route === "off-barcode" || route === "off-log" || route === "off-replace"
+  ) {
     return route;
   }
   throw new ProviderError("route_not_found", "Route not found.", 404);
@@ -178,6 +199,23 @@ function parseLookup(value: unknown): LookupInput {
     throw new ProviderError("candidate_token_invalid", "Candidate token is required.", 400);
   }
   return { candidateToken: body.candidate_token, requestId: parseRequestId(body.request_id) };
+}
+
+function parseOffBarcode(value: unknown): OffBarcodeInput {
+  const body = exactObject(value, ["barcode", "request_id"]);
+  const normalizedGtin14 = normalizeGtin14(body.barcode);
+  if (typeof body.barcode !== "string" || !normalizedGtin14) {
+    throw new ProviderError(
+      "invalid_barcode",
+      "A valid EAN-8, UPC-A, EAN-13, or GTIN-14 barcode is required.",
+      400,
+    );
+  }
+  return {
+    barcode: body.barcode.trim(),
+    normalizedGtin14,
+    requestId: parseRequestId(body.request_id),
+  };
 }
 
 function parseUuid(value: unknown, field: string): string {
@@ -349,6 +387,83 @@ function parseReplace(value: unknown): ProviderReplaceInput {
     mealMoment: parseMealMoment(body.meal_moment),
     consumedQuantity: parseConsumedQuantity(body.consumed_quantity),
     consumedUnit: "g",
+    notes: parseNotes(body.notes),
+  };
+}
+
+function parseOffConsumedUnit(value: unknown): "g" | "ml" {
+  if (value !== "g" && value !== "ml") {
+    throw new ProviderError("invalid_consumed_unit", "OFF logging supports grams or millilitres.", 400);
+  }
+  return value;
+}
+
+function parseOffLog(value: unknown): OffLogInput {
+  const body = exactObject(value, [
+    "candidate_token",
+    "item_id",
+    "request_id",
+    "log_date",
+    "timezone_name",
+    "timezone_offset_minutes",
+    "meal_moment",
+    "consumed_quantity",
+    "consumed_unit",
+    "notes",
+    "consumed_at",
+  ]);
+  if (typeof body.candidate_token !== "string") {
+    throw new ProviderError("off_candidate_token_invalid", "OFF candidate token is required.", 400);
+  }
+  if (
+    !Number.isSafeInteger(body.timezone_offset_minutes) ||
+    Number(body.timezone_offset_minutes) < -840 ||
+    Number(body.timezone_offset_minutes) > 840
+  ) {
+    throw new ProviderError("invalid_timezone_offset", "Timezone offset is invalid.", 400);
+  }
+  return {
+    candidateToken: body.candidate_token,
+    itemId: parseUuid(body.item_id, "item_id"),
+    requestId: parseRequestId(body.request_id),
+    logDate: parseLogDate(body.log_date),
+    timezoneName: parseTimezone(body.timezone_name),
+    timezoneOffsetMinutes: Number(body.timezone_offset_minutes),
+    mealMoment: parseMealMoment(body.meal_moment),
+    consumedQuantity: parseConsumedQuantity(body.consumed_quantity),
+    consumedUnit: parseOffConsumedUnit(body.consumed_unit),
+    notes: parseNotes(body.notes),
+    consumedAt: parseIsoTimestamp(body.consumed_at, "consumed_at", true),
+  };
+}
+
+function parseOffReplace(value: unknown): OffReplaceInput {
+  const body = exactObject(value, [
+    "candidate_token",
+    "original_item_id",
+    "replacement_item_id",
+    "request_id",
+    "expected_original_updated_at",
+    "meal_moment",
+    "consumed_quantity",
+    "consumed_unit",
+    "notes",
+  ]);
+  if ("candidate_token" in body && typeof body.candidate_token !== "string") {
+    throw new ProviderError("off_candidate_token_invalid", "OFF candidate token is invalid.", 400);
+  }
+  return {
+    candidateToken: typeof body.candidate_token === "string" ? body.candidate_token : null,
+    originalItemId: parseUuid(body.original_item_id, "original_item_id"),
+    replacementItemId: parseUuid(body.replacement_item_id, "replacement_item_id"),
+    requestId: parseRequestId(body.request_id),
+    expectedOriginalUpdatedAt: parseExactIsoTimestamp(
+      body.expected_original_updated_at,
+      "expected_original_updated_at",
+    ),
+    mealMoment: parseMealMoment(body.meal_moment),
+    consumedQuantity: parseConsumedQuantity(body.consumed_quantity),
+    consumedUnit: parseOffConsumedUnit(body.consumed_unit),
     notes: parseNotes(body.notes),
   };
 }
@@ -544,6 +659,64 @@ async function validFoodCache(row: FoodCacheRow | null, now: Date): Promise<Safe
   return payload as SafeCandidate;
 }
 
+async function validOffFoodCache(
+  row: FoodCacheRow | null,
+  now: Date,
+): Promise<{ candidate: OffSafeCandidate; checksum: string } | null> {
+  if (
+    !row || !isFresh(row.expires_at, now) || row.provider_code !== OFF_PROVIDER_CODE ||
+    row.provider_data_type !== OFF_DATA_TYPE || row.mapping_version !== OFF_MAPPING_VERSION ||
+    (row.quality_state !== "candidate" && row.quality_state !== "validated") ||
+    !/^[0-9a-f]{64}$/u.test(row.payload_checksum)
+  ) return null;
+  if (await sha256Hex(row.normalized_payload) !== row.payload_checksum) return null;
+  const candidate = await validateOffCandidate(row.normalized_payload);
+  if (
+    !candidate || candidate.candidate_id !== row.candidate_id ||
+    candidate.provider_food_id !== row.provider_food_id
+  ) return null;
+  return { candidate, checksum: candidate.provenance.source_checksum };
+}
+
+async function validRejectedOffFoodCache(
+  row: FoodCacheRow | null,
+  expectedGtin14: string,
+  now: Date,
+): Promise<string | null> {
+  if (
+    !row || !isFresh(row.expires_at, now) || row.provider_code !== OFF_PROVIDER_CODE ||
+    row.provider_food_id !== expectedGtin14 || row.provider_data_type !== OFF_DATA_TYPE ||
+    row.mapping_version !== OFF_MAPPING_VERSION ||
+    (row.quality_state !== "quarantined" && row.quality_state !== "rejected") ||
+    !row.rejection_code || !/^[a-z0-9-]{1,80}$/u.test(row.rejection_code)
+  ) return null;
+  if (await sha256Hex(row.normalized_payload) !== row.payload_checksum) return null;
+  const payload = exactRecord(row.normalized_payload, [
+    "data_type",
+    "mapping_version",
+    "provider",
+    "provider_food_id",
+    "rejection_code",
+  ]);
+  return payload && payload.provider === OFF_PROVIDER_CODE &&
+      payload.provider_food_id === expectedGtin14 && payload.data_type === OFF_DATA_TYPE &&
+      payload.mapping_version === OFF_MAPPING_VERSION && payload.rejection_code === row.rejection_code
+    ? row.rejection_code
+    : null;
+}
+
+async function memberOffCandidate(
+  candidate: OffSafeCandidate,
+  checksum: string,
+  hmacKey: string,
+  now: Date,
+): Promise<MemberOffSafeCandidate> {
+  return {
+    ...candidate,
+    candidate_token: await signOffCandidateToken(hmacKey, candidate, checksum, now),
+  };
+}
+
 async function validRejectedFoodCache(
   row: FoodCacheRow | null,
   token: CandidateTokenPayload,
@@ -654,6 +827,7 @@ function upstreamRateMetadata(
 
 async function enforceOperationalGate(
   dependencies: NutritionProviderDependencies,
+  providerCode: ProviderCode,
   userId: string,
   clientRequestId: string,
   operationIdentity: string,
@@ -664,7 +838,7 @@ async function enforceOperationalGate(
     clientRequestId,
     `${subject}:${operationIdentity}`,
   );
-  const rate = await dependencies.store.consumeRateLimit(subject, rateRequestId);
+  const rate = await dependencies.store.consumeRateLimit(providerCode, subject, rateRequestId);
   if (!rate.allowed) {
     const retry = Math.max(1, Math.min(rate.retry_after_seconds ?? 60, MAX_RETRY_AFTER_SECONDS));
     throw new ProviderError("rate_limited", "Provider request limit reached.", 429, {
@@ -678,7 +852,7 @@ async function enforceOperationalGate(
       409,
     );
   }
-  const probe = await dependencies.store.beginProbe();
+  const probe = await dependencies.store.beginProbe(providerCode);
   if (!probe.probe_allowed) {
     throw new ProviderError(
       "provider_temporarily_unavailable",
@@ -722,6 +896,7 @@ async function handleSearch(
 
   await enforceOperationalGate(
     dependencies,
+    PROVIDER_CODE,
     userId,
     input.requestId,
     stableJson({
@@ -747,7 +922,7 @@ async function handleSearch(
         }),
     );
   } catch (error) {
-    await dependencies.store.transitionRuntime({
+    await dependencies.store.transitionRuntime(PROVIDER_CODE, {
       event: "failure",
       errorClass: error instanceof ProviderError && error.code === "provider_timeout"
         ? "upstream-timeout"
@@ -758,7 +933,7 @@ async function handleSearch(
   }
   if (response.status === 429) {
     const retry = retryAfter(response);
-    await dependencies.store.transitionRuntime({
+    await dependencies.store.transitionRuntime(PROVIDER_CODE, {
       event: "rate_limited",
       retryAfterSeconds: Math.min(retry, 3_600),
       errorClass: "upstream-rate-limited",
@@ -767,7 +942,7 @@ async function handleSearch(
     throw new ProviderError("provider_rate_limited", "Provider is temporarily rate limited.", 503);
   }
   if (response.status < 200 || response.status >= 300) {
-    await dependencies.store.transitionRuntime({
+    await dependencies.store.transitionRuntime(PROVIDER_CODE, {
       event: "failure",
       errorClass: "upstream-http-error",
     });
@@ -778,13 +953,13 @@ async function handleSearch(
   try {
     normalized = await normalizeUsdaSearchPayload(boundedJson(response), now);
   } catch (error) {
-    await dependencies.store.transitionRuntime({
+    await dependencies.store.transitionRuntime(PROVIDER_CODE, {
       event: "failure",
       errorClass: "upstream-payload-invalid",
     });
     throw error;
   }
-  await dependencies.store.transitionRuntime({
+  await dependencies.store.transitionRuntime(PROVIDER_CODE, {
     event: "success",
     ...upstreamRateMetadata(response),
   });
@@ -867,6 +1042,7 @@ async function handleLookup(
 
   await enforceOperationalGate(
     dependencies,
+    PROVIDER_CODE,
     userId,
     input.requestId,
     stableJson({
@@ -884,7 +1060,7 @@ async function handleLookup(
       (signal) => dependencies.usda.lookup({ providerFoodId: token.provider_food_id, signal }),
     );
   } catch (error) {
-    await dependencies.store.transitionRuntime({
+    await dependencies.store.transitionRuntime(PROVIDER_CODE, {
       event: "failure",
       errorClass: error instanceof ProviderError && error.code === "provider_timeout"
         ? "upstream-timeout"
@@ -894,12 +1070,12 @@ async function handleLookup(
     throw new ProviderError("provider_unavailable", "Provider is temporarily unavailable.", 503);
   }
   if (response.status === 404) {
-    await dependencies.store.transitionRuntime({ event: "success" });
+    await dependencies.store.transitionRuntime(PROVIDER_CODE, { event: "success" });
     throw new ProviderError("candidate_not_found", "Candidate was not found.", 404);
   }
   if (response.status === 429) {
     const retry = retryAfter(response);
-    await dependencies.store.transitionRuntime({
+    await dependencies.store.transitionRuntime(PROVIDER_CODE, {
       event: "rate_limited",
       retryAfterSeconds: Math.min(retry, 3_600),
       errorClass: "upstream-rate-limited",
@@ -908,7 +1084,7 @@ async function handleLookup(
     throw new ProviderError("provider_rate_limited", "Provider is temporarily rate limited.", 503);
   }
   if (response.status < 200 || response.status >= 300) {
-    await dependencies.store.transitionRuntime({
+    await dependencies.store.transitionRuntime(PROVIDER_CODE, {
       event: "failure",
       errorClass: "upstream-http-error",
     });
@@ -919,7 +1095,7 @@ async function handleLookup(
   try {
     candidate = await normalizeUsdaFood(boundedJson(response), now);
   } catch (error) {
-    await dependencies.store.transitionRuntime({
+    await dependencies.store.transitionRuntime(PROVIDER_CODE, {
       event: "failure",
       errorClass: "upstream-payload-invalid",
     });
@@ -954,7 +1130,7 @@ async function handleLookup(
   if (
     candidate.provider_food_id !== token.provider_food_id || candidate.data_type !== token.data_type
   ) {
-    await dependencies.store.transitionRuntime({
+    await dependencies.store.transitionRuntime(PROVIDER_CODE, {
       event: "failure",
       errorClass: "candidate-identity-mismatch",
     });
@@ -964,7 +1140,7 @@ async function handleLookup(
       409,
     );
   }
-  await dependencies.store.transitionRuntime({
+  await dependencies.store.transitionRuntime(PROVIDER_CODE, {
     event: "success",
     ...upstreamRateMetadata(response),
   });
@@ -991,6 +1167,376 @@ async function handleLookup(
     cache: "miss",
     result: (await memberCandidates([candidate], dependencies.hmacKey, now))[0],
   };
+}
+
+function offFoodCacheKey(normalizedGtin14: string) {
+  return {
+    providerCode: OFF_PROVIDER_CODE as "open_food_facts",
+    providerFoodId: normalizedGtin14,
+    mappingVersion: OFF_MAPPING_VERSION,
+  };
+}
+
+async function putRejectedOffCache(
+  dependencies: NutritionProviderDependencies,
+  normalizedGtin14: string,
+  rejectionCode: string,
+  now: Date,
+): Promise<void> {
+  const normalizedCode = rejectionCode.replaceAll("_", "-").slice(0, 80);
+  const payload = {
+    provider: OFF_PROVIDER_CODE,
+    provider_food_id: normalizedGtin14,
+    data_type: OFF_DATA_TYPE,
+    mapping_version: OFF_MAPPING_VERSION,
+    rejection_code: normalizedCode,
+  };
+  await dependencies.store.putFoodCache({
+    provider_code: OFF_PROVIDER_CODE,
+    provider_food_id: normalizedGtin14,
+    provider_data_type: OFF_DATA_TYPE,
+    mapping_version: OFF_MAPPING_VERSION,
+    candidate_id: await createOffCandidateId(normalizedGtin14),
+    normalized_payload: payload,
+    payload_checksum: await sha256Hex(payload),
+    quality_state: "quarantined",
+    rejection_code: normalizedCode,
+    source_version: null,
+    source_updated_at: null,
+    provenance: { provider: OFF_PROVIDER_CODE, mapping_version: OFF_MAPPING_VERSION },
+    metadata: { cache_kind: "transient_off_negative" },
+    fetched_at: now.toISOString(),
+    expires_at: new Date(now.getTime() + OFF_NEGATIVE_CACHE_TTL_SECONDS * 1_000).toISOString(),
+  });
+}
+
+async function resolveOffTokenCandidate(
+  candidateToken: string,
+  dependencies: NutritionProviderDependencies,
+  now: Date,
+): Promise<{ candidate: OffSafeCandidate; cache: "hit" }> {
+  const token = await verifyOffCandidateToken(dependencies.hmacKey, candidateToken, now);
+  const cached = await validOffFoodCache(
+    await dependencies.store.getFoodCache(offFoodCacheKey(token.provider_food_id)),
+    now,
+  );
+  if (!cached) {
+    throw new ProviderError(
+      "off_candidate_unavailable",
+      "OFF candidate is no longer available; scan the barcode again.",
+      409,
+    );
+  }
+  if (
+    cached.candidate.candidate_id !== token.candidate_id ||
+    cached.candidate.nutrition_basis !== token.reference_basis ||
+    cached.checksum !== token.payload_checksum
+  ) {
+    throw new ProviderError(
+      "off_candidate_token_mismatch",
+      "OFF candidate token does not match the trusted snapshot.",
+      409,
+    );
+  }
+  return { candidate: cached.candidate, cache: "hit" };
+}
+
+async function handleOffBarcode(
+  input: OffBarcodeInput,
+  userId: string,
+  dependencies: NutritionProviderDependencies,
+  now: Date,
+): Promise<{
+  cache: "hit" | "miss" | "not_checked";
+  source: "local" | "open_food_facts";
+  result: Record<string, unknown> | MemberOffSafeCandidate;
+}> {
+  const local = await dependencies.store.resolveLocalBarcode(userId, input.normalizedGtin14);
+  if (local) return { cache: "not_checked", source: "local", result: local };
+
+  const cacheKey = offFoodCacheKey(input.normalizedGtin14);
+  const cacheRow = await dependencies.store.getFoodCache(cacheKey);
+  const cached = await validOffFoodCache(cacheRow, now);
+  if (cached) {
+    return {
+      cache: "hit",
+      source: OFF_PROVIDER_CODE,
+      result: await memberOffCandidate(
+        cached.candidate,
+        cached.checksum,
+        dependencies.hmacKey,
+        now,
+      ),
+    };
+  }
+  if (await validRejectedOffFoodCache(cacheRow, input.normalizedGtin14, now)) {
+    throw new ProviderError(
+      "off_product_unavailable",
+      "No usable Open Food Facts product was found for this barcode.",
+      404,
+    );
+  }
+
+  await enforceOperationalGate(
+    dependencies,
+    OFF_PROVIDER_CODE,
+    userId,
+    input.requestId,
+    stableJson({
+      provider: OFF_PROVIDER_CODE,
+      normalized_gtin14: input.normalizedGtin14,
+      route: "off-barcode",
+    }),
+  );
+  let response: UpstreamResponse;
+  try {
+    response = await withTimeout(
+      dependencies.timeoutMs ?? UPSTREAM_TIMEOUT_MS,
+      (signal) => dependencies.off.lookupBarcode({ normalizedGtin14: input.normalizedGtin14, signal }),
+    );
+  } catch (error) {
+    await dependencies.store.transitionRuntime(OFF_PROVIDER_CODE, {
+      event: "failure",
+      errorClass: error instanceof ProviderError && error.code === "provider_timeout"
+        ? "upstream-timeout"
+        : "upstream-network-error",
+    });
+    if (error instanceof ProviderError) throw error;
+    throw new ProviderError("off_provider_unavailable", "Open Food Facts is unavailable.", 503);
+  }
+  if (response.status === 404) {
+    await dependencies.store.transitionRuntime(OFF_PROVIDER_CODE, { event: "success" });
+    await putRejectedOffCache(dependencies, input.normalizedGtin14, "off_product_not_found", now);
+    throw new ProviderError(
+      "off_product_not_found",
+      "No Open Food Facts product was found for this barcode.",
+      404,
+    );
+  }
+  if (response.status === 429) {
+    const retry = retryAfter(response);
+    await dependencies.store.transitionRuntime(OFF_PROVIDER_CODE, {
+      event: "rate_limited",
+      retryAfterSeconds: Math.min(retry, 3_600),
+      errorClass: "upstream-rate-limited",
+      ...upstreamRateMetadata(response),
+    });
+    throw new ProviderError("off_provider_rate_limited", "Open Food Facts is busy.", 503);
+  }
+  if (response.status < 200 || response.status >= 300) {
+    await dependencies.store.transitionRuntime(OFF_PROVIDER_CODE, {
+      event: "failure",
+      errorClass: "upstream-http-error",
+    });
+    throw new ProviderError("off_provider_unavailable", "Open Food Facts is unavailable.", 503);
+  }
+
+  let candidate: OffSafeCandidate;
+  try {
+    candidate = await normalizeOffProductPayload(
+      boundedJson(response),
+      input.normalizedGtin14,
+      now,
+    );
+  } catch (error) {
+    await dependencies.store.transitionRuntime(OFF_PROVIDER_CODE, {
+      event: "failure",
+      errorClass: error instanceof ProviderError ? error.code.replaceAll("_", "-") : "upstream-payload-invalid",
+    });
+    if (error instanceof ProviderError && error.status >= 400 && error.status < 500) {
+      await putRejectedOffCache(dependencies, input.normalizedGtin14, error.code, now);
+    }
+    throw error;
+  }
+  await dependencies.store.transitionRuntime(OFF_PROVIDER_CODE, {
+    event: "success",
+    ...upstreamRateMetadata(response),
+  });
+  const payloadChecksum = await sha256Hex(candidate);
+  await dependencies.store.putFoodCache({
+    provider_code: OFF_PROVIDER_CODE,
+    provider_food_id: candidate.provider_food_id,
+    provider_data_type: OFF_DATA_TYPE,
+    mapping_version: OFF_MAPPING_VERSION,
+    candidate_id: candidate.candidate_id,
+    normalized_payload: candidate,
+    payload_checksum: payloadChecksum,
+    quality_state: "validated",
+    rejection_code: null,
+    source_version: candidate.provenance.source_revision,
+    source_updated_at: candidate.provenance.source_updated_at,
+    provenance: candidate.provenance,
+    metadata: {
+      cache_kind: "transient_off_exact_barcode",
+      source_checksum: candidate.provenance.source_checksum,
+      reference_basis: candidate.nutrition_basis,
+    },
+    fetched_at: now.toISOString(),
+    expires_at: new Date(now.getTime() + OFF_FOOD_CACHE_TTL_SECONDS * 1_000).toISOString(),
+  });
+  return {
+    cache: "miss",
+    source: OFF_PROVIDER_CODE,
+    result: await memberOffCandidate(
+      candidate,
+      candidate.provenance.source_checksum,
+      dependencies.hmacKey,
+      now,
+    ),
+  };
+}
+
+function offSnapshot(candidate: OffSafeCandidate): OffSnapshotCandidate {
+  return {
+    provider: OFF_PROVIDER_CODE,
+    provider_food_id: candidate.provider_food_id,
+    candidate_id: candidate.candidate_id,
+    mapping_version: OFF_MAPPING_VERSION,
+    provider_data_type: OFF_DATA_TYPE,
+    food_name: candidate.name,
+    brand: candidate.brand,
+    barcode_original: candidate.barcode_original,
+    normalized_gtin14: candidate.barcode,
+    reference_amount: 100,
+    reference_unit: candidate.reference_unit,
+    energy_kcal_per_100: candidate.kcal,
+    protein_grams_per_100: candidate.protein,
+    carbohydrate_grams_per_100: candidate.carbohydrates,
+    fat_grams_per_100: candidate.fat,
+    fiber_grams_per_100: candidate.fiber,
+    source_version: candidate.provenance.source_revision,
+    source_checksum: candidate.provenance.source_checksum,
+    retrieved_at: candidate.provenance.retrieved_at,
+    source_updated_at: candidate.provenance.source_updated_at,
+    provenance: candidate.provenance,
+  };
+}
+
+async function validHistoricalOffSnapshot(value: unknown): Promise<OffSnapshotCandidate> {
+  const snapshot = exactRecord(value, [
+    "barcode_original",
+    "brand",
+    "candidate_id",
+    "carbohydrate_grams_per_100",
+    "energy_kcal_per_100",
+    "fat_grams_per_100",
+    "fiber_grams_per_100",
+    "food_name",
+    "mapping_version",
+    "normalized_gtin14",
+    "protein_grams_per_100",
+    "provenance",
+    "provider",
+    "provider_data_type",
+    "provider_food_id",
+    "reference_amount",
+    "reference_unit",
+    "retrieved_at",
+    "source_checksum",
+    "source_updated_at",
+    "source_version",
+  ]);
+  if (!snapshot) {
+    throw new ProviderError("off_replace_resolver_invalid", "Historical OFF snapshot is invalid.", 500);
+  }
+  const gtin = normalizeGtin14(snapshot.provider_food_id);
+  const referenceUnit = snapshot.reference_unit;
+  const expectedBasis = referenceUnit === "ml" ? "per_100_ml" : "per_100_g";
+  const provenance = snapshot.provenance as Record<string, unknown> | null;
+  if (
+    !gtin || gtin !== snapshot.provider_food_id || snapshot.normalized_gtin14 !== gtin ||
+    normalizeGtin14(snapshot.barcode_original) !== gtin || snapshot.provider !== OFF_PROVIDER_CODE ||
+    snapshot.provider_data_type !== OFF_DATA_TYPE || snapshot.mapping_version !== OFF_MAPPING_VERSION ||
+    snapshot.candidate_id !== await createOffCandidateId(gtin) || snapshot.reference_amount !== 100 ||
+    (referenceUnit !== "g" && referenceUnit !== "ml") || !safeCachedText(snapshot.food_name, 240) ||
+    !safeCachedText(snapshot.brand, 160) || !/^[0-9a-f]{64}$/u.test(String(snapshot.source_checksum)) ||
+    !safeCachedText(snapshot.source_version, 120) ||
+    typeof snapshot.retrieved_at !== "string" || !Number.isFinite(Date.parse(snapshot.retrieved_at)) ||
+    !safeCachedNumber(snapshot.energy_kcal_per_100, 0, 900) ||
+    !safeCachedNumber(snapshot.protein_grams_per_100, 0, 100) ||
+    !safeCachedNumber(snapshot.carbohydrate_grams_per_100, 0, 100) ||
+    !safeCachedNumber(snapshot.fat_grams_per_100, 0, 100) ||
+    !(snapshot.fiber_grams_per_100 === null || safeCachedNumber(snapshot.fiber_grams_per_100, 0, 100)) ||
+    !provenance || provenance.provider !== OFF_PROVIDER_CODE ||
+    provenance.provider_food_id !== gtin || provenance.candidate_id !== snapshot.candidate_id ||
+    provenance.mapping_version !== OFF_MAPPING_VERSION || provenance.reference_basis !== expectedBasis ||
+    provenance.source_checksum !== snapshot.source_checksum || provenance.source_revision !== snapshot.source_version
+  ) {
+    throw new ProviderError("off_replace_resolver_invalid", "Historical OFF snapshot is invalid.", 500);
+  }
+  return snapshot as unknown as OffSnapshotCandidate;
+}
+
+function requireOffUnit(referenceUnit: "g" | "ml", consumedUnit: "g" | "ml"): void {
+  if (referenceUnit !== consumedUnit) {
+    throw new ProviderError(
+      "off_unit_mismatch",
+      referenceUnit === "ml" ? "This product must be logged in millilitres." : "This product must be logged in grams.",
+      400,
+    );
+  }
+}
+
+async function handleOffLog(
+  input: OffLogInput,
+  userId: string,
+  dependencies: NutritionProviderDependencies,
+  now: Date,
+): Promise<{ cache: "hit"; result: Record<string, unknown> }> {
+  const resolved = await resolveOffTokenCandidate(input.candidateToken, dependencies, now);
+  requireOffUnit(resolved.candidate.reference_unit, input.consumedUnit);
+  const result = await dependencies.store.logTransientOffFoodItem({
+    userId,
+    input,
+    candidate: offSnapshot(resolved.candidate),
+  });
+  return { cache: "hit", result };
+}
+
+async function resolveHistoricalOffSnapshot(
+  input: OffReplaceInput,
+  userId: string,
+  dependencies: NutritionProviderDependencies,
+): Promise<OffSnapshotCandidate> {
+  try {
+    return await validHistoricalOffSnapshot(
+      await dependencies.store.resolveTransientOffFoodLogItem(userId, input.originalItemId),
+    );
+  } catch (error) {
+    if (!(error instanceof ActiveProviderItemUnavailableError)) throw error;
+    try {
+      return await validHistoricalOffSnapshot(
+        await dependencies.store.resolveTransientOffFoodLogItem(userId, input.replacementItemId),
+      );
+    } catch (fallbackError) {
+      if (!(fallbackError instanceof ActiveProviderItemUnavailableError)) throw fallbackError;
+      throw new ProviderError(
+        "off_replace_forbidden",
+        "OFF food logging is not allowed for this request.",
+        403,
+      );
+    }
+  }
+}
+
+async function handleOffReplace(
+  input: OffReplaceInput,
+  userId: string,
+  dependencies: NutritionProviderDependencies,
+  now: Date,
+): Promise<{ cache: "hit" | "not_checked"; result: Record<string, unknown> }> {
+  let candidate: OffSnapshotCandidate;
+  let cache: "hit" | "not_checked" = "not_checked";
+  if (input.candidateToken) {
+    const resolved = await resolveOffTokenCandidate(input.candidateToken, dependencies, now);
+    candidate = offSnapshot(resolved.candidate);
+    cache = "hit";
+  } else {
+    candidate = await resolveHistoricalOffSnapshot(input, userId, dependencies);
+  }
+  requireOffUnit(candidate.reference_unit, input.consumedUnit);
+  const result = await dependencies.store.replaceTransientOffFoodItem({ userId, input, candidate });
+  return { cache, result };
 }
 
 function providerSnapshot(candidate: SafeCandidate): ProviderSnapshotCandidate {
@@ -1220,11 +1766,44 @@ export function createNutritionProviderHandler(dependencies: NutritionProviderDe
           origin,
         );
       }
-      const input = parseReplace(body);
+      if (route === "replace") {
+        const input = parseReplace(body);
+        requestId = input.requestId;
+        const result = await handleReplace(input, user.id, dependencies, now);
+        cache = result.cache;
+        return jsonResponse(200, { ok: true, data: { ...result, provider: PROVIDER_CODE } }, origin);
+      }
+      if (route === "off-barcode") {
+        const input = parseOffBarcode(body);
+        requestId = input.requestId;
+        const result = await handleOffBarcode(input, user.id, dependencies, now);
+        cache = result.cache;
+        return jsonResponse(
+          200,
+          { ok: true, data: { ...result, provider: OFF_PROVIDER_CODE } },
+          origin,
+        );
+      }
+      if (route === "off-log") {
+        const input = parseOffLog(body);
+        requestId = input.requestId;
+        const result = await handleOffLog(input, user.id, dependencies, now);
+        cache = result.cache;
+        return jsonResponse(
+          200,
+          { ok: true, data: { ...result, provider: OFF_PROVIDER_CODE } },
+          origin,
+        );
+      }
+      const input = parseOffReplace(body);
       requestId = input.requestId;
-      const result = await handleReplace(input, user.id, dependencies, now);
+      const result = await handleOffReplace(input, user.id, dependencies, now);
       cache = result.cache;
-      return jsonResponse(200, { ok: true, data: { ...result, provider: PROVIDER_CODE } }, origin);
+      return jsonResponse(
+        200,
+        { ok: true, data: { ...result, provider: OFF_PROVIDER_CODE } },
+        origin,
+      );
     } catch (error) {
       const safeError = error instanceof ProviderError
         ? error
@@ -1235,7 +1814,7 @@ export function createNutritionProviderHandler(dependencies: NutritionProviderDe
       dependencies.logger.write({
         request_id: requestId,
         route,
-        provider: PROVIDER_CODE,
+        provider: route.startsWith("off-") ? OFF_PROVIDER_CODE : PROVIDER_CODE,
         cache,
         status_class: rejectionCategory ?? "success",
         latency_bucket: latencyBucket(startedAt),

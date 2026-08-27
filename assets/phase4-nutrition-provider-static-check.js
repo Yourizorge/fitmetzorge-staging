@@ -4,7 +4,7 @@ const path = require("path");
 const root = path.resolve(__dirname, "..");
 const read = (relativePath) => fs.readFileSync(path.join(root, relativePath), "utf8");
 const functionRoot = "supabase/functions/nutrition-provider";
-const files = ["constants.ts", "crypto.ts", "handler.ts", "index.ts", "normalization.ts", "types.ts"];
+const files = ["constants.ts", "crypto.ts", "handler.ts", "index.ts", "normalization.ts", "off-normalization.ts", "types.ts"];
 const sources = Object.fromEntries(files.map((file) => [file, read(`${functionRoot}/${file}`)]));
 const source = files.map((file) => sources[file]).join("\n");
 const tests = read(`${functionRoot}/nutrition-provider.test.ts`);
@@ -117,7 +117,7 @@ check("service role remains in server adapter only", !files.filter((file) => fil
 check("canonical foods are never written", !/\.from\(["'](foods|food_portions|food_aliases)["']\)\.(insert|upsert|update|delete)/.test(source));
 check("only provider operational tables are accessed", !/\.from\(["'](?!nutrition_provider_(?:query_cache|food_cache))[a-z0-9_]+["']\)/.test(sources["index.ts"]));
 check("no ingestion route or ledger exists", !/(ingest|ingestion_ledger)/i.test(source));
-check("no AI or OFF integration exists", !/(open_food_facts|openfoodfacts|anthropic|openai|gemini)/i.test(source));
+check("no AI or persistent OFF catalog mutation exists", !/(anthropic|openai|gemini)/i.test(source) && !/\.from\(["']nutrition_off_(?:products|product_names|catalog_releases)["']\)\.(?:insert|upsert|update|delete)/i.test(source));
 check("structured logs omit raw uid query and token", !/(console\.(?:info|log)[\s\S]{0,200}(userId|query|token))/i.test(source));
 
 check("runtime dependency is exactly pinned", sources["index.ts"].includes('npm:@supabase/supabase-js@2.95.0') && (sources["index.ts"].match(/(?:npm:|jsr:|https?:\/\/)/g) || []).length === 1);

@@ -1,6 +1,6 @@
 # Phase 4 Nutrition Slice 4F - Open Food Facts Catalog Foundation
 
-Status: 4F-A COMPLETE / FROZEN; 4F-B OWNER-ACCEPTED / FROZEN; 4F-C LOCALLY READY / STAGING GATE REQUIRED. The isolated catalog contains exactly 24,458 products and 74,184 source-derived names. Unified search performance and the Dutch branded selection UX are accepted. Authoritative OFF logging/edit/archive is implemented locally without deploying its additive function migration or frontend runtime. Production remains untouched.
+Status: 4F-A COMPLETE / FROZEN; 4F-B OWNER-ACCEPTED / FROZEN; 4F-C COMPLETE / FROZEN; 4F-D LOCALLY REVIEWED / STAGING GATE PENDING. The isolated catalog contains exactly 24,458 products and 74,184 source-derived names. Runtime unknown-barcode lookup remains separate from this deterministic release domain. Production remains untouched.
 
 ## Frozen Baseline
 
@@ -46,7 +46,11 @@ The reviewed 4F-C flow is member selection -> authenticated database RPC -> serv
 
 4F-C reuses `food_logs`, `food_log_items`, `fmz_phase4_day_payload`, the existing archive RPC, Free seven-day history, Pro/AI/PT entitlement behavior and the established request/object advisory-lock namespaces. It adds no table, no policy, no trainer route and no parallel logging model. Same-product and changed-OFF-product edits insert a new immutable row and archive the original in one transaction with optimistic `updated_at` conflict protection and equality replay.
 
-An unknown barcode will later follow local miss -> backend exact OFF lookup -> validation -> optional reviewed ODbL ingestion/cache -> typed result. A provider miss routes to private custom-product creation. It does not promote a community record into `public.foods`.
+## Package 4F-D Transient Unknown Barcode
+
+The owner-selected flow is local exact GTIN lookup first. A trusted local custom, generic or persistent OFF hit reuses frozen logging. A true local miss invokes the authenticated Edge route for one exact OFF product-by-barcode lookup. The server validates Mod-10 GTIN identity, Dutch relevance, name and brand, explicit `per_100_g` or `per_100_ml`, required bounded macros, revision/checksum and ODbL provenance before issuing a short-lived source-bound candidate.
+
+Logging writes an immutable transient OFF snapshot with null canonical food identities; the runtime product is never inserted into the pinned OFF release tables or `public.foods`. Same-product historical edits use the immutable saved snapshot without requiring the expired candidate token. Changing to another transient product requires a fresh token and uses atomic replacement. Provider misses and unusable products offer private custom-food creation with the normalized barcode prefilled. Camera frames stay in the browser; only the decoded barcode reaches FitMetZorge.
 
 ## Refresh And Import Gate
 

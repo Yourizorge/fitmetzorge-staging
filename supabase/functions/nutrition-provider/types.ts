@@ -1,7 +1,15 @@
 import type { AcceptedDataType } from "./constants.ts";
 
 export type Locale = "nl" | "en" | "de";
-export type RouteName = "search" | "lookup" | "log" | "replace";
+export type ProviderCode = "usda_fdc" | "open_food_facts";
+export type RouteName =
+  | "search"
+  | "lookup"
+  | "log"
+  | "replace"
+  | "off-barcode"
+  | "off-log"
+  | "off-replace";
 export type CacheStatus = "positive" | "empty" | "quarantined";
 export type QualityState = "candidate" | "validated" | "quarantined" | "rejected";
 
@@ -25,6 +33,12 @@ export interface SearchInput {
 
 export interface LookupInput {
   candidateToken: string;
+  requestId: string;
+}
+
+export interface OffBarcodeInput {
+  barcode: string;
+  normalizedGtin14: string;
   requestId: string;
 }
 
@@ -54,6 +68,32 @@ export interface ProviderReplaceInput {
   notes: string | null;
 }
 
+export interface OffLogInput {
+  candidateToken: string;
+  itemId: string;
+  requestId: string;
+  logDate: string;
+  timezoneName: string;
+  timezoneOffsetMinutes: number;
+  mealMoment: "breakfast" | "lunch" | "dinner" | "snacks";
+  consumedQuantity: number;
+  consumedUnit: "g" | "ml";
+  notes: string | null;
+  consumedAt: string | null;
+}
+
+export interface OffReplaceInput {
+  candidateToken: string | null;
+  originalItemId: string;
+  replacementItemId: string;
+  requestId: string;
+  expectedOriginalUpdatedAt: string;
+  mealMoment: "breakfast" | "lunch" | "dinner" | "snacks";
+  consumedQuantity: number;
+  consumedUnit: "g" | "ml";
+  notes: string | null;
+}
+
 export interface HistoricalProviderIdentity {
   provider: "usda_fdc";
   provider_food_id: string;
@@ -69,6 +109,18 @@ export interface CandidateTokenPayload {
   data_type: AcceptedDataType;
   mapping_version: string;
   candidate_id: string;
+  expires_at: number;
+}
+
+export interface OffCandidateTokenPayload {
+  version: 2;
+  provider: "open_food_facts";
+  provider_food_id: string;
+  data_type: "off_branded";
+  mapping_version: string;
+  candidate_id: string;
+  reference_basis: "per_100_g" | "per_100_ml";
+  payload_checksum: string;
   expires_at: number;
 }
 
@@ -123,6 +175,78 @@ export interface MemberSafeCandidate extends SafeCandidate {
   candidate_token: string;
 }
 
+export interface OffSafeCandidate {
+  candidate_id: string;
+  provider: "open_food_facts";
+  provider_label: string;
+  provider_food_id: string;
+  barcode: string;
+  barcode_original: string;
+  name: string;
+  brand: string;
+  data_type: "off_branded";
+  mapping_version: string;
+  reference_amount: 100;
+  reference_unit: "g" | "ml";
+  nutrition_basis: "per_100_g" | "per_100_ml";
+  kcal: number;
+  protein: number;
+  carbohydrates: number;
+  fat: number;
+  fiber: number | null;
+  quality: "candidate";
+  attribution: {
+    label: string;
+    license: "ODbL-1.0";
+    url: string;
+  };
+  provenance: {
+    provider: "open_food_facts";
+    provider_food_id: string;
+    candidate_id: string;
+    mapping_version: string;
+    reference_basis: "per_100_g" | "per_100_ml";
+    source_revision: string;
+    source_checksum: string;
+    retrieved_at: string;
+    source_updated_at: string | null;
+    original_barcode: string;
+    countries_tags: string[];
+    license_code: "ODbL-1.0";
+    license_url: string;
+    attribution: { label: string; url: string };
+    derivation: Record<string, unknown>;
+  };
+}
+
+export interface MemberOffSafeCandidate extends OffSafeCandidate {
+  candidate_token: string;
+}
+
+export interface OffSnapshotCandidate {
+  provider: "open_food_facts";
+  provider_food_id: string;
+  candidate_id: string;
+  mapping_version: string;
+  provider_data_type: "off_branded";
+  food_name: string;
+  brand: string;
+  barcode_original: string;
+  normalized_gtin14: string;
+  reference_amount: 100;
+  reference_unit: "g" | "ml";
+  energy_kcal_per_100: number;
+  protein_grams_per_100: number;
+  carbohydrate_grams_per_100: number;
+  fat_grams_per_100: number;
+  fiber_grams_per_100: number | null;
+  source_version: string;
+  source_checksum: string;
+  retrieved_at: string;
+  source_updated_at: string | null;
+  provenance: Record<string, unknown>;
+}
+
 export interface ProviderSnapshotCandidate {
   provider: "usda_fdc";
   provider_food_id: string;
@@ -154,6 +278,18 @@ export interface ProviderReplaceMutation {
   userId: string;
   input: ProviderReplaceInput;
   candidate: ProviderSnapshotCandidate;
+}
+
+export interface OffLogMutation {
+  userId: string;
+  input: OffLogInput;
+  candidate: OffSnapshotCandidate;
+}
+
+export interface OffReplaceMutation {
+  userId: string;
+  input: OffReplaceInput;
+  candidate: OffSnapshotCandidate;
 }
 
 export interface QueryCacheKey {
@@ -188,18 +324,18 @@ export interface QueryCacheRow {
 }
 
 export interface FoodCacheKey {
-  providerCode: "usda_fdc";
+  providerCode: ProviderCode;
   providerFoodId: string;
   mappingVersion: string;
 }
 
 export interface FoodCacheRow {
-  provider_code: "usda_fdc";
+  provider_code: ProviderCode;
   provider_food_id: string;
-  provider_data_type: AcceptedDataType;
+  provider_data_type: AcceptedDataType | "off_branded";
   mapping_version: string;
   candidate_id: string;
-  normalized_payload: SafeCandidate | Record<string, unknown>;
+  normalized_payload: SafeCandidate | OffSafeCandidate | Record<string, unknown>;
   payload_checksum: string;
   quality_state: QualityState;
   rejection_code: string | null;
@@ -243,9 +379,14 @@ export interface OperationalStore {
   putQueryCache(row: QueryCacheRow): Promise<void>;
   getFoodCache(key: FoodCacheKey): Promise<FoodCacheRow | null>;
   putFoodCache(row: FoodCacheRow): Promise<void>;
-  consumeRateLimit(userSubjectHmac: string, requestId: string): Promise<RateLimitResult>;
-  beginProbe(): Promise<ProbeResult>;
-  transitionRuntime(input: RuntimeTransitionInput): Promise<void>;
+  consumeRateLimit(
+    providerCode: ProviderCode,
+    userSubjectHmac: string,
+    requestId: string,
+  ): Promise<RateLimitResult>;
+  beginProbe(providerCode: ProviderCode): Promise<ProbeResult>;
+  transitionRuntime(providerCode: ProviderCode, input: RuntimeTransitionInput): Promise<void>;
+  resolveLocalBarcode(userId: string, normalizedGtin14: string): Promise<Record<string, unknown> | null>;
   resolveProviderFoodLogItem(
     userId: string,
     originalItemId: string,
@@ -254,6 +395,12 @@ export interface OperationalStore {
   replaceProviderFoodLogItem(
     input: ProviderReplaceMutation,
   ): Promise<Record<string, unknown>>;
+  resolveTransientOffFoodLogItem(
+    userId: string,
+    originalItemId: string,
+  ): Promise<OffSnapshotCandidate>;
+  logTransientOffFoodItem(input: OffLogMutation): Promise<Record<string, unknown>>;
+  replaceTransientOffFoodItem(input: OffReplaceMutation): Promise<Record<string, unknown>>;
 }
 
 export interface UpstreamResponse {
@@ -280,10 +427,19 @@ export interface UsdaClient {
   lookup(input: UsdaLookupRequest): Promise<UpstreamResponse>;
 }
 
+export interface OffBarcodeRequest {
+  normalizedGtin14: string;
+  signal: AbortSignal;
+}
+
+export interface OffClient {
+  lookupBarcode(input: OffBarcodeRequest): Promise<UpstreamResponse>;
+}
+
 export interface StructuredLogEvent {
   request_id: string;
   route: RouteName | "unknown";
-  provider: "usda_fdc";
+  provider: ProviderCode;
   cache: "hit" | "miss" | "not_checked";
   status_class: string;
   latency_bucket: "lt_100ms" | "lt_500ms" | "lt_2s" | "gte_2s";
@@ -302,6 +458,7 @@ export interface NutritionProviderDependencies {
   auth: AuthGateway;
   store: OperationalStore;
   usda: UsdaClient;
+  off: OffClient;
   logger: ProviderLogger;
   hmacKey: string;
   clock?: HandlerClock;
