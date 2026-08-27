@@ -17,7 +17,7 @@ The member starts the camera explicitly. Native `BarcodeDetector` is preferred; 
 - Migration: `supabase/migrations/20260827_phase4_nutrition_slice4fd_transient_off_barcode.sql`
 - Migration SHA-256: `476F829A2C669C029B87BEC9F24459F7E1F5430D02FB32559C50CD9C418C2A2B`
 - Read-only verifier: `supabase/verification/20260827_phase4_nutrition_slice4fd_transient_off_barcode_verification.sql`
-- Verifier SHA-256: `FFB728379BDF41CAF1CE92D9D56CB2E31578839302D9A517EC469DE29159AF40`
+- Verifier SHA-256: `5D1DED2671AF128FF3C2024B41321162211C5FCCE4D72EA0047BB45D41115C59`
 - Edge routes: `off-barcode`, `off-log`, `off-replace`
 - Runtime cache: `20260827-phase4fd-barcode1`
 - ZXing bundle SHA-256: `066BC34EDFCDD4A33F0964AEEC967752A0DEA1CCAF36E58E319AC9FCB5070F6A`

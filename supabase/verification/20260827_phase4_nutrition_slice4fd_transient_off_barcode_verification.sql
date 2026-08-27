@@ -124,7 +124,7 @@ checks(check_name, pass, details) as (
     select 1 from index_sources where index_name = 'foods_active_custom_gtin_owner_uidx'
       and indisvalid and indisready and indisunique
       and definition like '%owner_user_id%fmz_phase4_normalize_gtin14%barcode%'
-      and normalized_predicate like '%catalog_scope=''custom''%status=''active''%fmz_phase4_normalize_gtin14(barcode)isnotnull%'
+      and normalized_predicate like '%catalog_scope=''custom''%status=''active''%fmz_phase4_normalize_gtin14barcodeisnotnull%'
   ), '{}'::jsonb
   union all
   select 'local_lookup_is_local_first', exists (
@@ -144,17 +144,20 @@ checks(check_name, pass, details) as (
   union all
   select 'candidate_identity_and_odbl', exists (
     select 1 from function_catalog where signature like 'public.fmz_phase4_validate_transient_off_candidate%'
-      and source like '%open_food_facts:%fmz_phase4_provider_candidate_uuid_v5%'
+      and source like '%fmz_phase4_provider_candidate_uuid_v5(''open_food_facts:'' || v_gtin14)%'
       and source like '%phase4_off_barcode_v1%off_branded%'
       and source like '%odbl-1.0%opendatacommons.org/licenses/odbl/1-0/%'
-      and source like '%en:netherlands%source_checksum%'
+      and source like '%en:netherlands%'
+      and source like '%source_checksum%'
   ), '{}'::jsonb
   union all
   select 'explicit_100g_100ml_contract', exists (
     select 1 from function_catalog where signature like 'public.fmz_phase4_transient_off_food_item_mutation%'
       and source like '%p_consumed_unit is distinct from v_reference_unit%'
-      and source like '%per_100_ml%per_100_g%'
-      and source not like '%density_g_per_ml%=%'
+      and source like '%per_100_ml%'
+      and source like '%per_100_g%'
+      and source like '%v_factor := p_consumed_quantity / 100%'
+      and source like '%density_g_per_ml_snapshot%null%'
   ), '{}'::jsonb
   union all
   select 'transient_mutation_idempotent_atomic', exists (
@@ -168,8 +171,9 @@ checks(check_name, pass, details) as (
   union all
   select 'fresh_candidate_can_replace_any_active_own_item', exists (
     select 1 from function_catalog where signature like 'public.fmz_phase4_transient_off_food_item_mutation%'
-      and source like '%active food log item is unavailable for replacement%'
-      and source like '%p_candidate%fmz_phase4_validate_transient_off_candidate%'
+      and source like '%where i.id = p_original_item_id and i.user_id = v_user_id for update%'
+      and source like '%v_original.status is distinct from ''active''%v_original.updated_at is distinct from p_expected_original_updated_at%'
+      and source like '%fmz_phase4_validate_transient_off_candidate(p_candidate)%'
       and source not like '%replacement accepts transient off snapshots only%'
   ), '{}'::jsonb
   union all
