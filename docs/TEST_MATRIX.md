@@ -54,7 +54,7 @@ This matrix records the required functional, security, entitlement, AI, migratio
 | Phase 4 | Package 4F-B Dutch branded search UX | Dutch display labels, OFF-branded unified search, explicit selection and source attribution | OWNER ACCEPTANCE GATE | PASS - OWNER-ACCEPTED / FROZEN |
 | Phase 4 | Package 4F-C OFF authoritative logging | Server-resolved ODbL snapshot, g/ml basis isolation, authoritative totals, retry/edit/archive | STAGING MIGRATION + E2E GATE | PASS - COMPLETE / FROZEN |
 | Phase 4 | Package 4F-D transient unknown barcode | Local-first GTIN, exact OFF validation, signed transient snapshot, scanner/manual input, custom fallback | CONSOLIDATED STAGING MIGRATION + EDGE + FRONTEND E2E GATE | PASS - COMPLETE / OWNER-ACCEPTED / FROZEN |
-| Phase 4 | Package 4F-E final Nutrition readiness | Cross-source E2E, security/privacy, entitlement, responsive, frozen regressions and live artifact identity | FINAL OWNER ACCEPTANCE GATE | TECHNICAL PASS - OWNER ACCEPTANCE PENDING |
+| Phase 4 | Package 4F-E final Nutrition readiness | Cross-source E2E, security/privacy, entitlement, responsive, frozen regressions and live artifact identity | FINAL OWNER ACCEPTANCE GATE | PASS - COMPLETE / OWNER-ACCEPTED / FROZEN |
 | Phase 4 | Nutrition Pro | Full kcal/protein/carbs/fat goals, saved meals, recipes, copy meal/day | BLOCKING GATE | PLANNED |
 | Phase 4 | Barcode | Barcode behind entitlement and feature flag | BLOCKING GATE | PLANNED |
 | Phase 4 | Consumer boundaries | Invoices do not appear in consumer nutrition | BLOCKING GATE | PLANNED |
@@ -661,4 +661,5 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | Live frontend | PASS - `index.html`, `app.js`, Nutrition runtime and vendored ZXing HTTP 200 and byte-identical to commit/cache `20260827-phase4fd-owner-barcode1` |
 | Database/catalog/member data during 4F-E | UNCHANGED |
 | Production | UNTOUCHED |
-| Final result | 4F-E TECHNICAL PASS - READY FOR OWNER ACCEPTANCE |
+| Final owner acceptance | PASS - owner accepted Package 4F-E and the complete staging Nutrition functionality on 2026-08-31 |
+| Final result | PHASE 4 NUTRITION COMPLETE / OWNER-ACCEPTED / FROZEN |

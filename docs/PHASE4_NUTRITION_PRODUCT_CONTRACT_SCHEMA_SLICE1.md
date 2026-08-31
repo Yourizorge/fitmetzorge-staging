@@ -1,6 +1,6 @@
 # Phase 4 Nutrition Engine - Final Product Contract And Schema Slice 1 Design
 
-Status: OWNER PRODUCT CONTRACT LOCKED - SCHEMA SLICE 1 MIGRATION EXECUTED ON STAGING - CORRECTED READ-ONLY VERIFICATION PENDING RERUN
+Status: OWNER PRODUCT CONTRACT LOCKED - SCHEMA SLICE 1 COMPLETE / LIVE / VERIFIED / FROZEN ON STAGING
 
 Last updated: 2026-08-18
 
@@ -548,7 +548,7 @@ The current `assets/phase4-static-check.js` suite fails unless:
 3. Run local SQL/static/security self-review; show full SQL to owner. COMPLETE.
 4. Perform external/final migration review. COMPLETE.
 5. Execute the exact reviewed migration on staging only. COMPLETE WITH COMMIT.
-6. Run the SELECT-only post-migration checker and return full JSON. INITIAL RUN COMPLETE; INDEX-METADATA FALSE NEGATIVE CORRECTED; OWNER RERUN PENDING.
+6. Run the SELECT-only post-migration checker and return full JSON. COMPLETE; the index-metadata false negative was corrected and the owner rerun returned `overall_pass: true`.
 7. Correct only verified schema/security blockers through a separately reviewed hardening migration if needed.
 8. Prepare the first mobile frontend logging slice only after live database verification PASS and separate GO.
 9. Seed/import canonical foods only after provider/catalog/license review; never as an implicit part of schema deployment.
@@ -576,8 +576,8 @@ Schema Slice 1 design: LOCKED.
 
 Migration: `supabase/migrations/20260818_phase4_nutrition_schema_slice1.sql` - EXECUTED WITH COMMIT ON STAGING `mokxyyullfhkfalopbzd`. SHA-256 unchanged: `D70A589FEF997C14FCC9805E746536C86556E22622C8952B33DE9CA222B36188`.
 
-Post-migration checker: `supabase/verification/20260818_phase4_nutrition_schema_slice1_verification.sql` - CORRECTED / SELECT-ONLY / OWNER RERUN PENDING. Previous SHA-256: `D77AD4EBE0FE194F1AC73F297C1855A5B34FDEEEABAC44FCDF28B5C5E244D485`; current SHA-256: `6756126F896161B6D4A480C380D9FD8CB4E21DCAD5DAA59207E20E6CA2916CFA`.
+Post-migration checker: `supabase/verification/20260818_phase4_nutrition_schema_slice1_verification.sql` - CORRECTED / SELECT-ONLY / LIVE PASS. Previous SHA-256: `D77AD4EBE0FE194F1AC73F297C1855A5B34FDEEEABAC44FCDF28B5C5E244D485`; current SHA-256: `6756126F896161B6D4A480C380D9FD8CB4E21DCAD5DAA59207E20E6CA2916CFA`.
 
 Static/security suite: `assets/phase4-static-check.js` - PASS, 90 checks.
 
-Next gate: owner executes the corrected read-only checker on staging. Slice 1 remains pending until it returns `overall_pass: true`; no repair migration is currently required.
+Gate result: PASS. The corrected read-only checker returned `overall_pass: true`; no repair migration was required. Slice 1 is complete, live, verified and frozen on staging.

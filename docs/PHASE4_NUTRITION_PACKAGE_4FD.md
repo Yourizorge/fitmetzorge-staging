@@ -1,6 +1,8 @@
 # Phase 4 Nutrition Package 4F-D - Transient OFF Barcode
 
-Status: LOCAL IMPLEMENTATION AND FINAL REVIEW PASS / CONSOLIDATED STAGING GO REQUIRED
+Status: COMPLETE / OWNER-ACCEPTED / FROZEN ON STAGING
+
+Final acceptance: the reviewed migration, verifier, Edge v9, scanner frontend, controlled authenticated E2E and owner real-phone barcode retest all passed. Package 4F-D was explicitly frozen before final Package 4F-E acceptance. Production remains unapproved and untouched.
 
 ## Contract
 
@@ -24,4 +26,4 @@ The member starts the camera explicitly. Native `BarcodeDetector` is preferred; 
 
 ## Execution Gate
 
-One owner GO must authorize the additive migration on staging `mokxyyullfhkfalopbzd`, its exact read-only verifier, Edge deployment, controlled authenticated barcode/log/edit/archive E2E, and only then the scanner frontend deployment. The migration explicitly stops if pre-existing active duplicate custom-food GTINs need owner review. No automatic cleanup occurs. Production remains blocked.
+The owner-authorized staging execution sequence completed: additive migration, exact read-only verifier, Edge deployment, controlled authenticated barcode/log/edit/archive E2E, scanner frontend deployment and real-phone acceptance. No automatic cleanup or production action occurred.

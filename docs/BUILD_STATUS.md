@@ -14,10 +14,10 @@ Last updated: 2026-08-31
 - Phase 0B Storage verification: COMPLETE
 - Master Plan Specification: COMPLETE
 - Master Plan Final Review: COMPLETE
-- Implementation: PHASE 4 IN PROGRESS / SLICES 1-3 COMPLETE AND FROZEN / SLICES 4B-4E LIVE AND VERIFIED / 4F-A COMPLETE AND FROZEN / 4F-B OWNER-ACCEPTED AND FROZEN / 4F-C COMPLETE AND FROZEN / 4F-D COMPLETE, OWNER-ACCEPTED AND FROZEN / 4F-E TECHNICAL PASS, OWNER ACCEPTANCE PENDING
+- Implementation: PHASE 4 NUTRITION COMPLETE / OWNER-ACCEPTED / FROZEN
 - Production Migration: NOT STARTED
 
-Current next step: owner final Phase 4F-E acceptance on staging `mokxyyullfhkfalopbzd`. The 4F-E technical E2E, security, privacy, responsive and frozen-regression gates pass; Phase 4 becomes COMPLETE / OWNER-ACCEPTED / FROZEN only after explicit final owner acceptance. No legacy migration, AI, trainer-access or production change is authorized by this status.
+Current next step: no implementation phase is active. The short Master Plan strategic review is complete; Phase 5 Progressie remains the next planned phase, but may start only after a separate explicit owner GO. No legacy migration, AI, trainer-access or production change is authorized by this status.
 
 ## Environment Guardrail
 
@@ -120,7 +120,7 @@ Summary: The simplified Vandaag composition, compact Trackers overview/details, 
 
 ### Phase 4 Nutrition Engine
 
-Status: IN PROGRESS; SCHEMA SLICE 1 COMPLETE / LIVE / VERIFIED; FUNCTIONAL SLICES 2-3 OWNER-TESTED / FROZEN; SLICES 4B-4E LIVE / VERIFIED / FROZEN; 4F-A COMPLETE / FROZEN; 4F-B OWNER-ACCEPTED / FROZEN; 4F-C COMPLETE / FROZEN; 4F-D COMPLETE / OWNER-ACCEPTED / FROZEN; 4F-E TECHNICAL PASS / OWNER ACCEPTANCE PENDING
+Status: COMPLETE / OWNER-ACCEPTED / FROZEN
 
 Architecture audit: PASS.
 
@@ -158,7 +158,7 @@ Artifacts remain locked: foundation migration SHA-256 `A19FF1AA8DAEC57CD61A8DB5F
 
 ### Phase 4 Slice 4F - OFF Branded Catalog Foundation
 
-Status: FOUNDATION + 24,458-PRODUCT IMPORT + SEARCH PERFORMANCE LIVE / VERIFIED; 4F-A COMPLETE / FROZEN; 4F-B OWNER-ACCEPTED / FROZEN; 4F-C COMPLETE / FROZEN; 4F-D COMPLETE / OWNER-ACCEPTED / FROZEN; 4F-E TECHNICAL PASS / OWNER ACCEPTANCE PENDING
+Status: FOUNDATION + 24,458-PRODUCT IMPORT + SEARCH PERFORMANCE LIVE / VERIFIED; 4F-A-4F-E COMPLETE / OWNER-ACCEPTED / FROZEN
 
 Summary: The ODbL domain remains separate from `public.foods`. Package 4F-A imported and verified exactly 24,458 OFF products and 74,184 source-derived names, with 20,355 `per_100_g` and 4,103 `per_100_ml` products; its corrected unified-search performance package is complete and frozen. Package 4F-B deployed Dutch display labels and the branded unified-search selection UX to staging at commit `acc1c6bfbda3109c4af7a129e5979c42a46ce648` and passed owner acceptance. Package 4F-C is live at frontend commit `ebd0fc61652ed624f82cfda35fb96e16141b8a9e` using the existing `food_logs`/`food_log_items` history and day-total architecture plus two focused authenticated RPCs. Nutrition and ODbL provenance resolve server-side; browser nutrients, density conversion, parallel log tables, trainer expansion and canonical promotion are absent. The live verifier passed 18/18 checks and the controlled authenticated g/ml E2E passed log, replay, edit, atomic replacement, stale conflict, totals, history and archive before a full rollback.
 
@@ -170,7 +170,7 @@ Artifacts: migration SHA-256 unchanged at `606658F53EA29083E315F43546B507B40C9D0
 
 4F-D controlled authenticated staging E2E passed local and transient barcode resolution, 100 g and 100 ml authority, immutable ODbL snapshots, log and replace replay, same-product and changed-product edit, archive, custom fallback isolation, and cleanup. All eight controlled rows from the two completed diagnostic runs are archived and zero remain active. Persistent counts remain exactly 24,458 OFF products, 74,184 OFF names, 64 canonical foods and 197 aliases; no transient fixture was promoted. The focused owner hotfix is live at commit `36b29a0` with cache `20260827-phase4fd-owner-barcode1` and Edge `nutrition-provider` v9, with JWT verification enabled. It canonicalizes manual/scanned GTIN input, narrows camera decoding to supported one-dimensional formats, uses a faster bounded ZXing cadence, requests rear-camera HD/autofocus where supported, and routes an exact but incomplete SPA package to trusted local SPA catalog alternatives without inventing nutrients or mutating the catalog. Live runtime files and the unchanged vendored ZXing MIT bundle are byte-identical to the commit. Edge tests PASS 50/50, 4F-D static/security PASS 100/100, Nutrition browser checks PASS 138/138, and the locked five-fixture decoder benchmark passed 100/100 samples with 6.0 ms median and 8.7 ms p95. Owner real-phone acquisition and SPA fallback retest: PASS. Production touched: NO.
 
-4F-E technical readiness: PASS / READY FOR OWNER ACCEPTANCE. The dedicated read-only staging verifier `supabase/verification/20260831_phase4_nutrition_4fe_final_verification.sql` returned `overall_pass: true` with 22/22 checks. It reconfirmed all 15 Nutrition tables with RLS, minimal browser ACL, own-user and custom-food isolation, service-only provider functions, safe definer search paths, 64 canonical foods, 197 aliases, distinct raw/cooked identities, 24,458 OFF products, 74,184 names, 20,355 gram products, 4,103 millilitre products, zero identity/macro/ODbL defects, immutable snapshot integrity, seven-day Free history, current Pro/AI/PT full access, authoritative totals and atomic idempotent unit-safe OFF logging. The 4F-E static gate passes 45/45; frozen suites, responsive browser suites and live asset byte checks pass. The scanner benchmark rerun decoded 100/100 with 2.9 ms median and 5.1 ms p95. No schema, catalog, member-data, Edge or runtime mutation was performed for 4F-E. Final Phase 4 owner acceptance remains pending.
+4F-E final status: COMPLETE / OWNER-ACCEPTED / FROZEN on 2026-08-31. The dedicated read-only staging verifier `supabase/verification/20260831_phase4_nutrition_4fe_final_verification.sql` returned `overall_pass: true` with 22/22 checks. It reconfirmed all 15 Nutrition tables with RLS, minimal browser ACL, own-user and custom-food isolation, service-only provider functions, safe definer search paths, 64 canonical foods, 197 aliases, distinct raw/cooked identities, 24,458 OFF products, 74,184 names, 20,355 gram products, 4,103 millilitre products, zero identity/macro/ODbL defects, immutable snapshot integrity, seven-day Free history, current Pro/AI/PT full access, authoritative totals and atomic idempotent unit-safe OFF logging. The 4F-E static gate passes 45/45; frozen suites, responsive browser suites and live asset byte checks pass. The scanner benchmark rerun decoded 100/100 with 2.9 ms median and 5.1 ms p95. No schema, catalog, member-data, Edge or runtime mutation was performed for 4F-E. The owner accepted Package 4F-E and the full staging Nutrition functionality; production remains unapproved and locked.
 
 ### Production Migration
 

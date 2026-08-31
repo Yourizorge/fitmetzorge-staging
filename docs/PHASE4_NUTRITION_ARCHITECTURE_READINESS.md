@@ -1,6 +1,8 @@
 # Phase 4 Nutrition Engine - Architecture And Readiness Audit
 
-Status: ARCHITECTURE AUDIT COMPLETE - OWNER PRODUCT CONTRACT LOCKED - SLICE 1 LIVE / VERIFIED - SLICE 2 OWNER-TESTED / FROZEN - ATOMIC REPLACEMENT LIVE / VERIFIED - SLICE 3 OWNER-TESTED / COMPLETE / FROZEN - SLICE 4A LOCKED - SLICE 4B LIVE / COMPLETE - SLICE 4C LIVE / VERIFIED - USDA EDGE FUNCTION LOCAL / NOT DEPLOYED
+Status: PHASE 4 NUTRITION COMPLETE / OWNER-ACCEPTED / FROZEN ON STAGING
+
+Final acceptance: Package 4F-E and the complete staging Nutrition functionality were explicitly owner-accepted on 2026-08-31 after final E2E, security, privacy, responsive and frozen-regression verification. Production remains unapproved and untouched.
 
 Last updated: 2026-08-19
 
@@ -361,7 +363,7 @@ Status: DEPLOYED / REAL-PHONE OWNER-TESTED / FROZEN. Compact member-controlled d
 
 ### Slice 3 - Mobile Day Logging, Targets, And Totals
 
-Status: DEPLOYED TO STAGING / READ-ONLY LIVE VERIFICATION PASS / OWNER ACCEPTANCE PENDING. Build phone-first daily logging, four meal moments, detail entry, authoritative macro snapshots/totals, date isolation, and the approved Free/Pro history gate. Item edits use the live one-transaction `fmz_phase4_replace_food_log_item` RPC; browser-side archive-plus-create emulation is forbidden. Reuse the manual target established in Slice 2; do not create a second target authority. See `docs/PHASE4_NUTRITION_FUNCTIONAL_SLICE3.md`.
+Status: DEPLOYED / OWNER-ACCEPTED / FROZEN. Phone-first daily logging, four meal moments, detail entry, authoritative macro snapshots/totals, date isolation, and the approved Free/Pro history gate use the live one-transaction `fmz_phase4_replace_food_log_item` RPC; browser-side archive-plus-create emulation remains forbidden. The manual target established in Slice 2 remains the single target authority. See `docs/PHASE4_NUTRITION_FUNCTIONAL_SLICE3.md`.
 
 ### Slice 4 - Favorites, Recents, Saved Meals, And Recipes
 

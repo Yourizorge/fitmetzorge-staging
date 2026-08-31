@@ -1,8 +1,8 @@
 # Phase 4 Nutrition - Functional Slice 3
 
-Status: DEPLOYED TO STAGING / READ-ONLY LIVE VERIFICATION PASS / OWNER REAL-PHONE ACCEPTANCE PENDING
+Status: COMPLETE / OWNER-ACCEPTED / FROZEN ON STAGING
 
-Last updated: 2026-08-19
+Last updated: 2026-08-31
 
 Environment guard: staging project ref `mokxyyullfhkfalopbzd` only. Production was not connected to or changed.
 
