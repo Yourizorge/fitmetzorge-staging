@@ -180,7 +180,7 @@ Summary: the normalized own-user Progress foundation is live on staging `mokxyyu
 
 The mobile-first member surface provides goal-first progress, raw weight plus a transparent seven-entry trend, body measurements, strength and consistency derived from frozen Training data, descriptive Recovery/Nutrition context, truthful running insufficient-data behavior and contextual BMI. The trainer legacy Progress renderer and historical `coach_workspaces.state` data remain untouched. Photos are excluded until a separately reviewed private Storage/RLS/consent/deletion gate exists.
 
-Live database verification: PASS, 30/30. Transactional ownership/idempotency/stale/history E2E: PASS with full rollback and no retained fixtures. Frontend checks: Phase 5 static 85/85 and responsive browser 19/19. Frozen owner baselines remain unchanged; production and Phase 6 remain untouched. Owner acceptance/freeze: PENDING.
+Live database verification: PASS, 30/30. Transactional ownership/idempotency/stale/history E2E: PASS with full rollback and no retained fixtures. Frontend checks: Phase 5 static 85/85 and responsive browser 19/19. Runtime commit `cb1e926` and cache `20260831-phase5-progress1` are live on GitHub Pages; the four runtime assets return HTTP 200 and match their committed Git blobs. Frozen owner baselines remain unchanged; production and Phase 6 remain untouched. Owner acceptance/freeze: PENDING.
 
 ### Production Migration
 

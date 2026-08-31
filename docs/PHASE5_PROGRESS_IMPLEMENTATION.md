@@ -44,3 +44,12 @@ The four tables use own-user RLS. Browser writes are RPC-only. Authenticated tab
 ## Owner Gate
 
 Technical implementation does not equal owner acceptance. The owner should test a real staging member on phone for goal save, weight save/correction/archive, measurement save/correction/archive, unit switching, Free history boundary messaging, empty states, chart readability, navigation, refresh and logout/login persistence. Phase 6 remains outside scope.
+
+## Staging Deployment
+
+- Runtime commit: `cb1e926`.
+- Cache version: `20260831-phase5-progress1`.
+- Live URL: `https://yourizorge.github.io/fitmetzorge-staging/`.
+- `index.html`, `app.js`, `assets/member-ux-consistency.js`, and `assets/phase5-progress.js`: HTTP 200 and exact committed Git-blob identity.
+- Live member Progress route: initialized without app-load error; 390x844 and 320x700 have no horizontal overflow.
+- Production: untouched.

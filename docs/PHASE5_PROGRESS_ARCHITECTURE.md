@@ -79,7 +79,7 @@ Package 5A is additive. If frontend activation must be reverted, remove the Phas
 - Revision-index migration SHA-256: `D7434837E2D37B5F6EF54C3535A1D0D264D439EDA0B79A481553858C997744B7`.
 - Read-only verifier SHA-256: `B1724EB814DF1F81AC9DF9FE09A4343FD6FC48E3D476BD293A6C9F91506DD4BE`; live `overall_pass=true`, 30/30.
 - Transactional E2E SHA-256: `D83AC9FF74D1BAD17C4C2D68F8D04009E4C5A59967E9C266ECCF6FD0D5804DF5`; PASS with rollback and no persisted fixtures.
-- Runtime SHA-256: `84C2F8709ACFE11C8F768B21979030B3B5A68C61F6B6266E1AF2C65A119DADFF` before deployment identity verification.
+- Runtime SHA-256: `84C2F8709ACFE11C8F768B21979030B3B5A68C61F6B6266E1AF2C65A119DADFF`; live GitHub Pages identity verified at runtime commit `cb1e926` and cache `20260831-phase5-progress1`.
 - Static suite: PASS, 85/85 including the assembled seven-patch bundle parse. Responsive browser suite: PASS, 19/19.
 
 Owner acceptance and freeze are intentionally not recorded. The next gate is real-phone owner testing; Phase 6 remains not started.
