@@ -14,10 +14,10 @@ Last updated: 2026-08-31
 - Phase 0B Storage verification: COMPLETE
 - Master Plan Specification: COMPLETE
 - Master Plan Final Review: COMPLETE
-- Implementation: PHASE 4 NUTRITION COMPLETE / OWNER-ACCEPTED / FROZEN
+- Implementation: PHASE 5 PROGRESSIE ACTIVE ON STAGING
 - Production Migration: NOT STARTED
 
-Current next step: no implementation phase is active. The short Master Plan strategic review is complete; Phase 5 Progressie remains the next planned phase, but may start only after a separate explicit owner GO. No legacy migration, AI, trainer-access or production change is authorized by this status.
+Current next step: owner real-phone acceptance testing for the technically complete Phase 5 Progressie staging package. Phase 4 Nutrition and earlier owner-accepted baselines remain frozen. Phase 5 owner acceptance/freeze and Phase 6 both require a later explicit owner instruction.
 
 ## Environment Guardrail
 
@@ -171,6 +171,16 @@ Artifacts: migration SHA-256 unchanged at `606658F53EA29083E315F43546B507B40C9D0
 4F-D controlled authenticated staging E2E passed local and transient barcode resolution, 100 g and 100 ml authority, immutable ODbL snapshots, log and replace replay, same-product and changed-product edit, archive, custom fallback isolation, and cleanup. All eight controlled rows from the two completed diagnostic runs are archived and zero remain active. Persistent counts remain exactly 24,458 OFF products, 74,184 OFF names, 64 canonical foods and 197 aliases; no transient fixture was promoted. The focused owner hotfix is live at commit `36b29a0` with cache `20260827-phase4fd-owner-barcode1` and Edge `nutrition-provider` v9, with JWT verification enabled. It canonicalizes manual/scanned GTIN input, narrows camera decoding to supported one-dimensional formats, uses a faster bounded ZXing cadence, requests rear-camera HD/autofocus where supported, and routes an exact but incomplete SPA package to trusted local SPA catalog alternatives without inventing nutrients or mutating the catalog. Live runtime files and the unchanged vendored ZXing MIT bundle are byte-identical to the commit. Edge tests PASS 50/50, 4F-D static/security PASS 100/100, Nutrition browser checks PASS 138/138, and the locked five-fixture decoder benchmark passed 100/100 samples with 6.0 ms median and 8.7 ms p95. Owner real-phone acquisition and SPA fallback retest: PASS. Production touched: NO.
 
 4F-E final status: COMPLETE / OWNER-ACCEPTED / FROZEN on 2026-08-31. The dedicated read-only staging verifier `supabase/verification/20260831_phase4_nutrition_4fe_final_verification.sql` returned `overall_pass: true` with 22/22 checks. It reconfirmed all 15 Nutrition tables with RLS, minimal browser ACL, own-user and custom-food isolation, service-only provider functions, safe definer search paths, 64 canonical foods, 197 aliases, distinct raw/cooked identities, 24,458 OFF products, 74,184 names, 20,355 gram products, 4,103 millilitre products, zero identity/macro/ODbL defects, immutable snapshot integrity, seven-day Free history, current Pro/AI/PT full access, authoritative totals and atomic idempotent unit-safe OFF logging. The 4F-E static gate passes 45/45; frozen suites, responsive browser suites and live asset byte checks pass. The scanner benchmark rerun decoded 100/100 with 2.9 ms median and 5.1 ms p95. No schema, catalog, member-data, Edge or runtime mutation was performed for 4F-E. The owner accepted Package 4F-E and the full staging Nutrition functionality; production remains unapproved and locked.
+
+### Phase 5 Progressie
+
+Status: TECHNICAL PASS / READY FOR OWNER TESTING ON STAGING
+
+Summary: the normalized own-user Progress foundation is live on staging `mokxyyullfhkfalopbzd`. Four additive RLS tables, RPC-only writes, immutable correction history, archive behavior, stable retry IDs, stale-write protection, local-calendar dates, canonical kg/cm storage, metric/imperial presentation and a server-enforced Free 30-day history boundary are active. Current Pro, AI and personal-coaching entitlements receive full history; missing, future, expired or inactive entitlements resolve to Free.
+
+The mobile-first member surface provides goal-first progress, raw weight plus a transparent seven-entry trend, body measurements, strength and consistency derived from frozen Training data, descriptive Recovery/Nutrition context, truthful running insufficient-data behavior and contextual BMI. The trainer legacy Progress renderer and historical `coach_workspaces.state` data remain untouched. Photos are excluded until a separately reviewed private Storage/RLS/consent/deletion gate exists.
+
+Live database verification: PASS, 30/30. Transactional ownership/idempotency/stale/history E2E: PASS with full rollback and no retained fixtures. Frontend checks: Phase 5 static 85/85 and responsive browser 19/19. Frozen owner baselines remain unchanged; production and Phase 6 remain untouched. Owner acceptance/freeze: PENDING.
 
 ### Production Migration
 

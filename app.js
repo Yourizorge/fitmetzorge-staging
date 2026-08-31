@@ -80,11 +80,18 @@
   }
   const memberUxPatchSource = await memberUxPatchResponse.text();
 
+  const phase5ProgressPatchUrl = new URL("assets/phase5-progress.js?v=20260831-phase5-progress1", document.baseURI);
+  const phase5ProgressPatchResponse = await fetch(phase5ProgressPatchUrl, { cache: "no-cache" });
+  if (!phase5ProgressPatchResponse.ok) {
+    throw new Error(`Phase 5 Progressie laden mislukt: ${phase5ProgressPatchResponse.status}`);
+  }
+  const phase5ProgressPatchSource = await phase5ProgressPatchResponse.text();
+
   const phase1InitNeedle = "\ninit();";
   if (!source.includes(phase1InitNeedle)) {
     throw new Error("Phase 1 foundation kon niet voor app-init worden ingevoegd.");
   }
-  source = source.replace(phase1InitNeedle, `\n${phase1PatchSource}\n${phase2PatchSource}\n${phase3PatchSource}\n${phase4NutritionPatchSource}\n${phase4NutritionSlice3PatchSource}\n${memberUxPatchSource}\ninit();`);
+  source = source.replace(phase1InitNeedle, `\n${phase1PatchSource}\n${phase2PatchSource}\n${phase3PatchSource}\n${phase4NutritionPatchSource}\n${phase4NutritionSlice3PatchSource}\n${memberUxPatchSource}\n${phase5ProgressPatchSource}\ninit();`);
 
   (0, eval)(`${source}\n//# sourceURL=app.bundle.js`);
 

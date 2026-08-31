@@ -292,4 +292,14 @@ After mature PWA staging:
 3. Mobile QA using staging backend.
 4. Production app store builds only after Production Readiness Review and owner approval.
 
+### Phase 5 Progressie Architecture
+
+Status: TECHNICAL PASS / READY FOR OWNER TESTING ON STAGING
+
+The live normalized domain uses `progress_preferences`, `progress_goals`, `weight_logs`, and `body_measurements`. Canonical values are kilograms and centimetres; local dates are validated against an IANA timezone and client offset. Corrections create immutable superseding rows, removals archive, stable request UUIDs make retries idempotent, expected timestamps protect against stale writes, and per-user/date advisory locks serialize competing writes.
+
+Member writes are RPC-only and derive ownership from `auth.uid()`. Base-table browser privileges are absent; own-user RLS remains defense in depth. Free history is server-bounded to the current local day plus 29 prior days. Only current active Pro, AI, or personal-coaching entitlements grant full history. The dashboard reads frozen Training, Recovery, and Nutrition sources descriptively without changing their ownership or data models. Running remains explicitly unavailable until a reviewed authoritative source exists.
+
+The existing `user_settings.unit_system` stores the presentation choice. No imperial value becomes database authority. Progress photos remain deferred: there is no Phase 5 photo table or bucket, and the member runtime exposes no file input. Legacy trainer Progress and historical `coach_workspaces.state` data remain untouched.
+
 

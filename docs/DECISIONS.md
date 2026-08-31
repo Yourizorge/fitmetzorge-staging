@@ -416,3 +416,33 @@ The future phase must define and apply shared design tokens, colors, surfaces, e
 Rationale:
 
 A single shared visual system prevents inconsistent tab-by-tab styling, avoids repeated rework, and lets functionality, accessibility, mobile performance and regression safety remain the priority during current packages.
+
+## Decision 0029: Phase 5 Progress uses normalized own-user revision history
+
+Status: APPROVED / LIVE / TECHNICALLY VERIFIED ON STAGING
+
+Date: 2026-08-31
+
+Decision:
+
+Use four additive own-user tables for Progress preferences, goals, weight and body measurements. Store kilograms and centimetres canonically, treat `user_settings.unit_system` as display preference only, validate local calendar dates against IANA timezone context, archive instead of deleting, and represent corrections as immutable superseding revisions. Browser writes use authenticated RPCs that derive ownership from `auth.uid()`; direct personal-table grants, broad trainer policies and client-supplied entitlement authority are forbidden.
+
+Free receives the current local day plus 29 prior days. Only current active Pro, AI and personal-coaching entitlements receive full retained history. Missing, future, inactive or expired entitlement rows resolve to Free. Strength and consistency reuse frozen normalized Training sources; Recovery and Nutrition are descriptive context only. Running shows an explicit unavailable state until an authoritative source is reviewed.
+
+Rationale:
+
+One normalized revision model gives transparent history, safe retries, stale-write protection and later growth without rewriting legacy trainer workspaces or allowing presentation units to become competing data authority.
+
+## Decision 0030: Progress photos require a separate private-media gate
+
+Status: APPROVED / LOCKED / DEFERRED
+
+Date: 2026-08-31
+
+Decision:
+
+The first normalized Phase 5 runtime contains no photo table, Storage bucket, file input or data-URL migration. A later photo package must separately review a private bucket, own-user object paths, RLS, signed access, optional consent, deletion and withdrawal, retention, trainer-access rules and independent AI-analysis opt-in. Legacy values are not destructively removed, but they are not promoted into the normalized member runtime.
+
+Rationale:
+
+Deferring media prevents an incomplete privacy architecture from becoming a production-shaped contract while allowing weight, measurements and derived progress to ship safely.

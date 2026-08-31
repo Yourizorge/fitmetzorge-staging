@@ -58,10 +58,10 @@ This matrix records the required functional, security, entitlement, AI, migratio
 | Phase 4 | Nutrition Pro | Full kcal/protein/carbs/fat goals, saved meals, recipes, copy meal/day | BLOCKING GATE | PLANNED |
 | Phase 4 | Barcode | Barcode behind entitlement and feature flag | BLOCKING GATE | PLANNED |
 | Phase 4 | Consumer boundaries | Invoices do not appear in consumer nutrition | BLOCKING GATE | PLANNED |
-| Phase 5 | Progress | Weight, BMI, trend, week averages, target percentage | BLOCKING GATE | PLANNED |
-| Phase 5 | Measurements | Logical body measurements without forced neck/calf default | BLOCKING GATE | PLANNED |
-| Phase 5 | Photos | Private progress photos, signed access, no public default, AI photo consent gate | BLOCKING GATE | PLANNED |
-| Phase 5 | Milestones | Strength progress, PRs, milestones, achievements | BLOCKING GATE | PLANNED |
+| Phase 5 | Progress | Goal-first dashboard, raw weight, seven-entry trend, contextual BMI, unit display | OWNER ACCEPTANCE GATE | TECHNICAL PASS - LIVE ON STAGING; OWNER TEST PENDING |
+| Phase 5 | Measurements | Optional logical body measurements, immutable corrections and archive | OWNER ACCEPTANCE GATE | TECHNICAL PASS - LIVE ON STAGING; OWNER TEST PENDING |
+| Phase 5 | Photos | Private progress photos, signed access, no public default, AI photo consent gate | SEPARATE PRIVACY GATE | DEFERRED - NO TABLE, BUCKET OR MEMBER FILE INPUT |
+| Phase 5 | Milestones | Strength and consistency from frozen Training sources; truthful unavailable running state | OWNER ACCEPTANCE GATE | TECHNICAL PASS - LIVE ON STAGING; OWNER TEST PENDING |
 | Phase 6 | Youri AI | Backend-mediated AI, no browser-to-AI provider call, entitlement check before call | BLOCKING GATE | PLANNED |
 | Phase 6 | AI context | Goals, training, nutrition, progress, recovery context only when authorized | BLOCKING GATE | PLANNED |
 | Phase 6 | AI quality | Missing data handled honestly; no hallucinated facts; structured responses validated | BLOCKING GATE | PLANNED |
@@ -101,7 +101,7 @@ This matrix records the required functional, security, entitlement, AI, migratio
 | Phase 2 | Recovery data changes documented; Health-sync remains placeholder unless separately approved | PASS |
 | Phase 3 | Legacy training preserved until replacement accepted; workout data restoration path documented | PASS FOR FUNCTIONAL FREEZE; LEGACY DATA PRESERVED |
 | Phase 4 | Nutrition data changes reversible or forward-fixable; invoices remain outside consumer nutrition | PASS - MIGRATION EXECUTED ON EMPTY STAGING FOUNDATION; CORRECTED LIVE VERIFICATION `overall_pass: true` |
-| Phase 5 | Private storage/RLS rollback notes required before progress photos go live | PLANNED |
+| Phase 5 | Private storage/RLS rollback notes required before progress photos go live | PASS FOR CURRENT PACKAGE - PHOTOS EXCLUDED AND SEPARATE GATE LOCKED |
 | Phase 6 | AI calls gated by entitlement; no secret exposure; AI proposal/action rollback rules documented | PLANNED |
 | Phase 7 | Payment/growth lifecycle changes staging test mode only; entitlement rollback/credit correction path documented | PLANNED |
 | Phase 8 | Notification and reward triggers can be disabled or corrected; frequency caps tested | PLANNED |
@@ -139,8 +139,8 @@ This matrix records the required functional, security, entitlement, AI, migratio
 | Nutrition | Full macros | Pro/AI/PT | kcal/protein/carbs/fat tracked correctly; AI receives Pro Nutrition without Phase 4 AI execution | PLANNED - CONTRACT LOCKED |
 | Nutrition | Barcode | Pro/AI/PT | Barcode feature requires entitlement and enabled flag | PLANNED |
 | Nutrition | Recipes/meals | Pro/AI/PT | Saved meals, recipes, favorites, copy meal/day work | PLANNED |
-| Progress | Weight and BMI | All | Logs update trend/week average/target percentage | PLANNED |
-| Progress | Progress photos | Pro/AI/PT or allowed plan | Private storage and signed access only | PLANNED |
+| Progress | Weight and BMI | All | Logs update raw history, transparent trend and contextual BMI | TECHNICAL PASS - OWNER TEST PENDING |
+| Progress | Progress photos | Pro/AI/PT or allowed plan | Private storage and signed access only | DEFERRED - PRIVACY GATE NOT OPENED |
 | Recovery | Manual recovery | All | Sleep/steps/wellbeing/recovery feeling can be entered manually and persists per user/day | PASS |
 | Health | Apple Health | Pro/AI iOS | Sync only when entitled and consented | PLANNED |
 | Health | Health Connect | Pro/AI Android | Sync only when entitled and consented | PLANNED |
@@ -663,3 +663,21 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | Production | UNTOUCHED |
 | Final owner acceptance | PASS - owner accepted Package 4F-E and the complete staging Nutrition functionality on 2026-08-31 |
 | Final result | PHASE 4 NUTRITION COMPLETE / OWNER-ACCEPTED / FROZEN |
+
+## Phase 5 Progressie Technical Staging Gate
+
+| Check | Result |
+| --- | --- |
+| Additive migrations | PASS - four-table foundation, unit preference RPC and revision-FK indexes live on staging |
+| Read-only live verifier | PASS - `overall_pass=true`, 30/30 |
+| Transactional E2E | PASS - ownership, cross-user isolation, retry, stale conflict, revision, archive and Free history; all fixtures rolled back |
+| Entitlements | PASS - Free 30 local days; current Pro/AI/PT full; missing/future/inactive/expired resolve to Free |
+| RLS / ACL | PASS - own-user RLS; no DELETE/trainer policy; no browser table grants; internal helpers blocked |
+| Canonical units and timezone | PASS - kg/cm authority, metric/imperial display preference, IANA local date validation |
+| Progress sources | PASS - frozen Training-derived strength/consistency; descriptive Recovery/Nutrition; truthful running unavailable state |
+| Phase 5 static suite | PASS - 85/85 including assembled seven-patch bundle parse |
+| Phase 5 responsive browser suite | PASS - 19/19; 320/390 phone, tablet and desktop compatibility |
+| Frozen baselines | PASS - Phase 1 75, Phase 2 46, Phase 3 222, Member UX 56, current Phase 4/4F-D/4F-E suites preserved |
+| Photo privacy gate | PASS FOR CURRENT PACKAGE - no table, bucket, file input or normalized legacy-photo migration |
+| Production / Phase 6 | UNTOUCHED / NOT STARTED |
+| Technical result | TECHNICAL PASS / READY FOR OWNER TESTING; NOT OWNER-ACCEPTED OR FROZEN |

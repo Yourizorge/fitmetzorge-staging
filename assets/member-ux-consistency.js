@@ -348,8 +348,9 @@
     MEMBER_UX_LEGACY_TRACKER_VIEW_IDS.forEach((id) => {
       const view = document.getElementById(id);
       if (!view) return;
-      view.hidden = hidden;
-      if (hidden) {
+      const shouldHide = hidden && !(id === "progress" && window.FMZ_PHASE5_PROGRESS);
+      view.hidden = shouldHide;
+      if (shouldHide) {
         view.classList.remove("active");
         view.setAttribute("aria-hidden", "true");
       } else {
@@ -644,9 +645,13 @@
   }
 
   function memberUxTrackerCard(type, title, value, detail, actions = "", wide = false) {
+    const phase5Progress = type === "progress" && window.FMZ_PHASE5_PROGRESS;
+    const actionAttributes = phase5Progress
+      ? 'data-member-open-view="progress"'
+      : `data-member-open-detail="${escapeHTML(type)}" aria-haspopup="dialog" aria-controls="memberUxDetailPortal" aria-expanded="false"`;
     return `
       <section class="member-ux-card ${wide ? "member-ux-card-wide" : ""}">
-        <div class="member-ux-card-head"><h2>${escapeHTML(title)}</h2><button class="primary-btn member-ux-primary-action" data-member-open-detail="${escapeHTML(type)}" type="button" aria-haspopup="dialog" aria-controls="memberUxDetailPortal" aria-expanded="false">${escapeHTML(memberUxText("open"))}</button></div>
+        <div class="member-ux-card-head"><h2>${escapeHTML(title)}</h2><button class="primary-btn member-ux-primary-action" ${actionAttributes} type="button">${escapeHTML(memberUxText("open"))}</button></div>
         <strong>${escapeHTML(value)}</strong>
         ${detail ? `<p class="muted">${escapeHTML(detail)}</p>` : ""}
         ${actions ? `<div class="member-ux-card-actions">${actions}</div>` : ""}
@@ -934,6 +939,7 @@
   };
   renderProgress = function renderProgressMemberBoundary() {
     if (isLoggedIn() && state.ui.role === "client" && currentView !== "progress") return;
+    if (isLoggedIn() && state.ui.role === "client" && window.FMZ_PHASE5_PROGRESS) return window.FMZ_PHASE5_PROGRESS.render();
     return memberUxOriginalRenderers.progress();
   };
   renderWellbeing = function renderWellbeingMemberBoundary() {
@@ -958,7 +964,8 @@
   };
 
   showView = function showViewMemberBoundary(id) {
-    if (isLoggedIn() && state.ui.role === "client" && MEMBER_UX_LEGACY_TRACKER_VIEW_IDS.includes(id)) {
+    if (isLoggedIn() && state.ui.role === "client" && MEMBER_UX_LEGACY_TRACKER_VIEW_IDS.includes(id)
+      && !(id === "progress" && window.FMZ_PHASE5_PROGRESS)) {
       id = "trackers";
     }
     const selectiveMemberView = isLoggedIn()

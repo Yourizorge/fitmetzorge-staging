@@ -19,6 +19,37 @@ This document is the product and execution source of truth for the FitMetZorge M
 - Product functionality from this plan may not be silently removed or simplified. If implementation differs, document the technical reason and preserve the product outcome.
 - Missing product choices must be marked `NEEDS DECISION`.
 
+### Permanent Staging Autonomous Execution Authority
+
+Within `Yourizorge/fitmetzorge-staging` branch `main`, Supabase project `mokxyyullfhkfalopbzd`, and `https://yourizorge.github.io/fitmetzorge-staging/`, the owner authorizes continuous audit, implementation, migration, RLS/ACL, test, commit, push, staging deployment, verification and reversible repair work for an approved package without repeated GO requests. Stop only for a new cost, missing credential, unresolved product/privacy/pricing/licence/legal choice, irreversible external action, material frozen-contract change, owner acceptance/freeze, or any action outside those exact staging boundaries.
+
+This authority never includes production. Repository `Yourizorge/fitmetzorge` and Supabase `hgoygcviutmynaihcvpd` require a separate explicit owner GO in every case.
+
+## Strategic Product Addendum - 2026-08-31
+
+FitMetZorge targets adult sporters beyond existing PT clients and combines training, Nutrition, Recovery, activity, sleep and Progress in one simple coaching product. Initial release sports are fitness, strength training, running and conditioning. Initial goals are fat loss, muscle gain, strength, conditioning, running performance, healthier living and weight maintenance; no broader sport-specific coaching claim is allowed at launch.
+
+Locked commercial direction:
+
+- Free remains useful but intentionally limited: manual input, basic Recovery, maximum four active workout days, limited history/insights and no automatic AI coaching.
+- Pro is EUR 9.99 monthly or EUR 99.90 yearly and provides full non-AI tracking/history, eligible unlimited functionality, Health integrations when implemented, and continued manual input.
+- FitMetZorge AI Coach is EUR 19.99 monthly or EUR 199.90 yearly and includes Pro plus controlled AI coaching.
+- The AI trial is 30 days without payment details, with reminders seven days, one day and on the final day. It never auto-renews into paid service. Without explicit subscription the account returns to Free while data is retained and above-Free functionality is locked rather than destroyed. Abuse prevention permits one legitimate trial per eligible verified account.
+
+Human coaching uses the same account and history across Free, Pro, AI, Online Coaching and Personal Coaching. Intake precedes FitMetZorge review, offer/payment and secure trainer linking. Initial release has no open trainer marketplace. A member can revoke trainer data access immediately and independently from commercial contract settlement; member-owned history remains intact.
+
+The FitMetZorge AI Coach may later evaluate authorized combined data daily, at weekly check-in, on meaningful risk/deviation and after workouts. It must explain meaningful changes, stay inside validated safety rules, avoid diagnosis, stop unsafe progression and defer to human trainer authority. A linked trainer may receive minimized summaries/signals and change reasons, never the full private AI chat. AI execution remains Phase 6 and is not part of Phase 5.
+
+Later trainer communication may support text, voice, photos, training videos and fixed check-ins; built-in live video is not required initially. Initial motivation includes personal badges and streaks, not a public social feed. Notifications require category controls, quiet hours and frequency caps.
+
+The eventual public product must support iPhone and Android without needlessly rebuilding the working shared product. Manual entry remains available alongside future Apple Health, Health Connect, Strava, Garmin, COROS, Fitbit and later wearable integrations. Running later requires authoritative GPS/import/manual activity identity, background safety, pause/resume, lost-connection behavior, battery/permission handling and duplicate suppression. Workouts must eventually execute fully offline with deterministic conflict-safe synchronization; AI may remain online-only.
+
+Exercise guidance initially uses reviewed images/instructions/attention points and later controlled personalized explanation. User video technique analysis requires a separate safety/privacy/accuracy gate. Progress photos are optional and later require private storage, RLS, consent, deletion and separate AI-analysis opt-in; they may never imply diagnostic or definite body-fat conclusions. Voice input and meal-photo recognition are later roadmap items and always require user confirmation plus trusted server resolution.
+
+Market order is Netherlands, Belgium/Germany, Austria, then Italy. Product languages expand from Dutch/English/German to French and Italian; Belgium requires Dutch/French/German. Every market has a separate translation, catalog, locale, subscription/store, safety-copy and acceptance gate. Members choose metric or imperial display while canonical internal units remain stable.
+
+The centralized future design-system phase remains authoritative. Phase 5 may improve only acceptance-critical local Progress UX and must not redesign other tabs piecemeal.
+
 ## Product Vision
 
 FitMetZorge must become one complete fitness and lifestyle platform that combines training, nutrition, body weight, progress, recovery, sleep, steps, body measurements, health integrations, goals, gamification, AI coaching, and human Personal Training.
@@ -796,7 +827,13 @@ Permanent provider identity rule: `PHASE4_PROVIDER_CANDIDATE_UUID_NAMESPACE = 23
 
 ### Phase 5 - Progressie
 
-Scope: weight/BMI/trends/week averages, target percentage, body measurements, progress photos, PR and milestone surfaces, private storage design/implementation when approved.
+Status: TECHNICAL PASS / READY FOR OWNER TESTING ON STAGING. Owner implementation GO received 2026-08-31; owner acceptance/freeze remains pending.
+
+Scope: normalized own-user weight and body-measurement history, transparent raw values and smoothed trends, primary-goal progress, strength and adherence insight from frozen Training data, truthful Recovery/Nutrition context, running/conditioning insufficient-data behavior, metric/imperial display, localization and mobile-first accessible visualization. BMI is contextual only and never the main score or a body-composition claim.
+
+Execution packages and security boundaries are recorded in `docs/PHASE5_PROGRESS_ARCHITECTURE.md`. The first normalized runtime excludes photos; the separate private Storage/RLS/consent/deletion gate must pass before a photo slice is activated. Legacy trainer Progress and historical workspace data remain untouched.
+
+Technical gate result: PASS. The normalized four-table foundation, RPC authority, RLS/ACL, Free 30-day history boundary, current Pro/AI/PT full-history behavior, retry/stale/archive model, unit preference reuse and mobile-first member runtime are live on staging. Read-only verification passed 30/30; transactional E2E rolled back all fixtures; dedicated static and browser suites passed 85/85 and 19/19. This does not mark Phase 5 owner-accepted or frozen and does not authorize Phase 6.
 
 Gate: photos are private, no unwanted sharing, AI photo analysis is consent-gated, private storage/RLS rollback notes exist if storage is introduced, tests/review complete.
 
