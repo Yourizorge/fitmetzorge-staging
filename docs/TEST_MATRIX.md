@@ -53,7 +53,8 @@ This matrix records the required functional, security, entitlement, AI, migratio
 | Phase 4 | Package 4F-A OFF catalog/performance | Separate ODbL release/product/name domain, 24,458 products, 74,184 names, typed bounded search, local barcode, p95 gate | OWNER ACCEPTANCE GATE | PASS - COMPLETE / FROZEN |
 | Phase 4 | Package 4F-B Dutch branded search UX | Dutch display labels, OFF-branded unified search, explicit selection and source attribution | OWNER ACCEPTANCE GATE | PASS - OWNER-ACCEPTED / FROZEN |
 | Phase 4 | Package 4F-C OFF authoritative logging | Server-resolved ODbL snapshot, g/ml basis isolation, authoritative totals, retry/edit/archive | STAGING MIGRATION + E2E GATE | PASS - COMPLETE / FROZEN |
-| Phase 4 | Package 4F-D transient unknown barcode | Local-first GTIN, exact OFF validation, signed transient snapshot, scanner/manual input, custom fallback | CONSOLIDATED STAGING MIGRATION + EDGE + FRONTEND E2E GATE | PASS - HOTFIX LIVE / OWNER REAL-PHONE RETEST PENDING |
+| Phase 4 | Package 4F-D transient unknown barcode | Local-first GTIN, exact OFF validation, signed transient snapshot, scanner/manual input, custom fallback | CONSOLIDATED STAGING MIGRATION + EDGE + FRONTEND E2E GATE | PASS - COMPLETE / OWNER-ACCEPTED / FROZEN |
+| Phase 4 | Package 4F-E final Nutrition readiness | Cross-source E2E, security/privacy, entitlement, responsive, frozen regressions and live artifact identity | FINAL OWNER ACCEPTANCE GATE | TECHNICAL PASS - OWNER ACCEPTANCE PENDING |
 | Phase 4 | Nutrition Pro | Full kcal/protein/carbs/fat goals, saved meals, recipes, copy meal/day | BLOCKING GATE | PLANNED |
 | Phase 4 | Barcode | Barcode behind entitlement and feature flag | BLOCKING GATE | PLANNED |
 | Phase 4 | Consumer boundaries | Invoices do not appear in consumer nutrition | BLOCKING GATE | PLANNED |
@@ -632,11 +633,32 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | Owner SPA barcode analysis | PASS - exact 50 cl package absent from pinned catalog; remote record incomplete; trusted local SPA alternatives shown without nutrient invention or catalog mutation |
 | Five locked local barcode fixtures | PASS - 5/5 exact product identities |
 | Scanner acquisition contract | PASS - supported 1D formats only, 120 ms ZXing cadence, bounded rear-camera HD constraints, best-effort continuous autofocus |
-| Static fixture decoder benchmark | PASS - 100/100; median 6.0 ms; p95 8.7 ms; real-phone acquisition remains owner gate |
+| Static fixture decoder benchmark | PASS - 100/100; median 6.0 ms; p95 8.7 ms |
 | Phase 1 / Phase 2 / Phase 3 / Member UX frozen suites | PASS - 75 / 46 / 222 / 56 |
 | Migration/verifier | PASS - main migration/verifier live; parent-context correction `80EB696450ADC81A38BE12EBEC1631F660C85425CC8453E836047815BE3EA0BF` and verifier `96A7FCCF598463E4098AEF56A6D59F238FAA9212C9599597D58607D46E5C9913`; correction verifier PASS 12/12 |
 | Controlled authenticated staging E2E | PASS - local hit, transient OFF, 100 g/ml, log/replay, same/changing-product edit, archive, immutable history and cleanup |
 | Catalog/member preservation | PASS - 24,458 products, 74,184 names, 64 canonical foods, 197 aliases; zero transient promotion; zero active controlled rows |
 | Live frontend | PASS - commit `36b29a0`; cache `20260827-phase4fd-owner-barcode1`; runtime and vendored ZXing byte-identical |
 | Database / Edge staging / frontend staging / production | SCHEMA AND CATALOG UNCHANGED / EDGE V9 JWT-PROTECTED / DEPLOYED / UNTOUCHED |
-| Owner real-phone retest | PENDING - camera acquisition speed and SPA fallback selection |
+| Owner real-phone retest | PASS - barcode acquisition is fast and works very well; 4F-D COMPLETE / OWNER-ACCEPTED / FROZEN |
+
+## Phase 4 Package 4F-E Final Nutrition Readiness
+
+| Check | Result |
+| --- | --- |
+| Dedicated read-only live verifier | PASS - `overall_pass=true`, 22/22; SHA-256 `A87167173ADF1F5FCAF31697C9558BB0DAB5D869F582FFEDABF4742FBE01DE37` |
+| Dedicated 4F-E static/security gate | PASS - 45/45 |
+| Phase 1 / Phase 2 / Phase 3 / Member UX frozen suites | PASS - 75 / 46 / 222 / 56 |
+| Current Nutrition browser vertical slice | PASS - 138/138 |
+| Member navigation responsive browser suite | PASS - 45/45 after isolated rerun of one non-deterministic timeout |
+| Scanner benchmark rerun | PASS - 100/100; median 2.9 ms; p95 5.1 ms; maximum 22.1 ms |
+| Catalog identity and authority | PASS - 64 canonical foods, 197 aliases, raw/cooked pairs distinct, required macros complete |
+| OFF catalog and basis | PASS - 24,458 products, 74,184 names, 20,355 `per_100_g`, 4,103 `per_100_ml` |
+| OFF identity and licence | PASS - zero GTIN duplicates/mismatches, zero required-macro gaps, zero ODbL/provenance defects |
+| RLS / ACL / cross-member isolation | PASS - all 15 Nutrition tables use RLS; browser ACL minimal; service functions isolated; custom/log ownership intact |
+| Logging/history/entitlements | PASS - immutable snapshots, authoritative totals, archive-only removal, idempotent atomic replacement, Free seven-day history and current Pro/AI/PT full access |
+| Edge Function | PASS - `nutrition-provider` v9 ACTIVE, JWT verification enabled, deployed SHA-256 `22305274d27d313b21f55ebf3921e891aabc6cabcddbd4160e562652a2f2250f` |
+| Live frontend | PASS - `index.html`, `app.js`, Nutrition runtime and vendored ZXing HTTP 200 and byte-identical to commit/cache `20260827-phase4fd-owner-barcode1` |
+| Database/catalog/member data during 4F-E | UNCHANGED |
+| Production | UNTOUCHED |
+| Final result | 4F-E TECHNICAL PASS - READY FOR OWNER ACCEPTANCE |
