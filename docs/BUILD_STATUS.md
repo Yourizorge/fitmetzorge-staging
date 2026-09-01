@@ -14,10 +14,10 @@ Last updated: 2026-09-01
 - Phase 0B Storage verification: COMPLETE
 - Master Plan Specification: COMPLETE
 - Master Plan Final Review: COMPLETE
-- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6 AUDIT ONLY
+- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A TRUST FOUNDATION IN PROGRESS
 - Production Migration: NOT STARTED
 
-Current next step: owner architecture decisions for Phase 6 Youri AI Core. Phase 5 Progressie is complete, owner-accepted and frozen after the final real-phone metric/imperial retest. Phase 6 architecture/readiness is complete, but implementation, provider activation, database/runtime changes and paid AI calls have not started.
+Current next step: complete the authorized Phase 6A trust-foundation staging migration, verifier, provider-neutral disabled Edge scaffold and frozen regression gates. Phase 5 Progressie remains owner-accepted and frozen. OpenAI activation, paid AI calls, member AI UX and Package 6B remain forbidden.
 
 ## Environment Guardrail
 
@@ -192,13 +192,13 @@ Current checks: Phase 5 static 116/116 and responsive browser 53/53; selector, p
 
 ### Phase 6 Youri AI Core
 
-Status: ARCHITECTURE / READINESS AUDIT COMPLETE / IMPLEMENTATION NOT STARTED
+Status: PACKAGE 6A IMPLEMENTED LOCALLY / STAGING VERIFICATION PENDING
 
 Summary: repository and live read-only staging metadata confirm that the frozen Identity, Recovery, Training, Nutrition and Progress sources required for future Youri context exist with RLS. The checked directional AI tables do not exist, and the runtime contains no AI provider adapter, AI call, provider secret, private chat or AI write path. The existing `nutrition-provider` Edge architecture is reusable as a security and operational pattern, not as a shared function or data boundary.
 
 The target design uses a dedicated provider-neutral `youri-ai` Edge boundary, member-JWT-scoped context RPCs, server-side current entitlement and consent checks, private chat with no trainer read path, strict structured outputs, prompt-injection controls, service-only rate/budget/safety state, append-only proposal decisions, stale guards and existing authoritative domain RPCs for any later execution. The exact architecture, frozen inputs, gaps, provider options, cost inputs, privacy requirements, 30-day trial readiness, 6A-6I package order, test gates and owner decisions are documented in `docs/PHASE6_AI_CORE_ARCHITECTURE_READINESS.md`.
 
-The first future build package is 6A with no paid provider: storage/RLS/RPC contracts, context manifests, deterministic mock adapter, strict schemas and feature flag off. Owner decisions on chat retention/export/deletion and AI consent are required before its migration review. Provider/model, budget, legal/AVG/DPA, international transfer and medical/safety decisions are required before any external provider activation. Phase 6 implementation started: NO. Database/runtime changed for this audit: NO. Production touched: NO.
+The owner locked the 6A consent, 90-day post-entitlement chat retention, separate trainer-summary consent, EUR 3 included plus EUR 1 grace budget, action limits and safety hard-stop contracts. Package 6A now contains the additive public/private schema, RLS/ACL/RPC boundary, context manifest, strict structured schema, deterministic zero-call mock adapter and disabled `youri-ai` Edge scaffold documented in `docs/PHASE6A_AI_TRUST_FOUNDATION.md`. OpenAI remains inactive; all provider and mock flags default OFF. Staging execution and live verification are pending. Production touched: NO.
 
 ### Production Migration
 

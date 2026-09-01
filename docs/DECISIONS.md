@@ -478,3 +478,21 @@ Phase 6 may consume a current time-valid `ai` entitlement regardless of source. 
 Rationale:
 
 One explicit trial duration prevents contradictory entitlement, UX, test and cost assumptions while preserving the Phase 1 entitlement foundation and Phase 7 ownership of growth lifecycle logic.
+
+## Decision 0033: Phase 6A AI trust, consent, budget, retention and safety contract
+
+Status: APPROVED / PACKAGE 6A IMPLEMENTATION AUTHORIZED
+
+Date: 2026-09-01
+
+Decision:
+
+Build Package 6A on staging as a provider-neutral trust foundation with no paid provider call. OpenAI is the future primary provider and `GPT-5.6 Luna` / `GPT-5.6 Terra` are product routing labels, but no real provider model identifier, key or call is activated in 6A. Private AI chat is never trainer-readable. AI processing and minimized trainer-summary sharing use separate versioned, affirmative, withdrawable consent.
+
+Active-entitlement chat remains until member deletion. On entitlement loss, raw chat receives at most a 90-day grace period; reactivation inside the window restores access and expiry removes raw content. Internal per-user subscription-month operating cost is bounded at EUR 3 included, warning at 80 percent, at most EUR 1 Luna grace and an absolute EUR 4 stop; Terra stops before grace and there is no automatic member billing.
+
+Automatic changes remain proposals under strict reversible allowlists. Normal training increases are capped at 20 percent, larger fatigue/deload reductions require an explicit safe reason, calorie changes are capped at the smaller of 10 percent and 300 kcal with sufficient new authoritative data, and compatible exercise replacement is mandatory. Serious or unclear health signals hard-stop automation without diagnosis, medication change or treatment advice.
+
+Rationale:
+
+An enforceable database/Edge trust boundary before provider activation prevents consent, entitlement, cost, safety, trainer privacy and stale/idempotency guarantees from being reduced to prompt text or browser state.

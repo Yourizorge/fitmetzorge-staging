@@ -304,7 +304,7 @@ The existing `user_settings.unit_system` stores the presentation choice. No impe
 
 ### Phase 6 Youri AI Core Readiness
 
-Status: ARCHITECTURE / READINESS AUDIT COMPLETE; IMPLEMENTATION NOT STARTED
+Status: ARCHITECTURE AUDIT COMPLETE; PACKAGE 6A IMPLEMENTATION IN PROGRESS
 
 Live read-only staging metadata confirms that normalized own-user Identity, Recovery, Training, Nutrition and Progress inputs exist with RLS, while `ai_threads`, `ai_messages`, `ai_recommendations`, `ai_action_proposals` and `ai_action_decisions` do not exist. The runtime has no AI provider adapter, provider secret or AI call.
 
@@ -312,6 +312,6 @@ Phase 6 uses a dedicated provider-neutral `youri-ai` Edge boundary. It authentic
 
 Private `ai_threads` and `ai_messages` have no trainer read path. Future trainer summaries/signals are separate minimized records with explicit consent and active-link authorization. Strategic linked-client changes remain proposal-only until a reviewed trainer approval path exists. Every meaningful recommendation/action keeps feature, policy/model/schema versions, context manifest/hash, evidence references, safety result, usage/cost metadata and append-only decisions.
 
-The first package is a provider-free trust-boundary foundation with schema/RLS/RPC contracts, strict JSON schemas, deterministic mock adapter, context-manifest fixtures and the feature flag off. No external AI provider may be activated until provider/model, budget, legal/AVG/DPA, retention/consent and safety decisions are owner-approved. The full contract is in `docs/PHASE6_AI_CORE_ARCHITECTURE_READINESS.md`.
+Package 6A implements a provider-free trust boundary with eight own-user public foundations, twelve private operational/configuration tables, RPC-only browser access, strict JSON schemas, deterministic mock adapter, context manifests, exact replay, subscription-month budget reservation and safety/retention state. `ai_coach_enabled`, `provider_calls_enabled` and `staging_mock_enabled` default false. No external provider may be activated until the separate Package 6B privacy/legal/cost/medical gate passes. The contracts are in `docs/PHASE6_AI_CORE_ARCHITECTURE_READINESS.md` and `docs/PHASE6A_AI_TRUST_FOUNDATION.md`.
 
 

@@ -1,6 +1,6 @@
 # Phase 6 Youri AI Core - Architecture And Readiness
 
-Status: ARCHITECTURE / READINESS AUDIT COMPLETE; IMPLEMENTATION NOT STARTED
+Status: ARCHITECTURE / READINESS AUDIT COMPLETE; PACKAGE 6A IMPLEMENTATION IN PROGRESS
 
 Audit date: 2026-09-01
 Target repository: `Yourizorge/fitmetzorge-staging` / `main`
@@ -358,3 +358,9 @@ Phase 6 cannot exit until all applicable packages pass:
 - Production touched: NO.
 
 Rollback for this audit is documentation-only: revert the audit documentation commit. No persistent application state changed.
+
+## 21. Owner Decisions And Package 6A Start
+
+On 2026-09-01 the owner approved the Package 6A contracts and autonomous staging execution. OpenAI is the future primary provider; `GPT-5.6 Luna` and `GPT-5.6 Terra` are routing-policy labels only. No key, model ID or paid call is active. Consent, withdrawal, 90-day post-entitlement raw-chat retention, separate trainer-summary permission, EUR 3 included plus EUR 1 grace budget, action bounds and medical/risk hard stops are locked in `docs/PHASE6A_AI_TRUST_FOUNDATION.md`.
+
+Package 6A does not resolve or bypass the Package 6B provider privacy/legal gate. OpenAI activation, DPA/international-transfer/DPIA completion, final medical/legal copy and controlled paid-call acceptance remain separate work.

@@ -62,7 +62,7 @@ This matrix records the required functional, security, entitlement, AI, migratio
 | Phase 5 | Measurements | Optional logical body measurements, immutable corrections and archive | OWNER ACCEPTANCE GATE | PASS - COMPLETE / OWNER-ACCEPTED / FROZEN |
 | Phase 5 | Photos | Private progress photos, signed access, no public default, AI photo consent gate | SEPARATE PRIVACY GATE | DEFERRED - NO TABLE, BUCKET OR MEMBER FILE INPUT |
 | Phase 5 | Milestones | Strength and consistency from frozen Training sources; truthful unavailable running state | OWNER ACCEPTANCE GATE | PASS - COMPLETE / OWNER-ACCEPTED / FROZEN |
-| Phase 6 | Architecture/readiness | Frozen context sources, backend boundary, privacy, safety, provider, costs, packages and decisions | ARCHITECTURE GATE | PASS - AUDIT COMPLETE / IMPLEMENTATION NOT STARTED |
+| Phase 6 | Architecture/readiness | Frozen context sources, backend boundary, privacy, safety, provider, costs, packages and decisions | ARCHITECTURE GATE | PASS - AUDIT COMPLETE / 6A IN PROGRESS |
 | Phase 6 | Youri AI | Backend-mediated AI, no browser-to-AI provider call, entitlement check before call | BLOCKING GATE | PLANNED |
 | Phase 6 | AI context | Goals, training, nutrition, progress, recovery context only when authorized | BLOCKING GATE | PLANNED |
 | Phase 6 | AI quality | Missing data handled honestly; no hallucinated facts; structured responses validated | BLOCKING GATE | PLANNED |
@@ -711,7 +711,26 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | Provider and cost | OWNER DECISION REQUIRED - no provider selected, paid service activated or budget approved |
 | 30-day trial readiness | PASS FOR ARCHITECTURE - Phase 6 consumes time-valid `ai`; Phase 7 owns trial lifecycle and abuse prevention |
 | Package order | PASS - 6A through 6I recorded without pulling Phase 7, 9 or 10 scope forward |
-| First provider-free package | READY AFTER CONSENT/RETENTION DECISIONS - 6A trust boundary, schema/RLS/RPC, strict contracts and deterministic mock |
-| Database/runtime/provider during audit | UNCHANGED / NOT STARTED / NOT CALLED |
+| First provider-free package | OWNER DECISIONS LOCKED - 6A trust boundary, schema/RLS/RPC, strict contracts and deterministic mock implemented locally; staging verification pending |
+| Database/runtime/provider during audit | AUDIT UNCHANGED; 6A STAGING EXECUTION PENDING / PROVIDER NOT CALLED |
 | Production | UNTOUCHED |
-| Audit result | PASS - READY FOR OWNER PHASE 6 ARCHITECTURE DECISIONS |
+| Audit result | PASS - PACKAGE 6A AUTHORIZED AND IN PROGRESS |
+
+## Phase 6A AI Trust Foundation Gate
+
+| Check | Result |
+| --- | --- |
+| Owner contracts | PASS - consent, withdrawal, trainer-summary separation, 90-day retention, EUR 3 + EUR 1, action bounds and hard stop locked |
+| Migration / read-only verifier | CREATED / STAGING EXECUTION PENDING |
+| Public/private schema | 8 own-user public + 12 non-exposed private tables; live verification pending |
+| RLS / ACL | designed: RLS all 20, RPC-only browser, no write/trainer policy; live verification pending |
+| Entitlements | designed: current active/time-valid AI or personal coaching only; Free/Pro/missing/inactive/expired/future denied |
+| Feature flags | designed: AI, provider and mock all default OFF |
+| Budget | designed: warning 80 percent, EUR 3 included, EUR 1 Luna grace, EUR 4 hard, no billing |
+| Action safety | designed: strict allowlist, 20 percent training increase, 10 percent/300 kcal, hard-stop categories |
+| Context | designed: minimized references/aggregates; no copied domain authority; unavailable sources explicit |
+| Mock adapter | LOCAL PASS PENDING FINAL TOTAL - deterministic fixtures, zero external calls/cost |
+| External provider | NOT ACTIVATED / ZERO CALLS / ZERO COST |
+| Frozen regressions | PENDING FINAL PACKAGE RUN |
+| Production | UNTOUCHED |
+| Package result | IN PROGRESS - NOT OWNER-ACCEPTED OR FROZEN |
