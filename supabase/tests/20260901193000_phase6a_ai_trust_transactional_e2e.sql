@@ -28,7 +28,7 @@ values
   (current_setting('phase6a.user2')::uuid, 'free', 'active', 'phase6a_free', now() - interval '1 day', null),
   (current_setting('phase6a.user2')::uuid, 'pro', 'active', 'phase6a_pro', now() - interval '1 day', null),
   (current_setting('phase6a.user2')::uuid, 'ai', 'inactive', 'phase6a_inactive', now() - interval '1 day', null),
-  (current_setting('phase6a.user2')::uuid, 'ai', 'active', 'phase6a_future', now() + interval '1 day', null),
+  (current_setting('phase6a.user2')::uuid, 'ai', 'active', 'phase6a_future', now() + interval '1 day', now() + interval '2 days'),
   (current_setting('phase6a.user2')::uuid, 'ai', 'expired', 'phase6a_expired', now() - interval '30 days', now() - interval '1 day');
 
 select set_config('request.jwt.claim.sub', current_setting('phase6a.user1'), true);
