@@ -4,22 +4,16 @@ const { chromium } = require("playwright");
 
 const root = path.resolve(__dirname, "..");
 const runtime = fs.readFileSync(path.join(root, "assets/phase5-progress.js"), "utf8");
+const appStyles = fs.readFileSync(path.join(root, "styles.css"), "utf8");
 const checks = [];
 function check(name, pass) { checks.push({ name, pass: Boolean(pass) }); }
 
-function harness() {
-  return `
-    <style>
-      :root { --line:#36404a; --surface:#1c2228; --bg:#12161a; --text:#f5f5f5; --muted:#a9b0b7; --gold:#d7b24d; }
-      * { box-sizing:border-box; } body { margin:0; background:var(--bg); color:var(--text); font:14px Arial; }
-      button,input,select,textarea { font:inherit; } button { border:1px solid var(--line); color:var(--text); background:#242b31; border-radius:6px; padding:8px 12px; }
-      .primary-btn { background:#d7b24d; color:#17120a; } .secondary-btn { background:#242b31; }
-      .field { display:grid; gap:5px; } input,select,textarea { width:100%; min-width:0; padding:10px; border:1px solid var(--line); background:#101418; color:var(--text); }
-      .muted { color:var(--muted); } .view { display:none; padding:12px; } .view.active { display:block; }
-    </style>
-    <nav id="nav"></nav><section id="progress" class="view active"></section>
+function harness(language = "nl") {
+  return `<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"></head><body class="client-mode">
+    <style>.view { display:none; padding:12px; } .view.active { display:block; }</style>
+    <nav id="nav"></nav><main class="content"><section id="progress" class="view active"></section></main>
     <script>
-      let state = { ui:{ loggedIn:true, role:"client" }, accountSettings:{ language:"nl", unitSystem:"metric" } };
+      let state = { ui:{ loggedIn:true, role:"client" }, accountSettings:{ language:${JSON.stringify(language)}, unitSystem:"metric" } };
       let onlineProfile = { id:"11111111-1111-4111-8111-111111111111", role:"client" };
       let currentView = "progress";
       const NAV = { client:[["client-home","Vandaag"],["training","Training"],["nutrition","Voeding"],["trackers","Trackers"]], trainer:[] };
@@ -50,7 +44,91 @@ function harness() {
         return { data:{}, error:null };
       }};
       window.confirm = () => true;
-    </script>`;
+    </script></body></html>`;
+}
+
+async function initializePage(page, language = "nl") {
+  await page.setContent(harness(language));
+  await page.addStyleTag({ content: appStyles });
+  await page.addScriptTag({ content: runtime });
+  await page.evaluate(async () => { renderNav(); renderProgress(); await window.FMZ_PHASE5_PROGRESS.hydrate({force:true}); });
+  await page.waitForSelector(".phase5-shell .phase5-chart");
+}
+
+async function inspectOpenForm(page, formType, expectedColumns) {
+  await page.locator(`[data-phase5-open="${formType}"]`).click();
+  await page.waitForSelector(`[data-phase5-form="${formType}"]`);
+  const layout = await page.evaluate(({ formType, expectedColumns }) => {
+    const form = document.querySelector(`[data-phase5-form="${formType}"]`);
+    const sheet = form.closest(".phase5-sheet");
+    const grid = form.querySelector(".phase5-form-grid");
+    const fields = [...form.querySelectorAll("label.field")];
+    const viewportWidth = document.documentElement.clientWidth;
+    const sheetRect = sheet.getBoundingClientRect();
+    const headingRect = sheet.querySelector("h2").getBoundingClientRect();
+    const closeRect = sheet.querySelector(".phase5-close").getBoundingClientRect();
+    const results = fields.map((field) => {
+      const label = field.querySelector(":scope > span");
+      const control = field.querySelector("input,select,textarea");
+      const fieldRect = field.getBoundingClientRect();
+      const labelRect = label.getBoundingClientRect();
+      const controlRect = control.getBoundingClientRect();
+      return {
+        separated: labelRect.bottom <= controlRect.top + 0.5,
+        gap: controlRect.top - labelRect.bottom,
+        controlContained: controlRect.left >= fieldRect.left - 0.5 && controlRect.right <= fieldRect.right + 0.5,
+        fieldContained: fieldRect.left >= sheetRect.left - 0.5 && fieldRect.right <= sheetRect.right + 0.5,
+        touchHeight: controlRect.height,
+        labelLineHeight: Number.parseFloat(getComputedStyle(label).lineHeight)
+      };
+    });
+    const columns = getComputedStyle(grid).gridTemplateColumns.split(/\s+/).filter(Boolean).length;
+    const actions = form.querySelector(".phase5-actions");
+    const feedback = actions.querySelector(".save-feedback");
+    feedback.textContent = "Controleer de ingevulde waarden voordat je opnieuw opslaat.";
+    const buttonRect = actions.querySelector("button").getBoundingClientRect();
+    const feedbackRect = feedback.getBoundingClientRect();
+    const feedbackOverlaps = !(buttonRect.right <= feedbackRect.left || feedbackRect.right <= buttonRect.left || buttonRect.bottom <= feedbackRect.top || feedbackRect.bottom <= buttonRect.top);
+    return {
+      expectedColumns,
+      columns,
+      allSeparated: results.every((result) => result.separated && result.gap >= 5),
+      allControlsContained: results.every((result) => result.controlContained && result.fieldContained),
+      allTouchFriendly: results.every((result) => result.touchHeight >= 44),
+      allLabelsReadable: results.every((result) => result.labelLineHeight >= 17),
+      headingClear: headingRect.right <= closeRect.left + 0.5 || headingRect.bottom <= closeRect.top + 0.5,
+      feedbackClear: !feedbackOverlaps,
+      sheetContained: sheetRect.left >= -0.5 && sheetRect.right <= viewportWidth + 0.5 && sheet.scrollWidth <= sheet.clientWidth + 1,
+      pageContained: document.documentElement.scrollWidth <= viewportWidth + 1
+    };
+  }, { formType, expectedColumns });
+  await page.locator(`[data-phase5-form="${formType}"] input, [data-phase5-form="${formType}"] select`).first().focus();
+  layout.focusVisible = await page.evaluate((formType) => {
+    const control = document.querySelector(`[data-phase5-form="${formType}"] input, [data-phase5-form="${formType}"] select`);
+    const style = getComputedStyle(control);
+    return document.activeElement === control && style.outlineStyle !== "none" && Number.parseFloat(style.outlineWidth) >= 2;
+  }, formType);
+  await page.locator(".phase5-close").click();
+  return layout;
+}
+
+async function checkFormsAtViewport(page, width, height, expectedColumns) {
+  await page.setViewportSize({ width, height });
+  const scenarios = ["goal", "weight", "measurement"];
+  const results = [];
+  for (const formType of scenarios) {
+    results.push(await inspectOpenForm(page, formType, expectedColumns));
+  }
+  return {
+    columns: results.every((result) => result.columns === result.expectedColumns),
+    separated: results.every((result) => result.allSeparated),
+    contained: results.every((result) => result.allControlsContained && result.sheetContained && result.pageContained),
+    touch: results.every((result) => result.allTouchFriendly),
+    readable: results.every((result) => result.allLabelsReadable),
+    headings: results.every((result) => result.headingClear),
+    feedback: results.every((result) => result.feedbackClear),
+    focus: results.every((result) => result.focusVisible)
+  };
 }
 
 (async () => {
@@ -58,13 +136,13 @@ function harness() {
   const browser = await chromium.launch({ headless: true, executablePath: fs.existsSync(edgePath) ? edgePath : undefined });
   try {
     const page = await browser.newPage({ viewport: { width:390, height:844 } });
-    await page.setContent(harness());
-    await page.addScriptTag({ content: runtime });
-    await page.evaluate(async () => { renderNav(); renderProgress(); await window.FMZ_PHASE5_PROGRESS.hydrate({force:true}); });
-    await page.waitForSelector(".phase5-shell .phase5-chart");
+    const errors = [];
+    page.on("pageerror", (error) => errors.push(error.message));
+    await initializePage(page);
 
-    check("runtime contract exposed", await page.evaluate(() => window.FMZ_PHASE5_PROGRESS.version === "20260831-phase5-progress1"));
-    check("Progress nav inserted", await page.locator("#nav").textContent().then((text) => text.includes("Progressie")));
+    check("runtime contract exposed", await page.evaluate(() => window.FMZ_PHASE5_PROGRESS.version === "20260901-phase5-mobile-form1"));
+    check("Voortgang nav inserted", await page.locator("#nav").textContent().then((text) => text.includes("Voortgang") && !text.includes("Progressie")));
+    check("Voortgang page title", await page.locator(".phase5-head h1").textContent().then((text) => text.trim() === "Voortgang"));
     check("goal first", await page.locator(".phase5-grid > section").first().textContent().then((text) => text.includes("Mijn doel")));
     check("weight chart rendered", await page.locator(".phase5-chart .raw").count() === 1 && await page.locator(".phase5-chart .trend").count() === 1);
     check("accessible chart label", Boolean(await page.locator(".phase5-chart").getAttribute("aria-label")));
@@ -73,13 +151,41 @@ function harness() {
     check("photo gate no upload", await page.getByText("Progressiefoto's").count() === 1 && await page.locator('input[type="file"]').count() === 0);
     check("raw table alternative", await page.locator(".phase5-details .phase5-table").count() === 2);
 
-    const width390 = await page.evaluate(() => ({ scroll:document.documentElement.scrollWidth, client:document.documentElement.clientWidth }));
-    check("390px no horizontal overflow", width390.scroll <= width390.client + 1);
-    await page.setViewportSize({ width:320, height:700 });
-    const width320 = await page.evaluate(() => ({ scroll:document.documentElement.scrollWidth, client:document.documentElement.clientWidth }));
-    check("320px no horizontal overflow", width320.scroll <= width320.client + 1);
+    const mobile390 = await checkFormsAtViewport(page, 390, 844, 1);
+    check("390px forms single column", mobile390.columns);
+    check("390px labels and inputs separated", mobile390.separated);
+    check("390px forms contained without overflow", mobile390.contained);
+    check("390px touch targets", mobile390.touch);
+    check("390px labels readable", mobile390.readable);
+    check("390px headings clear", mobile390.headings);
+    check("390px feedback does not collide", mobile390.feedback);
+    check("390px focus visible", mobile390.focus);
 
-    await page.getByRole("button", { name:/Gewicht corrigeren/ }).click();
+    const mobile320 = await checkFormsAtViewport(page, 320, 700, 1);
+    check("320px forms single column", mobile320.columns);
+    check("320px labels and inputs separated", mobile320.separated);
+    check("320px forms contained without overflow", mobile320.contained);
+    check("320px touch targets", mobile320.touch);
+    check("320px labels readable", mobile320.readable);
+    check("320px headings clear", mobile320.headings);
+    check("320px feedback does not collide", mobile320.feedback);
+    check("320px focus visible", mobile320.focus);
+
+    await page.setViewportSize({ width:390, height:420 });
+    await page.locator('[data-phase5-open="measurement"]').click();
+    const keyboardLayout = await page.evaluate(() => {
+      const textarea = document.querySelector('[data-phase5-form="measurement"] textarea');
+      textarea.focus();
+      textarea.scrollIntoView({ block:"center" });
+      const rect = textarea.getBoundingClientRect();
+      const sheet = textarea.closest(".phase5-sheet");
+      return document.activeElement === textarea && rect.left >= 0 && rect.right <= innerWidth && rect.top >= 0 && rect.bottom <= innerHeight && sheet.scrollWidth <= sheet.clientWidth + 1;
+    });
+    check("reduced keyboard viewport remains stable", keyboardLayout);
+    await page.keyboard.press("Escape");
+
+    await page.setViewportSize({ width:390, height:844 });
+    await page.locator('[data-phase5-open="weight"]').click();
     check("weight dialog semantic", await page.locator('.phase5-sheet[role="dialog"][aria-modal="true"]').count() === 1);
     await page.locator('[data-phase5-form="weight"] input[name="weight"]').fill("83.7");
     await page.locator('[data-phase5-form="weight"] button[type="submit"]').click();
@@ -92,15 +198,19 @@ function harness() {
     check("unit RPC", await page.evaluate(() => mock.calls.some((call) => call.name === "fmz_phase5_set_unit_system" && call.args.p_unit_system === "imperial")));
     check("imperial display only", await page.getByText(/lb/).count() > 0 && await page.evaluate(() => mock.weight === 83.7));
 
-    await page.setViewportSize({ width:820, height:1180 });
-    const tablet = await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1);
-    check("tablet no overflow", tablet);
-    await page.setViewportSize({ width:1440, height:900 });
-    const desktop = await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1);
-    check("desktop no overflow", desktop);
+    const tablet = await checkFormsAtViewport(page, 820, 1180, 2);
+    check("tablet forms use bounded two-column layout", tablet.columns && tablet.separated && tablet.contained && tablet.touch && tablet.headings && tablet.feedback);
+    const desktop = await checkFormsAtViewport(page, 1440, 900, 2);
+    check("desktop forms use bounded two-column layout", desktop.columns && desktop.separated && desktop.contained && desktop.touch && desktop.headings && desktop.feedback);
 
-    const errors = [];
-    page.on("pageerror", (error) => errors.push(error.message));
+    for (const [language, expected] of [["en","Progress"],["de","Fortschritt"]]) {
+      const localePage = await browser.newPage({ viewport: { width:390, height:844 } });
+      await initializePage(localePage, language);
+      const localeResult = await localePage.evaluate(() => ({ nav:document.getElementById("nav").textContent, title:document.querySelector(".phase5-head h1")?.textContent }));
+      check(`${language.toUpperCase()} section label preserved`, localeResult.nav.includes(expected) && localeResult.title === expected);
+      await localePage.close();
+    }
+
     check("no runtime errors", errors.length === 0);
   } finally {
     await browser.close();

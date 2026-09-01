@@ -2,14 +2,14 @@
   if (window.FMZ_PHASE5_PROGRESS_LOADED) return;
   window.FMZ_PHASE5_PROGRESS_LOADED = true;
 
-  const PHASE5_VERSION = "20260831-phase5-progress1";
+  const PHASE5_VERSION = "20260901-phase5-mobile-form1";
   const PHASE5_LANGUAGES = ["nl", "en", "de"];
   const KG_TO_LB = 2.2046226218;
   const CM_TO_IN = 1 / 2.54;
   const PHASE5_I18N = {
     nl: {
-      nav: "Progressie", title: "Progressie", intro: "Je ontwikkeling in een rustig overzicht.",
-      loading: "Progressie laden...", retry: "Opnieuw proberen", noData: "Nog geen gegevens",
+      nav: "Voortgang", title: "Voortgang", intro: "Je ontwikkeling in een rustig overzicht.",
+      loading: "Voortgang laden...", retry: "Opnieuw proberen", noData: "Nog geen gegevens",
       fullHistory: "Volledige historie", freeHistory: "Laatste 30 dagen", historyLocked: "Oudere historie is beschikbaar met Pro, AI of coaching.",
       goal: "Mijn doel", setGoal: "Doel instellen", editGoal: "Doel aanpassen", goalProgress: "Voortgang naar doel",
       goalFatLoss: "Vet verliezen", goalMuscle: "Spiermassa opbouwen", goalStrength: "Sterker worden",
@@ -30,12 +30,12 @@
       history: "Historie en ruwe waarden", archive: "Archiveren", archiveConfirm: "Deze invoer uit het actieve overzicht halen? De revisiehistorie blijft bewaard.",
       metric: "Metrisch", imperial: "Imperiaal", units: "Eenheden", kg: "kg", lb: "lb", cm: "cm", inch: "in",
       saved: "Opgeslagen", archived: "Gearchiveerd", stale: "Deze invoer is elders gewijzigd. De nieuwste versie is geladen.",
-      validation: "Controleer de ingevulde waarden.", authRequired: "Log opnieuw in om Progressie te gebruiken.", onlineRequired: "Progressie heeft een beveiligde online verbinding nodig.",
+      validation: "Controleer de ingevulde waarden.", authRequired: "Log opnieuw in om Voortgang te gebruiken.", onlineRequired: "Voortgang heeft een beveiligde online verbinding nodig.",
       photos: "Progressiefoto's", photosGate: "Foto's volgen via een aparte private privacy- en opslagstap.",
       goalNeeded: "Stel je doel in om doelvoortgang te zien.", maintenanceDistance: "Afstand tot doelgewicht",
       current: "Nu", averageSleepUnknown: "slaap onbekend", stepsUnknown: "stappen onbekend", kcalUnknown: "kcal onbekend", proteinUnknown: "eiwit onbekend",
       previousPeriod: "Eerdere periode", newestPeriod: "Nieuwste periode", edit: "Bewerken", emptyMeasurements: "Nog geen lichaamsmetingen.", emptyStrength: "Voltooi sets met gewicht en herhalingen om krachtprogressie te zien.",
-      updated: "Bijgewerkt", loadError: "Progressie kon niet worden geladen.", saveError: "Opslaan is niet gelukt.",
+      updated: "Bijgewerkt", loadError: "Voortgang kon niet worden geladen.", saveError: "Opslaan is niet gelukt.",
       goalOptionalWeight: "Gewichtsvelden zijn optioneel voor dit doel.", requiredMeasurement: "Vul minimaal een lichaamsmeting in."
     },
     en: {
@@ -272,14 +272,28 @@
       .phase5-photo-gate { border-style: dashed; }
       .phase5-portal { position: fixed; inset: 0; z-index: 96; display: grid; align-items: end; }
       .phase5-backdrop { position: absolute; inset: 0; border: 0; background: rgba(0,0,0,.7); }
-      .phase5-sheet { position: relative; width: 100%; max-height: 94dvh; overflow-y: auto; background: var(--bg); border: 1px solid var(--line); border-radius: 8px 8px 0 0; padding: 16px 16px calc(24px + env(safe-area-inset-bottom)); }
+      .phase5-sheet { position: relative; width: 100%; max-width: 100%; max-height: 94dvh; overflow-y: auto; overscroll-behavior: contain; scroll-padding-block-end: calc(96px + env(safe-area-inset-bottom)); background: var(--bg); border: 1px solid var(--line); border-radius: 8px 8px 0 0; padding: 16px 16px calc(24px + env(safe-area-inset-bottom)); }
       .phase5-sheet-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
-      .phase5-sheet-head h2 { margin: 0; font-size: 22px; }
-      .phase5-form { display: grid; gap: 12px; }
-      .phase5-form-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
-      .phase5-form-grid .wide { grid-column: 1 / -1; }
+      .phase5-sheet-head h2 { min-width: 0; margin: 0; font-size: 22px; line-height: 1.2; overflow-wrap: anywhere; }
+      .phase5-form { display: grid; gap: 12px; min-width: 0; }
+      .phase5-form-grid { display: grid; grid-template-columns: minmax(0,1fr); gap: 14px; min-width: 0; }
+      .phase5-form-grid > *, .phase5-form .field { min-width: 0; }
+      .phase5-form .field { display: grid; grid-template-columns: minmax(0,1fr); align-content: start; gap: 7px; margin: 0; }
+      .phase5-form .field > span { display: block; min-width: 0; font-size: 13px; line-height: 1.35; overflow-wrap: anywhere; }
+      .phase5-form input, .phase5-form select, .phase5-form textarea { display: block; width: 100%; min-width: 0; max-width: 100%; min-height: 46px; margin: 0; }
+      .phase5-form textarea { min-height: 96px; }
+      .phase5-form input:focus-visible, .phase5-form select:focus-visible, .phase5-form textarea:focus-visible, .phase5-form button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+      .phase5-form .phase5-actions { display: grid; grid-template-columns: minmax(0,1fr); align-items: start; gap: 7px; min-width: 0; }
+      .phase5-form .phase5-actions button { width: 100%; }
+      .phase5-form .save-feedback { display: block; min-width: 0; min-height: 19px; line-height: 1.35; overflow-wrap: anywhere; }
       .phase5-close { width: 44px; height: 44px; padding: 0; flex: none; font-size: 22px; }
       body.phase5-modal-open { overflow: hidden; }
+      @media (min-width: 560px) {
+        .phase5-form-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+        .phase5-form-grid .wide { grid-column: 1 / -1; }
+        .phase5-form .phase5-actions { grid-template-columns: auto minmax(0,1fr); align-items: center; }
+        .phase5-form .phase5-actions button { width: auto; }
+      }
       @media (min-width: 760px) {
         .phase5-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
         .phase5-wide { grid-column: 1 / -1; }
@@ -288,8 +302,7 @@
       }
       @media (max-width: 359px) {
         .phase5-head, .phase5-section-head, .phase5-history-row { align-items: stretch; flex-direction: column; }
-        .phase5-form-grid, .phase5-metrics { grid-template-columns: 1fr; }
-        .phase5-form-grid .wide { grid-column: auto; }
+        .phase5-metrics { grid-template-columns: 1fr; }
         .phase5-head h1 { font-size: 25px; }
       }
     `;
@@ -566,7 +579,7 @@
     } else if (modal === "measurement") {
       title = phase5Text(measurement ? "editMeasurement" : "addMeasurement");
       const field = (name,key) => `<label class="field"><span>${phase5Escape(phase5Text(key))} (${lengthUnit})</span><input name="${name}" type="number" inputmode="decimal" min="0" step="0.1" value="${measurement?.[name] == null ? "" : phase5Number(phase5LengthValue(measurement[name]),1).replace(/[^0-9,.-]/g,"").replace(",",".")}" /></label>`;
-      form = `<form class="phase5-form" data-phase5-form="measurement" data-expected-updated-at="${phase5Escape(measurement?.updated_at || "")}"><div class="phase5-form-grid"><label class="field"><span>${phase5Escape(phase5Text("date"))}</span><input name="log_date" type="date" max="${phase5Today()}" value="${phase5Escape(date)}" required /></label><span></span>${field("waist_cm","waist")}${field("chest_cm","chest")}${field("hips_cm","hips")}${field("upper_arm_left_cm","armLeft")}${field("upper_arm_right_cm","armRight")}${field("thigh_left_cm","thighLeft")}${field("thigh_right_cm","thighRight")}<label class="field wide"><span>${phase5Escape(phase5Text("notes"))}</span><textarea name="notes" rows="3" maxlength="500">${phase5Escape(measurement?.notes || "")}</textarea></label></div><div class="phase5-actions"><button class="primary-btn" type="submit">${phase5Escape(phase5Text("save"))}</button><span class="save-feedback" data-phase5-form-feedback role="status" aria-live="polite"></span></div></form>`;
+      form = `<form class="phase5-form" data-phase5-form="measurement" data-expected-updated-at="${phase5Escape(measurement?.updated_at || "")}"><div class="phase5-form-grid"><label class="field wide"><span>${phase5Escape(phase5Text("date"))}</span><input name="log_date" type="date" max="${phase5Today()}" value="${phase5Escape(date)}" required /></label>${field("waist_cm","waist")}${field("chest_cm","chest")}${field("hips_cm","hips")}${field("upper_arm_left_cm","armLeft")}${field("upper_arm_right_cm","armRight")}${field("thigh_left_cm","thighLeft")}${field("thigh_right_cm","thighRight")}<label class="field wide"><span>${phase5Escape(phase5Text("notes"))}</span><textarea name="notes" rows="3" maxlength="500">${phase5Escape(measurement?.notes || "")}</textarea></label></div><div class="phase5-actions"><button class="primary-btn" type="submit">${phase5Escape(phase5Text("save"))}</button><span class="save-feedback" data-phase5-form-feedback role="status" aria-live="polite"></span></div></form>`;
     } else {
       const latestWeight = phase5Latest(data.weights || [])?.weight_kg;
       const baseline = goal.baseline_weight_kg ?? latestWeight;

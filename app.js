@@ -80,10 +80,10 @@
   }
   const memberUxPatchSource = await memberUxPatchResponse.text();
 
-  const phase5ProgressPatchUrl = new URL("assets/phase5-progress.js?v=20260831-phase5-progress1", document.baseURI);
+  const phase5ProgressPatchUrl = new URL("assets/phase5-progress.js?v=20260901-phase5-mobile-form1", document.baseURI);
   const phase5ProgressPatchResponse = await fetch(phase5ProgressPatchUrl, { cache: "no-cache" });
   if (!phase5ProgressPatchResponse.ok) {
-    throw new Error(`Phase 5 Progressie laden mislukt: ${phase5ProgressPatchResponse.status}`);
+    throw new Error(`Phase 5 Voortgang laden mislukt: ${phase5ProgressPatchResponse.status}`);
   }
   const phase5ProgressPatchSource = await phase5ProgressPatchResponse.text();
 

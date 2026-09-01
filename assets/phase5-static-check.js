@@ -29,9 +29,9 @@ function check(name, condition) { checks.push({ name, pass: Boolean(condition) }
 function includesAll(source, values) { return values.every((value) => source.includes(value)); }
 
 check("runtime duplicate guard", files.runtime.includes("FMZ_PHASE5_PROGRESS_LOADED"));
-check("runtime version", files.runtime.includes('20260831-phase5-progress1'));
-check("app cache version", files.app.includes('assets/phase5-progress.js?v=20260831-phase5-progress1'));
-check("index cache version", files.index.includes('app.js?v=20260831-phase5-progress1'));
+check("runtime version", files.runtime.includes('20260901-phase5-mobile-form1'));
+check("app cache version", files.app.includes('assets/phase5-progress.js?v=20260901-phase5-mobile-form1'));
+check("index cache version", files.index.includes('app.js?v=20260901-phase5-mobile-form1'));
 check("loader after Member UX", files.app.indexOf("memberUxPatchSource") < files.app.indexOf("phase5ProgressPatchSource"));
 check("loader before init", files.app.indexOf("phase5ProgressPatchSource}\\ninit();") > -1);
 let combinedBundleParse = false;
@@ -45,6 +45,11 @@ try {
 }
 check("combined seven-patch bundle parses", combinedBundleParse);
 check("client Progress nav", includesAll(files.runtime, ['["progress", phase5Text("nav")]', "phase5EnsureNav"]));
+check("Dutch section name is Voortgang", includesAll(files.runtime, ['nav: "Voortgang"', 'title: "Voortgang"', 'loading: "Voortgang laden..."']));
+check("Dutch section errors use Voortgang", includesAll(files.runtime, ['om Voortgang te gebruiken', 'Voortgang heeft een beveiligde online verbinding nodig', 'Voortgang kon niet worden geladen']));
+check("old Dutch section name removed", !includesAll(files.runtime, ['nav: "Progressie"']) && !files.app.includes("Phase 5 Progressie laden mislukt"));
+check("English section name preserved", includesAll(files.runtime, ['nav: "Progress"', 'title: "Progress"']));
+check("German section name preserved", includesAll(files.runtime, ['nav: "Fortschritt"', 'title: "Fortschritt"']));
 check("legacy tracker route exception", files.memberUx.includes('id === "progress" && window.FMZ_PHASE5_PROGRESS'));
 check("legacy Progress renderer delegates", files.memberUx.includes('window.FMZ_PHASE5_PROGRESS.render()'));
 check("tracker card routes to Progress", files.memberUx.includes('data-member-open-view="progress"'));
@@ -88,11 +93,20 @@ check("EN copy", files.runtime.includes("Your development in a calm overview"));
 check("DE copy", files.runtime.includes("Deine Entwicklung in einer ruhigen Uebersicht"));
 check("locale-aware numbers", files.runtime.includes("new Intl.NumberFormat"));
 check("locale-aware dates", files.runtime.includes("toLocaleDateString"));
-check("mobile 390 compatible CSS", files.runtime.includes("grid-template-columns: 1fr"));
+check("mobile-first single-column form", files.runtime.includes(".phase5-form-grid { display: grid; grid-template-columns: minmax(0,1fr);"));
+check("form two-column enhancement starts at 560", includesAll(files.runtime, ["@media (min-width: 560px)", ".phase5-form-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }"]));
+check("scoped Phase 5 field layout", includesAll(files.runtime, [".phase5-form .field { display: grid", "align-content: start", "gap: 7px", "margin: 0"]));
+check("labels wrap safely", includesAll(files.runtime, [".phase5-form .field > span", "line-height: 1.35", "overflow-wrap: anywhere"]));
+check("controls remain inside form", includesAll(files.runtime, [".phase5-form input, .phase5-form select, .phase5-form textarea", "width: 100%", "min-width: 0", "max-width: 100%", "min-height: 46px"]));
+check("form focus indicator", includesAll(files.runtime, [".phase5-form input:focus-visible", "outline: 2px solid var(--gold)", "outline-offset: 2px"]));
+check("mobile actions and feedback contained", includesAll(files.runtime, [".phase5-form .phase5-actions { display: grid", ".phase5-form .phase5-actions button { width: 100%; }", ".phase5-form .save-feedback", "min-height: 19px"]));
+check("keyboard scroll reserve", files.runtime.includes("scroll-padding-block-end: calc(96px + env(safe-area-inset-bottom))"));
+check("measurement spacer removed", !files.runtime.includes('<label class="field"><span>${phase5Escape(phase5Text("date"))}</span><input name="log_date" type="date" max="${phase5Today()}" value="${phase5Escape(date)}" required /></label><span></span>'));
+check("measurement date uses full row", files.runtime.includes('<label class="field wide"><span>${phase5Escape(phase5Text("date"))}</span><input name="log_date"'));
 check("narrow 359 fallback", files.runtime.includes("@media (max-width: 359px)"));
 check("tablet breakpoint", files.runtime.includes("@media (min-width: 760px)"));
 check("safe area padding", files.runtime.includes("env(safe-area-inset-bottom)"));
-check("minimum controls", files.runtime.includes("min-height: 44px"));
+check("minimum controls", files.runtime.includes("min-height: 44px") && files.runtime.includes("min-height: 46px"));
 check("modal semantics", includesAll(files.runtime, ['role="dialog"','aria-modal="true"','aria-labelledby="phase5-modal-title"']));
 check("Escape close", files.runtime.includes('event.key === "Escape"'));
 check("focus restoration", files.runtime.includes("opener?.focus?.()"));
