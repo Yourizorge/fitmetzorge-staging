@@ -675,9 +675,17 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | RLS / ACL | PASS - own-user RLS; no DELETE/trainer policy; no browser table grants; internal helpers blocked |
 | Canonical units and timezone | PASS - kg/cm authority, metric/imperial display preference, IANA local date validation |
 | Progress sources | PASS - frozen Training-derived strength/consistency; descriptive Recovery/Nutrition; truthful running unavailable state |
-| Phase 5 static suite | PASS - 85/85 including assembled seven-patch bundle parse |
-| Phase 5 responsive browser suite | PASS - 19/19; 320/390 phone, tablet and desktop compatibility |
+| Owner real-phone functional test | PASS - Voortgang opens, data entry works and graph renders; final UX acceptance remains pending |
+| Dutch user-facing section name | PASS - `Voortgang`; English `Progress` and German `Fortschritt` preserved |
+| Phase 5 static suite | PASS - 99/99 including assembled seven-patch bundle parse and mobile-form contract guards |
+| Phase 5 responsive browser suite | PASS - 37/37 using real app CSS; goal, weight and measurement forms checked at 390x844 and 320x700 |
+| Label/input collision gate | PASS - geometric label/control separation, safe wrapping, 46px controls, feedback containment and no horizontal overflow |
+| Keyboard/focus gate | PASS - visible focus and stable reduced-height keyboard-class viewport with scroll reserve |
+| Tablet/desktop compatibility | PASS - 820x1180 and 1440x900 bounded two-column forms |
 | Frozen baselines | PASS - Phase 1 75, Phase 2 46, Phase 3 222, Member UX 56, current Phase 4/4F-D/4F-E suites preserved |
+| Current Phase 4 gates | PASS - schema/security 90/90; Nutrition browser vertical slice 138/138 |
 | Photo privacy gate | PASS FOR CURRENT PACKAGE - no table, bucket, file input or normalized legacy-photo migration |
+| Live hotfix | PASS - commit `eaac528`, cache `20260901-phase5-mobile-form1`; three runtime assets HTTP 200 and byte-identical |
+| Database/schema/catalog/member data/Edge | UNCHANGED |
 | Production / Phase 6 | UNTOUCHED / NOT STARTED |
-| Technical result | TECHNICAL PASS / READY FOR OWNER TESTING; NOT OWNER-ACCEPTED OR FROZEN |
+| Technical result | OWNER FUNCTIONAL PASS / UX HOTFIX LIVE / READY FOR OWNER RETEST; NOT OWNER-ACCEPTED OR FROZEN |

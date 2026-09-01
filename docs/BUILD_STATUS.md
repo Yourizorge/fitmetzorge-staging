@@ -174,13 +174,17 @@ Artifacts: migration SHA-256 unchanged at `606658F53EA29083E315F43546B507B40C9D0
 
 ### Phase 5 Progressie
 
-Status: TECHNICAL PASS / READY FOR OWNER TESTING ON STAGING
+Status: OWNER FUNCTIONAL MOBILE PASS / UX HOTFIX LIVE / READY FOR OWNER RETEST
 
 Summary: the normalized own-user Progress foundation is live on staging `mokxyyullfhkfalopbzd`. Four additive RLS tables, RPC-only writes, immutable correction history, archive behavior, stable retry IDs, stale-write protection, local-calendar dates, canonical kg/cm storage, metric/imperial presentation and a server-enforced Free 30-day history boundary are active. Current Pro, AI and personal-coaching entitlements receive full history; missing, future, expired or inactive entitlements resolve to Free.
 
 The mobile-first member surface provides goal-first progress, raw weight plus a transparent seven-entry trend, body measurements, strength and consistency derived from frozen Training data, descriptive Recovery/Nutrition context, truthful running insufficient-data behavior and contextual BMI. The trainer legacy Progress renderer and historical `coach_workspaces.state` data remain untouched. Photos are excluded until a separately reviewed private Storage/RLS/consent/deletion gate exists.
 
-Live database verification: PASS, 30/30. Transactional ownership/idempotency/stale/history E2E: PASS with full rollback and no retained fixtures. Frontend checks: Phase 5 static 85/85 and responsive browser 19/19. Runtime commit `cb1e926` and cache `20260831-phase5-progress1` are live on GitHub Pages; the four runtime assets return HTTP 200 and match their committed Git blobs. Frozen owner baselines remain unchanged; production and Phase 6 remain untouched. Owner acceptance/freeze: PENDING.
+Live database verification: PASS, 30/30. Transactional ownership/idempotency/stale/history E2E: PASS with full rollback and no retained fixtures. The owner real-phone functional test passed for opening Voortgang, entering data and rendering the graph. Owner acceptance/freeze remains PENDING because the reported mobile form finishing required a focused retest.
+
+The 2026-09-01 UX hotfix corrects the Dutch member-facing section name from `Progressie` to `Voortgang`. Its root cause was a Phase 5-specific two-column form grid that remained active at 390px, combined with reliance on generic field styling and a browser harness that supplied protective layout rules itself. Long Dutch measurement/goal labels therefore received too little horizontal and vertical room on a real phone. Phase 5 forms now use one bounded column below 560px, two columns only from 560px upward, explicit label/control spacing and wrapping, 46px controls, contained feedback, visible focus, keyboard scroll reserve and a full-row measurement date without the former empty grid spacer.
+
+Frontend checks after the hotfix: Phase 5 static 99/99 and responsive browser 37/37; all goal, weight and measurement forms pass geometric overlap and overflow checks at 390x844 and 320x700, reduced keyboard viewport, tablet 820x1180 and desktop 1440x900. Frozen Phase 1/2/3/Member UX pass 75/46/222/56; Phase 4 schema/security passes 90/90 and Nutrition browser passes 138/138. Runtime commit `eaac528` and cache `20260901-phase5-mobile-form1` are live on GitHub Pages. `index.html`, `app.js` and `assets/phase5-progress.js` return HTTP 200 and are SHA-256 byte-identical to the commit. Database/schema, catalog, member data and Edge Functions changed: NO. Production and Phase 6 remain untouched. Final owner UX retest: PENDING.
 
 ### Production Migration
 

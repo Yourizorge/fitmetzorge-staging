@@ -34,22 +34,31 @@ The four tables use own-user RLS. Browser writes are RPC-only. Authenticated tab
 
 - Read-only live verifier: PASS, 30/30.
 - Transactional database E2E: PASS; zero retained fixtures.
-- Phase 5 static suite: PASS, 85/85 including the assembled seven-patch bundle parse.
-- Responsive browser suite: PASS, 19/19.
-- Mobile 320x700 and 390x844: PASS without horizontal overflow.
-- Tablet and desktop compatibility: PASS.
+- Phase 5 static suite: PASS, 99/99 including the assembled seven-patch bundle parse.
+- Responsive browser suite: PASS, 37/37 using the real app stylesheet rather than protective harness field CSS.
+- Mobile 320x700 and 390x844: PASS for goal, weight and measurement dialogs, label/control separation, focus, feedback and horizontal overflow.
+- Reduced-height keyboard-class viewport: PASS with active control reachable and no horizontal overflow.
+- Tablet 820x1180 and desktop 1440x900 compatibility: PASS.
 - Frozen Phase 1/2/3/Member UX and current Phase 4 gates: PASS.
 - No polling, `MutationObserver`, reload workaround, browser service role, secret, production reference or AI call.
 
 ## Owner Gate
 
-Technical implementation does not equal owner acceptance. The owner should test a real staging member on phone for goal save, weight save/correction/archive, measurement save/correction/archive, unit switching, Free history boundary messaging, empty states, chart readability, navigation, refresh and logout/login persistence. Phase 6 remains outside scope.
+The owner real-phone functional test passed for opening the page, entering progress data and rendering the graph. Technical implementation and functional PASS do not equal final owner acceptance. A final owner phone retest remains required for the corrected form spacing and Dutch `Voortgang` naming. Phase 6 remains outside scope.
 
 ## Staging Deployment
 
-- Runtime commit: `cb1e926`.
-- Cache version: `20260831-phase5-progress1`.
+- Runtime hotfix commit: `eaac528`.
+- Cache version: `20260901-phase5-mobile-form1`.
 - Live URL: `https://yourizorge.github.io/fitmetzorge-staging/`.
-- `index.html`, `app.js`, `assets/member-ux-consistency.js`, and `assets/phase5-progress.js`: HTTP 200 and exact committed Git-blob identity.
-- Live member Progress route: initialized without app-load error; 390x844 and 320x700 have no horizontal overflow.
+- `index.html`, `app.js`, and `assets/phase5-progress.js`: HTTP 200 and SHA-256 byte-identical to the runtime commit.
+- Live cache chain exposes the Phase 5 hotfix version and no longer references `20260831-phase5-progress1`.
 - Production: untouched.
+
+## Owner Mobile UX Hotfix
+
+The original Phase 5 dialog grid kept two columns active at 390px and depended on generic `.field` styling. Long Dutch labels could therefore wrap into cramped cells and visually run into controls. The former browser harness supplied its own safe field and input widths, masking this real-phone failure.
+
+The focused hotfix makes forms mobile-first with one column below 560px and progressive two-column enhancement above it. Phase 5 now owns label wrapping and line height, field/control min-width and max-width, 46px touch controls, visible focus, feedback containment, modal scroll reserve and heading wrapping. The measurements date occupies a full row and the unused spacer cell was removed. The Dutch user-facing navigation, title, loading and section error copy now consistently use `Voortgang`; English `Progress` and German `Fortschritt` are unchanged.
+
+Database/schema changed: NO. Catalog/member data changed: NO. Edge Functions changed: NO. Production touched: NO. Phase 5 owner acceptance/freeze: PENDING final owner UX retest.
