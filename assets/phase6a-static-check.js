@@ -6,6 +6,7 @@ const root = path.resolve(__dirname, "..");
 const read = (file) => fs.readFileSync(path.join(root, file), "utf8");
 const files = {
   migration: read("supabase/migrations/20260901193000_phase6a_ai_trust_foundation.sql"),
+  consentOrdering: read("supabase/migrations/20260901203000_phase6a_ai_consent_event_ordering.sql"),
   verifier: read("supabase/verification/20260901193000_phase6a_ai_trust_foundation_verification.sql"),
   e2e: read("supabase/tests/20260901193000_phase6a_ai_trust_transactional_e2e.sql"),
   contracts: read("supabase/functions/youri-ai/contracts.ts"),
@@ -63,6 +64,11 @@ check("idempotent replay equality", hasAll(files.migration + files.e2e, [
 ]));
 check("advisory locks", (files.migration.match(/pg_advisory_xact_lock/g) || []).length >= 8);
 check("consent separate", hasAll(files.migration, ["ai_processing", "trainer_summary_sharing", "explicit_confirmation is true"]));
+check("consent monotonic ordering", hasAll(files.consentOrdering, [
+  "event_sequence bigint generated always as identity",
+  "ai_consent_events_event_sequence_idx",
+  "order by e.event_sequence desc",
+]));
 check("consent categories", hasAll(files.migration, [
   "'profile'", "'onboarding'", "'goals'", "'training'", "'nutrition'", "'recovery'",
   "'sleep'", "'activity'", "'progress'", "'workout_performance'", "'health_limitations'",

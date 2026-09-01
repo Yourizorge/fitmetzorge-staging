@@ -83,7 +83,7 @@ Internal helpers are not executable by `PUBLIC`, `anon` or `authenticated`. No f
 
 ## Consent And Withdrawal
 
-`ai_processing` and `trainer_summary_sharing` have separate NL/EN/DE versioned documents, purposes and category sets. Recording either grant or withdrawal requires `explicit_confirmation=true`; no preselection is represented. The current event wins. A provider/mock run requires a current active AI document grant. Withdrawal therefore blocks the next trust-gate evaluation immediately.
+`ai_processing` and `trainer_summary_sharing` have separate NL/EN/DE versioned documents, purposes and category sets. Recording either grant or withdrawal requires `explicit_confirmation=true`; no preselection is represented. The current event wins. A database-generated monotone `event_sequence` makes that ordering deterministic even when multiple events share one transaction timestamp. A provider/mock run requires a current active AI document grant. Withdrawal therefore blocks the next trust-gate evaluation immediately.
 
 Trainer-summary permission is checked separately and creates no trainer read policy. Ending or withdrawing summary consent stops future sharing. Full private messages are not part of the summary contract.
 
@@ -172,4 +172,3 @@ The migration is additive. The immediate runtime rollback is to keep all three f
 Package 6B is NOT STARTED. It may not activate OpenAI until privacy/legal/DPA/international-transfer/DPIA and reviewed medical-safety gates are complete, real model IDs and spend controls are approved, and a separate controlled staging provider GO exists.
 
 Production touched: NO.
-
