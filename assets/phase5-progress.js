@@ -2,7 +2,7 @@
   if (window.FMZ_PHASE5_PROGRESS_LOADED) return;
   window.FMZ_PHASE5_PROGRESS_LOADED = true;
 
-  const PHASE5_VERSION = "20260901-phase5-mobile-form1";
+  const PHASE5_VERSION = "20260901-phase5-unit-switch1";
   const PHASE5_LANGUAGES = ["nl", "en", "de"];
   const KG_TO_LB = 2.2046226218;
   const CM_TO_IN = 1 / 2.54;
@@ -28,7 +28,8 @@
       insufficientTrend: "Vul minimaal twee metingen in om een trend te zien.",
       bmiContext: "BMI als context", bmiDisclaimer: "BMI is een globale verhouding, geen lichaamssamenstelling of gezondheidsoordeel.",
       history: "Historie en ruwe waarden", archive: "Archiveren", archiveConfirm: "Deze invoer uit het actieve overzicht halen? De revisiehistorie blijft bewaard.",
-      metric: "Metrisch", imperial: "Imperiaal", units: "Eenheden", kg: "kg", lb: "lb", cm: "cm", inch: "in",
+      metric: "Metrisch", imperial: "Imperiaal", units: "Eenheden", unitHint: "Kies hoe gewicht en lichaamsmetingen worden getoond en ingevuld.",
+      metricUnits: "kg en cm", imperialUnits: "lb en in", unitSaving: "Eenheden opslaan...", unitSaved: "Eenheden opgeslagen", kg: "kg", lb: "lb", cm: "cm", inch: "in",
       saved: "Opgeslagen", archived: "Gearchiveerd", stale: "Deze invoer is elders gewijzigd. De nieuwste versie is geladen.",
       validation: "Controleer de ingevulde waarden.", authRequired: "Log opnieuw in om Voortgang te gebruiken.", onlineRequired: "Voortgang heeft een beveiligde online verbinding nodig.",
       photos: "Progressiefoto's", photosGate: "Foto's volgen via een aparte private privacy- en opslagstap.",
@@ -52,7 +53,7 @@
       context: "Combined context", recovery: "Recovery", nutrition: "Nutrition", running: "Running and conditioning",
       recoverySummary: "{days} days logged · average {sleep} sleep · {steps} steps", nutritionSummary: "{days} days logged · average {kcal} kcal · {protein} protein", runningUnavailable: "No authoritative running or activity source is connected yet.",
       insufficientTrend: "Add at least two entries to see a trend.", bmiContext: "BMI as context", bmiDisclaimer: "BMI is a broad ratio, not body composition or a health judgement.",
-      history: "History and raw values", archive: "Archive", archiveConfirm: "Remove this entry from the active overview? Revision history remains preserved.", metric: "Metric", imperial: "Imperial", units: "Units", kg: "kg", lb: "lb", cm: "cm", inch: "in",
+      history: "History and raw values", archive: "Archive", archiveConfirm: "Remove this entry from the active overview? Revision history remains preserved.", metric: "Metric", imperial: "Imperial", units: "Units", unitHint: "Choose how weight and body measurements are shown and entered.", metricUnits: "kg and cm", imperialUnits: "lb and in", unitSaving: "Saving units...", unitSaved: "Units saved", kg: "kg", lb: "lb", cm: "cm", inch: "in",
       saved: "Saved", archived: "Archived", stale: "This entry changed elsewhere. The latest version is loaded.", validation: "Check the entered values.", authRequired: "Sign in again to use Progress.", onlineRequired: "Progress needs a secure online connection.",
       photos: "Progress photos", photosGate: "Photos follow through a separate private privacy and storage step.", goalNeeded: "Set your goal to see goal progress.", maintenanceDistance: "Distance to target weight",
       current: "Now", averageSleepUnknown: "sleep unknown", stepsUnknown: "steps unknown", kcalUnknown: "kcal unknown", proteinUnknown: "protein unknown", previousPeriod: "Earlier period", newestPeriod: "Newest period", edit: "Edit", emptyMeasurements: "No body measurements yet.", emptyStrength: "Complete weighted sets to see strength progress.",
@@ -71,7 +72,7 @@
       consistency: "Trainingsrhythmus", last7: "Letzte 7 Tage", last30: "Letzte 30 Tage", completedWorkouts: "abgeschlossene Trainings",
       context: "Zusammenhang", recovery: "Erholung", nutrition: "Ernaehrung", running: "Laufen und Kondition", recoverySummary: "{days} Tage erfasst · im Mittel {sleep} Schlaf · {steps} Schritte", nutritionSummary: "{days} Tage erfasst · im Mittel {kcal} kcal · {protein} Protein", runningUnavailable: "Noch keine verlaessliche Lauf- oder Aktivitaetsquelle verbunden.",
       insufficientTrend: "Trage mindestens zwei Werte ein, um einen Trend zu sehen.", bmiContext: "BMI als Kontext", bmiDisclaimer: "BMI ist ein grobes Verhaeltnis, keine Koerperzusammensetzung oder Gesundheitsbewertung.",
-      history: "Verlauf und Rohwerte", archive: "Archivieren", archiveConfirm: "Diesen Eintrag aus der aktiven Uebersicht entfernen? Der Revisionsverlauf bleibt erhalten.", metric: "Metrisch", imperial: "Imperial", units: "Einheiten", kg: "kg", lb: "lb", cm: "cm", inch: "in",
+      history: "Verlauf und Rohwerte", archive: "Archivieren", archiveConfirm: "Diesen Eintrag aus der aktiven Uebersicht entfernen? Der Revisionsverlauf bleibt erhalten.", metric: "Metrisch", imperial: "Imperial", units: "Einheiten", unitHint: "Waehle, wie Gewicht und Koerpermasse angezeigt und eingegeben werden.", metricUnits: "kg und cm", imperialUnits: "lb und in", unitSaving: "Einheiten werden gespeichert...", unitSaved: "Einheiten gespeichert", kg: "kg", lb: "lb", cm: "cm", inch: "in",
       saved: "Gespeichert", archived: "Archiviert", stale: "Dieser Eintrag wurde anderswo geaendert. Die neueste Version wurde geladen.", validation: "Pruefe die Eingaben.", authRequired: "Melde dich erneut an, um Fortschritt zu nutzen.", onlineRequired: "Fortschritt benoetigt eine sichere Online-Verbindung.",
       photos: "Fortschrittsfotos", photosGate: "Fotos folgen ueber einen separaten privaten Datenschutz- und Speicherschritt.", goalNeeded: "Lege dein Ziel fest, um Zielfortschritt zu sehen.", maintenanceDistance: "Abstand zum Zielgewicht",
       current: "Jetzt", averageSleepUnknown: "Schlaf unbekannt", stepsUnknown: "Schritte unbekannt", kcalUnknown: "kcal unbekannt", proteinUnknown: "Protein unbekannt", previousPeriod: "Frueherer Zeitraum", newestPeriod: "Neuester Zeitraum", edit: "Bearbeiten", emptyMeasurements: "Noch keine Koerpermasse.", emptyStrength: "Schliesse gewichtete Saetze ab, um Kraftfortschritt zu sehen.",
@@ -82,7 +83,7 @@
   const phase5State = {
     profileId: "", loaded: false, loading: false, error: "", data: null,
     beforeDate: null, modal: "", modalDate: "", opener: null,
-    timezoneInitializedFor: "", notice: "", pending: false
+    timezoneInitializedFor: "", notice: "", unitNotice: "", unitNoticeError: false, pending: false
   };
 
   function phase5Language() {
@@ -150,7 +151,8 @@
   }
 
   function phase5UnitSystem() {
-    return phase5State.data?.unit_system === "imperial" ? "imperial" : "metric";
+    const value = phase5State.data?.unit_system || state?.accountSettings?.unitSystem;
+    return value === "imperial" ? "imperial" : "metric";
   }
 
   function phase5WeightValue(kg) {
@@ -265,8 +267,16 @@
       .phase5-details > summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; font-weight: 800; }
       .phase5-actions { justify-content: flex-start; flex-wrap: wrap; }
       .phase5-actions button, .phase5-unit-toggle button { min-height: 44px; }
-      .phase5-unit-toggle { justify-content: flex-start; }
-      .phase5-unit-toggle button[aria-pressed="true"] { border-color: var(--gold); color: var(--gold); }
+      .phase5-unit-setting { display: grid; gap: 8px; min-width: 0; margin: 0; padding: 12px; border: 1px solid var(--line); border-radius: 8px; }
+      .phase5-unit-setting legend { padding: 0 5px; font-weight: 850; }
+      .phase5-unit-setting > p { margin: 0; }
+      .phase5-unit-toggle { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); justify-content: stretch; }
+      .phase5-unit-toggle button { display: grid; justify-items: center; gap: 2px; min-width: 0; padding: 9px 8px; line-height: 1.2; }
+      .phase5-unit-toggle button small { color: inherit; font-size: 11px; font-weight: 700; }
+      .phase5-unit-toggle button[aria-pressed="true"] { border-color: var(--gold); background: var(--gold); color: #17120a; }
+      .phase5-unit-toggle button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+      .phase5-unit-feedback { display: block; min-height: 19px; color: var(--muted); font-size: 12px; font-weight: 800; line-height: 1.35; overflow-wrap: anywhere; }
+      .phase5-unit-feedback.error { color: var(--danger); }
       .phase5-notice { border: 1px solid rgba(79,167,161,.55); border-radius: 8px; padding: 10px; }
       .phase5-error { border-color: rgba(220,80,80,.6); }
       .phase5-photo-gate { border-style: dashed; }
@@ -490,7 +500,15 @@
         <header class="phase5-hero">
           <div class="phase5-head"><div><p class="eyebrow">${phase5Escape(phase5Text("current"))}</p><h1>${phase5Escape(phase5Text("title"))}</h1></div><span class="status ${data.access === "full" ? "ok" : ""}">${phase5Escape(phase5Text(data.access === "full" ? "fullHistory" : "freeHistory"))}</span></div>
           <p class="muted">${phase5Escape(phase5Text("intro"))}</p>
-          <div class="phase5-unit-toggle" role="group" aria-label="${phase5Escape(phase5Text("units"))}"><button class="secondary-btn" data-phase5-unit="metric" aria-pressed="${phase5UnitSystem() === "metric"}" type="button">${phase5Escape(phase5Text("metric"))}</button><button class="secondary-btn" data-phase5-unit="imperial" aria-pressed="${phase5UnitSystem() === "imperial"}" type="button">${phase5Escape(phase5Text("imperial"))}</button></div>
+          <fieldset class="phase5-unit-setting">
+            <legend>${phase5Escape(phase5Text("units"))}</legend>
+            <p class="muted">${phase5Escape(phase5Text("unitHint"))}</p>
+            <div class="phase5-unit-toggle" role="group" aria-label="${phase5Escape(phase5Text("units"))}">
+              <button class="secondary-btn" data-phase5-unit="metric" aria-pressed="${phase5UnitSystem() === "metric"}" ${phase5State.pending ? "disabled" : ""} type="button"><span>${phase5Escape(phase5Text("metric"))}</span><small>${phase5Escape(phase5Text("metricUnits"))}</small></button>
+              <button class="secondary-btn" data-phase5-unit="imperial" aria-pressed="${phase5UnitSystem() === "imperial"}" ${phase5State.pending ? "disabled" : ""} type="button"><span>${phase5Escape(phase5Text("imperial"))}</span><small>${phase5Escape(phase5Text("imperialUnits"))}</small></button>
+            </div>
+            <span class="phase5-unit-feedback ${phase5State.unitNoticeError ? "error" : ""}" data-phase5-unit-feedback role="status" aria-live="polite">${phase5Escape(phase5State.unitNotice)}</span>
+          </fieldset>
           ${phase5State.notice ? `<div class="phase5-notice" role="status">${phase5Escape(phase5State.notice)}</div>` : ""}
           ${data.history_locked ? `<div class="phase5-notice">${phase5Escape(phase5Text("historyLocked"))}</div>` : ""}
         </header>
@@ -550,6 +568,8 @@
     phase5State.beforeDate = null;
     phase5State.timezoneInitializedFor = "";
     phase5State.notice = "";
+    phase5State.unitNotice = "";
+    phase5State.unitNoticeError = false;
     phase5State.pending = false;
   }
 
@@ -685,6 +705,7 @@
     } finally {
       phase5State.pending = false;
       if (document.body.contains(form)) form.querySelectorAll("button,input,select,textarea").forEach((control) => { control.disabled = false; });
+      if (currentView === "progress") phase5Render();
     }
   }
 
@@ -710,19 +731,35 @@
   }
 
   async function phase5SetUnit(unitSystem) {
-    if (phase5State.pending || !["metric","imperial"].includes(unitSystem) || unitSystem === phase5UnitSystem()) return;
+    if (phase5State.pending || !["metric","imperial"].includes(unitSystem)) return { ok: false };
+    if (unitSystem === phase5UnitSystem()) {
+      phase5State.unitNotice = phase5Text("unitSaved");
+      phase5State.unitNoticeError = false;
+      if (currentView === "progress") phase5Render();
+      return { ok: true, unchanged: true, unit_system: unitSystem };
+    }
     phase5State.pending = true;
+    phase5State.unitNotice = phase5Text("unitSaving");
+    phase5State.unitNoticeError = false;
+    if (currentView === "progress") phase5Render();
     try {
       const result = await supabaseClient.rpc("fmz_phase5_set_unit_system", { p_unit_system: unitSystem });
       if (result.error) throw result.error;
+      if (result.data?.unit_system !== unitSystem) throw new Error(phase5Text("validation"));
       if (state?.accountSettings) state.accountSettings.unitSystem = unitSystem;
+      if (phase5State.data) phase5State.data.unit_system = unitSystem;
+      phase5State.unitNotice = phase5Text("unitSaved");
+      phase5State.unitNoticeError = false;
       phase5State.loaded = false;
       await phase5Hydrate({ force: true });
+      return { ok: true, data: result.data, unit_system: unitSystem };
     } catch (error) {
-      phase5State.notice = phase5ErrorMessage(error);
-      phase5Render();
+      phase5State.unitNotice = phase5ErrorMessage(error);
+      phase5State.unitNoticeError = true;
+      return { ok: false, error };
     } finally {
       phase5State.pending = false;
+      if (currentView === "progress") phase5Render();
     }
   }
 
@@ -824,6 +861,7 @@
     render: phase5Render,
     hydrate: phase5Hydrate,
     reset: phase5Reset,
+    setUnit: phase5SetUnit,
     canonicalUnits: Object.freeze({ weight: "kg", length: "cm" }),
     freeHistoryDays: 30,
     photosEnabled: false,

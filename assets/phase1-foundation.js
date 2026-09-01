@@ -27,6 +27,8 @@
       defaultCountry: "Nederland",
       units: "Eenheden",
       metric: "Metrisch",
+      imperial: "Imperiaal",
+      unitSaveFailed: "De gekozen eenheden konden niet worden opgeslagen.",
       saveAccountSettings: "Accountinstellingen opslaan",
       accountSettingsSaved: "Accountinstellingen opgeslagen",
       settingsNav: "Instellingen",
@@ -137,6 +139,8 @@
       defaultCountry: "Netherlands",
       units: "Units",
       metric: "Metric",
+      imperial: "Imperial",
+      unitSaveFailed: "The selected units could not be saved.",
       saveAccountSettings: "Save account settings",
       accountSettingsSaved: "Account settings saved",
       settingsNav: "Settings",
@@ -247,6 +251,8 @@
       defaultCountry: "Niederlande",
       units: "Einheiten",
       metric: "Metrisch",
+      imperial: "Imperial",
+      unitSaveFailed: "Die gewaehlten Einheiten konnten nicht gespeichert werden.",
       saveAccountSettings: "Kontoeinstellungen speichern",
       accountSettingsSaved: "Kontoeinstellungen gespeichert",
       settingsNav: "Einstellungen",
@@ -1873,7 +1879,7 @@
         <form id="phase1AccountSettingsForm" class="settings-form-grid">
           <label class="field"><span>${escapeHTML(phase1Text("language"))}</span><select name="language">${phase1LanguageOptions(settings.language)}</select></label>
           <label class="field"><span>${escapeHTML(phase1Text("country"))}</span><input name="country" value="${escapeHTML(settings.country || phase1DefaultCountry(settings.language))}" /></label>
-          <label class="field"><span>${escapeHTML(phase1Text("units"))}</span><select name="unitSystem"><option value="metric" ${settings.unitSystem === "metric" ? "selected" : ""}>${escapeHTML(phase1Text("metric"))}</option></select></label>
+          <label class="field"><span>${escapeHTML(phase1Text("units"))}</span><select name="unitSystem"><option value="metric" ${settings.unitSystem === "metric" ? "selected" : ""}>${escapeHTML(phase1Text("metric"))}</option><option value="imperial" ${settings.unitSystem === "imperial" ? "selected" : ""}>${escapeHTML(phase1Text("imperial"))}</option></select></label>
           <div class="settings-save-row full">
             <button class="primary-btn" type="submit">${escapeHTML(phase1Text("saveAccountSettings"))}</button>
             <span class="save-feedback" data-save-feedback="phase1-account-settings"></span>
@@ -2483,9 +2489,10 @@
       event.preventDefault();
       const data = new FormData(event.target);
       const settings = phase1Settings();
+      const previousUnitSystem = settings.unitSystem;
+      const requestedUnitSystem = data.get("unitSystem") === "imperial" ? "imperial" : "metric";
       settings.language = phase1NormalizeLanguage(data.get("language"));
       settings.country = String(data.get("country") || phase1DefaultCountry(settings.language)).trim() || phase1DefaultCountry(settings.language);
-      settings.unitSystem = "metric";
       const syncResult = await phase1SyncAccountFoundation(client());
       if (!syncResult.ok) {
         renderAll();
@@ -2496,6 +2503,21 @@
         );
         return;
       }
+      const unitApi = window.FMZ_PHASE5_PROGRESS?.setUnit;
+      const unitResult = typeof unitApi === "function"
+        ? await unitApi(requestedUnitSystem)
+        : { ok: false, error: new Error(phase1Text("unitSaveFailed")) };
+      if (!unitResult.ok) {
+        settings.unitSystem = previousUnitSystem;
+        renderAll();
+        setSaveFeedback(
+          "phase1-account-settings",
+          unitResult.error?.message || phase1Text("unitSaveFailed"),
+          true
+        );
+        return;
+      }
+      settings.unitSystem = requestedUnitSystem;
       saveState();
       renderAll();
       setSaveFeedback("phase1-account-settings", phase1Text("accountSettingsSaved"));

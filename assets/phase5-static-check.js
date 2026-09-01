@@ -17,8 +17,11 @@ const files = {
   migration: fs.readFileSync(path.join(root, "supabase/migrations/20260831153000_phase5_progress_foundation.sql"), "utf8"),
   units: fs.readFileSync(path.join(root, "supabase/migrations/20260831161000_phase5_progress_unit_preference.sql"), "utf8"),
   revisionIndexes: fs.readFileSync(path.join(root, "supabase/migrations/20260831163000_phase5_progress_revision_indexes.sql"), "utf8"),
+  unitConstraintFix: fs.readFileSync(path.join(root, "supabase/migrations/20260901170000_phase5_unit_system_constraint_fix.sql"), "utf8"),
   verifier: fs.readFileSync(path.join(root, "supabase/verification/20260831153000_phase5_progress_foundation_verification.sql"), "utf8"),
+  unitConstraintVerifier: fs.readFileSync(path.join(root, "supabase/verification/20260901170000_phase5_unit_system_constraint_fix_verification.sql"), "utf8"),
   e2e: fs.readFileSync(path.join(root, "supabase/tests/20260831_phase5_progress_transactional_e2e.sql"), "utf8"),
+  unitE2e: fs.readFileSync(path.join(root, "supabase/tests/20260901_phase5_unit_system_transactional_e2e.sql"), "utf8"),
   agents: fs.readFileSync(path.join(root, "AGENTS.md"), "utf8"),
   master: fs.readFileSync(path.join(root, "docs/MASTER_BUILD_PLAN.md"), "utf8"),
   architecture: fs.readFileSync(path.join(root, "docs/PHASE5_PROGRESS_ARCHITECTURE.md"), "utf8")
@@ -29,9 +32,10 @@ function check(name, condition) { checks.push({ name, pass: Boolean(condition) }
 function includesAll(source, values) { return values.every((value) => source.includes(value)); }
 
 check("runtime duplicate guard", files.runtime.includes("FMZ_PHASE5_PROGRESS_LOADED"));
-check("runtime version", files.runtime.includes('20260901-phase5-mobile-form1'));
-check("app cache version", files.app.includes('assets/phase5-progress.js?v=20260901-phase5-mobile-form1'));
-check("index cache version", files.index.includes('app.js?v=20260901-phase5-mobile-form1'));
+check("runtime version", files.runtime.includes('20260901-phase5-unit-switch1'));
+check("Phase 1 cache version", files.app.includes('assets/phase1-foundation.js?v=20260901-phase5-unit-switch1'));
+check("app cache version", files.app.includes('assets/phase5-progress.js?v=20260901-phase5-unit-switch1'));
+check("index cache version", files.index.includes('app.js?v=20260901-phase5-unit-switch1'));
 check("loader after Member UX", files.app.indexOf("memberUxPatchSource") < files.app.indexOf("phase5ProgressPatchSource"));
 check("loader before init", files.app.indexOf("phase5ProgressPatchSource}\\ninit();") > -1);
 let combinedBundleParse = false;
@@ -73,6 +77,14 @@ check("kg to lb conversion", files.runtime.includes("KG_TO_LB"));
 check("cm to inch conversion", files.runtime.includes("CM_TO_IN"));
 check("Free 30-day contract", files.runtime.includes("freeHistoryDays: 30"));
 check("metric and imperial controls", includesAll(files.runtime, ['data-phase5-unit="metric"','data-phase5-unit="imperial"']));
+check("visible labelled unit selector", includesAll(files.runtime, ['<fieldset class="phase5-unit-setting">','<legend>${phase5Escape(phase5Text("units"))}</legend>','unitHint','metricUnits','imperialUnits']));
+check("unit selector state and feedback", includesAll(files.runtime, ['aria-pressed="${phase5UnitSystem() === "metric"}"','aria-pressed="${phase5UnitSystem() === "imperial"}"','data-phase5-unit-feedback','aria-live="polite"','unitSaving','unitSaved']));
+check("unit selector re-enabled after writes", files.runtime.includes('if (currentView === "progress") phase5Render();'));
+check("public unit setter contract", includesAll(files.runtime, ['setUnit: phase5SetUnit','return { ok: true, data: result.data, unit_system: unitSystem }','result.data?.unit_system !== unitSystem']));
+check("account settings offers both units", includesAll(files.phase1, ['select name="unitSystem"','option value="metric"','option value="imperial"','phase1Text("imperial")']));
+check("account settings delegates unit persistence", includesAll(files.phase1, ['window.FMZ_PHASE5_PROGRESS?.setUnit','await unitApi(requestedUnitSystem)','settings.unitSystem = previousUnitSystem','settings.unitSystem = requestedUnitSystem']));
+check("account settings no metric hardcode", !files.phase1.includes('settings.unitSystem = "metric"'));
+check("unit selector localized NL EN DE", (files.phase1.match(/imperial:/g) || []).length >= 3 && (files.runtime.match(/unitHint:/g) || []).length === 3);
 check("IANA browser timezone", files.runtime.includes("resolvedOptions().timeZone"));
 check("local calendar date", files.runtime.includes('new Intl.DateTimeFormat("en-CA"'));
 
@@ -128,6 +140,9 @@ check("no destructive table SQL", !/\b(drop|truncate|delete)\s+(table|from)\b/i.
 check("current entitlements", includesAll(files.migration, ["'pro', 'ai', 'personal_coaching'","e.status = 'active'","e.starts_at <= now()","e.ends_at is null or e.ends_at > now()"]));
 check("Free server history", includesAll(files.migration, ["v_today - 29","progress_history_locked"]));
 check("unit preference allowlist", includesAll(files.units, ["metric", "imperial", "user_settings"]));
+check("unit constraint correction exact allowlist", includesAll(files.unitConstraintFix, ["drop constraint if exists user_settings_unit_system_check","check (unit_system in ('metric', 'imperial')) not valid","validate constraint user_settings_unit_system_check"]));
+check("unit constraint correction is data-safe", !/\b(insert|update|delete|truncate)\b/i.test(files.unitConstraintFix) && !/\b(create|drop)\s+(table|policy|function|trigger)\b/i.test(files.unitConstraintFix));
+check("unit constraint correction leaves security objects", !/\b(grant|revoke)\b/i.test(files.unitConstraintFix) && !/row level security|create policy|drop policy/i.test(files.unitConstraintFix));
 check("revision foreign keys indexed", includesAll(files.revisionIndexes, ["weight_logs_supersedes_idx", "body_measurements_supersedes_idx", "where supersedes_weight_log_id is not null", "where supersedes_body_measurement_id is not null"]));
 check("internal functions revoked", files.migration.includes("fmz_phase5_has_full_progress_access(uuid) from public, anon, authenticated"));
 check("only eight member RPC grants", (files.migration.match(/grant execute on function/g) || []).length + (files.units.match(/grant execute on function/g) || []).length === 8);
@@ -136,6 +151,11 @@ check("verifier SELECT CTE", /^with\s/i.test(files.verifier.trim()) && /select v
 check("verifier no mutation statements", !/\b(insert|update|delete|alter|create|drop|truncate|grant|revoke|call)\b\s+(into|table|policy|function|on|from)?/i.test(files.verifier.replace(/'[^']*'/g, "''")));
 check("verifier overall pass", files.verifier.includes("'overall_pass', bool_and(pass)"));
 check("transactional E2E rollback", includesAll(files.e2e, ["begin;","rollback;","fixtures_persisted","cross-member isolation failed"]));
+check("unit verifier SELECT CTE", /^with\s/i.test(files.unitConstraintVerifier.trim()) && /select verification_result from result;\s*$/i.test(files.unitConstraintVerifier.trim()));
+check("unit verifier covers constraint RPC ACL RLS", includesAll(files.unitConstraintVerifier, ["validated_metric_imperial_constraint","setter_acl","user_settings_rls","own_user_policies","existing_values_supported"]));
+check("unit verifier has no mutation statements", !/\b(insert|update|delete|alter|create|drop|truncate|grant|revoke|call)\b\s+(into|table|policy|function|on|from)?/i.test(files.unitConstraintVerifier.replace(/'[^']*'/g, "''")));
+check("unit E2E rollback and two members", includesAll(files.unitE2e, ["begin;","rollback;","phase5.unit_user1","phase5.unit_user2","fixtures_persisted","cross-member direct update allowed","cross-member preference leakage"]));
+check("unit E2E round trips metric imperial", includesAll(files.unitE2e, ["fmz_phase5_set_unit_system('imperial')","fmz_phase5_set_unit_system('metric')","imperial preference hydration failed","metric round trip failed"]));
 
 check("staging autonomy recorded", includesAll(files.agents, ["mokxyyullfhkfalopbzd","Yourizorge/fitmetzorge-staging","Permanent Staging Autonomy"]));
 check("production lock recorded", includesAll(files.agents, ["hgoygcviutmynaihcvpd","Production Lock"]));

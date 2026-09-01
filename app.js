@@ -38,7 +38,7 @@
   source = source.replace('const FMZ_CONFIG = window.FMZ_CONFIG || {};', stagingConfigSource);
   source = source.replace(/const APP_AUTH_REDIRECT_URL = "[^"]+";/, stagingRedirectSource);
 
-  const phase1PatchUrl = new URL("assets/phase1-foundation.js?v=20260818-member-ux-today-hydration1", document.baseURI);
+  const phase1PatchUrl = new URL("assets/phase1-foundation.js?v=20260901-phase5-unit-switch1", document.baseURI);
   const phase1PatchResponse = await fetch(phase1PatchUrl, { cache: "no-cache" });
   if (!phase1PatchResponse.ok) {
     throw new Error(`Phase 1 foundation laden mislukt: ${phase1PatchResponse.status}`);
@@ -80,7 +80,7 @@
   }
   const memberUxPatchSource = await memberUxPatchResponse.text();
 
-  const phase5ProgressPatchUrl = new URL("assets/phase5-progress.js?v=20260901-phase5-mobile-form1", document.baseURI);
+  const phase5ProgressPatchUrl = new URL("assets/phase5-progress.js?v=20260901-phase5-unit-switch1", document.baseURI);
   const phase5ProgressPatchResponse = await fetch(phase5ProgressPatchUrl, { cache: "no-cache" });
   if (!phase5ProgressPatchResponse.ok) {
     throw new Error(`Phase 5 Voortgang laden mislukt: ${phase5ProgressPatchResponse.status}`);

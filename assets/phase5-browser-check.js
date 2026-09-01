@@ -131,6 +131,23 @@ async function checkFormsAtViewport(page, width, height, expectedColumns) {
   };
 }
 
+async function inspectUnitSelector(page, width, height) {
+  await page.setViewportSize({ width, height });
+  return page.evaluate(() => {
+    const fieldset = document.querySelector(".phase5-unit-setting");
+    const buttons = [...fieldset.querySelectorAll("[data-phase5-unit]")];
+    const rect = fieldset.getBoundingClientRect();
+    return {
+      visible: rect.width > 0 && rect.height > 0,
+      contained: rect.left >= 0 && rect.right <= innerWidth && document.documentElement.scrollWidth <= innerWidth + 1,
+      touch: buttons.every((button) => button.getBoundingClientRect().height >= 44),
+      selected: buttons.filter((button) => button.getAttribute("aria-pressed") === "true").length === 1,
+      labelled: Boolean(fieldset.querySelector("legend")?.textContent.trim()) && buttons.every((button) => button.textContent.trim()),
+      feedback: fieldset.querySelector('[role="status"][aria-live="polite"]') !== null
+    };
+  });
+}
+
 (async () => {
   const edgePath = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe";
   const browser = await chromium.launch({ headless: true, executablePath: fs.existsSync(edgePath) ? edgePath : undefined });
@@ -140,7 +157,7 @@ async function checkFormsAtViewport(page, width, height, expectedColumns) {
     page.on("pageerror", (error) => errors.push(error.message));
     await initializePage(page);
 
-    check("runtime contract exposed", await page.evaluate(() => window.FMZ_PHASE5_PROGRESS.version === "20260901-phase5-mobile-form1"));
+    check("runtime contract exposed", await page.evaluate(() => window.FMZ_PHASE5_PROGRESS.version === "20260901-phase5-unit-switch1"));
     check("Voortgang nav inserted", await page.locator("#nav").textContent().then((text) => text.includes("Voortgang") && !text.includes("Progressie")));
     check("Voortgang page title", await page.locator(".phase5-head h1").textContent().then((text) => text.trim() === "Voortgang"));
     check("goal first", await page.locator(".phase5-grid > section").first().textContent().then((text) => text.includes("Mijn doel")));
@@ -150,6 +167,9 @@ async function checkFormsAtViewport(page, width, height, expectedColumns) {
     check("truthful running empty state", await page.getByText(/betrouwbare hardloop/).count() === 1);
     check("photo gate no upload", await page.getByText("Progressiefoto's").count() === 1 && await page.locator('input[type="file"]').count() === 0);
     check("raw table alternative", await page.locator(".phase5-details .phase5-table").count() === 2);
+    const initialSelector = await inspectUnitSelector(page, 390, 844);
+    check("unit selector visible and labelled", initialSelector.visible && initialSelector.labelled && initialSelector.feedback);
+    check("unit selector starts metric", await page.locator('[data-phase5-unit="metric"]').getAttribute("aria-pressed") === "true");
 
     const mobile390 = await checkFormsAtViewport(page, 390, 844, 1);
     check("390px forms single column", mobile390.columns);
@@ -197,17 +217,66 @@ async function checkFormsAtViewport(page, width, height, expectedColumns) {
     await page.waitForFunction(() => document.body.textContent.includes("lb"));
     check("unit RPC", await page.evaluate(() => mock.calls.some((call) => call.name === "fmz_phase5_set_unit_system" && call.args.p_unit_system === "imperial")));
     check("imperial display only", await page.getByText(/lb/).count() > 0 && await page.evaluate(() => mock.weight === 83.7));
+    check("imperial selection and feedback", await page.locator('[data-phase5-unit="imperial"]').getAttribute("aria-pressed") === "true" && await page.locator("[data-phase5-unit-feedback]").textContent() === "Eenheden opgeslagen");
+    check("global account setting synchronized", await page.evaluate(() => state.accountSettings.unitSystem === "imperial"));
+    check("chart and strength converted", await page.locator(".phase5-chart").getAttribute("aria-label").then((label) => label.includes("lb")) && await page.getByText(/279,3 lb/).count() > 0);
+
+    await page.locator(".phase5-details summary").click();
+    await page.locator('[data-phase5-edit-weight="2026-08-31"]').click();
+    const imperialWeightForm = await page.evaluate(() => ({
+      label: document.querySelector('[data-phase5-form="weight"] input[name="weight"]')?.closest("label")?.textContent,
+      value: document.querySelector('[data-phase5-form="weight"] input[name="weight"]')?.value
+    }));
+    check("imperial weight form", imperialWeightForm.label.includes("lb") && imperialWeightForm.value === "184.5");
+    await page.locator(".phase5-close").click();
+    await page.locator('[data-phase5-edit-measurement="2026-08-31"]').click();
+    const imperialMeasurementForm = await page.evaluate(() => ({
+      label: document.querySelector('[data-phase5-form="measurement"] input[name="waist_cm"]')?.closest("label")?.textContent,
+      value: document.querySelector('[data-phase5-form="measurement"] input[name="waist_cm"]')?.value
+    }));
+    check("imperial measurement form", imperialMeasurementForm.label.includes("in") && imperialMeasurementForm.value === "35.4");
+    await page.locator(".phase5-close").click();
+
+    await page.evaluate(async () => {
+      window.FMZ_PHASE5_PROGRESS.reset();
+      renderProgress();
+      await window.FMZ_PHASE5_PROGRESS.hydrate({ force:true });
+    });
+    await page.waitForFunction(() => document.querySelector('[data-phase5-unit="imperial"]')?.getAttribute("aria-pressed") === "true");
+    check("unit preference persists after refresh hydration", await page.evaluate(() => mock.unit === "imperial" && state.accountSettings.unitSystem === "imperial"));
+
+    for (let round = 0; round < 3; round += 1) {
+      await page.locator('[data-phase5-unit="metric"]').click();
+      await page.waitForFunction(() => document.querySelector('[data-phase5-unit="metric"]')?.getAttribute("aria-pressed") === "true");
+      await page.locator('[data-phase5-unit="imperial"]').click();
+      await page.waitForFunction(() => document.querySelector('[data-phase5-unit="imperial"]')?.getAttribute("aria-pressed") === "true");
+    }
+    check("repeated unit round trips preserve canonical kg", await page.evaluate(() => mock.weight === 83.7));
+
+    await page.locator('[data-phase5-unit="metric"]').click();
+    await page.waitForFunction(() => document.querySelector('[data-phase5-unit="metric"]')?.getAttribute("aria-pressed") === "true");
+    check("metric round trip restores kg display", await page.getByText(/83,7 kg/).count() > 0 && await page.evaluate(() => mock.weight === 83.7));
+
+    const selector320 = await inspectUnitSelector(page, 320, 700);
+    check("320px unit selector", selector320.visible && selector320.contained && selector320.touch && selector320.selected);
+    const selector390 = await inspectUnitSelector(page, 390, 844);
+    check("390px unit selector", selector390.visible && selector390.contained && selector390.touch && selector390.selected);
 
     const tablet = await checkFormsAtViewport(page, 820, 1180, 2);
     check("tablet forms use bounded two-column layout", tablet.columns && tablet.separated && tablet.contained && tablet.touch && tablet.headings && tablet.feedback);
+    const selectorTablet = await inspectUnitSelector(page, 820, 1180);
+    check("tablet unit selector", selectorTablet.visible && selectorTablet.contained && selectorTablet.touch && selectorTablet.selected);
     const desktop = await checkFormsAtViewport(page, 1440, 900, 2);
     check("desktop forms use bounded two-column layout", desktop.columns && desktop.separated && desktop.contained && desktop.touch && desktop.headings && desktop.feedback);
+    const selectorDesktop = await inspectUnitSelector(page, 1440, 900);
+    check("desktop unit selector", selectorDesktop.visible && selectorDesktop.contained && selectorDesktop.touch && selectorDesktop.selected);
 
     for (const [language, expected] of [["en","Progress"],["de","Fortschritt"]]) {
       const localePage = await browser.newPage({ viewport: { width:390, height:844 } });
       await initializePage(localePage, language);
       const localeResult = await localePage.evaluate(() => ({ nav:document.getElementById("nav").textContent, title:document.querySelector(".phase5-head h1")?.textContent }));
       check(`${language.toUpperCase()} section label preserved`, localeResult.nav.includes(expected) && localeResult.title === expected);
+      check(`${language.toUpperCase()} unit selector localized`, await localePage.locator(".phase5-unit-setting").textContent().then((text) => language === "en" ? text.includes("Metric") && text.includes("Imperial") : text.includes("Metrisch") && text.includes("Imperial")));
       await localePage.close();
     }
 
