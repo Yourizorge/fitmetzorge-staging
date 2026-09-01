@@ -8,6 +8,7 @@ const files = {
   migration: read("supabase/migrations/20260901193000_phase6a_ai_trust_foundation.sql"),
   consentOrdering: read("supabase/migrations/20260901203000_phase6a_ai_consent_event_ordering.sql"),
   pgcryptoPath: read("supabase/migrations/20260901204500_phase6a_pgcrypto_search_path.sql"),
+  fkIndexes: read("supabase/migrations/20260901211500_phase6a_foreign_key_indexes.sql"),
   verifier: read("supabase/verification/20260901193000_phase6a_ai_trust_foundation_verification.sql"),
   e2e: read("supabase/tests/20260901193000_phase6a_ai_trust_transactional_e2e.sql"),
   contracts: read("supabase/functions/youri-ai/contracts.ts"),
@@ -76,6 +77,16 @@ check("pgcrypto fixed search path", hasAll(files.pgcryptoPath, [
   "fmz_phase6a_service_complete_run",
   "set search_path = pg_catalog, extensions, public, ai_private, pg_temp",
 ]));
+check("foreign keys indexed", [
+  "ai_messages_thread_owner_idx",
+  "ai_action_proposals_context_owner_idx",
+  "ai_action_decisions_proposal_owner_idx",
+  "ai_runs_thread_owner_idx",
+  "ai_runs_context_owner_idx",
+  "ai_budget_accounts_policy_idx",
+  "ai_safety_events_run_idx",
+  "ai_audit_events_run_idx",
+].every((name) => files.fkIndexes.includes(name)));
 check("consent categories", hasAll(files.migration, [
   "'profile'", "'onboarding'", "'goals'", "'training'", "'nutrition'", "'recovery'",
   "'sleep'", "'activity'", "'progress'", "'workout_performance'", "'health_limitations'",
