@@ -1,6 +1,6 @@
 # Phase 5 Progressie - Technical Implementation
 
-Status: OWNER MOBILE FORM PASS / UNIT-SWITCH HOTFIX LIVE / READY FOR OWNER RETEST
+Status: COMPLETE / OWNER-ACCEPTED / FROZEN
 
 Updated: 2026-09-01
 
@@ -47,7 +47,7 @@ The four tables use own-user RLS. Browser writes are RPC-only. Authenticated tab
 
 ## Owner Gate
 
-The owner real-phone functional test passed for opening the page, entering progress data and rendering the graph, and the follow-up mobile form/Dutch naming retest passed. Technical implementation and those functional passes do not equal final owner acceptance. A final owner phone retest remains required for persisted metric/imperial switching. Phase 6 remains outside scope.
+The owner real-phone functional test passed for opening the page, entering Progress data, rendering graphs/trends, mobile form layout, Dutch naming, metric/imperial switching, immediate conversion, refresh persistence and restoration of correct metric values. Phase 5 is complete, owner-accepted and frozen. Phase 6 remains outside the Phase 5 runtime scope.
 
 ## Staging Deployment
 
@@ -72,4 +72,14 @@ The focused migration replaces only that named CHECK constraint with an exact `m
 
 Verification passed live metadata 9/9 and a two-member transactional E2E covering imperial save, dashboard hydration, metric round trip and cross-member isolation. The transaction rolled back every fixture; aggregate member settings counts were unchanged. Browser tests cover refresh persistence, repeated unit round trips without canonical drift, NL/EN/DE and phone/tablet/desktop layouts.
 
-Database/schema changed: YES, named CHECK constraint only. Catalog/member data changed: NO. Edge Functions changed: NO. Production touched: NO. Phase 5 owner acceptance/freeze: PENDING final owner unit-switch retest.
+Database/schema changed during implementation: YES, named CHECK constraint only. Database/schema changed during final acceptance: NO. Catalog/member data changed: NO. Edge Functions changed: NO. Production touched: NO. Phase 5 owner acceptance/freeze: COMPLETE / PASS.
+
+## Final Accepted Baselines
+
+- Initial runtime: `cb1e926f7ecc567992f31f5107e785d293608932`.
+- Mobile runtime: `eaac528030c44e7d0383121e3a7fc551ace4dee2`.
+- Final unit runtime/schema: `f96f9346174a636d71adb6fd1cd151d28c6c449b`.
+- Final documentation head before the Phase 6 audit: `f7d234515f00699f02b80f66f392329f9617939a`.
+- Cache: `20260901-phase5-unit-switch1`.
+
+Do not reopen Phase 5 except for a proven regression or a minimal compatible fix.

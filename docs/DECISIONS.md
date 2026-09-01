@@ -446,3 +446,35 @@ The first normalized Phase 5 runtime contains no photo table, Storage bucket, fi
 Rationale:
 
 Deferring media prevents an incomplete privacy architecture from becoming a production-shaped contract while allowing weight, measurements and derived progress to ship safely.
+
+## Decision 0031: Phase 5 Progress is owner-accepted and frozen
+
+Status: APPROVED / COMPLETE / OWNER-ACCEPTED / FROZEN
+
+Date: 2026-09-01
+
+Decision:
+
+Freeze the normalized Phase 5 Progress member experience after owner real-phone acceptance of goals, weight, body measurements, graphs/trends, mobile layout, Dutch `Voortgang` naming, metric/imperial switching, immediate conversion, refresh persistence and restoration of correct metric values. Canonical storage remains kilograms and centimetres. Free Progress history remains 30 local days; current Pro, AI and personal-coaching entitlements receive full retained history. Nutrition keeps its separate frozen seven-day Free history.
+
+Accepted runtime baselines are `cb1e926f7ecc567992f31f5107e785d293608932`, `eaac528030c44e7d0383121e3a7fc551ace4dee2` and `f96f9346174a636d71adb6fd1cd151d28c6c449b`; cache baseline is `20260901-phase5-unit-switch1`. Reopen Phase 5 only for a proven regression or a minimal compatible fix.
+
+Rationale:
+
+The technical, security, responsive and owner acceptance gates now pass, so the Progress domain can serve as a stable source for later authorized AI context without continued feature churn.
+
+## Decision 0032: The Youri AI trial duration is 30 days
+
+Status: APPROVED / PRODUCT CONTRACT LOCKED; LIFECYCLE IMPLEMENTATION REMAINS PHASE 7
+
+Date: 2026-09-01
+
+Decision:
+
+The owner-locked AI trial is 30 days without payment details and does not auto-renew. Reminders occur seven days before expiry, one day before expiry and on the final day. On expiry, paid AI generation locks, the account falls back to its otherwise valid package or Free, and user data is retained. This decision supersedes older 7-day references.
+
+Phase 6 may consume a current time-valid `ai` entitlement regardless of source. Phase 7 remains responsible for creating the trial entitlement, one-trial abuse prevention, reminders, expiry and subscription lifecycle behavior.
+
+Rationale:
+
+One explicit trial duration prevents contradictory entitlement, UX, test and cost assumptions while preserving the Phase 1 entitlement foundation and Phase 7 ownership of growth lifecycle logic.

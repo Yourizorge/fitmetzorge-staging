@@ -1,6 +1,6 @@
 # Phase 5 Progressie - Architecture And Packages
 
-Status: TECHNICAL PASS / READY FOR OWNER TESTING ON STAGING
+Status: COMPLETE / OWNER-ACCEPTED / FROZEN
 
 Target repository: `Yourizorge/fitmetzorge-staging` / `main`  
 Target Supabase: `mokxyyullfhkfalopbzd`  
@@ -82,4 +82,10 @@ Package 5A is additive. If frontend activation must be reverted, remove the Phas
 - Runtime SHA-256: `84C2F8709ACFE11C8F768B21979030B3B5A68C61F6B6266E1AF2C65A119DADFF`; live GitHub Pages identity verified at runtime commit `cb1e926` and cache `20260831-phase5-progress1`.
 - Static suite: PASS, 85/85 including the assembled seven-patch bundle parse. Responsive browser suite: PASS, 19/19.
 
-Owner acceptance and freeze are intentionally not recorded. The next gate is real-phone owner testing; Phase 6 remains not started.
+## Owner Acceptance And Freeze
+
+Owner final real-phone acceptance passed on 2026-09-01 for goals, weight, body measurements, graphs/trends, mobile layout, Dutch `Voortgang` naming, metric/imperial switching, immediate conversion, refresh persistence and restoration of the correct metric values. Free Progress remains server-bounded to 30 local days; current Pro, AI and personal-coaching entitlements retain full Progress history. The separate frozen Nutrition Free history remains seven days.
+
+Accepted runtime baselines are `cb1e926f7ecc567992f31f5107e785d293608932`, `eaac528030c44e7d0383121e3a7fc551ace4dee2` and `f96f9346174a636d71adb6fd1cd151d28c6c449b`; accepted documentation head before the Phase 6 audit is `f7d234515f00699f02b80f66f392329f9617939a`. Cache baseline: `20260901-phase5-unit-switch1`.
+
+Phase 5 may only be reopened for a proven regression or a minimal compatible fix. Phase 6 architecture/readiness is recorded separately; no Phase 6 implementation is implied by this freeze.

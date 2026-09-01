@@ -1,7 +1,7 @@
 # FitMetZorge Master Build Plan
 
 Status: APPROVED PRODUCT SPECIFICATION CAPTURED
-Last updated: 2026-08-15
+Last updated: 2026-09-01
 
 This document is the product and execution source of truth for the FitMetZorge Master Build after Phase 0A Governance and Phase 0B Live Staging Infrastructure Verification.
 
@@ -238,13 +238,14 @@ Youri must be able to challenge unrealistic or unwise goals and help the user ar
 
 ### AI Trial
 
-New users can receive a 7-day free Youri AI trial.
+Eligible new users can receive a 30-day free Youri AI trial. This newer owner-locked strategic rule supersedes the earlier 7-day direction.
 
 The product must clearly communicate:
 
-- 7 days free.
+- 30 days free.
 - No payment details needed.
 - No credit card required upfront.
+- Reminders seven days before expiry, one day before expiry, and on the final day.
 
 After expiry:
 
@@ -827,13 +828,13 @@ Permanent provider identity rule: `PHASE4_PROVIDER_CANDIDATE_UUID_NAMESPACE = 23
 
 ### Phase 5 - Progressie
 
-Status: OWNER MOBILE FORM PASS / UNIT-SWITCH HOTFIX LIVE / READY FOR OWNER RETEST. Owner implementation GO received 2026-08-31; owner acceptance/freeze remains pending.
+Status: COMPLETE / OWNER-ACCEPTED / FROZEN. Owner final real-phone acceptance passed on 2026-09-01 for goals, weight, body measurements, graphs/trends, Dutch mobile layout, metric/imperial switching, immediate conversion, refresh persistence and reversible canonical-value presentation.
 
 Scope: normalized own-user weight and body-measurement history, transparent raw values and smoothed trends, primary-goal progress, strength and adherence insight from frozen Training data, truthful Recovery/Nutrition context, running/conditioning insufficient-data behavior, metric/imperial display, localization and mobile-first accessible visualization. BMI is contextual only and never the main score or a body-composition claim.
 
 Execution packages and security boundaries are recorded in `docs/PHASE5_PROGRESS_ARCHITECTURE.md`. The first normalized runtime excludes photos; the separate private Storage/RLS/consent/deletion gate must pass before a photo slice is activated. Legacy trainer Progress and historical workspace data remain untouched.
 
-Technical gate result: PASS. The normalized four-table foundation, RPC authority, RLS/ACL, Free 30-day history boundary, current Pro/AI/PT full-history behavior, retry/stale/archive model, persisted metric/imperial preference and mobile-first member runtime are live on staging. The original foundation verifier passed 30/30; the unit constraint verifier passed 9/9; both transactional E2E suites rolled back all fixtures. Current dedicated static and browser suites pass 116/116 and 53/53. Canonical storage remains kg/cm and presentation/input conversion is reversible without rewriting member progress data. This does not mark Phase 5 owner-accepted or frozen and does not authorize Phase 6.
+Technical and owner gate result: PASS. The normalized four-table foundation, RPC authority, RLS/ACL, Free 30-day history boundary, current Pro/AI/PT full-history behavior, retry/stale/archive model, persisted metric/imperial preference and mobile-first member runtime are live on staging. The original foundation verifier passed 30/30; the unit constraint verifier passed 9/9; both transactional E2E suites rolled back all fixtures. Current dedicated static and browser suites pass 116/116 and 53/53. Canonical storage remains kg/cm and presentation/input conversion is reversible without rewriting member progress data. Accepted runtime baselines are `cb1e926f7ecc567992f31f5107e785d293608932`, `eaac528030c44e7d0383121e3a7fc551ace4dee2` and `f96f9346174a636d71adb6fd1cd151d28c6c449b`; accepted documentation head before the Phase 6 audit is `f7d234515f00699f02b80f66f392329f9617939a`. Cache baseline: `20260901-phase5-unit-switch1`.
 
 Gate: photos are private, no unwanted sharing, AI photo analysis is consent-gated, private storage/RLS rollback notes exist if storage is introduced, tests/review complete.
 
@@ -843,11 +844,15 @@ Scope: AI backend, entitlement checks, context retrieval, structured responses, 
 
 Gate: no browser-to-AI calls, no AI call without entitlement from the single entitlement source, no secrets exposed, missing data handled without hallucinated facts, rollback/safety notes exist, tests/review complete.
 
+Status: ARCHITECTURE / READINESS AUDIT COMPLETE; IMPLEMENTATION NOT STARTED. The audit confirms that the frozen Identity, Recovery, Training, Nutrition and Progress sources are available with RLS, while no AI runtime or AI tables exist yet. The approved direction is one provider-neutral backend/Edge boundary, private member chat with no trainer read path, minimized member-scoped context retrieval, structured validated responses, separate service-only usage/rate/safety state, proposal-before-execution and immediate trainer priority for linked PT clients. Full details, gaps, owner decisions and the exact 6A-6I package order are recorded in `docs/PHASE6_AI_CORE_ARCHITECTURE_READINESS.md`.
+
+The first implementation package is 6A, an AI trust-boundary and contract foundation with a deterministic mock adapter and the feature flag off. It makes no paid provider call. It requires owner decisions on consent and chat retention/export/deletion before migration review. Provider/model, privacy/legal and cost decisions remain mandatory before Package 6B can activate any external AI service.
+
 ### Phase 7 - Subscriptions + Entitlements + Growth
 
 Scope: expand the Phase 1 entitlement foundation into subscriptions, trials, referral rewards, goal rewards, bonus entitlements, package configuration, and payment-provider integration only after provider decision.
 
-Gate: server-side entitlements remain the single source of truth, 7-day trial ends automatically, referral abuse prevention exists, payment work is staging test mode only, rollback/safety notes exist, tests/review complete.
+Gate: server-side entitlements remain the single source of truth, the owner-locked 30-day trial ends automatically, referral abuse prevention exists, payment work is staging test mode only, rollback/safety notes exist, tests/review complete.
 
 ### Phase 8 - Gamification + Notifications
 

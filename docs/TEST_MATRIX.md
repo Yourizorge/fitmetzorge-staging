@@ -58,17 +58,18 @@ This matrix records the required functional, security, entitlement, AI, migratio
 | Phase 4 | Nutrition Pro | Full kcal/protein/carbs/fat goals, saved meals, recipes, copy meal/day | BLOCKING GATE | PLANNED |
 | Phase 4 | Barcode | Barcode behind entitlement and feature flag | BLOCKING GATE | PLANNED |
 | Phase 4 | Consumer boundaries | Invoices do not appear in consumer nutrition | BLOCKING GATE | PLANNED |
-| Phase 5 | Progress | Goal-first dashboard, raw weight, seven-entry trend, contextual BMI, unit display | OWNER ACCEPTANCE GATE | TECHNICAL PASS - LIVE ON STAGING; OWNER TEST PENDING |
-| Phase 5 | Measurements | Optional logical body measurements, immutable corrections and archive | OWNER ACCEPTANCE GATE | TECHNICAL PASS - LIVE ON STAGING; OWNER TEST PENDING |
+| Phase 5 | Progress | Goal-first dashboard, raw weight, seven-entry trend, contextual BMI, unit display | OWNER ACCEPTANCE GATE | PASS - COMPLETE / OWNER-ACCEPTED / FROZEN |
+| Phase 5 | Measurements | Optional logical body measurements, immutable corrections and archive | OWNER ACCEPTANCE GATE | PASS - COMPLETE / OWNER-ACCEPTED / FROZEN |
 | Phase 5 | Photos | Private progress photos, signed access, no public default, AI photo consent gate | SEPARATE PRIVACY GATE | DEFERRED - NO TABLE, BUCKET OR MEMBER FILE INPUT |
-| Phase 5 | Milestones | Strength and consistency from frozen Training sources; truthful unavailable running state | OWNER ACCEPTANCE GATE | TECHNICAL PASS - LIVE ON STAGING; OWNER TEST PENDING |
+| Phase 5 | Milestones | Strength and consistency from frozen Training sources; truthful unavailable running state | OWNER ACCEPTANCE GATE | PASS - COMPLETE / OWNER-ACCEPTED / FROZEN |
+| Phase 6 | Architecture/readiness | Frozen context sources, backend boundary, privacy, safety, provider, costs, packages and decisions | ARCHITECTURE GATE | PASS - AUDIT COMPLETE / IMPLEMENTATION NOT STARTED |
 | Phase 6 | Youri AI | Backend-mediated AI, no browser-to-AI provider call, entitlement check before call | BLOCKING GATE | PLANNED |
 | Phase 6 | AI context | Goals, training, nutrition, progress, recovery context only when authorized | BLOCKING GATE | PLANNED |
 | Phase 6 | AI quality | Missing data handled honestly; no hallucinated facts; structured responses validated | BLOCKING GATE | PLANNED |
 | Phase 6 | AI cost | Usage/cost/rate-limit logging; no paid AI call without valid entitlement | BLOCKING GATE | PLANNED |
 | Phase 6 | Avatar | Youri avatar support exists, final avatar remains ASSET REQUIRED until supplied | BLOCKING GATE | PLANNED |
 | Phase 7 | Entitlements | Free/Pro/AI/trial/referral/goal/PT entitlements enforced server-side | BLOCKING GATE | PLANNED |
-| Phase 7 | AI trial | 7-day no-payment-details trial starts, ends, locks AI, preserves data | BLOCKING GATE | PLANNED |
+| Phase 7 | AI trial | 30-day no-payment-details trial starts, reminds, ends, locks generation and preserves data | BLOCKING GATE | PLANNED - OWNER PRODUCT CONTRACT LOCKED |
 | Phase 7 | Referrals | Server-validated referral, max 2/month/user, abuse prevention | BLOCKING GATE | PLANNED |
 | Phase 7 | Goal rewards | Qualified serious goal reward, max 2/12 months, paid users keep bonus value | BLOCKING GATE | PLANNED |
 | Phase 7 | Payments | Provider test-mode integration only after NEEDS DECISION is resolved | BLOCKING GATE | PLANNED |
@@ -127,7 +128,7 @@ This matrix records the required functional, security, entitlement, AI, migratio
 | Entitlements | Locked premium feature | Free | Feature visible, locked, clear upgrade explanation | PLANNED |
 | Entitlements | Pro access | Pro | Full Pro functionality available, AI only if separate entitlement exists | PLANNED |
 | Entitlements | PT included access | PT client | Pro + Youri AI active while relationship active | PLANNED |
-| Trial | AI trial start | New user | 7 days Youri AI without payment details | PLANNED |
+| Trial | AI trial start | New eligible user | 30 days Youri AI without payment details | PLANNED - OWNER PRODUCT CONTRACT LOCKED |
 | Trial | AI trial expiry | Trial user | AI locks, data preserved, fallback package applies | PLANNED |
 | Referral | Bring a Friend reward | Referrer/new user | Server-validated reward, max 2/month/user | PLANNED |
 | Training | Start workout | Free/Pro/PT/AI | User consciously starts active workout | PASS - OWNER REAL-PHONE ACCEPTED |
@@ -139,7 +140,7 @@ This matrix records the required functional, security, entitlement, AI, migratio
 | Nutrition | Full macros | Pro/AI/PT | kcal/protein/carbs/fat tracked correctly; AI receives Pro Nutrition without Phase 4 AI execution | PLANNED - CONTRACT LOCKED |
 | Nutrition | Barcode | Pro/AI/PT | Barcode feature requires entitlement and enabled flag | PLANNED |
 | Nutrition | Recipes/meals | Pro/AI/PT | Saved meals, recipes, favorites, copy meal/day work | PLANNED |
-| Progress | Weight and BMI | All | Logs update raw history, transparent trend and contextual BMI | TECHNICAL PASS - OWNER TEST PENDING |
+| Progress | Weight and BMI | All | Logs update raw history, transparent trend and contextual BMI | PASS - OWNER REAL-PHONE ACCEPTED / FROZEN |
 | Progress | Progress photos | Pro/AI/PT or allowed plan | Private storage and signed access only | DEFERRED - PRIVACY GATE NOT OPENED |
 | Recovery | Manual recovery | All | Sleep/steps/wellbeing/recovery feeling can be entered manually and persists per user/day | PASS |
 | Health | Apple Health | Pro/AI iOS | Sync only when entitled and consented | PLANNED |
@@ -678,7 +679,8 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | Unit preference transactional E2E | PASS - two members, imperial save/hydration, metric round trip and cross-member isolation; all fixtures rolled back |
 | Unit controls | PASS - labelled Voortgang segmented control plus Settings select; immediate localized feedback and authoritative rehydration |
 | Progress sources | PASS - frozen Training-derived strength/consistency; descriptive Recovery/Nutrition; truthful running unavailable state |
-| Owner real-phone functional test | PASS - Voortgang opens, data entry works and graph renders; final UX acceptance remains pending |
+| Owner real-phone functional test | PASS - goals, weight, measurements, graphs/trends, mobile layout and Dutch naming accepted |
+| Owner metric/imperial retest | PASS - immediate conversion, refresh persistence and correct metric restoration accepted |
 | Dutch user-facing section name | PASS - `Voortgang`; English `Progress` and German `Fortschritt` preserved |
 | Phase 5 static suite | PASS - 116/116 including assembled seven-patch bundle parse, schema contract and Settings integration guards |
 | Phase 5 responsive browser suite | PASS - 53/53 using real app CSS; forms and unit selector checked at 390x844 and 320x700 |
@@ -690,5 +692,26 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | Photo privacy gate | PASS FOR CURRENT PACKAGE - no table, bucket, file input or normalized legacy-photo migration |
 | Live hotfix | PASS - commit `f96f9346174a636d71adb6fd1cd151d28c6c449b`, cache `20260901-phase5-unit-switch1`; four runtime assets HTTP 200 and byte-identical |
 | Database/schema/catalog/member data/Edge | SCHEMA CHECK CONSTRAINT CHANGED / CATALOG, MEMBER DATA AND EDGE UNCHANGED |
-| Production / Phase 6 | UNTOUCHED / NOT STARTED |
-| Technical result | OWNER MOBILE FORM PASS / UNIT-SWITCH HOTFIX LIVE / READY FOR OWNER RETEST; NOT OWNER-ACCEPTED OR FROZEN |
+| Production / Phase 6 runtime | UNTOUCHED / NOT STARTED |
+| Final result | COMPLETE / OWNER-ACCEPTED / FROZEN |
+
+## Phase 6 Youri AI Architecture / Readiness Gate
+
+| Check | Result |
+| --- | --- |
+| Repository AI runtime | PASS - absent; no provider adapter, call, key, private chat or AI write path exists |
+| Live source readiness | PASS - Identity, Recovery, Training, Nutrition and Progress source tables checked read-only and RLS-enabled |
+| Live AI schema | PASS FOR AUDIT - directional AI tables are absent, so no unreviewed AI data path exists |
+| Entitlement readiness | PASS - `(user_id, entitlement_code, source)` supports current time-valid `ai` and `personal_coaching` access and future distinct trial source |
+| Backend boundary | PASS - dedicated provider-neutral Edge design; member JWT/RLS context; no browser provider call or authority |
+| Private chat separation | PASS BY DESIGN - no trainer policy; future minimized signals are separate from private messages |
+| Prompt injection | PASS FOR DESIGN - immutable server policy, untrusted data envelopes, no dynamic tools/SQL/RPC and strict output schemas required |
+| Safety | OWNER DECISION REQUIRED - conservative no-auto-change default locked; exact medical/red-flag policy requires review |
+| Privacy/retention | OWNER DECISION REQUIRED - consent, retention, export, deletion, DPA/transfer and DPIA outcomes required |
+| Provider and cost | OWNER DECISION REQUIRED - no provider selected, paid service activated or budget approved |
+| 30-day trial readiness | PASS FOR ARCHITECTURE - Phase 6 consumes time-valid `ai`; Phase 7 owns trial lifecycle and abuse prevention |
+| Package order | PASS - 6A through 6I recorded without pulling Phase 7, 9 or 10 scope forward |
+| First provider-free package | READY AFTER CONSENT/RETENTION DECISIONS - 6A trust boundary, schema/RLS/RPC, strict contracts and deterministic mock |
+| Database/runtime/provider during audit | UNCHANGED / NOT STARTED / NOT CALLED |
+| Production | UNTOUCHED |
+| Audit result | PASS - READY FOR OWNER PHASE 6 ARCHITECTURE DECISIONS |

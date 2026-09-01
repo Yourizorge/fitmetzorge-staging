@@ -294,12 +294,24 @@ After mature PWA staging:
 
 ### Phase 5 Progressie Architecture
 
-Status: TECHNICAL PASS / READY FOR OWNER TESTING ON STAGING
+Status: COMPLETE / OWNER-ACCEPTED / FROZEN
 
 The live normalized domain uses `progress_preferences`, `progress_goals`, `weight_logs`, and `body_measurements`. Canonical values are kilograms and centimetres; local dates are validated against an IANA timezone and client offset. Corrections create immutable superseding rows, removals archive, stable request UUIDs make retries idempotent, expected timestamps protect against stale writes, and per-user/date advisory locks serialize competing writes.
 
 Member writes are RPC-only and derive ownership from `auth.uid()`. Base-table browser privileges are absent; own-user RLS remains defense in depth. Free history is server-bounded to the current local day plus 29 prior days. Only current active Pro, AI, or personal-coaching entitlements grant full history. The dashboard reads frozen Training, Recovery, and Nutrition sources descriptively without changing their ownership or data models. Running remains explicitly unavailable until a reviewed authoritative source exists.
 
 The existing `user_settings.unit_system` stores the presentation choice. No imperial value becomes database authority. Progress photos remain deferred: there is no Phase 5 photo table or bucket, and the member runtime exposes no file input. Legacy trainer Progress and historical `coach_workspaces.state` data remain untouched.
+
+### Phase 6 Youri AI Core Readiness
+
+Status: ARCHITECTURE / READINESS AUDIT COMPLETE; IMPLEMENTATION NOT STARTED
+
+Live read-only staging metadata confirms that normalized own-user Identity, Recovery, Training, Nutrition and Progress inputs exist with RLS, while `ai_threads`, `ai_messages`, `ai_recommendations`, `ai_action_proposals` and `ai_action_decisions` do not exist. The runtime has no AI provider adapter, provider secret or AI call.
+
+Phase 6 uses a dedicated provider-neutral `youri-ai` Edge boundary. It authenticates the member, resolves current time-valid `ai` or `personal_coaching` entitlement, verifies AI consent, reads minimized context through member-JWT-scoped RPCs, applies rate/budget/safety/idempotency gates, invokes one approved provider, validates a strict structured response and persists only allowed private member and operational records. The browser never supplies data authority, model choice, entitlement, provider credentials or executable domain changes.
+
+Private `ai_threads` and `ai_messages` have no trainer read path. Future trainer summaries/signals are separate minimized records with explicit consent and active-link authorization. Strategic linked-client changes remain proposal-only until a reviewed trainer approval path exists. Every meaningful recommendation/action keeps feature, policy/model/schema versions, context manifest/hash, evidence references, safety result, usage/cost metadata and append-only decisions.
+
+The first package is a provider-free trust-boundary foundation with schema/RLS/RPC contracts, strict JSON schemas, deterministic mock adapter, context-manifest fixtures and the feature flag off. No external AI provider may be activated until provider/model, budget, legal/AVG/DPA, retention/consent and safety decisions are owner-approved. The full contract is in `docs/PHASE6_AI_CORE_ARCHITECTURE_READINESS.md`.
 
 

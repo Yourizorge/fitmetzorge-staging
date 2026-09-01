@@ -1,6 +1,6 @@
 # FitMetZorge Build Status
 
-Last updated: 2026-08-31
+Last updated: 2026-09-01
 
 - Baseline audit: COMPLETE
 - Phase 0A Governance: COMPLETE
@@ -14,10 +14,10 @@ Last updated: 2026-08-31
 - Phase 0B Storage verification: COMPLETE
 - Master Plan Specification: COMPLETE
 - Master Plan Final Review: COMPLETE
-- Implementation: PHASE 5 PROGRESSIE ACTIVE ON STAGING
+- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6 AUDIT ONLY
 - Production Migration: NOT STARTED
 
-Current next step: owner real-phone acceptance testing for the technically complete Phase 5 Progressie staging package. Phase 4 Nutrition and earlier owner-accepted baselines remain frozen. Phase 5 owner acceptance/freeze and Phase 6 both require a later explicit owner instruction.
+Current next step: owner architecture decisions for Phase 6 Youri AI Core. Phase 5 Progressie is complete, owner-accepted and frozen after the final real-phone metric/imperial retest. Phase 6 architecture/readiness is complete, but implementation, provider activation, database/runtime changes and paid AI calls have not started.
 
 ## Environment Guardrail
 
@@ -174,13 +174,13 @@ Artifacts: migration SHA-256 unchanged at `606658F53EA29083E315F43546B507B40C9D0
 
 ### Phase 5 Progressie
 
-Status: OWNER MOBILE FORM PASS / UNIT-SWITCH HOTFIX LIVE / READY FOR OWNER RETEST
+Status: COMPLETE / OWNER-ACCEPTED / FROZEN
 
 Summary: the normalized own-user Progress foundation is live on staging `mokxyyullfhkfalopbzd`. Four additive RLS tables, RPC-only writes, immutable correction history, archive behavior, stable retry IDs, stale-write protection, local-calendar dates, canonical kg/cm storage, metric/imperial presentation and a server-enforced Free 30-day history boundary are active. Current Pro, AI and personal-coaching entitlements receive full history; missing, future, expired or inactive entitlements resolve to Free.
 
 The mobile-first member surface provides goal-first progress, raw weight plus a transparent seven-entry trend, body measurements, strength and consistency derived from frozen Training data, descriptive Recovery/Nutrition context, truthful running insufficient-data behavior and contextual BMI. The trainer legacy Progress renderer and historical `coach_workspaces.state` data remain untouched. Photos are excluded until a separately reviewed private Storage/RLS/consent/deletion gate exists.
 
-Live database verification: PASS, 30/30. Transactional ownership/idempotency/stale/history E2E: PASS with full rollback and no retained fixtures. The owner real-phone functional test passed for opening Voortgang, entering data and rendering the graph. Owner acceptance/freeze remains PENDING because the reported mobile form finishing required a focused retest.
+Live database verification: PASS, 30/30. Transactional ownership/idempotency/stale/history E2E: PASS with full rollback and no retained fixtures. Owner real-phone acceptance passed for goals, weight, body measurements, graphs/trends, the mobile layout and Dutch `Voortgang` naming.
 
 The 2026-09-01 UX hotfix corrects the Dutch member-facing section name from `Progressie` to `Voortgang`. Its root cause was a Phase 5-specific two-column form grid that remained active at 390px, combined with reliance on generic field styling and a browser harness that supplied protective layout rules itself. Long Dutch measurement/goal labels therefore received too little horizontal and vertical room on a real phone. Phase 5 forms now use one bounded column below 560px, two columns only from 560px upward, explicit label/control spacing and wrapping, 46px controls, contained feedback, visible focus, keyboard scroll reserve and a full-row measurement date without the former empty grid spacer.
 
@@ -188,7 +188,17 @@ The owner accepted the mobile form layout and Dutch `Voortgang` naming. The rema
 
 The unit selector is now a labelled, touch-safe segmented control in Voortgang and a two-option select in Settings. Both use the same RPC, give localized save/error feedback and immediately rehydrate all weight, target, measurement, chart, history and strength presentation. Canonical storage remains kg/cm; repeated display round trips create no data rewrite or rounding drift. The live verifier passed 9/9 and the two-member transactional switch/isolation E2E passed with rollback and zero retained fixtures. Existing member settings remained two metric rows, zero imperial/unsupported rows before owner retest.
 
-Current checks: Phase 5 static 116/116 and responsive browser 53/53; selector, persistence simulation, kg/lb and cm/in forms, chart/history/strength conversion, three metric/imperial round trips and 320x700, 390x844, 820x1180 and 1440x900 layouts pass. Frozen Phase 1/2/3/Member UX pass 75/46/222/56; Phase 4 schema/security passes 90/90 and Nutrition browser passes 138/138. Runtime/schema commit `f96f9346174a636d71adb6fd1cd151d28c6c449b` and cache `20260901-phase5-unit-switch1` are live. `index.html`, `app.js`, `assets/phase1-foundation.js` and `assets/phase5-progress.js` return HTTP 200 and match the commit. Database schema changed: YES, constraint only. Member data, catalog and Edge Functions changed: NO. Production and Phase 6 remain untouched. Final owner unit-switch retest: PENDING.
+Current checks: Phase 5 static 116/116 and responsive browser 53/53; selector, persistence simulation, kg/lb and cm/in forms, chart/history/strength conversion, three metric/imperial round trips and 320x700, 390x844, 820x1180 and 1440x900 layouts pass. Frozen Phase 1/2/3/Member UX pass 75/46/222/56; Phase 4 schema/security passes 90/90 and Nutrition browser passes 138/138. Runtime/schema commit `f96f9346174a636d71adb6fd1cd151d28c6c449b` and cache `20260901-phase5-unit-switch1` are live. `index.html`, `app.js`, `assets/phase1-foundation.js` and `assets/phase5-progress.js` return HTTP 200 and match the commit. The owner verified immediate metric/imperial conversion, refresh persistence and restoration of the correct metric values on a real phone. Accepted runtime baselines: `cb1e926f7ecc567992f31f5107e785d293608932`, `eaac528030c44e7d0383121e3a7fc551ace4dee2`, `f96f9346174a636d71adb6fd1cd151d28c6c449b`; accepted documentation head before the Phase 6 audit: `f7d234515f00699f02b80f66f392329f9617939a`. Database schema changed during final acceptance: NO. Member data, catalog and Edge Functions changed: NO. Production untouched.
+
+### Phase 6 Youri AI Core
+
+Status: ARCHITECTURE / READINESS AUDIT COMPLETE / IMPLEMENTATION NOT STARTED
+
+Summary: repository and live read-only staging metadata confirm that the frozen Identity, Recovery, Training, Nutrition and Progress sources required for future Youri context exist with RLS. The checked directional AI tables do not exist, and the runtime contains no AI provider adapter, AI call, provider secret, private chat or AI write path. The existing `nutrition-provider` Edge architecture is reusable as a security and operational pattern, not as a shared function or data boundary.
+
+The target design uses a dedicated provider-neutral `youri-ai` Edge boundary, member-JWT-scoped context RPCs, server-side current entitlement and consent checks, private chat with no trainer read path, strict structured outputs, prompt-injection controls, service-only rate/budget/safety state, append-only proposal decisions, stale guards and existing authoritative domain RPCs for any later execution. The exact architecture, frozen inputs, gaps, provider options, cost inputs, privacy requirements, 30-day trial readiness, 6A-6I package order, test gates and owner decisions are documented in `docs/PHASE6_AI_CORE_ARCHITECTURE_READINESS.md`.
+
+The first future build package is 6A with no paid provider: storage/RLS/RPC contracts, context manifests, deterministic mock adapter, strict schemas and feature flag off. Owner decisions on chat retention/export/deletion and AI consent are required before its migration review. Provider/model, budget, legal/AVG/DPA, international transfer and medical/safety decisions are required before any external provider activation. Phase 6 implementation started: NO. Database/runtime changed for this audit: NO. Production touched: NO.
 
 ### Production Migration
 
