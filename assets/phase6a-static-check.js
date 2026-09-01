@@ -7,6 +7,7 @@ const read = (file) => fs.readFileSync(path.join(root, file), "utf8");
 const files = {
   migration: read("supabase/migrations/20260901193000_phase6a_ai_trust_foundation.sql"),
   consentOrdering: read("supabase/migrations/20260901203000_phase6a_ai_consent_event_ordering.sql"),
+  pgcryptoPath: read("supabase/migrations/20260901204500_phase6a_pgcrypto_search_path.sql"),
   verifier: read("supabase/verification/20260901193000_phase6a_ai_trust_foundation_verification.sql"),
   e2e: read("supabase/tests/20260901193000_phase6a_ai_trust_transactional_e2e.sql"),
   contracts: read("supabase/functions/youri-ai/contracts.ts"),
@@ -68,6 +69,12 @@ check("consent monotonic ordering", hasAll(files.consentOrdering, [
   "event_sequence bigint generated always as identity",
   "ai_consent_events_event_sequence_idx",
   "order by e.event_sequence desc",
+]));
+check("pgcrypto fixed search path", hasAll(files.pgcryptoPath, [
+  "fmz_phase6a_get_context_manifest",
+  "fmz_phase6a_service_begin_run",
+  "fmz_phase6a_service_complete_run",
+  "set search_path = pg_catalog, extensions, public, ai_private, pg_temp",
 ]));
 check("consent categories", hasAll(files.migration, [
   "'profile'", "'onboarding'", "'goals'", "'training'", "'nutrition'", "'recovery'",

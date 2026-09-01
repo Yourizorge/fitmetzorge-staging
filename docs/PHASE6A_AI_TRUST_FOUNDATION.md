@@ -85,6 +85,8 @@ Internal helpers are not executable by `PUBLIC`, `anon` or `authenticated`. No f
 
 `ai_processing` and `trainer_summary_sharing` have separate NL/EN/DE versioned documents, purposes and category sets. Recording either grant or withdrawal requires `explicit_confirmation=true`; no preselection is represented. The current event wins. A database-generated monotone `event_sequence` makes that ordering deterministic even when multiple events share one transaction timestamp. A provider/mock run requires a current active AI document grant. Withdrawal therefore blocks the next trust-gate evaluation immediately.
 
+The three digest-consuming RPCs use the fixed `pg_catalog, extensions, public, ai_private, pg_temp` search path required by Supabase's `pgcrypto` installation. Other Phase 6A functions retain the narrower fixed path.
+
 Trainer-summary permission is checked separately and creates no trainer read policy. Ending or withdrawing summary consent stops future sharing. Full private messages are not part of the summary contract.
 
 ## Entitlement And Feature Gates
