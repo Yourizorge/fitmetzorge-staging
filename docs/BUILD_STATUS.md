@@ -14,10 +14,10 @@ Last updated: 2026-09-01
 - Phase 0B Storage verification: COMPLETE
 - Master Plan Specification: COMPLETE
 - Master Plan Final Review: COMPLETE
-- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A TRUST FOUNDATION IN PROGRESS
+- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A TRUST FOUNDATION TECHNICAL PASS / READY FOR OWNER REVIEW
 - Production Migration: NOT STARTED
 
-Current next step: complete the authorized Phase 6A trust-foundation staging migration, verifier, provider-neutral disabled Edge scaffold and frozen regression gates. Phase 5 Progressie remains owner-accepted and frozen. OpenAI activation, paid AI calls, member AI UX and Package 6B remain forbidden.
+Current next step: owner review of the completed Phase 6A technical trust foundation. Phase 5 Progressie remains owner-accepted and frozen. OpenAI activation, paid AI calls, member AI UX and Package 6B remain forbidden pending separate owner authorization and the provider privacy/legal gate.
 
 ## Environment Guardrail
 
@@ -192,13 +192,13 @@ Current checks: Phase 5 static 116/116 and responsive browser 53/53; selector, p
 
 ### Phase 6 Youri AI Core
 
-Status: PACKAGE 6A IMPLEMENTED LOCALLY / STAGING VERIFICATION PENDING
+Status: PACKAGE 6A TECHNICAL PASS / READY FOR OWNER REVIEW
 
-Summary: repository and live read-only staging metadata confirm that the frozen Identity, Recovery, Training, Nutrition and Progress sources required for future Youri context exist with RLS. The checked directional AI tables do not exist, and the runtime contains no AI provider adapter, AI call, provider secret, private chat or AI write path. The existing `nutrition-provider` Edge architecture is reusable as a security and operational pattern, not as a shared function or data boundary.
+Summary: the additive Phase 6A public/private trust schema, RLS/ACL/RPC boundary and disabled provider-neutral `youri-ai` Edge scaffold are live only on staging `mokxyyullfhkfalopbzd`. Frozen Identity, Recovery, Training, Nutrition and Progress sources remain authoritative and unchanged.
 
 The target design uses a dedicated provider-neutral `youri-ai` Edge boundary, member-JWT-scoped context RPCs, server-side current entitlement and consent checks, private chat with no trainer read path, strict structured outputs, prompt-injection controls, service-only rate/budget/safety state, append-only proposal decisions, stale guards and existing authoritative domain RPCs for any later execution. The exact architecture, frozen inputs, gaps, provider options, cost inputs, privacy requirements, 30-day trial readiness, 6A-6I package order, test gates and owner decisions are documented in `docs/PHASE6_AI_CORE_ARCHITECTURE_READINESS.md`.
 
-The owner locked the 6A consent, 90-day post-entitlement chat retention, separate trainer-summary consent, EUR 3 included plus EUR 1 grace budget, action limits and safety hard-stop contracts. Package 6A now contains the additive public/private schema, RLS/ACL/RPC boundary, context manifest, strict structured schema, deterministic zero-call mock adapter and disabled `youri-ai` Edge scaffold documented in `docs/PHASE6A_AI_TRUST_FOUNDATION.md`. OpenAI remains inactive; all provider and mock flags default OFF. Staging execution and live verification are pending. Production touched: NO.
+The owner locked the 6A consent, 90-day post-entitlement chat retention, separate trainer-summary consent, EUR 3 included plus EUR 1 grace budget, action limits and safety hard-stop contracts. Four staging migrations are live. The exact verifier passed 47/47, the rollback E2E passed with no fixtures retained, the mock suite passed 11/11 and Package 6A static/security passed 93/93. `ai_coach_enabled`, `provider_calls_enabled` and `staging_mock_enabled` remain false. Edge version 1 is ACTIVE with JWT verification enabled; unauthenticated access returns 401. External AI calls: 0. External AI cost: EUR 0. No member AI frontend was deployed. Package 6B is not started. Production touched: NO.
 
 ### Production Migration
 

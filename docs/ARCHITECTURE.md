@@ -304,14 +304,14 @@ The existing `user_settings.unit_system` stores the presentation choice. No impe
 
 ### Phase 6 Youri AI Core Readiness
 
-Status: ARCHITECTURE AUDIT COMPLETE; PACKAGE 6A IMPLEMENTATION IN PROGRESS
+Status: ARCHITECTURE AUDIT COMPLETE; PACKAGE 6A TECHNICAL PASS / READY FOR OWNER REVIEW
 
-Live read-only staging metadata confirms that normalized own-user Identity, Recovery, Training, Nutrition and Progress inputs exist with RLS, while `ai_threads`, `ai_messages`, `ai_recommendations`, `ai_action_proposals` and `ai_action_decisions` do not exist. The runtime has no AI provider adapter, provider secret or AI call.
+Live staging now contains the additive Package 6A AI trust schema. Normalized own-user Identity, Recovery, Training, Nutrition and Progress inputs remain the frozen authorities. No provider credential, external provider call or member-facing AI runtime is active.
 
 Phase 6 uses a dedicated provider-neutral `youri-ai` Edge boundary. It authenticates the member, resolves current time-valid `ai` or `personal_coaching` entitlement, verifies AI consent, reads minimized context through member-JWT-scoped RPCs, applies rate/budget/safety/idempotency gates, invokes one approved provider, validates a strict structured response and persists only allowed private member and operational records. The browser never supplies data authority, model choice, entitlement, provider credentials or executable domain changes.
 
 Private `ai_threads` and `ai_messages` have no trainer read path. Future trainer summaries/signals are separate minimized records with explicit consent and active-link authorization. Strategic linked-client changes remain proposal-only until a reviewed trainer approval path exists. Every meaningful recommendation/action keeps feature, policy/model/schema versions, context manifest/hash, evidence references, safety result, usage/cost metadata and append-only decisions.
 
-Package 6A implements a provider-free trust boundary with eight own-user public foundations, twelve private operational/configuration tables, RPC-only browser access, strict JSON schemas, deterministic mock adapter, context manifests, exact replay, subscription-month budget reservation and safety/retention state. `ai_coach_enabled`, `provider_calls_enabled` and `staging_mock_enabled` default false. No external provider may be activated until the separate Package 6B privacy/legal/cost/medical gate passes. The contracts are in `docs/PHASE6_AI_CORE_ARCHITECTURE_READINESS.md` and `docs/PHASE6A_AI_TRUST_FOUNDATION.md`.
+Package 6A implements a provider-free trust boundary with eight own-user public foundations, twelve private operational/configuration tables, RPC-only browser access, strict JSON schemas, deterministic mock adapter, context manifests, exact replay, subscription-month budget reservation and safety/retention state. `ai_coach_enabled`, `provider_calls_enabled` and `staging_mock_enabled` are live and false. The verifier passed 47/47; the transactional E2E retained no fixtures and recorded zero external calls/cost. The disabled staging Edge scaffold is ACTIVE with JWT verification. No external provider may be activated until the separate Package 6B privacy/legal/cost/medical gate passes. The contracts are in `docs/PHASE6_AI_CORE_ARCHITECTURE_READINESS.md` and `docs/PHASE6A_AI_TRUST_FOUNDATION.md`.
 
 

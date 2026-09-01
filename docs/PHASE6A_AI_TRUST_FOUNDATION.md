@@ -1,6 +1,6 @@
 # Phase 6A Youri AI Trust Foundation
 
-Status: IMPLEMENTED LOCALLY / STAGING VERIFICATION PENDING
+Status: TECHNICAL PASS / READY FOR OWNER REVIEW
 
 Date: 2026-09-01
 Repository: `Yourizorge/fitmetzorge-staging` / `main`
@@ -162,17 +162,31 @@ Members can create idempotent export/delete lifecycle requests and read an own-u
 
 ## Verification Artifacts
 
-- Read-only verifier: `supabase/verification/20260901193000_phase6a_ai_trust_foundation_verification.sql`
-- Transactional E2E: `supabase/tests/20260901193000_phase6a_ai_trust_transactional_e2e.sql`
+- Foundation migration: `supabase/migrations/20260901193000_phase6a_ai_trust_foundation.sql`, SHA-256 `5B48B142FBDC2298BF268CF5804F99053C9346E554FAA12B558409E3AA98EE6F`.
+- Consent ordering correction: `supabase/migrations/20260901203000_phase6a_ai_consent_event_ordering.sql`, SHA-256 `7F653BF3BE688D294D68AF80689CCB4804EAF65CDE1D7C77559A8FDD2134C82C`.
+- Pgcrypto search-path correction: `supabase/migrations/20260901204500_phase6a_pgcrypto_search_path.sql`, SHA-256 `B93B711519796958A2569A363CC1D3131A444EACE34EC04395E08ABA82EE4325`.
+- Foreign-key index correction: `supabase/migrations/20260901211500_phase6a_foreign_key_indexes.sql`, SHA-256 `5997FE0BACD706503C8BF7397685EB14720C58E946B9BCF70DB58C70E6D52C9D`.
+- Read-only verifier: `supabase/verification/20260901193000_phase6a_ai_trust_foundation_verification.sql`, SHA-256 `5A721B370718DD37FB5E534462B7848AEE98EA17CC0CB3838AD9E86D3547D818`.
+- Transactional E2E: `supabase/tests/20260901193000_phase6a_ai_trust_transactional_e2e.sql`, SHA-256 `E2F9BDB2A111E8BCB6123C2021E005A9D9C59741E6824FBE8BB3D95DFA5558F1`.
 - Static/security suite: `assets/phase6a-static-check.js`
 - Mock/contract tests: `supabase/functions/youri-ai/youri-ai.test.ts`
 
-Final hashes, check totals, advisors, commits and live deployment evidence are recorded after staging verification.
+All four migrations are live only on staging `mokxyyullfhkfalopbzd`, recorded as `20260901183914`, `20260901184418`, `20260901190328` and `20260901191328`. The exact read-only verifier returned `overall_pass=true`, 47 PASS and 0 FAIL. The transactional E2E returned `overall_pass=true`, `external_ai_calls=0`, `external_ai_cost_eur=0` and `fixtures_persisted=false`.
+
+The deterministic mock/contract suite passes 11/11. Package 6A static/security checks pass 93/93 after this evidence update. Frozen suites pass Phase 1 75/75, Phase 2 46/46, Phase 3 222/222, Member UX 56/56, Phase 4 schema 90/90, Phase 4F-E 45/45, Nutrition browser 138/138, Phase 5 static 116/116 and Phase 5 browser 53/53.
+
+The staging `youri-ai` Edge Function is deployed as version 1, status `ACTIVE`, with JWT verification enabled. Its deployed source is the reviewed provider-neutral disabled scaffold. An unauthenticated smoke request returned HTTP 401. No frontend runtime was changed or deployed for Package 6A.
+
+Security advisors report only the intentional closed-schema `rls_enabled_no_policy` informational findings for `ai_private` and the intentional authenticated `SECURITY DEFINER` member-RPC warnings. Those RPCs derive ownership from `auth.uid()`, use fixed search paths, expose no base tables and have minimal ACL. Performance advisors report only expected unused-index informational findings while all 6A flags are OFF and tables are empty; no unindexed 6A foreign keys remain.
+
+Implementation commits before this final evidence commit: `16ca8cd`, `828c8cf`, `4064689`, `a21b901`, `1fd5e96` and `5f7326b`. The final documentation commit is recorded in the completion report.
 
 ## Rollback And Next Package
 
 The migration is additive. The immediate runtime rollback is to keep all three feature flags false and leave the member frontend unchanged. No existing domain row is rewritten. Pending AI proposals have no executor. If later forward correction is required, use a new reviewed migration; do not rewrite applied history.
 
 Package 6B is NOT STARTED. It may not activate OpenAI until privacy/legal/DPA/international-transfer/DPIA and reviewed medical-safety gates are complete, real model IDs and spend controls are approved, and a separate controlled staging provider GO exists.
+
+Package 6A result: TECHNICAL PASS / READY FOR OWNER REVIEW. It is not owner-accepted or frozen.
 
 Production touched: NO.
