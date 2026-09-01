@@ -827,13 +827,13 @@ Permanent provider identity rule: `PHASE4_PROVIDER_CANDIDATE_UUID_NAMESPACE = 23
 
 ### Phase 5 - Progressie
 
-Status: TECHNICAL PASS / READY FOR OWNER TESTING ON STAGING. Owner implementation GO received 2026-08-31; owner acceptance/freeze remains pending.
+Status: OWNER MOBILE FORM PASS / UNIT-SWITCH HOTFIX LIVE / READY FOR OWNER RETEST. Owner implementation GO received 2026-08-31; owner acceptance/freeze remains pending.
 
 Scope: normalized own-user weight and body-measurement history, transparent raw values and smoothed trends, primary-goal progress, strength and adherence insight from frozen Training data, truthful Recovery/Nutrition context, running/conditioning insufficient-data behavior, metric/imperial display, localization and mobile-first accessible visualization. BMI is contextual only and never the main score or a body-composition claim.
 
 Execution packages and security boundaries are recorded in `docs/PHASE5_PROGRESS_ARCHITECTURE.md`. The first normalized runtime excludes photos; the separate private Storage/RLS/consent/deletion gate must pass before a photo slice is activated. Legacy trainer Progress and historical workspace data remain untouched.
 
-Technical gate result: PASS. The normalized four-table foundation, RPC authority, RLS/ACL, Free 30-day history boundary, current Pro/AI/PT full-history behavior, retry/stale/archive model, unit preference reuse and mobile-first member runtime are live on staging. Read-only verification passed 30/30; transactional E2E rolled back all fixtures; dedicated static and browser suites passed 85/85 and 19/19. This does not mark Phase 5 owner-accepted or frozen and does not authorize Phase 6.
+Technical gate result: PASS. The normalized four-table foundation, RPC authority, RLS/ACL, Free 30-day history boundary, current Pro/AI/PT full-history behavior, retry/stale/archive model, persisted metric/imperial preference and mobile-first member runtime are live on staging. The original foundation verifier passed 30/30; the unit constraint verifier passed 9/9; both transactional E2E suites rolled back all fixtures. Current dedicated static and browser suites pass 116/116 and 53/53. Canonical storage remains kg/cm and presentation/input conversion is reversible without rewriting member progress data. This does not mark Phase 5 owner-accepted or frozen and does not authorize Phase 6.
 
 Gate: photos are private, no unwanted sharing, AI photo analysis is consent-gated, private storage/RLS rollback notes exist if storage is introduced, tests/review complete.
 

@@ -668,24 +668,27 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 
 | Check | Result |
 | --- | --- |
-| Additive migrations | PASS - four-table foundation, unit preference RPC and revision-FK indexes live on staging |
+| Additive migrations | PASS - four-table foundation, unit preference RPC, revision-FK indexes and exact metric/imperial CHECK correction live on staging |
 | Read-only live verifier | PASS - `overall_pass=true`, 30/30 |
 | Transactional E2E | PASS - ownership, cross-user isolation, retry, stale conflict, revision, archive and Free history; all fixtures rolled back |
 | Entitlements | PASS - Free 30 local days; current Pro/AI/PT full; missing/future/inactive/expired resolve to Free |
 | RLS / ACL | PASS - own-user RLS; no DELETE/trainer policy; no browser table grants; internal helpers blocked |
-| Canonical units and timezone | PASS - kg/cm authority, metric/imperial display preference, IANA local date validation |
+| Canonical units and timezone | PASS - kg/cm authority, live metric/imperial persistence, no round-trip drift, IANA local date validation |
+| Unit preference live verifier | PASS - 9/9; exact validated CHECK, setter signature/security/search path/ACL and own-user RLS/policies |
+| Unit preference transactional E2E | PASS - two members, imperial save/hydration, metric round trip and cross-member isolation; all fixtures rolled back |
+| Unit controls | PASS - labelled Voortgang segmented control plus Settings select; immediate localized feedback and authoritative rehydration |
 | Progress sources | PASS - frozen Training-derived strength/consistency; descriptive Recovery/Nutrition; truthful running unavailable state |
 | Owner real-phone functional test | PASS - Voortgang opens, data entry works and graph renders; final UX acceptance remains pending |
 | Dutch user-facing section name | PASS - `Voortgang`; English `Progress` and German `Fortschritt` preserved |
-| Phase 5 static suite | PASS - 99/99 including assembled seven-patch bundle parse and mobile-form contract guards |
-| Phase 5 responsive browser suite | PASS - 37/37 using real app CSS; goal, weight and measurement forms checked at 390x844 and 320x700 |
+| Phase 5 static suite | PASS - 116/116 including assembled seven-patch bundle parse, schema contract and Settings integration guards |
+| Phase 5 responsive browser suite | PASS - 53/53 using real app CSS; forms and unit selector checked at 390x844 and 320x700 |
 | Label/input collision gate | PASS - geometric label/control separation, safe wrapping, 46px controls, feedback containment and no horizontal overflow |
 | Keyboard/focus gate | PASS - visible focus and stable reduced-height keyboard-class viewport with scroll reserve |
 | Tablet/desktop compatibility | PASS - 820x1180 and 1440x900 bounded two-column forms |
 | Frozen baselines | PASS - Phase 1 75, Phase 2 46, Phase 3 222, Member UX 56, current Phase 4/4F-D/4F-E suites preserved |
 | Current Phase 4 gates | PASS - schema/security 90/90; Nutrition browser vertical slice 138/138 |
 | Photo privacy gate | PASS FOR CURRENT PACKAGE - no table, bucket, file input or normalized legacy-photo migration |
-| Live hotfix | PASS - commit `eaac528`, cache `20260901-phase5-mobile-form1`; three runtime assets HTTP 200 and byte-identical |
-| Database/schema/catalog/member data/Edge | UNCHANGED |
+| Live hotfix | PASS - commit `f96f9346174a636d71adb6fd1cd151d28c6c449b`, cache `20260901-phase5-unit-switch1`; four runtime assets HTTP 200 and byte-identical |
+| Database/schema/catalog/member data/Edge | SCHEMA CHECK CONSTRAINT CHANGED / CATALOG, MEMBER DATA AND EDGE UNCHANGED |
 | Production / Phase 6 | UNTOUCHED / NOT STARTED |
-| Technical result | OWNER FUNCTIONAL PASS / UX HOTFIX LIVE / READY FOR OWNER RETEST; NOT OWNER-ACCEPTED OR FROZEN |
+| Technical result | OWNER MOBILE FORM PASS / UNIT-SWITCH HOTFIX LIVE / READY FOR OWNER RETEST; NOT OWNER-ACCEPTED OR FROZEN |
