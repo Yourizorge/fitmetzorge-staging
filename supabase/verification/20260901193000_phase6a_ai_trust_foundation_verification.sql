@@ -156,7 +156,15 @@ checks(check_name, pass, detail) as (
     ('operational_tables_initially_empty', (select (select count(*) from ai_private.runs)+(select count(*) from ai_private.budget_accounts)+(select count(*) from ai_private.usage_ledger)+(select count(*) from ai_private.rate_buckets)+(select count(*) from ai_private.safety_events)+(select count(*) from ai_private.audit_events)=0), 'no provider usage, cost or safety rows'),
     ('frozen_guard_tables', (select count(*) = 26 from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='public' and c.relkind='r' and c.relname in ('profiles','coach_workspaces','user_settings','user_onboarding','entitlements','recovery_logs','training_plans','training_plan_days','training_plan_exercises','workout_sessions','workout_set_logs','nutrition_preferences','foods','food_portions','nutrition_targets','food_logs','food_log_items','food_aliases','nutrition_off_catalog_releases','nutrition_off_products','nutrition_off_product_names','progress_preferences','progress_goals','weight_logs','body_measurements','exercises')), 'Phase 1-5 source tables present'),
     ('frozen_guard_rls', not exists(select 1 from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='public' and c.relkind='r' and c.relname in ('profiles','coach_workspaces','user_settings','user_onboarding','entitlements','recovery_logs','training_plans','training_plan_days','training_plan_exercises','workout_sessions','workout_set_logs','nutrition_preferences','foods','food_portions','nutrition_targets','food_logs','food_log_items','food_aliases','nutrition_off_catalog_releases','nutrition_off_products','nutrition_off_product_names','progress_preferences','progress_goals','weight_logs','body_measurements','exercises') and not c.relrowsecurity), 'frozen RLS retained'),
-    ('production_and_secret_scan', not exists(select 1 from functions where source ~ '(hgoygcviutmynaihcvpd|service[_-]?role|api[_-]?key|provider[_-]?key|deno\\.env|current_setting\\([^)]*(secret|key))'), 'no production ref or credential lookup material')
+    ('production_and_secret_scan', not exists(
+      select 1 from functions
+      where position('hgoygcviutmynaihcvpd' in lower(source)) > 0
+         or position('service_role' in lower(source)) > 0
+         or position('api_key' in lower(source)) > 0
+         or position('provider_key' in lower(source)) > 0
+         or position('deno.env' in lower(source)) > 0
+         or (position('current_setting' in lower(source)) > 0 and lower(source) ~ '(secret|credential|api_key|provider_key)')
+    ), 'no production ref or credential lookup material')
 ),
 result as (
   select jsonb_build_object(
