@@ -17,7 +17,7 @@ Last updated: 2026-09-02
 - Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B PAID SYNTHETIC TEST BLOCKED BY OPENAI API AUTHENTICATION
 - Production Migration: NOT STARTED
 
-Current next step: owner replaces the rejected staging `OPENAI_API_KEY` directly in Supabase with a valid OpenAI API project key that has billing and exact Luna/Terra access. The synthetic-test flag is disabled after the controlled failure. Package 6A is owner-accepted and frozen against documentation baseline `055f610eb1a8712910214487d2e2bed96d40111c`. Real-member processing, member AI UX, Package 6C and production remain blocked.
+Current next step: owner resolves the external OpenAI account/key condition after both the original call and one authorized post-replacement Luna retry were rejected as `provider_authentication_failed`. The staging synthetic-test flag is disabled. Package 6A is owner-accepted and frozen against documentation baseline `055f610eb1a8712910214487d2e2bed96d40111c`. Real-member processing, member AI UX, Package 6C and production remain blocked.
 
 ## Environment Guardrail
 
@@ -208,7 +208,7 @@ Summary: Package 6B is owner-authorized for autonomous staging implementation. I
 
 DPA, DPIA, EU route, ZDR, privacy notice, consent copy, transfer assessment, lifecycle proof and later real-member owner activation remain incomplete. The Edge has no real-member provider route and the database gate returns denied. User-facing chat and Package 6C are not started.
 
-Staging evidence: migration history `20260902045834`; migration SHA-256 `6B432DA3AA389920D5A8EEA4F15F74D35E2A9E2D6F7BF44C7B0FBF62473CC526`; corrected verifier SHA-256 `761AE2F7A1F411A100862CE3254381A7AEB9C94727220674439F29E3869A8489`. One locked Luna request reached OpenAI using exact `gpt-5.6-luna` and was rejected with `provider_authentication_failed`; no Terra request was made. No tokens or provider output were returned. The metadata-only ledger conservatively charged the EUR 0.003585 reservation, leaving EUR 4.996415 under the EUR 5 cap. The synthetic-test flag is now false and a controlled follow-up returned `synthetic_test_environment_disabled` before reservation/provider access. `youri-ai` v10 is ACTIVE with JWT verification and reviewed bundle SHA-256 `4ee56c42fb2038ac8a94ca47ca791de6c48329e8ba6e0faec843ca9a2abec86c`. Production touched: NO.
+Staging evidence: migration history `20260902045834`; migration SHA-256 `6B432DA3AA389920D5A8EEA4F15F74D35E2A9E2D6F7BF44C7B0FBF62473CC526`; corrected verifier SHA-256 `761AE2F7A1F411A100862CE3254381A7AEB9C94727220674439F29E3869A8489`. Two locked Luna requests reached OpenAI using exact `gpt-5.6-luna`: the original attempt and one owner-authorized retry after key replacement. Both were rejected with `provider_authentication_failed`; no Terra request was made. No tokens or provider output were returned. The metadata-only ledger conservatively charged EUR 0.003585 per failed attempt, for EUR 0.007170 consumed and EUR 4.992830 remaining under the EUR 5 cap. The synthetic-test flag is false and a controlled follow-up returned `synthetic_test_environment_disabled` before reservation/provider access. `youri-ai` v21 is ACTIVE with JWT verification; all eight live runtime files are source-identical to the reviewed repository files and the deployed bundle SHA-256 is `19d585dcf16606a0d21974ed86ac2302d2116bc6ec25c2e75729f3815e636859`. Production touched: NO.
 
 ### Production Migration
 

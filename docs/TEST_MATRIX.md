@@ -744,11 +744,11 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | Synthetic payload minimization | LOCAL PASS - nine allowlisted fields; no member identity/private data |
 | Provider adapter tests | LOCAL PASS - strict output, routing, retry, sanitized failure, no member route |
 | Private schema/RLS/ACL | PASS - migration live; corrected verifier 36/36 |
-| EUR 5 / six-attempt cap | PASS - one failed Luna attempt conservatively charged EUR 0.003585; zero reservations; EUR 4.996415 remains |
+| EUR 5 / six-attempt cap | PASS - two failed Luna attempts conservatively charged EUR 0.007170 total; zero reservations; EUR 4.992830 remains |
 | Real-member hard gate | LOCAL PASS - no Edge route; ZDR/DPA/DPIA/EU/copy/transfer/lifecycle/owner gates incomplete |
 | DPA / DPIA / EU / ZDR | OWNER/ACCOUNT ACTION REQUIRED - no completion claimed |
 | Medical safety copy | DRAFT NL/EN/DE - owner medical/legal approval required; FR/IT unpublished |
-| Paid synthetic calls | BLOCKED - exact Luna call attempted once and rejected with `provider_authentication_failed`; zero returned tokens/output; Terra not attempted; flag disabled and HTTP 503 block verified |
-| Final Edge state | PASS - `youri-ai` v10 ACTIVE, JWT verification enabled, reviewed bundle SHA-256 restored |
+| Paid synthetic calls | BLOCKED - original Luna call and one authorized post-key-replacement retry rejected with `provider_authentication_failed`; zero returned tokens/output; Terra not attempted; flag disabled and HTTP 503 block verified |
+| Final Edge state | PASS - `youri-ai` v21 ACTIVE, JWT verification enabled, all eight live runtime files source-identical to the reviewed repository files |
 | Member AI chat / Package 6C | NOT STARTED |
 | Production | UNTOUCHED |
