@@ -1,6 +1,6 @@
 # Phase 6B Provider, Privacy And Cost Gate
 
-Status: IMPLEMENTATION COMPLETE / PAID SYNTHETIC CALL BLOCKED BY EXACT ACCOUNT ACTION
+Status: PAID SYNTHETIC TEST BLOCKED BY OPENAI API AUTHENTICATION
 
 Date: 2026-09-01
 Repository: `Yourizorge/fitmetzorge-staging` / `main`
@@ -87,21 +87,29 @@ The member subscription budget from frozen 6A remains separate: EUR 3 included, 
 - Migration SHA-256: `6B432DA3AA389920D5A8EEA4F15F74D35E2A9E2D6F7BF44C7B0FBF62473CC526`.
 - Live migration history: `20260902045834_phase6b_provider_privacy_cost_gate`.
 - Corrected read-only verifier SHA-256: `761AE2F7A1F411A100862CE3254381A7AEB9C94727220674439F29E3869A8489`.
-- Verifier result: `overall_pass=true`, 36 PASS, 0 FAIL, zero test runs.
-- Transactional E2E SHA-256: `4EF9CF62B49697EC366587CA7E5E60EF38E8E89D653764925134D4E919FFE538`.
-- E2E result: PASS with rollback, zero fixtures, zero provider calls and EUR 0 provider cost.
-- `youri-ai`: version 2, ACTIVE, JWT verification enabled, bundle SHA-256 `4ee56c42fb2038ac8a94ca47ca791de6c48329e8ba6e0faec843ca9a2abec86c`.
+- Verifier result after the controlled paid attempt: `overall_pass=true`, 36 PASS, 0 FAIL, one metadata-only test run.
+- Transactional E2E SHA-256: `B71A7D96C4BCB776A0175CA72E81C6E2EB0D3614C15E8A7A116816915C22ED40`.
+- E2E result: PASS against the non-empty live ledger with rollback, zero persisted fixtures, zero provider calls and EUR 0 additional provider cost.
+- `youri-ai`: final version 10, ACTIVE, JWT verification enabled, bundle SHA-256 `4ee56c42fb2038ac8a94ca47ca791de6c48329e8ba6e0faec843ca9a2abec86c`.
 - Live bundle: all eight runtime files match the reviewed local files after newline normalization.
 - Unauthenticated `/phase6b/status`: HTTP 401.
-- Provider-adapter/mock unit tests: 28/28 PASS.
+- Provider-adapter/mock unit tests: 17/17 PASS.
 - Package 6A static: 93/93 PASS. Package 6B static: 89/89 PASS.
 - Current frozen gates: Phase 4F-D 100/100, Phase 4F-E 45/45, Nutrition browser 138/138, Phase 5 static 116/116 and Phase 5 browser 53/53 PASS.
-- Security advisors: no new actionable 6B warning; intentional private RLS/no-policy INFO only. Performance advisors: expected unused-index INFO while the ledger is empty.
+- Security advisors: no new actionable 6B warning; intentional private RLS/no-policy INFO only. Performance advisors: expected low-use/unused-index INFO with one controlled ledger row.
 
-The global ledger remains at zero calls, zero reservations and EUR 0 consumed. The real-member gate reports denied with ZDR unverified, DPA/DPIA incomplete, EU route unverified, draft copy, incomplete transfer/lifecycle checks and owner activation false.
+The real-member gate reports denied with ZDR unverified, DPA/DPIA incomplete, EU route unverified, draft copy, incomplete transfer/lifecycle checks and owner activation false.
+
+## Paid Synthetic Acceptance Attempt
+
+On 2026-09-02 the required Edge secret names were confirmed from the staging dashboard without retrieving their values. One locked `luna_connectivity_v1` request was sent through the Responses API using exactly `gpt-5.6-luna`. The request was built only from the nine allowlisted deterministic synthetic fields with `store:false`, `background:false`, `tools:[]`, `tool_choice:none`, strict structured output and no fallback. OpenAI rejected the configured credential with the sanitized error `provider_authentication_failed` before any response/model identity or token usage was returned. No Terra request was made.
+
+The failed run is recorded as metadata only: one provider attempt, requested model `gpt-5.6-luna`, input/cached/output token counts not returned (`NULL`), no response hash, no raw request or response columns, and a conservative full-reservation charge of EUR 0.003585 because provider usage was unknown. The global budget now has one completed attempt, zero reservations, EUR 0.003585 consumed and EUR 4.996415 remaining under the owner-approved EUR 5 cap.
+
+`FMZ_PHASE6B_SYNTHETIC_TEST_ENABLED` was replaced with `false` after the account failure. A subsequent controlled request returned HTTP 503 `synthetic_test_environment_disabled` before reservation or provider access. The temporary dashboard-only invocation build was removed; the exact reviewed bundle is restored as Edge version 10 with JWT verification enabled and SHA-256 `4ee56c42fb2038ac8a94ca47ca791de6c48329e8ba6e0faec843ca9a2abec86c`.
 
 ## Exact Account Blocker
 
-No OpenAI staging API credential or account/model billing proof was safely available to this task, and no secret-value listing is exposed through the connected staging tooling. Therefore no paid synthetic request was attempted. To complete the remaining gate, the owner must configure `OPENAI_API_KEY` and `FMZ_PHASE6B_SYNTHETIC_TEST_ENABLED=true` as server-only secrets on Supabase staging `mokxyyullfhkfalopbzd`, using an OpenAI API project with billing and access to both exact model IDs. Values must be entered directly in the Supabase dashboard/official CLI and never shared in chat or committed. Then run only the two locked synthetic fixtures under the already-live EUR 5/six-attempt cap.
+The configured staging `OPENAI_API_KEY` is rejected by OpenAI with `provider_authentication_failed`. The owner must replace it directly in Supabase with a valid OpenAI API project key that has billing and access to both exact model IDs. The value must never be shared in chat or committed. After that owner-only account action, the synthetic test flag may be deliberately re-enabled and the minimum Luna/Terra acceptance sequence rerun under the remaining live budget. No automatic retry or model substitution is permitted.
 
 Package 6B is not owner-accepted or frozen. Package 6C and member AI chat remain unstarted.

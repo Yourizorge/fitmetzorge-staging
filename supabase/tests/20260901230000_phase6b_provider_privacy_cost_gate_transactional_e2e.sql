@@ -12,11 +12,18 @@ declare
   v_budget ai_private.provider_test_budget%rowtype;
   v_gate jsonb;
   v_blocked boolean := false;
+  v_start_completed_calls integer;
+  v_start_consumed_eur_micros bigint;
 begin
   v_gate := ai_private.phase6b_real_member_gate();
   if coalesce((v_gate->>'allowed')::boolean,true) or v_gate->>'deny_reason' <> 'real_member_provider_processing_blocked_phase6b' then
     raise exception 'phase6b real member gate did not fail closed';
   end if;
+
+  select completed_calls, consumed_eur_micros
+  into v_start_completed_calls, v_start_consumed_eur_micros
+  from ai_private.provider_test_budget
+  where policy_code='phase6b-staging-v1';
 
   select * into v_cost from ai_private.phase6b_estimate_test_cost('gpt-5.6-luna',120,20,80,1);
   if v_cost.usd_micros <> 117 or v_cost.eur_micros <> 147 then
@@ -70,8 +77,10 @@ begin
   end if;
 
   select * into v_budget from ai_private.provider_test_budget where policy_code='phase6b-staging-v1';
-  if v_budget.reserved_calls <> 0 or v_budget.reserved_eur_micros <> 0 or v_budget.completed_calls <> 2
-     or v_budget.consumed_eur_micros <= 147 or v_budget.consumed_eur_micros > v_budget.max_total_eur_micros then
+  if v_budget.reserved_calls <> 0 or v_budget.reserved_eur_micros <> 0
+     or v_budget.completed_calls <> v_start_completed_calls + 2
+     or v_budget.consumed_eur_micros <= v_start_consumed_eur_micros + 147
+     or v_budget.consumed_eur_micros > v_budget.max_total_eur_micros then
     raise exception 'budget reconciliation state invalid';
   end if;
 

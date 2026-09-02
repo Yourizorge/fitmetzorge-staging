@@ -744,10 +744,11 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | Synthetic payload minimization | LOCAL PASS - nine allowlisted fields; no member identity/private data |
 | Provider adapter tests | LOCAL PASS - strict output, routing, retry, sanitized failure, no member route |
 | Private schema/RLS/ACL | PASS - migration live; corrected verifier 36/36 |
-| EUR 5 / six-attempt cap | PASS - rollback E2E; zero retained fixtures/provider calls/cost |
+| EUR 5 / six-attempt cap | PASS - one failed Luna attempt conservatively charged EUR 0.003585; zero reservations; EUR 4.996415 remains |
 | Real-member hard gate | LOCAL PASS - no Edge route; ZDR/DPA/DPIA/EU/copy/transfer/lifecycle/owner gates incomplete |
 | DPA / DPIA / EU / ZDR | OWNER/ACCOUNT ACTION REQUIRED - no completion claimed |
 | Medical safety copy | DRAFT NL/EN/DE - owner medical/legal approval required; FR/IT unpublished |
-| Paid synthetic calls | BLOCKED - exact server-only OpenAI credential/account/model billing action required; zero calls/tokens/cost |
+| Paid synthetic calls | BLOCKED - exact Luna call attempted once and rejected with `provider_authentication_failed`; zero returned tokens/output; Terra not attempted; flag disabled and HTTP 503 block verified |
+| Final Edge state | PASS - `youri-ai` v10 ACTIVE, JWT verification enabled, reviewed bundle SHA-256 restored |
 | Member AI chat / Package 6C | NOT STARTED |
 | Production | UNTOUCHED |

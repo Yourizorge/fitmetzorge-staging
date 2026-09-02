@@ -14,10 +14,10 @@ Last updated: 2026-09-02
 - Phase 0B Storage verification: COMPLETE
 - Master Plan Specification: COMPLETE
 - Master Plan Final Review: COMPLETE
-- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B IMPLEMENTATION COMPLETE / PAID SYNTHETIC CALL BLOCKED BY EXACT ACCOUNT ACTION
+- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B PAID SYNTHETIC TEST BLOCKED BY OPENAI API AUTHENTICATION
 - Production Migration: NOT STARTED
 
-Current next step: owner configures the two server-only staging secrets and OpenAI API project/model billing access required for the locked Luna/Terra synthetic acceptance calls. Package 6A is owner-accepted and frozen against documentation baseline `055f610eb1a8712910214487d2e2bed96d40111c`. Real-member processing, member AI UX, Package 6C and production remain blocked.
+Current next step: owner replaces the rejected staging `OPENAI_API_KEY` directly in Supabase with a valid OpenAI API project key that has billing and exact Luna/Terra access. The synthetic-test flag is disabled after the controlled failure. Package 6A is owner-accepted and frozen against documentation baseline `055f610eb1a8712910214487d2e2bed96d40111c`. Real-member processing, member AI UX, Package 6C and production remain blocked.
 
 ## Environment Guardrail
 
@@ -192,7 +192,7 @@ Current checks: Phase 5 static 116/116 and responsive browser 53/53; selector, p
 
 ### Phase 6 Youri AI Core
 
-Status: PACKAGE 6A TECHNICAL PASS / READY FOR OWNER REVIEW
+Status: PACKAGE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PACKAGE 6B BLOCKED BY OPENAI API AUTHENTICATION
 
 Summary: the additive Phase 6A public/private trust schema, RLS/ACL/RPC boundary and disabled provider-neutral `youri-ai` Edge scaffold are live only on staging `mokxyyullfhkfalopbzd`. Frozen Identity, Recovery, Training, Nutrition and Progress sources remain authoritative and unchanged.
 
@@ -202,13 +202,13 @@ The owner locked the 6A consent, 90-day post-entitlement chat retention, separat
 
 ### Phase 6B Provider / Privacy / Cost Gate
 
-Status: IMPLEMENTATION COMPLETE / PAID SYNTHETIC CALL BLOCKED BY EXACT ACCOUNT ACTION
+Status: PAID SYNTHETIC TEST BLOCKED BY OPENAI API AUTHENTICATION
 
 Summary: Package 6B is owner-authorized for autonomous staging implementation. It adds a private provider configuration/model/payload/test-budget ledger, service-only synthetic test RPCs and a server-only OpenAI Responses adapter using exact `gpt-5.6-luna` and `gpt-5.6-terra` routes. The synthetic contract enforces `store:false`, no hosted tools, strict structured output, fixed pseudonymous fixtures, bounded retries and atomic EUR 5/six-attempt global test limits.
 
 DPA, DPIA, EU route, ZDR, privacy notice, consent copy, transfer assessment, lifecycle proof and later real-member owner activation remain incomplete. The Edge has no real-member provider route and the database gate returns denied. User-facing chat and Package 6C are not started.
 
-Staging evidence: migration history `20260902045834`; migration SHA-256 `6B432DA3AA389920D5A8EEA4F15F74D35E2A9E2D6F7BF44C7B0FBF62473CC526`; corrected verifier SHA-256 `761AE2F7A1F411A100862CE3254381A7AEB9C94727220674439F29E3869A8489`, 36/36 PASS; rollback E2E PASS with zero fixtures/calls/cost. `youri-ai` v2 is ACTIVE with JWT verification and its eight runtime files match locally. Paid synthetic calls were not attempted because no OpenAI staging credential/account configuration was safely available. Provider ledger: zero calls, zero tokens, EUR 0. Production touched: NO.
+Staging evidence: migration history `20260902045834`; migration SHA-256 `6B432DA3AA389920D5A8EEA4F15F74D35E2A9E2D6F7BF44C7B0FBF62473CC526`; corrected verifier SHA-256 `761AE2F7A1F411A100862CE3254381A7AEB9C94727220674439F29E3869A8489`. One locked Luna request reached OpenAI using exact `gpt-5.6-luna` and was rejected with `provider_authentication_failed`; no Terra request was made. No tokens or provider output were returned. The metadata-only ledger conservatively charged the EUR 0.003585 reservation, leaving EUR 4.996415 under the EUR 5 cap. The synthetic-test flag is now false and a controlled follow-up returned `synthetic_test_environment_disabled` before reservation/provider access. `youri-ai` v10 is ACTIVE with JWT verification and reviewed bundle SHA-256 `4ee56c42fb2038ac8a94ca47ca791de6c48329e8ba6e0faec843ca9a2abec86c`. Production touched: NO.
 
 ### Production Migration
 
