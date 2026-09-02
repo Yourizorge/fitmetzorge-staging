@@ -996,3 +996,11 @@ Production release requires explicit owner approval.
 - Beta cohort selection and operational process.
 - Production launch timing and approval checklist owner signoff.
 
+## Phase 6A Acceptance And Package 6B Gate
+
+Package 6A is COMPLETE / OWNER-ACCEPTED / FROZEN as of 2026-09-01 against documentation baseline `055f610eb1a8712910214487d2e2bed96d40111c`. Its consent, withdrawal, trainer isolation, budget, action, safety, strict-output, disabled-feature and zero-provider guarantees are frozen.
+
+Package 6B is the staging-only provider/privacy/cost gate. It uses OpenAI Responses with exact model IDs `gpt-5.6-luna` and `gpt-5.6-terra`, no automatic fallback, `store:false`, no hosted tools, strict structured output, server-only secrets, synthetic fixtures and a cumulative EUR 5 test ceiling. Member AI remains unavailable.
+
+Before any later member data transfer, ZDR must be verified for the exact OpenAI project, the owner must execute the DPA, the DPIA and international-transfer/subprocessor assessment must be complete, the exact Europe project/endpoint must be verified, privacy/consent/safety copy must be approved, lifecycle flows must be proven, and the owner must separately activate real-member processing. `store:false` is necessary but never sufficient proof of ZDR. Package 6B cannot owner-accept itself and may not start Package 6C.
+

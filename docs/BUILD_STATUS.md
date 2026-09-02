@@ -1,6 +1,6 @@
 # FitMetZorge Build Status
 
-Last updated: 2026-09-01
+Last updated: 2026-09-02
 
 - Baseline audit: COMPLETE
 - Phase 0A Governance: COMPLETE
@@ -14,10 +14,10 @@ Last updated: 2026-09-01
 - Phase 0B Storage verification: COMPLETE
 - Master Plan Specification: COMPLETE
 - Master Plan Final Review: COMPLETE
-- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A TRUST FOUNDATION TECHNICAL PASS / READY FOR OWNER REVIEW
+- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B IMPLEMENTATION COMPLETE / PAID SYNTHETIC CALL BLOCKED BY EXACT ACCOUNT ACTION
 - Production Migration: NOT STARTED
 
-Current next step: owner review of the completed Phase 6A technical trust foundation. Phase 5 Progressie remains owner-accepted and frozen. OpenAI activation, paid AI calls, member AI UX and Package 6B remain forbidden pending separate owner authorization and the provider privacy/legal gate.
+Current next step: owner configures the two server-only staging secrets and OpenAI API project/model billing access required for the locked Luna/Terra synthetic acceptance calls. Package 6A is owner-accepted and frozen against documentation baseline `055f610eb1a8712910214487d2e2bed96d40111c`. Real-member processing, member AI UX, Package 6C and production remain blocked.
 
 ## Environment Guardrail
 
@@ -198,7 +198,17 @@ Summary: the additive Phase 6A public/private trust schema, RLS/ACL/RPC boundary
 
 The target design uses a dedicated provider-neutral `youri-ai` Edge boundary, member-JWT-scoped context RPCs, server-side current entitlement and consent checks, private chat with no trainer read path, strict structured outputs, prompt-injection controls, service-only rate/budget/safety state, append-only proposal decisions, stale guards and existing authoritative domain RPCs for any later execution. The exact architecture, frozen inputs, gaps, provider options, cost inputs, privacy requirements, 30-day trial readiness, 6A-6I package order, test gates and owner decisions are documented in `docs/PHASE6_AI_CORE_ARCHITECTURE_READINESS.md`.
 
-The owner locked the 6A consent, 90-day post-entitlement chat retention, separate trainer-summary consent, EUR 3 included plus EUR 1 grace budget, action limits and safety hard-stop contracts. Four staging migrations are live. The exact verifier passed 47/47, the rollback E2E passed with no fixtures retained, the mock suite passed 11/11 and Package 6A static/security passed 93/93. `ai_coach_enabled`, `provider_calls_enabled` and `staging_mock_enabled` remain false. Edge version 1 is ACTIVE with JWT verification enabled; unauthenticated access returns 401. External AI calls: 0. External AI cost: EUR 0. No member AI frontend was deployed. Package 6B is not started. Production touched: NO.
+The owner locked the 6A consent, 90-day post-entitlement chat retention, separate trainer-summary consent, EUR 3 included plus EUR 1 grace budget, action limits and safety hard-stop contracts. Four staging migrations are live. The exact verifier passed 47/47, the rollback E2E passed with no fixtures retained, the mock suite passed 11/11 and Package 6A static/security passed 93/93. `ai_coach_enabled`, `provider_calls_enabled` and `staging_mock_enabled` remain false. Edge version 1 is ACTIVE with JWT verification enabled; unauthenticated access returns 401. External AI calls: 0. External AI cost: EUR 0. No member AI frontend was deployed. The owner accepted and froze Package 6A against documentation baseline `055f610eb1a8712910214487d2e2bed96d40111c`. Production touched: NO.
+
+### Phase 6B Provider / Privacy / Cost Gate
+
+Status: IMPLEMENTATION COMPLETE / PAID SYNTHETIC CALL BLOCKED BY EXACT ACCOUNT ACTION
+
+Summary: Package 6B is owner-authorized for autonomous staging implementation. It adds a private provider configuration/model/payload/test-budget ledger, service-only synthetic test RPCs and a server-only OpenAI Responses adapter using exact `gpt-5.6-luna` and `gpt-5.6-terra` routes. The synthetic contract enforces `store:false`, no hosted tools, strict structured output, fixed pseudonymous fixtures, bounded retries and atomic EUR 5/six-attempt global test limits.
+
+DPA, DPIA, EU route, ZDR, privacy notice, consent copy, transfer assessment, lifecycle proof and later real-member owner activation remain incomplete. The Edge has no real-member provider route and the database gate returns denied. User-facing chat and Package 6C are not started.
+
+Staging evidence: migration history `20260902045834`; migration SHA-256 `6B432DA3AA389920D5A8EEA4F15F74D35E2A9E2D6F7BF44C7B0FBF62473CC526`; corrected verifier SHA-256 `761AE2F7A1F411A100862CE3254381A7AEB9C94727220674439F29E3869A8489`, 36/36 PASS; rollback E2E PASS with zero fixtures/calls/cost. `youri-ai` v2 is ACTIVE with JWT verification and its eight runtime files match locally. Paid synthetic calls were not attempted because no OpenAI staging credential/account configuration was safely available. Provider ledger: zero calls, zero tokens, EUR 0. Production touched: NO.
 
 ### Production Migration
 

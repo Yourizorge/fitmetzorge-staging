@@ -1,6 +1,6 @@
 # Phase 6 Youri AI Core - Architecture And Readiness
 
-Status: ARCHITECTURE / READINESS AUDIT COMPLETE; PACKAGE 6A TECHNICAL PASS / READY FOR OWNER REVIEW
+Status: ARCHITECTURE / READINESS AUDIT COMPLETE; PACKAGE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PACKAGE 6B IMPLEMENTATION COMPLETE / PAID SYNTHETIC CALL BLOCKED
 
 Audit date: 2026-09-01
 Target repository: `Yourizorge/fitmetzorge-staging` / `main`
@@ -367,4 +367,12 @@ Package 6A does not resolve or bypass the Package 6B provider privacy/legal gate
 
 ## 22. Package 6A Technical Result
 
-The additive trust foundation and disabled provider-neutral `youri-ai` Edge scaffold are live only on staging `mokxyyullfhkfalopbzd`. The exact schema verifier passed 47/47, the transactional E2E passed with all fixtures rolled back, the deterministic mock suite passed 11/11 and the Package 6A static/security suite passed 93/93. All provider and mock flags remain OFF. External AI calls: 0. External AI cost: EUR 0. Package 6A is ready for owner review but is not owner-accepted or frozen. Package 6B is NOT STARTED. Production touched: NO.
+The additive trust foundation and disabled provider-neutral `youri-ai` Edge scaffold are live only on staging `mokxyyullfhkfalopbzd`. The exact schema verifier passed 47/47, the transactional E2E passed with all fixtures rolled back, the deterministic mock suite passed 11/11 and the Package 6A static/security suite passed 93/93. All member/provider/mock flags remain OFF. External AI calls during 6A: 0. External AI cost during 6A: EUR 0.
+
+The owner accepted and froze Package 6A on 2026-09-01 against documentation baseline `055f610eb1a8712910214487d2e2bed96d40111c`. Package 6B is now authorized only as the provider/privacy/cost gate described in `docs/PHASE6B_PROVIDER_PRIVACY_COST_GATE.md`; member AI chat and Package 6C remain unstarted. Production touched: NO.
+
+## 23. Package 6B Technical Result
+
+The private provider/privacy/cost schema is live on staging and its corrected read-only verifier passed 36/36. The rollback E2E proved real-member denial, exact replay, conflict detection, Luna cost calculation, conservative unknown-cost accounting and the absolute EUR 5/six-attempt caps without an external call or retained fixture. `youri-ai` version 2 is ACTIVE with JWT verification, service-only synthetic routes, exact Luna/Terra adapters, strict output, `store:false` and no hosted tools.
+
+Paid synthetic acceptance is blocked solely by unavailable OpenAI staging credential/account configuration. No key was requested or exposed. External calls: 0. Tokens: 0. Cost: EUR 0. Package 6B is not owner-accepted or frozen; Package 6C remains unstarted.

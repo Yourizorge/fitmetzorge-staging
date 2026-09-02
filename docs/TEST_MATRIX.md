@@ -62,7 +62,7 @@ This matrix records the required functional, security, entitlement, AI, migratio
 | Phase 5 | Measurements | Optional logical body measurements, immutable corrections and archive | OWNER ACCEPTANCE GATE | PASS - COMPLETE / OWNER-ACCEPTED / FROZEN |
 | Phase 5 | Photos | Private progress photos, signed access, no public default, AI photo consent gate | SEPARATE PRIVACY GATE | DEFERRED - NO TABLE, BUCKET OR MEMBER FILE INPUT |
 | Phase 5 | Milestones | Strength and consistency from frozen Training sources; truthful unavailable running state | OWNER ACCEPTANCE GATE | PASS - COMPLETE / OWNER-ACCEPTED / FROZEN |
-| Phase 6 | Architecture/readiness | Frozen context sources, backend boundary, privacy, safety, provider, costs, packages and decisions | ARCHITECTURE GATE | PASS - AUDIT COMPLETE / 6A TECHNICAL PASS |
+| Phase 6 | Architecture/readiness | Frozen context sources, backend boundary, privacy, safety, provider, costs, packages and decisions | ARCHITECTURE GATE | PASS - AUDIT COMPLETE / 6A OWNER-ACCEPTED + FROZEN / 6B IN PROGRESS |
 | Phase 6 | Youri AI | Backend-mediated AI, no browser-to-AI provider call, entitlement check before call | BLOCKING GATE | PLANNED |
 | Phase 6 | AI context | Goals, training, nutrition, progress, recovery context only when authorized | BLOCKING GATE | PLANNED |
 | Phase 6 | AI quality | Missing data handled honestly; no hallucinated facts; structured responses validated | BLOCKING GATE | PLANNED |
@@ -733,4 +733,21 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | External provider | NOT ACTIVATED / ZERO CALLS / ZERO COST |
 | Frozen regressions | PASS - P1 75, P2 46, P3 222, Member UX 56, P4 schema 90, P4F-E 45, Nutrition browser 138, P5 116 + 53 |
 | Production | UNTOUCHED |
-| Package result | TECHNICAL PASS / READY FOR OWNER REVIEW - NOT OWNER-ACCEPTED OR FROZEN |
+| Package result | COMPLETE / OWNER-ACCEPTED / FROZEN - baseline `055f610eb1a8712910214487d2e2bed96d40111c` |
+
+## Phase 6B Provider / Privacy / Cost Gate
+
+| Check | Result |
+| --- | --- |
+| Exact OpenAI model routes | LOCAL PASS - `gpt-5.6-luna` and `gpt-5.6-terra`; no substitution/fallback |
+| Responses contract | LOCAL PASS - `store:false`, no tools, strict JSON schema, 20s timeout, max two attempts |
+| Synthetic payload minimization | LOCAL PASS - nine allowlisted fields; no member identity/private data |
+| Provider adapter tests | LOCAL PASS - strict output, routing, retry, sanitized failure, no member route |
+| Private schema/RLS/ACL | PASS - migration live; corrected verifier 36/36 |
+| EUR 5 / six-attempt cap | PASS - rollback E2E; zero retained fixtures/provider calls/cost |
+| Real-member hard gate | LOCAL PASS - no Edge route; ZDR/DPA/DPIA/EU/copy/transfer/lifecycle/owner gates incomplete |
+| DPA / DPIA / EU / ZDR | OWNER/ACCOUNT ACTION REQUIRED - no completion claimed |
+| Medical safety copy | DRAFT NL/EN/DE - owner medical/legal approval required; FR/IT unpublished |
+| Paid synthetic calls | BLOCKED - exact server-only OpenAI credential/account/model billing action required; zero calls/tokens/cost |
+| Member AI chat / Package 6C | NOT STARTED |
+| Production | UNTOUCHED |

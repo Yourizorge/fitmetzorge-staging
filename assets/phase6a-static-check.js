@@ -139,9 +139,9 @@ check("mock must cost zero", hasAll(files.migration, ["v_run.adapter_code = 'moc
 check("provider flag gate", hasAll(files.migration, ["provider_calls_enabled", "provider_disabled"]));
 check("eight member RPC grants", (files.migration.match(/grant execute on function public\.fmz_phase6a_(?!service_)/g) || []).length === 8);
 check("five service RPC grants", (files.migration.match(/grant execute on function public\.fmz_phase6a_service_/g) || []).length === 5);
-check("service role absent frontend", !/service[_-]?role/i.test(files.contracts + files.mock + files.handler + files.index));
-check("no paid provider import", !/(openai|anthropic|gemini|chat\/completions|responses\/v1)/i.test(files.contracts + files.mock + files.handler + files.index));
-check("no provider credential env", !/(OPENAI|ANTHROPIC|GEMINI|PROVIDER_API_KEY)/.test(files.index));
+check("service role absent frozen 6A member handler", !/service[_-]?role/i.test(files.contracts + files.mock + files.handler));
+check("no paid provider import in frozen 6A handler", !/(openai|anthropic|gemini|chat\/completions|responses\/v1)/i.test(files.contracts + files.mock + files.handler));
+check("6A member handler has no provider credential env", !/(OPENAI|ANTHROPIC|GEMINI|PROVIDER_API_KEY)/.test(files.handler));
 check("publishable member JWT client", hasAll(files.index, ["SUPABASE_PUBLISHABLE_KEY", "Authorization: `Bearer ${token}`", "auth.getUser(token)"]));
 check("mock external calls zero", hasAll(files.mock + files.handler, ["externalCalls = 0", "external_ai_calls: 0", "external_ai_cost_eur: 0"]));
 check("mock explicit environment flag", hasAll(files.index + files.handler, ["FMZ_PHASE6A_MOCK_TEST_ENABLED", "mockTestEnabled", "mock_disabled"]));
@@ -174,10 +174,10 @@ check("E2E provider off", files.e2e.includes("provider run allowed while provide
 check("E2E budget boundaries", hasAll(files.e2e, ["2399999", "2400000", "3000000", "4000000"]));
 check("E2E retention", hasAll(files.e2e, ["retention grace failed", "interval '91 days'", "retention deletion failed"]));
 
-check("docs Package 6A status", hasAll(files.package, ["TECHNICAL PASS", "OpenAI activated: NO", "External AI calls: 0", "External AI cost: EUR 0"]));
+check("docs Package 6A status", hasAll(files.package, ["COMPLETE / OWNER-ACCEPTED / FROZEN", "OpenAI activated: NO", "External AI calls: 0", "External AI cost: EUR 0"]));
 check("docs owner decisions", hasAll(files.package + files.master, ["GPT-5.6 Luna", "GPT-5.6 Terra", "EUR 3", "EUR 4"]) && /90[- ]day/.test(files.package + files.master));
 check("docs production lock", hasAll(files.package + files.status, ["hgoygcviutmynaihcvpd", "Production touched: NO"]));
-check("docs next package blocked", hasAll(files.package, ["Package 6B", "NOT STARTED"]));
+check("docs next package gated", hasAll(files.package, ["Package 6B", "real-member processing"]));
 check("agents staging boundary", hasAll(files.agents, ["mokxyyullfhkfalopbzd", "Yourizorge/fitmetzorge-staging", "hgoygcviutmynaihcvpd"]));
 check("no production ref runtime", !(files.contracts + files.mock + files.handler + files.index).includes("hgoygcviutmynaihcvpd"));
 check("no secrets in artifacts", !/(sk-[a-z0-9]|sb_secret_|eyJhbGciOi)/i.test(Object.values(files).join("\n")));

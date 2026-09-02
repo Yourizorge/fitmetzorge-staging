@@ -496,3 +496,17 @@ Automatic changes remain proposals under strict reversible allowlists. Normal tr
 Rationale:
 
 An enforceable database/Edge trust boundary before provider activation prevents consent, entitlement, cost, safety, trainer privacy and stale/idempotency guarantees from being reduced to prompt text or browser state.
+
+## Decision 0034: Phase 6A accepted and frozen
+
+Status: APPROVED / COMPLETE / OWNER-ACCEPTED / FROZEN
+
+On 2026-09-01 the owner accepted Package 6A against documentation baseline `055f610eb1a8712910214487d2e2bed96d40111c`. Consent and deterministic withdrawal, private-chat/trainer separation, trainer-summary consent, EUR 3 included plus EUR 1 Luna grace and EUR 4 hard cap, no automatic billing, bounded actions, medical hard stops, strict structured output, deterministic mock, RLS/ACL isolation, OFF flags, zero external calls and zero cost are frozen.
+
+## Decision 0035: Phase 6B provider, privacy and cost gate
+
+Status: APPROVED FOR STAGING IMPLEMENTATION / NOT OWNER-ACCEPTED
+
+OpenAI is the sole initial provider. Exact routes are `gpt-5.6-luna` for normal/cost-sensitive work and `gpt-5.6-terra` for approved complex work; substitution and automatic fallback are forbidden. Only synthetic fixtures may be sent during 6B, under a cumulative EUR 5 test cap. `store:false`, no hosted tools, server-only secrets and strict output are mandatory.
+
+Zero Data Retention is a hard prerequisite for any later member data and must be evidenced separately from `store:false`. DPA, DPIA, exact Europe routing, privacy/consent/safety copy, transfer/subprocessor assessment, lifecycle verification and a later owner activation must all pass. Until then, real-member processing and Package 6C remain technically disabled.

@@ -1,6 +1,8 @@
 import { createClient } from "npm:@supabase/supabase-js@2.95.0";
 import { createYouriAiHandler } from "./handler.ts";
 import type { TrustStatus } from "./contracts.ts";
+import { createPhase6bHandler } from "./phase6b-handler.ts";
+import type { BeginResult } from "./phase6b-handler.ts";
 
 function requiredEnvironment(name: string): string {
   const value = Deno.env.get(name)?.trim();
@@ -26,8 +28,43 @@ function firstPublishableKey(): string {
   throw new Error("Missing usable Supabase publishable key");
 }
 
+function secretKeys(): string[] {
+  const values: string[] = [];
+  for (const name of ["SUPABASE_SERVICE_ROLE_KEY", "SUPABASE_SECRET_KEYS"]) {
+    const raw = Deno.env.get(name)?.trim();
+    if (!raw) continue;
+    if (!raw.startsWith("[") && !raw.startsWith("{")) {
+      values.push(raw);
+      continue;
+    }
+    try {
+      const parsed = JSON.parse(raw);
+      const candidates = Array.isArray(parsed) ? parsed : Object.values(parsed);
+      for (const value of candidates) if (typeof value === "string" && value.trim()) values.push(value.trim());
+    } catch {
+      // Ignore unusable structured secret collections.
+    }
+  }
+  return [...new Set(values)];
+}
+
+async function equalSecret(candidate: string, expected: string): Promise<boolean> {
+  const encoder = new TextEncoder();
+  const [left, right] = await Promise.all([
+    crypto.subtle.digest("SHA-256", encoder.encode(candidate)),
+    crypto.subtle.digest("SHA-256", encoder.encode(expected)),
+  ]);
+  const a = new Uint8Array(left);
+  const b = new Uint8Array(right);
+  let mismatch = a.length ^ b.length;
+  for (let index = 0; index < Math.min(a.length, b.length); index += 1) mismatch |= a[index] ^ b[index];
+  return mismatch === 0;
+}
+
 const supabaseUrl = requiredEnvironment("SUPABASE_URL");
 const publishableKey = firstPublishableKey();
+const availableSecretKeys = secretKeys();
+const adminKey = availableSecretKeys[0] || "";
 
 function memberClient(token: string) {
   return createClient(supabaseUrl, publishableKey, {
@@ -51,4 +88,34 @@ const handler = createYouriAiHandler({
   },
 });
 
-Deno.serve(handler);
+const adminClient = adminKey
+  ? createClient(supabaseUrl, adminKey, { auth: { persistSession: false, autoRefreshToken: false } })
+  : null;
+
+async function serviceRpc(name: string, input: Record<string, unknown> = {}) {
+  if (!adminClient) throw new Error("service_client_unavailable");
+  const { data, error } = await adminClient.rpc(name, input);
+  if (error || !data) throw new Error(error?.code === "42501" ? "provider_gate_denied" : "provider_accounting_unavailable");
+  return data as Record<string, unknown>;
+}
+
+const phase6bHandler = createPhase6bHandler({
+  providerTestEnvironmentEnabled: Deno.env.get("FMZ_PHASE6B_SYNTHETIC_TEST_ENABLED") === "true",
+  openAiApiKey: Deno.env.get("OPENAI_API_KEY")?.trim() || null,
+  async authorizeServer(request) {
+    const authorization = request.headers.get("Authorization") || "";
+    const candidate = authorization.startsWith("Bearer ") ? authorization.slice(7).trim() : "";
+    if (!candidate || !availableSecretKeys.length) return false;
+    for (const key of availableSecretKeys) if (await equalSecret(candidate, key)) return true;
+    return false;
+  },
+  readStatus: () => serviceRpc("fmz_phase6b_service_read_provider_status"),
+  begin: (input) => serviceRpc("fmz_phase6b_service_begin_synthetic_test", input) as Promise<BeginResult>,
+  complete: (input) => serviceRpc("fmz_phase6b_service_complete_synthetic_test", input),
+  fail: (input) => serviceRpc("fmz_phase6b_service_fail_synthetic_test", input),
+});
+
+Deno.serve((request) => {
+  const path = new URL(request.url).pathname;
+  return path.includes("/phase6b/") ? phase6bHandler(request) : handler(request);
+});

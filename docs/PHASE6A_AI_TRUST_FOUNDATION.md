@@ -1,6 +1,6 @@
 # Phase 6A Youri AI Trust Foundation
 
-Status: TECHNICAL PASS / READY FOR OWNER REVIEW
+Status: COMPLETE / OWNER-ACCEPTED / FROZEN
 
 Date: 2026-09-01
 Repository: `Yourizorge/fitmetzorge-staging` / `main`
@@ -185,8 +185,10 @@ Implementation commits before this final evidence commit: `16ca8cd`, `828c8cf`, 
 
 The migration is additive. The immediate runtime rollback is to keep all three feature flags false and leave the member frontend unchanged. No existing domain row is rewritten. Pending AI proposals have no executor. If later forward correction is required, use a new reviewed migration; do not rewrite applied history.
 
-Package 6B is NOT STARTED. It may not activate OpenAI until privacy/legal/DPA/international-transfer/DPIA and reviewed medical-safety gates are complete, real model IDs and spend controls are approved, and a separate controlled staging provider GO exists.
+The owner accepted and froze Package 6A on 2026-09-01 against documentation baseline `055f610eb1a8712910214487d2e2bed96d40111c`. Reopen it only for a proven defect requiring a minimal compatible correction.
 
-Package 6A result: TECHNICAL PASS / READY FOR OWNER REVIEW. It is not owner-accepted or frozen.
+Package 6B is separately authorized as a provider/privacy/cost gate. It cannot activate real-member processing while ZDR, DPA, DPIA, EU-route, copy, transfer, lifecycle and later owner-activation gates are incomplete.
+
+Package 6A result: COMPLETE / OWNER-ACCEPTED / FROZEN.
 
 Production touched: NO.
