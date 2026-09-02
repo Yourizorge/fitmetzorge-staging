@@ -33,11 +33,17 @@ const validOutput = {
   },
 };
 
-function providerResponse(output = validOutput, status = 200) {
+function providerResponse(output = validOutput, status = 200, model = "gpt-5.6-luna") {
   return new Response(JSON.stringify({
     id: "resp_synthetic",
+    model,
     output_text: JSON.stringify(output),
-    usage: { input_tokens: 120, input_tokens_details: { cached_tokens: 20 }, output_tokens: 80 },
+    usage: {
+      input_tokens: 120,
+      input_tokens_details: { cached_tokens: 20 },
+      output_tokens: 80,
+      output_tokens_details: { reasoning_tokens: 30 },
+    },
   }), { status, headers: { "Content-Type": "application/json" } });
 }
 
@@ -166,14 +172,38 @@ test("adapter validates strict output and token accounting", async () => {
   const result = await adapter.run(
     "gpt-5.6-luna", "luna", buildSyntheticProviderPayload("luna_connectivity_v1"), 2, 512,
   );
-  assert.deepEqual(result.usage, { inputTokens: 120, cachedInputTokens: 20, outputTokens: 80 });
+  assert.deepEqual(result.usage, { inputTokens: 120, cachedInputTokens: 20, outputTokens: 80, reasoningTokens: 30 });
   assert.equal(result.attemptCount, 1);
+  assert.equal(result.returnedModelId, "gpt-5.6-luna");
+  assert.equal(result.providerResponseId, "resp_synthetic");
   assert.match(result.requestHash, /^[0-9a-f]{64}$/);
   assert.match(result.responseHash, /^[0-9a-f]{64}$/);
 });
 
+test("adapter rejects a returned model that differs from the locked route", async () => {
+  const adapter = new OpenAiResponsesAdapter({
+    apiKey: "test-only",
+    fetchImpl: async () => providerResponse(validOutput, 200, "gpt-5.6-terra"),
+  });
+  await assert.rejects(
+    adapter.run("gpt-5.6-luna", "luna", buildSyntheticProviderPayload("luna_connectivity_v1"), 1, 512),
+    (error: unknown) => error instanceof SafeProviderError && error.message === "provider_returned_model_mismatch",
+  );
+});
+
 test("adapter rejects malformed structured output", async () => {
   const adapter = new OpenAiResponsesAdapter({ apiKey: "test-only", fetchImpl: async () => providerResponse({ bad: true } as never) });
+  await assert.rejects(
+    adapter.run("gpt-5.6-luna", "luna", buildSyntheticProviderPayload("luna_connectivity_v1"), 1, 512),
+    (error: unknown) => error instanceof SafeProviderError && error.message === "provider_structured_output_invalid",
+  );
+});
+
+test("adapter rejects unknown keys on an otherwise valid structured output", async () => {
+  const adapter = new OpenAiResponsesAdapter({
+    apiKey: "test-only",
+    fetchImpl: async () => providerResponse({ ...validOutput, unexpected: "forbidden" } as never),
+  });
   await assert.rejects(
     adapter.run("gpt-5.6-luna", "luna", buildSyntheticProviderPayload("luna_connectivity_v1"), 1, 512),
     (error: unknown) => error instanceof SafeProviderError && error.message === "provider_structured_output_invalid",
@@ -186,7 +216,7 @@ test("adapter retries one rate limit and remains bounded", async () => {
     apiKey: "test-only",
     fetchImpl: async () => {
       calls += 1;
-      return calls === 1 ? new Response("", { status: 429 }) : providerResponse();
+      return calls === 1 ? new Response("", { status: 429 }) : providerResponse(validOutput, 200, "gpt-5.6-terra");
     },
   });
   const result = await adapter.run(
@@ -204,7 +234,10 @@ test("post-retry output failure reports the real provider attempt count", async 
       calls += 1;
       return calls === 1
         ? new Response("", { status: 429 })
-        : new Response(JSON.stringify({ usage: {} }), { status: 200, headers: { "Content-Type": "application/json" } });
+        : new Response(JSON.stringify({ model: "gpt-5.6-luna", usage: {} }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        });
     },
   });
   await assert.rejects(
@@ -347,6 +380,9 @@ test("successful synthetic handler performs accounting around one provider call"
   const body = await response.json();
   assert.equal(body.store, false);
   assert.equal(body.tools_used, 0);
+  assert.equal(body.returned_model_id, "gpt-5.6-luna");
+  assert.equal(body.provider_response_id, "resp_synthetic");
+  assert.equal(body.attempt_count, 1);
   assert.deepEqual(state.calls.map((call) => call.name), ["begin", "complete"]);
 });
 

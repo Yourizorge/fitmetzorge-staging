@@ -177,12 +177,15 @@ export interface ProviderUsage {
   inputTokens: number;
   cachedInputTokens: number;
   outputTokens: number;
+  reasoningTokens: number;
 }
 
 export interface ProviderResult {
   output: CoachResponse;
   usage: ProviderUsage;
   attemptCount: number;
+  returnedModelId: string;
+  providerResponseId: string | null;
   requestHash: string;
   responseHash: string;
 }
@@ -307,6 +310,14 @@ export class OpenAiResponsesAdapter {
           throw new SafeProviderError(mappedProviderFailure(upstream), attempt, true, upstream);
         }
         const raw = await response.json() as Record<string, unknown>;
+        const returnedModelId = safeProviderField(raw.model);
+        if (returnedModelId !== modelId) {
+          throw new SafeProviderError("provider_returned_model_mismatch", attempt, true);
+        }
+        const providerResponseId = typeof raw.id === "string"
+            && /^resp_[A-Za-z0-9_-]{1,120}$/.test(raw.id)
+          ? raw.id
+          : null;
         const text = outputText(raw, attempt);
         let parsed: unknown;
         try {
@@ -323,22 +334,30 @@ export class OpenAiResponsesAdapter {
         const inputDetails = usage.input_tokens_details && typeof usage.input_tokens_details === "object"
           ? usage.input_tokens_details as Record<string, unknown>
           : {};
+        const outputDetails = usage.output_tokens_details && typeof usage.output_tokens_details === "object"
+          ? usage.output_tokens_details as Record<string, unknown>
+          : {};
         const normalizedUsage = {
           inputTokens: Number(usage.input_tokens || 0),
           cachedInputTokens: Number(inputDetails.cached_tokens || 0),
           outputTokens: Number(usage.output_tokens || 0),
+          reasoningTokens: Number(outputDetails.reasoning_tokens || 0),
         };
         if (!Object.values(normalizedUsage).every(Number.isSafeInteger)
           || normalizedUsage.inputTokens < 0
           || normalizedUsage.cachedInputTokens < 0
           || normalizedUsage.cachedInputTokens > normalizedUsage.inputTokens
-          || normalizedUsage.outputTokens < 0) {
+          || normalizedUsage.outputTokens < 0
+          || normalizedUsage.reasoningTokens < 0
+          || normalizedUsage.reasoningTokens > normalizedUsage.outputTokens) {
           throw new SafeProviderError("provider_usage_invalid", attempt, true);
         }
         return {
           output: parsed as CoachResponse,
           usage: normalizedUsage,
           attemptCount: attempt,
+          returnedModelId,
+          providerResponseId,
           requestHash,
           responseHash: await sha256(JSON.stringify(parsed)),
         };

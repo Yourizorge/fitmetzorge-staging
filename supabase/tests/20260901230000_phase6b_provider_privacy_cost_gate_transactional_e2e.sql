@@ -25,6 +25,18 @@ begin
   from ai_private.provider_test_budget
   where policy_code='phase6b-staging-v1';
 
+  -- Isolate fixture accounting from prior live acceptance evidence. The outer
+  -- transaction rolls this test-only budget state back in full.
+  update ai_private.provider_test_budget
+  set reserved_eur_micros=0,
+      consumed_eur_micros=0,
+      reserved_calls=0,
+      completed_calls=0
+  where policy_code='phase6b-staging-v1';
+
+  v_start_completed_calls := 0;
+  v_start_consumed_eur_micros := 0;
+
   select * into v_cost from ai_private.phase6b_estimate_test_cost('gpt-5.6-luna',120,20,80,1);
   if v_cost.usd_micros <> 117 or v_cost.eur_micros <> 147 then
     raise exception 'luna cost formula mismatch: %, %',v_cost.usd_micros,v_cost.eur_micros;

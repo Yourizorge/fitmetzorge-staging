@@ -14,10 +14,10 @@ Last updated: 2026-09-02
 - Phase 0B Storage verification: COMPLETE
 - Master Plan Specification: COMPLETE
 - Master Plan Final Review: COMPLETE
-- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B PAID SYNTHETIC TEST BLOCKED BY PROVEN INVALID OPENAI CREDENTIAL CONDITION
+- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B TECHNICAL PASS / READY FOR OWNER ACCEPTANCE
 - Production Migration: NOT STARTED
 
-Current next step: owner replaces the staging `OPENAI_API_KEY` with a newly copied active API project key from the intended OpenAI API project. A zero-cost model-read probe proved exact upstream `401`, type `invalid_request_error`, code `invalid_api_key`; the configured value was present and cleanly transported but did not match the expected project-key format class. The staging synthetic-test flag is disabled. Package 6A is owner-accepted and frozen against documentation baseline `055f610eb1a8712910214487d2e2bed96d40111c`. Real-member processing, member AI UX, Package 6C and production remain blocked.
+Current next step: explicit owner acceptance of the completed Package 6B technical result. The third staging key passed a zero-cost model-read probe, followed by exactly one successful `gpt-5.6-luna` and one successful `gpt-5.6-terra` Responses generation using locked synthetic fixtures. The synthetic-test flag is disabled again and a subsequent request was blocked before reservation. Package 6A remains owner-accepted and frozen against documentation baseline `055f610eb1a8712910214487d2e2bed96d40111c`. Real-member processing, member AI UX, Package 6C and production remain blocked.
 
 ## Environment Guardrail
 
@@ -192,7 +192,7 @@ Current checks: Phase 5 static 116/116 and responsive browser 53/53; selector, p
 
 ### Phase 6 Youri AI Core
 
-Status: PACKAGE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PACKAGE 6B BLOCKED BY OPENAI API AUTHENTICATION
+Status: PACKAGE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PACKAGE 6B TECHNICAL PASS / READY FOR OWNER ACCEPTANCE
 
 Summary: the additive Phase 6A public/private trust schema, RLS/ACL/RPC boundary and disabled provider-neutral `youri-ai` Edge scaffold are live only on staging `mokxyyullfhkfalopbzd`. Frozen Identity, Recovery, Training, Nutrition and Progress sources remain authoritative and unchanged.
 
@@ -202,13 +202,13 @@ The owner locked the 6A consent, 90-day post-entitlement chat retention, separat
 
 ### Phase 6B Provider / Privacy / Cost Gate
 
-Status: PAID SYNTHETIC TEST BLOCKED BY PROVEN INVALID OPENAI CREDENTIAL CONDITION
+Status: TECHNICAL PASS / READY FOR EXPLICIT OWNER ACCEPTANCE
 
 Summary: Package 6B is owner-authorized for autonomous staging implementation. It adds a private provider configuration/model/payload/test-budget ledger, service-only synthetic test RPCs and a server-only OpenAI Responses adapter using exact `gpt-5.6-luna` and `gpt-5.6-terra` routes. The synthetic contract enforces `store:false`, no hosted tools, strict structured output, fixed pseudonymous fixtures, bounded retries and atomic EUR 5/six-attempt global test limits.
 
 DPA, DPIA, EU route, ZDR, privacy notice, consent copy, transfer assessment, lifecycle proof and later real-member owner activation remain incomplete. The Edge has no real-member provider route and the database gate returns denied. User-facing chat and Package 6C are not started.
 
-Staging evidence: migration history `20260902045834`; migration SHA-256 `6B432DA3AA389920D5A8EEA4F15F74D35E2A9E2D6F7BF44C7B0FBF62473CC526`; corrected 6B verifier SHA-256 `761AE2F7A1F411A100862CE3254381A7AEB9C94727220674439F29E3869A8489`, live result 36/36 PASS. Two locked Luna requests reached OpenAI using exact `gpt-5.6-luna`: the original attempt and one owner-authorized retry after key replacement. No Terra request, tokens or provider output followed. A later zero-cost `GET /v1/models/gpt-5.6-luna` probe from the same Edge runtime proved upstream HTTP 401, type `invalid_request_error`, code `invalid_api_key`. The secret exists and is non-empty; no outer whitespace, quotes, newline or `Bearer` prefix is present, but its value is not compatible with the expected current project-key format class. The global endpoint and exact single-Bearer header are correct; no organization, project or proxy header is added. The probe generated no response, cost EUR 0.00 and created no ledger row. The existing two metadata-only FitMetZorge reservations remain conservatively charged at EUR 0.003585 each, EUR 0.007170 internal budget consumed and EUR 4.992830 remaining; these internal safety charges are not OpenAI invoice evidence. The synthetic-test flag is false. `youri-ai` v23 is ACTIVE with JWT verification; all eight live runtime files are source-identical to the repository runtime and bundle SHA-256 is `ae1f6dc8c102b1c55effe8c42bc38fec8e3917c7330052344c0b104cd82f40df`. Production touched: NO.
+Staging evidence: migration history `20260902045834`; migration SHA-256 `6B432DA3AA389920D5A8EEA4F15F74D35E2A9E2D6F7BF44C7B0FBF62473CC526`; corrected 6B verifier SHA-256 `761AE2F7A1F411A100862CE3254381A7AEB9C94727220674439F29E3869A8489`, live result 36/36 PASS with four metadata-only runs. Luna returned exact `gpt-5.6-luna`, strict output and 323 input / 0 cached / 311 output tokens including 57 reasoning tokens; reconciled estimate EUR 0.000548. Terra returned exact `gpt-5.6-terra`, strict output and 322 input / 0 cached / 211 output tokens including 0 reasoning tokens; reconciled estimate EUR 0.003970. Successful-call estimate totals EUR 0.004518. The separate conservative internal ledger totals EUR 0.011688, including EUR 0.007170 retained from the two earlier unknown-cost failures; zero reservations remain and EUR 4.988312 remains under the internal EUR 5 cap. No raw prompt/output column exists. The synthetic-test flag is false and a post-test request returned `synthetic_test_environment_disabled` without a row or reservation. `youri-ai` v38 is ACTIVE with JWT verification; all eight live runtime files are source-identical to the repository runtime and bundle SHA-256 is `34d4deb5561110c71ab7e8693262d8928b17cb7983766afc2ffbce11041daf25`. Package 6B is not owner-accepted/frozen yet. Production touched: NO.
 
 ### Production Migration
 

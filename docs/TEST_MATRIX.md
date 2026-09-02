@@ -742,17 +742,21 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | Exact OpenAI model routes | LOCAL PASS - `gpt-5.6-luna` and `gpt-5.6-terra`; no substitution/fallback |
 | Responses contract | LOCAL PASS - `store:false`, no tools, strict JSON schema, 20s timeout, max two attempts |
 | Synthetic payload minimization | LOCAL PASS - nine allowlisted fields; no member identity/private data |
-| Provider adapter tests | PASS - 23/23; strict output, routing, retry, exact Bearer builder, safe upstream classification, zero-cost model-read probe, no member route |
+| Provider adapter tests | PASS - 25/25; strict/unknown-key output rejection, exact requested/returned model, reasoning usage, bounded retry, exact Bearer builder, zero-cost probe, no member route |
 | Private schema/RLS/ACL | PASS - migration live; corrected verifier 36/36 |
-| EUR 5 / six-attempt cap | PASS - two failed Luna attempts conservatively charged EUR 0.007170 total; zero reservations; EUR 4.992830 remains |
+| EUR 5 / six-attempt cap | PASS - four completed ledger runs, zero reservations; conservative internal total EUR 0.011688 and EUR 4.988312 remains |
 | Real-member hard gate | LOCAL PASS - no Edge route; ZDR/DPA/DPIA/EU/copy/transfer/lifecycle/owner gates incomplete |
 | DPA / DPIA / EU / ZDR | OWNER/ACCOUNT ACTION REQUIRED - no completion claimed |
 | Medical safety copy | DRAFT NL/EN/DE - owner medical/legal approval required; FR/IT unpublished |
-| Paid synthetic calls | BLOCKED - original Luna call and one authorized post-key-replacement retry rejected with `provider_authentication_failed`; zero returned tokens/output; Terra not attempted; flag disabled and HTTP 503 block verified |
-| Authentication root cause | PROVEN - zero-cost `GET /v1/models/gpt-5.6-luna` returned 401 / `invalid_request_error` / `invalid_api_key`; key transport and header builder PASS, project-key format class FAIL |
-| Probe accounting | PASS - no paid generation, no third ledger row, EUR 0.00 external diagnostic cost; internal conservative budget remains EUR 0.007170 |
+| Paid synthetic calls | PASS - one Luna and one Terra acceptance generation; exact returned models, strict schemas, one provider attempt each, no fallback/tools |
+| Luna usage/cost | PASS - 323 input, 0 cached, 311 output including 57 reasoning; EUR 0.000548 reconciled estimate |
+| Terra usage/cost | PASS - 322 input, 0 cached, 211 output including 0 reasoning; EUR 0.003970 reconciled estimate |
+| Authentication root cause | RESOLVED - third project key passed zero-cost model GET with HTTP 200 and exact Luna model readable |
+| Probe/accounting isolation | PASS - diagnostic generated no ledger row; successful-call estimate EUR 0.004518; no raw prompt/output persistence |
+| Post-test disable gate | PASS - synthetic flag false; HTTP 503 `synthetic_test_environment_disabled`; no row or reservation created |
 | Safe upstream diagnostics | PASS - status/type/code/classification only; 401/403/404/429 no longer collapsed into authentication failure |
 | Phase 6A live verifier compatibility | PASS - verifier scoped to frozen 6A functions after additive 6B drift; 47/47 read-only PASS, no database change |
-| Final Edge state | PASS - `youri-ai` v23 ACTIVE, JWT verification enabled, all eight live runtime files source-identical to the repository files; SHA-256 `ae1f6dc8c102b1c55effe8c42bc38fec8e3917c7330052344c0b104cd82f40df` |
+| Final Edge state | PASS - `youri-ai` v38 ACTIVE, JWT verification enabled, all eight live runtime files source-identical to the repository files; SHA-256 `34d4deb5561110c71ab7e8693262d8928b17cb7983766afc2ffbce11041daf25` |
+| Package result | TECHNICAL PASS / READY FOR OWNER ACCEPTANCE - not owner-accepted/frozen yet |
 | Member AI chat / Package 6C | NOT STARTED |
 | Production | UNTOUCHED |

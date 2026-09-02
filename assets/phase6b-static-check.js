@@ -90,6 +90,17 @@ check("safe upstream metadata only", hasAll(files.adapter, [
   "An unreadable provider body is intentionally discarded",
 ]));
 check("no provider body logging", !/(console\.|response\.text\(|providerBody|rawResponse)/.test(files.adapter + files.handler));
+check("returned model identity fails closed", hasAll(files.adapter + files.handler, [
+  "provider_returned_model_mismatch",
+  "returnedModelId",
+  "returned_model_id",
+]));
+check("reasoning usage is bounded metadata", hasAll(files.adapter, [
+  "output_tokens_details",
+  "reasoning_tokens",
+  "reasoningTokens > normalizedUsage.outputTokens",
+]));
+check("provider attempt count is reported safely", files.handler.includes("attempt_count: result.attemptCount"));
 check("server-only origin rejection", files.handler.includes('request.headers.get("Origin")') && files.handler.includes("server_only_route"));
 check("server secret authorization", hasAll(files.index, ["secretKeys()", "equalSecret", "authorizeServer"]));
 check("member provider route absent", !/phase6b\/(chat|member|generate)/.test(files.index + files.handler));
