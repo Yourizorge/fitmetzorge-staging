@@ -90,11 +90,11 @@ The member subscription budget from frozen 6A remains separate: EUR 3 included, 
 - Verifier result after the controlled retry: `overall_pass=true`, 36 PASS, 0 FAIL, two metadata-only test runs.
 - Transactional E2E SHA-256: `B71A7D96C4BCB776A0175CA72E81C6E2EB0D3614C15E8A7A116816915C22ED40`.
 - E2E result: PASS against the non-empty live ledger with rollback, zero persisted fixtures, zero provider calls and EUR 0 additional provider cost.
-- `youri-ai`: final version 21, ACTIVE, JWT verification enabled, bundle SHA-256 `19d585dcf16606a0d21974ed86ac2302d2116bc6ec25c2e75729f3815e636859`.
+- `youri-ai`: final version 23, ACTIVE, JWT verification enabled, bundle SHA-256 `ae1f6dc8c102b1c55effe8c42bc38fec8e3917c7330052344c0b104cd82f40df`.
 - Live bundle: all eight runtime files match the reviewed local files after newline normalization.
 - Unauthenticated `/phase6b/status`: HTTP 401.
-- Provider-adapter/mock unit tests: 17/17 PASS.
-- Package 6A static: 93/93 PASS. Package 6B static: 89/89 PASS.
+- Provider-adapter tests: 23/23 PASS. Phase 6A mock/Edge tests: 11/11 PASS.
+- Package 6A static: 93/93 PASS. Package 6B static: 95/95 PASS.
 - Current frozen gates: Phase 4F-D 100/100, Phase 4F-E 45/45, Nutrition browser 138/138, Phase 5 static 116/116 and Phase 5 browser 53/53 PASS.
 - Security advisors: no new actionable 6B warning; intentional private RLS/no-policy INFO only. Performance advisors: expected low-use/unused-index INFO with two controlled ledger rows.
 
@@ -106,10 +106,20 @@ On 2026-09-02 the required Edge secret names were confirmed from the staging das
 
 Both failed runs are recorded as metadata only: two provider attempts, requested model `gpt-5.6-luna`, input/cached/output token counts not returned (`NULL`), no response hashes, no raw request or response columns, and a conservative full-reservation charge of EUR 0.003585 per attempt because provider usage was unknown. The global budget now has two completed attempts, zero reservations, EUR 0.007170 consumed and EUR 4.992830 remaining under the owner-approved EUR 5 cap.
 
-`FMZ_PHASE6B_SYNTHETIC_TEST_ENABLED` was replaced with `false` after the retry failed. A subsequent controlled request returned HTTP 503 `synthetic_test_environment_disabled` before reservation or provider access and did not create a third run. The temporary controlled invocation build was removed. Edge version 21 is ACTIVE with JWT verification enabled; all eight live files are source-identical to the reviewed repository runtime and the deployed bundle SHA-256 is `19d585dcf16606a0d21974ed86ac2302d2116bc6ec25c2e75729f3815e636859`.
+`FMZ_PHASE6B_SYNTHETIC_TEST_ENABLED` was replaced with `false` after the retry failed. A subsequent controlled request returned HTTP 503 `synthetic_test_environment_disabled` before reservation or provider access and did not create a third run.
+
+## Authentication Root-Cause Diagnostic
+
+On 2026-09-02 one non-generative model-read probe ran from the same staging Edge runtime and reused the adapter's normalized credential and exact Authorization-header builder. It called the official global endpoint category `GET /v1/models/gpt-5.6-luna`; no prompt, Responses generation, tools, member data or generation-ledger reservation was used. OpenAI returned HTTP `401`, `error.type=invalid_request_error` and `error.code=invalid_api_key`. External diagnostic cost: EUR 0.00.
+
+Credential inspection returned booleans only: the environment value exists and is non-empty after one trim; leading/trailing whitespace, quote characters, newline characters and an embedded `Bearer` prefix are absent; current project-key format compatibility is false. The outbound request uses `api.openai.com`, exactly one `Authorization: Bearer <trimmed-key>` header, and no organization, project, forwarded or proxy headers. The live bundle does not use `eu.api.openai.com` for this unverified synthetic path. No key value, fragment, length, fingerprint, request body, full provider body or response header was stored or reported.
+
+The previous two `provider_authentication_failed` mappings are therefore resolved to a credential condition rather than an adapter endpoint/header defect. The two existing internal safety charges remain EUR 0.003585 each and are deliberately separate from actual OpenAI billing evidence. The free probe created no third test row: live ledger remains two failed Luna rows, zero Terra rows, zero tokens, zero provider request/response hashes, zero open reservations and EUR 0.007170 internal budget consumption.
+
+The adapter now preserves only safe upstream status/type/code/classification, distinguishes 401 authentication from 403 permission, 404 resource/model and 429 quota/rate conditions, and has regression coverage for the zero-cost probe and exact header contract. The old Phase 6A verifier was also scoped to its frozen 6A function inventory after additive 6B functions caused three verifier-only false failures; corrected live result is 47/47 PASS, with no database change. Edge version 23 is ACTIVE with JWT verification enabled; all eight live files are source-identical to the repository runtime and the deployed bundle SHA-256 is `ae1f6dc8c102b1c55effe8c42bc38fec8e3917c7330052344c0b104cd82f40df`.
 
 ## Exact Account Blocker
 
-The replacement staging `OPENAI_API_KEY` is still rejected by OpenAI with `provider_authentication_failed`. The owner must validate that the configured value is an active OpenAI API project key, belongs to the intended billed API project, and is accepted by the Responses API before another controlled retry is authorized. The value must never be shared in chat or committed. The exact Luna/Terra model-access gate remains untested because authentication fails first. No automatic retry or model substitution is permitted.
+The replacement staging `OPENAI_API_KEY` is conclusively rejected by OpenAI with `invalid_api_key` and does not match the expected current project-key format class. The exact owner action is to create or select an active API project key in the intended billed OpenAI API project, copy the complete key value directly into the staging Edge secret, and leave the synthetic-test flag false until a separately authorized controlled retry. The value must never be shared in chat or committed. The exact Luna/Terra model-access gate remains untested because authentication fails first. No automatic retry or model substitution is permitted.
 
 Package 6B is not owner-accepted or frozen. Package 6C and member AI chat remain unstarted.

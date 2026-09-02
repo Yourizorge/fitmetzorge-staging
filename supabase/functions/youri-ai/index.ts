@@ -3,6 +3,7 @@ import { createYouriAiHandler } from "./handler.ts";
 import type { TrustStatus } from "./contracts.ts";
 import { createPhase6bHandler } from "./phase6b-handler.ts";
 import type { BeginResult } from "./phase6b-handler.ts";
+import { inspectOpenAiCredential, probeOpenAiModelRead } from "./openai-adapter.ts";
 
 function requiredEnvironment(name: string): string {
   const value = Deno.env.get(name)?.trim();
@@ -65,6 +66,7 @@ const supabaseUrl = requiredEnvironment("SUPABASE_URL");
 const publishableKey = firstPublishableKey();
 const availableSecretKeys = secretKeys();
 const adminKey = availableSecretKeys[0] || "";
+const openAiCredential = inspectOpenAiCredential(Deno.env.get("OPENAI_API_KEY"));
 
 function memberClient(token: string) {
   return createClient(supabaseUrl, publishableKey, {
@@ -101,7 +103,10 @@ async function serviceRpc(name: string, input: Record<string, unknown> = {}) {
 
 const phase6bHandler = createPhase6bHandler({
   providerTestEnvironmentEnabled: Deno.env.get("FMZ_PHASE6B_SYNTHETIC_TEST_ENABLED") === "true",
-  openAiApiKey: Deno.env.get("OPENAI_API_KEY")?.trim() || null,
+  authDiagnosticEnvironmentEnabled: Deno.env.get("FMZ_PHASE6B_AUTH_DIAGNOSTIC_ENABLED") === "true",
+  openAiApiKey: openAiCredential.apiKey,
+  openAiCredentialChecks: openAiCredential.checks,
+  runAuthProbe: () => probeOpenAiModelRead(openAiCredential.apiKey || ""),
   async authorizeServer(request) {
     const authorization = request.headers.get("Authorization") || "";
     const candidate = authorization.startsWith("Bearer ") ? authorization.slice(7).trim() : "";

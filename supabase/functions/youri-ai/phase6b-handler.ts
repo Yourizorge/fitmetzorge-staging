@@ -5,7 +5,13 @@ import {
   PHASE6B_MODEL_ROUTES,
   validateSyntheticProviderRequest,
 } from "./provider-contracts.ts";
-import { OpenAiResponsesAdapter, SafeProviderError, sha256 } from "./openai-adapter.ts";
+import {
+  type OpenAiCredentialChecks,
+  type OpenAiModelReadProbeResult,
+  OpenAiResponsesAdapter,
+  SafeProviderError,
+  sha256,
+} from "./openai-adapter.ts";
 
 const BODY_LIMIT_BYTES = 2048;
 
@@ -21,7 +27,10 @@ export interface BeginResult {
 export interface Phase6bDependencies {
   authorizeServer(request: Request): Promise<boolean>;
   providerTestEnvironmentEnabled: boolean;
+  authDiagnosticEnvironmentEnabled: boolean;
   openAiApiKey: string | null;
+  openAiCredentialChecks: OpenAiCredentialChecks;
+  runAuthProbe(): Promise<OpenAiModelReadProbeResult>;
   readStatus(): Promise<Record<string, unknown>>;
   begin(input: Record<string, unknown>): Promise<BeginResult>;
   complete(input: Record<string, unknown>): Promise<Record<string, unknown>>;
@@ -55,6 +64,26 @@ export function createPhase6bHandler(dependencies: Phase6bDependencies) {
         synthetic_test_environment_enabled: dependencies.providerTestEnvironmentEnabled,
         real_member_processing_enabled: false,
       });
+    }
+
+    if (path.endsWith("/phase6b/auth-diagnostic")) {
+      if (request.method !== "GET") return json(405, { error: "method_not_allowed" });
+      if (!dependencies.authDiagnosticEnvironmentEnabled) {
+        return json(503, { error: "auth_diagnostic_environment_disabled" });
+      }
+      if (!dependencies.openAiApiKey) return json(503, { error: "provider_credentials_unavailable" });
+      try {
+        const probe = await dependencies.runAuthProbe();
+        return json(200, {
+          mode: "provider_authentication_diagnostic",
+          secret_checks: dependencies.openAiCredentialChecks,
+          probe,
+          synthetic_test_environment_enabled: dependencies.providerTestEnvironmentEnabled,
+          real_member_processing_enabled: false,
+        });
+      } catch (error) {
+        return json(503, { error: safeCode(error) });
+      }
     }
 
     if (!path.endsWith("/phase6b/synthetic-test")) return json(404, { error: "route_not_found" });

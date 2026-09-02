@@ -75,7 +75,11 @@ functions as (
   from pg_proc p
   join pg_namespace n on n.oid = p.pronamespace
   where (n.nspname = 'public' and p.proname like 'fmz_phase6a_%')
-     or n.nspname = 'ai_private'
+     or (n.nspname = 'ai_private' and p.proname = any(array[
+       'assert_member','can_share_trainer_summary','current_consent','current_entitlement',
+       'evaluate_budget','subscription_period','touch_updated_at','trust_status',
+       'validate_action_contract','validate_structured_response'
+     ]::text[]))
 ),
 function_acl as (
   select f.function_schema, f.name, f.args,

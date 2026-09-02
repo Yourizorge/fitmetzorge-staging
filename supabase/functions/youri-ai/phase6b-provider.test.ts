@@ -7,7 +7,14 @@ import {
   PHASE6B_MODEL_ROUTES,
   validateSyntheticProviderRequest,
 } from "./provider-contracts.ts";
-import { buildOpenAiResponsesRequest, OpenAiResponsesAdapter, SafeProviderError } from "./openai-adapter.ts";
+import {
+  buildOpenAiResponsesRequest,
+  inspectOpenAiCredential,
+  inspectOpenAiHeaderContract,
+  OpenAiResponsesAdapter,
+  probeOpenAiModelRead,
+  SafeProviderError,
+} from "./openai-adapter.ts";
 import { createPhase6bHandler } from "./phase6b-handler.ts";
 
 const validOutput = {
@@ -80,6 +87,74 @@ test("Responses request enforces store false and denies all tools", () => {
   assert.equal("previous_response_id" in body, false);
 });
 
+test("credential inspection trims once and exposes booleans only", () => {
+  const inspected = inspectOpenAiCredential("  sk-proj-test_only_project_key_1234567890  \r\n");
+  assert.equal(inspected.apiKey, "sk-proj-test_only_project_key_1234567890");
+  assert.deepEqual(inspected.checks, {
+    rawExists: true,
+    trimmedNonEmpty: true,
+    leadingOrTrailingWhitespacePresent: true,
+    quoteCharactersPresent: false,
+    newlineCharactersPresent: true,
+    bearerPrefixPresent: false,
+    projectKeyFormatCompatible: true,
+    normalizationAppliedExactlyOnce: true,
+  });
+  assert.equal(JSON.stringify(inspected.checks).includes("sk-proj"), false);
+});
+
+test("OpenAI header contract is exactly one bearer and forwards no proxy headers", () => {
+  assert.deepEqual(inspectOpenAiHeaderContract("sk-proj-test_only_project_key_1234567890"), {
+    exactBearerHeader: true,
+    exactlyOneBearerPrefix: true,
+    authorizationHeaderCountOne: true,
+    organizationHeaderPresent: false,
+    projectHeaderPresent: false,
+    proxyHeadersForwarded: false,
+  });
+});
+
+test("model-read probe is GET-only, non-generative and proves authentication", async () => {
+  let inspectedRequest: Request | null = null;
+  const result = await probeOpenAiModelRead(
+    "sk-proj-test_only_project_key_1234567890",
+    async (input, init) => {
+      inspectedRequest = new Request(input, init);
+      return new Response(JSON.stringify({ id: "gpt-5.6-luna", object: "model" }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
+    },
+  );
+  assert.equal(inspectedRequest?.method, "GET");
+  assert.equal(inspectedRequest?.url, "https://api.openai.com/v1/models/gpt-5.6-luna");
+  assert.equal(await inspectedRequest?.text(), "");
+  assert.equal(result.keyAuthenticated, true);
+  assert.equal(result.returnedModelMatches, true);
+  assert.equal(result.generationPerformed, false);
+  assert.equal(result.externalCostEurMicros, 0);
+});
+
+test("model-read probe preserves only safe upstream authentication fields", async () => {
+  const key = "sk-proj-test_only_project_key_1234567890";
+  const result = await probeOpenAiModelRead(key, async () => new Response(JSON.stringify({
+    error: {
+      message: `Incorrect API key provided: ${key}`,
+      type: "invalid_request_error",
+      code: "invalid_api_key",
+    },
+  }), { status: 401, headers: { "Content-Type": "application/json" } }));
+  assert.deepEqual(result.upstream, {
+    status: 401,
+    type: "invalid_request_error",
+    code: "invalid_api_key",
+    classification: "invalid_or_revoked_api_key",
+  });
+  assert.equal(result.keyAuthenticated, false);
+  assert.equal(JSON.stringify(result).includes(key), false);
+  assert.equal(JSON.stringify(result).includes("Incorrect API key"), false);
+});
+
 test("model allowlist and route pairing fail closed", () => {
   const payload = buildSyntheticProviderPayload("luna_connectivity_v1");
   assert.throws(() => buildOpenAiResponsesRequest("gpt-5.6", "luna", payload), /provider_model_forbidden/);
@@ -148,6 +223,23 @@ test("adapter returns sanitized auth failure without response body", async () =>
   );
 });
 
+test("adapter does not misclassify provider permission errors as authentication", async () => {
+  const adapter = new OpenAiResponsesAdapter({
+    apiKey: "test-only",
+    fetchImpl: async () => new Response(JSON.stringify({
+      error: { type: "insufficient_permissions", code: "model_not_allowed", message: "sensitive" },
+    }), { status: 403, headers: { "Content-Type": "application/json" } }),
+  });
+  await assert.rejects(
+    adapter.run("gpt-5.6-luna", "luna", buildSyntheticProviderPayload("luna_connectivity_v1"), 1, 512),
+    (error: unknown) => error instanceof SafeProviderError
+      && error.message === "provider_permission_denied"
+      && error.upstream?.status === 403
+      && error.upstream.type === "insufficient_permissions"
+      && error.upstream.code === "model_not_allowed",
+  );
+});
+
 function handlerDependencies(overrides: Record<string, unknown> = {}) {
   const calls: Array<{ name: string; input: Record<string, unknown> }> = [];
   return {
@@ -155,7 +247,12 @@ function handlerDependencies(overrides: Record<string, unknown> = {}) {
     dependencies: {
       authorizeServer: async () => true,
       providerTestEnvironmentEnabled: true,
+      authDiagnosticEnvironmentEnabled: false,
       openAiApiKey: "test-only",
+      openAiCredentialChecks: inspectOpenAiCredential("test-only").checks,
+      runAuthProbe: async () => {
+        throw new Error("diagnostic_not_expected");
+      },
       readStatus: async () => ({ execution_mode: "synthetic_only" }),
       begin: async (input: Record<string, unknown>) => {
         calls.push({ name: "begin", input });
@@ -202,6 +299,36 @@ test("browser origin is rejected from server-only provider route", async () => {
   request.headers.set("Origin", "https://yourizorge.github.io");
   const response = await createPhase6bHandler(dependencies)(request);
   assert.equal(response.status, 403);
+});
+
+test("auth diagnostic is server-only, separately gated and performs no accounting", async () => {
+  const disabled = handlerDependencies();
+  const request = new Request("https://example.test/youri-ai/phase6b/auth-diagnostic", {
+    method: "GET",
+    headers: { Authorization: "Bearer server-only" },
+  });
+  assert.equal((await createPhase6bHandler(disabled.dependencies)(request)).status, 503);
+  assert.equal(disabled.calls.length, 0);
+
+  const enabled = handlerDependencies({
+    authDiagnosticEnvironmentEnabled: true,
+    runAuthProbe: async () => ({
+      upstream: { status: 401, type: "invalid_request_error", code: "invalid_api_key", classification: "invalid_or_revoked_api_key" },
+      keyAuthenticated: false,
+      returnedModelMatches: false,
+      endpointHost: "api.openai.com",
+      endpointPath: "/v1/models/gpt-5.6-luna",
+      headerChecks: inspectOpenAiHeaderContract("test-only"),
+      generationPerformed: false,
+      externalCostEurMicros: 0,
+    }),
+  });
+  const response = await createPhase6bHandler(enabled.dependencies)(request);
+  assert.equal(response.status, 200);
+  const body = await response.json();
+  assert.equal(body.probe.upstream.code, "invalid_api_key");
+  assert.equal(body.probe.generationPerformed, false);
+  assert.equal(enabled.calls.length, 0);
 });
 
 test("missing environment test flag and key fail before reservation", async () => {

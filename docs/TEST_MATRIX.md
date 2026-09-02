@@ -742,13 +742,17 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | Exact OpenAI model routes | LOCAL PASS - `gpt-5.6-luna` and `gpt-5.6-terra`; no substitution/fallback |
 | Responses contract | LOCAL PASS - `store:false`, no tools, strict JSON schema, 20s timeout, max two attempts |
 | Synthetic payload minimization | LOCAL PASS - nine allowlisted fields; no member identity/private data |
-| Provider adapter tests | LOCAL PASS - strict output, routing, retry, sanitized failure, no member route |
+| Provider adapter tests | PASS - 23/23; strict output, routing, retry, exact Bearer builder, safe upstream classification, zero-cost model-read probe, no member route |
 | Private schema/RLS/ACL | PASS - migration live; corrected verifier 36/36 |
 | EUR 5 / six-attempt cap | PASS - two failed Luna attempts conservatively charged EUR 0.007170 total; zero reservations; EUR 4.992830 remains |
 | Real-member hard gate | LOCAL PASS - no Edge route; ZDR/DPA/DPIA/EU/copy/transfer/lifecycle/owner gates incomplete |
 | DPA / DPIA / EU / ZDR | OWNER/ACCOUNT ACTION REQUIRED - no completion claimed |
 | Medical safety copy | DRAFT NL/EN/DE - owner medical/legal approval required; FR/IT unpublished |
 | Paid synthetic calls | BLOCKED - original Luna call and one authorized post-key-replacement retry rejected with `provider_authentication_failed`; zero returned tokens/output; Terra not attempted; flag disabled and HTTP 503 block verified |
-| Final Edge state | PASS - `youri-ai` v21 ACTIVE, JWT verification enabled, all eight live runtime files source-identical to the reviewed repository files |
+| Authentication root cause | PROVEN - zero-cost `GET /v1/models/gpt-5.6-luna` returned 401 / `invalid_request_error` / `invalid_api_key`; key transport and header builder PASS, project-key format class FAIL |
+| Probe accounting | PASS - no paid generation, no third ledger row, EUR 0.00 external diagnostic cost; internal conservative budget remains EUR 0.007170 |
+| Safe upstream diagnostics | PASS - status/type/code/classification only; 401/403/404/429 no longer collapsed into authentication failure |
+| Phase 6A live verifier compatibility | PASS - verifier scoped to frozen 6A functions after additive 6B drift; 47/47 read-only PASS, no database change |
+| Final Edge state | PASS - `youri-ai` v23 ACTIVE, JWT verification enabled, all eight live runtime files source-identical to the repository files; SHA-256 `ae1f6dc8c102b1c55effe8c42bc38fec8e3917c7330052344c0b104cd82f40df` |
 | Member AI chat / Package 6C | NOT STARTED |
 | Production | UNTOUCHED |

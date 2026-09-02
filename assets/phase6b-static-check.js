@@ -44,7 +44,19 @@ check("exact Luna model", hasAll(files.migration + runtime, ["gpt-5.6-luna", "mo
 check("exact Terra model", hasAll(files.migration + runtime, ["gpt-5.6-terra", "model_route = 'terra'"]));
 check("no model substitution", files.adapter.includes("provider_model_forbidden") && files.adapter.includes("provider_route_conflict"));
 check("official price lock", hasAll(files.migration, ["200000,20000,1200000", "2000000,200000,12000000"]));
-check("Responses endpoint exact", files.adapter.includes('const FIXED_OPENAI_ENDPOINT = "https://api.openai.com/v1/responses"'));
+check("Responses endpoint exact", hasAll(files.adapter, [
+  'OPENAI_API_HOST = "api.openai.com"',
+  'OPENAI_RESPONSES_PATH = "/v1/responses"',
+  'const FIXED_OPENAI_ENDPOINT = `https://${OPENAI_API_HOST}${OPENAI_RESPONSES_PATH}`',
+]));
+check("free auth probe endpoint exact", hasAll(files.adapter, [
+  'OPENAI_MODEL_READ_PATH = "/v1/models/gpt-5.6-luna"',
+  "probeOpenAiModelRead",
+  'method: "GET"',
+  "generationPerformed: false",
+  "externalCostEurMicros: 0",
+]));
+check("global endpoint only", !files.adapter.includes("eu.api.openai.com"));
 check("real EU endpoint gated", files.migration.includes("https://eu.api.openai.com/v1/responses"));
 check("store false", files.adapter.includes("store: false"));
 check("background false", files.adapter.includes("background: false"));
@@ -63,12 +75,47 @@ check("no actions in provider test", files.contracts.includes('maxItems: 0'));
 check("provider timeout bounded", hasAll(files.adapter, ["20_000", "provider_timeout_invalid", "provider_timeout"]));
 check("retry max two", hasAll(files.adapter, ["maxAttempts > 2", "response.status === 429", "response.status >= 500"]));
 check("usage exact", hasAll(files.adapter, ["input_tokens", "cached_tokens", "output_tokens", "provider_usage_invalid"]));
-check("sanitized provider errors", hasAll(files.adapter, ["provider_authentication_failed", "provider_request_rejected", "provider_network_error"]));
+check("sanitized provider errors", hasAll(files.adapter, [
+  "provider_authentication_failed",
+  "provider_permission_denied",
+  "provider_resource_not_found",
+  "provider_quota_exceeded",
+  "provider_request_rejected",
+  "provider_network_error",
+]));
+check("safe upstream metadata only", hasAll(files.adapter, [
+  "safeProviderField",
+  "classification",
+  "invalid_or_revoked_api_key",
+  "An unreadable provider body is intentionally discarded",
+]));
 check("no provider body logging", !/(console\.|response\.text\(|providerBody|rawResponse)/.test(files.adapter + files.handler));
 check("server-only origin rejection", files.handler.includes('request.headers.get("Origin")') && files.handler.includes("server_only_route"));
 check("server secret authorization", hasAll(files.index, ["secretKeys()", "equalSecret", "authorizeServer"]));
 check("member provider route absent", !/phase6b\/(chat|member|generate)/.test(files.index + files.handler));
 check("explicit test environment flag", hasAll(files.index + files.handler, ["FMZ_PHASE6B_SYNTHETIC_TEST_ENABLED", "providerTestEnvironmentEnabled"]));
+check("auth diagnostic independently gated", hasAll(files.index + files.handler, [
+  "FMZ_PHASE6B_AUTH_DIAGNOSTIC_ENABLED",
+  "authDiagnosticEnvironmentEnabled",
+  "/phase6b/auth-diagnostic",
+]));
+check("credential normalization and format booleans", hasAll(files.adapter + files.index, [
+  "inspectOpenAiCredential",
+  "leadingOrTrailingWhitespacePresent",
+  "quoteCharactersPresent",
+  "newlineCharactersPresent",
+  "bearerPrefixPresent",
+  "projectKeyFormatCompatible",
+  "normalizationAppliedExactlyOnce",
+]));
+check("exact bearer builder", hasAll(files.adapter, [
+  "buildOpenAiHeaders",
+  "exactBearerHeader",
+  "exactlyOneBearerPrefix",
+  "organizationHeaderPresent",
+  "projectHeaderPresent",
+  "proxyHeadersForwarded",
+]));
 check("server OpenAI secret only", hasAll(files.index, ["OPENAI_API_KEY", "Deno.env.get"]));
 check("no key returned", !/(openAiApiKey|availableSecretKeys|adminKey)\s*[:,]\s*[^\n]*json/i.test(files.index + files.handler));
 check("real member DB off", hasAll(files.migration, ["real_member_processing_enabled boolean not null default false", "owner_real_member_activation boolean not null default false"]));

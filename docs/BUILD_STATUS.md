@@ -14,10 +14,10 @@ Last updated: 2026-09-02
 - Phase 0B Storage verification: COMPLETE
 - Master Plan Specification: COMPLETE
 - Master Plan Final Review: COMPLETE
-- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B PAID SYNTHETIC TEST BLOCKED BY OPENAI API AUTHENTICATION
+- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B PAID SYNTHETIC TEST BLOCKED BY PROVEN INVALID OPENAI CREDENTIAL CONDITION
 - Production Migration: NOT STARTED
 
-Current next step: owner resolves the external OpenAI account/key condition after both the original call and one authorized post-replacement Luna retry were rejected as `provider_authentication_failed`. The staging synthetic-test flag is disabled. Package 6A is owner-accepted and frozen against documentation baseline `055f610eb1a8712910214487d2e2bed96d40111c`. Real-member processing, member AI UX, Package 6C and production remain blocked.
+Current next step: owner replaces the staging `OPENAI_API_KEY` with a newly copied active API project key from the intended OpenAI API project. A zero-cost model-read probe proved exact upstream `401`, type `invalid_request_error`, code `invalid_api_key`; the configured value was present and cleanly transported but did not match the expected project-key format class. The staging synthetic-test flag is disabled. Package 6A is owner-accepted and frozen against documentation baseline `055f610eb1a8712910214487d2e2bed96d40111c`. Real-member processing, member AI UX, Package 6C and production remain blocked.
 
 ## Environment Guardrail
 
@@ -202,13 +202,13 @@ The owner locked the 6A consent, 90-day post-entitlement chat retention, separat
 
 ### Phase 6B Provider / Privacy / Cost Gate
 
-Status: PAID SYNTHETIC TEST BLOCKED BY OPENAI API AUTHENTICATION
+Status: PAID SYNTHETIC TEST BLOCKED BY PROVEN INVALID OPENAI CREDENTIAL CONDITION
 
 Summary: Package 6B is owner-authorized for autonomous staging implementation. It adds a private provider configuration/model/payload/test-budget ledger, service-only synthetic test RPCs and a server-only OpenAI Responses adapter using exact `gpt-5.6-luna` and `gpt-5.6-terra` routes. The synthetic contract enforces `store:false`, no hosted tools, strict structured output, fixed pseudonymous fixtures, bounded retries and atomic EUR 5/six-attempt global test limits.
 
 DPA, DPIA, EU route, ZDR, privacy notice, consent copy, transfer assessment, lifecycle proof and later real-member owner activation remain incomplete. The Edge has no real-member provider route and the database gate returns denied. User-facing chat and Package 6C are not started.
 
-Staging evidence: migration history `20260902045834`; migration SHA-256 `6B432DA3AA389920D5A8EEA4F15F74D35E2A9E2D6F7BF44C7B0FBF62473CC526`; corrected verifier SHA-256 `761AE2F7A1F411A100862CE3254381A7AEB9C94727220674439F29E3869A8489`. Two locked Luna requests reached OpenAI using exact `gpt-5.6-luna`: the original attempt and one owner-authorized retry after key replacement. Both were rejected with `provider_authentication_failed`; no Terra request was made. No tokens or provider output were returned. The metadata-only ledger conservatively charged EUR 0.003585 per failed attempt, for EUR 0.007170 consumed and EUR 4.992830 remaining under the EUR 5 cap. The synthetic-test flag is false and a controlled follow-up returned `synthetic_test_environment_disabled` before reservation/provider access. `youri-ai` v21 is ACTIVE with JWT verification; all eight live runtime files are source-identical to the reviewed repository files and the deployed bundle SHA-256 is `19d585dcf16606a0d21974ed86ac2302d2116bc6ec25c2e75729f3815e636859`. Production touched: NO.
+Staging evidence: migration history `20260902045834`; migration SHA-256 `6B432DA3AA389920D5A8EEA4F15F74D35E2A9E2D6F7BF44C7B0FBF62473CC526`; corrected 6B verifier SHA-256 `761AE2F7A1F411A100862CE3254381A7AEB9C94727220674439F29E3869A8489`, live result 36/36 PASS. Two locked Luna requests reached OpenAI using exact `gpt-5.6-luna`: the original attempt and one owner-authorized retry after key replacement. No Terra request, tokens or provider output followed. A later zero-cost `GET /v1/models/gpt-5.6-luna` probe from the same Edge runtime proved upstream HTTP 401, type `invalid_request_error`, code `invalid_api_key`. The secret exists and is non-empty; no outer whitespace, quotes, newline or `Bearer` prefix is present, but its value is not compatible with the expected current project-key format class. The global endpoint and exact single-Bearer header are correct; no organization, project or proxy header is added. The probe generated no response, cost EUR 0.00 and created no ledger row. The existing two metadata-only FitMetZorge reservations remain conservatively charged at EUR 0.003585 each, EUR 0.007170 internal budget consumed and EUR 4.992830 remaining; these internal safety charges are not OpenAI invoice evidence. The synthetic-test flag is false. `youri-ai` v23 is ACTIVE with JWT verification; all eight live runtime files are source-identical to the repository runtime and bundle SHA-256 is `ae1f6dc8c102b1c55effe8c42bc38fec8e3917c7330052344c0b104cd82f40df`. Production touched: NO.
 
 ### Production Migration
 
