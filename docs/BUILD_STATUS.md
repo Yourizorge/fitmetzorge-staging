@@ -14,10 +14,10 @@ Last updated: 2026-09-02
 - Phase 0B Storage verification: COMPLETE
 - Master Plan Specification: COMPLETE
 - Master Plan Final Review: COMPLETE
-- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B TECHNICAL PASS / READY FOR OWNER ACCEPTANCE
+- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B COMPLETE / OWNER-ACCEPTED / FROZEN
 - Production Migration: NOT STARTED
 
-Current next step: explicit owner acceptance of the completed Package 6B technical result. The third staging key passed a zero-cost model-read probe, followed by exactly one successful `gpt-5.6-luna` and one successful `gpt-5.6-terra` Responses generation using locked synthetic fixtures. The synthetic-test flag is disabled again and a subsequent request was blocked before reservation. Package 6A remains owner-accepted and frozen against documentation baseline `055f610eb1a8712910214487d2e2bed96d40111c`. Real-member processing, member AI UX, Package 6C and production remain blocked.
+Current next step: wait for a separate explicit owner GO before Package 6C. Package 6B was owner-accepted and frozen on 2026-09-02 after the zero-cost model-read probe and exactly one successful locked `gpt-5.6-luna` and `gpt-5.6-terra` Responses generation. The synthetic-test flag is disabled and a subsequent request was blocked before reservation. Packages 6A and 6B remain frozen. Real-member processing, member AI UX, Package 6C and production remain blocked.
 
 ## Environment Guardrail
 
@@ -192,7 +192,7 @@ Current checks: Phase 5 static 116/116 and responsive browser 53/53; selector, p
 
 ### Phase 6 Youri AI Core
 
-Status: PACKAGE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PACKAGE 6B TECHNICAL PASS / READY FOR OWNER ACCEPTANCE
+Status: PACKAGES 6A AND 6B COMPLETE / OWNER-ACCEPTED / FROZEN
 
 Summary: the additive Phase 6A public/private trust schema, RLS/ACL/RPC boundary and disabled provider-neutral `youri-ai` Edge scaffold are live only on staging `mokxyyullfhkfalopbzd`. Frozen Identity, Recovery, Training, Nutrition and Progress sources remain authoritative and unchanged.
 
@@ -202,13 +202,13 @@ The owner locked the 6A consent, 90-day post-entitlement chat retention, separat
 
 ### Phase 6B Provider / Privacy / Cost Gate
 
-Status: TECHNICAL PASS / READY FOR EXPLICIT OWNER ACCEPTANCE
+Status: COMPLETE / OWNER-ACCEPTED / FROZEN
 
 Summary: Package 6B is owner-authorized for autonomous staging implementation. It adds a private provider configuration/model/payload/test-budget ledger, service-only synthetic test RPCs and a server-only OpenAI Responses adapter using exact `gpt-5.6-luna` and `gpt-5.6-terra` routes. The synthetic contract enforces `store:false`, no hosted tools, strict structured output, fixed pseudonymous fixtures, bounded retries and atomic EUR 5/six-attempt global test limits.
 
 DPA, DPIA, EU route, ZDR, privacy notice, consent copy, transfer assessment, lifecycle proof and later real-member owner activation remain incomplete. The Edge has no real-member provider route and the database gate returns denied. User-facing chat and Package 6C are not started.
 
-Staging evidence: migration history `20260902045834`; migration SHA-256 `6B432DA3AA389920D5A8EEA4F15F74D35E2A9E2D6F7BF44C7B0FBF62473CC526`; corrected 6B verifier SHA-256 `761AE2F7A1F411A100862CE3254381A7AEB9C94727220674439F29E3869A8489`, live result 36/36 PASS with four metadata-only runs. Luna returned exact `gpt-5.6-luna`, strict output and 323 input / 0 cached / 311 output tokens including 57 reasoning tokens; reconciled estimate EUR 0.000548. Terra returned exact `gpt-5.6-terra`, strict output and 322 input / 0 cached / 211 output tokens including 0 reasoning tokens; reconciled estimate EUR 0.003970. Successful-call estimate totals EUR 0.004518. The separate conservative internal ledger totals EUR 0.011688, including EUR 0.007170 retained from the two earlier unknown-cost failures; zero reservations remain and EUR 4.988312 remains under the internal EUR 5 cap. No raw prompt/output column exists. The synthetic-test flag is false and a post-test request returned `synthetic_test_environment_disabled` without a row or reservation. `youri-ai` v38 is ACTIVE with JWT verification; all eight live runtime files are source-identical to the repository runtime and bundle SHA-256 is `34d4deb5561110c71ab7e8693262d8928b17cb7983766afc2ffbce11041daf25`. Package 6B is not owner-accepted/frozen yet. Production touched: NO.
+Staging evidence: migration history `20260902045834`; migration SHA-256 `6B432DA3AA389920D5A8EEA4F15F74D35E2A9E2D6F7BF44C7B0FBF62473CC526`; corrected 6B verifier SHA-256 `761AE2F7A1F411A100862CE3254381A7AEB9C94727220674439F29E3869A8489`, live result 36/36 PASS with four metadata-only runs. Luna returned exact `gpt-5.6-luna`, strict output and 323 input / 0 cached / 311 output tokens including 57 reasoning tokens; reconciled estimate EUR 0.000548. Terra returned exact `gpt-5.6-terra`, strict output and 322 input / 0 cached / 211 output tokens including 0 reasoning tokens; reconciled estimate EUR 0.003970. Successful-call estimate totals EUR 0.004518. The separate conservative internal ledger totals EUR 0.011688, including EUR 0.007170 retained from the two earlier unknown-cost failures; zero reservations remain and EUR 4.988312 remains under the internal EUR 5 cap. No raw prompt/output column exists. The synthetic-test flag is false and a post-test request returned `synthetic_test_environment_disabled` without a row or reservation. `youri-ai` v38 is ACTIVE with JWT verification; all eight live runtime files are source-identical to the repository runtime and bundle SHA-256 is `34d4deb5561110c71ab7e8693262d8928b17cb7983766afc2ffbce11041daf25`. Owner acceptance and freeze were recorded on 2026-09-02. Production touched: NO.
 
 ### Production Migration
 

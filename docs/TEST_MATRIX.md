@@ -62,7 +62,7 @@ This matrix records the required functional, security, entitlement, AI, migratio
 | Phase 5 | Measurements | Optional logical body measurements, immutable corrections and archive | OWNER ACCEPTANCE GATE | PASS - COMPLETE / OWNER-ACCEPTED / FROZEN |
 | Phase 5 | Photos | Private progress photos, signed access, no public default, AI photo consent gate | SEPARATE PRIVACY GATE | DEFERRED - NO TABLE, BUCKET OR MEMBER FILE INPUT |
 | Phase 5 | Milestones | Strength and consistency from frozen Training sources; truthful unavailable running state | OWNER ACCEPTANCE GATE | PASS - COMPLETE / OWNER-ACCEPTED / FROZEN |
-| Phase 6 | Architecture/readiness | Frozen context sources, backend boundary, privacy, safety, provider, costs, packages and decisions | ARCHITECTURE GATE | PASS - AUDIT COMPLETE / 6A OWNER-ACCEPTED + FROZEN / 6B IN PROGRESS |
+| Phase 6 | Architecture/readiness | Frozen context sources, backend boundary, privacy, safety, provider, costs, packages and decisions | ARCHITECTURE GATE | PASS - AUDIT COMPLETE / 6A + 6B OWNER-ACCEPTED AND FROZEN |
 | Phase 6 | Youri AI | Backend-mediated AI, no browser-to-AI provider call, entitlement check before call | BLOCKING GATE | PLANNED |
 | Phase 6 | AI context | Goals, training, nutrition, progress, recovery context only when authorized | BLOCKING GATE | PLANNED |
 | Phase 6 | AI quality | Missing data handled honestly; no hallucinated facts; structured responses validated | BLOCKING GATE | PLANNED |
@@ -711,10 +711,10 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | Provider and cost | OWNER DECISION REQUIRED - no provider selected, paid service activated or budget approved |
 | 30-day trial readiness | PASS FOR ARCHITECTURE - Phase 6 consumes time-valid `ai`; Phase 7 owns trial lifecycle and abuse prevention |
 | Package order | PASS - 6A through 6I recorded without pulling Phase 7, 9 or 10 scope forward |
-| First provider-free package | TECHNICAL PASS - 6A trust boundary, schema/RLS/RPC, strict contracts, disabled Edge scaffold and deterministic mock live on staging |
+| First provider-free package | PASS - 6A trust boundary, schema/RLS/RPC, strict contracts, disabled Edge scaffold and deterministic mock live on staging; owner-accepted and frozen |
 | Database/runtime/provider during audit | 6A STAGING SCHEMA + DISABLED EDGE LIVE / PROVIDER NOT CALLED / ZERO COST |
 | Production | UNTOUCHED |
-| Audit result | PASS - PACKAGE 6A READY FOR OWNER REVIEW; NOT ACCEPTED/FROZEN |
+| Audit result | PASS - PACKAGE 6A COMPLETE / OWNER-ACCEPTED / FROZEN |
 
 ## Phase 6A AI Trust Foundation Gate
 
@@ -757,6 +757,6 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | Safe upstream diagnostics | PASS - status/type/code/classification only; 401/403/404/429 no longer collapsed into authentication failure |
 | Phase 6A live verifier compatibility | PASS - verifier scoped to frozen 6A functions after additive 6B drift; 47/47 read-only PASS, no database change |
 | Final Edge state | PASS - `youri-ai` v38 ACTIVE, JWT verification enabled, all eight live runtime files source-identical to the repository files; SHA-256 `34d4deb5561110c71ab7e8693262d8928b17cb7983766afc2ffbce11041daf25` |
-| Package result | TECHNICAL PASS / READY FOR OWNER ACCEPTANCE - not owner-accepted/frozen yet |
+| Package result | PASS - COMPLETE / OWNER-ACCEPTED / FROZEN on 2026-09-02 |
 | Member AI chat / Package 6C | NOT STARTED |
 | Production | UNTOUCHED |

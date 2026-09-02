@@ -304,7 +304,7 @@ The existing `user_settings.unit_system` stores the presentation choice. No impe
 
 ### Phase 6 Youri AI Core Readiness
 
-Status: ARCHITECTURE AUDIT COMPLETE; PACKAGE 6A TECHNICAL PASS / READY FOR OWNER REVIEW
+Status: ARCHITECTURE AUDIT COMPLETE; PACKAGES 6A AND 6B COMPLETE / OWNER-ACCEPTED / FROZEN
 
 Live staging now contains the additive Package 6A AI trust schema. Normalized own-user Identity, Recovery, Training, Nutrition and Progress inputs remain the frozen authorities. No provider credential, external provider call or member-facing AI runtime is active.
 
@@ -318,6 +318,6 @@ Package 6B adds a service-only synthetic path around an `OpenAiResponsesAdapter`
 
 Five RLS-enabled tables in non-exposed `ai_private` hold provider configuration, exact model policy, payload purpose inventory, a global staging test budget and minimized test-run accounting. No browser role has table access or service-RPC execution. Per-request/global advisory locks reserve maximum cost and calls before a provider attempt and reconcile returned usage. Real-member processing has no route and remains blocked by technical ZDR/DPA/DPIA/EU-route/copy/transfer/lifecycle/owner gates.
 
-This 6B boundary is live only on staging as migration history `20260902045834` and final `youri-ai` v38 with JWT verification. The verifier passes 36/36 and the isolated rollback E2E persists no fixtures or cost. One Luna and one Terra locked synthetic fixture passed exact-model, schema, token and cost reconciliation; successful-call estimates total EUR 0.004518. The synthetic flag is off and the real-member block remains unchanged. Package 6B awaits explicit owner acceptance and Package 6C has not started.
+This 6B boundary is live only on staging as migration history `20260902045834` and final `youri-ai` v38 with JWT verification. The verifier passes 36/36 and the isolated rollback E2E persists no fixtures or cost. One Luna and one Terra locked synthetic fixture passed exact-model, schema, token and cost reconciliation; successful-call estimates total EUR 0.004518. The synthetic flag is off and the real-member block remains unchanged. Package 6B was owner-accepted and frozen on 2026-09-02; Package 6C has not started and requires a separate owner GO.
 
 
