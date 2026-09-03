@@ -758,7 +758,7 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | Phase 6A live verifier compatibility | PASS - verifier scoped to frozen 6A functions after additive 6B drift; 47/47 read-only PASS, no database change |
 | Final Edge state | PASS - `youri-ai` v38 ACTIVE, JWT verification enabled, all eight live runtime files source-identical to the repository files; SHA-256 `34d4deb5561110c71ab7e8693262d8928b17cb7983766afc2ffbce11041daf25` |
 | Package result | PASS - COMPLETE / OWNER-ACCEPTED / FROZEN on 2026-09-02 |
-| Member AI chat / Package 6C | SAFETY + CHAT UX HOTFIX TECHNICAL PASS / OWNER RETEST REQUIRED |
+| Member AI chat / Package 6C | CONTINUED CHAT + FINAL UX/IDENTITY HOTFIX TECHNICAL PASS / OWNER RETEST REQUIRED |
 | Production | UNTOUCHED |
 
 ## Phase 6C Private AI Chat Gate
@@ -774,11 +774,14 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | Trainer / cross-member isolation | PASS - no trainer policy, no broad authenticated table grants, own-user RPC authorization |
 | Mock safety | PASS - exact owner NL chest-pain/dizziness sentence, natural/case/punctuation variants, EN/DE, prompt injection, ordinary-fitness false positives and controlled failure; hard stop suppresses coaching and actions remain empty |
 | Live hard-stop proof | PASS - exact owner sentence returned HTTP 200, `hard_stop`, `execution_blocked=true`, exercise-stop/no-diagnosis/medical-assessment/112 copy and 0 external calls/cost; isolated synthetic fixture fully removed |
-| Package 6C handler | PASS 12/12 |
-| Package 6C static | PASS 94/94 |
-| Package 6C browser | PASS 57/57 - compact chat UX, NL/EN/DE, 320x700, 390x844, tablet and desktop; no overlap or overflow |
+| Request-scoped safety migration | PASS - history `20260903125150`; one private gate function replaced; no table, RLS, ACL or member-row change; verifier 16/16 |
+| Continued-chat live sequence | PASS - hard stop, normal follow-up, new conversation, repeated risk, override refusal, delete and new conversation; 0 actions/cost and 0 retained fixtures |
+| Consent / entitlement after hard stop | PASS - communication resumes only while the independent gates pass; withdrawal and loss still deny |
+| Package 6C handler | PASS 14/14 |
+| Package 6C static | PASS 111/111 |
+| Package 6C browser | PASS 76/76 - `Youri AI` identity, neutral avatar, one-row composer and right-side send at 320x700, 390x844, tablet and desktop; no overlap or overflow |
 | Frozen regressions | PASS - Phase 5 116/116 + 53/53; Phase 6A 93/93; Phase 6B 98/98; Nutrition 45/45 + 138/138 |
 | External AI | PASS - 0 calls, EUR 0.00; real-member provider processing disabled |
 | Owner-test entitlement | PASS - exact owner account uniquely resolved; one active `phase6c_owner_test` AI entitlement retained through `2026-09-10T23:59:59Z` |
-| Package result | SAFETY + CHAT UX HOTFIX TECHNICAL PASS / READY FOR OWNER RETEST / NOT FROZEN |
+| Package result | CONTINUED CHAT + FINAL UX/IDENTITY HOTFIX TECHNICAL PASS / READY FOR OWNER RETEST / NOT FROZEN |
 | Production | UNTOUCHED |

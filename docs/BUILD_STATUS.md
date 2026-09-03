@@ -14,10 +14,10 @@ Last updated: 2026-09-03
 - Phase 0B Storage verification: COMPLETE
 - Master Plan Specification: COMPLETE
 - Master Plan Final Review: COMPLETE
-- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6C SAFETY + CHAT UX HOTFIX TECHNICAL PASS / OWNER RETEST REQUIRED
+- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6C CONTINUED CHAT + FINAL UX/IDENTITY HOTFIX TECHNICAL PASS / OWNER RETEST REQUIRED
 - Production Migration: NOT STARTED
 
-Current next step: owner real-phone retest of the Package 6C private mock chat and the exact chest-pain/dizziness safety sentence on staging. Package 6C is not owner-accepted or frozen. Packages 6A and 6B remain frozen; all external member-provider processing remains disabled. Production remains blocked.
+Current next step: owner real-phone retest that the Package 6C private mock chat remains usable immediately after the chest-pain/dizziness hard stop, including a normal follow-up, new conversation and delete-then-new flow, and that the final `Youri AI` one-row composer UX is accepted. Package 6C is not owner-accepted or frozen. Packages 6A and 6B remain frozen; all external member-provider processing remains disabled. Production remains blocked.
 
 ## Environment Guardrail
 
@@ -212,13 +212,13 @@ Staging evidence: migration history `20260902045834`; migration SHA-256 `6B432DA
 
 ### Phase 6C Private AI Chat
 
-Status: OWNER SAFETY + CHAT UX HOTFIX TECHNICAL PASS / READY FOR OWNER RETEST / NOT FROZEN
+Status: CONTINUED CHAT + FINAL UX/IDENTITY HOTFIX TECHNICAL PASS / READY FOR OWNER RETEST / NOT FROZEN
 
 Summary: Package 6C adds a mobile-first private member chat on top of the frozen 6A trust boundary. It is consent-, age- and current `ai`/`personal_coaching`-entitlement gated, uses own-user RPCs only, exposes no trainer read path, keeps messages immutable, supports deterministic sequencing/replay, JSON export, content deletion and a server-authoritative maximum 90-day entitlement-loss grace period.
 
-Only the deterministic staging mock is enabled. External-provider processing remains structurally disabled; the Edge path performs no OpenAI request and reports zero calls and EUR 0 cost. The owner-reported natural Dutch chest-pain/dizziness sentence now routes through a normalized server-authoritative NL/EN/DE hard stop that stops exercise, avoids diagnosis, requests prompt medical assessment, points severe/persistent/immediate-danger cases to 112, suppresses generic coaching and returns no actions. The chat surface was compacted for mobile without changing RPC, consent, entitlement, retention or ownership contracts.
+Only the deterministic staging mock is enabled. External-provider processing remains structurally disabled; the Edge path performs no OpenAI request and reports zero calls and EUR 0 cost. The owner-reported natural Dutch chest-pain/dizziness sentence routes through the normalized server-authoritative NL/EN/DE hard stop. The persisted safety state now blocks automatic execution only, not communication: a safe normal follow-up, a new conversation and delete-then-new all work immediately, while repeated risk and override attempts remain hard-stopped with zero actions. Consent and entitlement loss still deny processing.
 
-Migration history `20260903085454` remains live and unchanged. The locked read-only verifier passes 37/37 and the transactional E2E passes with rollback and zero retained fixtures. `youri-ai` v40 is ACTIVE with JWT verification and bundle SHA-256 `453309b755c53aca1754c8cb529dbb340694a5828e7b049a1c3b40e63530fcf3`. Hotfix commit `832014a` and cache `20260903-phase6c-safety-chatux1` are live; `index.html`, `app.js` and the 6C runtime are byte-identical. Static 94/94, browser 57/57, handler 12/12 and combined Edge 44/44 pass. The exact live sentence returned `hard_stop` with zero external calls/cost through an isolated synthetic account that was fully removed. The owner-test AI entitlement remains active once through `2026-09-10T23:59:59Z`. Package 6C remains pending owner real-phone retest and must not be marked frozen yet.
+Original migration history `20260903085454` remains live; request-scoped gate migration history `20260903125150` is live. The original verifier passes 37/37, the new verifier passes 16/16, and both transactional E2Es pass with rollback and zero retained fixtures. `youri-ai` v40 remains ACTIVE and unchanged with JWT verification and bundle SHA-256 `453309b755c53aca1754c8cb529dbb340694a5828e7b049a1c3b40e63530fcf3`. Continued-chat commit `8dfa235` and cache `20260903-phase6c-continued-chat1` are live. Static 111/111, browser 76/76, handler 14/14 and combined Edge 50/50 pass. The live synthetic sequence passed all request-scoped safety flows, incurred zero external calls/cost and was fully removed. The UI now identifies the coach as `Youri AI`, preserves `FitMetZorge AI Coach` as product subtitle, uses a neutral placeholder, and keeps the input left/send right in one row at 320px and wider. The owner-test AI entitlement remains active once through `2026-09-10T23:59:59Z`. Package 6C remains pending owner real-phone retest and must not be marked frozen yet.
 
 ### Production Migration
 

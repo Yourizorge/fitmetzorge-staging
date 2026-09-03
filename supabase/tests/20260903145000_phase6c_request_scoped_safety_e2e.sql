@@ -53,11 +53,12 @@ begin
   v_thread:=public.fmz_phase6c_create_thread(v_new_thread,'nl',gen_random_uuid());
   if (v_thread->>'revision')::bigint<>1 then raise exception 'new conversation after hard stop blocked'; end if;
 
-  perform public.fmz_phase6c_delete_thread(v_risk_thread,(select revision from public.ai_threads where id=v_risk_thread),gen_random_uuid());
+  perform public.fmz_phase6c_delete_thread(v_risk_thread,(v_message->>'revision')::bigint,gen_random_uuid());
   v_thread:=public.fmz_phase6c_create_thread(v_after_delete,'nl',gen_random_uuid());
   if (v_thread->>'revision')::bigint<>1 then raise exception 'new conversation after delete blocked'; end if;
 
-  if not exists(select 1 from public.ai_member_safety_state where user_id=current_setting('phase6c.continue.user1')::uuid and safety_status='hard_stop') then
+  v_status:=public.fmz_phase6c_get_chat_status();
+  if v_status->>'safety_status'<>'hard_stop' or not (v_status->>'chat_write_allowed')::boolean then
     raise exception 'safety metadata was lost';
   end if;
 end $continued_chat$;

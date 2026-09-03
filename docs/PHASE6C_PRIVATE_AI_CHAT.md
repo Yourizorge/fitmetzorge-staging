@@ -1,6 +1,6 @@
 # Package 6C Private AI Chat
 
-Status: OWNER SAFETY + CHAT UX HOTFIX TECHNICAL PASS / READY FOR OWNER RETEST / NOT FROZEN
+Status: CONTINUED CHAT + FINAL UX/IDENTITY HOTFIX TECHNICAL PASS / READY FOR OWNER RETEST / NOT FROZEN
 
 Date: 2026-09-03
 
@@ -8,13 +8,13 @@ Environment: Supabase staging `mokxyyullfhkfalopbzd` and `Yourizorge/fitmetzorge
 
 ## Scope
 
-Package 6C provides the mobile-first FitMetZorge AI Coach private-chat foundation in NL, EN and DE. The deployed route uses a deterministic staging mock only. It does not invoke OpenAI, does not expose a provider or model selector, and cannot execute or propose application changes.
+Package 6C provides the mobile-first FitMetZorge AI Coach private-chat foundation in NL, EN and DE. The personal coach is displayed as `Youri AI`; the subscription/product identity remains `FitMetZorge AI Coach`. The deployed route uses a deterministic staging mock only. It does not invoke OpenAI, does not expose a provider or model selector, and cannot execute or propose application changes.
 
 ## Data And Ownership
 
 The implementation reuses `public.ai_threads`, `public.ai_messages`, `public.ai_data_lifecycle_requests`, `ai_private.runs`, the Phase 6A consent and entitlement helpers, rate/budget/safety state, and the frozen completion/failure service RPCs. Added fields provide stable client request identity, thread revision, message sequence and run-to-source-message correlation. The only new table is `ai_private.phase6c_runtime_config`, which fixes mock mode on and external-provider mode off.
 
-Browser roles have no direct table writes. Member RPCs derive the user from `auth.uid()`, bind threads/messages to that user, enforce current status and use fixed safe search paths. There is no trainer policy or trainer RPC. Message content is immutable; only the guarded transition to a scrubbed deleted state is permitted.
+Browser roles have no direct table writes. Member RPCs derive the user from `auth.uid()`, bind threads/messages to that user, enforce current status and use fixed safe search paths. There is no trainer policy or trainer RPC. Message content is immutable; only the guarded transition to a scrubbed deleted state is permitted. Retained `hard_stop` and `review_required` metadata blocks future automatic execution but no longer functions as a chat ban; communication access remains governed by current entitlement, consent, age and mock-runtime gates.
 
 ## Member RPCs
 
@@ -40,17 +40,27 @@ The `youri-ai/phase6c/chat` route requires a valid member JWT and an exact bound
 
 The hard-stop copy tells the member to stop exercising, states that no diagnosis is made, requests prompt professional medical assessment and directs severe, persistent or immediately dangerous symptoms to emergency help/112. A hard stop suppresses normal coaching output and has no plan, proposal or executable action.
 
-The focused chat UX uses a compact FitMetZorge identity header, staging-test status, mobile history switcher, readable user/assistant bubbles, empty-state prompts, processing and retry states, a growing multiline composer and a secondary export/delete menu. Safety output is visually distinct without moving classification authority into the browser. Previously hydrated content may remain visible offline, but new content is never silently queued or represented as processed. Mobile layouts cover 320x700 and 390x844, with tablet and desktop compatibility.
+The focused chat UX uses a compact `Youri AI` header, `FitMetZorge AI Coach` subtitle, neutral `AI` placeholder, staging-test status, mobile history switcher, readable user/assistant bubbles, empty-state prompts, processing and retry states, and a secondary export/delete menu. The composer is one horizontal bottom row at every supported width: a rounded one-to-four-line textarea on the left and a fixed circular send action on the right. Safety output is visually distinct without moving classification authority into the browser. Previously hydrated content may remain visible offline, but new content is never silently queued or represented as processed. Mobile layouts cover 320x700 and 390x844, with tablet and desktop compatibility. A personalized Youri avatar remains pending an owner-supplied photo and explicit visual approval.
 
 ## Owner Safety Hotfix
 
 The owner sentence `Ik heb pijn op de borst en ben erg duizelig tijdens het sporten.` previously missed the hard-stop route because the serious-pattern list recognized the compound `borstpijn` but not the natural phrase `pijn op de borst`, and did not combine exercise context with dizziness. The browser payload was correct. The Edge classifier now covers that phrase and equivalent NL/EN/DE variants after deterministic normalization. Prompt-injection wording cannot suppress the hard stop, while ordinary non-serious fitness uses of words such as chest training do not false-positive.
+
+## Continued Chat Correction
+
+The follow-up defect was caused by `ai_private.phase6c_chat_status`: its communication gate reused the persisted member safety state and denied every later thread, message and mock-run request after a `hard_stop`. Deleting the conversation correctly scrubbed content but did not erase safety metadata, so deletion could not restore access. Migration `20260903145000_phase6c_request_scoped_safety.sql` replaces only that private gate function. A hard stop remains persisted and `automatic_execution_blocked=true`, while `communication_allowed` and `chat_write_allowed` stay true when the independent entitlement, consent, age and mock-runtime gates pass.
+
+The corrected live sequence is proven with an isolated synthetic member: exact risk message -> hard stop -> normal safe follow-up -> new conversation -> repeated risk hard stop -> safety-override refusal -> delete risk thread -> new conversation. No action proposal was created, operational metadata contained no raw fixture message, all four mock runs cost zero, and every synthetic row was removed afterward. Consent withdrawal and entitlement loss still deny new processing; cross-member and trainer isolation remain intact.
 
 ## Evidence
 
 - Migration: `supabase/migrations/20260902203000_phase6c_private_ai_chat.sql`
 - Migration SHA-256: `131E63FF165069A4D2861EADEC838AD47906CF74A382C0F7CE8AB99F91D8D26F`
 - Live migration history: `20260903085454` / `phase6c_private_ai_chat`
+- Request-scoped safety migration: `supabase/migrations/20260903145000_phase6c_request_scoped_safety.sql`; SHA-256 `35EF14F978AD6500ABD086B5DB80DBEC2D875A2A8DDEB39825E8B0AC2B57A831`
+- Request-scoped safety migration history: `20260903125150` / `phase6c_request_scoped_safety`
+- Request-scoped read-only verifier: `supabase/verification/20260903145000_phase6c_request_scoped_safety_verification.sql`; SHA-256 `F45C64E09EB37447BE97629229824C1BF5A72CCF7063B93D36472B59853DA1D6`; result 16 PASS / 0 FAIL
+- Request-scoped transactional E2E: `supabase/tests/20260903145000_phase6c_request_scoped_safety_e2e.sql`; SHA-256 `F2046E2403EC1CEA5ED680DC67F75CF00432DD91604BB0F28B38C9CE34A0BAAF`; result PASS with rollback and 0 fixtures
 - Read-only verifier: `supabase/verification/20260902203000_phase6c_private_ai_chat_verification.sql`
 - Verifier SHA-256: `CA1A5D407E8631A36B4C8629EFF5A529EF0010B8D408760CEF54E2339114552D`
 - Verifier result: 37 PASS / 0 FAIL
@@ -58,20 +68,20 @@ The owner sentence `Ik heb pijn op de borst en ben erg duizelig tijdens het spor
 - E2E SHA-256: `A3372F6DC48ECD97549F1BA8C7D499FA1981EF653A1565AC3A06C1A450DDBD22`
 - E2E result: PASS with rollback; fixtures remaining 0
 - Edge: `youri-ai` v40 ACTIVE; JWT verification enabled; bundle SHA-256 `453309b755c53aca1754c8cb529dbb340694a5828e7b049a1c3b40e63530fcf3`
-- Hotfix implementation/runtime commit: `832014a`
-- Frontend cache: `20260903-phase6c-safety-chatux1`
+- Continued-chat implementation/runtime commit: `8dfa235`
+- Frontend cache: `20260903-phase6c-continued-chat1`
 - Live frontend: `index.html`, `app.js` and `assets/phase6c-private-ai-chat.js` return HTTP 200 and are byte-identical to the implementation commit
 - Live exact-phrase Edge proof: HTTP 200, `hard_stop`, `execution_blocked=true`, empty actions, exercise-stop/no-diagnosis/medical-assessment/emergency-112 copy present, generic coaching suppressed, 0 external calls and EUR 0.00 cost
 - Live proof used one isolated synthetic staging account; the account and all related fixtures were removed and fourteen post-cleanup counts were zero. The owner account and its chat data were not used or changed.
 - Live assembled runtime: 320x700 and 390x844 chat UI render without console errors, truncation or horizontal overflow
-- Package 6C handler: 12/12 PASS
-- Package 6C static: 94/94 PASS
-- Package 6C browser/responsive: 57/57 PASS
-- Combined Phase 6 Edge tests: 44/44 PASS
+- Package 6C handler: 14/14 PASS
+- Package 6C static: 111/111 PASS
+- Package 6C browser/responsive: 76/76 PASS
+- Combined Phase 6 Edge tests: 50/50 PASS
 - Frozen regressions: Phase 5 116/116 and 53/53; Phase 6A 93/93; Phase 6B 98/98; Nutrition 45/45 and 138/138
 - Security advisor: no Package 6C ERROR; intended private no-policy and authenticated RPC notices reviewed
 - Performance advisor: no hotfix blocker; existing informational run-FK and young unused-index notices remain unchanged
 
 ## Safety Boundary
 
-External AI calls during Package 6C: 0. External AI cost: EUR 0.00. Real-member OpenAI processing enabled: NO. Trainers can read private chat: NO. Owner/member data changed during hotfix verification: NO. Test fixtures remaining: 0. The exact owner-test AI entitlement remains active once through `2026-09-10T23:59:59Z`. Production touched: NO. Package 6D started: NO. Owner real-phone retest is still required before acceptance or freeze.
+External AI calls during Package 6C: 0. External AI cost: EUR 0.00. Real-member OpenAI processing enabled: NO. Trainers can read private chat: NO. Schema change: one private gate function replaced on staging; no table, RLS, ACL or member-row change. Test fixtures remaining: 0. The owner's retained hard-stop metadata and chat content were not changed; read-only status now proves communication allowed with automatic execution blocked. The exact owner-test AI entitlement remains active once through `2026-09-10T23:59:59Z`. Production touched: NO. Package 6D started: NO. Owner real-phone retest is still required before acceptance or freeze.
