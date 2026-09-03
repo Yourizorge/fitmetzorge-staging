@@ -17,6 +17,7 @@ Phase 6B owns provider activation, privacy/legal completion, real model identifi
 - Synthetic requests only; callers cannot supply prompts, context, tools, model IDs or member data.
 - `store: false`, empty tools and `tool_choice: none` are immutable request properties.
 - `/phase6b/status`, `/phase6b/synthetic-test` and `/phase6b/auth-diagnostic` are server-only and require a service credential; browser/member JWTs are rejected.
+- `/phase6c/chat` is the JWT-verified private member route. It accepts only the locked chat contract and uses the deterministic Package 6C mock. It never calls an external AI provider and never accepts a model, provider, fixture, entitlement, role or action from the browser.
 - The authentication diagnostic is independently disabled by default. When explicitly enabled on staging it performs only `GET /v1/models/gpt-5.6-luna`, never sends a prompt, never creates a generation ledger row and returns only boolean credential checks plus sanitized upstream status/type/code/classification.
 - Real-member provider processing has no Edge route and remains database-blocked until ZDR, DPA, DPIA, EU route, approved copy, transfer/lifecycle checks and a later owner activation all pass.
 - `OPENAI_API_KEY` and `FMZ_PHASE6B_SYNTHETIC_TEST_ENABLED` are server-only Supabase Edge secrets. Their absence fails closed and is never logged.

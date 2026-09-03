@@ -122,4 +122,4 @@ The adapter now preserves only safe upstream status/type/code/classification, di
 
 ## Acceptance State
 
-The former invalid-key blocker is resolved by the third project key. Package 6B was explicitly owner-accepted and frozen on 2026-09-02. ZDR, DPA, DPIA, EU routing, privacy/consent copy, transfer assessment and lifecycle approval remain incomplete and are not implied by successful synthetic testing or this acceptance. Package 6C and member AI chat remain unstarted and require separate owner authorization.
+The former invalid-key blocker is resolved by the third project key. Package 6B was explicitly owner-accepted and frozen on 2026-09-02. ZDR, DPA, DPIA, EU routing, privacy/consent copy, transfer assessment and lifecycle approval remain incomplete and are not implied by successful synthetic testing or this acceptance. Package 6C was later separately authorized as a deterministic mock-only member chat and does not activate real-member provider processing.

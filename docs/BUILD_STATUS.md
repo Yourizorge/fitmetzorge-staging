@@ -1,6 +1,6 @@
 # FitMetZorge Build Status
 
-Last updated: 2026-09-02
+Last updated: 2026-09-03
 
 - Baseline audit: COMPLETE
 - Phase 0A Governance: COMPLETE
@@ -14,10 +14,10 @@ Last updated: 2026-09-02
 - Phase 0B Storage verification: COMPLETE
 - Master Plan Specification: COMPLETE
 - Master Plan Final Review: COMPLETE
-- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B COMPLETE / OWNER-ACCEPTED / FROZEN
+- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6C TECHNICAL PASS / OWNER TESTING REQUIRED
 - Production Migration: NOT STARTED
 
-Current next step: wait for a separate explicit owner GO before Package 6C. Package 6B was owner-accepted and frozen on 2026-09-02 after the zero-cost model-read probe and exactly one successful locked `gpt-5.6-luna` and `gpt-5.6-terra` Responses generation. The synthetic-test flag is disabled and a subsequent request was blocked before reservation. Packages 6A and 6B remain frozen. Real-member processing, member AI UX, Package 6C and production remain blocked.
+Current next step: owner real-phone testing of the Package 6C private mock chat on staging. Package 6C is technically complete but is not owner-accepted or frozen. Packages 6A and 6B remain frozen; all external member-provider processing remains disabled. Production remains blocked.
 
 ## Environment Guardrail
 
@@ -206,9 +206,17 @@ Status: COMPLETE / OWNER-ACCEPTED / FROZEN
 
 Summary: Package 6B is owner-authorized for autonomous staging implementation. It adds a private provider configuration/model/payload/test-budget ledger, service-only synthetic test RPCs and a server-only OpenAI Responses adapter using exact `gpt-5.6-luna` and `gpt-5.6-terra` routes. The synthetic contract enforces `store:false`, no hosted tools, strict structured output, fixed pseudonymous fixtures, bounded retries and atomic EUR 5/six-attempt global test limits.
 
-DPA, DPIA, EU route, ZDR, privacy notice, consent copy, transfer assessment, lifecycle proof and later real-member owner activation remain incomplete. The Edge has no real-member provider route and the database gate returns denied. User-facing chat and Package 6C are not started.
+DPA, DPIA, EU route, ZDR, privacy notice, consent copy, transfer assessment, lifecycle proof and later real-member owner activation remain incomplete. The Edge has no real-member provider route and the database gate returns denied. The later Package 6C member surface is therefore deterministic mock-only and does not weaken this 6B block.
 
 Staging evidence: migration history `20260902045834`; migration SHA-256 `6B432DA3AA389920D5A8EEA4F15F74D35E2A9E2D6F7BF44C7B0FBF62473CC526`; corrected 6B verifier SHA-256 `761AE2F7A1F411A100862CE3254381A7AEB9C94727220674439F29E3869A8489`, live result 36/36 PASS with four metadata-only runs. Luna returned exact `gpt-5.6-luna`, strict output and 323 input / 0 cached / 311 output tokens including 57 reasoning tokens; reconciled estimate EUR 0.000548. Terra returned exact `gpt-5.6-terra`, strict output and 322 input / 0 cached / 211 output tokens including 0 reasoning tokens; reconciled estimate EUR 0.003970. Successful-call estimate totals EUR 0.004518. The separate conservative internal ledger totals EUR 0.011688, including EUR 0.007170 retained from the two earlier unknown-cost failures; zero reservations remain and EUR 4.988312 remains under the internal EUR 5 cap. No raw prompt/output column exists. The synthetic-test flag is false and a post-test request returned `synthetic_test_environment_disabled` without a row or reservation. `youri-ai` v38 is ACTIVE with JWT verification; all eight live runtime files are source-identical to the repository runtime and bundle SHA-256 is `34d4deb5561110c71ab7e8693262d8928b17cb7983766afc2ffbce11041daf25`. Owner acceptance and freeze were recorded on 2026-09-02. Production touched: NO.
+
+### Phase 6C Private AI Chat
+
+Status: TECHNICAL PASS / READY FOR OWNER TESTING / NOT FROZEN
+
+Summary: Package 6C adds a mobile-first private member chat on top of the frozen 6A trust boundary. It is consent-, age- and current `ai`/`personal_coaching`-entitlement gated, uses own-user RPCs only, exposes no trainer read path, keeps messages immutable, supports deterministic sequencing/replay, JSON export, content deletion and a server-authoritative maximum 90-day entitlement-loss grace period.
+
+Only the deterministic staging mock is enabled. External-provider processing remains structurally disabled; the Edge path performs no OpenAI request and reports zero calls and EUR 0 cost. Migration history `20260903085454` is live on staging. The locked read-only verifier passes 37/37 and the transactional E2E passes with rollback and zero retained fixtures. `youri-ai` v39 is ACTIVE with JWT verification. Package 6C remains pending owner real-phone acceptance and must not be marked frozen yet.
 
 ### Production Migration
 

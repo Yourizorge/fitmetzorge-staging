@@ -35,9 +35,9 @@ check("runtime duplicate guard", files.runtime.includes("FMZ_PHASE5_PROGRESS_LOA
 check("runtime version", files.runtime.includes('20260901-phase5-unit-switch1'));
 check("Phase 1 cache version", files.app.includes('assets/phase1-foundation.js?v=20260901-phase5-unit-switch1'));
 check("app cache version", files.app.includes('assets/phase5-progress.js?v=20260901-phase5-unit-switch1'));
-check("index cache version", files.index.includes('app.js?v=20260901-phase5-unit-switch1'));
+check("index cache version", /app\.js\?v=2026[0-9a-z-]+/.test(files.index));
 check("loader after Member UX", files.app.indexOf("memberUxPatchSource") < files.app.indexOf("phase5ProgressPatchSource"));
-check("loader before init", files.app.indexOf("phase5ProgressPatchSource}\\ninit();") > -1);
+check("loader before init", files.app.indexOf("phase5ProgressPatchSource") < files.app.lastIndexOf("init();"));
 let combinedBundleParse = false;
 try {
   const patches = [files.phase1, files.phase2, files.phase3, files.phase4Slice2, files.phase4Slice3, files.memberUx, files.runtime];

@@ -87,11 +87,18 @@
   }
   const phase5ProgressPatchSource = await phase5ProgressPatchResponse.text();
 
+  const phase6cPrivateChatPatchUrl = new URL("assets/phase6c-private-ai-chat.js?v=20260903-phase6c-private-chat1", document.baseURI);
+  const phase6cPrivateChatPatchResponse = await fetch(phase6cPrivateChatPatchUrl, { cache: "no-cache" });
+  if (!phase6cPrivateChatPatchResponse.ok) {
+    throw new Error(`Package 6C private AI chat laden mislukt: ${phase6cPrivateChatPatchResponse.status}`);
+  }
+  const phase6cPrivateChatPatchSource = await phase6cPrivateChatPatchResponse.text();
+
   const phase1InitNeedle = "\ninit();";
   if (!source.includes(phase1InitNeedle)) {
     throw new Error("Phase 1 foundation kon niet voor app-init worden ingevoegd.");
   }
-  source = source.replace(phase1InitNeedle, `\n${phase1PatchSource}\n${phase2PatchSource}\n${phase3PatchSource}\n${phase4NutritionPatchSource}\n${phase4NutritionSlice3PatchSource}\n${memberUxPatchSource}\n${phase5ProgressPatchSource}\ninit();`);
+  source = source.replace(phase1InitNeedle, `\n${phase1PatchSource}\n${phase2PatchSource}\n${phase3PatchSource}\n${phase4NutritionPatchSource}\n${phase4NutritionSlice3PatchSource}\n${memberUxPatchSource}\n${phase5ProgressPatchSource}\n${phase6cPrivateChatPatchSource}\ninit();`);
 
   (0, eval)(`${source}\n//# sourceURL=app.bundle.js`);
 

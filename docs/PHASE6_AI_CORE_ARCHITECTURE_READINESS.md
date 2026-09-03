@@ -369,10 +369,18 @@ Package 6A does not resolve or bypass the Package 6B provider privacy/legal gate
 
 The additive trust foundation and disabled provider-neutral `youri-ai` Edge scaffold are live only on staging `mokxyyullfhkfalopbzd`. The exact schema verifier passed 47/47, the transactional E2E passed with all fixtures rolled back, the deterministic mock suite passed 11/11 and the Package 6A static/security suite passed 93/93. All member/provider/mock flags remain OFF. External AI calls during 6A: 0. External AI cost during 6A: EUR 0.
 
-The owner accepted and froze Package 6A on 2026-09-01 against documentation baseline `055f610eb1a8712910214487d2e2bed96d40111c`. Package 6B is now authorized only as the provider/privacy/cost gate described in `docs/PHASE6B_PROVIDER_PRIVACY_COST_GATE.md`; member AI chat and Package 6C remain unstarted. Production touched: NO.
+The owner accepted and froze Package 6A on 2026-09-01 against documentation baseline `055f610eb1a8712910214487d2e2bed96d40111c`. Package 6B was subsequently completed and frozen as described in `docs/PHASE6B_PROVIDER_PRIVACY_COST_GATE.md`. Package 6C now adds only a deterministic mock member chat; real-member provider processing remains disabled. Production touched: NO.
 
 ## 23. Package 6B Technical Result
 
 The private provider/privacy/cost schema is live on staging and its corrected read-only verifier passed 36/36. The rollback E2E proved real-member denial, exact replay, conflict detection, Luna cost calculation, conservative unknown-cost accounting and the absolute EUR 5/six-attempt caps without an external call or retained fixture. `youri-ai` version 2 is ACTIVE with JWT verification, service-only synthetic routes, exact Luna/Terra adapters, strict output, `store:false` and no hosted tools.
 
-Paid synthetic acceptance is blocked solely by unavailable OpenAI staging credential/account configuration. No key was requested or exposed. External calls: 0. Tokens: 0. Cost: EUR 0. Package 6B is not owner-accepted or frozen; Package 6C remains unstarted.
+Package 6B was subsequently paid-synthetic tested, owner-accepted and frozen; its final evidence is recorded in `docs/PHASE6B_PROVIDER_PRIVACY_COST_GATE.md` and the build/test status documents.
+
+## 24. Package 6C Technical Result
+
+Package 6C is live only on staging as a deterministic mock chat. It reuses the frozen 6A trust model and does not activate the 6B provider route for members. Current active `ai` or `personal_coaching` entitlement, active versioned `ai_processing` consent and age 18+ are checked server-side before thread creation or message processing. Free, Pro-only, inactive, future and expired states fail closed.
+
+Member browser access is RPC-only. Threads and immutable messages are ordered by server sequence and revision, retries replay exact request/attempt identities, and stale writes fail. Trainers and other members have no content path. Export returns the member's own JSON without provider/budget metadata; deletion scrubs raw message content and removes it from member reads while retaining only non-content lifecycle evidence. Entitlement loss starts a maximum 90-day read/export/delete grace period, with deterministic restoration on timely reactivation and a server sweep for expiry.
+
+The `youri-ai/phase6c/chat` route verifies the member JWT and accepts an exact bounded payload. It uses only deterministic localized mock output with an empty action list, safe medical refusal and serious-signal hard stop. External AI calls are 0 and external cost is EUR 0.00. Migration history `20260903085454`, read-only verifier 37/37, rollback E2E with zero fixtures, Edge v39 and responsive NL/EN/DE frontend checks all pass. Package 6C awaits owner real-phone acceptance and is not frozen. Package 6D has not started.
