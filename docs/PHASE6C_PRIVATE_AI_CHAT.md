@@ -52,6 +52,10 @@ The member UI provides consent activation/withdrawal, thread list, new thread, b
 - E2E SHA-256: `A3372F6DC48ECD97549F1BA8C7D499FA1981EF653A1565AC3A06C1A450DDBD22`
 - E2E result: PASS with rollback; fixtures remaining 0
 - Edge: `youri-ai` v39 ACTIVE; JWT verification enabled; bundle SHA-256 `d2856ac587d37d72967a383ae03ddaa21324d1ba37963133cb0a1e39b88a43e6`
+- Implementation/runtime commit: `6ed908834c879850e980cbb0aad75597f69553a3`
+- Frontend cache: `20260903-phase6c-private-chat1`
+- Live frontend: `index.html`, `app.js` and `assets/phase6c-private-ai-chat.js` return HTTP 200 and are byte-identical to the implementation commit
+- Live assembled runtime: 390x844 consent-gated AI Coach and mock notice render without console errors or horizontal overflow; no member message was sent
 - Package 6C static: 82/82 PASS
 - Package 6C browser/responsive: 35/35 PASS
 - Combined Phase 6 Edge tests: 44/44 PASS
