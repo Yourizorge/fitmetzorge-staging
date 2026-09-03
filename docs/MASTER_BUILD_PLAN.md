@@ -195,9 +195,8 @@ The AI coach is named `YOURI`.
 Youri AI must:
 
 - Be recognizable through a small avatar/popup.
-- Eventually use an avatar based on owner Youri Zorge.
-- Not invent a face or final avatar in the absence of an approved asset.
-- Mark the definitive avatar asset as `ASSET REQUIRED`.
+- Use the owner-supplied and owner-approved Youri AI avatar without regenerating or reshaping the face.
+- Keep the approved avatar as a permanent versioned local asset with a stable neutral load-error fallback.
 - Avoid becoming a generic chatbot.
 - Use relevant FitMetZorge data to personalize coaching.
 
@@ -981,7 +980,6 @@ Production release requires explicit owner approval.
 
 - Payment provider and exact integration approach.
 - Final public pricing and yearly/monthly package rules.
-- Definitive Youri avatar asset: `ASSET REQUIRED`.
 - Native app framework/reuse strategy after PWA maturity.
 - Barcode provider/data source.
 - Phase 4 normalized trainer-client authorization and relationship-end behavior before the trainer Nutrition slice.
@@ -1004,7 +1002,7 @@ Package 6B is the staging-only provider/privacy/cost gate. It uses OpenAI Respon
 
 Package 6B reached technical acceptance PASS and was explicitly owner-accepted and frozen on staging on 2026-09-02: one locked Luna fixture and one locked Terra fixture returned the exact requested models and strict schemas, with reconciled successful-call estimates of EUR 0.000548 and EUR 0.003970. The separate conservative internal ledger is EUR 0.011688 because two earlier credential failures remain charged at their maximum reservations. The test flag is off, a further call is blocked before accounting, raw prompts/outputs are not persisted, and real-member flags remain off.
 
-Package 6C reached continued-chat and final UX/identity technical PASS on staging on 2026-09-03 and awaits owner real-phone retest. It provides private member-only chat with versioned consent, age and current AI/PT entitlement gates; deterministic mock-only replies; immutable ordered messages; exact retry; own JSON export; content deletion; and a maximum 90-day entitlement-loss grace period. Natural NL/EN/DE serious-symptom phrasing and exertion-plus-dizziness combinations are classified only by the Edge and produce a hard stop with no actions. That hard stop is request-scoped for communication: retained safety metadata blocks automatic execution, never later messages or new conversations. Repeated risk and override attempts remain blocked, while a normal follow-up is allowed. The member surface identifies the coach as `Youri AI`, keeps `FitMetZorge AI Coach` as product subtitle, uses a neutral avatar pending owner photo/approval and keeps its growing textarea left of the send action in one horizontal bottom row even at 320px. Browser access remains RPC-only, trainers have zero chat-content access, all external member AI processing is disabled, and Package 6D has not started. Commit `8dfa235`, cache `20260903-phase6c-continued-chat1`, migration history `20260903125150` and unchanged Edge v40 are live; Package 6C is not owner-accepted or frozen.
+Package 6C reached continued-chat and final UX/identity technical PASS on staging on 2026-09-03 and awaits owner real-phone retest. It provides private member-only chat with versioned consent, age and current AI/PT entitlement gates; deterministic mock-only replies; immutable ordered messages; exact retry; own JSON export; content deletion; and a maximum 90-day entitlement-loss grace period. Natural NL/EN/DE serious-symptom phrasing and exertion-plus-dizziness combinations are classified only by the Edge and produce a hard stop with no actions. That hard stop is request-scoped for communication: retained safety metadata blocks automatic execution, never later messages or new conversations. Repeated risk and override attempts remain blocked, while a normal follow-up is allowed. The member surface identifies the coach as `Youri AI`, keeps `FitMetZorge AI Coach` as product subtitle, displays the owner-supplied and owner-approved avatar in the header and assistant messages, and keeps its growing textarea left of the send action in one horizontal bottom row even at 320px. The face was not regenerated, reshaped or retouched; only metadata-free master storage and lossless runtime resizing were applied. Browser access remains RPC-only, trainers have zero chat-content access, all external member AI processing is disabled, and Package 6D has not started. Continued-chat commit `8dfa235`, approved-avatar runtime commit `abc724fec6115ce85c810fb2f53ff2e5e6a01740`, cache `20260903-phase6c-approved-avatar1`, migration history `20260903125150` and unchanged Edge v40 are live; Package 6C is not owner-accepted or frozen.
 
 Before any later member data transfer, ZDR must be verified for the exact OpenAI project, the owner must execute the DPA, the DPIA and international-transfer/subprocessor assessment must be complete, the exact Europe project/endpoint must be verified, privacy/consent/safety copy must be approved, lifecycle flows must be proven, and the owner must separately activate real-member processing. `store:false` is necessary but never sufficient proof of ZDR. Package 6B acceptance and the mock-only Package 6C runtime do not authorize real-member provider processing.
 

@@ -40,7 +40,15 @@ The `youri-ai/phase6c/chat` route requires a valid member JWT and an exact bound
 
 The hard-stop copy tells the member to stop exercising, states that no diagnosis is made, requests prompt professional medical assessment and directs severe, persistent or immediately dangerous symptoms to emergency help/112. A hard stop suppresses normal coaching output and has no plan, proposal or executable action.
 
-The focused chat UX uses a compact `Youri AI` header, `FitMetZorge AI Coach` subtitle, neutral `AI` placeholder, staging-test status, mobile history switcher, readable user/assistant bubbles, empty-state prompts, processing and retry states, and a secondary export/delete menu. The composer is one horizontal bottom row at every supported width: a rounded one-to-four-line textarea on the left and a fixed circular send action on the right. Safety output is visually distinct without moving classification authority into the browser. Previously hydrated content may remain visible offline, but new content is never silently queued or represented as processed. Mobile layouts cover 320x700 and 390x844, with tablet and desktop compatibility. A personalized Youri avatar remains pending an owner-supplied photo and explicit visual approval.
+The focused chat UX uses a compact `Youri AI` header, `FitMetZorge AI Coach` subtitle, the owner-supplied and owner-approved `Youri-AI-avatar-3D-v3.png`, staging-test status, mobile history switcher, readable user/assistant bubbles, empty-state prompts, processing and retry states, and a secondary export/delete menu. The approved avatar appears in the header and beside Youri AI messages; stable circular CSS crops preserve the full face and hairstyle, while a neutral `AI` fallback appears only when the local image cannot load. The composer is one horizontal bottom row at every supported width: a rounded one-to-four-line textarea on the left and a fixed circular send action on the right. Safety output is visually distinct without moving classification authority into the browser. Previously hydrated content may remain visible offline, but new content is never silently queued or represented as processed. Mobile layouts cover 320x700 and 390x844, with tablet and desktop compatibility.
+
+## Approved Youri AI Avatar
+
+- Owner approval: YES; official Package 6C source identity: `Youri-AI-avatar-3D-v3.png`.
+- Metadata-free lossless master: `assets/youri-ai-avatar-3d-v3-master.png`; 1254x1254; 1,864,738 bytes; SHA-256 `53EDC8C376F097417ABDE7B74F4C9D85CEBAD4E2A676AE65620A4CBD65DA2E57`.
+- Lossless runtime asset: `assets/youri-ai-avatar-3d-v3-256.webp`; 256x256; 53,188 bytes; SHA-256 `257F31E6FE4FAA7FECF5FB9874EED06D4018DC8C60958AA714E7D4B79A7517DC`.
+- The master is pixel-identical to the supplied PNG after metadata-free re-encoding. The runtime asset is a downscaled, lossless avatar derivative; the face was not generated, reshaped or retouched.
+- No personal reference photographs are stored in the repository. Only the approved final avatar master and runtime derivative are committed.
 
 ## Owner Safety Hotfix
 
@@ -69,16 +77,17 @@ The corrected live sequence is proven with an isolated synthetic member: exact r
 - E2E result: PASS with rollback; fixtures remaining 0
 - Edge: `youri-ai` v40 ACTIVE; JWT verification enabled; bundle SHA-256 `453309b755c53aca1754c8cb529dbb340694a5828e7b049a1c3b40e63530fcf3`
 - Continued-chat implementation/runtime commit: `8dfa235`
-- Frontend cache: `20260903-phase6c-continued-chat1`
-- Live frontend: `index.html`, `app.js` and `assets/phase6c-private-ai-chat.js` return HTTP 200 and are byte-identical to the implementation commit
+- Approved-avatar runtime commit: `abc724fec6115ce85c810fb2f53ff2e5e6a01740`
+- Frontend cache: `20260903-phase6c-approved-avatar1`
+- Frontend runtime set: `index.html`, `app.js`, `assets/phase6c-private-ai-chat.js`, `assets/youri-ai-avatar-3d-v3-256.webp` and `assets/youri-ai-avatar-3d-v3-master.png`
 - Live exact-phrase Edge proof: HTTP 200, `hard_stop`, `execution_blocked=true`, empty actions, exercise-stop/no-diagnosis/medical-assessment/emergency-112 copy present, generic coaching suppressed, 0 external calls and EUR 0.00 cost
 - Live proof used one isolated synthetic staging account; the account and all related fixtures were removed and fourteen post-cleanup counts were zero. The owner account and its chat data were not used or changed.
 - Live assembled runtime: 320x700 and 390x844 chat UI render without console errors, truncation or horizontal overflow
 - Package 6C handler: 14/14 PASS
-- Package 6C static: 111/111 PASS
-- Package 6C browser/responsive: 76/76 PASS
+- Package 6C static: 115/115 PASS
+- Package 6C browser/responsive: 85/85 PASS
 - Combined Phase 6 Edge tests: 50/50 PASS
-- Frozen regressions: Phase 5 116/116 and 53/53; Phase 6A 93/93; Phase 6B 98/98; Nutrition 45/45 and 138/138
+- Frozen regressions: Phase 1 75/75; Phase 2 46/46; Phase 3 222/222; Member UX 56/56; Phase 4 schema 90/90 and Nutrition browser 138/138; Phase 5 116/116 and 53/53; Phase 6A 93/93; Phase 6B 98/98
 - Security advisor: no Package 6C ERROR; intended private no-policy and authenticated RPC notices reviewed
 - Performance advisor: no hotfix blocker; existing informational run-FK and young unused-index notices remain unchanged
 

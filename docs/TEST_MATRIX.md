@@ -67,7 +67,7 @@ This matrix records the required functional, security, entitlement, AI, migratio
 | Phase 6 | AI context | Goals, training, nutrition, progress, recovery context only when authorized | BLOCKING GATE | PLANNED |
 | Phase 6 | AI quality | Missing data handled honestly; no hallucinated facts; structured responses validated | BLOCKING GATE | PLANNED |
 | Phase 6 | AI cost | Usage/cost/rate-limit logging; no paid AI call without valid entitlement | BLOCKING GATE | PLANNED |
-| Phase 6 | Avatar | Youri avatar support exists, final avatar remains ASSET REQUIRED until supplied | BLOCKING GATE | PLANNED |
+| Phase 6 | Avatar | Owner-supplied approved Youri avatar, local optimized assets, circular header/message presentation and stable error fallback | BLOCKING GATE | TECHNICAL PASS - READY FOR OWNER RETEST |
 | Phase 7 | Entitlements | Free/Pro/AI/trial/referral/goal/PT entitlements enforced server-side | BLOCKING GATE | PLANNED |
 | Phase 7 | AI trial | 30-day no-payment-details trial starts, reminds, ends, locks generation and preserves data | BLOCKING GATE | PLANNED - OWNER PRODUCT CONTRACT LOCKED |
 | Phase 7 | Referrals | Server-validated referral, max 2/month/user, abuse prevention | BLOCKING GATE | PLANNED |
@@ -778,9 +778,9 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | Continued-chat live sequence | PASS - hard stop, normal follow-up, new conversation, repeated risk, override refusal, delete and new conversation; 0 actions/cost and 0 retained fixtures |
 | Consent / entitlement after hard stop | PASS - communication resumes only while the independent gates pass; withdrawal and loss still deny |
 | Package 6C handler | PASS 14/14 |
-| Package 6C static | PASS 111/111 |
-| Package 6C browser | PASS 76/76 - `Youri AI` identity, neutral avatar, one-row composer and right-side send at 320x700, 390x844, tablet and desktop; no overlap or overflow |
-| Frozen regressions | PASS - Phase 5 116/116 + 53/53; Phase 6A 93/93; Phase 6B 98/98; Nutrition 45/45 + 138/138 |
+| Package 6C static | PASS 115/115 |
+| Package 6C browser | PASS 85/85 - approved Youri avatar decoded, circular and layout-stable in header/messages with neutral error fallback; one-row composer and right-side send at 320x700, 390x844, tablet and desktop; no overlap or overflow |
+| Frozen regressions | PASS - Phase 1 75/75; Phase 2 46/46; Phase 3 222/222; Member UX 56/56; Phase 4 schema 90/90 + Nutrition browser 138/138; Phase 5 116/116 + 53/53; Phase 6A 93/93; Phase 6B 98/98 |
 | External AI | PASS - 0 calls, EUR 0.00; real-member provider processing disabled |
 | Owner-test entitlement | PASS - exact owner account uniquely resolved; one active `phase6c_owner_test` AI entitlement retained through `2026-09-10T23:59:59Z` |
 | Package result | CONTINUED CHAT + FINAL UX/IDENTITY HOTFIX TECHNICAL PASS / READY FOR OWNER RETEST / NOT FROZEN |

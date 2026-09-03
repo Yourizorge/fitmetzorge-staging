@@ -87,7 +87,7 @@ Date: 2026-08-15
 
 Decision:
 
-The AI coach is named `YOURI`, must use FitMetZorge data context when authorized, and must become more personal as history grows. The final avatar based on owner Youri Zorge is `ASSET REQUIRED`.
+The AI coach is named `YOURI`, must use FitMetZorge data context when authorized, and must become more personal as history grows. On 2026-09-03 the owner supplied and explicitly approved `Youri-AI-avatar-3D-v3.png` as the permanent Package 6C identity asset. The approved face must not be regenerated or reshaped; project-local optimized derivatives may be produced without visual retouching.
 
 Rationale:
 

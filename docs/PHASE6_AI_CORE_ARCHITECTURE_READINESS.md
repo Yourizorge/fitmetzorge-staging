@@ -70,7 +70,6 @@ Blocking gaps before live AI calls:
 
 Deferred gaps that do not block the first non-provider foundation:
 
-- Final Youri avatar asset.
 - Health/wearable and authoritative running context.
 - Progress-photo analysis, which remains behind its own privacy and consent gate.
 - Push notifications and frequency caps, which remain Phase 8.
@@ -324,7 +323,7 @@ Blocking before action execution or trainer sharing:
 
 Later asset/content gates:
 
-11. Definitive Youri avatar asset.
+11. Definitive Youri avatar asset. RESOLVED on 2026-09-03 with the owner-supplied and owner-approved `Youri-AI-avatar-3D-v3.png`; the metadata-free master and lossless runtime derivative are installed in Package 6C.
 12. Reviewed FR/IT AI and safety content before those markets are enabled.
 
 ## 19. Test And Exit Gate
