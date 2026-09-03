@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { createPhase6cHandler, createPhase6cMockReply, parsePhase6cChatRequest } from "./phase6c-handler.ts";
+import { classifyPhase6cSafety, createPhase6cHandler, createPhase6cMockReply, parsePhase6cChatRequest } from "./phase6c-handler.ts";
 
 const input = {
   request_id:"10000000-0000-4000-8000-000000000001",attempt_id:"10000000-0000-4000-8000-000000000002",
@@ -46,6 +46,29 @@ test("exact owner Dutch message hard stops without generic coaching",()=>{
   assert.match(reply.summary,/112/);
   assert.doesNotMatch(reply.summary,/kleine, haalbare volgende stap/);
 });
+test("all owner acceptance Dutch sentences hard stop",()=>{
+  const fixtures=[
+    "Ik heb pijn in de borst en ben duizelig.",
+    "Ik heb pijn in de borst en duizeligheid.",
+    "Ik heb pijn in mijn borst en voel me duizelig tijdens het sporten.",
+  ];
+  for(const content of fixtures){
+    const reply=createPhase6cMockReply(content,"nl");
+    assert.equal(reply.safety.status,"hard_stop",content);
+    assert.equal(reply.safety.automatic_execution_blocked,true,content);
+    assert.equal(reply.actions.length,0,content);
+    assert.deepEqual(reply.recommendations,["seek_prompt_professional_medical_assessment"],content);
+    assert.doesNotMatch(reply.summary,/kleine, haalbare volgende stap/,content);
+  }
+});
+test("NL EN DE serious concepts and combinations are bounded",()=>{
+  const fixtures=[
+    "Mijn borst doet pijn.","Ik voel enge druk in mijn borst.","Ik ben draaierig.","Ik ben licht in mijn hoofd.","Ik ben bijna aan het flauwvallen.",
+    "I have chest tightness.","I feel dizzy.","I am light headed during exercise.","I nearly fainted during my workout.",
+    "Ich habe Brustdruck.","Mir ist schwindelig beim Sport.","Ich bin fast ohnmachtig bei Belastung.",
+  ];
+  for(const content of fixtures)assert.equal(classifyPhase6cSafety(content),"hard_stop",content);
+});
 test("NL EN DE capitalization punctuation and common phrasing hard stop",()=>{
   const fixtures:[string,"nl"|"en"|"de"][]=[
     ["PIJN OP MIJN BORST!!! Tijdens het sporten.","nl"],
@@ -63,6 +86,21 @@ test("normal fitness language does not false-positive",()=>{
     ["Na mijn training wil ik rustig herstellen.","nl"],
     ["I finished chest press and feel good.","en"],
     ["Mein Brusttraining war gut.","de"],
+    ["Ik deed chest press en heb gewone spierpijn na de training.","nl"],
+    ["My chest muscles are sore after chest press.","en"],
+    ["Ich habe Muskelkater nach dem Brusttraining.","de"],
+  ];
+  for(const [content,locale] of fixtures)assert.equal(createPhase6cMockReply(content,locale).safety.status,"clear",content);
+});
+test("negated symptoms and educational questions stay clear",()=>{
+  const fixtures:[string,"nl"|"en"|"de"][]=[
+    ["Ik heb geen borstpijn en ben niet duizelig.","nl"],
+    ["Ik werd niet duizelig tijdens het sporten.","nl"],
+    ["Wat betekent borstpijn?","nl"],
+    ["I have no chest pain and I am not dizzy.","en"],
+    ["What is chest tightness?","en"],
+    ["Ich habe keine Brustschmerzen und bin nicht schwindelig.","de"],
+    ["Was bedeutet Brustdruck?","de"],
   ];
   for(const [content,locale] of fixtures)assert.equal(createPhase6cMockReply(content,locale).safety.status,"clear",content);
 });

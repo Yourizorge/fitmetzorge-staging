@@ -89,17 +89,65 @@ function normalizeSafetyText(value: string): string {
 
 const seriousPatterns = [
   /\bchest (?:pain|pressure|tightness)\b|\bpain (?:in|on) (?:my |the )?chest\b|\b(?:pressure|tightness) (?:in|on) (?:my |the )?chest\b/,
-  /\bcannot breathe\b|\bcant breathe\b|\bstruggling to breathe\b|\bfainted\b|\bpassed out\b|\bsuicid(?:e|al)\b/,
-  /\bborstpijn\b|\bpijn op (?:mijn |de )?borst\b|\b(?:druk|beklemming) op (?:mijn |de )?borst\b/,
-  /\bkan niet ademen\b|\bkrijg geen adem\b|\bgeen lucht\b|\bflauwgevallen\b|\braak flauw\b|\bbewusteloos\b|\bzelfmoord\b/,
-  /\bbrustschmerz(?:en)?\b|\bschmerzen (?:in|auf) (?:meiner |der )?brust\b|\b(?:druck|enge) (?:in|auf) (?:meiner |der )?brust\b/,
-  /\bkann nicht atmen\b|\bbekomme keine luft\b|\bohnmacht\b|\bohnmachtig\b|\bsuizid\b/,
+  /\bcannot breathe\b|\bcant breathe\b|\bstruggling to breathe\b|\bshortness of breath\b|\bshort of breath\b|\bfainted\b|\bpassed out\b|\bsuicid(?:e|al)\b/,
+  /\bborstpijn\b|\bpijn (?:op|in) (?:mijn |de )?borst\b|\bmijn borst doet pijn\b|\b(?:druk|beklemming|enge druk) (?:op|in) (?:mijn |de )?borst\b/,
+  /\bkan niet ademen\b|\bkrijg geen adem\b|\bgeen lucht\b|\bkortademig\b|\bbenauwd\b|\bflauwgevallen\b|\braak flauw\b|\bbewusteloos\b|\bzelfmoord\b/,
+  /\bbrustschmerz(?:en)?\b|\bbrustdruck\b|\bschmerzen (?:in|auf) (?:meiner |der )?brust\b|\b(?:druck|enge) (?:in|auf) (?:meiner |der )?brust\b/,
+  /\bkann nicht atmen\b|\bbekomme keine luft\b|\batemnot\b|\bkurzatmig\b|\bohnmacht\b|\bohnmachtig\b|\bbewusstlos\b|\bsuizid\b/,
 ];
-const exertionDizzinessPatterns = [
-  { symptom: /\bduizelig\b|\blicht in (?:mijn |het )?hoofd\b|\bbijna flauw\b/, exertion: /\bsport(?:en)?\b|\btrain(?:en|ing)?\b|\binspanning\b/ },
-  { symptom: /\bdizz(?:y|iness)\b|\blightheaded\b|\bnearly faint(?:ed)?\b/, exertion: /\bexercis(?:e|ing)\b|\btrain(?:ing)?\b|\bworkout\b|\bexertion\b/ },
-  { symptom: /\bschwindel\b|\bschwindelig\b|\bbenommen\b|\bfast ohnmachtig\b/, exertion: /\bsport\b|\btraining\b|\btrainieren\b|\bbelastung\b/ },
+const dizzinessPatterns = [
+  /\bduizelig(?:heid)?\b|\bdraaierig\b|\blicht in (?:mijn |het )?hoofd\b|\bbijna (?:aan het )?flauw(?:vallen)?\b|\bflauwgevallen\b|\braak flauw\b/,
+  /\bdizz(?:y|iness)\b|\blight ?headed\b|\b(?:nearly|almost|about to) faint(?:ed|ing)?\b|\bfaint(?:ed|ing)\b|\bpassed out\b/,
+  /\bschwindel(?:ig)?\b|\bbenommen\b|\bfast ohnmachtig\b|\bohnmachtig\b|\bbewusstlos\b/,
 ];
+const exertionPatterns = [
+  /\bsport(?:en)?\b|\btrain(?:en|ing)?\b|\binspanning\b|\boefening\b/,
+  /\bexercis(?:e|ing)\b|\btrain(?:ing)?\b|\bworkout\b|\bexertion\b/,
+  /\bsport\b|\btraining\b|\btrainieren\b|\bbelastung\b/,
+];
+const chestDiscomfortPatterns = [
+  /\bonprettig gevoel (?:op|in) (?:mijn |de )?borst\b|\bborstklachten\b/,
+  /\bchest discomfort\b/,
+  /\bbeschwerden (?:in|an) (?:meiner |der )?brust\b|\bunwohlsein (?:in|an) (?:meiner |der )?brust\b/,
+];
+const educationalPatterns = [
+  /\bwat (?:betekent|zijn|is)\b|\bleg uit\b|\bwat moet (?:iemand|je) doen bij\b/,
+  /\bwhat (?:does|do|is|are)\b|\bexplain\b|\bwhat should (?:someone|you) do (?:about|with)\b/,
+  /\bwas (?:bedeutet|ist|sind)\b|\berklar(?:e|en)\b|\bwas soll (?:man|jemand) bei\b/,
+];
+const currentPersonalPatterns = [
+  /\bik (?:heb|voel|ben|word|werd|krijg)\b|\bmijn borst\b|\bbij mij\b|\bnu\b|\bmomenteel\b|\bvandaag\b|\bhoudt aan\b/,
+  /\bi (?:have|feel|am|became|get)\b|\bmy chest\b|\bfor me\b|\bnow\b|\bcurrently\b|\btoday\b|\bpersists?\b/,
+  /\bich (?:habe|fuhle|bin|werde|bekomme)\b|\bmeine brust\b|\bbei mir\b|\bjetzt\b|\bheute\b|\bhalt an\b/,
+];
+const negationBeforeMatch = /\b(?:geen|zonder|niet|no|without|not|kein|keine|keinen|keinem|keiner|ohne|nicht)\b(?:\s+[a-z0-9]+){0,2}\s*$/;
+
+function hasNonNegatedMatch(text: string, pattern: RegExp): boolean {
+  const matcher = new RegExp(pattern.source, pattern.flags.includes("g") ? pattern.flags : `${pattern.flags}g`);
+  for (const match of text.matchAll(matcher)) {
+    const prefix = text.slice(Math.max(0, (match.index || 0) - 48), match.index).trimEnd();
+    if (!negationBeforeMatch.test(prefix)) return true;
+  }
+  return false;
+}
+
+function hasConcept(text: string, patterns: RegExp[]): boolean {
+  return patterns.some((pattern) => hasNonNegatedMatch(text, pattern));
+}
+
+export function classifyPhase6cSafety(content: string): "clear" | "hard_stop" {
+  const text = normalizeSafetyText(content);
+  const educationalOnly = educationalPatterns.some((pattern) => pattern.test(text)) &&
+    !currentPersonalPatterns.some((pattern) => pattern.test(text));
+  if (educationalOnly) return "clear";
+
+  const serious = hasConcept(text, seriousPatterns);
+  const dizziness = hasConcept(text, dizzinessPatterns);
+  const exertion = exertionPatterns.some((pattern) => pattern.test(text));
+  const chestDiscomfort = hasConcept(text, chestDiscomfortPatterns);
+  return serious || dizziness || (chestDiscomfort && (dizziness || exertion)) ? "hard_stop" : "clear";
+}
+
 const medicalAdvicePatterns = [
   /diagnos|medicat|dosage|treatment|prescri/i,
   /diagnos|medicijn|dosering|behandeling|voorschrift/i,
@@ -107,9 +155,7 @@ const medicalAdvicePatterns = [
 ];
 
 export function createPhase6cMockReply(content: string, locale: Locale): CoachResponse {
-  const normalizedContent = normalizeSafetyText(content);
-  const hardStop = seriousPatterns.some((pattern) => pattern.test(normalizedContent)) ||
-    exertionDizzinessPatterns.some(({ symptom, exertion }) => symptom.test(normalizedContent) && exertion.test(normalizedContent));
+  const hardStop = classifyPhase6cSafety(content) === "hard_stop";
   const safeRefusal = !hardStop && medicalAdvicePatterns.some((pattern) => pattern.test(content));
   const copy = {
     nl: {

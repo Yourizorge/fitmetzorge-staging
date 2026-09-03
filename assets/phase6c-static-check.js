@@ -118,8 +118,10 @@ check("Edge zero call cost",all(files.edge,["external_ai_calls: 0","external_ai_
 check("Edge no fetch",!files.edge.includes("fetch("));
 check("Edge strict response",files.edge.includes("validateCoachResponse(output)"));
 check("Edge no actions",files.edge.includes("output.actions.length !== 0"));
-check("Edge medical boundary",all(files.edge,["medicalAdvicePatterns","seriousPatterns","exertionDizzinessPatterns","normalizeSafetyText","hard_stop"]));
+check("Edge medical boundary",all(files.edge,["medicalAdvicePatterns","seriousPatterns","dizzinessPatterns","exertionPatterns","normalizeSafetyText","classifyPhase6cSafety","hard_stop"]));
 check("exact owner sentence fixture",files.edgeTest.includes("Ik heb pijn op de borst en ben erg duizelig tijdens het sporten."));
+check("natural-language owner fixtures",all(files.edgeTest,["Ik heb pijn in de borst en ben duizelig.","Ik heb pijn in de borst en duizeligheid.","Ik heb pijn in mijn borst en voel me duizelig tijdens het sporten."]));
+check("bounded safety false-positive controls",all(files.edgeTest,["geen borstpijn","niet duizelig","Wat betekent borstpijn?","chest press","Was bedeutet Brustdruck?"]));
 check("hard stop copy contract",all(files.edge,["Stop direct met sporten","geen diagnose stellen","medisch beoordelen","bel dan 112"]));
 check("hard stop blocks generic coaching",all(files.edgeTest,["kleine, haalbare volgende stap","seek_prompt_professional_medical_assessment","prompt injection cannot bypass hard stop"]));
 check("safety authority remains Edge only",!files.runtime.includes("seriousPatterns")&&!files.runtime.includes("exertionDizzinessPatterns"));
