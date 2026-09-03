@@ -87,7 +87,7 @@
   }
   const phase5ProgressPatchSource = await phase5ProgressPatchResponse.text();
 
-  const phase6cPrivateChatPatchUrl = new URL("assets/phase6c-private-ai-chat.js?v=20260903-phase6c-safety-chatux1", document.baseURI);
+  const phase6cPrivateChatPatchUrl = new URL("assets/phase6c-private-ai-chat.js?v=20260903-phase6c-continued-chat1", document.baseURI);
   const phase6cPrivateChatPatchResponse = await fetch(phase6cPrivateChatPatchUrl, { cache: "no-cache" });
   if (!phase6cPrivateChatPatchResponse.ok) {
     throw new Error(`Package 6C private AI chat laden mislukt: ${phase6cPrivateChatPatchResponse.status}`);

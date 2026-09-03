@@ -73,6 +73,21 @@ test("prompt injection cannot bypass hard stop",()=>{
     assert.equal(reply.safety.status,"hard_stop");assert.equal(reply.actions.length,0);assert.equal(reply.recommendations.includes("choose_one_realistic_next_step"),false);
   }
 });
+test("hard stop is request scoped and a normal follow-up remains normal",()=>{
+  const risk=createPhase6cMockReply("Ik heb pijn op de borst en ben duizelig tijdens het sporten.","nl");
+  const followUp=createPhase6cMockReply("Kun je me helpen rustig op een rij te zetten wat ik nu kan vragen aan mijn arts?","nl");
+  assert.equal(risk.safety.status,"hard_stop");
+  assert.equal(followUp.safety.status,"clear");
+  assert.equal(followUp.actions.length,0);
+  assert.match(followUp.summary,/kleine, haalbare volgende stap/);
+});
+test("repeated serious messages keep hard stopping",()=>{
+  const first=createPhase6cMockReply("Ik heb pijn op de borst tijdens het sporten.","nl");
+  const second=createPhase6cMockReply("De pijn op mijn borst houdt aan.","nl");
+  assert.equal(first.safety.status,"hard_stop");
+  assert.equal(second.safety.status,"hard_stop");
+  assert.equal(first.actions.length+second.actions.length,0);
+});
 test("authenticated request writes through RPC and completes zero-cost mock",async()=>{
   const {calls,response}=invoke(input);const result=await response;const body=await result.json();
   assert.equal(result.status,200);assert.equal(body.external_ai_calls,0);assert.equal(body.external_ai_cost_eur,0);

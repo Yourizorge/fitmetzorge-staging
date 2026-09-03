@@ -6,23 +6,29 @@ const files={
   phase1:read("assets/phase1-foundation.js"),phase2:read("assets/phase2-home-recovery.js"),phase3:read("assets/phase3-training-engine.js"),
   phase4a:read("assets/phase4-nutrition-slice2.js"),phase4b:read("assets/phase4-nutrition-slice3.js"),member:read("assets/member-ux-consistency.js"),phase5:read("assets/phase5-progress.js"),
   migration:read("supabase/migrations/20260902203000_phase6c_private_ai_chat.sql"),verifier:read("supabase/verification/20260902203000_phase6c_private_ai_chat_verification.sql"),e2e:read("supabase/tests/20260902203000_phase6c_private_ai_chat_transactional_e2e.sql"),
+  continuationMigration:read("supabase/migrations/20260903145000_phase6c_request_scoped_safety.sql"),continuationVerifier:read("supabase/verification/20260903145000_phase6c_request_scoped_safety_verification.sql"),continuationE2e:read("supabase/tests/20260903145000_phase6c_request_scoped_safety_e2e.sql"),
   edge:read("supabase/functions/youri-ai/phase6c-handler.ts"),edgeIndex:read("supabase/functions/youri-ai/index.ts"),edgeTest:read("supabase/functions/youri-ai/phase6c-handler.test.ts")
 };
 const checks=[];const check=(name,pass)=>checks.push({name,pass:Boolean(pass)});const all=(source,values)=>values.every((value)=>source.includes(value));
 check("runtime duplicate guard",files.runtime.includes("FMZ_PHASE6C_PRIVATE_CHAT_LOADED"));
-check("cache version consistent",all(files.runtime+files.app+files.index,["20260903-phase6c-safety-chatux1"])&&files.index.includes("app.js?v=20260903-phase6c-safety-chatux1"));
+check("cache version consistent",all(files.runtime+files.app+files.index,["20260903-phase6c-continued-chat1"])&&files.index.includes("app.js?v=20260903-phase6c-continued-chat1"));
 check("asset loaded before init",files.app.indexOf("phase6cPrivateChatPatchSource")<files.app.indexOf("init();`"));
 check("section exists",files.index.includes('id="ai-coach"'));
 check("client nav only",files.runtime.includes('NAV.client')&&!files.runtime.includes('NAV.trainer'));
-check("NL EN DE",all(files.runtime,["Een privegesprek","A private conversation","Ein privates Gespraech"]));
+check("NL EN DE",all(files.runtime,["Waar wil je vandaag hulp bij?","What would you like help with today?","Wobei moechtest du heute Hilfe?"]));
 check("mock notice visible",all(files.runtime,["Vaste simulatie","Fixed simulation","Feste Simulation"]));
-check("compact coach identity",all(files.runtime,["p6c-identity","p6c-avatar","fit-met-zorge-logo-cropped.png","p6c-ready","p6c-test"]));
+check("Youri AI identity hierarchy",all(files.runtime,['title:"Youri AI"','intro:"FitMetZorge AI Coach"','coach:"Youri AI"',"p6c-identity","p6c-avatar","p6c-ready","p6c-test"]));
+check("neutral avatar only",files.runtime.includes('<span class="p6c-avatar" aria-hidden="true">AI</span>')&&!/p6c-avatar[^>]+<img|p6c-avatar[^\n]+\.png/.test(files.runtime));
+check("subscription identity unchanged",files.runtime.includes("FitMetZorge AI Coach")&&files.migration.includes("entitlement_code"));
 check("mobile conversation switcher",all(files.runtime,["historyOpen",'data-p6c-history','aria-expanded="${chat.historyOpen}"']));
 check("secondary action menu",all(files.runtime,["p6c-actions","p6c-action-menu","data-p6c-export","data-p6c-delete"]));
 check("empty state prompts",all(files.runtime,["promptOne","promptTwo","promptThree","data-p6c-prompt"]));
 check("processing indicator",all(files.runtime,["p6c-typing","p6c-typing-dots","p6c-pulse"]));
 check("safety presentation",all(files.runtime,["p6c-message.safety","safetyLabel","isSafetyMessage"]));
 check("composer auto grow",all(files.runtime,['rows="1"','Math.min(event.target.scrollHeight,132)','event.target.form?.requestSubmit()']));
+check("composer one horizontal row",all(files.runtime,[".p6c-composer{position:static;display:flex","align-items:flex-end","flex:1 1 auto","flex:0 0 48px"]));
+check("composer never stacks",!files.runtime.includes(".p6c-composer{grid-template-columns:1fr}"));
+check("send action is right-side icon",all(files.runtime,['data-state="${sendState}"','aria-label="${esc(sendLabel)}"','sendSymbol=chat.pending?"…":chat.retry?"↻":"↑"']));
 check("routine and consent controls separated",files.runtime.indexOf("p6c-action-menu")<files.runtime.indexOf("p6c-consent-control"));
 check("consent activation",all(files.runtime,["fmz_phase6a_read_consent_contract","fmz_phase6a_record_consent",'p_consent_kind:"ai_processing"','p_explicit_confirmation:true']));
 check("withdrawal",all(files.runtime,['data-p6c-consent="withdraw"','recordConsent("withdrawn")']));
@@ -51,6 +57,12 @@ check("no reload workaround",!files.runtime.includes("location.reload"));
 
 let combined=false;try{new vm.Script(files.bundle.replace("\ninit();",`\n${[files.phase1,files.phase2,files.phase3,files.phase4a,files.phase4b,files.member,files.phase5,files.runtime].join("\n")}\ninit();`));combined=true;}catch{}check("combined eight-patch parse",combined);
 check("migration transaction",/^--[\s\S]*\nbegin;/.test(files.migration)&&/\ncommit;\s*$/.test(files.migration));
+check("continuation migration transaction",/^--[\s\S]*\nbegin;/.test(files.continuationMigration)&&/\ncommit;\s*$/.test(files.continuationMigration));
+check("continuation migration minimal",(files.continuationMigration.match(/create or replace function/g)||[]).length===1&&!/\b(create table|alter table|drop table|insert into|update public\.|delete from)\b/i.test(files.continuationMigration));
+check("request scoped communication",all(files.continuationMigration,["'chat_write_allowed', v_allowed","'communication_allowed', v_allowed","'automatic_execution_blocked', v_safety in ('hard_stop', 'review_required')"]));
+check("retained safety not a chat denial",!files.continuationMigration.includes("and v_safety not in")&&!files.continuationMigration.includes("then 'safety_hard_stop'"));
+check("continuation preserves entitlement consent age and mock gates",all(files.continuationMigration,["v_entitlement.entitlement_code is not null","v_consent.consent_state = 'granted'","document_active","and v_age","mock_chat_enabled","external_provider_enabled"]));
+check("continuation function security",all(files.continuationMigration,["stable","security definer","set search_path = pg_catalog, public, ai_private, pg_temp"]));
 check("reuse 6A tables",all(files.migration,["alter table public.ai_threads","alter table public.ai_messages","alter table ai_private.runs"]));
 check("one new private config table",(files.migration.match(/create table if not exists/g)||[]).length===1&&files.migration.includes("ai_private.phase6c_runtime_config"));
 check("message sequencing",all(files.migration,["sequence_number bigint","ai_messages_thread_sequence_idx","phase6c_assign_message_sequence"]));
@@ -81,12 +93,18 @@ check("zero provider metadata",all(files.migration,["'external_ai_calls', 0","'e
 check("verifier read only",/^with\s/i.test(files.verifier.trim())&&/select verification_result from result;\s*$/i.test(files.verifier.trim()));
 const verifierCode=files.verifier.replace(/'(?:''|[^'])*'/g,"''");check("verifier no mutation",!/\b(insert|update|delete|alter|create|drop|truncate|grant|revoke|call)\b/i.test(verifierCode));
 check("verifier overall",files.verifier.includes("'overall_pass',bool_and(pass)"));
+check("continuation verifier read only",/^with\s/i.test(files.continuationVerifier.trim())&&/select verification_result from result;\s*$/i.test(files.continuationVerifier.trim()));
+const continuationVerifierCode=files.continuationVerifier.replace(/'(?:''|[^'])*'/g,"''");check("continuation verifier no mutation",!/\b(insert|update|delete|alter|create|drop|truncate|grant|revoke|call)\b/i.test(continuationVerifierCode));
+check("continuation verifier covers request scope",all(files.continuationVerifier,["communication_gate","safety_metadata_retained","safety_not_chat_denial","member_routes_use_gate"]));
 check("verifier ACL metadata",all(files.verifier,["aclexplode","acldefault","a.grantee=0 then 'PUBLIC'"]));
 check("E2E rollback",/^begin;/.test(files.e2e)&&/rollback;[\s\S]+fixtures_remaining/.test(files.e2e));
 check("E2E consent entitlement age",all(files.e2e,["consent gate failed","Free Pro deny failed","age gate failed"]));
 check("E2E sequencing idempotency",all(files.e2e,["message sequencing failed","message replay failed","assistant duplicate or missing"]));
 check("E2E isolation",all(files.e2e,["trainer chat access","trainer table access"]));
 check("E2E export delete retention",all(files.e2e,["export failed","raw content remained","retention scrub failed"]));
+check("continuation E2E rollback",/^begin;/.test(files.continuationE2e)&&/rollback;[\s\S]+fixtures_remaining/.test(files.continuationE2e));
+check("continuation E2E hard stop follow-up",all(files.continuationE2e,["normal follow-up blocked","new conversation after hard stop blocked","new conversation after delete blocked","safety metadata was lost"]));
+check("continuation E2E isolation and gates",all(files.continuationE2e,["member safety isolation failed","consent withdrawal no longer blocks processing","entitlement loss no longer blocks processing","trainer safety access"]));
 check("Edge exact request",all(files.edge,["exactKeys","request_id","attempt_id","expected_revision"]));
 check("Edge member JWT",all(files.edgeIndex,["auth.getUser(token)","phase6cHandler"]));
 check("Edge no provider import",!/(openai-adapter|OpenAI|api\.openai|Responses API)/i.test(files.edge));
@@ -100,7 +118,7 @@ check("hard stop copy contract",all(files.edge,["Stop direct met sporten","geen 
 check("hard stop blocks generic coaching",all(files.edgeTest,["kleine, haalbare volgende stap","seek_prompt_professional_medical_assessment","prompt injection cannot bypass hard stop"]));
 check("safety authority remains Edge only",!files.runtime.includes("seriousPatterns")&&!files.runtime.includes("exertionDizzinessPatterns"));
 check("Edge safe errors no raw",all(files.edge,["safeError","chat_unexpected_error"]));
-check("Edge tests",(files.edgeTest.match(/test\(/g)||[]).length>=12);
+check("Edge tests",(files.edgeTest.match(/test\(/g)||[]).length>=14);
 check("Edge failure reconciliation",all(files.edge,["fmz_phase6a_service_fail_run","p_safe_error_code"]));
 check("no production ref",!Object.values(files).join("\n").includes("hgoygcviutmynaihcvpd"));
 check("no secret material",!/(sk-[a-z0-9]|sb_secret_|eyJhbGciOi)/i.test(Object.values(files).join("\n")));
