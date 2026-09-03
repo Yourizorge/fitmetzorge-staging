@@ -1,6 +1,6 @@
 # Package 6C Private AI Chat
 
-Status: TECHNICAL PASS / READY FOR OWNER TESTING / NOT FROZEN
+Status: OWNER SAFETY + CHAT UX HOTFIX TECHNICAL PASS / READY FOR OWNER RETEST / NOT FROZEN
 
 Date: 2026-09-03
 
@@ -36,9 +36,15 @@ Entitlement loss starts a server-authoritative read/export/delete-only grace per
 
 ## Edge And Frontend
 
-The `youri-ai/phase6c/chat` route requires a valid member JWT and an exact bounded payload containing request, attempt and thread identities, expected revision, locale and content. It first stores or replays the user message, reserves an idempotent zero-cost mock run, validates strict localized mock output and completes the run. Serious signals return the deterministic professional-help hard stop; diagnosis, medication and treatment requests receive a safe refusal. Actions are always empty.
+The `youri-ai/phase6c/chat` route requires a valid member JWT and an exact bounded payload containing request, attempt and thread identities, expected revision, locale and content. It first stores or replays the user message, reserves an idempotent zero-cost mock run, validates strict localized mock output and completes the run. The server-authoritative deterministic classifier normalizes case, accents, punctuation, whitespace and common NL/EN/DE phrasing. Explicit serious signals and bounded exertion-plus-dizziness combinations return the localized professional-help hard stop; diagnosis, medication and treatment requests receive a safe refusal. Actions are always empty.
 
-The member UI provides consent activation/withdrawal, thread list, new thread, bounded history, composer, sending/failure/retry, offline handling, export and delete confirmation. Previously hydrated content may remain visible offline, but new content is never silently queued or represented as processed. Mobile layouts cover 320x700 and 390x844, with tablet and desktop compatibility.
+The hard-stop copy tells the member to stop exercising, states that no diagnosis is made, requests prompt professional medical assessment and directs severe, persistent or immediately dangerous symptoms to emergency help/112. A hard stop suppresses normal coaching output and has no plan, proposal or executable action.
+
+The focused chat UX uses a compact FitMetZorge identity header, staging-test status, mobile history switcher, readable user/assistant bubbles, empty-state prompts, processing and retry states, a growing multiline composer and a secondary export/delete menu. Safety output is visually distinct without moving classification authority into the browser. Previously hydrated content may remain visible offline, but new content is never silently queued or represented as processed. Mobile layouts cover 320x700 and 390x844, with tablet and desktop compatibility.
+
+## Owner Safety Hotfix
+
+The owner sentence `Ik heb pijn op de borst en ben erg duizelig tijdens het sporten.` previously missed the hard-stop route because the serious-pattern list recognized the compound `borstpijn` but not the natural phrase `pijn op de borst`, and did not combine exercise context with dizziness. The browser payload was correct. The Edge classifier now covers that phrase and equivalent NL/EN/DE variants after deterministic normalization. Prompt-injection wording cannot suppress the hard stop, while ordinary non-serious fitness uses of words such as chest training do not false-positive.
 
 ## Evidence
 
@@ -51,18 +57,21 @@ The member UI provides consent activation/withdrawal, thread list, new thread, b
 - Transactional E2E: `supabase/tests/20260902203000_phase6c_private_ai_chat_transactional_e2e.sql`
 - E2E SHA-256: `A3372F6DC48ECD97549F1BA8C7D499FA1981EF653A1565AC3A06C1A450DDBD22`
 - E2E result: PASS with rollback; fixtures remaining 0
-- Edge: `youri-ai` v39 ACTIVE; JWT verification enabled; bundle SHA-256 `d2856ac587d37d72967a383ae03ddaa21324d1ba37963133cb0a1e39b88a43e6`
-- Implementation/runtime commit: `6ed908834c879850e980cbb0aad75597f69553a3`
-- Frontend cache: `20260903-phase6c-private-chat1`
+- Edge: `youri-ai` v40 ACTIVE; JWT verification enabled; bundle SHA-256 `453309b755c53aca1754c8cb529dbb340694a5828e7b049a1c3b40e63530fcf3`
+- Hotfix implementation/runtime commit: `832014a`
+- Frontend cache: `20260903-phase6c-safety-chatux1`
 - Live frontend: `index.html`, `app.js` and `assets/phase6c-private-ai-chat.js` return HTTP 200 and are byte-identical to the implementation commit
-- Live assembled runtime: 390x844 consent-gated AI Coach and mock notice render without console errors or horizontal overflow; no member message was sent
-- Package 6C static: 82/82 PASS
-- Package 6C browser/responsive: 35/35 PASS
+- Live exact-phrase Edge proof: HTTP 200, `hard_stop`, `execution_blocked=true`, empty actions, exercise-stop/no-diagnosis/medical-assessment/emergency-112 copy present, generic coaching suppressed, 0 external calls and EUR 0.00 cost
+- Live proof used one isolated synthetic staging account; the account and all related fixtures were removed and fourteen post-cleanup counts were zero. The owner account and its chat data were not used or changed.
+- Live assembled runtime: 320x700 and 390x844 chat UI render without console errors, truncation or horizontal overflow
+- Package 6C handler: 12/12 PASS
+- Package 6C static: 94/94 PASS
+- Package 6C browser/responsive: 57/57 PASS
 - Combined Phase 6 Edge tests: 44/44 PASS
 - Frozen regressions: Phase 5 116/116 and 53/53; Phase 6A 93/93; Phase 6B 98/98; Nutrition 45/45 and 138/138
 - Security advisor: no Package 6C ERROR; intended private no-policy and authenticated RPC notices reviewed
-- Performance advisor: no Package 6C finding
+- Performance advisor: no hotfix blocker; existing informational run-FK and young unused-index notices remain unchanged
 
 ## Safety Boundary
 
-External AI calls during Package 6C: 0. External AI cost: EUR 0.00. Real-member OpenAI processing enabled: NO. Trainers can read private chat: NO. Member data changed during verification: NO. Test fixtures remaining: 0. Production touched: NO. Package 6D started: NO.
+External AI calls during Package 6C: 0. External AI cost: EUR 0.00. Real-member OpenAI processing enabled: NO. Trainers can read private chat: NO. Owner/member data changed during hotfix verification: NO. Test fixtures remaining: 0. The exact owner-test AI entitlement remains active once through `2026-09-10T23:59:59Z`. Production touched: NO. Package 6D started: NO. Owner real-phone retest is still required before acceptance or freeze.

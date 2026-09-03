@@ -304,7 +304,7 @@ The existing `user_settings.unit_system` stores the presentation choice. No impe
 
 ### Phase 6 Youri AI Core Readiness
 
-Status: ARCHITECTURE AUDIT COMPLETE; PACKAGES 6A AND 6B OWNER-ACCEPTED / FROZEN; PACKAGE 6C TECHNICAL PASS
+Status: ARCHITECTURE AUDIT COMPLETE; PACKAGES 6A AND 6B OWNER-ACCEPTED / FROZEN; PACKAGE 6C SAFETY + CHAT UX HOTFIX TECHNICAL PASS
 
 Live staging now contains the additive Package 6A AI trust schema. Normalized own-user Identity, Recovery, Training, Nutrition and Progress inputs remain the frozen authorities. No provider credential, external provider call or member-facing AI runtime is active.
 
@@ -322,6 +322,8 @@ This 6B boundary is live only on staging as migration history `20260902045834` a
 
 Package 6C reuses the 6A `ai_threads`, `ai_messages`, `ai_data_lifecycle_requests`, private run/rate/safety state and consent/entitlement authorities. It adds deterministic sequence/revision identifiers, a service-only source-message correlation, mock-only runtime configuration and own-user chat RPCs. The browser has no base-table write grant. Message content cannot be edited; deletion changes content-bearing rows only to the scrubbed `deleted` state and leaves non-content lifecycle evidence. A minute retention sweep starts, restores or expires the 90-day grace period under the same server-side entitlement authority.
 
-The member calls `youri-ai/phase6c/chat` with a verified JWT and exact request schema. The Edge first commits or replays the own-user message, reserves an idempotent zero-cost mock run, creates a strict deterministic localized response, and completes it through the frozen service RPC. The path has no provider import or provider call, and cannot select a model or action. It is live on staging as `youri-ai` v39 with JWT verification. Package 6C is technically ready for owner testing, but is not owner-accepted or frozen.
+The member calls `youri-ai/phase6c/chat` with a verified JWT and exact request schema. The Edge first commits or replays the own-user message, reserves an idempotent zero-cost mock run, applies a deterministic normalized NL/EN/DE safety classifier, creates a strict localized response, and completes it through the frozen service RPC. Natural chest-pain phrasing and exertion-plus-dizziness combinations hard-stop before generic coaching; the response stops exercise, avoids diagnosis, requests prompt medical assessment, includes emergency/112 escalation for severe, persistent or immediate danger and always returns zero actions. Prompt-injection text cannot bypass this route.
+
+The browser only presents the server result. Its compact mobile chat, history switcher, message bubbles, prompt chips, processing/retry states, growing composer and secondary export/delete menu add no classifier or domain authority. The path has no provider import or provider call, and cannot select a model or action. It is live on staging as `youri-ai` v40 with JWT verification; commit `832014a`, cache `20260903-phase6c-safety-chatux1` and bundle SHA-256 `453309b755c53aca1754c8cb529dbb340694a5828e7b049a1c3b40e63530fcf3`. Package 6C is ready for owner retest, but is not owner-accepted or frozen.
 
 

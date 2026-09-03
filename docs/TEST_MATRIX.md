@@ -758,7 +758,7 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | Phase 6A live verifier compatibility | PASS - verifier scoped to frozen 6A functions after additive 6B drift; 47/47 read-only PASS, no database change |
 | Final Edge state | PASS - `youri-ai` v38 ACTIVE, JWT verification enabled, all eight live runtime files source-identical to the repository files; SHA-256 `34d4deb5561110c71ab7e8693262d8928b17cb7983766afc2ffbce11041daf25` |
 | Package result | PASS - COMPLETE / OWNER-ACCEPTED / FROZEN on 2026-09-02 |
-| Member AI chat / Package 6C | TECHNICAL PASS / OWNER TESTING REQUIRED |
+| Member AI chat / Package 6C | SAFETY + CHAT UX HOTFIX TECHNICAL PASS / OWNER RETEST REQUIRED |
 | Production | UNTOUCHED |
 
 ## Phase 6C Private AI Chat Gate
@@ -767,15 +767,18 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | --- | --- |
 | Additive schema / verifier | PASS - migration history `20260903085454`; read-only verifier 37/37 |
 | Transactional database E2E | PASS - consent, entitlement, age, isolation, trainer denial, sequencing, replay, stale conflict, export, deletion and grace retention; rollback left 0 fixtures |
-| Edge mock route | PASS - `youri-ai` v39 ACTIVE, JWT verification enabled, exact request schema, strict mock response, no provider call |
+| Edge mock route | PASS - `youri-ai` v40 ACTIVE, JWT verification enabled, exact request schema, strict mock response, no provider call; bundle SHA-256 `453309b755c53aca1754c8cb529dbb340694a5828e7b049a1c3b40e63530fcf3` |
 | Consent / entitlement | PASS - current active `ai` or `personal_coaching` plus active versioned consent and age 18+ required |
 | History / export / deletion | PASS - own-user only, bounded deterministic ordering, JSON export without private operational metadata, raw content scrubbed on deletion |
 | Retention | PASS - read/export/delete-only grace, maximum 90 days, minute server sweep, deterministic reactivation |
 | Trainer / cross-member isolation | PASS - no trainer policy, no broad authenticated table grants, own-user RPC authorization |
-| Mock safety | PASS - normal, medical refusal, serious-signal hard stop and controlled failure; actions always empty |
-| Package 6C static | PASS 82/82 |
-| Package 6C browser | PASS 35/35 - NL/EN/DE; 320x700, 390x844, tablet and desktop; no overflow |
+| Mock safety | PASS - exact owner NL chest-pain/dizziness sentence, natural/case/punctuation variants, EN/DE, prompt injection, ordinary-fitness false positives and controlled failure; hard stop suppresses coaching and actions remain empty |
+| Live hard-stop proof | PASS - exact owner sentence returned HTTP 200, `hard_stop`, `execution_blocked=true`, exercise-stop/no-diagnosis/medical-assessment/112 copy and 0 external calls/cost; isolated synthetic fixture fully removed |
+| Package 6C handler | PASS 12/12 |
+| Package 6C static | PASS 94/94 |
+| Package 6C browser | PASS 57/57 - compact chat UX, NL/EN/DE, 320x700, 390x844, tablet and desktop; no overlap or overflow |
 | Frozen regressions | PASS - Phase 5 116/116 + 53/53; Phase 6A 93/93; Phase 6B 98/98; Nutrition 45/45 + 138/138 |
 | External AI | PASS - 0 calls, EUR 0.00; real-member provider processing disabled |
-| Package result | TECHNICAL PASS / READY FOR OWNER TESTING / NOT FROZEN |
+| Owner-test entitlement | PASS - exact owner account uniquely resolved; one active `phase6c_owner_test` AI entitlement retained through `2026-09-10T23:59:59Z` |
+| Package result | SAFETY + CHAT UX HOTFIX TECHNICAL PASS / READY FOR OWNER RETEST / NOT FROZEN |
 | Production | UNTOUCHED |

@@ -14,10 +14,10 @@ Last updated: 2026-09-03
 - Phase 0B Storage verification: COMPLETE
 - Master Plan Specification: COMPLETE
 - Master Plan Final Review: COMPLETE
-- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6C TECHNICAL PASS / OWNER TESTING REQUIRED
+- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6C SAFETY + CHAT UX HOTFIX TECHNICAL PASS / OWNER RETEST REQUIRED
 - Production Migration: NOT STARTED
 
-Current next step: owner real-phone testing of the Package 6C private mock chat on staging. Package 6C is technically complete but is not owner-accepted or frozen. Packages 6A and 6B remain frozen; all external member-provider processing remains disabled. Production remains blocked.
+Current next step: owner real-phone retest of the Package 6C private mock chat and the exact chest-pain/dizziness safety sentence on staging. Package 6C is not owner-accepted or frozen. Packages 6A and 6B remain frozen; all external member-provider processing remains disabled. Production remains blocked.
 
 ## Environment Guardrail
 
@@ -212,11 +212,13 @@ Staging evidence: migration history `20260902045834`; migration SHA-256 `6B432DA
 
 ### Phase 6C Private AI Chat
 
-Status: TECHNICAL PASS / READY FOR OWNER TESTING / NOT FROZEN
+Status: OWNER SAFETY + CHAT UX HOTFIX TECHNICAL PASS / READY FOR OWNER RETEST / NOT FROZEN
 
 Summary: Package 6C adds a mobile-first private member chat on top of the frozen 6A trust boundary. It is consent-, age- and current `ai`/`personal_coaching`-entitlement gated, uses own-user RPCs only, exposes no trainer read path, keeps messages immutable, supports deterministic sequencing/replay, JSON export, content deletion and a server-authoritative maximum 90-day entitlement-loss grace period.
 
-Only the deterministic staging mock is enabled. External-provider processing remains structurally disabled; the Edge path performs no OpenAI request and reports zero calls and EUR 0 cost. Migration history `20260903085454` is live on staging. The locked read-only verifier passes 37/37 and the transactional E2E passes with rollback and zero retained fixtures. `youri-ai` v39 is ACTIVE with JWT verification. Implementation commit `6ed908834c879850e980cbb0aad75597f69553a3` and cache `20260903-phase6c-private-chat1` are live; `index.html`, `app.js` and the 6C runtime are byte-identical to that commit. The assembled 390x844 runtime loads the consent gate and mock notice without console errors or overflow. Package 6C remains pending owner real-phone acceptance and must not be marked frozen yet.
+Only the deterministic staging mock is enabled. External-provider processing remains structurally disabled; the Edge path performs no OpenAI request and reports zero calls and EUR 0 cost. The owner-reported natural Dutch chest-pain/dizziness sentence now routes through a normalized server-authoritative NL/EN/DE hard stop that stops exercise, avoids diagnosis, requests prompt medical assessment, points severe/persistent/immediate-danger cases to 112, suppresses generic coaching and returns no actions. The chat surface was compacted for mobile without changing RPC, consent, entitlement, retention or ownership contracts.
+
+Migration history `20260903085454` remains live and unchanged. The locked read-only verifier passes 37/37 and the transactional E2E passes with rollback and zero retained fixtures. `youri-ai` v40 is ACTIVE with JWT verification and bundle SHA-256 `453309b755c53aca1754c8cb529dbb340694a5828e7b049a1c3b40e63530fcf3`. Hotfix commit `832014a` and cache `20260903-phase6c-safety-chatux1` are live; `index.html`, `app.js` and the 6C runtime are byte-identical. Static 94/94, browser 57/57, handler 12/12 and combined Edge 44/44 pass. The exact live sentence returned `hard_stop` with zero external calls/cost through an isolated synthetic account that was fully removed. The owner-test AI entitlement remains active once through `2026-09-10T23:59:59Z`. Package 6C remains pending owner real-phone retest and must not be marked frozen yet.
 
 ### Production Migration
 
