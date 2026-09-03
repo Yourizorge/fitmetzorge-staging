@@ -767,18 +767,18 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | --- | --- |
 | Additive schema / verifier | PASS - migration history `20260903085454`; read-only verifier 37/37 |
 | Transactional database E2E | PASS - consent, entitlement, age, isolation, trainer denial, sequencing, replay, stale conflict, export, deletion and grace retention; rollback left 0 fixtures |
-| Edge mock route | PASS - `youri-ai` v40 ACTIVE, JWT verification enabled, exact request schema, strict mock response, no provider call; bundle SHA-256 `453309b755c53aca1754c8cb529dbb340694a5828e7b049a1c3b40e63530fcf3` |
+| Edge mock route | PASS - `youri-ai` v41 ACTIVE, JWT verification enabled, exact request schema, strict mock response, no provider call; bundle SHA-256 `b4c61d47baa620cf7af62842dec3b660fdd40da30cc58c5da221147ab86a3fc2` |
 | Consent / entitlement | PASS - current active `ai` or `personal_coaching` plus active versioned consent and age 18+ required |
 | History / export / deletion | PASS - own-user only, bounded deterministic ordering, JSON export without private operational metadata, raw content scrubbed on deletion |
 | Retention | PASS - read/export/delete-only grace, maximum 90 days, minute server sweep, deterministic reactivation |
 | Trainer / cross-member isolation | PASS - no trainer policy, no broad authenticated table grants, own-user RPC authorization |
-| Mock safety | PASS - exact owner NL chest-pain/dizziness sentence, natural/case/punctuation variants, EN/DE, prompt injection, ordinary-fitness false positives and controlled failure; hard stop suppresses coaching and actions remain empty |
-| Live hard-stop proof | PASS - exact owner sentence returned HTTP 200, `hard_stop`, `execution_blocked=true`, exercise-stop/no-diagnosis/medical-assessment/112 copy and 0 external calls/cost; isolated synthetic fixture fully removed |
+| Mock safety | PASS - all three final owner NL sentences, chest pain/pressure/tightness, dizziness/fainting, breathlessness, EN/DE, prompt injection, negation, education and ordinary-fitness controls; hard stop suppresses coaching and actions remain empty |
+| Live hard-stop proof | PASS - 12/12 authenticated route checks at HTTP 200; all required serious cases hard-stopped, bounded controls stayed clear, actions/calls/cost remained zero and eighteen synthetic fixture categories were fully removed |
 | Request-scoped safety migration | PASS - history `20260903125150`; one private gate function replaced; no table, RLS, ACL or member-row change; verifier 16/16 |
 | Continued-chat live sequence | PASS - hard stop, normal follow-up, new conversation, repeated risk, override refusal, delete and new conversation; 0 actions/cost and 0 retained fixtures |
 | Consent / entitlement after hard stop | PASS - communication resumes only while the independent gates pass; withdrawal and loss still deny |
-| Package 6C handler | PASS 14/14 |
-| Package 6C static | PASS 115/115 |
+| Package 6C handler | PASS 17/17 |
+| Package 6C static | PASS 117/117 |
 | Package 6C browser | PASS 85/85 - approved Youri avatar decoded, circular and layout-stable in header/messages with neutral error fallback; one-row composer and right-side send at 320x700, 390x844, tablet and desktop; no overlap or overflow |
 | Frozen regressions | PASS - Phase 1 75/75; Phase 2 46/46; Phase 3 222/222; Member UX 56/56; Phase 4 schema 90/90 + Nutrition browser 138/138; Phase 5 116/116 + 53/53; Phase 6A 93/93; Phase 6B 98/98 |
 | External AI | PASS - 0 calls, EUR 0.00; real-member provider processing disabled |

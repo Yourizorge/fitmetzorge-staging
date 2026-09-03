@@ -1,6 +1,6 @@
 # Package 6C Private AI Chat
 
-Status: CONTINUED CHAT + FINAL UX/IDENTITY HOTFIX TECHNICAL PASS / READY FOR OWNER RETEST / NOT FROZEN
+Status: NATURAL-LANGUAGE SAFETY HOTFIX TECHNICAL PASS / READY FOR FINAL OWNER RETEST / NOT FROZEN
 
 Date: 2026-09-03
 
@@ -52,7 +52,9 @@ The focused chat UX uses a compact `Youri AI` header, `FitMetZorge AI Coach` sub
 
 ## Owner Safety Hotfix
 
-The owner sentence `Ik heb pijn op de borst en ben erg duizelig tijdens het sporten.` previously missed the hard-stop route because the serious-pattern list recognized the compound `borstpijn` but not the natural phrase `pijn op de borst`, and did not combine exercise context with dizziness. The browser payload was correct. The Edge classifier now covers that phrase and equivalent NL/EN/DE variants after deterministic normalization. Prompt-injection wording cannot suppress the hard stop, while ordinary non-serious fitness uses of words such as chest training do not false-positive.
+The owner sentence `Ik heb pijn op de borst en ben erg duizelig tijdens het sporten.` previously missed the hard-stop route because the serious-pattern list recognized the compound `borstpijn` but not the natural phrase `pijn op de borst`, and did not combine exercise context with dizziness. A later owner test exposed two remaining bounded-language gaps: `pijn in de borst` was not accepted alongside `pijn op de borst`, and the noun `duizeligheid` was not accepted alongside `duizelig`. The browser payload and presentation were correct.
+
+Edge v41 closes those server-only gaps with explicit NL/EN/DE concepts for chest pain, pressure and tightness; dizziness and fainting; breathlessness; and exertion context. It recognizes first-person natural variants after deterministic case, accent, punctuation and whitespace normalization. A bounded negation check keeps statements such as `geen borstpijn` and `niet duizelig` clear, while educational questions without current personal symptoms and normal chest-training or post-training muscle-soreness language remain outside the hard stop. Prompt-injection wording cannot suppress classification. Every hard stop retains the existing exercise-stop, no-diagnosis, prompt-assessment and urgent-help copy and always returns zero actions.
 
 ## Continued Chat Correction
 
@@ -75,22 +77,22 @@ The corrected live sequence is proven with an isolated synthetic member: exact r
 - Transactional E2E: `supabase/tests/20260902203000_phase6c_private_ai_chat_transactional_e2e.sql`
 - E2E SHA-256: `A3372F6DC48ECD97549F1BA8C7D499FA1981EF653A1565AC3A06C1A450DDBD22`
 - E2E result: PASS with rollback; fixtures remaining 0
-- Edge: `youri-ai` v40 ACTIVE; JWT verification enabled; bundle SHA-256 `453309b755c53aca1754c8cb529dbb340694a5828e7b049a1c3b40e63530fcf3`
+- Edge: `youri-ai` v41 ACTIVE; JWT verification enabled; bundle SHA-256 `b4c61d47baa620cf7af62842dec3b660fdd40da30cc58c5da221147ab86a3fc2`
 - Continued-chat implementation/runtime commit: `8dfa235`
 - Approved-avatar runtime commit: `abc724fec6115ce85c810fb2f53ff2e5e6a01740`
+- Natural-language safety implementation commit: `bb5076a`
 - Frontend cache: `20260903-phase6c-approved-avatar1`
 - Frontend runtime set: `index.html`, `app.js`, `assets/phase6c-private-ai-chat.js`, `assets/youri-ai-avatar-3d-v3-256.webp` and `assets/youri-ai-avatar-3d-v3-master.png`
-- Live exact-phrase Edge proof: HTTP 200, `hard_stop`, `execution_blocked=true`, empty actions, exercise-stop/no-diagnosis/medical-assessment/emergency-112 copy present, generic coaching suppressed, 0 external calls and EUR 0.00 cost
-- Live proof used one isolated synthetic staging account; the account and all related fixtures were removed and fourteen post-cleanup counts were zero. The owner account and its chat data were not used or changed.
+- Live natural-language Edge proof: 12/12 PASS at HTTP 200. All three final owner sentences, chest pain alone, EN/DE variants, repeated risk and prompt injection returned `hard_stop`; normal chest training, negated symptoms, an educational question and a normal follow-up remained `clear`. Every response had zero actions and zero external calls/cost.
+- Live proof used one isolated synthetic staging account. The account and every related fixture category were removed; eighteen post-cleanup counts were zero. The owner account and its chat data were not used or changed.
 - Live assembled runtime: 320x700 and 390x844 chat UI render without console errors, truncation or horizontal overflow
-- Package 6C handler: 14/14 PASS
-- Package 6C static: 115/115 PASS
+- Package 6C handler: 17/17 PASS
+- Package 6C static: 117/117 PASS
 - Package 6C browser/responsive: 85/85 PASS
-- Combined Phase 6 Edge tests: 50/50 PASS
+- Combined Phase 6 Edge tests: 53/53 PASS
 - Frozen regressions: Phase 1 75/75; Phase 2 46/46; Phase 3 222/222; Member UX 56/56; Phase 4 schema 90/90 and Nutrition browser 138/138; Phase 5 116/116 and 53/53; Phase 6A 93/93; Phase 6B 98/98
-- Security advisor: no Package 6C ERROR; intended private no-policy and authenticated RPC notices reviewed
-- Performance advisor: no hotfix blocker; existing informational run-FK and young unused-index notices remain unchanged
+- Security and performance advisors: zero current notices; no hotfix regression
 
 ## Safety Boundary
 
-External AI calls during Package 6C: 0. External AI cost: EUR 0.00. Real-member OpenAI processing enabled: NO. Trainers can read private chat: NO. Schema change: one private gate function replaced on staging; no table, RLS, ACL or member-row change. Test fixtures remaining: 0. The owner's retained hard-stop metadata and chat content were not changed; read-only status now proves communication allowed with automatic execution blocked. The exact owner-test AI entitlement remains active once through `2026-09-10T23:59:59Z`. Production touched: NO. Package 6D started: NO. Owner real-phone retest is still required before acceptance or freeze.
+External AI calls during Package 6C: 0. External AI cost: EUR 0.00. Real-member OpenAI processing enabled: NO. Trainers can read private chat: NO. The natural-language hotfix changed no schema, RLS, ACL, frontend or member row; only isolated synthetic setup/cleanup rows existed during the live proof. Test fixtures remaining: 0. The earlier request-scoped gate migration remains frozen. The owner's retained hard-stop metadata and chat content were not changed; read-only status proves communication allowed with automatic execution blocked. The exact owner-test AI entitlement remains active once through `2026-09-10T23:59:59Z`. Production touched: NO. Package 6D started: NO. Owner real-phone retest is still required before acceptance or freeze.
