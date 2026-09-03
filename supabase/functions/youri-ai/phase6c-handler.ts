@@ -75,10 +75,30 @@ async function sha256(value: string): Promise<string> {
   return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
 }
 
+function normalizeSafetyText(value: string): string {
+  return ` ${value
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[\u2018\u2019']/g, "")
+    .replace(/\u00df/g, "ss")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim()
+    .replace(/\s+/g, " ")} `;
+}
+
 const seriousPatterns = [
-  /chest pain|cannot breathe|can't breathe|fainting|suicid/i,
-  /borstpijn|geen adem|niet ademen|flauwvallen|zelfmoord/i,
-  /brustschmerz|keine luft|nicht atmen|ohnmacht|suizid/i,
+  /\bchest (?:pain|pressure|tightness)\b|\bpain (?:in|on) (?:my |the )?chest\b|\b(?:pressure|tightness) (?:in|on) (?:my |the )?chest\b/,
+  /\bcannot breathe\b|\bcant breathe\b|\bstruggling to breathe\b|\bfainted\b|\bpassed out\b|\bsuicid(?:e|al)\b/,
+  /\bborstpijn\b|\bpijn op (?:mijn |de )?borst\b|\b(?:druk|beklemming) op (?:mijn |de )?borst\b/,
+  /\bkan niet ademen\b|\bkrijg geen adem\b|\bgeen lucht\b|\bflauwgevallen\b|\braak flauw\b|\bbewusteloos\b|\bzelfmoord\b/,
+  /\bbrustschmerz(?:en)?\b|\bschmerzen (?:in|auf) (?:meiner |der )?brust\b|\b(?:druck|enge) (?:in|auf) (?:meiner |der )?brust\b/,
+  /\bkann nicht atmen\b|\bbekomme keine luft\b|\bohnmacht\b|\bohnmachtig\b|\bsuizid\b/,
+];
+const exertionDizzinessPatterns = [
+  { symptom: /\bduizelig\b|\blicht in (?:mijn |het )?hoofd\b|\bbijna flauw\b/, exertion: /\bsport(?:en)?\b|\btrain(?:en|ing)?\b|\binspanning\b/ },
+  { symptom: /\bdizz(?:y|iness)\b|\blightheaded\b|\bnearly faint(?:ed)?\b/, exertion: /\bexercis(?:e|ing)\b|\btrain(?:ing)?\b|\bworkout\b|\bexertion\b/ },
+  { symptom: /\bschwindel\b|\bschwindelig\b|\bbenommen\b|\bfast ohnmachtig\b/, exertion: /\bsport\b|\btraining\b|\btrainieren\b|\bbelastung\b/ },
 ];
 const medicalAdvicePatterns = [
   /diagnos|medicat|dosage|treatment|prescri/i,
@@ -87,23 +107,25 @@ const medicalAdvicePatterns = [
 ];
 
 export function createPhase6cMockReply(content: string, locale: Locale): CoachResponse {
-  const hardStop = seriousPatterns.some((pattern) => pattern.test(content));
+  const normalizedContent = normalizeSafetyText(content);
+  const hardStop = seriousPatterns.some((pattern) => pattern.test(normalizedContent)) ||
+    exertionDizzinessPatterns.some(({ symptom, exertion }) => symptom.test(normalizedContent) && exertion.test(normalizedContent));
   const safeRefusal = !hardStop && medicalAdvicePatterns.some((pattern) => pattern.test(content));
   const copy = {
     nl: {
       normal: "Ik hoor je. Kies een kleine, haalbare volgende stap en kijk daarna eerlijk wat het effect is.",
       refusal: "Ik kan geen diagnose, medicatie- of behandeladvies geven. Bespreek dit met een bevoegde zorgprofessional.",
-      hard: "Stop hiermee en zoek direct passende professionele hulp. Bij acuut gevaar: bel 112.",
+      hard: "Stop direct met sporten. Ik kan geen diagnose stellen. Laat deze klachten snel professioneel medisch beoordelen. Zijn de klachten ernstig, houden ze aan of is er direct gevaar, bel dan 112.",
     },
     en: {
       normal: "I hear you. Choose one small, realistic next step and then review its effect honestly.",
       refusal: "I cannot provide diagnosis, medication, or treatment advice. Discuss this with a qualified health professional.",
-      hard: "Stop and seek appropriate professional help now. In immediate danger, call your local emergency number.",
+      hard: "Stop exercising now. I cannot diagnose this. Seek prompt professional medical assessment. If symptoms are severe, ongoing, or there is immediate danger, call your local emergency number.",
     },
     de: {
       normal: "Ich hoere dich. Waehle einen kleinen, realistischen naechsten Schritt und pruefe danach ehrlich die Wirkung.",
       refusal: "Ich kann keine Diagnose, Medikamenten- oder Behandlungsempfehlung geben. Besprich das mit medizinischem Fachpersonal.",
-      hard: "Stoppe und hole jetzt passende professionelle Hilfe. Bei akuter Gefahr rufe den Notruf.",
+      hard: "Beende das Training sofort. Ich kann keine Diagnose stellen. Lass diese Beschwerden zeitnah medizinisch abklaeren. Bei starken oder anhaltenden Beschwerden oder unmittelbarer Gefahr rufe den Notruf.",
     },
   }[locale];
   return {
@@ -112,7 +134,7 @@ export function createPhase6cMockReply(content: string, locale: Locale): CoachRe
     summary: hardStop ? copy.hard : safeRefusal ? copy.refusal : copy.normal,
     observations: [],
     uncertainties: [],
-    recommendations: hardStop ? ["seek_appropriate_professional_support"] : safeRefusal ? ["consult_qualified_professional"] : ["choose_one_realistic_next_step"],
+    recommendations: hardStop ? ["seek_prompt_professional_medical_assessment"] : safeRefusal ? ["consult_qualified_professional"] : ["choose_one_realistic_next_step"],
     actions: [],
     safety: {
       status: hardStop ? "hard_stop" : "clear",
