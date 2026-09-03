@@ -1,6 +1,8 @@
-const fs=require("fs"),path=require("path"),vm=require("vm");
+const fs=require("fs"),path=require("path"),vm=require("vm"),crypto=require("crypto");
 const root=path.resolve(__dirname,"..");
 const read=(file)=>fs.readFileSync(path.join(root,file),"utf8");
+const avatarMaster=path.join(root,"assets/youri-ai-avatar-3d-v3-master.png"),avatarRuntime=path.join(root,"assets/youri-ai-avatar-3d-v3-256.webp");
+const sha256=(file)=>crypto.createHash("sha256").update(fs.readFileSync(file)).digest("hex").toUpperCase();
 const files={
   runtime:read("assets/phase6c-private-ai-chat.js"),app:read("app.js"),index:read("index.html"),bundle:read("app.bundle.js"),
   phase1:read("assets/phase1-foundation.js"),phase2:read("assets/phase2-home-recovery.js"),phase3:read("assets/phase3-training-engine.js"),
@@ -11,14 +13,18 @@ const files={
 };
 const checks=[];const check=(name,pass)=>checks.push({name,pass:Boolean(pass)});const all=(source,values)=>values.every((value)=>source.includes(value));
 check("runtime duplicate guard",files.runtime.includes("FMZ_PHASE6C_PRIVATE_CHAT_LOADED"));
-check("cache version consistent",all(files.runtime+files.app+files.index,["20260903-phase6c-continued-chat1"])&&files.index.includes("app.js?v=20260903-phase6c-continued-chat1"));
+check("cache version consistent",all(files.runtime+files.app+files.index,["20260903-phase6c-approved-avatar1"])&&files.index.includes("app.js?v=20260903-phase6c-approved-avatar1"));
 check("asset loaded before init",files.app.indexOf("phase6cPrivateChatPatchSource")<files.app.indexOf("init();`"));
 check("section exists",files.index.includes('id="ai-coach"'));
 check("client nav only",files.runtime.includes('NAV.client')&&!files.runtime.includes('NAV.trainer'));
 check("NL EN DE",all(files.runtime,["Waar wil je vandaag hulp bij?","What would you like help with today?","Wobei moechtest du heute Hilfe?"]));
 check("mock notice visible",all(files.runtime,["Vaste simulatie","Fixed simulation","Feste Simulation"]));
 check("Youri AI identity hierarchy",all(files.runtime,['title:"Youri AI"','intro:"FitMetZorge AI Coach"','coach:"Youri AI"',"p6c-identity","p6c-avatar","p6c-ready","p6c-test"]));
-check("neutral avatar only",files.runtime.includes('<span class="p6c-avatar" aria-hidden="true">AI</span>')&&!/p6c-avatar[^>]+<img|p6c-avatar[^\n]+\.png/.test(files.runtime));
+check("approved avatar assets exist",fs.existsSync(avatarMaster)&&fs.existsSync(avatarRuntime));
+check("approved avatar hashes locked",sha256(avatarMaster)==="53EDC8C376F097417ABDE7B74F4C9D85CEBAD4E2A676AE65620A4CBD65DA2E57"&&sha256(avatarRuntime)==="257F31E6FE4FAA7FECF5FB9874EED06D4018DC8C60958AA714E7D4B79A7517DC");
+check("approved avatar runtime contract",all(files.runtime,['const AVATAR_SRC = "assets/youri-ai-avatar-3d-v3-256.webp"',"avatarMarkup(true)","p6c-message-identity",'data-p6c-avatar-image']));
+check("stable circular avatar crop",all(files.runtime,["width:44px;height:44px","border-radius:50%","object-fit:cover","width:26px;height:26px"]));
+check("neutral load-error fallback",all(files.runtime,["p6c-avatar-fallback",'document.addEventListener("error"',"event.target.hidden=true","fallback.hidden=false"]));
 check("subscription identity unchanged",files.runtime.includes("FitMetZorge AI Coach")&&files.migration.includes("entitlement_code"));
 check("mobile conversation switcher",all(files.runtime,["historyOpen",'data-p6c-history','aria-expanded="${chat.historyOpen}"']));
 check("secondary action menu",all(files.runtime,["p6c-actions","p6c-action-menu","data-p6c-export","data-p6c-delete"]));
