@@ -806,3 +806,13 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 Legacy Phase1/2/3/Member UX/navigation suites reside in the original staging source workspace; current6C/6B/6A/Phase5/Phase4 suites run in the synchronized checkout. Frozen runtime files are unchanged. Source-string metadata checks supplement prior E2E and owner proof. A false-empty installation assertion must never trigger deletion of valid owner data.
 
 Existing project-wide advisor review: NOT ALL-GREEN. Legacy bootstrap/linkage authorization requires a separate remediation gate; current advisor counts and limitations are in the 6D report. No automatic repair.
+
+
+## Package 6D-0 Legacy Authorization Security Gate (2026-09-04)
+
+Owner-authorized focused staging remediation is prepared. Transactional rehearsal: 48/48;
+read-only verifier: 40/40. Bootstrap/metadata authority, direct profile grants and broad
+member workspace access are corrected together with the invitation Edge/frontend bridge.
+Existing links/data and frozen Phase 1-6C semantics remain protected. Package 6D analysis
+implementation and external member AI remain forbidden. Deployment evidence and exact
+artifacts are tracked in [the 6D-0 security receipt](PHASE6D0_LEGACY_AUTHORIZATION_SECURITY.md).

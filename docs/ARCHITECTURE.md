@@ -333,3 +333,13 @@ The 2026-09-04 audit is complete in `docs/PHASE6D_READ_ONLY_ANALYSES_READINESS.m
 Recommended additive boundary: bounded own-user SELECT context, one private member-result lifecycle, exact event/retry identity, no-action strict schema and service-only atomic completion. Domain data remains read-only; no trainer access, private-chat context, legacy water authority, proposals or execution. Consent, timezone, retention, quality/cadence/cost and safety details require owner decisions. Mock-only implementation precedes separate legal/provider activation. No schema/runtime/config change was made.
 
 
+## Package 6D-0 Legacy Authorization Security Gate (2026-09-04)
+
+Owner-authorized focused staging remediation is prepared. Transactional rehearsal: 48/48;
+read-only verifier: 40/40. Bootstrap/metadata authority, direct profile grants and broad
+member workspace access are corrected together with the invitation Edge/frontend bridge.
+Existing links/data and frozen Phase 1-6C semantics remain protected. Package 6D analysis
+implementation and external member AI remain forbidden. Deployment evidence and exact
+artifacts are tracked in [the 6D-0 security receipt](PHASE6D0_LEGACY_AUTHORIZATION_SECURITY.md).
+
+

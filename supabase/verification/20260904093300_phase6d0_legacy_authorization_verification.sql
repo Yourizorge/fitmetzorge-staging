@@ -1,0 +1,50 @@
+-- Package 6D-0 read-only catalog and security verification. No application RPC execution.
+with f as (
+ select p.* from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='public' and
+ (p.proname like 'fmz_phase6d0_%' or p.proname in ('fmz_bootstrap_trainer_profile','accept_client_invite','fmz_handle_new_auth_user',
+ 'fmz_current_profile_role','fmz_current_profile_trainer_id','fmz_is_trainer','fmz_can_select_profile','fmz_can_access_workspace'))
+), checks(name,pass) as (
+ values
+ ('private_ledger_rls',coalesce((exists(select 1 from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='legacy_auth_private' and c.relname='client_invitations' and c.relrowsecurity)),false)),
+ ('private_schema_acl',coalesce((not has_schema_privilege('authenticated','legacy_auth_private','USAGE') and not has_schema_privilege('anon','legacy_auth_private','USAGE')),false)),
+ ('profiles_rls',coalesce(((select relrowsecurity from pg_class where oid='public.profiles'::regclass)),false)),
+ ('workspaces_rls',coalesce(((select relrowsecurity from pg_class where oid='public.coach_workspaces'::regclass)),false)),
+ ('profile_no_browser_insert',coalesce((not has_table_privilege('authenticated','public.profiles','INSERT')),false)),
+ ('profile_no_role_write',coalesce((not has_column_privilege('authenticated','public.profiles','role','UPDATE')),false)),
+ ('profile_no_link_write',coalesce((not has_column_privilege('authenticated','public.profiles','trainer_id','UPDATE') and not has_column_privilege('authenticated','public.profiles','client_id','UPDATE')),false)),
+ ('profile_name_write',coalesce((has_column_privilege('authenticated','public.profiles','name','UPDATE')),false)),
+ ('profile_no_identity_write',coalesce((not has_column_privilege('authenticated','public.profiles','id','UPDATE') and not has_column_privilege('authenticated','public.profiles','email','UPDATE')),false)),
+ ('no_truncate',coalesce((not has_table_privilege('authenticated','public.profiles','TRUNCATE') and not has_table_privilege('authenticated','public.coach_workspaces','TRUNCATE')),false)),
+ ('no_delete',coalesce((not has_table_privilege('authenticated','public.profiles','DELETE') and not has_table_privilege('authenticated','public.coach_workspaces','DELETE')),false)),
+ ('anonymous_tables_blocked',coalesce((not exists(select 1 from pg_class c cross join lateral aclexplode(coalesce(c.relacl,acldefault('r',c.relowner))) a where c.oid in ('public.profiles'::regclass,'public.coach_workspaces'::regclass,'legacy_auth_private.client_invitations'::regclass) and a.grantee in (0,(select oid from pg_roles where rolname='anon')))),false)),
+ ('member_workspace_policies_removed',coalesce((not exists(select 1 from pg_policy where polrelid='public.coach_workspaces'::regclass and (pg_get_expr(polqual,polrelid) like '%fmz_can_access_workspace%' or polname like '%linked client%'))),false)),
+ ('workspace_owner_policies',coalesce(((select count(*)=3 from pg_policy where polrelid='public.coach_workspaces'::regclass and polroles=array[(select oid from pg_roles where rolname='authenticated')]::oid[])),false)),
+ ('unique_link_slot',coalesce((exists(select 1 from pg_index where indexrelid=to_regclass('public.profiles_unique_trainer_client_slot') and indisunique and indisvalid and indpred is not null)),false)),
+ ('bootstrap_self_guard',coalesce(((select prosrc like '%p_user_id is distinct from v_uid%' and prosrc like '%auth.uid()%' and prosrc like '%values(v_uid,''client''%' from f where proname='fmz_bootstrap_trainer_profile')),false)),
+ ('bootstrap_no_metadata_authority',coalesce(((select prosrc not ilike '%user_metadata%' and prosrc not ilike '%p_email,%' from f where proname='fmz_bootstrap_trainer_profile')),false)),
+ ('auth_trigger_no_role_provisioning',coalesce(((select prosrc not ilike '%raw_user_meta_data%' and prosrc not ilike '%bootstrap%' from f where proname='fmz_handle_new_auth_user')),false)),
+ ('legacy_invite_read_only',coalesce(((select prosrc not ilike '%insert into%' and prosrc not ilike '%update public%' and prosrc not ilike '%user_metadata%' from f where proname='accept_client_invite')),false)),
+ ('issue_trainer_and_stored_slot',coalesce(((select prosrc like '%role=''trainer''%' and prosrc like '%w.trainer_id=v_uid%' and prosrc like '%v_client->>''email''%' from f where proname='fmz_phase6d0_issue_client_invite')),false)),
+ ('token_random_hash_only',coalesce(((select prosrc like '%gen_random_uuid()%' and prosrc like '%sha256(convert_to(v_token%' from f where proname='fmz_phase6d0_issue_client_invite')),false)),
+ ('email_confirmed_owner',coalesce(((select prosrc like '%auth.uid()%' and prosrc like '%email_confirmed_at is not null%' and prosrc like '%v_inv.target_email is distinct from v_email%' from f where proname='fmz_phase6d0_accept_client_invite')),false)),
+ ('token_expiry_replay_revocation',coalesce(((select prosrc like '%v_inv.accepted_at is not null%' and prosrc like '%v_inv.revoked_at is not null%' and prosrc like '%v_inv.expires_at<=clock_timestamp()%' from f where proname='fmz_phase6d0_accept_client_invite')),false)),
+ ('slot_revalidated',coalesce(((select prosrc like '%v_slot_count<>1%' and prosrc like '%lower(btrim(c->>''email''))=v_email%' from f where proname='fmz_phase6d0_accept_client_invite')),false)),
+ ('conflicting_link_denied',coalesce(((select prosrc like '%existing_link_conflict%' and prosrc like '%client_slot_conflict%' from f where proname='fmz_phase6d0_accept_client_invite')),false)),
+ ('shared_lock_order',coalesce(((select count(*)=3 from f where proname in ('fmz_phase6d0_issue_client_invite','fmz_phase6d0_accept_client_invite','fmz_phase6d0_revoke_client_invite') and position('fmz6d0:invite-email:' in prosrc)>0 and position('fmz6d0:invite-slot:' in prosrc)>position('fmz6d0:invite-email:' in prosrc))),false)),
+ ('atomic_accept',coalesce(((select prosrc like '%for update%' and prosrc like '%update public.profiles%' and prosrc like '%accepted_by=v_uid%' from f where proname='fmz_phase6d0_accept_client_invite')),false)),
+ ('own_workspace_projection',coalesce(((select prosrc like '%where id=auth.uid()%' and prosrc like '%c->>''id''=v_profile.client_id%' and prosrc like '%v_client:=v_client-''password''%' from f where proname='fmz_phase6d0_read_own_workspace')),false)),
+ ('own_workspace_write',coalesce(((select prosrc like '%where id=auth.uid()%' and prosrc like '%for update%' and prosrc like '%p_client->>''id'' is distinct from v_profile.client_id%' from f where proname='fmz_phase6d0_save_own_workspace')),false)),
+ ('workspace_conflict_replay',coalesce(((select prosrc like '%p_expected_revision is distinct from v_revision%' and prosrc like '%''replay'',true%' from f where proname='fmz_phase6d0_save_own_workspace')),false)),
+ ('workspace_merge_not_replace_all',coalesce(((select prosrc like '%jsonb_set(v_state,array[''clients'',v_index::text],v_next)%' from f where proname='fmz_phase6d0_save_own_workspace')),false)),
+ ('all_functions_safe_path',coalesce(((select count(*)=13 and bool_and(prosecdef and proconfig @> array['search_path=pg_catalog, pg_temp']) from f)),false)),
+ ('all_function_public_anon_denied',coalesce((not exists(select 1 from f cross join lateral aclexplode(coalesce(f.proacl,acldefault('f',f.proowner))) a where a.grantee in (0,(select oid from pg_roles where rolname='anon')))),false)),
+ ('trigger_direct_authenticated_denied',coalesce((not has_function_privilege('authenticated','public.fmz_handle_new_auth_user()','EXECUTE')),false)),
+ ('public_rpcs_authenticated',coalesce(((select count(*)=12 and bool_and(has_function_privilege('authenticated',oid,'EXECUTE')) from f where proname<>'fmz_handle_new_auth_user')),false)),
+ ('no_ai_authority_writes',coalesce((not exists(select 1 from f where proname like 'fmz_phase6d0%' and (prosrc ~* '(insert into|update|delete from) (public.ai_|ai_private\.)'))),false)),
+ ('mock_only',coalesce(((select bool_and(mock_chat_enabled and not external_provider_enabled) from ai_private.phase6c_runtime_config)),false)),
+ ('member_provider_disabled',coalesce((not exists(select 1 from ai_private.provider_configurations where real_member_processing_enabled or owner_real_member_activation)),false)),
+ ('no_analysis_flags',coalesce((not exists(select 1 from ai_private.feature_flags where enabled)),false)),
+ ('runtime_state_guard',coalesce((to_regclass('public.nutrition_provider_runtime_state') is not null),false))
+)
+select jsonb_build_object('overall_pass',bool_and(pass),'pass_count',count(*) filter(where pass),
+'fail_count',count(*) filter(where not pass),'checks',jsonb_agg(jsonb_build_object('check',name,'pass',pass) order by name)) as verification_result from checks;

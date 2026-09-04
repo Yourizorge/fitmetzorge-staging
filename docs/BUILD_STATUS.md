@@ -242,3 +242,13 @@ Summary: Documentation-only final review completed. Corrections were made only t
 
 The read-only 6D audit identified material legacy identity/ACL concerns outside the accepted 6C implementation: anon/authenticated execution of `fmz_bootstrap_trainer_profile` with a caller-supplied user ID and no caller authorization guard; user-metadata-derived invitation/trainer linkage. No exploit, repair or mutation was performed. A separate owner-scoped security review/correction is required before 6D relies on these authorities. The 6C owner freeze stands; overall project security must not be described as advisor-clean. Full counts and references are in the 6D report.
 
+
+## Package 6D-0 Legacy Authorization Security Gate (2026-09-04)
+
+Owner-authorized focused staging remediation is prepared. Transactional rehearsal: 48/48;
+read-only verifier: 40/40. Bootstrap/metadata authority, direct profile grants and broad
+member workspace access are corrected together with the invitation Edge/frontend bridge.
+Existing links/data and frozen Phase 1-6C semantics remain protected. Package 6D analysis
+implementation and external member AI remain forbidden. Deployment evidence and exact
+artifacts are tracked in [the 6D-0 security receipt](PHASE6D0_LEGACY_AUTHORIZATION_SECURITY.md).
+

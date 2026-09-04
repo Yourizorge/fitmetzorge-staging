@@ -38,6 +38,11 @@
   source = source.replace('const FMZ_CONFIG = window.FMZ_CONFIG || {};', stagingConfigSource);
   source = source.replace(/const APP_AUTH_REDIRECT_URL = "[^"]+";/, stagingRedirectSource);
 
+  const legacyAuthUrl = new URL("assets/phase6d0-legacy-auth.js?v=20260904-phase6d0-auth1", document.baseURI);
+  const legacyAuthResponse = await fetch(legacyAuthUrl, { cache: "no-cache" });
+  if (!legacyAuthResponse.ok) throw new Error("Staging authorization layer unavailable");
+  const legacyAuthSource = await legacyAuthResponse.text();
+
   const phase1PatchUrl = new URL("assets/phase1-foundation.js?v=20260901-phase5-unit-switch1", document.baseURI);
   const phase1PatchResponse = await fetch(phase1PatchUrl, { cache: "no-cache" });
   if (!phase1PatchResponse.ok) {
@@ -98,7 +103,7 @@
   if (!source.includes(phase1InitNeedle)) {
     throw new Error("Phase 1 foundation kon niet voor app-init worden ingevoegd.");
   }
-  source = source.replace(phase1InitNeedle, `\n${phase1PatchSource}\n${phase2PatchSource}\n${phase3PatchSource}\n${phase4NutritionPatchSource}\n${phase4NutritionSlice3PatchSource}\n${memberUxPatchSource}\n${phase5ProgressPatchSource}\n${phase6cPrivateChatPatchSource}\ninit();`);
+  source = source.replace(phase1InitNeedle, `\n${legacyAuthSource}\n${phase1PatchSource}\n${phase2PatchSource}\n${phase3PatchSource}\n${phase4NutritionPatchSource}\n${phase4NutritionSlice3PatchSource}\n${memberUxPatchSource}\n${phase5ProgressPatchSource}\n${phase6cPrivateChatPatchSource}\ninit();`);
 
   (0, eval)(`${source}\n//# sourceURL=app.bundle.js`);
 

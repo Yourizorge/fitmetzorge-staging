@@ -13,7 +13,7 @@ const files={
 };
 const checks=[];const check=(name,pass)=>checks.push({name,pass:Boolean(pass)});const all=(source,values)=>values.every((value)=>source.includes(value));
 check("runtime duplicate guard",files.runtime.includes("FMZ_PHASE6C_PRIVATE_CHAT_LOADED"));
-check("cache version consistent",all(files.runtime+files.app+files.index,["20260903-phase6c-approved-avatar1"])&&files.index.includes("app.js?v=20260903-phase6c-approved-avatar1"));
+check("cache version consistent",all(files.runtime+files.app,["20260903-phase6c-approved-avatar1"])&&files.app.includes("assets/phase6c-private-ai-chat.js?v=20260903-phase6c-approved-avatar1")&&files.index.includes("app.js?v=20260904-phase6d0-auth1"));
 check("asset loaded before init",files.app.indexOf("phase6cPrivateChatPatchSource")<files.app.indexOf("init();`"));
 check("section exists",files.index.includes('id="ai-coach"'));
 check("client nav only",files.runtime.includes('NAV.client')&&!files.runtime.includes('NAV.trainer'));
