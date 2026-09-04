@@ -1,0 +1,48 @@
+# Trusted FitMetZorge staging project only; user/global settings are not changed.
+approval_policy = "on-request"
+approvals_reviewer = "auto_review"
+sandbox_mode = "workspace-write"
+
+[sandbox_workspace_write]
+network_access = true
+
+[apps._default]
+approvals_reviewer = "auto_review"
+default_tools_approval_mode = "auto"
+
+# Keep eligible GitHub writes reviewable even if this user's global tool overrides
+# previously allowed them unconditionally. These overrides load only in this project.
+[apps.connector_76869538009648d5b282a4bb21c3d157]
+approvals_reviewer = "auto_review"
+default_tools_approval_mode = "auto"
+
+[apps.connector_76869538009648d5b282a4bb21c3d157.tools."github.create_tree"]
+approval_mode = "auto"
+
+[apps.connector_76869538009648d5b282a4bb21c3d157.tools."github.create_commit"]
+approval_mode = "auto"
+
+[apps.connector_76869538009648d5b282a4bb21c3d157.tools."github.update_ref"]
+approval_mode = "auto"
+
+[apps.connector_76869538009648d5b282a4bb21c3d157.tools."github.update_file"]
+approval_mode = "auto"
+
+[apps.connector_76869538009648d5b282a4bb21c3d157.tools."github.create_file"]
+approval_mode = "auto"
+
+[auto_review]
+policy = """
+Review actions only against the owner's approved FitMetZorge staging package.
+The only writable remote repository is Yourizorge/fitmetzorge-staging, branch main.
+The only permitted Supabase project is mokxyyullfhkfalopbzd.
+The only permitted frontend deployment is its staging GitHub Pages site.
+Normal scoped diagnosis, edits, tests, reviewed migrations, Edge/frontend deployment,
+commits and staging pushes have standing owner authorization.
+Check the concrete target and package scope; these permissions are not blanket approval.
+Production and other repositories/projects are forbidden. Do not approve destructive
+real member-data changes, secret exposure, new external costs or unresolved material
+owner decisions. Owner credentials must be entered securely by the owner.
+Do not relax managed requirements, widen filesystem access outside this workspace,
+or treat automatic review as a reason to skip verification or frozen contracts.
+"""

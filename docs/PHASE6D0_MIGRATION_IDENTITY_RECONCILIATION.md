@@ -88,6 +88,13 @@ remediation gate: compare each older applied artifact and its evolution, reconci
 identity without reapplying security/data SQL, and prove an approved clean baseline.
 No older frozen artifact or history row was silently changed in this task.
 
+Read-only continuation during the owner-requested Codex configuration task compared
+committed Git blobs against all 21 history entries: 6D-0 byte-exact; thirteen older
+artifacts equal after CRLF/outer-whitespace normalization; seven recorded artifacts
+still unresolved by that comparison (including the 95-statement OFF foundation entry);
+three without a same-name history entry. This does not establish semantic drift in
+the seven, nor authorize blind applied/reverted markers. No database mutation occurred.
+
 ## Verification Receipt
 
 - Exact 6D-0 identity checks: 8/8 PASS; exact live function bodies: 8/8 PASS.
