@@ -1022,6 +1022,9 @@ Additional readiness blocker: separately review/correct the legacy identity/ACL 
 Owner-authorized focused staging remediation is COMPLETE / TECHNICALLY VERIFIED.
 Live rollback E2E: 48/48; read-only verifier: 40/40; concurrency: 8/8; browser: 41/41.
 Migration history: 20260904105918. invite-client version 16; cache 20260904-phase6d0-auth1.
+Migration-identity gate: 6D-0 Git/live 20260904105918 PASS. Whole-project legacy migration
+reproducibility remains a separate blocker; no broad db push/reset/repair is approved by
+this narrow result. See [identity receipt](PHASE6D0_MIGRATION_IDENTITY_RECONCILIATION.md).
 Bootstrap/metadata authority, direct profile grants and broad member workspace access
 are corrected. Existing links/data checksums and frozen Phase 1-6C semantics are preserved.
 Package 6D analyses and external member AI remain forbidden. Deployment evidence and exact

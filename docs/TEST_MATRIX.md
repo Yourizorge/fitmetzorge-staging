@@ -817,6 +817,10 @@ live frozen database checks: 188 PASS. Phase 1/Member UX historical assertions a
 against the actual deployment checkout (75/56), with cache-only expectation updates and
 a rendered gold-action assertion covering Sleep detail and frozen Phase 5 Progress.
 Migration history: 20260904105918. invite-client version 16; cache 20260904-phase6d0-auth1.
+Identity reconciliation: 8/8 identity checks, 8/8 exact function bodies, 12/12 negative
+tests and unchanged 40/40 live security verifier PASS. Git/live ID is 20260904105918.
+Whole-project dry-run remains BLOCKED by older history drift, not 6D-0. See
+[identity receipt](PHASE6D0_MIGRATION_IDENTITY_RECONCILIATION.md).
 Bootstrap/metadata authority, direct profile grants and broad member workspace access
 are corrected. Existing links/data checksums and frozen Phase 1-6C semantics are preserved.
 Package 6D analyses and external member AI remain forbidden. Deployment evidence and exact

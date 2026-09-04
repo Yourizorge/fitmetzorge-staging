@@ -342,6 +342,9 @@ Recommended additive boundary: bounded own-user SELECT context, one private memb
 Owner-authorized focused staging remediation is COMPLETE / TECHNICALLY VERIFIED.
 Live rollback E2E: 48/48; read-only verifier: 40/40; concurrency: 8/8; browser: 41/41.
 Migration history: 20260904105918. invite-client version 16; cache 20260904-phase6d0-auth1.
+The canonical Git migration now uses that same ID with unchanged bytes. Matching names
+alone are not migration identity: the CLI compares timestamp versions. Older history
+drift still blocks a general db push; see [identity receipt](PHASE6D0_MIGRATION_IDENTITY_RECONCILIATION.md).
 Bootstrap/metadata authority, direct profile grants and broad member workspace access
 are corrected. Existing links/data checksums and frozen Phase 1-6C semantics are preserved.
 Package 6D analyses and external member AI remain forbidden. Deployment evidence and exact

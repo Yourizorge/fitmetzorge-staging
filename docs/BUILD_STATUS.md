@@ -248,6 +248,9 @@ The read-only 6D audit identified material legacy identity/ACL concerns outside 
 Owner-authorized focused staging remediation is COMPLETE / TECHNICALLY VERIFIED.
 Live rollback E2E: 48/48; read-only verifier: 40/40; concurrency: 8/8; browser: 41/41.
 Migration history: 20260904105918. invite-client version 16; cache 20260904-phase6d0-auth1.
+6D-0 identity reconciled: Git/live 20260904105918, identical SQL SHA-256, no DB/history mutation.
+General migration deployment remains blocked by older history drift; see
+[the identity receipt](PHASE6D0_MIGRATION_IDENTITY_RECONCILIATION.md).
 Bootstrap/metadata authority, direct profile grants and broad member workspace access
 are corrected. Existing links/data checksums and frozen Phase 1-6C semantics are preserved.
 Package 6D analyses and external member AI remain forbidden. Deployment evidence and exact

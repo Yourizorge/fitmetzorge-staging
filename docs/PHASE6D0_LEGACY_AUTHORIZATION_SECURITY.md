@@ -43,7 +43,8 @@ This is identity remediation, not Package 6D analysis implementation or owner ac
 
 ## Changes
 
-- Migration: 20260904093300_phase6d0_legacy_authorization_gate.sql.
+- Canonical migration: 20260904105918_phase6d0_legacy_authorization_gate.sql.
+  Original reviewed filename used 20260904093300; identity reconciled without changing SQL.
 - New private schema/table: legacy_auth_private.client_invitations.
 - New unique partial index: profiles_unique_trainer_client_slot (existing duplicates would fail, not be cleaned up).
 - Changed bootstrap, signup trigger function, legacy accept function; hardened helper search paths/ACLs.
@@ -87,6 +88,9 @@ This is identity remediation, not Package 6D analysis implementation or owner ac
 - Runtime/migration commit: ab9b3f186898522ae91dba230e8df0adf1f9d895.
 - Staging: mokxyyullfhkfalopbzd; ACTIVE_HEALTHY.
 - Migration history: 20260904105918 / phase6d0_legacy_authorization_gate.
+- Git and live 6D-0 versions now match. See [identity reconciliation](PHASE6D0_MIGRATION_IDENTITY_RECONCILIATION.md).
+  Broader pre-existing migration-history drift still blocks a general clean-checkout db push;
+  this security PASS must not be read as a full-project migration reproducibility PASS.
 - Migration SHA-256: 5B91B22F823A30F86E329B381FE797FD28655D237AD977D6B80D2C99AF5485B3.
 - Verifier SHA-256: 9B5F54B40550F57AD67D678AD5A5889CAB2BA31897B81DD873E5171EF4FCE76D.
 - invite-client: version 16, JWT enabled, ACTIVE.
