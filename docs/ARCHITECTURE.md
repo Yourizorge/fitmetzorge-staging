@@ -8,6 +8,14 @@ Registration/login/password/confirmation/error screens must never dispatch membe
 renderers or member hydration before explicit valid application entry. See
 PUBLIC_AUTH_REGISTRATION_HOTFIX.md. This does not add Package 6D functionality.
 
+Migration reproducibility: project-wide history reconciliation is BLOCKED as of
+2026-09-04. Four historical files reuse version 20260819; core profiles/workspaces/
+settings/entitlements creation baselines are absent from the committed migration chain.
+Exact or line-ending-equivalent recorded SQL is separate from proof of current object
+definitions and dependency completeness. No broad db push, blind history repair or
+historical replay is safe while execution identity remains uncertain. The 6D-0
+canonical ID and security contract stay frozen. See PROJECT_MIGRATION_RECONCILIATION.md.
+
 The Phase 0B Auth/invitation/workspace descriptions below are historical. Their unsafe
 metadata and broad member-access paths are superseded by Package 6D-0 at the end of this
 document and in PHASE6D0_LEGACY_AUTHORIZATION_SECURITY.md.

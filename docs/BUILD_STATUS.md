@@ -4,12 +4,18 @@ Last updated: 2026-09-04
 
 ## Urgent Public Auth Hotfix (2026-09-04)
 
-Local lifecycle/resend hotfix PASS; staging publication in progress. See
+Lifecycle/resend hotfix DEPLOYED / LIVE TECHNICAL PASS. Runtime commit
+333954a68a1429634e49bafbcc08720ea688131a; cache 20260904-auth-lifecycle2. See
 [public Auth evidence](PUBLIC_AUTH_REGISTRATION_HOTFIX.md). Exactly one confirmation
 resend was accepted by Supabase (HTTP 200); inbox delivery remains owner-verifiable.
-Account remains unconfirmed, with no trainer grant. No schema/Edge/AI change.
-Project-wide migration reconciliation remains a separate blocked gate; no historical
-SQL was replayed for this frontend hotfix.
+At the post-resend check the account remained unconfirmed, with no trainer grant.
+No schema/Edge/AI change. Four live public-route viewports PASS without console errors
+or mutating requests; 88 assembled-browser, 26 focused static and 228 live DB checks PASS.
+Project-wide migration reconciliation is BLOCKED: 24 Git / 21 live records, 19 timestamp
+differences, three unrecorded-by-name files, four files sharing version 20260819 and
+missing core baseline SQL. Ten artifacts lack sufficient execution-identity proof.
+No history repair, rename or replay occurred. Full db push and empty-database rebuild
+are NOT approved by this result. See [migration audit](PROJECT_MIGRATION_RECONCILIATION.md).
 
 - Baseline audit: COMPLETE
 - Phase 0A Governance: COMPLETE

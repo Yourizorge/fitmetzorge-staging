@@ -1,7 +1,7 @@
 # Public Auth Registration Hotfix
 
 Date: 2026-09-04. Scope: staging only, mokxyyullfhkfalopbzd.
-Status: local implementation/security PASS; staging deployment receipt follows.
+Status: DEPLOYED / LIVE TECHNICAL PASS. Owner inbox/confirmation acceptance pending.
 
 ## Root Cause
 
@@ -93,6 +93,32 @@ email, UUID, credentials, confirmation link or tokens.
 - Historical test cache expectations were updated only for changed runtime URLs.
   Missing legacy SQL/catalog fixtures are read from the original archive; actual runtime
   under test comes from this checkout. No catalog import or generation is deployed.
+
+## Live Deployment Receipt
+
+- Repository/branch: Yourizorge/fitmetzorge-staging / main.
+- Implementation commit: e63e05b325bf9302a74e7c03c995171ee9d81675.
+- Final runtime commit: 333954a68a1429634e49bafbcc08720ea688131a.
+- Cache: 20260904-auth-lifecycle2.
+- Live index.html, app.js, app.bundle.js, Phase 1 and Phase 5 assets: HTTP 200 and
+  SHA-256 identical to the committed blobs. Frozen Phase 6C and 6D-0 assets also
+  HTTP 200 / commit-identical. No runtime change is included in the final evidence commit.
+- Actual staging public login/register/forgot navigation and refresh: PASS at
+  320x700, 390x844, 820x1180 and 1440x900; zero console/page errors and zero mutating
+  requests. Real confirmation/password flows were covered with synthetic Auth responses
+  in the 88-check assembled-browser suite, not by consuming the owner's email link.
+- Live verification did not authenticate as the owner or create another account.
+- Before/after read-only fingerprints of profiles, workspaces, entitlements and
+  normalized functions match; private chat row counts match. No member/trainer data
+  or schema change. The single supported Auth resend is the only intended account action.
+- Full project migration history is NOT synchronized. The separate reconciliation
+  gate is BLOCKED, as documented in PROJECT_MIGRATION_RECONCILIATION.md. Its dry-run
+  applied no SQL and the live migration history is unchanged.
+
+The remaining mail question is delivery, not dispatch: Supabase accepted the one resend,
+but the reason the first email was not received cannot be established from the available
+Auth logs. If the new email is absent, inspect Brevo delivery/bounce events with owner
+provider access. Do not resend again automatically, reset credentials or confirm manually.
 
 Package 6D functionality NOT STARTED. External member AI stays disabled. No external
 AI calls or cost. Production UNTOUCHED.

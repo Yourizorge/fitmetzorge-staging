@@ -1,11 +1,24 @@
 # FitMetZorge Test Matrix
 
 Status: MASTER PLAN COVERAGE MATRIX
-Latest execution: 2026-09-04 public Auth hotfix, 88 assembled browser + 25 focused
+Latest execution: 2026-09-04 public Auth hotfix, 88 assembled browser + 26 focused
 static/security checks PASS; frozen runtime suites PASS and 228 live read-only
 database checks PASS. See PUBLIC_AUTH_REGISTRATION_HOTFIX.md for exact counts,
 four viewports, mail-dispatch limits and the staging deployment receipt.
-Last updated: 2026-08-18
+Last updated: 2026-09-04
+
+Live receipt: runtime 333954a68a1429634e49bafbcc08720ea688131a,
+cache 20260904-auth-lifecycle2. Seven checked assets HTTP 200 / commit-identical;
+public routes at 320x700, 390x844, tablet and desktop: zero console/page errors,
+zero mutating requests. Real email delivery/confirmation remains owner acceptance.
+
+Project migration gate: inventory complete, reconciliation BLOCKED. Official CLI
+migration list is not synchronized; dry-run reports LegacyDbPushMissingLocalError.
+No SQL/history repair executed. Clean empty-database rebuild and rebuilt-schema
+comparison are NOT PASS: required historical core-table baseline SQL is missing.
+The unchanged 6D-0 authorization verifier remains 40/40 PASS. Full classification,
+before/after history and exact file hashes are in PROJECT_MIGRATION_RECONCILIATION.md
+and PROJECT_MIGRATION_RECONCILIATION_MANIFEST.json.
 
 This matrix records the required functional, security, entitlement, AI, migration, and release checks for the Master Build. No implementation tests are executed by this document.
 

@@ -1,7 +1,7 @@
 # FitMetZorge Master Build Plan
 
 Status: APPROVED PRODUCT SPECIFICATION CAPTURED
-Last updated: 2026-09-01
+Last updated: 2026-09-04
 
 This document is the product and execution source of truth for the FitMetZorge Master Build after Phase 0A Governance and Phase 0B Live Staging Infrastructure Verification.
 
@@ -24,6 +24,20 @@ This document is the product and execution source of truth for the FitMetZorge M
 Within `Yourizorge/fitmetzorge-staging` branch `main`, Supabase project `mokxyyullfhkfalopbzd`, and `https://yourizorge.github.io/fitmetzorge-staging/`, the owner authorizes continuous audit, implementation, migration, RLS/ACL, test, commit, push, staging deployment, verification and reversible repair work for an approved package without repeated GO requests. Stop only for a new cost, missing credential, unresolved product/privacy/pricing/licence/legal choice, irreversible external action, material frozen-contract change, owner acceptance/freeze, or any action outside those exact staging boundaries.
 
 This authority never includes production. Repository `Yourizorge/fitmetzorge` and Supabase `hgoygcviutmynaihcvpd` require a separate explicit owner GO in every case.
+
+## Execution Gates - 2026-09-04
+
+The urgent public Auth lifecycle/resend correction is live on staging, without new
+Package 6D functionality. Public Auth routes must not dispatch member renderers or
+hydration before valid application entry. See PUBLIC_AUTH_REGISTRATION_HOTFIX.md.
+
+The project-wide migration reconciliation gate is BLOCKED. Historical timestamp
+differences, uncertain execution identities and missing core-table baseline SQL must
+be resolved with reviewed evidence before broad db push or an empty-database rebuild.
+Do not mark uncertain migrations applied, replay historical security SQL, or treat
+present objects as proof of exact historical execution. Package 6D-0's canonical
+20260904105918 identity remains unchanged. See PROJECT_MIGRATION_RECONCILIATION.md.
+This gate does not authorize another build phase or production access.
 
 ## Strategic Product Addendum - 2026-08-31
 
