@@ -9,7 +9,7 @@
     INVITE_FUNCTION_NAME: "invite-client"
   };
 
-  const bundleUrl = new URL("app.bundle.js?v=20260904-auth-lifecycle1", document.baseURI);
+  const bundleUrl = new URL("app.bundle.js?v=20260904-auth-lifecycle2", document.baseURI);
   const bundleResponse = await fetch(bundleUrl, { cache: "no-cache" });
   if (!bundleResponse.ok) {
     throw new Error(`App bundle laden mislukt: ${bundleResponse.status}`);
@@ -43,7 +43,7 @@
   if (!legacyAuthResponse.ok) throw new Error("Staging authorization layer unavailable");
   const legacyAuthSource = await legacyAuthResponse.text();
 
-  const phase1PatchUrl = new URL("assets/phase1-foundation.js?v=20260904-auth-lifecycle1", document.baseURI);
+  const phase1PatchUrl = new URL("assets/phase1-foundation.js?v=20260904-auth-lifecycle2", document.baseURI);
   const phase1PatchResponse = await fetch(phase1PatchUrl, { cache: "no-cache" });
   if (!phase1PatchResponse.ok) {
     throw new Error(`Phase 1 foundation laden mislukt: ${phase1PatchResponse.status}`);
@@ -85,7 +85,7 @@
   }
   const memberUxPatchSource = await memberUxPatchResponse.text();
 
-  const phase5ProgressPatchUrl = new URL("assets/phase5-progress.js?v=20260904-auth-lifecycle1", document.baseURI);
+  const phase5ProgressPatchUrl = new URL("assets/phase5-progress.js?v=20260904-auth-lifecycle2", document.baseURI);
   const phase5ProgressPatchResponse = await fetch(phase5ProgressPatchUrl, { cache: "no-cache" });
   if (!phase5ProgressPatchResponse.ok) {
     throw new Error(`Phase 5 Voortgang laden mislukt: ${phase5ProgressPatchResponse.status}`);
@@ -103,7 +103,7 @@
   if (!source.includes(phase1InitNeedle)) {
     throw new Error("Phase 1 foundation kon niet voor app-init worden ingevoegd.");
   }
-  source = source.replace(phase1InitNeedle, `\n${legacyAuthSource}\n${phase1PatchSource}\n${phase2PatchSource}\n${phase3PatchSource}\n${phase4NutritionPatchSource}\n${phase4NutritionSlice3PatchSource}\n${memberUxPatchSource}\n${phase5ProgressPatchSource}\n${phase6cPrivateChatPatchSource}\ninit();`);
+  source = source.replace(phase1InitNeedle, `\n${legacyAuthSource}\n${phase1PatchSource}\n${phase2PatchSource}\n${phase3PatchSource}\n${phase4NutritionPatchSource}\n${phase4NutritionSlice3PatchSource}\n${memberUxPatchSource}\n${phase5ProgressPatchSource}\n${phase6cPrivateChatPatchSource}\nwindow.FMZ_PUBLIC_AUTH.bindLifecycle();\ninit();`);
 
   (0, eval)(`${source}\n//# sourceURL=app.bundle.js`);
 

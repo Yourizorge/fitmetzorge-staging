@@ -100,7 +100,36 @@
     phase1PublicLink = false;
     try { sessionStorage.removeItem("fmz.auth.confirmation-login-required"); } catch {}
   }
-  window.FMZ_PUBLIC_AUTH = Object.freeze({ errorMessage: phase1SafeAuthError, handleLink: phase1HandlePublicLink, enterApp: phase1EnterApp });
+  let phase1LifecycleBound = false;
+  function phase1BindPublicLifecycle() {
+    if (phase1LifecycleBound) return;
+    phase1LifecycleBound = true;
+    let hadAppSession = false;
+    const appRender = renderAll, appView = showView, appNav = renderNav;
+    renderAll = function renderAllAuthBoundary(...args) {
+      if (isLoggedIn()) {
+        hadAppSession = true;
+        return appRender(...args);
+      }
+      // Teardown an existing session once; cold Auth routes never enter module cleanup.
+      if (hadAppSession) {
+        hadAppSession = false;
+        return appRender(...args);
+      }
+      phase1InstallStyles();
+      renderRoleVisibility();
+      phase1ApplyAuthCopy();
+    };
+    showView = function showViewAuthBoundary(...args) {
+      if (isLoggedIn()) return appView(...args);
+    };
+    renderNav = function renderNavAuthBoundary(...args) {
+      if (isLoggedIn()) return appNav(...args);
+      const nav = $("#nav");
+      if (nav) nav.replaceChildren();
+    };
+  }
+  window.FMZ_PUBLIC_AUTH = Object.freeze({ errorMessage: phase1SafeAuthError, handleLink: phase1HandlePublicLink, enterApp: phase1EnterApp, bindLifecycle: phase1BindPublicLifecycle });
 
   const PHASE1_I18N = {
     nl: {
@@ -2243,13 +2272,13 @@
 
   const phase1OriginalLoadOnlineWorkspace = loadOnlineWorkspace;
   loadOnlineWorkspace = async function loadOnlineWorkspacePhase1(profile) {
-    if (passwordSetupRequired || phase1HydrationEpoch !== phase1AuthEpoch) return;
+    if (passwordSetupRequired || phase1HydrationEpoch !== phase1AuthEpoch) throw new Error("auth_context_changed");
     const authEpoch = phase1AuthEpoch;
     const [remoteSettings, remoteOnboarding] = await Promise.all([
       phase1HydrateAccountSettings(profile),
       phase1HydrateOnboarding(profile)
     ]);
-    if (authEpoch !== phase1AuthEpoch || passwordSetupRequired) return;
+    if (authEpoch !== phase1AuthEpoch || passwordSetupRequired) throw new Error("auth_context_changed");
     if (profile?.role === "client" && !profile.trainer_id) {
       const freeClient = createClientProfile({
         name: profile.name || profile.email || phase1Text("freeUserName"),
@@ -2424,7 +2453,7 @@
   const phase1OriginalHydrateOnlineUser = hydrateOnlineUser;
   const phase1OriginalApplyOnlineState = applyOnlineState;
   applyOnlineState = function applyOnlineStatePhase1(...args) {
-    if (passwordSetupRequired || phase1HydrationEpoch !== phase1AuthEpoch) return;
+    if (passwordSetupRequired || phase1HydrationEpoch !== phase1AuthEpoch) throw new Error("auth_context_changed");
     return phase1OriginalApplyOnlineState(...args);
   };
   hydrateOnlineUser = async function hydrateOnlineUserPhase1(...args) {

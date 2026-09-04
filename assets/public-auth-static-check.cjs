@@ -11,7 +11,8 @@ check("password and confirmation routes excluded",p1.includes("!passwordSetupReq
 check("public renderer returns before member tree",/state = phase1NormalizeState\(state\);\s+if \(!isLoggedIn\(\)\) \{\s+renderRoleVisibility\(\);\s+phase1ApplyAuthCopy\(\);\s+return;/.test(p1));
 check("public nav stays empty",p1.includes("nav.replaceChildren()"));
 check("public hydration requires real session",p1.includes("if (!data?.session || authEpoch !== phase1AuthEpoch || passwordSetupRequired) return false;"));
-check("late onboarding results rejected",p1.includes("if (authEpoch !== phase1AuthEpoch || passwordSetupRequired) return;"));
+check("late onboarding results rejected",p1.includes('if (authEpoch !== phase1AuthEpoch || passwordSetupRequired) throw new Error("auth_context_changed");'));
+check("outer lifecycle binds after frozen modules",app.includes('phase6cPrivateChatPatchSource}\\nwindow.FMZ_PUBLIC_AUTH.bindLifecycle();\\ninit();'));
 check("recovery and invitation do not prehydrate",!bundle.includes('await hydrateOnlineUser("client");\n          requirePasswordSetup("invite")'));
 check("confirmation session validated before success",p1.includes("!session?.user?.email_confirmed_at"));
 check("confirmation refresh remains public until login",p1.includes("fmz.auth.confirmation-login-required")&&bundle.includes("window.FMZ_PUBLIC_AUTH.enterApp()"));
@@ -25,7 +26,7 @@ check("resend NL EN DE",["Bevestigingsmail opnieuw versturen","Resend confirmati
 check("resend accessibility",p1.includes('button.setAttribute("aria-busy"')&&p1.includes('message.setAttribute("role", "status")'));
 check("Progress public no-op and legacy mount guard",p5.includes('if (!document.getElementById("progressGoalStrip")) return;'));
 check("Progress async session guard",p5.includes("if (!isLoggedIn() || onlineProfile?.id !== profileId) return;"));
-check("cache chain all changed assets",["app.bundle.js","assets/phase1-foundation.js","assets/phase5-progress.js"].every(f=>app.includes(f+"?v=20260904-auth-lifecycle1"))&&read("index.html").includes("app.js?v=20260904-auth-lifecycle1"));
+check("cache chain all changed assets",["app.bundle.js","assets/phase1-foundation.js","assets/phase5-progress.js"].every(f=>app.includes(f+"?v=20260904-auth-lifecycle2"))&&read("index.html").includes("app.js?v=20260904-auth-lifecycle2"));
 check("mock-only chat asset untouched",app.includes("phase6c-private-ai-chat.js?v=20260903-phase6c-approved-avatar1"));
 check("no polling observers reload workaround",!/(MutationObserver|setInterval|location\.reload)/.test(p1));
 check("no frontend privileged credentials",!/(sb_secret_|sbp_[a-zA-Z0-9]{10}|service_role|sk-proj-)/.test(app+p1+p5));

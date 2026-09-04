@@ -25,6 +25,11 @@ Progress back to Auth to guard the complete failure path.
   state, password setup and public confirmation/error screens do not qualify.
 - The Phase 1 renderAll boundary performs only Auth styling/copy/visibility while
   public; no member/dashboard dispatch or state-save occurs. Public nav remains empty.
+- A final loader binding wraps the complete renderer/navigation chain after all modules
+  load. Cold Auth routes do not invoke frozen module teardown (including Training's
+  vibration cancellation); an existing app session is torn down once on logout.
+  This additional path was found by the actual live browser console check, not hidden
+  by suppressing console errors. Training runtime bytes remain unchanged.
 - User hydration requires a session and a current Auth epoch. Late onboarding results
   are discarded after logout/recovery. Invite/recovery callbacks no longer prehydrate
   member workspaces before password setup.
@@ -39,7 +44,7 @@ Progress back to Auth to guard the complete failure path.
   Server/network failures are not displayed as a successful send. Auth remains authoritative.
 
 Runtime files: index.html, app.js, app.bundle.js, assets/phase1-foundation.js,
-assets/phase5-progress.js. Cache: 20260904-auth-lifecycle1.
+assets/phase5-progress.js. Cache: 20260904-auth-lifecycle2.
 The legacy bundle change is required for callback ordering and safe public error handling;
 it is not an unrelated refactor. No Edge, migration, RLS, trainer or AI change.
 
@@ -78,7 +83,7 @@ email, UUID, credentials, confirmation link or tokens.
   cooldown, duplicate taps, NL/EN/DE, successful member login, Progress and logout.
 - 320x700, 390x844, 820x1180, 1440x900: no console errors/horizontal overflow.
   Screenshots reviewed locally; no personal data or tokens in fixtures/screenshots.
-- New static/security/syntax/combined parse: 25 PASS.
+- New static/security/syntax/combined parse: 26 PASS.
 - Frozen static: Phase 1 75; Phase 2 46; Phase 3 222; Member UX 56;
   Nutrition schema 90/final 45; Phase 5 116; 6A 93; 6B 98; 6C 117.
 - Frozen browsers: Nutrition 138; Progress 53; private chat 85; 6D-0 41.

@@ -11,8 +11,8 @@ if(process.argv[2]==="--historical"){
     };
   }});
   let source=fs.readFileSync(path.join(archive,"assets",name),"utf8")
-    .replace('const currentAppVersion = "20260826-phase4f-c1";','const currentAppVersion = "20260904-auth-lifecycle1";')
-    .replace('const phase1Version = "20260818-member-ux-today-hydration1";','const phase1Version = "20260904-auth-lifecycle1";');
+    .replace('const currentAppVersion = "20260826-phase4f-c1";','const currentAppVersion = "20260904-auth-lifecycle2";')
+    .replace('const phase1Version = "20260818-member-ux-today-hydration1";','const phase1Version = "20260904-auth-lifecycle2";');
   const historicalRequire=name=>{
     if(name==="fs")return proxy;
     if(path.isAbsolute(name)&&!fs.existsSync(name)){
