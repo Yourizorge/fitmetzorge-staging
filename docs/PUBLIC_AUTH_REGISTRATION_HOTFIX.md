@@ -1,7 +1,7 @@
 # Public Auth Registration Hotfix
 
 Date: 2026-09-04. Scope: staging only, mokxyyullfhkfalopbzd.
-Status: DEPLOYED / LIVE TECHNICAL PASS. Owner inbox/confirmation acceptance pending.
+Status: DEPLOYED / LIVE TECHNICAL PASS / OWNER MAIL RECEIVED.
 
 ## Root Cause
 
@@ -68,7 +68,8 @@ email, UUID, credentials, confirmation link or tokens.
   Auth logs or the SMTP credentials alone. Provider event access is an owner-only follow-up
   if delivery is still missing; do not request another resend automatically.
 - Exactly ONE /auth/v1/resend request: HTTP 200. confirmation_sent_at advanced to
-  2026-09-04 12:41:49.407945 UTC. Supabase dispatch accepted; inbox delivery NOT proven.
+  2026-09-04 12:41:49.407945 UTC. Supabase dispatch was accepted; the owner later
+  confirmed that the new confirmation email was received.
 - A local preflight initially received a transport rejection before the resend request;
   adding the same explicit non-secret User-Agent as the existing approved transport
   resolved it. That preflight did not send a mail. A local exclusive receipt prevents
@@ -111,14 +112,13 @@ email, UUID, credentials, confirmation link or tokens.
 - Before/after read-only fingerprints of profiles, workspaces, entitlements and
   normalized functions match; private chat row counts match. No member/trainer data
   or schema change. The single supported Auth resend is the only intended account action.
-- Full project migration history is NOT synchronized. The separate reconciliation
-  gate is BLOCKED, as documented in PROJECT_MIGRATION_RECONCILIATION.md. Its dry-run
-  applied no SQL and the live migration history is unchanged.
+- Full project migration history was later reconciled, as documented in
+  PROJECT_MIGRATION_RECONCILIATION.md. That work did not resend email, inspect Brevo,
+  confirm the account manually, create a trainer role/link or alter public Auth runtime.
 
-The remaining mail question is delivery, not dispatch: Supabase accepted the one resend,
-but the reason the first email was not received cannot be established from the available
-Auth logs. If the new email is absent, inspect Brevo delivery/bounce events with owner
-provider access. Do not resend again automatically, reset credentials or confirm manually.
+The mail-delivery question is closed for this test account because the owner received
+the confirmation email. Do not resend again automatically, inspect Brevo, reset
+credentials, confirm manually, or add a trainer role/link for this account.
 
 Package 6D functionality NOT STARTED. External member AI stays disabled. No external
 AI calls or cost. Production UNTOUCHED.

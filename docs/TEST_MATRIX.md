@@ -1,24 +1,27 @@
 # FitMetZorge Test Matrix
 
 Status: MASTER PLAN COVERAGE MATRIX
-Latest execution: 2026-09-04 public Auth hotfix, 88 assembled browser + 26 focused
-static/security checks PASS; frozen runtime suites PASS and 228 live read-only
-database checks PASS. See PUBLIC_AUTH_REGISTRATION_HOTFIX.md for exact counts,
-four viewports, mail-dispatch limits and the staging deployment receipt.
+Latest execution: 2026-09-04 project migration reconciliation, after the public Auth
+hotfix. Migration history is synchronized 25/25; `db push --dry-run --skip-vault`
+is clean. Public Auth hotfix checks remain 88 assembled browser + 26 focused
+static/security PASS; frozen runtime suites PASS and 228 live read-only database
+checks PASS. See PUBLIC_AUTH_REGISTRATION_HOTFIX.md for exact counts, four viewports,
+mail-dispatch limits and the staging deployment receipt.
 Last updated: 2026-09-04
 
 Live receipt: runtime 333954a68a1429634e49bafbcc08720ea688131a,
 cache 20260904-auth-lifecycle2. Seven checked assets HTTP 200 / commit-identical;
 public routes at 320x700, 390x844, tablet and desktop: zero console/page errors,
-zero mutating requests. Real email delivery/confirmation remains owner acceptance.
+zero mutating requests. The owner later received the new account confirmation email.
 
-Project migration gate: inventory complete, reconciliation BLOCKED. Official CLI
-migration list is not synchronized; dry-run reports LegacyDbPushMissingLocalError.
-No SQL/history repair executed. Clean empty-database rebuild and rebuilt-schema
-comparison are NOT PASS: required historical core-table baseline SQL is missing.
-The unchanged 6D-0 authorization verifier remains 40/40 PASS. Full classification,
-before/after history and exact file hashes are in PROJECT_MIGRATION_RECONCILIATION.md
-and PROJECT_MIGRATION_RECONCILIATION_MANIFEST.json.
+Project migration gate: PASS for staging. Official CLI `migration list` is synchronized
+at 25 local / 25 remote rows; `db push --dry-run --skip-vault` reports the remote
+database is up to date. The 19 timestamp drifts are renamed to canonical live versions,
+the duplicate old `20260819` conflict is gone, the missing Phase 1-3/source SQL is
+covered by a forward-only source baseline, and four previously local-only versions were
+marked applied as history metadata only. Local rebuild PASSes through Phase 6B; full
+local replay of 6C/6D0 still requires a local `pg_cron` extension. Details are in
+PROJECT_MIGRATION_RECONCILIATION.md and PROJECT_MIGRATION_RECONCILIATION_MANIFEST.json.
 
 This matrix records the required functional, security, entitlement, AI, migration, and release checks for the Master Build. No implementation tests are executed by this document.
 
@@ -836,7 +839,8 @@ a rendered gold-action assertion covering Sleep detail and frozen Phase 5 Progre
 Migration history: 20260904105918. invite-client version 16; cache 20260904-phase6d0-auth1.
 Identity reconciliation: 8/8 identity checks, 8/8 exact function bodies, 12/12 negative
 tests and unchanged 40/40 live security verifier PASS. Git/live ID is 20260904105918.
-Whole-project dry-run remains BLOCKED by older history drift, not 6D-0. See
+Whole-project dry-run is now clean after the later project-wide reconciliation. See
+[migration audit](PROJECT_MIGRATION_RECONCILIATION.md) and
 [identity receipt](PHASE6D0_MIGRATION_IDENTITY_RECONCILIATION.md).
 Bootstrap/metadata authority, direct profile grants and broad member workspace access
 are corrected. Existing links/data checksums and frozen Phase 1-6C semantics are preserved.

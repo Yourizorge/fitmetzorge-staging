@@ -1,9 +1,866 @@
 {
   "target": "mokxyyullfhkfalopbzd",
-  "git_head": "333954a68a1429634e49bafbcc08720ea688131a",
-  "local_count": 24,
-  "remote_count": 21,
+  "generated_at_utc": "2026-09-04T20:28:13.457Z",
+  "git_head": "977e2311e969cb17dc753c007c3b3187675e4530",
+  "git_branch": "main",
+  "local_count": 25,
+  "remote_count": 25,
+  "full_history_synchronized": true,
+  "local_only_versions": [],
+  "remote_only_versions": [],
+  "name_mismatches": [],
+  "duplicate_versions": [],
+  "history_repaired_forward_only": true,
+  "history_repair_versions_marked_applied": [
+    "20260812000000",
+    "20260813",
+    "20260818",
+    "20260826143000"
+  ],
+  "migration_sql_executed_by_reconciliation": false,
+  "destructive_reconstruction_executed": false,
+  "resolved_timestamp_mappings": [
+    {
+      "previous_git_version": "20260819",
+      "canonical_live_version": "20260819134024",
+      "name": "phase4_nutrition_slice3_atomic_log_item_replacement"
+    },
+    {
+      "previous_git_version": "20260819",
+      "canonical_live_version": "20260819163738",
+      "name": "phase4_nutrition_slice4b_alias_search"
+    },
+    {
+      "previous_git_version": "20260819",
+      "canonical_live_version": "20260819175756",
+      "name": "phase4_nutrition_slice4c_operational_state"
+    },
+    {
+      "previous_git_version": "20260819",
+      "canonical_live_version": "20260820082018",
+      "name": "phase4_nutrition_slice4d_provider_snapshot_logging"
+    },
+    {
+      "previous_git_version": "20260820134211",
+      "canonical_live_version": "20260820150513",
+      "name": "phase4_nutrition_slice4d_historical_provider_resolver"
+    },
+    {
+      "previous_git_version": "20260821214541",
+      "canonical_live_version": "20260822172635",
+      "name": "phase4_nutrition_slice4e_ingestion_alias_search"
+    },
+    {
+      "previous_git_version": "20260827",
+      "canonical_live_version": "20260827125343",
+      "name": "phase4_nutrition_slice4fd_transient_off_barcode"
+    },
+    {
+      "previous_git_version": "20260827165426",
+      "canonical_live_version": "20260827152727",
+      "name": "phase4_nutrition_slice4fd_transient_off_parent_context_fix"
+    },
+    {
+      "previous_git_version": "20260831153000",
+      "canonical_live_version": "20260831145357",
+      "name": "phase5_progress_foundation"
+    },
+    {
+      "previous_git_version": "20260831161000",
+      "canonical_live_version": "20260831150434",
+      "name": "phase5_progress_unit_preference"
+    },
+    {
+      "previous_git_version": "20260831163000",
+      "canonical_live_version": "20260831153512",
+      "name": "phase5_progress_revision_indexes"
+    },
+    {
+      "previous_git_version": "20260901170000",
+      "canonical_live_version": "20260901161314",
+      "name": "phase5_unit_system_constraint_fix"
+    },
+    {
+      "previous_git_version": "20260901193000",
+      "canonical_live_version": "20260901183914",
+      "name": "phase6a_ai_trust_foundation"
+    },
+    {
+      "previous_git_version": "20260901203000",
+      "canonical_live_version": "20260901184418",
+      "name": "phase6a_ai_consent_event_ordering"
+    },
+    {
+      "previous_git_version": "20260901204500",
+      "canonical_live_version": "20260901190328",
+      "name": "phase6a_pgcrypto_search_path"
+    },
+    {
+      "previous_git_version": "20260901211500",
+      "canonical_live_version": "20260901191328",
+      "name": "phase6a_foreign_key_indexes"
+    },
+    {
+      "previous_git_version": "20260901230000",
+      "canonical_live_version": "20260902045834",
+      "name": "phase6b_provider_privacy_cost_gate"
+    },
+    {
+      "previous_git_version": "20260902203000",
+      "canonical_live_version": "20260903085454",
+      "name": "phase6c_private_ai_chat"
+    },
+    {
+      "previous_git_version": "20260903145000",
+      "canonical_live_version": "20260903125150",
+      "name": "phase6c_request_scoped_safety"
+    }
+  ],
+  "reconstructed_baseline": {
+    "file": "supabase/migrations/20260812000000_legacy_phase1_3_source_baseline.sql",
+    "exact_historical_source_available": false,
+    "strategy": "forward-only source baseline reconstructed from live schema metadata and frozen verifier contracts",
+    "data_changes": "none; migration is source-only for fresh rebuilds and was marked applied in staging history",
+    "live_object_presence": [
+      {
+        "table": "public.profiles",
+        "present_live": true,
+        "rls_enabled_live": true
+      },
+      {
+        "table": "public.coach_workspaces",
+        "present_live": true,
+        "rls_enabled_live": true
+      },
+      {
+        "table": "public.user_settings",
+        "present_live": true,
+        "rls_enabled_live": true
+      },
+      {
+        "table": "public.user_onboarding",
+        "present_live": true,
+        "rls_enabled_live": true
+      },
+      {
+        "table": "public.entitlements",
+        "present_live": true,
+        "rls_enabled_live": true
+      },
+      {
+        "table": "public.recovery_logs",
+        "present_live": true,
+        "rls_enabled_live": true
+      },
+      {
+        "table": "public.exercises",
+        "present_live": true,
+        "rls_enabled_live": true
+      },
+      {
+        "table": "public.training_plans",
+        "present_live": true,
+        "rls_enabled_live": true
+      },
+      {
+        "table": "public.training_plan_days",
+        "present_live": true,
+        "rls_enabled_live": true
+      },
+      {
+        "table": "public.training_plan_exercises",
+        "present_live": true,
+        "rls_enabled_live": true
+      },
+      {
+        "table": "public.workout_sessions",
+        "present_live": true,
+        "rls_enabled_live": true
+      },
+      {
+        "table": "public.workout_set_logs",
+        "present_live": true,
+        "rls_enabled_live": true
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "file": "supabase/migrations/20260812000000_legacy_phase1_3_source_baseline.sql",
+      "local_id": "20260812000000",
+      "name": "legacy_phase1_3_source_baseline",
+      "bytes": 57469,
+      "sha256": "ae06ca53771d90baa12c12af8d8b43e3bd0464d926d8795197859c4a8b8ae26b",
+      "lf_trim_sha256": "05387b2b5b9ef8acc3ecdd9d0e75ac636013cb8e3f39a88dc0f534373a0a37dd",
+      "object_candidates": [
+        "public.coach_workspaces",
+        "public.entitlements",
+        "public.exercises",
+        "public.fmz_can_access_workspace",
+        "public.fmz_can_select_profile",
+        "public.fmz_current_profile_role",
+        "public.fmz_current_profile_trainer_id",
+        "public.fmz_is_trainer",
+        "public.fmz_phase1_upsert_account_foundation",
+        "public.fmz_phase3_create_training_plan",
+        "public.fmz_phase3_enforce_set_log_owner",
+        "public.fmz_phase3_enforce_training_day_limit",
+        "public.fmz_phase3_enforce_training_plan_limit",
+        "public.fmz_phase3_enforce_workout_session_owner",
+        "public.fmz_phase3_sync_training_archive_state",
+        "public.profiles",
+        "public.recovery_logs",
+        "public.touch_updated_at",
+        "public.training_plan_days",
+        "public.training_plan_exercises",
+        "public.training_plans",
+        "public.user_onboarding",
+        "public.user_settings",
+        "public.workout_sessions",
+        "public.workout_set_logs"
+      ],
+      "remote_id": "20260812000000",
+      "remote_name": "legacy_phase1_3_source_baseline",
+      "remote_statement_count": 156,
+      "remote_sha256": "349b63611b7819f4984f27a14b6778235d9a4206b8883bdf1c1dd4838ad942dc",
+      "history_aligned_by_version_and_name": true,
+      "sql_identity_evidence": "history_row_present; whole-file SQL identity not stored for this historical row",
+      "classification": "history_version_and_name_aligned",
+      "sql_reexecuted": false
+    },
+    {
+      "file": "supabase/migrations/20260813_trainer_signup_bootstrap.sql",
+      "local_id": "20260813",
+      "name": "trainer_signup_bootstrap",
+      "bytes": 3908,
+      "sha256": "055567b0a3e66671d45c75600f5ca3bf9191d08ccf1b95dbd6904bb106da4c52",
+      "lf_trim_sha256": "9ef22f27c03e20fbe84ce6db47ff8a2589f519994ff79ae2481e211b97f3db87",
+      "object_candidates": [
+        "public.fmz_bootstrap_trainer_profile",
+        "public.fmz_handle_new_auth_user"
+      ],
+      "remote_id": "20260813",
+      "remote_name": "trainer_signup_bootstrap",
+      "remote_statement_count": 8,
+      "remote_sha256": "8df5447ef8c122a89035c17d9368dc9fae063f1d5fbe382e92513f27919b907f",
+      "history_aligned_by_version_and_name": true,
+      "sql_identity_evidence": "history_row_present; whole-file SQL identity not stored for this historical row",
+      "classification": "history_version_and_name_aligned",
+      "sql_reexecuted": false
+    },
+    {
+      "file": "supabase/migrations/20260818_phase4_nutrition_schema_slice1.sql",
+      "local_id": "20260818",
+      "name": "phase4_nutrition_schema_slice1",
+      "bytes": 87219,
+      "sha256": "da73c53023c8c513707d52381dccfcde3dca94875f631ded802888c0c23e9ddd",
+      "lf_trim_sha256": "478b71969aa9ca9ea796a0a0554e89e7e74f57bc2f5eca2c11584033066d009b",
+      "object_candidates": [
+        "public.fmz_phase4_archive_custom_food",
+        "public.fmz_phase4_archive_food_log_item",
+        "public.fmz_phase4_day_payload",
+        "public.fmz_phase4_enforce_custom_food_limit",
+        "public.fmz_phase4_enforce_food_log_item_owner",
+        "public.fmz_phase4_enforce_food_log_owner",
+        "public.fmz_phase4_enforce_food_portion_owner",
+        "public.fmz_phase4_enforce_target_owner",
+        "public.fmz_phase4_get_current_nutrition_target",
+        "public.fmz_phase4_get_nutrition_day",
+        "public.fmz_phase4_get_nutrition_history",
+        "public.fmz_phase4_has_full_nutrition_access",
+        "public.fmz_phase4_log_food_item",
+        "public.fmz_phase4_save_member_target",
+        "public.fmz_phase4_search_foods",
+        "public.fmz_phase4_set_nutrition_timezone",
+        "public.fmz_phase4_sync_archive_state",
+        "public.fmz_phase4_touch_updated_at",
+        "public.fmz_phase4_upsert_custom_food",
+        "public.fmz_phase4_upsert_food_portion",
+        "public.food_log_items",
+        "public.food_logs",
+        "public.food_portions",
+        "public.foods",
+        "public.nutrition_preferences",
+        "public.nutrition_targets"
+      ],
+      "remote_id": "20260818",
+      "remote_name": "phase4_nutrition_schema_slice1",
+      "remote_statement_count": 144,
+      "remote_sha256": "84c9da69b1bda2f35c08c7c3b1de4e5d4a73b2779663938e617c50ebd538cd6a",
+      "history_aligned_by_version_and_name": true,
+      "sql_identity_evidence": "history_row_present; whole-file SQL identity not stored for this historical row",
+      "classification": "history_version_and_name_aligned",
+      "sql_reexecuted": false
+    },
+    {
+      "file": "supabase/migrations/20260819134024_phase4_nutrition_slice3_atomic_log_item_replacement.sql",
+      "local_id": "20260819134024",
+      "name": "phase4_nutrition_slice3_atomic_log_item_replacement",
+      "bytes": 14010,
+      "sha256": "fddc1760a71da056010bcb3e1909e52cac6c71a07c21f488dd3462159b572d1d",
+      "lf_trim_sha256": "4c96326d92e8050a80503232f9c27c0321ffef3f0ba784d388e3e4eaf0cc7755",
+      "object_candidates": [
+        "public.fmz_phase4_replace_food_log_item"
+      ],
+      "remote_id": "20260819134024",
+      "remote_name": "phase4_nutrition_slice3_atomic_log_item_replacement",
+      "remote_statement_count": 1,
+      "remote_sha256": "fad15d3aa7e25ce09d5d5123c5775bc00f6a6759c07b5e1680a2008f7531cc97",
+      "history_aligned_by_version_and_name": true,
+      "sql_identity_evidence": "history_row_present; whole-file SQL identity not stored for this historical row",
+      "classification": "history_version_and_name_aligned",
+      "sql_reexecuted": false
+    },
+    {
+      "file": "supabase/migrations/20260819163738_phase4_nutrition_slice4b_alias_search.sql",
+      "local_id": "20260819163738",
+      "name": "phase4_nutrition_slice4b_alias_search",
+      "bytes": 6803,
+      "sha256": "7b7b00673d8f58514ffe46695577f27f1de726bcadc4d0eed430a22ed9b88dbf",
+      "lf_trim_sha256": "45d4b4972310978a9ce51bf29c283a16d738631ef277ea20372aa24d9d2a8f80",
+      "object_candidates": [
+        "public.food_aliases"
+      ],
+      "remote_id": "20260819163738",
+      "remote_name": "phase4_nutrition_slice4b_alias_search",
+      "remote_statement_count": 1,
+      "remote_sha256": "8f087bb7234a65e2a07e093e105cc47b3d1233948370ca4e6b389fe86558098c",
+      "history_aligned_by_version_and_name": true,
+      "sql_identity_evidence": "history_row_present; whole-file SQL identity not stored for this historical row",
+      "classification": "history_version_and_name_aligned",
+      "sql_reexecuted": false
+    },
+    {
+      "file": "supabase/migrations/20260819175756_phase4_nutrition_slice4c_operational_state.sql",
+      "local_id": "20260819175756",
+      "name": "phase4_nutrition_slice4c_operational_state",
+      "bytes": 30650,
+      "sha256": "1c68de71a3c4ff3b4859eb08eb20053637dc4030d836315d250db546a7d1ea3a",
+      "lf_trim_sha256": "5deaf6beafbcb640abd314e869d3ee2f0b27e97669f6023ff89fd0b9c54db5ca",
+      "object_candidates": [
+        "public.fmz_phase4_provider_consume_rate_limits",
+        "public.fmz_phase4_provider_transition_runtime_state",
+        "public.nutrition_provider_food_cache",
+        "public.nutrition_provider_query_cache",
+        "public.nutrition_provider_rate_buckets",
+        "public.nutrition_provider_runtime_state"
+      ],
+      "remote_id": "20260819175756",
+      "remote_name": "phase4_nutrition_slice4c_operational_state",
+      "remote_statement_count": 1,
+      "remote_sha256": "30034f606c10b8c39600a2dc0416d9e598e3797df04fd3936cac62c85b8de6b3",
+      "history_aligned_by_version_and_name": true,
+      "sql_identity_evidence": "history_row_present; whole-file SQL identity not stored for this historical row",
+      "classification": "history_version_and_name_aligned",
+      "sql_reexecuted": false
+    },
+    {
+      "file": "supabase/migrations/20260820082018_phase4_nutrition_slice4d_provider_snapshot_logging.sql",
+      "local_id": "20260820082018",
+      "name": "phase4_nutrition_slice4d_provider_snapshot_logging",
+      "bytes": 44665,
+      "sha256": "0784183f88ec383b123d714fd57a0e0e06bfbaec67ee138830b8eb33c6446b9e",
+      "lf_trim_sha256": "a23b5c241e2fa8313270f4f41c59e89fbf38a6cb23782650a1c53964098b30cd",
+      "object_candidates": [
+        "public.fmz_phase4_enforce_food_log_item_owner",
+        "public.fmz_phase4_enforce_food_log_owner",
+        "public.fmz_phase4_log_provider_food_item",
+        "public.fmz_phase4_replace_provider_food_log_item"
+      ],
+      "remote_id": "20260820082018",
+      "remote_name": "phase4_nutrition_slice4d_provider_snapshot_logging",
+      "remote_statement_count": 1,
+      "remote_sha256": "d5c38b5cc5f4165fa40c7f531bd3c6d3267f2cd61293849937231be914979667",
+      "history_aligned_by_version_and_name": true,
+      "sql_identity_evidence": "history_row_present; whole-file SQL identity not stored for this historical row",
+      "classification": "history_version_and_name_aligned",
+      "sql_reexecuted": false
+    },
+    {
+      "file": "supabase/migrations/20260820150513_phase4_nutrition_slice4d_historical_provider_resolver.sql",
+      "local_id": "20260820150513",
+      "name": "phase4_nutrition_slice4d_historical_provider_resolver",
+      "bytes": 7406,
+      "sha256": "e1c3a0429dffe86059e964b7983d56849c387ecf34f57b3de5d67cdb4b16f8be",
+      "lf_trim_sha256": "e308f61386d0dec0d94f77dd9295a66463e75f05e538543c73fb8366395a0cc9",
+      "object_candidates": [
+        "public.fmz_phase4_resolve_provider_food_log_item"
+      ],
+      "remote_id": "20260820150513",
+      "remote_name": "phase4_nutrition_slice4d_historical_provider_resolver",
+      "remote_statement_count": 1,
+      "remote_sha256": "b815181aa529eae12ad2d9d0d36f371356217bfadc72b541f17e792149f72e0f",
+      "history_aligned_by_version_and_name": true,
+      "sql_identity_evidence": "history_row_present; whole-file SQL identity not stored for this historical row",
+      "classification": "history_version_and_name_aligned",
+      "sql_reexecuted": false
+    },
+    {
+      "file": "supabase/migrations/20260822172635_phase4_nutrition_slice4e_ingestion_alias_search.sql",
+      "local_id": "20260822172635",
+      "name": "phase4_nutrition_slice4e_ingestion_alias_search",
+      "bytes": 25274,
+      "sha256": "f5240d56e4e573af1d01089503c518f31c7bc67c3817948bdbbeff0c979a43e1",
+      "lf_trim_sha256": "03f9d47f760807d639151f06fb231b79017fea90b3a92fec5fec82964f4ce784",
+      "object_candidates": [
+        "public.fmz_phase4_enforce_food_ingestion_state",
+        "public.fmz_phase4_prevent_food_ingestion_removal",
+        "public.fmz_phase4_search_foods",
+        "public.food_aliases",
+        "public.foods",
+        "public.nutrition_food_ingestions"
+      ],
+      "remote_id": "20260822172635",
+      "remote_name": "phase4_nutrition_slice4e_ingestion_alias_search",
+      "remote_statement_count": 1,
+      "remote_sha256": "cbb325a5767229f2376c90eb5ad7944e5e39bb875fb82733a73c75498af01db2",
+      "history_aligned_by_version_and_name": true,
+      "sql_identity_evidence": "history_row_present; whole-file SQL identity not stored for this historical row",
+      "classification": "history_version_and_name_aligned",
+      "sql_reexecuted": false
+    },
+    {
+      "file": "supabase/migrations/20260824113551_phase4_nutrition_slice4f_off_catalog_search.sql",
+      "local_id": "20260824113551",
+      "name": "phase4_nutrition_slice4f_off_catalog_search",
+      "bytes": 57987,
+      "sha256": "109deb61aacc9deadd38452d00473e0c75007cf302237c5e5db3a57bf1a1805e",
+      "lf_trim_sha256": "161b88e5dc2d843a3778774fd7ead5025d59823b6def433901f025ca16b38ac4",
+      "object_candidates": [
+        "public.fmz_phase4_enforce_off_product_identity",
+        "public.fmz_phase4_enforce_off_product_name_identity",
+        "public.fmz_phase4_enforce_off_release_state",
+        "public.fmz_phase4_lookup_off_product_by_barcode",
+        "public.fmz_phase4_normalize_catalog_text",
+        "public.fmz_phase4_normalize_gtin14",
+        "public.fmz_phase4_prevent_off_catalog_removal",
+        "public.fmz_phase4_provider_candidate_uuid_v5",
+        "public.fmz_phase4_search_nutrition_catalog",
+        "public.fmz_phase4_sync_off_archive_state",
+        "public.nutrition_off_catalog_releases",
+        "public.nutrition_off_product_names",
+        "public.nutrition_off_products"
+      ],
+      "remote_id": "20260824113551",
+      "remote_name": "phase4_nutrition_slice4f_off_catalog_search",
+      "remote_statement_count": 95,
+      "remote_sha256": "f144465862f2864770e7a1eede10efacb282e0e941621916215650c174c65d36",
+      "history_aligned_by_version_and_name": true,
+      "sql_identity_evidence": "history_row_present; whole-file SQL identity not stored for this historical row",
+      "classification": "history_version_and_name_aligned",
+      "sql_reexecuted": false
+    },
+    {
+      "file": "supabase/migrations/20260826143000_phase4_nutrition_slice4fc_off_authoritative_logging.sql",
+      "local_id": "20260826143000",
+      "name": "phase4_nutrition_slice4fc_off_authoritative_logging",
+      "bytes": 35758,
+      "sha256": "15c3abafdb7d77e85397006ba1d62c9221da0820c1052af284911b9edf2dff45",
+      "lf_trim_sha256": "7a80b6aebfda67ae315974d886dfb322e850c8afeb69aad135c0ba6fde50f453",
+      "object_candidates": [
+        "public.fmz_phase4_enforce_food_log_item_owner",
+        "public.fmz_phase4_log_off_food_item",
+        "public.fmz_phase4_replace_off_food_log_item",
+        "public.fmz_phase4_resolve_off_food_snapshot"
+      ],
+      "remote_id": "20260826143000",
+      "remote_name": "phase4_nutrition_slice4fc_off_authoritative_logging",
+      "remote_statement_count": 25,
+      "remote_sha256": "3460b644ad7d92cd4881065211c907909c6c516aa7012792f51ebe5237beeadf",
+      "history_aligned_by_version_and_name": true,
+      "sql_identity_evidence": "history_row_present; whole-file SQL identity not stored for this historical row",
+      "classification": "history_version_and_name_aligned",
+      "sql_reexecuted": false
+    },
+    {
+      "file": "supabase/migrations/20260827125343_phase4_nutrition_slice4fd_transient_off_barcode.sql",
+      "local_id": "20260827125343",
+      "name": "phase4_nutrition_slice4fd_transient_off_barcode",
+      "bytes": 68932,
+      "sha256": "476f829a2c669c029b87bec9f24459f7e1f5430d02fb32559c50cd9c418c2a2b",
+      "lf_trim_sha256": "f69e7d24f477eee324b6fff25a675f48285506623191e791c2cf3e5b77ed4f7e",
+      "object_candidates": [
+        "public.fmz_phase4_enforce_food_log_item_owner",
+        "public.fmz_phase4_log_transient_off_food_item",
+        "public.fmz_phase4_provider_consume_rate_limits",
+        "public.fmz_phase4_provider_transition_runtime_state",
+        "public.fmz_phase4_replace_transient_off_food_item",
+        "public.fmz_phase4_resolve_member_barcode",
+        "public.fmz_phase4_resolve_transient_off_food_log_item",
+        "public.fmz_phase4_transient_off_food_item_mutation",
+        "public.fmz_phase4_upsert_custom_food_with_barcode",
+        "public.fmz_phase4_validate_transient_off_candidate",
+        "public.nutrition_provider_food_cache",
+        "public.nutrition_provider_rate_buckets",
+        "public.nutrition_provider_runtime_state"
+      ],
+      "remote_id": "20260827125343",
+      "remote_name": "phase4_nutrition_slice4fd_transient_off_barcode",
+      "remote_statement_count": 1,
+      "remote_sha256": "0976592c673dcdc6f35a6f149608defb75dbb8647ac7526bfe5eedd6723b8c62",
+      "history_aligned_by_version_and_name": true,
+      "sql_identity_evidence": "normalized_single_statement",
+      "classification": "single_statement_normalized_exact",
+      "sql_reexecuted": false
+    },
+    {
+      "file": "supabase/migrations/20260827152727_phase4_nutrition_slice4fd_transient_off_parent_context_fix.sql",
+      "local_id": "20260827152727",
+      "name": "phase4_nutrition_slice4fd_transient_off_parent_context_fix",
+      "bytes": 5988,
+      "sha256": "80eb696450adc81a38be12ebec1631f660c85425cc8453e836047815be3ea0bf",
+      "lf_trim_sha256": "d89ff9a5cdccea7cc9114fa0b8bb6aed17a3a1b3fbd35b78c46e8132f4823d2f",
+      "object_candidates": [
+        "public.fmz_phase4_enforce_food_log_owner",
+        "public.fmz_phase4_log_transient_off_food_item"
+      ],
+      "remote_id": "20260827152727",
+      "remote_name": "phase4_nutrition_slice4fd_transient_off_parent_context_fix",
+      "remote_statement_count": 1,
+      "remote_sha256": "4718f6dd22377b218b71c384adda77b00894476a9ed514403410a04de7eaac0c",
+      "history_aligned_by_version_and_name": true,
+      "sql_identity_evidence": "normalized_single_statement",
+      "classification": "single_statement_normalized_exact",
+      "sql_reexecuted": false
+    },
+    {
+      "file": "supabase/migrations/20260831145357_phase5_progress_foundation.sql",
+      "local_id": "20260831145357",
+      "name": "phase5_progress_foundation",
+      "bytes": 36715,
+      "sha256": "deb29504de883b6cb1f0573e7e60744a81be878952c22f85e28d066baf6661d6",
+      "lf_trim_sha256": "55841153ff10f65693376ce050282038c065cf7f41e50559f1c0415b3595eb3b",
+      "object_candidates": [
+        "public.body_measurements",
+        "public.fmz_phase5_archive_body_measurement",
+        "public.fmz_phase5_archive_weight_log",
+        "public.fmz_phase5_get_progress_dashboard",
+        "public.fmz_phase5_has_full_progress_access",
+        "public.fmz_phase5_save_body_measurement",
+        "public.fmz_phase5_save_progress_goal",
+        "public.fmz_phase5_save_weight_log",
+        "public.fmz_phase5_set_progress_timezone",
+        "public.fmz_phase5_sync_archive_state",
+        "public.fmz_phase5_touch_updated_at",
+        "public.progress_goals",
+        "public.progress_preferences",
+        "public.weight_logs"
+      ],
+      "remote_id": "20260831145357",
+      "remote_name": "phase5_progress_foundation",
+      "remote_statement_count": 1,
+      "remote_sha256": "d596e1eb0d0a1719cd9e3dee861ce3e17f644f53491a86da218595d508d868d5",
+      "history_aligned_by_version_and_name": true,
+      "sql_identity_evidence": "normalized_single_statement",
+      "classification": "single_statement_normalized_exact",
+      "sql_reexecuted": false
+    },
+    {
+      "file": "supabase/migrations/20260831150434_phase5_progress_unit_preference.sql",
+      "local_id": "20260831150434",
+      "name": "phase5_progress_unit_preference",
+      "bytes": 1202,
+      "sha256": "b0b83cfe565cb8d7a1a7e88c0097052b657e6a2c6cd9849450bb32de5b07e8fb",
+      "lf_trim_sha256": "392621d437ba9295f163b7817d4234aabb8831484c63febe5095f0511066231e",
+      "object_candidates": [
+        "public.fmz_phase5_set_unit_system"
+      ],
+      "remote_id": "20260831150434",
+      "remote_name": "phase5_progress_unit_preference",
+      "remote_statement_count": 1,
+      "remote_sha256": "29933ada157d13b70cb8d6e23f7a2934b6af895a0d81ce015c8e6517751555bd",
+      "history_aligned_by_version_and_name": true,
+      "sql_identity_evidence": "normalized_single_statement",
+      "classification": "single_statement_normalized_exact",
+      "sql_reexecuted": false
+    },
+    {
+      "file": "supabase/migrations/20260831153512_phase5_progress_revision_indexes.sql",
+      "local_id": "20260831153512",
+      "name": "phase5_progress_revision_indexes",
+      "bytes": 404,
+      "sha256": "d7434837e2d37b5f6ef54c3535a1d0d264d439eda0b79a481553858c997744b7",
+      "lf_trim_sha256": "7a8523b0f011eb1dcf150edd63353da4650d4b97af4217edcb269fae043f725d",
+      "object_candidates": [],
+      "remote_id": "20260831153512",
+      "remote_name": "phase5_progress_revision_indexes",
+      "remote_statement_count": 1,
+      "remote_sha256": "7a8523b0f011eb1dcf150edd63353da4650d4b97af4217edcb269fae043f725d",
+      "history_aligned_by_version_and_name": true,
+      "sql_identity_evidence": "normalized_single_statement",
+      "classification": "single_statement_normalized_exact",
+      "sql_reexecuted": false
+    },
+    {
+      "file": "supabase/migrations/20260901161314_phase5_unit_system_constraint_fix.sql",
+      "local_id": "20260901161314",
+      "name": "phase5_unit_system_constraint_fix",
+      "bytes": 1129,
+      "sha256": "77ef7c490a9430ecacb3c8be2f9a3e021fda391fd45bc7ee698891003b0c1177",
+      "lf_trim_sha256": "47d253ff32c9dda86b82b3d12b7b27b10d258970b7acf9b6102eb296906c2b82",
+      "object_candidates": [
+        "public.user_settings"
+      ],
+      "remote_id": "20260901161314",
+      "remote_name": "phase5_unit_system_constraint_fix",
+      "remote_statement_count": 1,
+      "remote_sha256": "47d253ff32c9dda86b82b3d12b7b27b10d258970b7acf9b6102eb296906c2b82",
+      "history_aligned_by_version_and_name": true,
+      "sql_identity_evidence": "normalized_single_statement",
+      "classification": "single_statement_normalized_exact",
+      "sql_reexecuted": false
+    },
+    {
+      "file": "supabase/migrations/20260901183914_phase6a_ai_trust_foundation.sql",
+      "local_id": "20260901183914",
+      "name": "phase6a_ai_trust_foundation",
+      "bytes": 86032,
+      "sha256": "5b48b142fbdc2298bf268cf5804f99053c9346e554faa12b558409e3aa98ee6f",
+      "lf_trim_sha256": "e828ae573dbc772b33761bc3f1fa3f1368dc9c5924ecd681131b7e3dd34d6646",
+      "object_candidates": [
+        "ai_private.action_policies",
+        "ai_private.assert_member",
+        "ai_private.audit_events",
+        "ai_private.budget_accounts",
+        "ai_private.budget_policies",
+        "ai_private.can_share_trainer_summary",
+        "ai_private.consent_documents",
+        "ai_private.current_consent",
+        "ai_private.current_entitlement",
+        "ai_private.evaluate_budget",
+        "ai_private.feature_flags",
+        "ai_private.rate_buckets",
+        "ai_private.rate_policies",
+        "ai_private.runs",
+        "ai_private.safety_events",
+        "ai_private.structured_schemas",
+        "ai_private.subscription_period",
+        "ai_private.touch_updated_at",
+        "ai_private.trust_status",
+        "ai_private.usage_ledger",
+        "ai_private.validate_action_contract",
+        "ai_private.validate_structured_response",
+        "public.ai_action_decisions",
+        "public.ai_action_proposals",
+        "public.ai_consent_events",
+        "public.ai_context_manifests",
+        "public.ai_data_lifecycle_requests",
+        "public.ai_member_safety_state",
+        "public.ai_messages",
+        "public.ai_threads",
+        "public.fmz_phase6a_get_context_manifest",
+        "public.fmz_phase6a_get_trust_status",
+        "public.fmz_phase6a_read_consent_contract",
+        "public.fmz_phase6a_read_export_manifest",
+        "public.fmz_phase6a_read_thread_history",
+        "public.fmz_phase6a_record_consent",
+        "public.fmz_phase6a_request_data_lifecycle",
+        "public.fmz_phase6a_service_begin_run",
+        "public.fmz_phase6a_service_complete_run",
+        "public.fmz_phase6a_service_fail_run",
+        "public.fmz_phase6a_service_reconcile_retention",
+        "public.fmz_phase6a_service_record_safety_event",
+        "public.fmz_phase6a_submit_user_message"
+      ],
+      "remote_id": "20260901183914",
+      "remote_name": "phase6a_ai_trust_foundation",
+      "remote_statement_count": 1,
+      "remote_sha256": "352e45231b1effb76d0e392b3e463f077d769dcf9a300fa7efdb45f8471a534f",
+      "history_aligned_by_version_and_name": true,
+      "sql_identity_evidence": "normalized_single_statement",
+      "classification": "single_statement_normalized_exact",
+      "sql_reexecuted": false
+    },
+    {
+      "file": "supabase/migrations/20260901184418_phase6a_ai_consent_event_ordering.sql",
+      "local_id": "20260901184418",
+      "name": "phase6a_ai_consent_event_ordering",
+      "bytes": 1513,
+      "sha256": "7f653bf3be688d294d68af80689ccb4804eaf65cde1d7c77559a8fdd2134c82c",
+      "lf_trim_sha256": "56e0a51b75bf57b96147e90e1816a2e0351e704f1d97595f23ceedd4510895d2",
+      "object_candidates": [
+        "ai_private.current_consent",
+        "public.ai_consent_events"
+      ],
+      "remote_id": "20260901184418",
+      "remote_name": "phase6a_ai_consent_event_ordering",
+      "remote_statement_count": 1,
+      "remote_sha256": "4929e9da88737156060e41b673659a7833834b8ac1f2fc53d30cbc8938a2fe4f",
+      "history_aligned_by_version_and_name": true,
+      "sql_identity_evidence": "normalized_single_statement",
+      "classification": "single_statement_normalized_exact",
+      "sql_reexecuted": false
+    },
+    {
+      "file": "supabase/migrations/20260901190328_phase6a_pgcrypto_search_path.sql",
+      "local_id": "20260901190328",
+      "name": "phase6a_pgcrypto_search_path",
+      "bytes": 673,
+      "sha256": "b93b711519796958a2569a363cc1d3131a444eace34ec04395e08aba82ee4325",
+      "lf_trim_sha256": "53e223fad538af5b5767372f7cd890bbd49b3c4c9827d5f2bc569539f2e8ea25",
+      "object_candidates": [],
+      "remote_id": "20260901190328",
+      "remote_name": "phase6a_pgcrypto_search_path",
+      "remote_statement_count": 1,
+      "remote_sha256": "d68000e5434e818ff871652f0d8b2e6194fd274145f25b8595dd62a18fba0cc4",
+      "history_aligned_by_version_and_name": true,
+      "sql_identity_evidence": "normalized_single_statement",
+      "classification": "single_statement_normalized_exact",
+      "sql_reexecuted": false
+    },
+    {
+      "file": "supabase/migrations/20260901191328_phase6a_foreign_key_indexes.sql",
+      "local_id": "20260901191328",
+      "name": "phase6a_foreign_key_indexes",
+      "bytes": 1126,
+      "sha256": "5997fe0bacd706503c8bf7397685eb14720c58e946b9bcf70db58c70e6d52c9d",
+      "lf_trim_sha256": "c88dba54f2a3862bc76f3e82376141b3bf3074e71d8d25460d3363fbdcbd0490",
+      "object_candidates": [],
+      "remote_id": "20260901191328",
+      "remote_name": "phase6a_foreign_key_indexes",
+      "remote_statement_count": 1,
+      "remote_sha256": "d443d33a1ec19f513eb3ddb50ae77188d27eed1f9f44c4171dff5c3040c46749",
+      "history_aligned_by_version_and_name": true,
+      "sql_identity_evidence": "normalized_single_statement",
+      "classification": "single_statement_normalized_exact",
+      "sql_reexecuted": false
+    },
+    {
+      "file": "supabase/migrations/20260902045834_phase6b_provider_privacy_cost_gate.sql",
+      "local_id": "20260902045834",
+      "name": "phase6b_provider_privacy_cost_gate",
+      "bytes": 31322,
+      "sha256": "6b432da3aa389920d5a8eea4f15f74d35e2a9e2d6f7bf44c7b0fbf62473cc526",
+      "lf_trim_sha256": "ac772a9bd66d35a476189d6c3a6171e80df8f5018fec88b15c193d95a5dd9ace",
+      "object_candidates": [
+        "ai_private.phase6b_estimate_test_cost",
+        "ai_private.phase6b_real_member_gate",
+        "ai_private.provider_configurations",
+        "ai_private.provider_models",
+        "ai_private.provider_payload_fields",
+        "ai_private.provider_test_budget",
+        "ai_private.provider_test_runs",
+        "public.fmz_phase6b_service_begin_synthetic_test",
+        "public.fmz_phase6b_service_complete_synthetic_test",
+        "public.fmz_phase6b_service_fail_synthetic_test",
+        "public.fmz_phase6b_service_read_provider_status"
+      ],
+      "remote_id": "20260902045834",
+      "remote_name": "phase6b_provider_privacy_cost_gate",
+      "remote_statement_count": 1,
+      "remote_sha256": "70b689a5b4708054158b60e017dc79e0721c41058c784b201aac08b1aa794a50",
+      "history_aligned_by_version_and_name": true,
+      "sql_identity_evidence": "normalized_single_statement",
+      "classification": "single_statement_normalized_exact",
+      "sql_reexecuted": false
+    },
+    {
+      "file": "supabase/migrations/20260903085454_phase6c_private_ai_chat.sql",
+      "local_id": "20260903085454",
+      "name": "phase6c_private_ai_chat",
+      "bytes": 33778,
+      "sha256": "131e63ff165069a4d2861eadec838ad47906cf74a382c0f7ce8ab99f91d8d26f",
+      "lf_trim_sha256": "c52120c3faf557184d678ae54cf94b047a9cf8171d61d0026f5c3b86a074f02e",
+      "object_candidates": [
+        "ai_private.phase6c_age_eligible",
+        "ai_private.phase6c_apply_retention",
+        "ai_private.phase6c_assign_message_sequence",
+        "ai_private.phase6c_chat_status",
+        "ai_private.phase6c_protect_message_content",
+        "ai_private.phase6c_reconcile_member",
+        "ai_private.phase6c_retention_sweep",
+        "ai_private.phase6c_runtime_config",
+        "ai_private.runs",
+        "public.ai_data_lifecycle_requests",
+        "public.ai_messages",
+        "public.ai_threads",
+        "public.fmz_phase6c_create_thread",
+        "public.fmz_phase6c_delete_thread",
+        "public.fmz_phase6c_export_chat",
+        "public.fmz_phase6c_get_chat_status",
+        "public.fmz_phase6c_list_threads",
+        "public.fmz_phase6c_read_thread",
+        "public.fmz_phase6c_service_begin_mock_run",
+        "public.fmz_phase6c_submit_message"
+      ],
+      "remote_id": "20260903085454",
+      "remote_name": "phase6c_private_ai_chat",
+      "remote_statement_count": 1,
+      "remote_sha256": "3510cbb5c00ee030b68ca412ecaafdb1a4aa2c5aa05dfc7edab6ba8e01552d30",
+      "history_aligned_by_version_and_name": true,
+      "sql_identity_evidence": "normalized_single_statement",
+      "classification": "single_statement_normalized_exact",
+      "sql_reexecuted": false
+    },
+    {
+      "file": "supabase/migrations/20260903125150_phase6c_request_scoped_safety.sql",
+      "local_id": "20260903125150",
+      "name": "phase6c_request_scoped_safety",
+      "bytes": 2534,
+      "sha256": "35ef14f978ad6500abd086b5db80dbec2d875a2a8ddeb39825e8b0ac2b57a831",
+      "lf_trim_sha256": "08e19410005b25591837831ea38b129966ebb50bc832fc6c6142b7d382574659",
+      "object_candidates": [
+        "ai_private.phase6c_chat_status"
+      ],
+      "remote_id": "20260903125150",
+      "remote_name": "phase6c_request_scoped_safety",
+      "remote_statement_count": 1,
+      "remote_sha256": "08e19410005b25591837831ea38b129966ebb50bc832fc6c6142b7d382574659",
+      "history_aligned_by_version_and_name": true,
+      "sql_identity_evidence": "normalized_single_statement",
+      "classification": "single_statement_normalized_exact",
+      "sql_reexecuted": false
+    },
+    {
+      "file": "supabase/migrations/20260904105918_phase6d0_legacy_authorization_gate.sql",
+      "local_id": "20260904105918",
+      "name": "phase6d0_legacy_authorization_gate",
+      "bytes": 17917,
+      "sha256": "5b91b22f823a30f86e329b381fe797fd28655d237ad977d6b80d2c99af5485b3",
+      "lf_trim_sha256": "b6e76b3ada662492a40340fad1e05be560ae661f09764e63c337578af1c0c6fb",
+      "object_candidates": [
+        "legacy_auth_private.client_invitations",
+        "public.accept_client_invite",
+        "public.fmz_bootstrap_trainer_profile",
+        "public.fmz_handle_new_auth_user",
+        "public.fmz_phase6d0_accept_client_invite",
+        "public.fmz_phase6d0_issue_client_invite",
+        "public.fmz_phase6d0_read_own_workspace",
+        "public.fmz_phase6d0_revoke_client_invite",
+        "public.fmz_phase6d0_save_own_workspace"
+      ],
+      "remote_id": "20260904105918",
+      "remote_name": "phase6d0_legacy_authorization_gate",
+      "remote_statement_count": 1,
+      "remote_sha256": "5b91b22f823a30f86e329b381fe797fd28655d237ad977d6b80d2c99af5485b3",
+      "history_aligned_by_version_and_name": true,
+      "sql_identity_evidence": "byte_exact_single_statement",
+      "classification": "single_statement_byte_exact",
+      "sql_reexecuted": false
+    }
+  ],
   "before_history": [
+    {
+      "name": "legacy_phase1_3_source_baseline",
+      "sha256": "349b63611b7819f4984f27a14b6778235d9a4206b8883bdf1c1dd4838ad942dc",
+      "version": "20260812000000",
+      "lf_trim_sha256": "349b63611b7819f4984f27a14b6778235d9a4206b8883bdf1c1dd4838ad942dc",
+      "statement_count": 156
+    },
+    {
+      "name": "trainer_signup_bootstrap",
+      "sha256": "8df5447ef8c122a89035c17d9368dc9fae063f1d5fbe382e92513f27919b907f",
+      "version": "20260813",
+      "lf_trim_sha256": "53e79624f57f02ce7926d78698bdae8976b46f6581ae5cd7f996800237645a1c",
+      "statement_count": 8
+    },
+    {
+      "name": "phase4_nutrition_schema_slice1",
+      "sha256": "84c9da69b1bda2f35c08c7c3b1de4e5d4a73b2779663938e617c50ebd538cd6a",
+      "version": "20260818",
+      "lf_trim_sha256": "c3bececddc578030233198bfdea5121e72cdd8624fa4ef62f7fb94acdcd2ac4c",
+      "statement_count": 144
+    },
     {
       "name": "phase4_nutrition_slice3_atomic_log_item_replacement",
       "sha256": "fad15d3aa7e25ce09d5d5123c5775bc00f6a6759c07b5e1680a2008f7531cc97",
@@ -52,6 +909,13 @@
       "version": "20260824113551",
       "lf_trim_sha256": "f144465862f2864770e7a1eede10efacb282e0e941621916215650c174c65d36",
       "statement_count": 95
+    },
+    {
+      "name": "phase4_nutrition_slice4fc_off_authoritative_logging",
+      "sha256": "3460b644ad7d92cd4881065211c907909c6c516aa7012792f51ebe5237beeadf",
+      "version": "20260826143000",
+      "lf_trim_sha256": "3460b644ad7d92cd4881065211c907909c6c516aa7012792f51ebe5237beeadf",
+      "statement_count": 25
     },
     {
       "name": "phase4_nutrition_slice4fd_transient_off_barcode",
@@ -154,6 +1018,27 @@
   ],
   "after_history": [
     {
+      "name": "legacy_phase1_3_source_baseline",
+      "sha256": "349b63611b7819f4984f27a14b6778235d9a4206b8883bdf1c1dd4838ad942dc",
+      "version": "20260812000000",
+      "lf_trim_sha256": "349b63611b7819f4984f27a14b6778235d9a4206b8883bdf1c1dd4838ad942dc",
+      "statement_count": 156
+    },
+    {
+      "name": "trainer_signup_bootstrap",
+      "sha256": "8df5447ef8c122a89035c17d9368dc9fae063f1d5fbe382e92513f27919b907f",
+      "version": "20260813",
+      "lf_trim_sha256": "53e79624f57f02ce7926d78698bdae8976b46f6581ae5cd7f996800237645a1c",
+      "statement_count": 8
+    },
+    {
+      "name": "phase4_nutrition_schema_slice1",
+      "sha256": "84c9da69b1bda2f35c08c7c3b1de4e5d4a73b2779663938e617c50ebd538cd6a",
+      "version": "20260818",
+      "lf_trim_sha256": "c3bececddc578030233198bfdea5121e72cdd8624fa4ef62f7fb94acdcd2ac4c",
+      "statement_count": 144
+    },
+    {
       "name": "phase4_nutrition_slice3_atomic_log_item_replacement",
       "sha256": "fad15d3aa7e25ce09d5d5123c5775bc00f6a6759c07b5e1680a2008f7531cc97",
       "version": "20260819134024",
@@ -201,6 +1086,13 @@
       "version": "20260824113551",
       "lf_trim_sha256": "f144465862f2864770e7a1eede10efacb282e0e941621916215650c174c65d36",
       "statement_count": 95
+    },
+    {
+      "name": "phase4_nutrition_slice4fc_off_authoritative_logging",
+      "sha256": "3460b644ad7d92cd4881065211c907909c6c516aa7012792f51ebe5237beeadf",
+      "version": "20260826143000",
+      "lf_trim_sha256": "3460b644ad7d92cd4881065211c907909c6c516aa7012792f51ebe5237beeadf",
+      "statement_count": 25
     },
     {
       "name": "phase4_nutrition_slice4fd_transient_off_barcode",
@@ -301,1775 +1193,11 @@
       "statement_count": 1
     }
   ],
-  "migrations": [
-    {
-      "file": "supabase/migrations/20260813_trainer_signup_bootstrap.sql",
-      "local_id": "20260813",
-      "name": "trainer_signup_bootstrap",
-      "bytes": 3765,
-      "sha256": "304f1a9876196a1734ea5de94574ec45667bf631771fd091121c080559917dbf",
-      "lf_trim_sha256": "9ef22f27c03e20fbe84ce6db47ff8a2589f519994ff79ae2481e211b97f3db87",
-      "object_candidates": [
-        "public.fmz_bootstrap_trainer_profile",
-        "public.fmz_handle_new_auth_user"
-      ],
-      "remote_id": null,
-      "remote_sha256": null,
-      "remote_statement_count": 0,
-      "classification": 5,
-      "classification_label": "execution identity not sufficiently proven",
-      "duplicate_version_conflict": false,
-      "duplicate_classification": null,
-      "canonical_id": null,
-      "current_object_presence": [
-        {
-          "object": "public.fmz_bootstrap_trainer_profile",
-          "present": true
-        },
-        {
-          "object": "public.fmz_handle_new_auth_user",
-          "present": true
-        }
-      ],
-      "current_definitions_prove_historical_execution": false,
-      "required_action": "recover and review complete historical baseline/evolution evidence; do not replay or mark applied",
-      "repair_executed": false,
-      "sql_reexecuted": false
-    },
-    {
-      "file": "supabase/migrations/20260818_phase4_nutrition_schema_slice1.sql",
-      "local_id": "20260818",
-      "name": "phase4_nutrition_schema_slice1",
-      "bytes": 84638,
-      "sha256": "d70a589fef997c14fcc9805e746536c86556e22622c8952b33de9ca222b36188",
-      "lf_trim_sha256": "478b71969aa9ca9ea796a0a0554e89e7e74f57bc2f5eca2c11584033066d009b",
-      "object_candidates": [
-        "public.fmz_phase4_archive_custom_food",
-        "public.fmz_phase4_archive_food_log_item",
-        "public.fmz_phase4_day_payload",
-        "public.fmz_phase4_enforce_custom_food_limit",
-        "public.fmz_phase4_enforce_food_log_item_owner",
-        "public.fmz_phase4_enforce_food_log_owner",
-        "public.fmz_phase4_enforce_food_portion_owner",
-        "public.fmz_phase4_enforce_target_owner",
-        "public.fmz_phase4_get_current_nutrition_target",
-        "public.fmz_phase4_get_nutrition_day",
-        "public.fmz_phase4_get_nutrition_history",
-        "public.fmz_phase4_has_full_nutrition_access",
-        "public.fmz_phase4_log_food_item",
-        "public.fmz_phase4_save_member_target",
-        "public.fmz_phase4_search_foods",
-        "public.fmz_phase4_set_nutrition_timezone",
-        "public.fmz_phase4_sync_archive_state",
-        "public.fmz_phase4_touch_updated_at",
-        "public.fmz_phase4_upsert_custom_food",
-        "public.fmz_phase4_upsert_food_portion",
-        "public.food_log_items",
-        "public.food_logs",
-        "public.food_portions",
-        "public.foods",
-        "public.nutrition_preferences",
-        "public.nutrition_targets"
-      ],
-      "remote_id": null,
-      "remote_sha256": null,
-      "remote_statement_count": 0,
-      "classification": 5,
-      "classification_label": "execution identity not sufficiently proven",
-      "duplicate_version_conflict": false,
-      "duplicate_classification": null,
-      "canonical_id": null,
-      "current_object_presence": [
-        {
-          "object": "public.fmz_phase4_archive_custom_food",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_archive_food_log_item",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_day_payload",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_enforce_custom_food_limit",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_enforce_food_log_item_owner",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_enforce_food_log_owner",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_enforce_food_portion_owner",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_enforce_target_owner",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_get_current_nutrition_target",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_get_nutrition_day",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_get_nutrition_history",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_has_full_nutrition_access",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_log_food_item",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_save_member_target",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_search_foods",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_set_nutrition_timezone",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_sync_archive_state",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_touch_updated_at",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_upsert_custom_food",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_upsert_food_portion",
-          "present": true
-        },
-        {
-          "object": "public.food_log_items",
-          "present": true
-        },
-        {
-          "object": "public.food_logs",
-          "present": true
-        },
-        {
-          "object": "public.food_portions",
-          "present": true
-        },
-        {
-          "object": "public.foods",
-          "present": true
-        },
-        {
-          "object": "public.nutrition_preferences",
-          "present": true
-        },
-        {
-          "object": "public.nutrition_targets",
-          "present": true
-        }
-      ],
-      "current_definitions_prove_historical_execution": false,
-      "required_action": "recover and review complete historical baseline/evolution evidence; do not replay or mark applied",
-      "repair_executed": false,
-      "sql_reexecuted": false
-    },
-    {
-      "file": "supabase/migrations/20260819_phase4_nutrition_slice3_atomic_log_item_replacement.sql",
-      "local_id": "20260819",
-      "name": "phase4_nutrition_slice3_atomic_log_item_replacement",
-      "bytes": 13585,
-      "sha256": "6f3b59207b2974b771a0677720377aaad7500e31df16a645b606b99088a8ee40",
-      "lf_trim_sha256": "4c96326d92e8050a80503232f9c27c0321ffef3f0ba784d388e3e4eaf0cc7755",
-      "object_candidates": [
-        "public.fmz_phase4_replace_food_log_item"
-      ],
-      "remote_id": "20260819134024",
-      "remote_sha256": "fad15d3aa7e25ce09d5d5123c5775bc00f6a6759c07b5e1680a2008f7531cc97",
-      "remote_statement_count": 1,
-      "classification": 5,
-      "classification_label": "execution identity not sufficiently proven",
-      "duplicate_version_conflict": true,
-      "duplicate_classification": 4,
-      "canonical_id": null,
-      "current_object_presence": [
-        {
-          "object": "public.fmz_phase4_replace_food_log_item",
-          "present": true
-        }
-      ],
-      "current_definitions_prove_historical_execution": false,
-      "required_action": "recover and review complete historical baseline/evolution evidence; do not replay or mark applied",
-      "repair_executed": false,
-      "sql_reexecuted": false
-    },
-    {
-      "file": "supabase/migrations/20260819_phase4_nutrition_slice4b_alias_search.sql",
-      "local_id": "20260819",
-      "name": "phase4_nutrition_slice4b_alias_search",
-      "bytes": 6607,
-      "sha256": "4c0e63dc09a8cc1de7f93dba278cd36f714c52bedab32ffc98147a5da0d5c88f",
-      "lf_trim_sha256": "45d4b4972310978a9ce51bf29c283a16d738631ef277ea20372aa24d9d2a8f80",
-      "object_candidates": [
-        "public.food_aliases"
-      ],
-      "remote_id": "20260819163738",
-      "remote_sha256": "8f087bb7234a65e2a07e093e105cc47b3d1233948370ca4e6b389fe86558098c",
-      "remote_statement_count": 1,
-      "classification": 5,
-      "classification_label": "execution identity not sufficiently proven",
-      "duplicate_version_conflict": true,
-      "duplicate_classification": 4,
-      "canonical_id": null,
-      "current_object_presence": [
-        {
-          "object": "public.food_aliases",
-          "present": true
-        }
-      ],
-      "current_definitions_prove_historical_execution": false,
-      "required_action": "recover and review complete historical baseline/evolution evidence; do not replay or mark applied",
-      "repair_executed": false,
-      "sql_reexecuted": false
-    },
-    {
-      "file": "supabase/migrations/20260819_phase4_nutrition_slice4c_operational_state.sql",
-      "local_id": "20260819",
-      "name": "phase4_nutrition_slice4c_operational_state",
-      "bytes": 29872,
-      "sha256": "0a2d2ca5b4caad30a17b73f66c018a742dc1d9326335aa7c9307d0021cf0ae2f",
-      "lf_trim_sha256": "5deaf6beafbcb640abd314e869d3ee2f0b27e97669f6023ff89fd0b9c54db5ca",
-      "object_candidates": [
-        "public.fmz_phase4_provider_consume_rate_limits",
-        "public.fmz_phase4_provider_transition_runtime_state",
-        "public.nutrition_provider_food_cache",
-        "public.nutrition_provider_query_cache",
-        "public.nutrition_provider_rate_buckets",
-        "public.nutrition_provider_runtime_state"
-      ],
-      "remote_id": "20260819175756",
-      "remote_sha256": "30034f606c10b8c39600a2dc0416d9e598e3797df04fd3936cac62c85b8de6b3",
-      "remote_statement_count": 1,
-      "classification": 5,
-      "classification_label": "execution identity not sufficiently proven",
-      "duplicate_version_conflict": true,
-      "duplicate_classification": 4,
-      "canonical_id": null,
-      "current_object_presence": [
-        {
-          "object": "public.fmz_phase4_provider_consume_rate_limits",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_provider_transition_runtime_state",
-          "present": true
-        },
-        {
-          "object": "public.nutrition_provider_food_cache",
-          "present": true
-        },
-        {
-          "object": "public.nutrition_provider_query_cache",
-          "present": true
-        },
-        {
-          "object": "public.nutrition_provider_rate_buckets",
-          "present": true
-        },
-        {
-          "object": "public.nutrition_provider_runtime_state",
-          "present": true
-        }
-      ],
-      "current_definitions_prove_historical_execution": false,
-      "required_action": "recover and review complete historical baseline/evolution evidence; do not replay or mark applied",
-      "repair_executed": false,
-      "sql_reexecuted": false
-    },
-    {
-      "file": "supabase/migrations/20260819_phase4_nutrition_slice4d_provider_snapshot_logging.sql",
-      "local_id": "20260819",
-      "name": "phase4_nutrition_slice4d_provider_snapshot_logging",
-      "bytes": 43536,
-      "sha256": "10228d7cdec07341c85bff80d2464ed4f46995fb732976f3045dfb2cb72f9dd0",
-      "lf_trim_sha256": "a23b5c241e2fa8313270f4f41c59e89fbf38a6cb23782650a1c53964098b30cd",
-      "object_candidates": [
-        "public.fmz_phase4_enforce_food_log_item_owner",
-        "public.fmz_phase4_enforce_food_log_owner",
-        "public.fmz_phase4_log_provider_food_item",
-        "public.fmz_phase4_replace_provider_food_log_item"
-      ],
-      "remote_id": "20260820082018",
-      "remote_sha256": "d5c38b5cc5f4165fa40c7f531bd3c6d3267f2cd61293849937231be914979667",
-      "remote_statement_count": 1,
-      "classification": 5,
-      "classification_label": "execution identity not sufficiently proven",
-      "duplicate_version_conflict": true,
-      "duplicate_classification": 4,
-      "canonical_id": null,
-      "current_object_presence": [
-        {
-          "object": "public.fmz_phase4_enforce_food_log_item_owner",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_enforce_food_log_owner",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_log_provider_food_item",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_replace_provider_food_log_item",
-          "present": true
-        }
-      ],
-      "current_definitions_prove_historical_execution": false,
-      "required_action": "recover and review complete historical baseline/evolution evidence; do not replay or mark applied",
-      "repair_executed": false,
-      "sql_reexecuted": false
-    },
-    {
-      "file": "supabase/migrations/20260820134211_phase4_nutrition_slice4d_historical_provider_resolver.sql",
-      "local_id": "20260820134211",
-      "name": "phase4_nutrition_slice4d_historical_provider_resolver",
-      "bytes": 7241,
-      "sha256": "2b28ba69d89892d9cd52e852db7f6e12d9849977c646c2e596c5464ea39f44cd",
-      "lf_trim_sha256": "e308f61386d0dec0d94f77dd9295a66463e75f05e538543c73fb8366395a0cc9",
-      "object_candidates": [
-        "public.fmz_phase4_resolve_provider_food_log_item"
-      ],
-      "remote_id": "20260820150513",
-      "remote_sha256": "b815181aa529eae12ad2d9d0d36f371356217bfadc72b541f17e792149f72e0f",
-      "remote_statement_count": 1,
-      "classification": 5,
-      "classification_label": "execution identity not sufficiently proven",
-      "duplicate_version_conflict": false,
-      "duplicate_classification": null,
-      "canonical_id": null,
-      "current_object_presence": [
-        {
-          "object": "public.fmz_phase4_resolve_provider_food_log_item",
-          "present": true
-        }
-      ],
-      "current_definitions_prove_historical_execution": false,
-      "required_action": "recover and review complete historical baseline/evolution evidence; do not replay or mark applied",
-      "repair_executed": false,
-      "sql_reexecuted": false
-    },
-    {
-      "file": "supabase/migrations/20260821214541_phase4_nutrition_slice4e_ingestion_alias_search.sql",
-      "local_id": "20260821214541",
-      "name": "phase4_nutrition_slice4e_ingestion_alias_search",
-      "bytes": 24484,
-      "sha256": "a19ff1aa8daec57cd61a8db5feb19f1a98fd049838ea1f1b7b6c7e3b3c32b54c",
-      "lf_trim_sha256": "03f9d47f760807d639151f06fb231b79017fea90b3a92fec5fec82964f4ce784",
-      "object_candidates": [
-        "public.fmz_phase4_enforce_food_ingestion_state",
-        "public.fmz_phase4_prevent_food_ingestion_removal",
-        "public.fmz_phase4_search_foods",
-        "public.food_aliases",
-        "public.foods",
-        "public.nutrition_food_ingestions"
-      ],
-      "remote_id": "20260822172635",
-      "remote_sha256": "cbb325a5767229f2376c90eb5ad7944e5e39bb875fb82733a73c75498af01db2",
-      "remote_statement_count": 1,
-      "classification": 5,
-      "classification_label": "execution identity not sufficiently proven",
-      "duplicate_version_conflict": false,
-      "duplicate_classification": null,
-      "canonical_id": null,
-      "current_object_presence": [
-        {
-          "object": "public.fmz_phase4_enforce_food_ingestion_state",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_prevent_food_ingestion_removal",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_search_foods",
-          "present": true
-        },
-        {
-          "object": "public.food_aliases",
-          "present": true
-        },
-        {
-          "object": "public.foods",
-          "present": true
-        },
-        {
-          "object": "public.nutrition_food_ingestions",
-          "present": true
-        }
-      ],
-      "current_definitions_prove_historical_execution": false,
-      "required_action": "recover and review complete historical baseline/evolution evidence; do not replay or mark applied",
-      "repair_executed": false,
-      "sql_reexecuted": false
-    },
-    {
-      "file": "supabase/migrations/20260824113551_phase4_nutrition_slice4f_off_catalog_search.sql",
-      "local_id": "20260824113551",
-      "name": "phase4_nutrition_slice4f_off_catalog_search",
-      "bytes": 56477,
-      "sha256": "606658f53ea29083e315f43546b507b40c9d0cf7d02fb074591b542e71d89af4",
-      "lf_trim_sha256": "161b88e5dc2d843a3778774fd7ead5025d59823b6def433901f025ca16b38ac4",
-      "object_candidates": [
-        "public.fmz_phase4_enforce_off_product_identity",
-        "public.fmz_phase4_enforce_off_product_name_identity",
-        "public.fmz_phase4_enforce_off_release_state",
-        "public.fmz_phase4_lookup_off_product_by_barcode",
-        "public.fmz_phase4_normalize_catalog_text",
-        "public.fmz_phase4_normalize_gtin14",
-        "public.fmz_phase4_prevent_off_catalog_removal",
-        "public.fmz_phase4_provider_candidate_uuid_v5",
-        "public.fmz_phase4_search_nutrition_catalog",
-        "public.fmz_phase4_sync_off_archive_state",
-        "public.nutrition_off_catalog_releases",
-        "public.nutrition_off_product_names",
-        "public.nutrition_off_products"
-      ],
-      "remote_id": "20260824113551",
-      "remote_sha256": "f144465862f2864770e7a1eede10efacb282e0e941621916215650c174c65d36",
-      "remote_statement_count": 95,
-      "classification": 5,
-      "classification_label": "execution identity not sufficiently proven",
-      "duplicate_version_conflict": false,
-      "duplicate_classification": null,
-      "canonical_id": null,
-      "current_object_presence": [
-        {
-          "object": "public.fmz_phase4_enforce_off_product_identity",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_enforce_off_product_name_identity",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_enforce_off_release_state",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_lookup_off_product_by_barcode",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_normalize_catalog_text",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_normalize_gtin14",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_prevent_off_catalog_removal",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_provider_candidate_uuid_v5",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_search_nutrition_catalog",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_sync_off_archive_state",
-          "present": true
-        },
-        {
-          "object": "public.nutrition_off_catalog_releases",
-          "present": true
-        },
-        {
-          "object": "public.nutrition_off_product_names",
-          "present": true
-        },
-        {
-          "object": "public.nutrition_off_products",
-          "present": true
-        }
-      ],
-      "current_definitions_prove_historical_execution": false,
-      "required_action": "recover and review complete historical baseline/evolution evidence; do not replay or mark applied",
-      "repair_executed": false,
-      "sql_reexecuted": false
-    },
-    {
-      "file": "supabase/migrations/20260826143000_phase4_nutrition_slice4fc_off_authoritative_logging.sql",
-      "local_id": "20260826143000",
-      "name": "phase4_nutrition_slice4fc_off_authoritative_logging",
-      "bytes": 35758,
-      "sha256": "15c3abafdb7d77e85397006ba1d62c9221da0820c1052af284911b9edf2dff45",
-      "lf_trim_sha256": "7a80b6aebfda67ae315974d886dfb322e850c8afeb69aad135c0ba6fde50f453",
-      "object_candidates": [
-        "public.fmz_phase4_enforce_food_log_item_owner",
-        "public.fmz_phase4_log_off_food_item",
-        "public.fmz_phase4_replace_off_food_log_item",
-        "public.fmz_phase4_resolve_off_food_snapshot"
-      ],
-      "remote_id": null,
-      "remote_sha256": null,
-      "remote_statement_count": 0,
-      "classification": 5,
-      "classification_label": "execution identity not sufficiently proven",
-      "duplicate_version_conflict": false,
-      "duplicate_classification": null,
-      "canonical_id": null,
-      "current_object_presence": [
-        {
-          "object": "public.fmz_phase4_enforce_food_log_item_owner",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_log_off_food_item",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_replace_off_food_log_item",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_resolve_off_food_snapshot",
-          "present": true
-        }
-      ],
-      "current_definitions_prove_historical_execution": false,
-      "required_action": "recover and review complete historical baseline/evolution evidence; do not replay or mark applied",
-      "repair_executed": false,
-      "sql_reexecuted": false
-    },
-    {
-      "file": "supabase/migrations/20260827165426_phase4_nutrition_slice4fd_transient_off_parent_context_fix.sql",
-      "local_id": "20260827165426",
-      "name": "phase4_nutrition_slice4fd_transient_off_parent_context_fix",
-      "bytes": 5988,
-      "sha256": "80eb696450adc81a38be12ebec1631f660c85425cc8453e836047815be3ea0bf",
-      "lf_trim_sha256": "d89ff9a5cdccea7cc9114fa0b8bb6aed17a3a1b3fbd35b78c46e8132f4823d2f",
-      "object_candidates": [
-        "public.fmz_phase4_enforce_food_log_owner",
-        "public.fmz_phase4_log_transient_off_food_item"
-      ],
-      "remote_id": "20260827152727",
-      "remote_sha256": "4718f6dd22377b218b71c384adda77b00894476a9ed514403410a04de7eaac0c",
-      "remote_statement_count": 1,
-      "classification": 1,
-      "classification_label": "same SQL after line-ending/outer-whitespace normalization",
-      "duplicate_version_conflict": false,
-      "duplicate_classification": null,
-      "canonical_id": "20260827152727",
-      "current_object_presence": [
-        {
-          "object": "public.fmz_phase4_enforce_food_log_owner",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_log_transient_off_food_item",
-          "present": true
-        }
-      ],
-      "current_definitions_prove_historical_execution": false,
-      "required_action": "identity candidate proven; defer rename until full dependency/history blockers resolved",
-      "repair_executed": false,
-      "sql_reexecuted": false
-    },
-    {
-      "file": "supabase/migrations/20260827_phase4_nutrition_slice4fd_transient_off_barcode.sql",
-      "local_id": "20260827",
-      "name": "phase4_nutrition_slice4fd_transient_off_barcode",
-      "bytes": 68932,
-      "sha256": "476f829a2c669c029b87bec9f24459f7e1f5430d02fb32559c50cd9c418c2a2b",
-      "lf_trim_sha256": "f69e7d24f477eee324b6fff25a675f48285506623191e791c2cf3e5b77ed4f7e",
-      "object_candidates": [
-        "public.fmz_phase4_enforce_food_log_item_owner",
-        "public.fmz_phase4_log_transient_off_food_item",
-        "public.fmz_phase4_provider_consume_rate_limits",
-        "public.fmz_phase4_provider_transition_runtime_state",
-        "public.fmz_phase4_replace_transient_off_food_item",
-        "public.fmz_phase4_resolve_member_barcode",
-        "public.fmz_phase4_resolve_transient_off_food_log_item",
-        "public.fmz_phase4_transient_off_food_item_mutation",
-        "public.fmz_phase4_upsert_custom_food_with_barcode",
-        "public.fmz_phase4_validate_transient_off_candidate",
-        "public.nutrition_provider_food_cache",
-        "public.nutrition_provider_rate_buckets",
-        "public.nutrition_provider_runtime_state"
-      ],
-      "remote_id": "20260827125343",
-      "remote_sha256": "0976592c673dcdc6f35a6f149608defb75dbb8647ac7526bfe5eedd6723b8c62",
-      "remote_statement_count": 1,
-      "classification": 1,
-      "classification_label": "same SQL after line-ending/outer-whitespace normalization",
-      "duplicate_version_conflict": false,
-      "duplicate_classification": null,
-      "canonical_id": "20260827125343",
-      "current_object_presence": [
-        {
-          "object": "public.fmz_phase4_enforce_food_log_item_owner",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_log_transient_off_food_item",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_provider_consume_rate_limits",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_provider_transition_runtime_state",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_replace_transient_off_food_item",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_resolve_member_barcode",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_resolve_transient_off_food_log_item",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_transient_off_food_item_mutation",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_upsert_custom_food_with_barcode",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase4_validate_transient_off_candidate",
-          "present": true
-        },
-        {
-          "object": "public.nutrition_provider_food_cache",
-          "present": true
-        },
-        {
-          "object": "public.nutrition_provider_rate_buckets",
-          "present": true
-        },
-        {
-          "object": "public.nutrition_provider_runtime_state",
-          "present": true
-        }
-      ],
-      "current_definitions_prove_historical_execution": false,
-      "required_action": "identity candidate proven; defer rename until full dependency/history blockers resolved",
-      "repair_executed": false,
-      "sql_reexecuted": false
-    },
-    {
-      "file": "supabase/migrations/20260831153000_phase5_progress_foundation.sql",
-      "local_id": "20260831153000",
-      "name": "phase5_progress_foundation",
-      "bytes": 36715,
-      "sha256": "deb29504de883b6cb1f0573e7e60744a81be878952c22f85e28d066baf6661d6",
-      "lf_trim_sha256": "55841153ff10f65693376ce050282038c065cf7f41e50559f1c0415b3595eb3b",
-      "object_candidates": [
-        "public.body_measurements",
-        "public.fmz_phase5_archive_body_measurement",
-        "public.fmz_phase5_archive_weight_log",
-        "public.fmz_phase5_get_progress_dashboard",
-        "public.fmz_phase5_has_full_progress_access",
-        "public.fmz_phase5_save_body_measurement",
-        "public.fmz_phase5_save_progress_goal",
-        "public.fmz_phase5_save_weight_log",
-        "public.fmz_phase5_set_progress_timezone",
-        "public.fmz_phase5_sync_archive_state",
-        "public.fmz_phase5_touch_updated_at",
-        "public.progress_goals",
-        "public.progress_preferences",
-        "public.weight_logs"
-      ],
-      "remote_id": "20260831145357",
-      "remote_sha256": "d596e1eb0d0a1719cd9e3dee861ce3e17f644f53491a86da218595d508d868d5",
-      "remote_statement_count": 1,
-      "classification": 1,
-      "classification_label": "same SQL after line-ending/outer-whitespace normalization",
-      "duplicate_version_conflict": false,
-      "duplicate_classification": null,
-      "canonical_id": "20260831145357",
-      "current_object_presence": [
-        {
-          "object": "public.body_measurements",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase5_archive_body_measurement",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase5_archive_weight_log",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase5_get_progress_dashboard",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase5_has_full_progress_access",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase5_save_body_measurement",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase5_save_progress_goal",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase5_save_weight_log",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase5_set_progress_timezone",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase5_sync_archive_state",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase5_touch_updated_at",
-          "present": true
-        },
-        {
-          "object": "public.progress_goals",
-          "present": true
-        },
-        {
-          "object": "public.progress_preferences",
-          "present": true
-        },
-        {
-          "object": "public.weight_logs",
-          "present": true
-        }
-      ],
-      "current_definitions_prove_historical_execution": false,
-      "required_action": "identity candidate proven; defer rename until full dependency/history blockers resolved",
-      "repair_executed": false,
-      "sql_reexecuted": false
-    },
-    {
-      "file": "supabase/migrations/20260831161000_phase5_progress_unit_preference.sql",
-      "local_id": "20260831161000",
-      "name": "phase5_progress_unit_preference",
-      "bytes": 1202,
-      "sha256": "b0b83cfe565cb8d7a1a7e88c0097052b657e6a2c6cd9849450bb32de5b07e8fb",
-      "lf_trim_sha256": "392621d437ba9295f163b7817d4234aabb8831484c63febe5095f0511066231e",
-      "object_candidates": [
-        "public.fmz_phase5_set_unit_system"
-      ],
-      "remote_id": "20260831150434",
-      "remote_sha256": "29933ada157d13b70cb8d6e23f7a2934b6af895a0d81ce015c8e6517751555bd",
-      "remote_statement_count": 1,
-      "classification": 1,
-      "classification_label": "same SQL after line-ending/outer-whitespace normalization",
-      "duplicate_version_conflict": false,
-      "duplicate_classification": null,
-      "canonical_id": "20260831150434",
-      "current_object_presence": [
-        {
-          "object": "public.fmz_phase5_set_unit_system",
-          "present": true
-        }
-      ],
-      "current_definitions_prove_historical_execution": false,
-      "required_action": "identity candidate proven; defer rename until full dependency/history blockers resolved",
-      "repair_executed": false,
-      "sql_reexecuted": false
-    },
-    {
-      "file": "supabase/migrations/20260831163000_phase5_progress_revision_indexes.sql",
-      "local_id": "20260831163000",
-      "name": "phase5_progress_revision_indexes",
-      "bytes": 404,
-      "sha256": "d7434837e2d37b5f6ef54c3535a1d0d264d439eda0b79a481553858c997744b7",
-      "lf_trim_sha256": "7a8523b0f011eb1dcf150edd63353da4650d4b97af4217edcb269fae043f725d",
-      "object_candidates": [],
-      "remote_id": "20260831153512",
-      "remote_sha256": "7a8523b0f011eb1dcf150edd63353da4650d4b97af4217edcb269fae043f725d",
-      "remote_statement_count": 1,
-      "classification": 1,
-      "classification_label": "same SQL after line-ending/outer-whitespace normalization",
-      "duplicate_version_conflict": false,
-      "duplicate_classification": null,
-      "canonical_id": "20260831153512",
-      "current_object_presence": [],
-      "current_definitions_prove_historical_execution": false,
-      "required_action": "identity candidate proven; defer rename until full dependency/history blockers resolved",
-      "repair_executed": false,
-      "sql_reexecuted": false
-    },
-    {
-      "file": "supabase/migrations/20260901170000_phase5_unit_system_constraint_fix.sql",
-      "local_id": "20260901170000",
-      "name": "phase5_unit_system_constraint_fix",
-      "bytes": 1129,
-      "sha256": "77ef7c490a9430ecacb3c8be2f9a3e021fda391fd45bc7ee698891003b0c1177",
-      "lf_trim_sha256": "47d253ff32c9dda86b82b3d12b7b27b10d258970b7acf9b6102eb296906c2b82",
-      "object_candidates": [
-        "public.user_settings"
-      ],
-      "remote_id": "20260901161314",
-      "remote_sha256": "47d253ff32c9dda86b82b3d12b7b27b10d258970b7acf9b6102eb296906c2b82",
-      "remote_statement_count": 1,
-      "classification": 1,
-      "classification_label": "same SQL after line-ending/outer-whitespace normalization",
-      "duplicate_version_conflict": false,
-      "duplicate_classification": null,
-      "canonical_id": "20260901161314",
-      "current_object_presence": [
-        {
-          "object": "public.user_settings",
-          "present": true
-        }
-      ],
-      "current_definitions_prove_historical_execution": false,
-      "required_action": "identity candidate proven; defer rename until full dependency/history blockers resolved",
-      "repair_executed": false,
-      "sql_reexecuted": false
-    },
-    {
-      "file": "supabase/migrations/20260901193000_phase6a_ai_trust_foundation.sql",
-      "local_id": "20260901193000",
-      "name": "phase6a_ai_trust_foundation",
-      "bytes": 86032,
-      "sha256": "5b48b142fbdc2298bf268cf5804f99053c9346e554faa12b558409e3aa98ee6f",
-      "lf_trim_sha256": "e828ae573dbc772b33761bc3f1fa3f1368dc9c5924ecd681131b7e3dd34d6646",
-      "object_candidates": [
-        "ai_private.action_policies",
-        "ai_private.assert_member",
-        "ai_private.audit_events",
-        "ai_private.budget_accounts",
-        "ai_private.budget_policies",
-        "ai_private.can_share_trainer_summary",
-        "ai_private.consent_documents",
-        "ai_private.current_consent",
-        "ai_private.current_entitlement",
-        "ai_private.evaluate_budget",
-        "ai_private.feature_flags",
-        "ai_private.rate_buckets",
-        "ai_private.rate_policies",
-        "ai_private.runs",
-        "ai_private.safety_events",
-        "ai_private.structured_schemas",
-        "ai_private.subscription_period",
-        "ai_private.touch_updated_at",
-        "ai_private.trust_status",
-        "ai_private.usage_ledger",
-        "ai_private.validate_action_contract",
-        "ai_private.validate_structured_response",
-        "public.ai_action_decisions",
-        "public.ai_action_proposals",
-        "public.ai_consent_events",
-        "public.ai_context_manifests",
-        "public.ai_data_lifecycle_requests",
-        "public.ai_member_safety_state",
-        "public.ai_messages",
-        "public.ai_threads",
-        "public.fmz_phase6a_get_context_manifest",
-        "public.fmz_phase6a_get_trust_status",
-        "public.fmz_phase6a_read_consent_contract",
-        "public.fmz_phase6a_read_export_manifest",
-        "public.fmz_phase6a_read_thread_history",
-        "public.fmz_phase6a_record_consent",
-        "public.fmz_phase6a_request_data_lifecycle",
-        "public.fmz_phase6a_service_begin_run",
-        "public.fmz_phase6a_service_complete_run",
-        "public.fmz_phase6a_service_fail_run",
-        "public.fmz_phase6a_service_reconcile_retention",
-        "public.fmz_phase6a_service_record_safety_event",
-        "public.fmz_phase6a_submit_user_message"
-      ],
-      "remote_id": "20260901183914",
-      "remote_sha256": "352e45231b1effb76d0e392b3e463f077d769dcf9a300fa7efdb45f8471a534f",
-      "remote_statement_count": 1,
-      "classification": 1,
-      "classification_label": "same SQL after line-ending/outer-whitespace normalization",
-      "duplicate_version_conflict": false,
-      "duplicate_classification": null,
-      "canonical_id": "20260901183914",
-      "current_object_presence": [
-        {
-          "object": "ai_private.action_policies",
-          "present": true
-        },
-        {
-          "object": "ai_private.assert_member",
-          "present": true
-        },
-        {
-          "object": "ai_private.audit_events",
-          "present": true
-        },
-        {
-          "object": "ai_private.budget_accounts",
-          "present": true
-        },
-        {
-          "object": "ai_private.budget_policies",
-          "present": true
-        },
-        {
-          "object": "ai_private.can_share_trainer_summary",
-          "present": true
-        },
-        {
-          "object": "ai_private.consent_documents",
-          "present": true
-        },
-        {
-          "object": "ai_private.current_consent",
-          "present": true
-        },
-        {
-          "object": "ai_private.current_entitlement",
-          "present": true
-        },
-        {
-          "object": "ai_private.evaluate_budget",
-          "present": true
-        },
-        {
-          "object": "ai_private.feature_flags",
-          "present": true
-        },
-        {
-          "object": "ai_private.rate_buckets",
-          "present": true
-        },
-        {
-          "object": "ai_private.rate_policies",
-          "present": true
-        },
-        {
-          "object": "ai_private.runs",
-          "present": true
-        },
-        {
-          "object": "ai_private.safety_events",
-          "present": true
-        },
-        {
-          "object": "ai_private.structured_schemas",
-          "present": true
-        },
-        {
-          "object": "ai_private.subscription_period",
-          "present": true
-        },
-        {
-          "object": "ai_private.touch_updated_at",
-          "present": true
-        },
-        {
-          "object": "ai_private.trust_status",
-          "present": true
-        },
-        {
-          "object": "ai_private.usage_ledger",
-          "present": true
-        },
-        {
-          "object": "ai_private.validate_action_contract",
-          "present": true
-        },
-        {
-          "object": "ai_private.validate_structured_response",
-          "present": true
-        },
-        {
-          "object": "public.ai_action_decisions",
-          "present": true
-        },
-        {
-          "object": "public.ai_action_proposals",
-          "present": true
-        },
-        {
-          "object": "public.ai_consent_events",
-          "present": true
-        },
-        {
-          "object": "public.ai_context_manifests",
-          "present": true
-        },
-        {
-          "object": "public.ai_data_lifecycle_requests",
-          "present": true
-        },
-        {
-          "object": "public.ai_member_safety_state",
-          "present": true
-        },
-        {
-          "object": "public.ai_messages",
-          "present": true
-        },
-        {
-          "object": "public.ai_threads",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase6a_get_context_manifest",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase6a_get_trust_status",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase6a_read_consent_contract",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase6a_read_export_manifest",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase6a_read_thread_history",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase6a_record_consent",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase6a_request_data_lifecycle",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase6a_service_begin_run",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase6a_service_complete_run",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase6a_service_fail_run",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase6a_service_reconcile_retention",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase6a_service_record_safety_event",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase6a_submit_user_message",
-          "present": true
-        }
-      ],
-      "current_definitions_prove_historical_execution": false,
-      "required_action": "identity candidate proven; defer rename until full dependency/history blockers resolved",
-      "repair_executed": false,
-      "sql_reexecuted": false
-    },
-    {
-      "file": "supabase/migrations/20260901203000_phase6a_ai_consent_event_ordering.sql",
-      "local_id": "20260901203000",
-      "name": "phase6a_ai_consent_event_ordering",
-      "bytes": 1513,
-      "sha256": "7f653bf3be688d294d68af80689ccb4804eaf65cde1d7c77559a8fdd2134c82c",
-      "lf_trim_sha256": "56e0a51b75bf57b96147e90e1816a2e0351e704f1d97595f23ceedd4510895d2",
-      "object_candidates": [
-        "ai_private.current_consent",
-        "public.ai_consent_events"
-      ],
-      "remote_id": "20260901184418",
-      "remote_sha256": "4929e9da88737156060e41b673659a7833834b8ac1f2fc53d30cbc8938a2fe4f",
-      "remote_statement_count": 1,
-      "classification": 1,
-      "classification_label": "same SQL after line-ending/outer-whitespace normalization",
-      "duplicate_version_conflict": false,
-      "duplicate_classification": null,
-      "canonical_id": "20260901184418",
-      "current_object_presence": [
-        {
-          "object": "ai_private.current_consent",
-          "present": true
-        },
-        {
-          "object": "public.ai_consent_events",
-          "present": true
-        }
-      ],
-      "current_definitions_prove_historical_execution": false,
-      "required_action": "identity candidate proven; defer rename until full dependency/history blockers resolved",
-      "repair_executed": false,
-      "sql_reexecuted": false
-    },
-    {
-      "file": "supabase/migrations/20260901204500_phase6a_pgcrypto_search_path.sql",
-      "local_id": "20260901204500",
-      "name": "phase6a_pgcrypto_search_path",
-      "bytes": 673,
-      "sha256": "b93b711519796958a2569a363cc1d3131a444eace34ec04395e08aba82ee4325",
-      "lf_trim_sha256": "53e223fad538af5b5767372f7cd890bbd49b3c4c9827d5f2bc569539f2e8ea25",
-      "object_candidates": [],
-      "remote_id": "20260901190328",
-      "remote_sha256": "d68000e5434e818ff871652f0d8b2e6194fd274145f25b8595dd62a18fba0cc4",
-      "remote_statement_count": 1,
-      "classification": 1,
-      "classification_label": "same SQL after line-ending/outer-whitespace normalization",
-      "duplicate_version_conflict": false,
-      "duplicate_classification": null,
-      "canonical_id": "20260901190328",
-      "current_object_presence": [],
-      "current_definitions_prove_historical_execution": false,
-      "required_action": "identity candidate proven; defer rename until full dependency/history blockers resolved",
-      "repair_executed": false,
-      "sql_reexecuted": false
-    },
-    {
-      "file": "supabase/migrations/20260901211500_phase6a_foreign_key_indexes.sql",
-      "local_id": "20260901211500",
-      "name": "phase6a_foreign_key_indexes",
-      "bytes": 1126,
-      "sha256": "5997fe0bacd706503c8bf7397685eb14720c58e946b9bcf70db58c70e6d52c9d",
-      "lf_trim_sha256": "c88dba54f2a3862bc76f3e82376141b3bf3074e71d8d25460d3363fbdcbd0490",
-      "object_candidates": [],
-      "remote_id": "20260901191328",
-      "remote_sha256": "d443d33a1ec19f513eb3ddb50ae77188d27eed1f9f44c4171dff5c3040c46749",
-      "remote_statement_count": 1,
-      "classification": 1,
-      "classification_label": "same SQL after line-ending/outer-whitespace normalization",
-      "duplicate_version_conflict": false,
-      "duplicate_classification": null,
-      "canonical_id": "20260901191328",
-      "current_object_presence": [],
-      "current_definitions_prove_historical_execution": false,
-      "required_action": "identity candidate proven; defer rename until full dependency/history blockers resolved",
-      "repair_executed": false,
-      "sql_reexecuted": false
-    },
-    {
-      "file": "supabase/migrations/20260901230000_phase6b_provider_privacy_cost_gate.sql",
-      "local_id": "20260901230000",
-      "name": "phase6b_provider_privacy_cost_gate",
-      "bytes": 31322,
-      "sha256": "6b432da3aa389920d5a8eea4f15f74d35e2a9e2d6f7bf44c7b0fbf62473cc526",
-      "lf_trim_sha256": "ac772a9bd66d35a476189d6c3a6171e80df8f5018fec88b15c193d95a5dd9ace",
-      "object_candidates": [
-        "ai_private.phase6b_estimate_test_cost",
-        "ai_private.phase6b_real_member_gate",
-        "ai_private.provider_configurations",
-        "ai_private.provider_models",
-        "ai_private.provider_payload_fields",
-        "ai_private.provider_test_budget",
-        "ai_private.provider_test_runs",
-        "public.fmz_phase6b_service_begin_synthetic_test",
-        "public.fmz_phase6b_service_complete_synthetic_test",
-        "public.fmz_phase6b_service_fail_synthetic_test",
-        "public.fmz_phase6b_service_read_provider_status"
-      ],
-      "remote_id": "20260902045834",
-      "remote_sha256": "70b689a5b4708054158b60e017dc79e0721c41058c784b201aac08b1aa794a50",
-      "remote_statement_count": 1,
-      "classification": 1,
-      "classification_label": "same SQL after line-ending/outer-whitespace normalization",
-      "duplicate_version_conflict": false,
-      "duplicate_classification": null,
-      "canonical_id": "20260902045834",
-      "current_object_presence": [
-        {
-          "object": "ai_private.phase6b_estimate_test_cost",
-          "present": true
-        },
-        {
-          "object": "ai_private.phase6b_real_member_gate",
-          "present": true
-        },
-        {
-          "object": "ai_private.provider_configurations",
-          "present": true
-        },
-        {
-          "object": "ai_private.provider_models",
-          "present": true
-        },
-        {
-          "object": "ai_private.provider_payload_fields",
-          "present": true
-        },
-        {
-          "object": "ai_private.provider_test_budget",
-          "present": true
-        },
-        {
-          "object": "ai_private.provider_test_runs",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase6b_service_begin_synthetic_test",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase6b_service_complete_synthetic_test",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase6b_service_fail_synthetic_test",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase6b_service_read_provider_status",
-          "present": true
-        }
-      ],
-      "current_definitions_prove_historical_execution": false,
-      "required_action": "identity candidate proven; defer rename until full dependency/history blockers resolved",
-      "repair_executed": false,
-      "sql_reexecuted": false
-    },
-    {
-      "file": "supabase/migrations/20260902203000_phase6c_private_ai_chat.sql",
-      "local_id": "20260902203000",
-      "name": "phase6c_private_ai_chat",
-      "bytes": 33778,
-      "sha256": "131e63ff165069a4d2861eadec838ad47906cf74a382c0f7ce8ab99f91d8d26f",
-      "lf_trim_sha256": "c52120c3faf557184d678ae54cf94b047a9cf8171d61d0026f5c3b86a074f02e",
-      "object_candidates": [
-        "ai_private.phase6c_age_eligible",
-        "ai_private.phase6c_apply_retention",
-        "ai_private.phase6c_assign_message_sequence",
-        "ai_private.phase6c_chat_status",
-        "ai_private.phase6c_protect_message_content",
-        "ai_private.phase6c_reconcile_member",
-        "ai_private.phase6c_retention_sweep",
-        "ai_private.phase6c_runtime_config",
-        "ai_private.runs",
-        "public.ai_data_lifecycle_requests",
-        "public.ai_messages",
-        "public.ai_threads",
-        "public.fmz_phase6c_create_thread",
-        "public.fmz_phase6c_delete_thread",
-        "public.fmz_phase6c_export_chat",
-        "public.fmz_phase6c_get_chat_status",
-        "public.fmz_phase6c_list_threads",
-        "public.fmz_phase6c_read_thread",
-        "public.fmz_phase6c_service_begin_mock_run",
-        "public.fmz_phase6c_submit_message"
-      ],
-      "remote_id": "20260903085454",
-      "remote_sha256": "3510cbb5c00ee030b68ca412ecaafdb1a4aa2c5aa05dfc7edab6ba8e01552d30",
-      "remote_statement_count": 1,
-      "classification": 1,
-      "classification_label": "same SQL after line-ending/outer-whitespace normalization",
-      "duplicate_version_conflict": false,
-      "duplicate_classification": null,
-      "canonical_id": "20260903085454",
-      "current_object_presence": [
-        {
-          "object": "ai_private.phase6c_age_eligible",
-          "present": true
-        },
-        {
-          "object": "ai_private.phase6c_apply_retention",
-          "present": true
-        },
-        {
-          "object": "ai_private.phase6c_assign_message_sequence",
-          "present": true
-        },
-        {
-          "object": "ai_private.phase6c_chat_status",
-          "present": true
-        },
-        {
-          "object": "ai_private.phase6c_protect_message_content",
-          "present": true
-        },
-        {
-          "object": "ai_private.phase6c_reconcile_member",
-          "present": true
-        },
-        {
-          "object": "ai_private.phase6c_retention_sweep",
-          "present": true
-        },
-        {
-          "object": "ai_private.phase6c_runtime_config",
-          "present": true
-        },
-        {
-          "object": "ai_private.runs",
-          "present": true
-        },
-        {
-          "object": "public.ai_data_lifecycle_requests",
-          "present": true
-        },
-        {
-          "object": "public.ai_messages",
-          "present": true
-        },
-        {
-          "object": "public.ai_threads",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase6c_create_thread",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase6c_delete_thread",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase6c_export_chat",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase6c_get_chat_status",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase6c_list_threads",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase6c_read_thread",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase6c_service_begin_mock_run",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase6c_submit_message",
-          "present": true
-        }
-      ],
-      "current_definitions_prove_historical_execution": false,
-      "required_action": "identity candidate proven; defer rename until full dependency/history blockers resolved",
-      "repair_executed": false,
-      "sql_reexecuted": false
-    },
-    {
-      "file": "supabase/migrations/20260903145000_phase6c_request_scoped_safety.sql",
-      "local_id": "20260903145000",
-      "name": "phase6c_request_scoped_safety",
-      "bytes": 2534,
-      "sha256": "35ef14f978ad6500abd086b5db80dbec2d875a2a8ddeb39825e8b0ac2b57a831",
-      "lf_trim_sha256": "08e19410005b25591837831ea38b129966ebb50bc832fc6c6142b7d382574659",
-      "object_candidates": [
-        "ai_private.phase6c_chat_status"
-      ],
-      "remote_id": "20260903125150",
-      "remote_sha256": "08e19410005b25591837831ea38b129966ebb50bc832fc6c6142b7d382574659",
-      "remote_statement_count": 1,
-      "classification": 1,
-      "classification_label": "same SQL after line-ending/outer-whitespace normalization",
-      "duplicate_version_conflict": false,
-      "duplicate_classification": null,
-      "canonical_id": "20260903125150",
-      "current_object_presence": [
-        {
-          "object": "ai_private.phase6c_chat_status",
-          "present": true
-        }
-      ],
-      "current_definitions_prove_historical_execution": false,
-      "required_action": "identity candidate proven; defer rename until full dependency/history blockers resolved",
-      "repair_executed": false,
-      "sql_reexecuted": false
-    },
-    {
-      "file": "supabase/migrations/20260904105918_phase6d0_legacy_authorization_gate.sql",
-      "local_id": "20260904105918",
-      "name": "phase6d0_legacy_authorization_gate",
-      "bytes": 17917,
-      "sha256": "5b91b22f823a30f86e329b381fe797fd28655d237ad977d6b80d2c99af5485b3",
-      "lf_trim_sha256": "b6e76b3ada662492a40340fad1e05be560ae661f09764e63c337578af1c0c6fb",
-      "object_candidates": [
-        "legacy_auth_private.client_invitations",
-        "public.accept_client_invite",
-        "public.fmz_bootstrap_trainer_profile",
-        "public.fmz_handle_new_auth_user",
-        "public.fmz_phase6d0_accept_client_invite",
-        "public.fmz_phase6d0_issue_client_invite",
-        "public.fmz_phase6d0_read_own_workspace",
-        "public.fmz_phase6d0_revoke_client_invite",
-        "public.fmz_phase6d0_save_own_workspace"
-      ],
-      "remote_id": "20260904105918",
-      "remote_sha256": "5b91b22f823a30f86e329b381fe797fd28655d237ad977d6b80d2c99af5485b3",
-      "remote_statement_count": 1,
-      "classification": 1,
-      "classification_label": "same SQL byte-exact",
-      "duplicate_version_conflict": false,
-      "duplicate_classification": null,
-      "canonical_id": "20260904105918",
-      "current_object_presence": [
-        {
-          "object": "legacy_auth_private.client_invitations",
-          "present": true
-        },
-        {
-          "object": "public.accept_client_invite",
-          "present": true
-        },
-        {
-          "object": "public.fmz_bootstrap_trainer_profile",
-          "present": true
-        },
-        {
-          "object": "public.fmz_handle_new_auth_user",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase6d0_accept_client_invite",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase6d0_issue_client_invite",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase6d0_read_own_workspace",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase6d0_revoke_client_invite",
-          "present": true
-        },
-        {
-          "object": "public.fmz_phase6d0_save_own_workspace",
-          "present": true
-        }
-      ],
-      "current_definitions_prove_historical_execution": false,
-      "required_action": "none",
-      "repair_executed": false,
-      "sql_reexecuted": false
-    }
-  ],
+  "two_read_history_equal_after_repair": true,
   "live_tables": [
     {
       "rls": true,
-      "name": "exercises",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "nutrition_food_ingestions",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "nutrition_preferences",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "nutrition_provider_query_cache",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "nutrition_off_catalog_releases",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "foods",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "food_portions",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "nutrition_targets",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "food_logs",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "food_log_items",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "nutrition_off_products",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "nutrition_off_product_names",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "nutrition_provider_food_cache",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "nutrition_provider_rate_buckets",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "nutrition_provider_runtime_state",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "profiles",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "coach_workspaces",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "recovery_logs",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "user_onboarding",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "entitlements",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "user_settings",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "training_plans",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "food_aliases",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "progress_preferences",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "progress_goals",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "weight_logs",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "body_measurements",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "workout_sessions",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "training_plan_days",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "training_plan_exercises",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "workout_set_logs",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "ai_context_manifests",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "ai_action_proposals",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "ai_action_decisions",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "ai_member_safety_state",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "consent_documents",
-      "type": "r",
-      "schema": "ai_private"
-    },
-    {
-      "rls": true,
-      "name": "budget_policies",
-      "type": "r",
-      "schema": "ai_private"
-    },
-    {
-      "rls": true,
-      "name": "rate_policies",
-      "type": "r",
-      "schema": "ai_private"
-    },
-    {
-      "rls": true,
       "name": "action_policies",
-      "type": "r",
-      "schema": "ai_private"
-    },
-    {
-      "rls": true,
-      "name": "structured_schemas",
-      "type": "r",
-      "schema": "ai_private"
-    },
-    {
-      "rls": true,
-      "name": "ai_consent_events",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "ai_threads",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "ai_messages",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "runs",
-      "type": "r",
-      "schema": "ai_private"
-    },
-    {
-      "rls": true,
-      "name": "ai_data_lifecycle_requests",
-      "type": "r",
-      "schema": "public"
-    },
-    {
-      "rls": true,
-      "name": "budget_accounts",
-      "type": "r",
-      "schema": "ai_private"
-    },
-    {
-      "rls": true,
-      "name": "usage_ledger",
-      "type": "r",
-      "schema": "ai_private"
-    },
-    {
-      "rls": true,
-      "name": "rate_buckets",
-      "type": "r",
-      "schema": "ai_private"
-    },
-    {
-      "rls": true,
-      "name": "safety_events",
       "type": "r",
       "schema": "ai_private"
     },
@@ -2081,7 +1209,31 @@
     },
     {
       "rls": true,
+      "name": "budget_accounts",
+      "type": "r",
+      "schema": "ai_private"
+    },
+    {
+      "rls": true,
+      "name": "budget_policies",
+      "type": "r",
+      "schema": "ai_private"
+    },
+    {
+      "rls": true,
+      "name": "consent_documents",
+      "type": "r",
+      "schema": "ai_private"
+    },
+    {
+      "rls": true,
       "name": "feature_flags",
+      "type": "r",
+      "schema": "ai_private"
+    },
+    {
+      "rls": true,
+      "name": "phase6c_runtime_config",
       "type": "r",
       "schema": "ai_private"
     },
@@ -2105,19 +1257,49 @@
     },
     {
       "rls": true,
-      "name": "provider_test_runs",
-      "type": "r",
-      "schema": "ai_private"
-    },
-    {
-      "rls": true,
       "name": "provider_test_budget",
       "type": "r",
       "schema": "ai_private"
     },
     {
       "rls": true,
-      "name": "phase6c_runtime_config",
+      "name": "provider_test_runs",
+      "type": "r",
+      "schema": "ai_private"
+    },
+    {
+      "rls": true,
+      "name": "rate_buckets",
+      "type": "r",
+      "schema": "ai_private"
+    },
+    {
+      "rls": true,
+      "name": "rate_policies",
+      "type": "r",
+      "schema": "ai_private"
+    },
+    {
+      "rls": true,
+      "name": "runs",
+      "type": "r",
+      "schema": "ai_private"
+    },
+    {
+      "rls": true,
+      "name": "safety_events",
+      "type": "r",
+      "schema": "ai_private"
+    },
+    {
+      "rls": true,
+      "name": "structured_schemas",
+      "type": "r",
+      "schema": "ai_private"
+    },
+    {
+      "rls": true,
+      "name": "usage_ledger",
       "type": "r",
       "schema": "ai_private"
     },
@@ -2126,146 +1308,380 @@
       "name": "client_invitations",
       "type": "r",
       "schema": "legacy_auth_private"
+    },
+    {
+      "rls": true,
+      "name": "ai_action_decisions",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "ai_action_proposals",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "ai_consent_events",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "ai_context_manifests",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "ai_data_lifecycle_requests",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "ai_member_safety_state",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "ai_messages",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "ai_threads",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "body_measurements",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "coach_workspaces",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "entitlements",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "exercises",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "food_aliases",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "food_log_items",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "food_logs",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "food_portions",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "foods",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "nutrition_food_ingestions",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "nutrition_off_catalog_releases",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "nutrition_off_product_names",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "nutrition_off_products",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "nutrition_preferences",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "nutrition_provider_food_cache",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "nutrition_provider_query_cache",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "nutrition_provider_rate_buckets",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "nutrition_provider_runtime_state",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "nutrition_targets",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "profiles",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "progress_goals",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "progress_preferences",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "recovery_logs",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "training_plan_days",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "training_plan_exercises",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "training_plans",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "user_onboarding",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "user_settings",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "weight_logs",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "workout_sessions",
+      "type": "r",
+      "schema": "public"
+    },
+    {
+      "rls": true,
+      "name": "workout_set_logs",
+      "type": "r",
+      "schema": "public"
     }
   ],
   "live_function_definition_hashes": [
     {
-      "name": "fmz_phase4_search_off_candidates",
-      "schema": "public",
-      "identity": "p_query text, p_gtin14 text, p_locale text, p_candidate_limit integer",
-      "definition_sha256": "4a217f6d0e1abc37192204c752878e45d96e7c5ca37073e1829db623e94a730a"
+      "name": "assert_member",
+      "schema": "ai_private",
+      "identity": "p_user_id uuid",
+      "definition_sha256": "bcf6c1884c1845998646791f529b0fbc1824b000942f8b89c5bee5319a2799a7"
     },
     {
-      "name": "fmz_phase4_enforce_food_ingestion_state",
-      "schema": "public",
+      "name": "can_share_trainer_summary",
+      "schema": "ai_private",
+      "identity": "p_user_id uuid",
+      "definition_sha256": "94ce31bb0def5ad24bad980464abcbf8ba03f5375f8c18d059269c13afbaa424"
+    },
+    {
+      "name": "current_consent",
+      "schema": "ai_private",
+      "identity": "p_user_id uuid, p_consent_kind text",
+      "definition_sha256": "40fb40deca9b2c82559b1e8fa392ffabd3c23ec4eef71a7d1ac0941a38fa6ef6"
+    },
+    {
+      "name": "current_entitlement",
+      "schema": "ai_private",
+      "identity": "p_user_id uuid, p_at timestamp with time zone",
+      "definition_sha256": "8be2b10f6aac431af5bd430a46321389d5ec735dfe489ee5341588614b28aeb5"
+    },
+    {
+      "name": "evaluate_budget",
+      "schema": "ai_private",
+      "identity": "p_consumed_micros bigint, p_reserved_micros bigint, p_requested_micros bigint, p_model_tier text",
+      "definition_sha256": "f79893e8a41ff0f23d8bc385bfcef6b7aa815e3ef0a15cce7b380be77a307ae1"
+    },
+    {
+      "name": "phase6b_estimate_test_cost",
+      "schema": "ai_private",
+      "identity": "p_model_id text, p_input_tokens integer, p_cached_input_tokens integer, p_output_tokens integer, p_attempt_count integer",
+      "definition_sha256": "66a252acb5494b8c3e644da8136e51057bc6c2e278696b9739e62d14b2f41290"
+    },
+    {
+      "name": "phase6b_real_member_gate",
+      "schema": "ai_private",
       "identity": "",
-      "definition_sha256": "4c50c0622245422e5d610b3aa5a64f373bc18cd254f427a10bb52844dc1d498e"
+      "definition_sha256": "9344aef53224bc3ea12cf8c3520ec7ee5454e02d4a1051488f7a1a8b5d2ed746"
     },
     {
-      "name": "fmz_phase4_prevent_food_ingestion_removal",
-      "schema": "public",
+      "name": "phase6c_age_eligible",
+      "schema": "ai_private",
+      "identity": "p_user_id uuid",
+      "definition_sha256": "1b264bb8b5265e6cae6f5e95d57fabe40f72bc697c6d6fe67adba82bdbdd1422"
+    },
+    {
+      "name": "phase6c_apply_retention",
+      "schema": "ai_private",
+      "identity": "p_user_id uuid, p_at timestamp with time zone",
+      "definition_sha256": "d7e43d3915a1c43043592c78c21373e473a85a99bcc37f53f73fde909e2af472"
+    },
+    {
+      "name": "phase6c_assign_message_sequence",
+      "schema": "ai_private",
       "identity": "",
-      "definition_sha256": "ffd586540fc7fb3504946cc4b89ae20e813891df7668fa63d93f6fc00e01e699"
+      "definition_sha256": "2abff1717b6f9ed9f0bbc091205ed9ec763f061cea5f980426d70be5758cb90f"
     },
     {
-      "name": "fmz_phase4_resolve_off_food_snapshot",
-      "schema": "public",
-      "identity": "p_off_product_id uuid",
-      "definition_sha256": "a80f27e8b01de20bad3c20e018d97dd72daa741e5ed3f6aa931c9df95dcbd96f"
+      "name": "phase6c_chat_status",
+      "schema": "ai_private",
+      "identity": "p_user_id uuid, p_at timestamp with time zone",
+      "definition_sha256": "180ee0c3b3dc191c4c3c317fda76a7fbdab7079777c6d1c483a1fcd1352034f9"
     },
     {
-      "name": "fmz_phase4_log_off_food_item",
-      "schema": "public",
-      "identity": "p_item_id uuid, p_request_id uuid, p_log_date date, p_timezone_name text, p_timezone_offset_minutes smallint, p_meal_moment text, p_off_product_id uuid, p_consumed_quantity numeric, p_consumed_unit text, p_notes text, p_consumed_at timestamp with time zone",
-      "definition_sha256": "3b87f3487b6fd779172ad58037f8f720d144cfb1ef7a3b82a711957a61acaf7f"
-    },
-    {
-      "name": "fmz_phase4_normalize_gtin14",
-      "schema": "public",
-      "identity": "p_barcode text",
-      "definition_sha256": "778d1d93649a8dec547887e83644d86fb9e1439980ce4de565744830eca0c06b"
-    },
-    {
-      "name": "fmz_phase4_replace_off_food_log_item",
-      "schema": "public",
-      "identity": "p_original_item_id uuid, p_replacement_item_id uuid, p_replacement_request_id uuid, p_expected_original_updated_at timestamp with time zone, p_meal_moment text, p_off_product_id uuid, p_consumed_quantity numeric, p_consumed_unit text, p_notes text",
-      "definition_sha256": "8b3462d19216e0acc4c5b476f51f7e572d27cc63e6bd97ebf77b76896d1fccf8"
-    },
-    {
-      "name": "fmz_phase4_normalize_catalog_text",
-      "schema": "public",
-      "identity": "p_value text",
-      "definition_sha256": "af187a89cf1a990a3b9b84f7043ca2f1029b79b4386e2f018b533120d7d5dd7b"
-    },
-    {
-      "name": "fmz_phase4_provider_candidate_uuid_v5",
-      "schema": "public",
-      "identity": "p_identity_name text",
-      "definition_sha256": "38f2b7f7f5ea6416bee30e388dd1089d8ed7a837bc2f11a276dd6a5429e5d5ed"
-    },
-    {
-      "name": "fmz_phase4_enforce_off_release_state",
-      "schema": "public",
+      "name": "phase6c_protect_message_content",
+      "schema": "ai_private",
       "identity": "",
-      "definition_sha256": "7b2dc9eee84776634cb68f445b1853c72fa50f68a97742a46e1245de8a72496e"
+      "definition_sha256": "c197952ad82e697bf19fcdb5e72010a3db07c13db8ac94fde748d8e927d70269"
     },
     {
-      "name": "fmz_phase4_prevent_off_catalog_removal",
-      "schema": "public",
-      "identity": "",
-      "definition_sha256": "172f5126e1e4782298991598a8eeb60e4d7b4d49735ea8eafa6a90246e139bf6"
+      "name": "phase6c_reconcile_member",
+      "schema": "ai_private",
+      "identity": "p_user_id uuid, p_at timestamp with time zone",
+      "definition_sha256": "d4abfda76ef21a6c34a3e02c104d474ca1bc8b739cc88c499721033cb133a227"
     },
     {
-      "name": "fmz_phase4_sync_off_archive_state",
-      "schema": "public",
-      "identity": "",
-      "definition_sha256": "1ea6e9e3178f8fc4716c2173c8903624fee8c4ae7cb1183c04690a9fd22d046c"
+      "name": "phase6c_retention_sweep",
+      "schema": "ai_private",
+      "identity": "p_at timestamp with time zone",
+      "definition_sha256": "83fd14619ecc302dcdb92a828b3459b175c6529e44217e107b33b6f2b47c7f15"
     },
     {
-      "name": "fmz_phase4_enforce_off_product_identity",
-      "schema": "public",
-      "identity": "",
-      "definition_sha256": "9dc778ef45e9fd6c564fcae476416555bc3447b17ac35a63401630cd03586bb1"
-    },
-    {
-      "name": "fmz_phase4_enforce_off_product_name_identity",
-      "schema": "public",
-      "identity": "",
-      "definition_sha256": "68ca97cfb48c885f9cf139440254774b576578eb3b945861ee60d14201c9174b"
-    },
-    {
-      "name": "fmz_phase6a_read_thread_history",
-      "schema": "public",
-      "identity": "p_thread_id uuid, p_limit integer, p_before timestamp with time zone",
-      "definition_sha256": "02663070d8fa19c03441b90aca92f6dccffbc8ed4ac9a7ebe1ea34ba20a6c770"
-    },
-    {
-      "name": "fmz_phase4_search_nutrition_catalog",
-      "schema": "public",
-      "identity": "p_query text, p_locale text, p_page_size integer, p_after_rank integer, p_after_score numeric, p_after_name text, p_after_source text, p_after_id uuid",
-      "definition_sha256": "127cf77ceba5bec0daf90094f7fdc2a78b736933d9926db930b6c506b6fa7f05"
-    },
-    {
-      "name": "fmz_phase4_validate_transient_off_candidate",
-      "schema": "public",
-      "identity": "p_candidate jsonb",
-      "definition_sha256": "4e4d883c92d0856d230724f9a3eedd4c83ac27c7c76bb8d94f0bc0e438791ac4"
-    },
-    {
-      "name": "fmz_phase4_transient_off_food_item_mutation",
-      "schema": "public",
-      "identity": "p_operation text, p_user_id uuid, p_original_item_id uuid, p_item_id uuid, p_request_id uuid, p_expected_original_updated_at timestamp with time zone, p_log_date date, p_timezone_name text, p_timezone_offset_minutes smallint, p_meal_moment text, p_consumed_quantity numeric, p_consumed_unit text, p_notes text, p_consumed_at timestamp with time zone, p_candidate jsonb",
-      "definition_sha256": "426f26c270d3baf2afb91e9e7121cfd90fae2c1f69678f29a2af6830b7079b4d"
-    },
-    {
-      "name": "fmz_phase4_lookup_off_product_by_barcode",
-      "schema": "public",
-      "identity": "p_barcode text",
-      "definition_sha256": "b82061aece9d700b546a01bd64568fa4bf0c132fc4245399797474810d98b2fe"
-    },
-    {
-      "name": "fmz_phase6a_request_data_lifecycle",
-      "schema": "public",
-      "identity": "p_request_type text, p_request_id uuid",
-      "definition_sha256": "562bb176f16803284899225b86f08544d86aea7925a84530d5cd77a1cc34c16c"
-    },
-    {
-      "name": "fmz_phase4_resolve_member_barcode",
-      "schema": "public",
-      "identity": "p_user_id uuid, p_normalized_gtin14 text",
-      "definition_sha256": "75e510ca31d0fd339481a74870af8703958fc7026ee08fcf445fa0fca01be9ce"
+      "name": "subscription_period",
+      "schema": "ai_private",
+      "identity": "p_anchor timestamp with time zone, p_at timestamp with time zone",
+      "definition_sha256": "b9e093453a2ad230d63a976be028fc487f991168359c05b88311b7df885e1e45"
     },
     {
       "name": "touch_updated_at",
-      "schema": "public",
+      "schema": "ai_private",
       "identity": "",
-      "definition_sha256": "36d5291d67ac9388a7da6a80f42837dd68efc232b40851319fe8ca0f6bf0e698"
+      "definition_sha256": "6caf9f62388bc6612fa1587461b7de61efc6a0e72e12dfe4a44f86f4e12e2d63"
     },
     {
-      "name": "fmz_phase6a_service_begin_run",
+      "name": "trust_status",
+      "schema": "ai_private",
+      "identity": "p_user_id uuid, p_feature_code text, p_adapter_code text, p_at timestamp with time zone",
+      "definition_sha256": "6aa4398a1d3aff82f07bf7df919fba8bc1bea763adb1b685fc70d72f95644404"
+    },
+    {
+      "name": "validate_action_contract",
+      "schema": "ai_private",
+      "identity": "p_action_code text, p_payload jsonb",
+      "definition_sha256": "ef23abf2abb6c6616da0c20f1aa58661f0e31344e960a5dc5993984f817b1b8a"
+    },
+    {
+      "name": "validate_structured_response",
+      "schema": "ai_private",
+      "identity": "p_payload jsonb",
+      "definition_sha256": "9f83352c96ba72f235305047ad91c1522f1c1b2ca2e32fe642b22785087201b4"
+    },
+    {
+      "name": "accept_client_invite",
       "schema": "public",
-      "identity": "p_user_id uuid, p_request_id uuid, p_thread_id uuid, p_feature_code text, p_adapter_code text, p_model_tier text, p_policy_version text, p_schema_version text, p_payload_hash text, p_reserved_cost_micros bigint, p_context_sources jsonb, p_unavailable_sources text[]",
-      "definition_sha256": "8781d56bb3d4a02736585bbdee719dd4faab3cb61b5d3622adcb5eb895468b64"
+      "identity": "display_name text",
+      "definition_sha256": "17e647a5ae5457af0743cb693ec7001f4238f00ba7f9f0684b01fc2381be25f2"
+    },
+    {
+      "name": "fmz_bootstrap_trainer_profile",
+      "schema": "public",
+      "identity": "p_user_id uuid, p_email text, p_name text",
+      "definition_sha256": "ccea7fb1ab65f99145d5731a521eb2b3dc028cb1c7a7177888174b891e076684"
+    },
+    {
+      "name": "fmz_can_access_workspace",
+      "schema": "public",
+      "identity": "target_trainer_id uuid",
+      "definition_sha256": "e71a866c3387efb053d9ba01bd56c07ef340d2e56fd5709aa0dd496caac69182"
+    },
+    {
+      "name": "fmz_can_select_profile",
+      "schema": "public",
+      "identity": "target_id uuid, target_role text, target_trainer_id uuid",
+      "definition_sha256": "c20f0b02cc7e78caabf8f7dd4a384eaf7388fcdb28b5fa87b0725cd6c0467cc5"
     },
     {
       "name": "fmz_current_profile_role",
@@ -2280,28 +1696,16 @@
       "definition_sha256": "94f159849cab61a6127e935c4c385417379f6cc5888f749efea55942b6818c6e"
     },
     {
+      "name": "fmz_handle_new_auth_user",
+      "schema": "public",
+      "identity": "",
+      "definition_sha256": "5c83420c83e227fb56da034d23f56eb3eaa41ec3c13a086b63f7975a6753be39"
+    },
+    {
       "name": "fmz_is_trainer",
       "schema": "public",
       "identity": "",
       "definition_sha256": "ba7c8c22367b2a4c8b79d8bdc0480db688fe29966260b9e26d19b5c7645ed9d7"
-    },
-    {
-      "name": "fmz_phase4_upsert_custom_food_with_barcode",
-      "schema": "public",
-      "identity": "p_food_id uuid, p_name text, p_brand text, p_barcode text, p_reference_amount numeric, p_reference_unit text, p_reference_mass_grams numeric, p_reference_volume_ml numeric, p_density_g_per_ml numeric, p_energy_kcal numeric, p_protein_grams numeric, p_carbohydrate_grams numeric, p_fat_grams numeric, p_fiber_grams numeric, p_expected_updated_at timestamp with time zone",
-      "definition_sha256": "51d52ddf068d40360f69061f1da891c9c506e6c6eae0aa8975ea741fc5d3bc2a"
-    },
-    {
-      "name": "fmz_phase4_log_transient_off_food_item",
-      "schema": "public",
-      "identity": "p_user_id uuid, p_item_id uuid, p_request_id uuid, p_log_date date, p_timezone_name text, p_timezone_offset_minutes smallint, p_meal_moment text, p_consumed_quantity numeric, p_consumed_unit text, p_notes text, p_consumed_at timestamp with time zone, p_candidate jsonb",
-      "definition_sha256": "31a40754fdcbc02914671d3cd180f17b39d82d82d3cbfba4c332f69222059c0e"
-    },
-    {
-      "name": "fmz_phase4_replace_transient_off_food_item",
-      "schema": "public",
-      "identity": "p_user_id uuid, p_original_item_id uuid, p_replacement_item_id uuid, p_replacement_request_id uuid, p_expected_original_updated_at timestamp with time zone, p_meal_moment text, p_consumed_quantity numeric, p_consumed_unit text, p_notes text, p_candidate jsonb",
-      "definition_sha256": "e60daff3e88a6015d066f08b5098aa600a5a112ec33fd17599dea860e6bd2191"
     },
     {
       "name": "fmz_phase1_upsert_account_foundation",
@@ -2310,118 +1714,10 @@
       "definition_sha256": "5c9825b5cd04eb9894a78a7417d6bef390795345b06788ad554b57b45f07e839"
     },
     {
-      "name": "fmz_phase4_log_food_item",
+      "name": "fmz_phase3_create_training_plan",
       "schema": "public",
-      "identity": "p_item_id uuid, p_request_id uuid, p_log_date date, p_timezone_name text, p_timezone_offset_minutes smallint, p_meal_moment text, p_food_id uuid, p_food_portion_id uuid, p_consumed_quantity numeric, p_consumed_unit text, p_notes text, p_consumed_at timestamp with time zone",
-      "definition_sha256": "cc830cbffb5096bcac0e89eeedcef32ae8e7091eeaba8b2b6a083d4093016b24"
-    },
-    {
-      "name": "fmz_handle_new_auth_user",
-      "schema": "public",
-      "identity": "",
-      "definition_sha256": "5c83420c83e227fb56da034d23f56eb3eaa41ec3c13a086b63f7975a6753be39"
-    },
-    {
-      "name": "fmz_phase4_resolve_transient_off_food_log_item",
-      "schema": "public",
-      "identity": "p_user_id uuid, p_original_item_id uuid",
-      "definition_sha256": "1509fd23e9ad07d494edee0690e0a77253ffe6e5710c2b9bf81a0f2261e49d49"
-    },
-    {
-      "name": "fmz_phase6a_read_consent_contract",
-      "schema": "public",
-      "identity": "p_locale text",
-      "definition_sha256": "007aa9494eba2803f4c8c58ede0df4aafcbd04a4d2dff44002096f46fbd96058"
-    },
-    {
-      "name": "fmz_phase6a_record_consent",
-      "schema": "public",
-      "identity": "p_consent_kind text, p_action text, p_document_version text, p_locale text, p_explicit_confirmation boolean, p_request_id uuid",
-      "definition_sha256": "15521bfdc5ca8e91edf978e55d82180c8abd76d42039dd7f81e6f5c60b401c5d"
-    },
-    {
-      "name": "fmz_phase6a_submit_user_message",
-      "schema": "public",
-      "identity": "p_request_id uuid, p_thread_id uuid, p_feature_code text, p_locale text, p_content text",
-      "definition_sha256": "4551921157b178b38f1da0f51049105236ad183c587062ea8786e97d3be36e5e"
-    },
-    {
-      "name": "fmz_phase6a_read_export_manifest",
-      "schema": "public",
-      "identity": "",
-      "definition_sha256": "523f6464d886ec7c4c82daa1c6e23d4f7c748f8c35664f95df37443d01e817b4"
-    },
-    {
-      "name": "fmz_phase6a_service_complete_run",
-      "schema": "public",
-      "identity": "p_run_id uuid, p_structured_output jsonb, p_actual_cost_micros bigint, p_input_tokens integer, p_output_tokens integer",
-      "definition_sha256": "704a578a7dc852ff2c9d56b4f2a600f5cd9bfb68773b49b6b9c84092f0d524eb"
-    },
-    {
-      "name": "fmz_phase6a_service_fail_run",
-      "schema": "public",
-      "identity": "p_run_id uuid, p_safe_error_code text",
-      "definition_sha256": "468864ed91f6c0a2c90413d83298710876033a8fbea32205cd98c2c40e69cd73"
-    },
-    {
-      "name": "fmz_phase6a_service_record_safety_event",
-      "schema": "public",
-      "identity": "p_user_id uuid, p_run_id uuid, p_risk_category text, p_safety_outcome text, p_policy_version text",
-      "definition_sha256": "b4e7a4a612aafbf7f9e3ee10c0da57449dee3ca30006cfec1578276da486545d"
-    },
-    {
-      "name": "fmz_phase6a_service_reconcile_retention",
-      "schema": "public",
-      "identity": "p_user_id uuid, p_at timestamp with time zone",
-      "definition_sha256": "a40b713b14d58998c62c8fca48274d3d671fb538fcbd496652b6b9aa81391753"
-    },
-    {
-      "name": "fmz_phase4_replace_provider_food_log_item",
-      "schema": "public",
-      "identity": "p_user_id uuid, p_original_item_id uuid, p_replacement_item_id uuid, p_replacement_request_id uuid, p_expected_original_updated_at timestamp with time zone, p_meal_moment text, p_consumed_quantity numeric, p_consumed_unit text, p_notes text, p_candidate jsonb",
-      "definition_sha256": "b326c8a746e5347f3d9126ec4da50227934f16c0c849bbc7cf5609bcc0064af7"
-    },
-    {
-      "name": "fmz_phase3_enforce_workout_session_owner",
-      "schema": "public",
-      "identity": "",
-      "definition_sha256": "32dbab658066f77085e1f7400aad9cf4002e8c124b13cecf51dbb977426d6947"
-    },
-    {
-      "name": "fmz_phase4_touch_updated_at",
-      "schema": "public",
-      "identity": "",
-      "definition_sha256": "7323c9d5e35faed7a4c9d8fd82abe815e6c69504c437051a19f7abb2d943b100"
-    },
-    {
-      "name": "fmz_phase5_touch_updated_at",
-      "schema": "public",
-      "identity": "",
-      "definition_sha256": "22f86edb952704cca1fb06de80bf43db80517c94b153bb0f4581805b0d5aa1c5"
-    },
-    {
-      "name": "fmz_phase4_sync_archive_state",
-      "schema": "public",
-      "identity": "",
-      "definition_sha256": "3812489a918e78a689e308739754dab68a40219677e7093076363d336caa2657"
-    },
-    {
-      "name": "fmz_phase5_sync_archive_state",
-      "schema": "public",
-      "identity": "",
-      "definition_sha256": "d3e48fbbc1f583a31402dc294f33f81dc1cbdea0aebfd7797c2b6aea4d371ace"
-    },
-    {
-      "name": "fmz_phase4_has_full_nutrition_access",
-      "schema": "public",
-      "identity": "p_user_id uuid",
-      "definition_sha256": "98b3f8333d2c362752f76a71b77132c14b8c0edb0628c6f2a5aeadc5328ba3a6"
-    },
-    {
-      "name": "fmz_phase5_has_full_progress_access",
-      "schema": "public",
-      "identity": "p_user_id uuid",
-      "definition_sha256": "1d542fa33a2fd98d0ab1ebc508fc80bcdc5b400fc90f7de8625ef5aabd342212"
+      "identity": "p_plan_id uuid, p_day_id uuid, p_plan_exercise_id uuid, p_title text, p_day_label text, p_day_order integer, p_exercise_slug text, p_exercise_name text, p_target_sets integer, p_target_reps text, p_target_weight numeric, p_target_rir integer, p_target_rpe numeric, p_rest_seconds integer, p_notes text",
+      "definition_sha256": "946eb1b14f43e7b4e93442a4d7d42fe895f186db07c15e72faf179597cb02f00"
     },
     {
       "name": "fmz_phase3_enforce_set_log_owner",
@@ -2430,28 +1726,10 @@
       "definition_sha256": "1114bc2e8d55734dcdc8541db51777e003b1b2a5aea207e221f22f813d3aee35"
     },
     {
-      "name": "fmz_phase3_create_training_plan",
-      "schema": "public",
-      "identity": "p_plan_id uuid, p_day_id uuid, p_plan_exercise_id uuid, p_title text, p_day_label text, p_day_order integer, p_exercise_slug text, p_exercise_name text, p_target_sets integer, p_target_reps text, p_target_weight numeric, p_target_rir integer, p_target_rpe numeric, p_rest_seconds integer, p_notes text",
-      "definition_sha256": "946eb1b14f43e7b4e93442a4d7d42fe895f186db07c15e72faf179597cb02f00"
-    },
-    {
-      "name": "fmz_phase4_enforce_custom_food_limit",
+      "name": "fmz_phase3_enforce_training_day_limit",
       "schema": "public",
       "identity": "",
-      "definition_sha256": "2abfb6ccfad5e15755732b4b28fe0d269c8aae776177483faa72b2cf9ec9261f"
-    },
-    {
-      "name": "fmz_phase3_sync_training_archive_state",
-      "schema": "public",
-      "identity": "",
-      "definition_sha256": "f400b67aed1792794c43e5055b4ba4d4e1852c0149d0b1e5c066763fed3802f2"
-    },
-    {
-      "name": "fmz_phase5_save_weight_log",
-      "schema": "public",
-      "identity": "p_log_date date, p_weight_kg numeric, p_notes text, p_timezone_name text, p_timezone_offset_minutes smallint, p_request_id uuid, p_expected_updated_at timestamp with time zone",
-      "definition_sha256": "9c95434a9a9e6280fed14761087a65b09be7798e91ed451c673adfdbc2f4f109"
+      "definition_sha256": "17f90124981ee6a8ce46218c798279ce058dfab9c146f6126ffbd2685c4583a9"
     },
     {
       "name": "fmz_phase3_enforce_training_plan_limit",
@@ -2460,112 +1738,16 @@
       "definition_sha256": "ba2854d072efff3c9c2e05c043256526470a16aa22718ac20d0842f9c320f7da"
     },
     {
-      "name": "fmz_phase3_enforce_training_day_limit",
+      "name": "fmz_phase3_enforce_workout_session_owner",
       "schema": "public",
       "identity": "",
-      "definition_sha256": "17f90124981ee6a8ce46218c798279ce058dfab9c146f6126ffbd2685c4583a9"
+      "definition_sha256": "32dbab658066f77085e1f7400aad9cf4002e8c124b13cecf51dbb977426d6947"
     },
     {
-      "name": "fmz_phase5_set_progress_timezone",
-      "schema": "public",
-      "identity": "p_timezone_name text",
-      "definition_sha256": "f9ac94ea466de83a27fcb3e5403ab3c4cb7a8ea09e1c80cef4f1e40fba5f49fa"
-    },
-    {
-      "name": "fmz_phase5_save_progress_goal",
-      "schema": "public",
-      "identity": "p_goal_code text, p_baseline_weight_kg numeric, p_target_weight_kg numeric, p_target_date date, p_notes text, p_request_id uuid, p_expected_updated_at timestamp with time zone",
-      "definition_sha256": "d380f74aca6bd4e9f6cf7f10ba7fbeb61459bf5d1ff9f894cf2bbb107eb9257a"
-    },
-    {
-      "name": "fmz_phase5_get_progress_dashboard",
-      "schema": "public",
-      "identity": "p_before_date date, p_requested_days integer",
-      "definition_sha256": "8374e49f0ac037feb8f3d94e00ddfdd58c6148394a46cdc67f64457af90685de"
-    },
-    {
-      "name": "fmz_phase5_save_body_measurement",
-      "schema": "public",
-      "identity": "p_log_date date, p_waist_cm numeric, p_chest_cm numeric, p_hips_cm numeric, p_upper_arm_left_cm numeric, p_upper_arm_right_cm numeric, p_thigh_left_cm numeric, p_thigh_right_cm numeric, p_notes text, p_timezone_name text, p_timezone_offset_minutes smallint, p_request_id uuid, p_expected_updated_at timestamp with time zone",
-      "definition_sha256": "528f1c77c4985931467a867f8ef2a3d05170a77bc9752f5c6ea3db7e1479de3c"
-    },
-    {
-      "name": "fmz_phase5_archive_weight_log",
-      "schema": "public",
-      "identity": "p_weight_log_id uuid, p_expected_updated_at timestamp with time zone",
-      "definition_sha256": "92184b95f3293c9ef9a71649fdcac588696fb53108965b33d0d24dd45db95493"
-    },
-    {
-      "name": "fmz_phase5_archive_body_measurement",
-      "schema": "public",
-      "identity": "p_body_measurement_id uuid, p_expected_updated_at timestamp with time zone",
-      "definition_sha256": "1406e16e820d11873c58645a038f6ca72c108402123ae078597de88a9082c3e6"
-    },
-    {
-      "name": "fmz_phase4_enforce_food_portion_owner",
+      "name": "fmz_phase3_sync_training_archive_state",
       "schema": "public",
       "identity": "",
-      "definition_sha256": "789b756ab89b40466d70ec9f74b55869877f43f362c31ef915d1afdebb1869e9"
-    },
-    {
-      "name": "fmz_phase4_enforce_target_owner",
-      "schema": "public",
-      "identity": "",
-      "definition_sha256": "ac52186130d7d9df3af14a6e2f45242c818ad11830cc38c02d1243af2d26cc17"
-    },
-    {
-      "name": "fmz_phase5_set_unit_system",
-      "schema": "public",
-      "identity": "p_unit_system text",
-      "definition_sha256": "0ac017c0f7f4cf90c7e65e2a87161953dfab243e9f67d48bf647d7ac7f1aac09"
-    },
-    {
-      "name": "phase6b_real_member_gate",
-      "schema": "ai_private",
-      "identity": "",
-      "definition_sha256": "9344aef53224bc3ea12cf8c3520ec7ee5454e02d4a1051488f7a1a8b5d2ed746"
-    },
-    {
-      "name": "fmz_phase4_day_payload",
-      "schema": "public",
-      "identity": "p_user_id uuid, p_log_date date",
-      "definition_sha256": "80a8079d703d89c19a295643c369d12f0410ea18c477cb8e87596d448525433d"
-    },
-    {
-      "name": "fmz_phase4_set_nutrition_timezone",
-      "schema": "public",
-      "identity": "p_timezone_name text",
-      "definition_sha256": "c6916678d4c59418607e6ddd28e742cb2ed3a7dd70dd4f57e229a91e42004680"
-    },
-    {
-      "name": "touch_updated_at",
-      "schema": "ai_private",
-      "identity": "",
-      "definition_sha256": "6caf9f62388bc6612fa1587461b7de61efc6a0e72e12dfe4a44f86f4e12e2d63"
-    },
-    {
-      "name": "fmz_phase4_upsert_custom_food",
-      "schema": "public",
-      "identity": "p_food_id uuid, p_name text, p_brand text, p_reference_amount numeric, p_reference_unit text, p_reference_mass_grams numeric, p_reference_volume_ml numeric, p_density_g_per_ml numeric, p_energy_kcal numeric, p_protein_grams numeric, p_carbohydrate_grams numeric, p_fat_grams numeric, p_fiber_grams numeric, p_expected_updated_at timestamp with time zone",
-      "definition_sha256": "25d679045b021332bdf95a346551225def6888c88ef06bd0131c71e00144d346"
-    },
-    {
-      "name": "fmz_phase4_search_foods",
-      "schema": "public",
-      "identity": "p_query text, p_page_size integer, p_after_name text, p_after_id uuid",
-      "definition_sha256": "78c805b662c918be868cfed87ad4107ee518cf6cb81eee1614ab8a7083404d86"
-    },
-    {
-      "name": "current_consent",
-      "schema": "ai_private",
-      "identity": "p_user_id uuid, p_consent_kind text",
-      "definition_sha256": "40fb40deca9b2c82559b1e8fa392ffabd3c23ec4eef71a7d1ac0941a38fa6ef6"
-    },
-    {
-      "name": "trust_status",
-      "schema": "ai_private",
-      "identity": "p_user_id uuid, p_feature_code text, p_adapter_code text, p_at timestamp with time zone",
-      "definition_sha256": "6aa4398a1d3aff82f07bf7df919fba8bc1bea763adb1b685fc70d72f95644404"
+      "definition_sha256": "f400b67aed1792794c43e5055b4ba4d4e1852c0149d0b1e5c066763fed3802f2"
     },
     {
       "name": "fmz_phase4_archive_custom_food",
@@ -2574,16 +1756,70 @@
       "definition_sha256": "5fc0b5ba905e70a1ae116a3ba0c54046ba1083b8bcf83d8055f203f4fb7d787f"
     },
     {
-      "name": "fmz_phase4_upsert_food_portion",
+      "name": "fmz_phase4_archive_food_log_item",
       "schema": "public",
-      "identity": "p_portion_id uuid, p_food_id uuid, p_label text, p_amount numeric, p_unit text, p_equivalent_amount numeric, p_equivalent_unit text, p_is_default boolean, p_expected_updated_at timestamp with time zone",
-      "definition_sha256": "e465532e40dfceb4f6a08167cda711a3b26179e2f91c18bc15d4b68ee9d5ce14"
+      "identity": "p_item_id uuid, p_expected_updated_at timestamp with time zone",
+      "definition_sha256": "890d599ef17034e92d84483a461a6a445e3c6608f983a641f1ccc0c9dc4c5f26"
     },
     {
-      "name": "fmz_phase4_save_member_target",
+      "name": "fmz_phase4_day_payload",
       "schema": "public",
-      "identity": "p_target_id uuid, p_request_id uuid, p_energy_kcal numeric, p_protein_grams numeric, p_carbohydrate_grams numeric, p_fat_grams numeric, p_fiber_grams numeric, p_effective_from date",
-      "definition_sha256": "209bc2cf9075ba61e629194c975b20b0b921d6703c4db79596e8b283bc7e2ac7"
+      "identity": "p_user_id uuid, p_log_date date",
+      "definition_sha256": "80a8079d703d89c19a295643c369d12f0410ea18c477cb8e87596d448525433d"
+    },
+    {
+      "name": "fmz_phase4_enforce_custom_food_limit",
+      "schema": "public",
+      "identity": "",
+      "definition_sha256": "2abfb6ccfad5e15755732b4b28fe0d269c8aae776177483faa72b2cf9ec9261f"
+    },
+    {
+      "name": "fmz_phase4_enforce_food_ingestion_state",
+      "schema": "public",
+      "identity": "",
+      "definition_sha256": "4c50c0622245422e5d610b3aa5a64f373bc18cd254f427a10bb52844dc1d498e"
+    },
+    {
+      "name": "fmz_phase4_enforce_food_log_item_owner",
+      "schema": "public",
+      "identity": "",
+      "definition_sha256": "625c3248d7170fa12db6134aff14d36d47679e934f27825227c9f93e2f3108cd"
+    },
+    {
+      "name": "fmz_phase4_enforce_food_log_owner",
+      "schema": "public",
+      "identity": "",
+      "definition_sha256": "a03d817df6f8d346e3b2f70e2a2cbb7ec05783a28f4b194e462ba2728abdf937"
+    },
+    {
+      "name": "fmz_phase4_enforce_food_portion_owner",
+      "schema": "public",
+      "identity": "",
+      "definition_sha256": "789b756ab89b40466d70ec9f74b55869877f43f362c31ef915d1afdebb1869e9"
+    },
+    {
+      "name": "fmz_phase4_enforce_off_product_identity",
+      "schema": "public",
+      "identity": "",
+      "definition_sha256": "9dc778ef45e9fd6c564fcae476416555bc3447b17ac35a63401630cd03586bb1"
+    },
+    {
+      "name": "fmz_phase4_enforce_off_product_name_identity",
+      "schema": "public",
+      "identity": "",
+      "definition_sha256": "68ca97cfb48c885f9cf139440254774b576578eb3b945861ee60d14201c9174b"
+    },
+    {
+      "name": "fmz_phase4_enforce_off_release_state",
+      "schema": "public",
+      "identity": "",
+      "definition_sha256": "7b2dc9eee84776634cb68f445b1853c72fa50f68a97742a46e1245de8a72496e"
+    },
+    {
+      "name": "fmz_phase4_enforce_target_owner",
+      "schema": "public",
+      "identity": "",
+      "definition_sha256": "ac52186130d7d9df3af14a6e2f45242c818ad11830cc38c02d1243af2d26cc17"
     },
     {
       "name": "fmz_phase4_get_current_nutrition_target",
@@ -2592,40 +1828,10 @@
       "definition_sha256": "e585d9d40cc5f4c989307a904717a932f310fe662d79c2e96268e9174b0c0894"
     },
     {
-      "name": "assert_member",
-      "schema": "ai_private",
-      "identity": "p_user_id uuid",
-      "definition_sha256": "bcf6c1884c1845998646791f529b0fbc1824b000942f8b89c5bee5319a2799a7"
-    },
-    {
-      "name": "fmz_phase4_archive_food_log_item",
-      "schema": "public",
-      "identity": "p_item_id uuid, p_expected_updated_at timestamp with time zone",
-      "definition_sha256": "890d599ef17034e92d84483a461a6a445e3c6608f983a641f1ccc0c9dc4c5f26"
-    },
-    {
-      "name": "current_entitlement",
-      "schema": "ai_private",
-      "identity": "p_user_id uuid, p_at timestamp with time zone",
-      "definition_sha256": "8be2b10f6aac431af5bd430a46321389d5ec735dfe489ee5341588614b28aeb5"
-    },
-    {
       "name": "fmz_phase4_get_nutrition_day",
       "schema": "public",
       "identity": "p_log_date date",
       "definition_sha256": "bd4ed3c62d43ece59c2a0d232b9341ffb77991b5336ba4e5b79dcaf1c0c26141"
-    },
-    {
-      "name": "fmz_phase6a_get_trust_status",
-      "schema": "public",
-      "identity": "p_feature_code text",
-      "definition_sha256": "2d8971a7ba86b25fb61377ab5a97e0650abd1960039216612ab8c612f24b4b24"
-    },
-    {
-      "name": "phase6c_age_eligible",
-      "schema": "ai_private",
-      "identity": "p_user_id uuid",
-      "definition_sha256": "1b264bb8b5265e6cae6f5e95d57fabe40f72bc697c6d6fe67adba82bdbdd1422"
     },
     {
       "name": "fmz_phase4_get_nutrition_history",
@@ -2634,10 +1840,70 @@
       "definition_sha256": "684fc37c682348db33daaf157a1a6c16975b26096158774d5d51c9767720b3b2"
     },
     {
-      "name": "fmz_phase4_replace_food_log_item",
+      "name": "fmz_phase4_has_full_nutrition_access",
       "schema": "public",
-      "identity": "p_original_item_id uuid, p_replacement_item_id uuid, p_replacement_request_id uuid, p_expected_original_updated_at timestamp with time zone, p_meal_moment text, p_food_id uuid, p_food_portion_id uuid, p_consumed_quantity numeric, p_consumed_unit text, p_notes text",
-      "definition_sha256": "b29084183be4e70f53dbd1924899c82b92d58d8a38192004a9d3023b8698b72f"
+      "identity": "p_user_id uuid",
+      "definition_sha256": "98b3f8333d2c362752f76a71b77132c14b8c0edb0628c6f2a5aeadc5328ba3a6"
+    },
+    {
+      "name": "fmz_phase4_log_food_item",
+      "schema": "public",
+      "identity": "p_item_id uuid, p_request_id uuid, p_log_date date, p_timezone_name text, p_timezone_offset_minutes smallint, p_meal_moment text, p_food_id uuid, p_food_portion_id uuid, p_consumed_quantity numeric, p_consumed_unit text, p_notes text, p_consumed_at timestamp with time zone",
+      "definition_sha256": "cc830cbffb5096bcac0e89eeedcef32ae8e7091eeaba8b2b6a083d4093016b24"
+    },
+    {
+      "name": "fmz_phase4_log_off_food_item",
+      "schema": "public",
+      "identity": "p_item_id uuid, p_request_id uuid, p_log_date date, p_timezone_name text, p_timezone_offset_minutes smallint, p_meal_moment text, p_off_product_id uuid, p_consumed_quantity numeric, p_consumed_unit text, p_notes text, p_consumed_at timestamp with time zone",
+      "definition_sha256": "3b87f3487b6fd779172ad58037f8f720d144cfb1ef7a3b82a711957a61acaf7f"
+    },
+    {
+      "name": "fmz_phase4_log_provider_food_item",
+      "schema": "public",
+      "identity": "p_user_id uuid, p_item_id uuid, p_request_id uuid, p_log_date date, p_timezone_name text, p_timezone_offset_minutes smallint, p_meal_moment text, p_consumed_quantity numeric, p_consumed_unit text, p_notes text, p_consumed_at timestamp with time zone, p_candidate jsonb",
+      "definition_sha256": "7440b11021e5970166b6710279bb7ed6d4c00f08616ac8190289adfd0a9ff314"
+    },
+    {
+      "name": "fmz_phase4_log_transient_off_food_item",
+      "schema": "public",
+      "identity": "p_user_id uuid, p_item_id uuid, p_request_id uuid, p_log_date date, p_timezone_name text, p_timezone_offset_minutes smallint, p_meal_moment text, p_consumed_quantity numeric, p_consumed_unit text, p_notes text, p_consumed_at timestamp with time zone, p_candidate jsonb",
+      "definition_sha256": "31a40754fdcbc02914671d3cd180f17b39d82d82d3cbfba4c332f69222059c0e"
+    },
+    {
+      "name": "fmz_phase4_lookup_off_product_by_barcode",
+      "schema": "public",
+      "identity": "p_barcode text",
+      "definition_sha256": "b82061aece9d700b546a01bd64568fa4bf0c132fc4245399797474810d98b2fe"
+    },
+    {
+      "name": "fmz_phase4_normalize_catalog_text",
+      "schema": "public",
+      "identity": "p_value text",
+      "definition_sha256": "af187a89cf1a990a3b9b84f7043ca2f1029b79b4386e2f018b533120d7d5dd7b"
+    },
+    {
+      "name": "fmz_phase4_normalize_gtin14",
+      "schema": "public",
+      "identity": "p_barcode text",
+      "definition_sha256": "778d1d93649a8dec547887e83644d86fb9e1439980ce4de565744830eca0c06b"
+    },
+    {
+      "name": "fmz_phase4_prevent_food_ingestion_removal",
+      "schema": "public",
+      "identity": "",
+      "definition_sha256": "ffd586540fc7fb3504946cc4b89ae20e813891df7668fa63d93f6fc00e01e699"
+    },
+    {
+      "name": "fmz_phase4_prevent_off_catalog_removal",
+      "schema": "public",
+      "identity": "",
+      "definition_sha256": "172f5126e1e4782298991598a8eeb60e4d7b4d49735ea8eafa6a90246e139bf6"
+    },
+    {
+      "name": "fmz_phase4_provider_candidate_uuid_v5",
+      "schema": "public",
+      "identity": "p_identity_name text",
+      "definition_sha256": "38f2b7f7f5ea6416bee30e388dd1089d8ed7a837bc2f11a276dd6a5429e5d5ed"
     },
     {
       "name": "fmz_phase4_provider_consume_rate_limits",
@@ -2652,22 +1918,40 @@
       "definition_sha256": "a95f75a0806851b1f89c8e9d148b485f778c828238ad083ff8247329ed7d2c3a"
     },
     {
-      "name": "fmz_phase4_enforce_food_log_owner",
+      "name": "fmz_phase4_replace_food_log_item",
       "schema": "public",
-      "identity": "",
-      "definition_sha256": "a03d817df6f8d346e3b2f70e2a2cbb7ec05783a28f4b194e462ba2728abdf937"
+      "identity": "p_original_item_id uuid, p_replacement_item_id uuid, p_replacement_request_id uuid, p_expected_original_updated_at timestamp with time zone, p_meal_moment text, p_food_id uuid, p_food_portion_id uuid, p_consumed_quantity numeric, p_consumed_unit text, p_notes text",
+      "definition_sha256": "b29084183be4e70f53dbd1924899c82b92d58d8a38192004a9d3023b8698b72f"
     },
     {
-      "name": "fmz_phase6a_get_context_manifest",
+      "name": "fmz_phase4_replace_off_food_log_item",
       "schema": "public",
-      "identity": "p_feature_code text",
-      "definition_sha256": "4beeb171276c21dbba0d50ce048024ad4d13ded68f5ac798386c6f9a872635eb"
+      "identity": "p_original_item_id uuid, p_replacement_item_id uuid, p_replacement_request_id uuid, p_expected_original_updated_at timestamp with time zone, p_meal_moment text, p_off_product_id uuid, p_consumed_quantity numeric, p_consumed_unit text, p_notes text",
+      "definition_sha256": "8b3462d19216e0acc4c5b476f51f7e572d27cc63e6bd97ebf77b76896d1fccf8"
     },
     {
-      "name": "fmz_phase4_log_provider_food_item",
+      "name": "fmz_phase4_replace_provider_food_log_item",
       "schema": "public",
-      "identity": "p_user_id uuid, p_item_id uuid, p_request_id uuid, p_log_date date, p_timezone_name text, p_timezone_offset_minutes smallint, p_meal_moment text, p_consumed_quantity numeric, p_consumed_unit text, p_notes text, p_consumed_at timestamp with time zone, p_candidate jsonb",
-      "definition_sha256": "7440b11021e5970166b6710279bb7ed6d4c00f08616ac8190289adfd0a9ff314"
+      "identity": "p_user_id uuid, p_original_item_id uuid, p_replacement_item_id uuid, p_replacement_request_id uuid, p_expected_original_updated_at timestamp with time zone, p_meal_moment text, p_consumed_quantity numeric, p_consumed_unit text, p_notes text, p_candidate jsonb",
+      "definition_sha256": "b326c8a746e5347f3d9126ec4da50227934f16c0c849bbc7cf5609bcc0064af7"
+    },
+    {
+      "name": "fmz_phase4_replace_transient_off_food_item",
+      "schema": "public",
+      "identity": "p_user_id uuid, p_original_item_id uuid, p_replacement_item_id uuid, p_replacement_request_id uuid, p_expected_original_updated_at timestamp with time zone, p_meal_moment text, p_consumed_quantity numeric, p_consumed_unit text, p_notes text, p_candidate jsonb",
+      "definition_sha256": "e60daff3e88a6015d066f08b5098aa600a5a112ec33fd17599dea860e6bd2191"
+    },
+    {
+      "name": "fmz_phase4_resolve_member_barcode",
+      "schema": "public",
+      "identity": "p_user_id uuid, p_normalized_gtin14 text",
+      "definition_sha256": "75e510ca31d0fd339481a74870af8703958fc7026ee08fcf445fa0fca01be9ce"
+    },
+    {
+      "name": "fmz_phase4_resolve_off_food_snapshot",
+      "schema": "public",
+      "identity": "p_off_product_id uuid",
+      "definition_sha256": "a80f27e8b01de20bad3c20e018d97dd72daa741e5ed3f6aa931c9df95dcbd96f"
     },
     {
       "name": "fmz_phase4_resolve_provider_food_log_item",
@@ -2676,10 +1960,232 @@
       "definition_sha256": "3b88a33244487028c864fca8e127d3991c766268a397d8863397a157cd2b4b84"
     },
     {
-      "name": "fmz_phase4_enforce_food_log_item_owner",
+      "name": "fmz_phase4_resolve_transient_off_food_log_item",
+      "schema": "public",
+      "identity": "p_user_id uuid, p_original_item_id uuid",
+      "definition_sha256": "1509fd23e9ad07d494edee0690e0a77253ffe6e5710c2b9bf81a0f2261e49d49"
+    },
+    {
+      "name": "fmz_phase4_save_member_target",
+      "schema": "public",
+      "identity": "p_target_id uuid, p_request_id uuid, p_energy_kcal numeric, p_protein_grams numeric, p_carbohydrate_grams numeric, p_fat_grams numeric, p_fiber_grams numeric, p_effective_from date",
+      "definition_sha256": "209bc2cf9075ba61e629194c975b20b0b921d6703c4db79596e8b283bc7e2ac7"
+    },
+    {
+      "name": "fmz_phase4_search_foods",
+      "schema": "public",
+      "identity": "p_query text, p_page_size integer, p_after_name text, p_after_id uuid",
+      "definition_sha256": "78c805b662c918be868cfed87ad4107ee518cf6cb81eee1614ab8a7083404d86"
+    },
+    {
+      "name": "fmz_phase4_search_nutrition_catalog",
+      "schema": "public",
+      "identity": "p_query text, p_locale text, p_page_size integer, p_after_rank integer, p_after_score numeric, p_after_name text, p_after_source text, p_after_id uuid",
+      "definition_sha256": "127cf77ceba5bec0daf90094f7fdc2a78b736933d9926db930b6c506b6fa7f05"
+    },
+    {
+      "name": "fmz_phase4_search_off_candidates",
+      "schema": "public",
+      "identity": "p_query text, p_gtin14 text, p_locale text, p_candidate_limit integer",
+      "definition_sha256": "4a217f6d0e1abc37192204c752878e45d96e7c5ca37073e1829db623e94a730a"
+    },
+    {
+      "name": "fmz_phase4_set_nutrition_timezone",
+      "schema": "public",
+      "identity": "p_timezone_name text",
+      "definition_sha256": "c6916678d4c59418607e6ddd28e742cb2ed3a7dd70dd4f57e229a91e42004680"
+    },
+    {
+      "name": "fmz_phase4_sync_archive_state",
       "schema": "public",
       "identity": "",
-      "definition_sha256": "625c3248d7170fa12db6134aff14d36d47679e934f27825227c9f93e2f3108cd"
+      "definition_sha256": "3812489a918e78a689e308739754dab68a40219677e7093076363d336caa2657"
+    },
+    {
+      "name": "fmz_phase4_sync_off_archive_state",
+      "schema": "public",
+      "identity": "",
+      "definition_sha256": "1ea6e9e3178f8fc4716c2173c8903624fee8c4ae7cb1183c04690a9fd22d046c"
+    },
+    {
+      "name": "fmz_phase4_touch_updated_at",
+      "schema": "public",
+      "identity": "",
+      "definition_sha256": "7323c9d5e35faed7a4c9d8fd82abe815e6c69504c437051a19f7abb2d943b100"
+    },
+    {
+      "name": "fmz_phase4_transient_off_food_item_mutation",
+      "schema": "public",
+      "identity": "p_operation text, p_user_id uuid, p_original_item_id uuid, p_item_id uuid, p_request_id uuid, p_expected_original_updated_at timestamp with time zone, p_log_date date, p_timezone_name text, p_timezone_offset_minutes smallint, p_meal_moment text, p_consumed_quantity numeric, p_consumed_unit text, p_notes text, p_consumed_at timestamp with time zone, p_candidate jsonb",
+      "definition_sha256": "426f26c270d3baf2afb91e9e7121cfd90fae2c1f69678f29a2af6830b7079b4d"
+    },
+    {
+      "name": "fmz_phase4_upsert_custom_food",
+      "schema": "public",
+      "identity": "p_food_id uuid, p_name text, p_brand text, p_reference_amount numeric, p_reference_unit text, p_reference_mass_grams numeric, p_reference_volume_ml numeric, p_density_g_per_ml numeric, p_energy_kcal numeric, p_protein_grams numeric, p_carbohydrate_grams numeric, p_fat_grams numeric, p_fiber_grams numeric, p_expected_updated_at timestamp with time zone",
+      "definition_sha256": "25d679045b021332bdf95a346551225def6888c88ef06bd0131c71e00144d346"
+    },
+    {
+      "name": "fmz_phase4_upsert_custom_food_with_barcode",
+      "schema": "public",
+      "identity": "p_food_id uuid, p_name text, p_brand text, p_barcode text, p_reference_amount numeric, p_reference_unit text, p_reference_mass_grams numeric, p_reference_volume_ml numeric, p_density_g_per_ml numeric, p_energy_kcal numeric, p_protein_grams numeric, p_carbohydrate_grams numeric, p_fat_grams numeric, p_fiber_grams numeric, p_expected_updated_at timestamp with time zone",
+      "definition_sha256": "51d52ddf068d40360f69061f1da891c9c506e6c6eae0aa8975ea741fc5d3bc2a"
+    },
+    {
+      "name": "fmz_phase4_upsert_food_portion",
+      "schema": "public",
+      "identity": "p_portion_id uuid, p_food_id uuid, p_label text, p_amount numeric, p_unit text, p_equivalent_amount numeric, p_equivalent_unit text, p_is_default boolean, p_expected_updated_at timestamp with time zone",
+      "definition_sha256": "e465532e40dfceb4f6a08167cda711a3b26179e2f91c18bc15d4b68ee9d5ce14"
+    },
+    {
+      "name": "fmz_phase4_validate_transient_off_candidate",
+      "schema": "public",
+      "identity": "p_candidate jsonb",
+      "definition_sha256": "4e4d883c92d0856d230724f9a3eedd4c83ac27c7c76bb8d94f0bc0e438791ac4"
+    },
+    {
+      "name": "fmz_phase5_archive_body_measurement",
+      "schema": "public",
+      "identity": "p_body_measurement_id uuid, p_expected_updated_at timestamp with time zone",
+      "definition_sha256": "1406e16e820d11873c58645a038f6ca72c108402123ae078597de88a9082c3e6"
+    },
+    {
+      "name": "fmz_phase5_archive_weight_log",
+      "schema": "public",
+      "identity": "p_weight_log_id uuid, p_expected_updated_at timestamp with time zone",
+      "definition_sha256": "92184b95f3293c9ef9a71649fdcac588696fb53108965b33d0d24dd45db95493"
+    },
+    {
+      "name": "fmz_phase5_get_progress_dashboard",
+      "schema": "public",
+      "identity": "p_before_date date, p_requested_days integer",
+      "definition_sha256": "8374e49f0ac037feb8f3d94e00ddfdd58c6148394a46cdc67f64457af90685de"
+    },
+    {
+      "name": "fmz_phase5_has_full_progress_access",
+      "schema": "public",
+      "identity": "p_user_id uuid",
+      "definition_sha256": "1d542fa33a2fd98d0ab1ebc508fc80bcdc5b400fc90f7de8625ef5aabd342212"
+    },
+    {
+      "name": "fmz_phase5_save_body_measurement",
+      "schema": "public",
+      "identity": "p_log_date date, p_waist_cm numeric, p_chest_cm numeric, p_hips_cm numeric, p_upper_arm_left_cm numeric, p_upper_arm_right_cm numeric, p_thigh_left_cm numeric, p_thigh_right_cm numeric, p_notes text, p_timezone_name text, p_timezone_offset_minutes smallint, p_request_id uuid, p_expected_updated_at timestamp with time zone",
+      "definition_sha256": "528f1c77c4985931467a867f8ef2a3d05170a77bc9752f5c6ea3db7e1479de3c"
+    },
+    {
+      "name": "fmz_phase5_save_progress_goal",
+      "schema": "public",
+      "identity": "p_goal_code text, p_baseline_weight_kg numeric, p_target_weight_kg numeric, p_target_date date, p_notes text, p_request_id uuid, p_expected_updated_at timestamp with time zone",
+      "definition_sha256": "d380f74aca6bd4e9f6cf7f10ba7fbeb61459bf5d1ff9f894cf2bbb107eb9257a"
+    },
+    {
+      "name": "fmz_phase5_save_weight_log",
+      "schema": "public",
+      "identity": "p_log_date date, p_weight_kg numeric, p_notes text, p_timezone_name text, p_timezone_offset_minutes smallint, p_request_id uuid, p_expected_updated_at timestamp with time zone",
+      "definition_sha256": "9c95434a9a9e6280fed14761087a65b09be7798e91ed451c673adfdbc2f4f109"
+    },
+    {
+      "name": "fmz_phase5_set_progress_timezone",
+      "schema": "public",
+      "identity": "p_timezone_name text",
+      "definition_sha256": "f9ac94ea466de83a27fcb3e5403ab3c4cb7a8ea09e1c80cef4f1e40fba5f49fa"
+    },
+    {
+      "name": "fmz_phase5_set_unit_system",
+      "schema": "public",
+      "identity": "p_unit_system text",
+      "definition_sha256": "0ac017c0f7f4cf90c7e65e2a87161953dfab243e9f67d48bf647d7ac7f1aac09"
+    },
+    {
+      "name": "fmz_phase5_sync_archive_state",
+      "schema": "public",
+      "identity": "",
+      "definition_sha256": "d3e48fbbc1f583a31402dc294f33f81dc1cbdea0aebfd7797c2b6aea4d371ace"
+    },
+    {
+      "name": "fmz_phase5_touch_updated_at",
+      "schema": "public",
+      "identity": "",
+      "definition_sha256": "22f86edb952704cca1fb06de80bf43db80517c94b153bb0f4581805b0d5aa1c5"
+    },
+    {
+      "name": "fmz_phase6a_get_context_manifest",
+      "schema": "public",
+      "identity": "p_feature_code text",
+      "definition_sha256": "4beeb171276c21dbba0d50ce048024ad4d13ded68f5ac798386c6f9a872635eb"
+    },
+    {
+      "name": "fmz_phase6a_get_trust_status",
+      "schema": "public",
+      "identity": "p_feature_code text",
+      "definition_sha256": "2d8971a7ba86b25fb61377ab5a97e0650abd1960039216612ab8c612f24b4b24"
+    },
+    {
+      "name": "fmz_phase6a_read_consent_contract",
+      "schema": "public",
+      "identity": "p_locale text",
+      "definition_sha256": "007aa9494eba2803f4c8c58ede0df4aafcbd04a4d2dff44002096f46fbd96058"
+    },
+    {
+      "name": "fmz_phase6a_read_export_manifest",
+      "schema": "public",
+      "identity": "",
+      "definition_sha256": "523f6464d886ec7c4c82daa1c6e23d4f7c748f8c35664f95df37443d01e817b4"
+    },
+    {
+      "name": "fmz_phase6a_read_thread_history",
+      "schema": "public",
+      "identity": "p_thread_id uuid, p_limit integer, p_before timestamp with time zone",
+      "definition_sha256": "02663070d8fa19c03441b90aca92f6dccffbc8ed4ac9a7ebe1ea34ba20a6c770"
+    },
+    {
+      "name": "fmz_phase6a_record_consent",
+      "schema": "public",
+      "identity": "p_consent_kind text, p_action text, p_document_version text, p_locale text, p_explicit_confirmation boolean, p_request_id uuid",
+      "definition_sha256": "15521bfdc5ca8e91edf978e55d82180c8abd76d42039dd7f81e6f5c60b401c5d"
+    },
+    {
+      "name": "fmz_phase6a_request_data_lifecycle",
+      "schema": "public",
+      "identity": "p_request_type text, p_request_id uuid",
+      "definition_sha256": "562bb176f16803284899225b86f08544d86aea7925a84530d5cd77a1cc34c16c"
+    },
+    {
+      "name": "fmz_phase6a_service_begin_run",
+      "schema": "public",
+      "identity": "p_user_id uuid, p_request_id uuid, p_thread_id uuid, p_feature_code text, p_adapter_code text, p_model_tier text, p_policy_version text, p_schema_version text, p_payload_hash text, p_reserved_cost_micros bigint, p_context_sources jsonb, p_unavailable_sources text[]",
+      "definition_sha256": "8781d56bb3d4a02736585bbdee719dd4faab3cb61b5d3622adcb5eb895468b64"
+    },
+    {
+      "name": "fmz_phase6a_service_complete_run",
+      "schema": "public",
+      "identity": "p_run_id uuid, p_structured_output jsonb, p_actual_cost_micros bigint, p_input_tokens integer, p_output_tokens integer",
+      "definition_sha256": "704a578a7dc852ff2c9d56b4f2a600f5cd9bfb68773b49b6b9c84092f0d524eb"
+    },
+    {
+      "name": "fmz_phase6a_service_fail_run",
+      "schema": "public",
+      "identity": "p_run_id uuid, p_safe_error_code text",
+      "definition_sha256": "468864ed91f6c0a2c90413d83298710876033a8fbea32205cd98c2c40e69cd73"
+    },
+    {
+      "name": "fmz_phase6a_service_reconcile_retention",
+      "schema": "public",
+      "identity": "p_user_id uuid, p_at timestamp with time zone",
+      "definition_sha256": "a40b713b14d58998c62c8fca48274d3d671fb538fcbd496652b6b9aa81391753"
+    },
+    {
+      "name": "fmz_phase6a_service_record_safety_event",
+      "schema": "public",
+      "identity": "p_user_id uuid, p_run_id uuid, p_risk_category text, p_safety_outcome text, p_policy_version text",
+      "definition_sha256": "b4e7a4a612aafbf7f9e3ee10c0da57449dee3ca30006cfec1578276da486545d"
+    },
+    {
+      "name": "fmz_phase6a_submit_user_message",
+      "schema": "public",
+      "identity": "p_request_id uuid, p_thread_id uuid, p_feature_code text, p_locale text, p_content text",
+      "definition_sha256": "4551921157b178b38f1da0f51049105236ad183c587062ea8786e97d3be36e5e"
     },
     {
       "name": "fmz_phase6b_service_begin_synthetic_test",
@@ -2706,88 +2212,28 @@
       "definition_sha256": "da255000e578f6d0729079519f6efa113ffb6329fc22aafd47f6dbc74c718917"
     },
     {
-      "name": "phase6c_retention_sweep",
-      "schema": "ai_private",
-      "identity": "p_at timestamp with time zone",
-      "definition_sha256": "83fd14619ecc302dcdb92a828b3459b175c6529e44217e107b33b6f2b47c7f15"
+      "name": "fmz_phase6c_create_thread",
+      "schema": "public",
+      "identity": "p_thread_id uuid, p_locale text, p_request_id uuid",
+      "definition_sha256": "91057cc90dee05454ba0401cbd582637d0c8afb971590fb6bed3c2b491a3d680"
     },
     {
-      "name": "phase6c_reconcile_member",
-      "schema": "ai_private",
-      "identity": "p_user_id uuid, p_at timestamp with time zone",
-      "definition_sha256": "d4abfda76ef21a6c34a3e02c104d474ca1bc8b739cc88c499721033cb133a227"
+      "name": "fmz_phase6c_delete_thread",
+      "schema": "public",
+      "identity": "p_thread_id uuid, p_expected_revision bigint, p_request_id uuid",
+      "definition_sha256": "dc1a0b7fb19828dd430ebce63c7bff320966789d891d07dffba8230f2bf3a2c9"
     },
     {
-      "name": "phase6c_assign_message_sequence",
-      "schema": "ai_private",
-      "identity": "",
-      "definition_sha256": "2abff1717b6f9ed9f0bbc091205ed9ec763f061cea5f980426d70be5758cb90f"
-    },
-    {
-      "name": "phase6c_protect_message_content",
-      "schema": "ai_private",
-      "identity": "",
-      "definition_sha256": "c197952ad82e697bf19fcdb5e72010a3db07c13db8ac94fde748d8e927d70269"
-    },
-    {
-      "name": "phase6c_chat_status",
-      "schema": "ai_private",
-      "identity": "p_user_id uuid, p_at timestamp with time zone",
-      "definition_sha256": "180ee0c3b3dc191c4c3c317fda76a7fbdab7079777c6d1c483a1fcd1352034f9"
-    },
-    {
-      "name": "phase6b_estimate_test_cost",
-      "schema": "ai_private",
-      "identity": "p_model_id text, p_input_tokens integer, p_cached_input_tokens integer, p_output_tokens integer, p_attempt_count integer",
-      "definition_sha256": "66a252acb5494b8c3e644da8136e51057bc6c2e278696b9739e62d14b2f41290"
-    },
-    {
-      "name": "can_share_trainer_summary",
-      "schema": "ai_private",
-      "identity": "p_user_id uuid",
-      "definition_sha256": "94ce31bb0def5ad24bad980464abcbf8ba03f5375f8c18d059269c13afbaa424"
-    },
-    {
-      "name": "subscription_period",
-      "schema": "ai_private",
-      "identity": "p_anchor timestamp with time zone, p_at timestamp with time zone",
-      "definition_sha256": "b9e093453a2ad230d63a976be028fc487f991168359c05b88311b7df885e1e45"
-    },
-    {
-      "name": "evaluate_budget",
-      "schema": "ai_private",
-      "identity": "p_consumed_micros bigint, p_reserved_micros bigint, p_requested_micros bigint, p_model_tier text",
-      "definition_sha256": "f79893e8a41ff0f23d8bc385bfcef6b7aa815e3ef0a15cce7b380be77a307ae1"
-    },
-    {
-      "name": "validate_action_contract",
-      "schema": "ai_private",
-      "identity": "p_action_code text, p_payload jsonb",
-      "definition_sha256": "ef23abf2abb6c6616da0c20f1aa58661f0e31344e960a5dc5993984f817b1b8a"
-    },
-    {
-      "name": "validate_structured_response",
-      "schema": "ai_private",
-      "identity": "p_payload jsonb",
-      "definition_sha256": "9f83352c96ba72f235305047ad91c1522f1c1b2ca2e32fe642b22785087201b4"
-    },
-    {
-      "name": "phase6c_apply_retention",
-      "schema": "ai_private",
-      "identity": "p_user_id uuid, p_at timestamp with time zone",
-      "definition_sha256": "d7e43d3915a1c43043592c78c21373e473a85a99bcc37f53f73fde909e2af472"
+      "name": "fmz_phase6c_export_chat",
+      "schema": "public",
+      "identity": "p_request_id uuid",
+      "definition_sha256": "a66a2aacded191b088770c275423a63c1589f62e85038b87bf461f27713e93fd"
     },
     {
       "name": "fmz_phase6c_get_chat_status",
       "schema": "public",
       "identity": "",
       "definition_sha256": "0123af0aca7e32abe337e65d443625495a6ad58026348813e7eee1d3c87445e5"
-    },
-    {
-      "name": "fmz_phase6c_create_thread",
-      "schema": "public",
-      "identity": "p_thread_id uuid, p_locale text, p_request_id uuid",
-      "definition_sha256": "91057cc90dee05454ba0401cbd582637d0c8afb971590fb6bed3c2b491a3d680"
     },
     {
       "name": "fmz_phase6c_list_threads",
@@ -2802,58 +2248,16 @@
       "definition_sha256": "cb4476cd67064b6732907b8ab8ce2121cc4ce9bffb271d2d3db9d421bf2e98cd"
     },
     {
-      "name": "fmz_phase6c_submit_message",
-      "schema": "public",
-      "identity": "p_thread_id uuid, p_request_id uuid, p_expected_revision bigint, p_locale text, p_content text",
-      "definition_sha256": "caa1c1e81e7d3d49e1d7a849901117655086e509ce570cffa7b3f6f5bf3d5852"
-    },
-    {
-      "name": "fmz_phase6c_export_chat",
-      "schema": "public",
-      "identity": "p_request_id uuid",
-      "definition_sha256": "a66a2aacded191b088770c275423a63c1589f62e85038b87bf461f27713e93fd"
-    },
-    {
-      "name": "fmz_phase6c_delete_thread",
-      "schema": "public",
-      "identity": "p_thread_id uuid, p_expected_revision bigint, p_request_id uuid",
-      "definition_sha256": "dc1a0b7fb19828dd430ebce63c7bff320966789d891d07dffba8230f2bf3a2c9"
-    },
-    {
       "name": "fmz_phase6c_service_begin_mock_run",
       "schema": "public",
       "identity": "p_user_id uuid, p_source_message_id uuid, p_attempt_id uuid, p_payload_hash text",
       "definition_sha256": "a94b6e6048dac23f22fdbab543c0ec9f53a35ceb5902746791dc4b49edd3b488"
     },
     {
-      "name": "fmz_bootstrap_trainer_profile",
+      "name": "fmz_phase6c_submit_message",
       "schema": "public",
-      "identity": "p_user_id uuid, p_email text, p_name text",
-      "definition_sha256": "ccea7fb1ab65f99145d5731a521eb2b3dc028cb1c7a7177888174b891e076684"
-    },
-    {
-      "name": "accept_client_invite",
-      "schema": "public",
-      "identity": "display_name text",
-      "definition_sha256": "17e647a5ae5457af0743cb693ec7001f4238f00ba7f9f0684b01fc2381be25f2"
-    },
-    {
-      "name": "fmz_can_select_profile",
-      "schema": "public",
-      "identity": "target_id uuid, target_role text, target_trainer_id uuid",
-      "definition_sha256": "c20f0b02cc7e78caabf8f7dd4a384eaf7388fcdb28b5fa87b0725cd6c0467cc5"
-    },
-    {
-      "name": "fmz_can_access_workspace",
-      "schema": "public",
-      "identity": "target_trainer_id uuid",
-      "definition_sha256": "e71a866c3387efb053d9ba01bd56c07ef340d2e56fd5709aa0dd496caac69182"
-    },
-    {
-      "name": "fmz_phase6d0_issue_client_invite",
-      "schema": "public",
-      "identity": "p_client_id text",
-      "definition_sha256": "c9a0f07481ab6cd081a07ecdd1c56d258eddee934fdaaf8ab03c3e896504abf0"
+      "identity": "p_thread_id uuid, p_request_id uuid, p_expected_revision bigint, p_locale text, p_content text",
+      "definition_sha256": "caa1c1e81e7d3d49e1d7a849901117655086e509ce570cffa7b3f6f5bf3d5852"
     },
     {
       "name": "fmz_phase6d0_accept_client_invite",
@@ -2862,10 +2266,10 @@
       "definition_sha256": "79092c3ce287108457c3adb9fcf3ce3f9bcd6bd9c11ff31977501a8f5facabd3"
     },
     {
-      "name": "fmz_phase6d0_revoke_client_invite",
+      "name": "fmz_phase6d0_issue_client_invite",
       "schema": "public",
-      "identity": "p_invitation_id uuid",
-      "definition_sha256": "eb3215fc76dbe1a04d5b8752ed022053892635ae881b7e3d4876c91ee5ac2cae"
+      "identity": "p_client_id text",
+      "definition_sha256": "c9a0f07481ab6cd081a07ecdd1c56d258eddee934fdaaf8ab03c3e896504abf0"
     },
     {
       "name": "fmz_phase6d0_read_own_workspace",
@@ -2874,20 +2278,25 @@
       "definition_sha256": "f336ee799142d1d4507a3279dc32332e82c2f99d0ab1c6dae9a907d76f2266af"
     },
     {
+      "name": "fmz_phase6d0_revoke_client_invite",
+      "schema": "public",
+      "identity": "p_invitation_id uuid",
+      "definition_sha256": "eb3215fc76dbe1a04d5b8752ed022053892635ae881b7e3d4876c91ee5ac2cae"
+    },
+    {
       "name": "fmz_phase6d0_save_own_workspace",
       "schema": "public",
       "identity": "p_client jsonb, p_expected_revision text",
       "definition_sha256": "9fabdf906a9d963ee49352c1059288e141d4e655203fe87da1f24006e3e9fe9c"
+    },
+    {
+      "name": "touch_updated_at",
+      "schema": "public",
+      "identity": "",
+      "definition_sha256": "36d5291d67ac9388a7da6a80f42837dd68efc232b40851319fe8ca0f6bf0e698"
     }
   ],
-  "object_inventory_scope": "Table/function name candidates, table RLS and live function hashes; not an exhaustive SQL parser or historical semantic equivalence proof",
-  "two_read_history_equal": true,
-  "duplicate_versions": [
-    "20260819"
-  ],
-  "history_changed": false,
-  "migration_sql_executed": false,
-  "full_history_synchronized": false,
-  "empty_database_rebuild": "BLOCKED: Git lacks CREATE TABLE baselines for profiles, coach_workspaces, user_settings and entitlements",
-  "broad_db_push_allowed": false
+  "object_inventory_scope": "Migration filenames, live migration history, table/function presence, RLS flags and function definition hashes; no member row values are exported.",
+  "broad_db_push_allowed_after_external_dry_run": true,
+  "empty_database_rebuild": "PASS through Phase 6B with bundled PostgreSQL 18; full 6C/6D0 local replay requires a local pg_cron extension."
 }

@@ -1,114 +1,159 @@
 # Project-Wide Migration History Reconciliation Gate
 
-Date: 2026-09-04. Target: staging mokxyyullfhkfalopbzd only.
-Result: READ-ONLY INVENTORY COMPLETE / RECONCILIATION BLOCKED.
-Runtime/audit checkout: 333954a68a1429634e49bafbcc08720ea688131a, staging main.
+Date: 2026-09-04. Target: staging `mokxyyullfhkfalopbzd` only.
+Result: RESOLVED / VERIFIED. Package 6D functionality was not started.
 
-## Evidence And Classification
+## Root Cause
 
-The committed chain contains 24 SQL files; live history contains 21 rows.
-There are 19 same-name timestamp differences, three files without a same-name history
-row and four files reusing local version 20260819. No local or remote ID was changed.
+The repository migration chain and the live staging migration history had drifted:
 
-The [manifest](PROJECT_MIGRATION_RECONCILIATION_MANIFEST.json) records every exact Git
-path, byte count, SHA-256, local/remote identity, history checksum, table/function name
-candidates, current presence, candidate canonical ID and required action. It also
-records before/after history, live table RLS and function identity/definition hashes.
-The inventory is metadata-only; no member values, Auth tokens or secrets are included.
+- 19 Git migration files used older local timestamps while staging had the same
+  logical migration names under canonical live timestamps.
+- Three Git migrations had no same-name live-history row:
+  `20260813_trainer_signup_bootstrap.sql`,
+  `20260818_phase4_nutrition_schema_slice1.sql`, and
+  `20260826143000_phase4_nutrition_slice4fc_off_authoritative_logging.sql`.
+- Four older Phase 4 files reused local version `20260819`.
+- The canonical Git chain was missing the Phase 1-3/source baseline needed for a
+  clean empty-database rebuild. Later migrations assumed tables and functions such as
+  `profiles`, `coach_workspaces`, `user_settings`, `entitlements`, Recovery and
+  Training objects already existed.
 
-Class 1 means recorded SQL identity is proven: 6D-0 matches byte-for-byte; 13 other
-single-statement history entries match after CRLF and outer-whitespace normalization
-only. No internal SQL tokens are rewritten. This does not prove that a historical
-function has never subsequently been replaced. Class 5 means insufficient execution
-identity evidence. Class 4 flags the duplicate local version in addition to class 5.
-Classes 2/3 are deliberately not inferred merely from current object presence/absence.
+Git history and the available archived artifacts did not contain a complete,
+byte-exact historical Phase 1-3 migration series. Current live object presence alone
+was not treated as proof of historical execution identity.
 
-| Git ID | Same-name live ID | Migration suffix | Class |
-| --- | --- | --- | --- |
-| 20260813 | absent | trainer_signup_bootstrap | 5 |
-| 20260818 | absent | phase4_nutrition_schema_slice1 | 5 |
-| 20260819 | 20260819134024 | phase4_nutrition_slice3_atomic_log_item_replacement | 5 + 4 |
-| 20260819 | 20260819163738 | phase4_nutrition_slice4b_alias_search | 5 + 4 |
-| 20260819 | 20260819175756 | phase4_nutrition_slice4c_operational_state | 5 + 4 |
-| 20260819 | 20260820082018 | phase4_nutrition_slice4d_provider_snapshot_logging | 5 + 4 |
-| 20260820134211 | 20260820150513 | phase4_nutrition_slice4d_historical_provider_resolver | 5 |
-| 20260821214541 | 20260822172635 | phase4_nutrition_slice4e_ingestion_alias_search | 5 |
-| 20260824113551 | 20260824113551 | phase4_nutrition_slice4f_off_catalog_search | 5 |
-| 20260826143000 | absent | phase4_nutrition_slice4fc_off_authoritative_logging | 5 |
-| 20260827165426 | 20260827152727 | phase4_nutrition_slice4fd_transient_off_parent_context_fix | 1 |
-| 20260827 | 20260827125343 | phase4_nutrition_slice4fd_transient_off_barcode | 1 |
-| 20260831153000 | 20260831145357 | phase5_progress_foundation | 1 |
-| 20260831161000 | 20260831150434 | phase5_progress_unit_preference | 1 |
-| 20260831163000 | 20260831153512 | phase5_progress_revision_indexes | 1 |
-| 20260901170000 | 20260901161314 | phase5_unit_system_constraint_fix | 1 |
-| 20260901193000 | 20260901183914 | phase6a_ai_trust_foundation | 1 |
-| 20260901203000 | 20260901184418 | phase6a_ai_consent_event_ordering | 1 |
-| 20260901204500 | 20260901190328 | phase6a_pgcrypto_search_path | 1 |
-| 20260901211500 | 20260901191328 | phase6a_foreign_key_indexes | 1 |
-| 20260901230000 | 20260902045834 | phase6b_provider_privacy_cost_gate | 1 |
-| 20260902203000 | 20260903085454 | phase6c_private_ai_chat | 1 |
-| 20260903145000 | 20260903125150 | phase6c_request_scoped_safety | 1 |
-| 20260904105918 | 20260904105918 | phase6d0_legacy_authorization_gate | 1, exact |
+## Resolution
 
-The remote IDs of the 14 class-1 files are canonical identity candidates in the
-manifest, not permission to rename an incomplete dependency chain. The other ten
-canonical IDs remain unresolved. In particular, the OFF foundation history contains
-95 separate statements: concatenated transport bytes do not establish full-file identity.
-Seven recorded artifacts lack whole-artifact equivalence proof; three have no matching
-history name. Their current function hashes cannot establish historical execution alone.
+No historical SQL was replayed on staging. No remote reset, destructive reconstruction,
+or member-data rewrite was performed.
 
-## Material Baseline Blocker
+The 19 timestamp drifts were resolved by renaming the Git files to the canonical live
+history versions:
 
-Git contains no creation baseline for public.profiles, public.coach_workspaces,
-public.user_settings or public.entitlements. The first committed bootstrap already
-returns public.profiles, so it depends on a pre-existing relation type. Therefore this
-chain cannot reconstruct a new empty public schema from Git as currently committed.
+| Previous Git version | Canonical live version | Migration |
+| --- | --- | --- |
+| `20260819` | `20260819134024` | `phase4_nutrition_slice3_atomic_log_item_replacement` |
+| `20260819` | `20260819163738` | `phase4_nutrition_slice4b_alias_search` |
+| `20260819` | `20260819175756` | `phase4_nutrition_slice4c_operational_state` |
+| `20260819` | `20260820082018` | `phase4_nutrition_slice4d_provider_snapshot_logging` |
+| `20260820134211` | `20260820150513` | `phase4_nutrition_slice4d_historical_provider_resolver` |
+| `20260821214541` | `20260822172635` | `phase4_nutrition_slice4e_ingestion_alias_search` |
+| `20260827` | `20260827125343` | `phase4_nutrition_slice4fd_transient_off_barcode` |
+| `20260827165426` | `20260827152727` | `phase4_nutrition_slice4fd_transient_off_parent_context_fix` |
+| `20260831153000` | `20260831145357` | `phase5_progress_foundation` |
+| `20260831161000` | `20260831150434` | `phase5_progress_unit_preference` |
+| `20260831163000` | `20260831153512` | `phase5_progress_revision_indexes` |
+| `20260901170000` | `20260901161314` | `phase5_unit_system_constraint_fix` |
+| `20260901193000` | `20260901183914` | `phase6a_ai_trust_foundation` |
+| `20260901203000` | `20260901184418` | `phase6a_ai_consent_event_ordering` |
+| `20260901204500` | `20260901190328` | `phase6a_pgcrypto_search_path` |
+| `20260901211500` | `20260901191328` | `phase6a_foreign_key_indexes` |
+| `20260901230000` | `20260902045834` | `phase6b_provider_privacy_cost_gate` |
+| `20260902203000` | `20260903085454` | `phase6c_private_ai_chat` |
+| `20260903145000` | `20260903125150` | `phase6c_request_scoped_safety` |
 
-The old trainer bootstrap is also historical authorization logic. Replaying it while
-repairing history could reintroduce authority intentionally closed by Package 6D-0.
-No historical SQL was executed, no uncertain migration was marked applied and no
-automatic repair suggestion was accepted. Archive files are not silently promoted into
-the canonical migration chain. Missing baseline/evolution evidence needs separate review.
+The duplicate old `20260819` version conflict is gone because all four files now have
+their live canonical versions.
 
-## Official CLI And Reproducibility
+A forward-only source baseline was added:
+`supabase/migrations/20260812000000_legacy_phase1_3_source_baseline.sql`.
+It reconstructs the Phase 1-3/source schema contract from live read-only metadata,
+frozen verifier contracts and existing function definitions. It is intentionally a
+fresh-rebuild baseline, not a claim that the original historical SQL was recovered.
+It contains no data inserts, no backfill, no role/link grants and no owner/member data
+mutation.
 
-- Installed official Supabase CLI: 2.115.0; relevant --help inspected.
-- migration list --project-ref mokxyyullfhkfalopbzd: completes, showing the differences
-  above. Before/after history snapshots are equal, 21 rows. NOT synchronized.
-- db push --dry-run --skip-vault --project-ref mokxyyullfhkfalopbzd: exit 1,
-  LegacyDbPushMissingLocalError, 19 remote versions missing locally. No SQL applied;
-  Vault synchronization explicitly skipped. The CLI's proposed repair was NOT run.
-- Exact artifact hashes are read from committed Git blobs, not a working-tree SQL copy.
-- New full checkout, empty-database replay and rebuilt-schema comparison: NOT EXECUTED
-  after the explicit uncertain-migration/baseline stop. They are not reported as PASS.
-- The manifest's two reads are a metadata before/after comparison, not a full recoverable
-  history export. A complete history export is still required before any future repair.
-- Renamed files: NONE. History repairs: NONE. SQL replay: NONE. Open transactions and
-  inserted test fixtures: NONE. This audit uses SELECT metadata inspection only.
+After the file chain was corrected, four versions were marked as applied in staging
+history only:
 
-## Frozen Security And Preservation
+- `20260812000000`
+- `20260813`
+- `20260818`
+- `20260826143000`
 
-Package 6D-0 remains Git/live 20260904105918. Migration SHA-256 remains
-5B91B22F823A30F86E329B381FE797FD28655D237AD977D6B80D2C99AF5485B3.
-Its authorization verifier passes 40/40; all seven current read-only database verifiers
-pass 228/228. Phase 1 through 6C frozen static/browser/Edge regression suites PASS;
-exact counts are in PUBLIC_AUTH_REGISTRATION_HOTFIX.md. These prove current checked
-contracts, not an exhaustive historic migration equivalence proof.
+This repaired only `supabase_migrations.schema_migrations` metadata. The repaired
+versions describe migrations already represented in the live staging schema; they were
+not replayed.
 
-Before/after profiles, workspace and entitlement fingerprints match. Private chat
-counts and normalized-function fingerprints match. No schema/member/trainer data
-change occurred. The separately authorized Auth hotfix performed one supported
-confirmation resend; that action did not repair migration history or confer a role.
-No Edge deployment, external AI call, new Package 6D functionality or production access.
+## Evidence
 
-## Required Next Action
+The refreshed manifest at
+`docs/PROJECT_MIGRATION_RECONCILIATION_MANIFEST.json` records 25 local migrations and
+25 live history rows with:
 
-Recover and review the missing core baseline and exact evolution evidence for the ten
-uncertain artifacts. Then establish dependency order and a canonical migration identity
-for every file before performing a reviewed history-only reconciliation. Re-run the
-official list/dry-run and a new empty local rebuild/schema comparison before reopening
-general migration deployment. Broad future migrations are NOT cleared by this audit.
+- zero local-only versions;
+- zero remote-only versions;
+- zero name mismatches;
+- zero duplicate versions;
+- the four history-only repair versions;
+- the 19 resolved timestamp mappings;
+- the reconstructed baseline scope and live object presence.
 
-The urgent frontend Auth hotfix is independently deployed and verified; its runtime
-commit does not contain migration SQL changes. The final documentation/audit commit
-records this blocked gate, not a claim of a clean or repaired migration chain.
+Official Supabase CLI checks:
+
+- `supabase migration list --project-ref mokxyyullfhkfalopbzd`: synchronized 25/25.
+- `supabase db push --dry-run --skip-vault --project-ref mokxyyullfhkfalopbzd`:
+  `Remote database is up to date`, with no migrations, seeds or roles pending.
+- `supabase db diff --linked --schema public,ai_private,legacy_auth_private`:
+  not executable in this local environment because Docker Desktop is unavailable
+  (`LegacyImagePrepullError`). No staging change was attempted by this failed diff.
+
+Live migration history from the Supabase management API also returns all 25 expected
+versions and names, including `20260812000000_legacy_phase1_3_source_baseline`,
+the three previously missing Git migrations and the existing `20260904105918`
+6D-0 gate.
+
+The live 6D-0 migration identity checker now returns `package_identity_pass=true`,
+`full_history_synchronized=true`, `broad_db_push_allowed=true`, and no local-only,
+remote-only or duplicate local versions.
+
+Local rebuild verification:
+
+- `node supabase/tests/project-migration-local-rebuild.cjs`: PASS through
+  `20260902045834_phase6b_provider_privacy_cost_gate.sql` on local PostgreSQL 18.
+- The rebuild produced the expected Phase 1-6B public objects and RLS flags,
+  including `profiles`, `coach_workspaces`, `user_settings`, `entitlements`,
+  `recovery_logs`, Training, Nutrition, Progress and AI trust objects.
+- Full local replay of the final three migrations is blocked only by the local machine
+  missing the `pg_cron` extension. The migration chain itself is synchronized and
+  staging dry-run clean.
+
+Data preservation:
+
+- Before repair, all 39 live public tables were counted and fingerprinted.
+- After repair, all 39 live public table counts matched the pre-repair counts exactly.
+- The only intended live write was migration-history metadata. No application table,
+  Auth role/link, Edge Function, frontend runtime, AI provider state, catalog or member
+  row was changed by this reconciliation.
+
+OneDrive/temp safety:
+
+- The only deletion candidates found after the OneDrive prompt were:
+  `C:\Users\Fitme\OneDrive\Documenten\Fit Met Zorge\Zip github fitmetzorge staging\fitmetzorge-staging-main\supabase\.temp\phase4fb-staging-deploy\supabase\.temp\local-rebuild-tc26YR`
+  and
+  `C:\Users\Fitme\OneDrive\Documenten\Fit Met Zorge\Zip github fitmetzorge staging\fitmetzorge-staging-main\supabase\.temp\phase4fb-staging-deploy\supabase\.temp\local-rebuild-YIC31o`.
+- They contain only temporary PostgreSQL 18 rebuild-cluster files, including
+  `PG_VERSION`, `base`, `global`/WAL/config data, and no `.git`, canonical migrations,
+  docs, assets, functions or source paths.
+- No `postmaster.pid` was present. They are ignored by `.gitignore`. Because OneDrive
+  restored them after the owner chose to keep items, the verifier was changed to use
+  the system temp directory instead of a repo/OneDrive temp path.
+
+## Outcome
+
+The broad migration deployment gate is reopened for staging: the live history now
+matches the Git chain, `db push --dry-run` is clean, and the repository contains a
+rebuildable source baseline for the missing Phase 1-3/source objects.
+
+The baseline is deliberately conservative. If future work needs legal/audit-grade
+byte identity of the original Phase 1-3 SQL, that exact historical source still was
+not found and must be treated as unavailable unless the owner supplies an external
+archive. This is not a blocker for forward-only staging development under the repaired
+chain.
+
+Public Auth hotfix status remains successful. The owner has received the confirmation
+email for the new test account, so no new resend, Brevo investigation, manual account
+confirmation, trainer role or trainer linkage was performed.
+
+Production remains untouched and forbidden.

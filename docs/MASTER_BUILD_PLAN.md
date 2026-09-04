@@ -31,13 +31,17 @@ The urgent public Auth lifecycle/resend correction is live on staging, without n
 Package 6D functionality. Public Auth routes must not dispatch member renderers or
 hydration before valid application entry. See PUBLIC_AUTH_REGISTRATION_HOTFIX.md.
 
-The project-wide migration reconciliation gate is BLOCKED. Historical timestamp
-differences, uncertain execution identities and missing core-table baseline SQL must
-be resolved with reviewed evidence before broad db push or an empty-database rebuild.
-Do not mark uncertain migrations applied, replay historical security SQL, or treat
-present objects as proof of exact historical execution. Package 6D-0's canonical
-20260904105918 identity remains unchanged. See PROJECT_MIGRATION_RECONCILIATION.md.
-This gate does not authorize another build phase or production access.
+The project-wide migration reconciliation gate is RESOLVED for staging. The 19 older
+timestamp differences are renamed to canonical live migration versions, the duplicate
+old `20260819` conflict is removed, the missing Phase 1-3/source SQL is represented by
+a forward-only source baseline, and the four previously local-only versions were marked
+applied as history metadata only. No historical SQL replay, member-data rewrite, Edge
+deploy, frontend deploy or production access occurred. Official migration list and
+`db push --dry-run --skip-vault` are clean for staging; local rebuild PASSes through
+Phase 6B and full local 6C/6D0 replay still needs a local `pg_cron` extension.
+Package 6D-0's canonical `20260904105918` identity remains unchanged. See
+PROJECT_MIGRATION_RECONCILIATION.md. This gate does not authorize another build phase
+or production access.
 
 ## Strategic Product Addendum - 2026-08-31
 
@@ -1036,9 +1040,11 @@ Additional readiness blocker: separately review/correct the legacy identity/ACL 
 Owner-authorized focused staging remediation is COMPLETE / TECHNICALLY VERIFIED.
 Live rollback E2E: 48/48; read-only verifier: 40/40; concurrency: 8/8; browser: 41/41.
 Migration history: 20260904105918. invite-client version 16; cache 20260904-phase6d0-auth1.
-Migration-identity gate: 6D-0 Git/live 20260904105918 PASS. Whole-project legacy migration
-reproducibility remains a separate blocker; no broad db push/reset/repair is approved by
-this narrow result. See [identity receipt](PHASE6D0_MIGRATION_IDENTITY_RECONCILIATION.md).
+Migration-identity gate: 6D-0 Git/live 20260904105918 PASS. The later project-wide
+reconciliation resolved the older history drift without SQL replay; broad staging
+dry-run is clean, while production remains forbidden. See
+[migration audit](PROJECT_MIGRATION_RECONCILIATION.md) and
+[identity receipt](PHASE6D0_MIGRATION_IDENTITY_RECONCILIATION.md).
 Bootstrap/metadata authority, direct profile grants and broad member workspace access
 are corrected. Existing links/data checksums and frozen Phase 1-6C semantics are preserved.
 Package 6D analyses and external member AI remain forbidden. Deployment evidence and exact

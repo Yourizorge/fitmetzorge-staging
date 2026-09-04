@@ -7,15 +7,20 @@ Last updated: 2026-09-04
 Lifecycle/resend hotfix DEPLOYED / LIVE TECHNICAL PASS. Runtime commit
 333954a68a1429634e49bafbcc08720ea688131a; cache 20260904-auth-lifecycle2. See
 [public Auth evidence](PUBLIC_AUTH_REGISTRATION_HOTFIX.md). Exactly one confirmation
-resend was accepted by Supabase (HTTP 200); inbox delivery remains owner-verifiable.
-At the post-resend check the account remained unconfirmed, with no trainer grant.
-No schema/Edge/AI change. Four live public-route viewports PASS without console errors
-or mutating requests; 88 assembled-browser, 26 focused static and 228 live DB checks PASS.
-Project-wide migration reconciliation is BLOCKED: 24 Git / 21 live records, 19 timestamp
-differences, three unrecorded-by-name files, four files sharing version 20260819 and
-missing core baseline SQL. Ten artifacts lack sufficient execution-identity proof.
-No history repair, rename or replay occurred. Full db push and empty-database rebuild
-are NOT approved by this result. See [migration audit](PROJECT_MIGRATION_RECONCILIATION.md).
+resend was accepted by Supabase (HTTP 200); the owner subsequently received the
+confirmation email. No new resend, Brevo investigation, manual confirmation, trainer
+role or trainer link was performed. Four live public-route viewports PASS without
+console errors or mutating requests; 88 assembled-browser, 26 focused static and
+228 live DB checks PASS.
+
+Project-wide migration reconciliation is RESOLVED: 25 Git migrations and 25 live
+history rows are synchronized, the 19 older timestamp differences were renamed to
+canonical live versions, the duplicate old `20260819` conflict is gone, the missing
+Phase 1-3/source SQL is represented by a safe forward-only baseline, and the four
+previously local-only versions were marked applied as history metadata only. No
+historical SQL replay, member-data rewrite, Edge deploy, frontend deploy or production
+access occurred. `supabase migration list` and `db push --dry-run --skip-vault` are
+clean for staging. See [migration audit](PROJECT_MIGRATION_RECONCILIATION.md).
 
 - Baseline audit: COMPLETE
 - Phase 0A Governance: COMPLETE
@@ -32,7 +37,7 @@ are NOT approved by this result. See [migration audit](PROJECT_MIGRATION_RECONCI
 - Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6C COMPLETE / OWNER-ACCEPTED / FROZEN; PACKAGE 6D READINESS AUDIT COMPLETE / IMPLEMENTATION NOT STARTED
 - Production Migration: NOT STARTED
 
-Current next step: owner decisions on Package 6D scope/consent, timezone/quality, result retention, cadence/cost and safety copy, followed by separate implementation GO. Package 6C was owner real-phone accepted and frozen on 2026-09-04. The 6D readiness audit is complete; no implementation or deployment has started. All earlier baselines remain frozen; external member-provider processing and production remain blocked. See `docs/PHASE6D_READ_ONLY_ANALYSES_READINESS.md`.
+Current next step: Package 6D may remain queued behind its existing owner decisions on scope/consent, timezone/quality, result retention, cadence/cost and safety copy, followed by separate implementation GO. Package 6C was owner real-phone accepted and frozen on 2026-09-04. The 6D readiness audit is complete; no implementation or deployment has started. All earlier baselines remain frozen; external member-provider processing and production remain blocked. See `docs/PHASE6D_READ_ONLY_ANALYSES_READINESS.md`.
 
 ## Environment Guardrail
 
@@ -264,7 +269,8 @@ Owner-authorized focused staging remediation is COMPLETE / TECHNICALLY VERIFIED.
 Live rollback E2E: 48/48; read-only verifier: 40/40; concurrency: 8/8; browser: 41/41.
 Migration history: 20260904105918. invite-client version 16; cache 20260904-phase6d0-auth1.
 6D-0 identity reconciled: Git/live 20260904105918, identical SQL SHA-256, no DB/history mutation.
-General migration deployment remains blocked by older history drift; see
+The later project-wide reconciliation resolved the older history drift without SQL replay;
+see [the migration audit](PROJECT_MIGRATION_RECONCILIATION.md) and
 [the identity receipt](PHASE6D0_MIGRATION_IDENTITY_RECONCILIATION.md).
 Bootstrap/metadata authority, direct profile grants and broad member workspace access
 are corrected. Existing links/data checksums and frozen Phase 1-6C semantics are preserved.

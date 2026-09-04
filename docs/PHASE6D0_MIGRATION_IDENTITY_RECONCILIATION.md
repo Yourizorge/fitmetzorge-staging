@@ -4,9 +4,11 @@ Date: 2026-09-04. Staging only: mokxyyullfhkfalopbzd.
 Repository: Yourizorge/fitmetzorge-staging, main.
 Starting HEAD: 65e0ae11d45b7cf3dbddb357e1cbaff493bdf97b.
 
-Status: 6D-0 IDENTITY PASS. Broader legacy migration-history synchronization BLOCKED.
-No Package 6D implementation, database change, history repair, SQL reapplication,
-frontend/Edge deployment, external AI call or production access occurred.
+Status: 6D-0 IDENTITY PASS. The broader legacy migration-history synchronization
+that was blocked during this narrow 6D-0 receipt was later resolved by the
+project-wide reconciliation. In the original 6D-0 identity task, no Package 6D
+implementation, database change, history repair, SQL reapplication, frontend/Edge
+deployment, external AI call or production access occurred.
 
 ## Cause And Exact Identity
 
@@ -56,44 +58,19 @@ The read-only identity checker independently requires a single canonical filenam
 single history record, locked checksum, eight exact function bodies and thirteen
 safe function contexts. It rejects old/duplicate/missing IDs and altered bytes.
 
-## Important Broader Deployment Limitation
+## Broader Deployment Limitation, Later Resolved
 
-A general clean-checkout db push is NOT yet proven safe or synchronized for the
-whole historical project. This predates 6D-0:
+At the time of this narrow 6D-0 identity receipt, whole-project deployment remained
+blocked by older history drift outside 6D-0. That historical warning is superseded by
+`docs/PROJECT_MIGRATION_RECONCILIATION.md`.
 
-- 19 older migrations have matching names but different Git/live timestamps.
-- Three Git artifacts have no same-name live history entry:
-  20260813_trainer_signup_bootstrap.sql;
-  20260818_phase4_nutrition_schema_slice1.sql;
-  20260826143000_phase4_nutrition_slice4fc_off_authoritative_logging.sql.
-- Four old files share the local version 20260819.
-- The existing Git history is not a complete empty-database baseline.
-
-The official db push --dry-run --skip-vault still fails closed with
-LegacyDbPushMissingLocalError for the 19 older remote versions. The corrected
-6D-0 version is absent from that error list. No SQL was applied by the dry run.
-
-Do not follow its generic suggestion to mass-mark old versions reverted. That would
-discard applied-history evidence and could schedule dangerous legacy SQL again.
-Do not use --include-all, reset, reapply the bootstrap, or mark the three unrecorded
-artifacts applied merely because some current objects exist.
-
-The new checker defaults to nonzero exit on broader history drift. --package-only
-permits the narrow 6D-0 identity result while still explicitly reporting
-full_history_synchronized=false and broad_db_push_allowed=false. This is an inspection
-gate, not a replacement migration executor or a guarantee against bypassing it.
-
-Full-project migration reproducibility remains a separate legacy-history/baseline
-remediation gate: compare each older applied artifact and its evolution, reconcile
-identity without reapplying security/data SQL, and prove an approved clean baseline.
-No older frozen artifact or history row was silently changed in this task.
-
-Read-only continuation during the owner-requested Codex configuration task compared
-committed Git blobs against all 21 history entries: 6D-0 byte-exact; thirteen older
-artifacts equal after CRLF/outer-whitespace normalization; seven recorded artifacts
-still unresolved by that comparison (including the 95-statement OFF foundation entry);
-three without a same-name history entry. This does not establish semantic drift in
-the seven, nor authorize blind applied/reverted markers. No database mutation occurred.
+The later project-wide reconciliation resolved the 19 older timestamp differences,
+removed the duplicate old `20260819` conflict, added a forward-only Phase 1-3/source
+baseline, and marked four already-represented versions applied in staging history
+metadata only. It did not replay historical SQL, reset the remote database, mutate
+member rows, deploy Edge/frontend runtime, start Package 6D functionality or touch
+production. The current official CLI result is synchronized `migration list` and a
+clean `db push --dry-run --skip-vault` for staging.
 
 ## Verification Receipt
 
