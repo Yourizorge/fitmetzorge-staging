@@ -65,6 +65,11 @@ This is identity remediation, not Package 6D analysis implementation or owner ac
 - Real assembled nine-patch source parses; no new polling, observer or external AI route.
 - Frozen static: Phase 1 75; Phase 2 46; Phase 3 222; Member UX 56; navigation 41;
   Nutrition schema 90; Nutrition final 45; Phase 5 116; 6A 93; 6B 98; 6C 117.
+- The historical Phase 1 and Member UX harnesses also PASS against the actual deployment
+  checkout through assets/phase6d0-frozen-regression-check.cjs (75 + 56). Only missing
+  historical SQL fixtures are read from the archive. Obsolete cache expectations are
+  refreshed; the gold-action assertion renders both Sleep detail and the already-frozen
+  Phase 5 Progress navigation branch. No frozen runtime or security assertion is weakened.
 - Frozen browser: Nutrition 138; Phase 5 53; 6C 85.
 - Frozen mocked Youri AI tests: 53. External AI calls/cost: 0 / EUR 0.00.
 - One 6C static cache assertion updated solely to accept the new shell cache while
@@ -108,6 +113,8 @@ This is identity remediation, not Package 6D analysis implementation or owner ac
 ## Reproducible Tests And Transport Notes
 
 - Run assets/phase6d0-browser-check.js with local Playwright.
+- Run node assets/phase6d0-frozen-regression-check.cjs with the original archive available
+  (or FMZ_ARCHIVE_ROOT pointing to it). Runtime files always come from the Git checkout.
 - Run node --test supabase/functions/invite-client/handler.test.ts (network-free).
 - Run the complete rollback E2E SQL and SELECT-only verifier against staging.
 - Set FMZ_PYTHON to the bundled Python binary, then run

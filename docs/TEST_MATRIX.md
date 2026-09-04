@@ -812,6 +812,10 @@ Existing project-wide advisor review: NOT ALL-GREEN. Legacy bootstrap/linkage au
 
 Owner-authorized focused staging remediation is COMPLETE / TECHNICALLY VERIFIED.
 Live rollback E2E: 48/48; read-only verifier: 40/40; concurrency: 8/8; browser: 41/41.
+Frozen static: 999 PASS; frozen browser: 276 PASS; mocked AI tests: 53 PASS;
+live frozen database checks: 188 PASS. Phase 1/Member UX historical assertions also run
+against the actual deployment checkout (75/56), with cache-only expectation updates and
+a rendered gold-action assertion covering Sleep detail and frozen Phase 5 Progress.
 Migration history: 20260904105918. invite-client version 16; cache 20260904-phase6d0-auth1.
 Bootstrap/metadata authority, direct profile grants and broad member workspace access
 are corrected. Existing links/data checksums and frozen Phase 1-6C semantics are preserved.
