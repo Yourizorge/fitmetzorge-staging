@@ -1,6 +1,10 @@
 # FitMetZorge Test Matrix
 
 Status: MASTER PLAN COVERAGE MATRIX
+Latest execution: 2026-09-04 public Auth hotfix, 88 assembled browser + 25 focused
+static/security checks PASS; frozen runtime suites PASS and 228 live read-only
+database checks PASS. See PUBLIC_AUTH_REGISTRATION_HOTFIX.md for exact counts,
+four viewports, mail-dispatch limits and the staging deployment receipt.
 Last updated: 2026-08-18
 
 This matrix records the required functional, security, entitlement, AI, migration, and release checks for the Master Build. No implementation tests are executed by this document.

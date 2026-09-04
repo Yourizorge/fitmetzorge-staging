@@ -33,8 +33,8 @@ function includesAll(source, values) { return values.every((value) => source.inc
 
 check("runtime duplicate guard", files.runtime.includes("FMZ_PHASE5_PROGRESS_LOADED"));
 check("runtime version", files.runtime.includes('20260901-phase5-unit-switch1'));
-check("Phase 1 cache version", files.app.includes('assets/phase1-foundation.js?v=20260901-phase5-unit-switch1'));
-check("app cache version", files.app.includes('assets/phase5-progress.js?v=20260901-phase5-unit-switch1'));
+check("Phase 1 cache version", files.app.includes('assets/phase1-foundation.js?v=20260904-auth-lifecycle1'));
+check("app cache version", files.app.includes('assets/phase5-progress.js?v=20260904-auth-lifecycle1'));
 check("index cache version", /app\.js\?v=2026[0-9a-z-]+/.test(files.index));
 check("loader after Member UX", files.app.indexOf("memberUxPatchSource") < files.app.indexOf("phase5ProgressPatchSource"));
 check("loader before init", files.app.indexOf("phase5ProgressPatchSource") < files.app.lastIndexOf("init();"));

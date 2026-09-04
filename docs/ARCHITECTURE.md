@@ -3,6 +3,11 @@
 Status: CURRENT AND TARGET ARCHITECTURE DOCUMENTED
 Last updated: 2026-09-04
 
+Public Auth lifecycle: Phase 1 owns the session/profile-ready render boundary.
+Registration/login/password/confirmation/error screens must never dispatch member
+renderers or member hydration before explicit valid application entry. See
+PUBLIC_AUTH_REGISTRATION_HOTFIX.md. This does not add Package 6D functionality.
+
 The Phase 0B Auth/invitation/workspace descriptions below are historical. Their unsafe
 metadata and broad member-access paths are superseded by Package 6D-0 at the end of this
 document and in PHASE6D0_LEGACY_AUTHORIZATION_SECURITY.md.

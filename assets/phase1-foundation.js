@@ -11,6 +11,96 @@
     general_health: "health"
   });
   let phase1OnboardingHydrationState = { loaded: false, rowFound: false, failed: false };
+  let phase1AuthEpoch = 0;
+  let phase1HydrationEpoch = 0;
+  const phase1IncomingError = new URLSearchParams(location.hash.slice(1)).has("error")
+    || new URLSearchParams(location.search).has("error");
+  let phase1PublicLink = INITIAL_AUTH_LINK_TYPE === "signup" || phase1IncomingError;
+  try { phase1PublicLink ||= sessionStorage.getItem("fmz.auth.confirmation-login-required") === "true"; } catch {}
+  const phase1OriginalIsLoggedIn = isLoggedIn;
+  isLoggedIn = function isLoggedInPhase1() {
+    return phase1OriginalIsLoggedIn() && !passwordSetupRequired && !phase1PublicLink
+      && (!isOnlineMode() || Boolean(onlineReady && onlineProfile?.id));
+  };
+
+  const PHASE1_AUTH_COPY = {
+    nl: { resend: "Bevestigingsmail opnieuw versturen", sent: "Als bevestiging nodig is, ontvang je een e-mail. Controleer ook je spammap.", wait: "Wacht even voordat je opnieuw probeert.", failed: "Dit lukt nu niet. Probeer het later opnieuw.", invalid: "Controleer je e-mailadres en wachtwoord, of bevestig eerst je e-mail.", email: "Vul je e-mailadres in.", sending: "Bevestigingsmail aanvragen..." },
+    en: { resend: "Resend confirmation email", sent: "If confirmation is needed, you will receive an email. Please also check spam.", wait: "Please wait before trying again.", failed: "This is unavailable right now. Please try again later.", invalid: "Check your email and password, or confirm your email first.", email: "Enter your email address.", sending: "Requesting confirmation email..." },
+    de: { resend: "Bestaetigungs-E-Mail erneut senden", sent: "Falls eine Bestaetigung erforderlich ist, erhaeltst du eine E-Mail. Pruefe auch den Spamordner.", wait: "Bitte warte vor einem erneuten Versuch.", failed: "Das ist momentan nicht moeglich. Bitte versuche es spaeter erneut.", invalid: "Pruefe E-Mail und Passwort oder bestaetige zuerst deine E-Mail.", email: "Gib deine E-Mail-Adresse ein.", sending: "Bestaetigungs-E-Mail wird angefordert..." }
+  };
+  const phase1AuthText = key => (PHASE1_AUTH_COPY[state.accountSettings?.language] || PHASE1_AUTH_COPY.nl)[key];
+  function phase1SafeAuthError(error) {
+    if (error?.status === 429 || /over_.*rate_limit/.test(error?.code || "")) return phase1AuthText("wait");
+    if (["invalid_credentials", "email_not_confirmed"].includes(error?.code)) return phase1AuthText("invalid");
+    return phase1AuthText("failed");
+  }
+  let phase1ConfirmationEmail = "";
+  let phase1ResendPending = false;
+  let phase1ResendTimer;
+  const phase1ResendKey = "fmz.auth.resend-after.v1";
+  let phase1ResendAfter = 0;
+  try { phase1ResendAfter = Math.min(Number(sessionStorage.getItem(phase1ResendKey)) || 0, Date.now() + 60000); } catch {}
+  function phase1RefreshResend() {
+    clearTimeout(phase1ResendTimer);
+    document.querySelectorAll("[data-phase1-resend]").forEach(button => {
+      button.textContent = phase1AuthText(phase1ResendPending ? "sending" : "resend");
+      button.disabled = phase1ResendPending || Date.now() < phase1ResendAfter;
+      button.setAttribute("aria-busy", String(phase1ResendPending));
+    });
+    if (phase1ResendAfter > Date.now()) phase1ResendTimer = setTimeout(phase1RefreshResend, phase1ResendAfter - Date.now() + 20);
+  }
+  function phase1ResendCooldown() {
+    phase1ResendAfter = Date.now() + 60000;
+    try { sessionStorage.setItem(phase1ResendKey, String(phase1ResendAfter)); } catch {}
+    phase1RefreshResend();
+  }
+  async function phase1ResendConfirmation(button) {
+    if (phase1ResendPending || Date.now() < phase1ResendAfter) return;
+    const form = button.closest("form");
+    const email = cleanEmail(form?.elements.email?.value || phase1ConfirmationEmail);
+    const message = form?.querySelector(".login-message");
+    if (!message) return;
+    message.className = "login-message";
+    message.setAttribute("role", "status");
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      message.textContent = phase1AuthText("email");
+      return;
+    }
+    phase1ResendPending = true;
+    phase1ResendCooldown();
+    message.textContent = phase1AuthText("sending");
+    try {
+      const { error } = await supabaseClient.auth.resend({
+        type: "signup", email, options: { emailRedirectTo: APP_AUTH_REDIRECT_URL }
+      });
+      if (error && !["user_not_found", "email_already_confirmed"].includes(error.code)) throw error;
+      message.textContent = phase1AuthText("sent");
+    } catch (error) {
+      message.textContent = phase1SafeAuthError(error);
+    } finally {
+      phase1ResendPending = false;
+      phase1RefreshResend();
+    }
+  }
+  function phase1HandlePublicLink(session) {
+    if (!phase1PublicLink) return false;
+    try { sessionStorage.setItem("fmz.auth.confirmation-login-required", "true"); } catch {}
+    phase1ClearAuthUrl();
+    showAuthPanel("login");
+    const message = $("#loginMessage");
+    if (message) {
+      message.setAttribute("role", "status");
+      const confirmed = { nl: "Je e-mail is bevestigd. Log in om verder te gaan.", en: "Your email is confirmed. Log in to continue.", de: "Deine E-Mail ist bestaetigt. Melde dich an, um fortzufahren." };
+      message.textContent = phase1IncomingError || !session?.user?.email_confirmed_at
+        ? phase1AuthText("invalid") : confirmed[state.accountSettings?.language] || confirmed.nl;
+    }
+    return true;
+  }
+  function phase1EnterApp() {
+    phase1PublicLink = false;
+    try { sessionStorage.removeItem("fmz.auth.confirmation-login-required"); } catch {}
+  }
+  window.FMZ_PUBLIC_AUTH = Object.freeze({ errorMessage: phase1SafeAuthError, handleLink: phase1HandlePublicLink, enterApp: phase1EnterApp });
 
   const PHASE1_I18N = {
     nl: {
@@ -1406,6 +1496,19 @@
   }
 
   function phase1ApplyAuthCopy(context = passwordSetupContext || "") {
+    ["loginForm", "registerForm"].forEach(id => {
+      const form = document.getElementById(id);
+      if (form && !form.querySelector("[data-phase1-resend]")) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "secondary-btn";
+        button.dataset.phase1Resend = "";
+        button.style.cssText = "min-height:44px;white-space:normal;max-width:100%";
+        button.addEventListener("click", () => phase1ResendConfirmation(button));
+        form.append(button);
+      }
+    });
+    phase1RefreshResend();
     phase1SetText('.auth-tab[data-auth-mode="login"]', phase1Text("authLoginTab"));
     phase1SetText('.auth-tab[data-auth-mode="register"]', phase1Text("authRegisterTab"));
     phase1SetText("#registerForm h1", phase1Text("authRegisterTab"));
@@ -1923,6 +2026,11 @@
 
   const phase1OriginalRenderNav = renderNav;
   renderNav = function renderNavPhase1() {
+    if (!isLoggedIn()) {
+      const nav = $("#nav");
+      if (nav) nav.replaceChildren();
+      return;
+    }
     phase1UpdateNavigationLabel();
     phase1OriginalRenderNav();
     phase1RequestClientShellCopy();
@@ -1932,6 +2040,11 @@
   renderAll = function renderAllPhase1() {
     phase1InstallStyles();
     state = phase1NormalizeState(state);
+    if (!isLoggedIn()) {
+      renderRoleVisibility();
+      phase1ApplyAuthCopy();
+      return;
+    }
     phase1UpdateNavigationLabel();
     phase1RenderAllDepth += 1;
     try {
@@ -2130,10 +2243,13 @@
 
   const phase1OriginalLoadOnlineWorkspace = loadOnlineWorkspace;
   loadOnlineWorkspace = async function loadOnlineWorkspacePhase1(profile) {
+    if (passwordSetupRequired || phase1HydrationEpoch !== phase1AuthEpoch) return;
+    const authEpoch = phase1AuthEpoch;
     const [remoteSettings, remoteOnboarding] = await Promise.all([
       phase1HydrateAccountSettings(profile),
       phase1HydrateOnboarding(profile)
     ]);
+    if (authEpoch !== phase1AuthEpoch || passwordSetupRequired) return;
     if (profile?.role === "client" && !profile.trainer_id) {
       const freeClient = createClientProfile({
         name: profile.name || profile.email || phase1Text("freeUserName"),
@@ -2219,6 +2335,9 @@
       "expires_in",
       "expires_at",
       "token_type",
+      "error",
+      "error_code",
+      "error_description",
       "type",
       "code"
     ].forEach((key) => url.searchParams.delete(key));
@@ -2302,8 +2421,28 @@
   }
 
   let phase1PasswordSetupCompleting = false;
+  const phase1OriginalHydrateOnlineUser = hydrateOnlineUser;
+  const phase1OriginalApplyOnlineState = applyOnlineState;
+  applyOnlineState = function applyOnlineStatePhase1(...args) {
+    if (passwordSetupRequired || phase1HydrationEpoch !== phase1AuthEpoch) return;
+    return phase1OriginalApplyOnlineState(...args);
+  };
+  hydrateOnlineUser = async function hydrateOnlineUserPhase1(...args) {
+    if (passwordSetupRequired || phase1PublicLink || !isOnlineMode()) return false;
+    const authEpoch = phase1AuthEpoch;
+    const { data, error } = await supabaseClient.auth.getSession();
+    if (error) throw error;
+    if (!data?.session || authEpoch !== phase1AuthEpoch || passwordSetupRequired) return false;
+    phase1HydrationEpoch = authEpoch;
+    onlineReady = false;
+    return phase1OriginalHydrateOnlineUser(...args);
+  };
   if (supabaseClient?.auth?.onAuthStateChange) {
     supabaseClient.auth.onAuthStateChange((event) => {
+      if (event === "SIGNED_OUT" || event === "PASSWORD_RECOVERY") {
+        phase1AuthEpoch += 1;
+        onlineReady = false;
+      }
       if (event === "USER_UPDATED" && phase1PasswordSetupCompleting) {
         passwordSetupRequired = false;
         passwordSetupContext = "";
@@ -2359,6 +2498,8 @@
         });
         if (error) throw error;
         if (!authData.session) {
+          phase1ConfirmationEmail = email;
+          phase1ResendCooldown();
           if (message) {
             message.className = "login-message ok";
             message.textContent = phase1Text("accountCreatedCheckEmail");
@@ -2376,7 +2517,7 @@
       } catch (error) {
         if (message) {
           message.className = "login-message error";
-          message.textContent = error.message;
+          message.textContent = phase1SafeAuthError(error);
         }
       }
       return;
@@ -2448,7 +2589,7 @@
     } catch (error) {
       if (message) {
         message.className = "login-message error";
-        message.textContent = phase1Format("passwordChangeFailed", { message: error.message });
+        message.textContent = phase1SafeAuthError(error);
       }
       passwordSetupRequired = true;
       renderRoleVisibility();

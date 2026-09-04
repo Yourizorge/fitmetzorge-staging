@@ -16,10 +16,10 @@ for(const name of ["phase1-static-check.js","member-ux-static-check.js"]){
  let source=fs.readFileSync(file,"utf8");
  // Refresh obsolete deployment constants without changing runtime or security assertions.
  if(!source.includes('const currentAppVersion = "20260826-phase4f-c1";'))throw new Error("Historical cache assertion changed");
- source=source.replace('const currentAppVersion = "20260826-phase4f-c1";','const currentAppVersion = "20260904-phase6d0-auth1";');
+ source=source.replace('const currentAppVersion = "20260826-phase4f-c1";','const currentAppVersion = "20260904-auth-lifecycle1";');
  if(name==="phase1-static-check.js"){
   if(!source.includes('const phase1Version = "20260818-member-ux-today-hydration1";'))throw new Error("Historical Phase 1 cache assertion changed");
-  source=source.replace('const phase1Version = "20260818-member-ux-today-hydration1";','const phase1Version = "20260901-phase5-unit-switch1";');
+  source=source.replace('const phase1Version = "20260818-member-ux-today-hydration1";','const phase1Version = "20260904-auth-lifecycle1";');
  }
  if(name==="member-ux-static-check.js"){
   const oldCheck = `memberUx.includes('class="primary-btn member-ux-primary-action" data-member-open-detail=')`;

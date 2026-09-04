@@ -53,8 +53,9 @@ def main():
         print(json.dumps({"ok": False, "rows": [], "status": error.code,
                           "error": match.group(0) if match else "management_query_rejected"}))
 
-try:
-    main()
-except Exception as error:
-    safe = str(error) if isinstance(error, RuntimeError) else "management_transport_unavailable"
-    print(json.dumps({"ok": False, "rows": [], "error": safe}))
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as error:
+        safe = str(error) if isinstance(error, RuntimeError) else "management_transport_unavailable"
+        print(json.dumps({"ok": False, "rows": [], "error": safe}))

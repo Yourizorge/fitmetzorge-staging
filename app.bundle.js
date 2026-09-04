@@ -5096,7 +5096,7 @@ $("#forgotPasswordForm").addEventListener("submit", async (event) => {
     form.reset();
   } catch (error) {
     message.className = "login-message error";
-    message.textContent = `Resetlink versturen mislukt: ${error.message}`;
+    message.textContent = window.FMZ_PUBLIC_AUTH.errorMessage(error);
   }
 });
 
@@ -5245,6 +5245,7 @@ $("#loginForm").addEventListener("submit", async (event) => {
       message.textContent = "Inloggen...";
       const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
       if (error) throw error;
+      window.FMZ_PUBLIC_AUTH.enterApp();
       await hydrateOnlineUser(role);
       message.textContent = "";
       form.reset();
@@ -5252,9 +5253,7 @@ $("#loginForm").addEventListener("submit", async (event) => {
       return;
     } catch (error) {
       message.className = "login-message error";
-      message.textContent = role === "client" && /uitnodiging|invite|gekoppeld/i.test(error.message)
-        ? "Dit lidaccount is nog niet gekoppeld. Vraag je trainer om je via e-mail toe te voegen."
-        : error.message;
+      message.textContent = window.FMZ_PUBLIC_AUTH.errorMessage(error);
       return;
     }
   }
@@ -5769,11 +5768,11 @@ async function init() {
   if (isOnlineMode()) {
     try {
       const { data } = await supabaseClient.auth.getSession();
-      if (data?.session) {
+      const publicConfirmation = window.FMZ_PUBLIC_AUTH.handleLink(data?.session);
+      if (data?.session && !publicConfirmation) {
         if (INITIAL_AUTH_LINK_TYPE === "recovery") {
           requirePasswordSetup("recovery");
         } else if (INITIAL_AUTH_LINK_TYPE === "invite") {
-          await hydrateOnlineUser("client");
           requirePasswordSetup("invite");
         } else {
           await hydrateOnlineUser();
@@ -5786,13 +5785,12 @@ async function init() {
         }
         if (event === "SIGNED_IN" && session && INITIAL_AUTH_LINK_TYPE === "invite" && !passwordSetupRequired) {
           try {
-            await hydrateOnlineUser("client");
             requirePasswordSetup("invite");
           } catch (error) {
             const message = $("#setPasswordMessage");
             if (message) {
               message.className = "login-message error";
-              message.textContent = error.message;
+              message.textContent = window.FMZ_PUBLIC_AUTH.errorMessage(error);
             }
           }
           return;
@@ -5809,7 +5807,7 @@ async function init() {
       const message = $("#loginMessage");
       if (message && !isLoggedIn()) {
         message.className = "login-message error";
-        message.textContent = error.message;
+        message.textContent = window.FMZ_PUBLIC_AUTH.errorMessage(error);
       }
     }
   }

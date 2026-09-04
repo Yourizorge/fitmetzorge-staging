@@ -468,6 +468,7 @@
   }
 
   function phase5Render() {
+    if (!isLoggedIn() || state.ui.role !== "client") return;
     const target = document.getElementById("progress");
     if (!target) return;
     phase5InstallStyles();
@@ -540,6 +541,7 @@
       if (phase5State.timezoneInitializedFor !== profileId) {
         const timezoneResult = await supabaseClient.rpc("fmz_phase5_set_progress_timezone", { p_timezone_name: timezone });
         if (timezoneResult.error) throw timezoneResult.error;
+        if (!isLoggedIn() || onlineProfile?.id !== profileId) return;
         phase5State.timezoneInitializedFor = profileId;
       }
       const { data, error } = await supabaseClient.rpc("fmz_phase5_get_progress_dashboard", {
@@ -547,6 +549,7 @@
         p_requested_days: 90
       });
       if (error) throw error;
+      if (!isLoggedIn() || onlineProfile?.id !== profileId) return;
       phase5State.data = data || {};
       phase5State.loaded = true;
       phase5State.error = "";
@@ -768,7 +771,9 @@
   const phase5OriginalRenderNav = renderNav;
 
   renderProgress = function renderProgressPhase5() {
+    if (!isLoggedIn()) return;
     if (isLoggedIn() && state.ui.role === "client") return phase5Render();
+    if (!document.getElementById("progressGoalStrip")) return;
     return phase5OriginalRenderProgress();
   };
 

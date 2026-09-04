@@ -1,6 +1,15 @@
 # FitMetZorge Build Status
 
-Last updated: 2026-09-03
+Last updated: 2026-09-04
+
+## Urgent Public Auth Hotfix (2026-09-04)
+
+Local lifecycle/resend hotfix PASS; staging publication in progress. See
+[public Auth evidence](PUBLIC_AUTH_REGISTRATION_HOTFIX.md). Exactly one confirmation
+resend was accepted by Supabase (HTTP 200); inbox delivery remains owner-verifiable.
+Account remains unconfirmed, with no trainer grant. No schema/Edge/AI change.
+Project-wide migration reconciliation remains a separate blocked gate; no historical
+SQL was replayed for this frontend hotfix.
 
 - Baseline audit: COMPLETE
 - Phase 0A Governance: COMPLETE
