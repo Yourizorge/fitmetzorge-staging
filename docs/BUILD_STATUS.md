@@ -14,10 +14,10 @@ Last updated: 2026-09-03
 - Phase 0B Storage verification: COMPLETE
 - Master Plan Specification: COMPLETE
 - Master Plan Final Review: COMPLETE
-- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6C NATURAL-LANGUAGE SAFETY HOTFIX TECHNICAL PASS / FINAL OWNER RETEST REQUIRED
+- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6C COMPLETE / OWNER-ACCEPTED / FROZEN; PACKAGE 6D READINESS AUDIT COMPLETE / IMPLEMENTATION NOT STARTED
 - Production Migration: NOT STARTED
 
-Current next step: final owner real-phone retest of the Package 6C natural-language safety hotfix. The three final Dutch chest-pain/dizziness sentences must hard-stop immediately without generic coaching, while negated, educational and ordinary chest-training language remains usable. The already accepted `Youri AI` layout, composer and avatar are unchanged. Package 6C is not owner-accepted or frozen. Packages 6A and 6B remain frozen; all external member-provider processing remains disabled. Production remains blocked.
+Current next step: owner decisions on Package 6D scope/consent, timezone/quality, result retention, cadence/cost and safety copy, followed by separate implementation GO. Package 6C was owner real-phone accepted and frozen on 2026-09-04. The 6D readiness audit is complete; no implementation or deployment has started. All earlier baselines remain frozen; external member-provider processing and production remain blocked. See `docs/PHASE6D_READ_ONLY_ANALYSES_READINESS.md`.
 
 ## Environment Guardrail
 
@@ -212,13 +212,19 @@ Staging evidence: migration history `20260902045834`; migration SHA-256 `6B432DA
 
 ### Phase 6C Private AI Chat
 
-Status: NATURAL-LANGUAGE SAFETY HOTFIX TECHNICAL PASS / READY FOR FINAL OWNER RETEST / NOT FROZEN
+Status: COMPLETE / OWNER-ACCEPTED / FROZEN
 
 Summary: Package 6C adds a mobile-first private member chat on top of the frozen 6A trust boundary. It is consent-, age- and current `ai`/`personal_coaching`-entitlement gated, uses own-user RPCs only, exposes no trainer read path, keeps messages immutable, supports deterministic sequencing/replay, JSON export, content deletion and a server-authoritative maximum 90-day entitlement-loss grace period.
 
 Only the deterministic staging mock is enabled. External-provider processing remains structurally disabled; the Edge path performs no OpenAI request and reports zero calls and EUR 0 cost. The server-authoritative NL/EN/DE classifier now covers `pijn op/in de/mijn borst`, chest pain/pressure/tightness, dizziness nouns and adjectives, fainting, breathlessness and exertion combinations. Negated symptoms, non-personal educational questions, normal chest training and ordinary post-training soreness remain clear. The persisted safety state blocks automatic execution only, not communication: a safe normal follow-up and new conversation remain available, while repeated risk and override attempts stay hard-stopped with zero actions. Consent and entitlement loss still deny processing.
 
-Original migration history `20260903085454` remains live; request-scoped gate migration history `20260903125150` is live. Their read-only verifiers pass 37/37 and 16/16. `youri-ai` v41 is ACTIVE with JWT verification and bundle SHA-256 `b4c61d47baa620cf7af62842dec3b660fdd40da30cc58c5da221147ab86a3fc2`; every deployed source file is SHA-256-identical to commit `bb5076a`. The approved-avatar runtime commit `abc724fec6115ce85c810fb2f53ff2e5e6a01740` and cache `20260903-phase6c-approved-avatar1` remain unchanged. Static 117/117, browser 85/85, handler 17/17 and combined Edge 53/53 pass. A 12/12 authenticated synthetic live sequence proved all required hard stops and bounded clear controls with zero actions, calls and cost; eighteen cleanup categories returned zero. Phase 1 75/75, Phase 2 46/46, Phase 3 222/222, Member UX 56/56, Phase 4F-E 45/45, Nutrition browser 138/138, Phase 5 116/116 plus 53/53, Phase 6A 93/93 and Phase 6B 98/98 remain PASS. No frontend, schema, RLS, ACL or owner/member data changed. The owner-test AI entitlement remains active once through `2026-09-10T23:59:59Z`. Package 6C remains pending final owner real-phone retest and must not be marked frozen yet.
+Original migration history `20260903085454` remains live; request-scoped gate migration history `20260903125150` is live. Their read-only verifiers pass 37/37 and 16/16. `youri-ai` v41 is ACTIVE with JWT verification and bundle SHA-256 `b4c61d47baa620cf7af62842dec3b660fdd40da30cc58c5da221147ab86a3fc2`; every deployed source file is SHA-256-identical to commit `bb5076a`. The approved-avatar runtime commit `abc724fec6115ce85c810fb2f53ff2e5e6a01740` and cache `20260903-phase6c-approved-avatar1` remain unchanged. Static 117/117, browser 85/85, handler 17/17 and combined Edge 53/53 pass. A 12/12 authenticated synthetic live sequence proved all required hard stops and bounded clear controls with zero actions, calls and cost; eighteen cleanup categories returned zero. Phase 1 75/75, Phase 2 46/46, Phase 3 222/222, Member UX 56/56, Phase 4F-E 45/45, Nutrition browser 138/138, Phase 5 116/116 plus 53/53, Phase 6A 93/93 and Phase 6B 98/98 remain PASS. No frontend, schema, RLS, ACL or owner/member data changed. The owner-test AI entitlement remains active once through `2026-09-10T23:59:59Z`. Package 6C was explicitly owner-accepted and frozen on 2026-09-04. Frozen baselines and current read-only verification are recorded in `docs/PHASE6C_PRIVATE_AI_CHAT.md`.
+
+### Package 6D Read-Only Analyses
+
+Status: READINESS AUDIT COMPLETE / OWNER DECISIONS REQUIRED / IMPLEMENTATION NOT STARTED
+
+The dedicated 15-section report covers authoritative sources, minimized manifests, no-action output, consent/entitlements, lifecycle, legal gates, frozen Luna/Terra cost envelopes, kill switches, additive recommendations and tests. Legacy water/bedtime data and private chat are excluded. No runtime, migration, provider call, member-data write or deployment occurred. The only non-documentation addition is a read-only current-state foundation verifier; the historical 6A installation verifier is unchanged.
 
 ### Production Migration
 
@@ -231,4 +237,8 @@ Summary: Production remains strictly forbidden without explicit owner approval a
 Status: COMPLETE
 
 Summary: Documentation-only final review completed. Corrections were made only to documentation to make the entitlement source of truth, Privacy/AVG requirements, phase dependency rules, and rollback/safety gates explicit before Phase 1. No implementation has started.
+
+## Existing Security Follow-Up Gate - 2026-09-04
+
+The read-only 6D audit identified material legacy identity/ACL concerns outside the accepted 6C implementation: anon/authenticated execution of `fmz_bootstrap_trainer_profile` with a caller-supplied user ID and no caller authorization guard; user-metadata-derived invitation/trainer linkage. No exploit, repair or mutation was performed. A separate owner-scoped security review/correction is required before 6D relies on these authorities. The 6C owner freeze stands; overall project security must not be described as advisor-clean. Full counts and references are in the 6D report.
 

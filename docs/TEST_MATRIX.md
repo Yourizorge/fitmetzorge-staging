@@ -62,12 +62,12 @@ This matrix records the required functional, security, entitlement, AI, migratio
 | Phase 5 | Measurements | Optional logical body measurements, immutable corrections and archive | OWNER ACCEPTANCE GATE | PASS - COMPLETE / OWNER-ACCEPTED / FROZEN |
 | Phase 5 | Photos | Private progress photos, signed access, no public default, AI photo consent gate | SEPARATE PRIVACY GATE | DEFERRED - NO TABLE, BUCKET OR MEMBER FILE INPUT |
 | Phase 5 | Milestones | Strength and consistency from frozen Training sources; truthful unavailable running state | OWNER ACCEPTANCE GATE | PASS - COMPLETE / OWNER-ACCEPTED / FROZEN |
-| Phase 6 | Architecture/readiness | Frozen context sources, backend boundary, privacy, safety, provider, costs, packages and decisions | ARCHITECTURE GATE | PASS - AUDIT COMPLETE / 6A + 6B OWNER-ACCEPTED AND FROZEN |
+| Phase 6 | Architecture/readiness | Frozen context sources, backend boundary, privacy, safety, provider, costs, packages and decisions | ARCHITECTURE GATE | PASS - 6A + 6B + 6C OWNER-ACCEPTED / FROZEN; 6D AUDIT COMPLETE |
 | Phase 6 | Youri AI | Backend-mediated AI, no browser-to-AI provider call, entitlement check before call | BLOCKING GATE | PLANNED |
 | Phase 6 | AI context | Goals, training, nutrition, progress, recovery context only when authorized | BLOCKING GATE | PLANNED |
 | Phase 6 | AI quality | Missing data handled honestly; no hallucinated facts; structured responses validated | BLOCKING GATE | PLANNED |
 | Phase 6 | AI cost | Usage/cost/rate-limit logging; no paid AI call without valid entitlement | BLOCKING GATE | PLANNED |
-| Phase 6 | Avatar | Owner-supplied approved Youri avatar, local optimized assets, circular header/message presentation and stable error fallback | BLOCKING GATE | TECHNICAL PASS - READY FOR OWNER RETEST |
+| Phase 6 | Avatar | Owner-supplied approved Youri avatar, local optimized assets, circular header/message presentation and stable error fallback | BLOCKING GATE | OWNER-ACCEPTED / FROZEN 2026-09-04 |
 | Phase 7 | Entitlements | Free/Pro/AI/trial/referral/goal/PT entitlements enforced server-side | BLOCKING GATE | PLANNED |
 | Phase 7 | AI trial | 30-day no-payment-details trial starts, reminds, ends, locks generation and preserves data | BLOCKING GATE | PLANNED - OWNER PRODUCT CONTRACT LOCKED |
 | Phase 7 | Referrals | Server-validated referral, max 2/month/user, abuse prevention | BLOCKING GATE | PLANNED |
@@ -758,7 +758,7 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | Phase 6A live verifier compatibility | PASS - verifier scoped to frozen 6A functions after additive 6B drift; 47/47 read-only PASS, no database change |
 | Final Edge state | PASS - `youri-ai` v38 ACTIVE, JWT verification enabled, all eight live runtime files source-identical to the repository files; SHA-256 `34d4deb5561110c71ab7e8693262d8928b17cb7983766afc2ffbce11041daf25` |
 | Package result | PASS - COMPLETE / OWNER-ACCEPTED / FROZEN on 2026-09-02 |
-| Member AI chat / Package 6C | CONTINUED CHAT + FINAL UX/IDENTITY HOTFIX TECHNICAL PASS / OWNER RETEST REQUIRED |
+| Member AI chat / Package 6C | COMPLETE / OWNER-ACCEPTED / FROZEN |
 | Production | UNTOUCHED |
 
 ## Phase 6C Private AI Chat Gate
@@ -783,5 +783,26 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | Frozen regressions | PASS - Phase 1 75/75; Phase 2 46/46; Phase 3 222/222; Member UX 56/56; Phase 4 schema 90/90 + Nutrition browser 138/138; Phase 5 116/116 + 53/53; Phase 6A 93/93; Phase 6B 98/98 |
 | External AI | PASS - 0 calls, EUR 0.00; real-member provider processing disabled |
 | Owner-test entitlement | PASS - exact owner account uniquely resolved; one active `phase6c_owner_test` AI entitlement retained through `2026-09-10T23:59:59Z` |
-| Package result | CONTINUED CHAT + FINAL UX/IDENTITY HOTFIX TECHNICAL PASS / READY FOR OWNER RETEST / NOT FROZEN |
+| Package result | COMPLETE / OWNER-ACCEPTED / FROZEN 2026-09-04 |
 | Production | UNTOUCHED |
+
+## Package 6C Freeze / Package 6D Audit - 2026-09-04
+
+| Gate | Current result |
+| --- | --- |
+| Owner final real-phone acceptance | PASS - hard stop, safe continued chat, normal chest training, layout/composer/avatar, persistence/deletion |
+| Local 6C | PASS static117/browser85/handler17; combined Edge53 |
+| Earlier frozen local gates | PASS Phase1/2/3/Member UX75/46/222/56; navigation41+45; Phase4 schema90,4F-E45,Nutrition browser138; Phase5 static116/browser53;6A93;6B98 |
+| Live 6C read-only | PASS37/37 + request-scoped safety16/16 |
+| Live 6B read-only | PASS36/36; real-member processing blocked |
+| Historical 6A installation verifier | 44PASS/3expected post-install mismatches: empty-state assumptions and six accepted6C columns; not a current empty-database gate |
+| Current-state 6A freeze verifier | PASS47/47; other44 contracts unchanged plus exact accepted schema, no proposals/decisions, zero-cost mock-only runs |
+| Runtime preservation | PASS Edgev41, nine source files match bb5076a; five frontend/avatar files HTTP200 and byte-identical; cache unchanged |
+| Source RLS / entitlement | PASS18/18 source tables; one owner test entitlement unchanged through2026-09-10T23:59:59Z |
+| Read-only discipline | No fixture writes, application RPC, provider call, schema/runtime change or deployment; prior live/rollback E2E proof retained, not rerun |
+| 6D readiness deliverable | PASS15 sections: source-field matrix, per-type manifests, no-action schema, safety, entitlement, lifecycle, cost, flags, impact, slices/tests, decisions, scope |
+| 6D functional implementation | NOT STARTED; proposed tests are future criteria, not executed features |
+
+Legacy Phase1/2/3/Member UX/navigation suites reside in the original staging source workspace; current6C/6B/6A/Phase5/Phase4 suites run in the synchronized checkout. Frozen runtime files are unchanged. Source-string metadata checks supplement prior E2E and owner proof. A false-empty installation assertion must never trigger deletion of valid owner data.
+
+Existing project-wide advisor review: NOT ALL-GREEN. Legacy bootstrap/linkage authorization requires a separate remediation gate; current advisor counts and limitations are in the 6D report. No automatic repair.

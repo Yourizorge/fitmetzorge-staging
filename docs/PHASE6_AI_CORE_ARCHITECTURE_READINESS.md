@@ -1,15 +1,18 @@
 # Phase 6 Youri AI Core - Architecture And Readiness
 
-Status: ARCHITECTURE / READINESS AUDIT COMPLETE; PACKAGE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PACKAGE 6B IMPLEMENTATION COMPLETE / PAID SYNTHETIC CALL BLOCKED
+Status: PACKAGES 6A, 6B AND 6C COMPLETE / OWNER-ACCEPTED / FROZEN; PACKAGE 6D READINESS AUDIT COMPLETE / IMPLEMENTATION NOT STARTED
 
-Audit date: 2026-09-01
+Initial audit date: 2026-09-01
+Current acceptance/readiness update: 2026-09-04
+
+Historical context: sections 1-20 retain the initial pre-implementation audit and are not current live-state claims. Sections 21-24 record subsequent delivery. The current Package 6D source/minimization/cost/decision contract is `docs/PHASE6D_READ_ONLY_ANALYSES_READINESS.md`. Current freeze evidence is `docs/PHASE6C_PRIVATE_AI_CHAT.md`.
 Target repository: `Yourizorge/fitmetzorge-staging` / `main`
 Target Supabase: `mokxyyullfhkfalopbzd`
 Production: FORBIDDEN
 
 ## 1. Audit Result
 
-Phase 6 is ready for owner architecture decisions, but not yet ready for provider activation or feature implementation. The repository contains no AI runtime, no AI provider dependency, no AI secret, no AI tables, and no member chat implementation. Read-only staging metadata confirms that the frozen Identity, Recovery, Training, Nutrition, and Progress sources exist with RLS while the directional AI tables from the Master Plan do not yet exist.
+At the initial 2026-09-01 audit, Phase 6 was ready for architecture decisions but not implementation or activation. The repository then contained no AI runtime, provider dependency, AI tables or member chat implementation. Read-only staging metadata confirms that the frozen Identity, Recovery, Training, Nutrition, and Progress sources exist with RLS while the directional AI tables from the Master Plan do not yet exist.
 
 The correct direction is a provider-neutral, backend-mediated Youri AI service. The browser may submit a member request and render validated results, but it may never hold provider credentials, author nutrition/training authority, choose its own entitlement, or directly execute an AI-proposed domain mutation.
 
@@ -382,4 +385,12 @@ Package 6C is live only on staging as a deterministic mock chat. It reuses the f
 
 Member browser access is RPC-only. Threads and immutable messages are ordered by server sequence and revision, retries replay exact request/attempt identities, and stale writes fail. Trainers and other members have no content path. Export returns the member's own JSON without provider/budget metadata; deletion scrubs raw message content and removes it from member reads while retaining only non-content lifecycle evidence. Entitlement loss starts a maximum 90-day read/export/delete grace period, with deterministic restoration on timely reactivation and a server sweep for expiry.
 
-The `youri-ai/phase6c/chat` route verifies the member JWT and accepts an exact bounded payload. It uses only deterministic localized mock output with an empty action list, safe medical refusal and serious-signal hard stop. External AI calls are 0 and external cost is EUR 0.00. Migration history `20260903085454`, read-only verifier 37/37, rollback E2E with zero fixtures, Edge v39 and responsive NL/EN/DE frontend checks all pass. Package 6C awaits owner real-phone acceptance and is not frozen. Package 6D has not started.
+The `youri-ai/phase6c/chat` route verifies the member JWT and accepts an exact bounded payload. It uses only deterministic localized mock output with an empty action list, safe medical refusal and serious-signal hard stop. External AI calls are 0 and external cost is EUR 0.00. Migration history `20260903085454`, read-only verifier 37/37, rollback E2E with zero fixtures, Edge v39 and responsive NL/EN/DE frontend checks all pass. This was the initial technical evidence. Final accepted runtime is Edge v41, safety commit `bb5076a6d19e304a5e093af38090314fa85379dc`, approved-avatar cache `20260903-phase6c-approved-avatar1`. Package 6C was owner real-phone accepted and frozen on 2026-09-04. Package 6D readiness is complete; implementation has not started.
+
+## 25. Package 6C Freeze And 6D Audit Result
+
+Owner acceptance covers natural-language safety, suppression of coaching on risk, continued normal conversation, ordinary chest-training controls, layout/composer/identity/avatar and persistence/deletion. Existing consent/18+/AI-PT/private-chat/immutability/replay/export/deletion/grace/mock-only contracts remain frozen. The temporary test entitlement is unchanged through2026-09-10T23:59:59Z.
+
+The 15-section6D report documents gaps instead of assuming the availability-only6A context RPC is analysis-ready. Proposed aggregate contexts exclude all private chat, notes, photos, direct identity, trainer content and legacy water/bedtime data. Proposed read-only outputs have zero actions and cannot write domain tables or create6F/6G work. Reuse trust/run/budget/lifecycle primitives; separately review one analysis-result lifecycle and bounded own-user context bridge.
+
+Owner decisions remain: initial kinds/placement; purpose/domain consent; timezone/quality; retention/export/delete; cadence/cost/global ceilings; safety copy. Legal/real-member provider activation remains separately blocked. Audit-only changes: docs plus a SELECT-only current-state freeze verifier. No migration/runtime/frontend/Edge change, no provider call, no member data mutation or production action.

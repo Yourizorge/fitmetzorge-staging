@@ -1,8 +1,9 @@
 # Package 6C Private AI Chat
 
-Status: NATURAL-LANGUAGE SAFETY HOTFIX TECHNICAL PASS / READY FOR FINAL OWNER RETEST / NOT FROZEN
+Status: COMPLETE / OWNER-ACCEPTED / FROZEN
 
-Date: 2026-09-03
+Implementation evidence date: 2026-09-03
+Owner acceptance and formal freeze date: 2026-09-04
 
 Environment: Supabase staging `mokxyyullfhkfalopbzd` and `Yourizorge/fitmetzorge-staging` only. Production was not touched.
 
@@ -80,7 +81,9 @@ The corrected live sequence is proven with an isolated synthetic member: exact r
 - Edge: `youri-ai` v41 ACTIVE; JWT verification enabled; bundle SHA-256 `b4c61d47baa620cf7af62842dec3b660fdd40da30cc58c5da221147ab86a3fc2`
 - Continued-chat implementation/runtime commit: `8dfa235`
 - Approved-avatar runtime commit: `abc724fec6115ce85c810fb2f53ff2e5e6a01740`
-- Natural-language safety implementation commit: `bb5076a`
+- Natural-language safety implementation commit: `bb5076a6d19e304a5e093af38090314fa85379dc`
+- Accepted pre-freeze documentation commit: `f8050c26e9b773b7954901ded780b13efa6fe040`
+- Formal freeze documentation commit: see `docs/PHASE6C_FREEZE_RECEIPT.md`, recorded after commit creation.
 - Frontend cache: `20260903-phase6c-approved-avatar1`
 - Frontend runtime set: `index.html`, `app.js`, `assets/phase6c-private-ai-chat.js`, `assets/youri-ai-avatar-3d-v3-256.webp` and `assets/youri-ai-avatar-3d-v3-master.png`
 - Live natural-language Edge proof: 12/12 PASS at HTTP 200. All three final owner sentences, chest pain alone, EN/DE variants, repeated risk and prompt injection returned `hard_stop`; normal chest training, negated symptoms, an educational question and a normal follow-up remained `clear`. Every response had zero actions and zero external calls/cost.
@@ -91,8 +94,24 @@ The corrected live sequence is proven with an isolated synthetic member: exact r
 - Package 6C browser/responsive: 85/85 PASS
 - Combined Phase 6 Edge tests: 53/53 PASS
 - Frozen regressions: Phase 1 75/75; Phase 2 46/46; Phase 3 222/222; Member UX 56/56; Phase 4 schema 90/90 and Nutrition browser 138/138; Phase 5 116/116 and 53/53; Phase 6A 93/93; Phase 6B 98/98
-- Security and performance advisors: zero current notices; no hotfix regression
+- Historical hotfix report recorded zero advisor notices. The 2026-09-04 project-wide rerun contains pre-existing legacy security/performance findings; see the current 6D audit evidence. Do not treat the historical statement as current project-wide security clearance.
 
 ## Safety Boundary
 
-External AI calls during Package 6C: 0. External AI cost: EUR 0.00. Real-member OpenAI processing enabled: NO. Trainers can read private chat: NO. The natural-language hotfix changed no schema, RLS, ACL, frontend or member row; only isolated synthetic setup/cleanup rows existed during the live proof. Test fixtures remaining: 0. The earlier request-scoped gate migration remains frozen. The owner's retained hard-stop metadata and chat content were not changed; read-only status proves communication allowed with automatic execution blocked. The exact owner-test AI entitlement remains active once through `2026-09-10T23:59:59Z`. Production touched: NO. Package 6D started: NO. Owner real-phone retest is still required before acceptance or freeze.
+External AI calls during Package 6C: 0. External AI cost: EUR 0.00. Real-member OpenAI processing enabled: NO. Trainers can read private chat: NO. The natural-language hotfix changed no schema, RLS, ACL, frontend or member row; only isolated synthetic setup/cleanup rows existed during the live proof. Test fixtures remaining: 0. The earlier request-scoped gate migration remains frozen. The owner's retained hard-stop metadata and chat content were not changed; read-only status proves communication allowed with automatic execution blocked. The exact owner-test AI entitlement remains active once through `2026-09-10T23:59:59Z`. Production touched: NO. Package 6D implementation started: NO. Owner final real-phone retest PASSED; Package 6C was explicitly accepted and frozen on 2026-09-04.
+
+## Formal Owner Acceptance And Freeze
+
+The owner accepted natural Dutch chest-pain/dizziness hard stops, suppression of generic coaching, normal conversation afterward, ordinary chest-training controls, chat layout, horizontal composer, Youri AI identity/approved avatar, persistence and deletion. The current visual finish is accepted for this phase. Later app-wide design-system polish may not silently change frozen safety, privacy or functionality.
+
+Frozen contracts: separate explicit AI consent; age 18+; current active AI/PT entitlement; private member-only chat; zero trainer access; immutable messages; exact retry and deterministic sequencing; own history/JSON export/irreversible content deletion; maximum 90-day entitlement-loss grace; mock-only; request-scoped medical communication hard stop; persistent action-safety blocking separate; deterministic NL/EN/DE classifier; communication remains available after a warning subject to the other gates; Youri AI / FitMetZorge AI Coach identity; approved avatar; horizontal mobile composer; no external member AI.
+
+Audit on 2026-09-04 began with clean synchronized main at f8050c2. No partial prior freeze existed. Live Edge v41 and its nine source files, three frontend runtime files and both avatar files were unchanged. Live assets HTTP 200, byte-identical to the accepted commit. Chat asset SHA-256: `ab132a4ad02a49820350c4844dbdbf3ec021df1a3725a9270ef5c630bfecc43f`.
+
+Rerun: 6C static117, browser85, handler17; combined Edge53; frozen Phase1/2/3/Member UX75/46/222/56, navigation41+45, Phase4 schema90/4F-E45/Nutrition browser138, Phase5 static116/browser53, 6A static93, 6B static98. All PASS. Local mocked data only; no live mutating E2E rerun. Prior live safety/transactional proofs remain historical evidence.
+
+Read-only live gates: 6B36/36, 6C37/37, request-safety16/16 and post-6C foundation47/47. The immutable 6A installation verifier returns44/47 after legitimate 6C use: two initially-empty assertions and four table shapes with six additive columns are obsolete at freeze. New `supabase/verification/20260904_phase6c_owner_freeze_verification.sql` retains the other44 checks and tests exact accepted columns, no proposals/decisions and zero-cost mock-only member runs. SHA-256: `74CA0E7D7D1E444286E00F5A3BEF33DEAC029093AF9A098524530969939A5DB2`. No database repair, frozen verifier rewrite or deletion.
+
+All18 inspected source tables retain RLS. Exactly one temporary owner AI entitlement remains active through2026-09-10T23:59:59Z; no entitlement/consent/member row changed. Only metadata/counts were inspected, not chat contents. External AI calls0, EUR0.00. Package6D readiness is documented separately; implementation remains forbidden until a new GO.
+
+The owner-accepted 6C freeze is not a project-wide security certification. A read-only follow-up found a legacy SECURITY DEFINER bootstrap missing a caller-ownership guard and legacy linkage based on user-editable metadata. These paths were not changed or invoked. Separate owner-scoped remediation must precede reliance on them for 6D; exact 6C private-chat ACL/ownership gates remain PASS.

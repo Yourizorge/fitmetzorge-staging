@@ -509,16 +509,25 @@ Status: APPROVED FOR STAGING IMPLEMENTATION / NOT OWNER-ACCEPTED
 
 OpenAI is the sole initial provider. Exact routes are `gpt-5.6-luna` for normal/cost-sensitive work and `gpt-5.6-terra` for approved complex work; substitution and automatic fallback are forbidden. Only synthetic fixtures may be sent during 6B, under a cumulative EUR 5 test cap. `store:false`, no hosted tools, server-only secrets and strict output are mandatory.
 
-Zero Data Retention is a hard prerequisite for any later member data and must be evidenced separately from `store:false`. DPA, DPIA, exact Europe routing, privacy/consent/safety copy, transfer/subprocessor assessment, lifecycle verification and a later owner activation must all pass. Until then, real-member processing and Package 6C remain technically disabled.
+Zero Data Retention is a hard prerequisite for any later member data and must be evidenced separately from `store:false`. DPA, DPIA, exact Europe routing, privacy/consent/safety copy, transfer/subprocessor assessment, lifecycle verification and a later owner activation must all pass. At that decision point, real-member processing and Package 6C were disabled. Package 6C has since been accepted as mock-only; real-member processing remains disabled.
 
 ## Decision 0036: Package 6C is private, mock-only and trainer-isolated
 
-Status: TECHNICAL PASS / OWNER TESTING REQUIRED / NOT FROZEN
+Status: COMPLETE / OWNER-ACCEPTED / FROZEN
 
-Date: 2026-09-03
+Implementation date: 2026-09-03
+Owner acceptance date: 2026-09-04
 
 Decision:
 
 Package 6C exposes a private member chat only to adults with active `ai` or `personal_coaching` entitlement and active versioned AI-processing consent. It uses deterministic staging mock output only. No real-member content may reach OpenAI or another provider, and no model/provider/action authority exists in the browser.
 
 Private chat remains permanently unavailable to trainers and other members. Messages are immutable; export is own-user JSON; deletion irreversibly scrubs content while preserving only minimum non-content lifecycle evidence. Loss of entitlement permits read/export/delete for no more than 90 days, after which the server retention sweep scrubs raw content. Package 6C does not authorize Package 6D or production.
+
+## Decision 0037: Package 6C owner freeze; Package 6D audit only
+
+Date:2026-09-04. Status: OWNER-APPROVED FREEZE / READINESS AUDIT COMPLETE.
+
+The owner accepts final natural-language medical hard stops, clear normal conversation afterward, ordinary chest-training controls, current chat layout/horizontal composer/Youri identity/approved avatar, persistence and deletion. Package6C is COMPLETE / OWNER-ACCEPTED / FROZEN. Later visual polish may not silently change its frozen safety/privacy/functionality. The temporary owner AI entitlement remains unchanged through2026-09-10T23:59:59Z.
+
+Only the6D read-only readiness audit is complete. Its six decisions and proposed slices are in `docs/PHASE6D_READ_ONLY_ANALYSES_READINESS.md`; none is an implicit implementation approval. No6D migration/runtime/deployment or external member processing is authorized. Private6C chat is excluded from analysis context absent a future separate purpose/consent review. Production remains forbidden.
