@@ -13,7 +13,8 @@ insert into public.profiles(id,role,name,email) values
 (current_setting('phase6c.continue.user1')::uuid,'client','6C Continue A','phase6c-continue-a@example.invalid'),
 (current_setting('phase6c.continue.user2')::uuid,'client','6C Continue B','phase6c-continue-b@example.invalid');
 update public.profiles set role='client' where id in (current_setting('phase6c.continue.user1')::uuid,current_setting('phase6c.continue.user2')::uuid);
-update public.profiles set role='trainer' where id=current_setting('phase6c.continue.trainer')::uuid;
+-- Trusted fixture setup must not rely on user-metadata trainer provisioning.
+insert into public.profiles(id,role,name,email) values(current_setting('phase6c.continue.trainer')::uuid,'trainer','6C Continue trainer','phase6c-continue-trainer@example.invalid');
 
 insert into public.user_onboarding(user_id,age,goal_safety_status) values
 (current_setting('phase6c.continue.user1')::uuid,25,'realistic_foundation'),

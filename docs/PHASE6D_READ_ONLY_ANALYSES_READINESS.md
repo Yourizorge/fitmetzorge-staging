@@ -301,3 +301,15 @@ The project-wide Advisor is NOT all-green. Current security output: 24 INFO `rls
 No-policy private operational tables and intentionally callable authenticated ownership-guarded RPCs are expected patterns; the exact 6A/6B/6C ACL verifiers pass. However the legacy bootstrap and metadata-linking bodies warrant the separate material review described above. Mutable `public.touch_updated_at` and Auth password protection also remain open existing hardening items. No grants, policies, Auth settings or indexes were changed. Production was not inspected.
 
 References: [SECURITY DEFINER exposure](https://supabase.com/docs/guides/database/database-linter?lint=0028_anon_security_definer_function_executable), [mutable search path](https://supabase.com/docs/guides/database/database-linter?lint=0011_function_search_path_mutable), [RLS initplan guidance](https://supabase.com/docs/guides/database/database-linter?lint=0003_auth_rls_initplan). These findings supersede any historical blanket claim that the project currently has zero advisor notices.
+
+## Package 6D-0 Closure (2026-09-04)
+
+The legacy authorization blocker identified by the read-only 6D audit is now remediated
+on staging under separate owner GO: migration history 20260904105918, invite-client v16,
+runtime commit ab9b3f186898522ae91dba230e8df0adf1f9d895. Own-user bootstrap, server-issued
+email-bound one-use invitations, protected profile fields and own-client workspace RPCs
+replace editable metadata and broad member workspace access. Existing relationships and
+data are unchanged; live verifier 40/40, rollback E2E 48/48 and concurrency 8/8 PASS.
+See [the security receipt](PHASE6D0_LEGACY_AUTHORIZATION_SECURITY.md).
+This closes that security prerequisite only. Package 6D analysis implementation and real
+member external AI remain unapproved; existing 6D product/privacy decisions are unchanged.

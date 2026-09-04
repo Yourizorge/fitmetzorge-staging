@@ -531,3 +531,15 @@ Date:2026-09-04. Status: OWNER-APPROVED FREEZE / READINESS AUDIT COMPLETE.
 The owner accepts final natural-language medical hard stops, clear normal conversation afterward, ordinary chest-training controls, current chat layout/horizontal composer/Youri identity/approved avatar, persistence and deletion. Package6C is COMPLETE / OWNER-ACCEPTED / FROZEN. Later visual polish may not silently change its frozen safety/privacy/functionality. The temporary owner AI entitlement remains unchanged through2026-09-10T23:59:59Z.
 
 Only the6D read-only readiness audit is complete. Its six decisions and proposed slices are in `docs/PHASE6D_READ_ONLY_ANALYSES_READINESS.md`; none is an implicit implementation approval. No6D migration/runtime/deployment or external member processing is authorized. Private6C chat is excluded from analysis context absent a future separate purpose/consent review. Production remains forbidden.
+
+## Package 6D-0 Closure (2026-09-04)
+
+The legacy authorization blocker identified by the read-only 6D audit is now remediated
+on staging under separate owner GO: migration history 20260904105918, invite-client v16,
+runtime commit ab9b3f186898522ae91dba230e8df0adf1f9d895. Own-user bootstrap, server-issued
+email-bound one-use invitations, protected profile fields and own-client workspace RPCs
+replace editable metadata and broad member workspace access. Existing relationships and
+data are unchanged; live verifier 40/40, rollback E2E 48/48 and concurrency 8/8 PASS.
+See [the security receipt](PHASE6D0_LEGACY_AUTHORIZATION_SECURITY.md).
+This closes that security prerequisite only. Package 6D analysis implementation and real
+member external AI remain unapproved; existing 6D product/privacy decisions are unchanged.

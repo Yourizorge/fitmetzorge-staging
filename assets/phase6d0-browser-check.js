@@ -32,7 +32,9 @@ check("no polling or observers",!/(MutationObserver|setInterval|location.reload)
    window.__api={ensure:()=>ensureOnlineProfile("trainer"),load:p=>loadOnlineWorkspace(p),save:()=>saveStateToCloud(),
     change:()=>state.clients[0].water=2,clearProfile:()=>onlineProfile=null,setTrainer:()=>onlineProfile={id:"trainer",role:"trainer"}};
   `});
-  await page.evaluate(()=>window.__api.ensure());
+  await page.evaluate(()=>window.__events.forEach(fn=>fn("SIGNED_OUT")));
+  check(width+" recovery signout retains email-bound invitation",await page.evaluate(()=>Boolean(sessionStorage.getItem("fmz.staging.verified-invite.v1"))));
+  await page.evaluate(()=>Promise.all([window.__api.ensure(),window.__api.ensure()]));
   const initial=await page.evaluate(()=>({calls:window.__calls,clean:!location.search.includes("fmz_invite"),token:sessionStorage.getItem("fmz.staging.verified-invite.v1")}));
   check(width+" invite consumed once",initial.calls.filter(x=>x.name==="fmz_phase6d0_accept_client_invite").length===1);
   check(width+" invite removed from URL/storage",initial.clean&&initial.token===null);

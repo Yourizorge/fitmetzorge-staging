@@ -1,18 +1,17 @@
-// Controlled STAGING concurrency fixtures. CLI credentials stay in its OS credential store.
-const fs=require("fs"),os=require("os"),path=require("path"),crypto=require("crypto"),{execFile}=require("child_process");
-const cli=process.env.SUPABASE_CLI;
-if(!cli)throw new Error("SUPABASE_CLI required");
+// Controlled STAGING concurrency fixtures. Existing CLI authorization stays in process memory.
+const path=require("path"),crypto=require("crypto"),{execFile}=require("child_process");
 const project="mokxyyullfhkfalopbzd";
 const member=crypto.randomUUID(),trainer=crypto.randomUUID(),suffix=member.replaceAll("-","");
 const email="6d0-race-"+suffix+"@example.invalid",trainerEmail="6d0-race-trainer-"+suffix+"@example.invalid";
-const dir=fs.mkdtempSync(path.join(os.tmpdir(),"fmz-6d0-race-"));
 const lit=x=>"'"+String(x).replaceAll("'","''")+"'";
 async function query(sql){
- const file=path.join(dir,crypto.randomUUID()+".sql");fs.writeFileSync(file,sql);
- try{return await new Promise(resolve=>execFile(cli,["db","query","--linked","--project-ref",project,"--file",file,"--output","json"],{windowsHide:true,timeout:90000,maxBuffer:1048576},(err,out)=>{
-  try{const parsed=JSON.parse(out);resolve({ok:!err&&!!parsed.rows,rows:parsed.rows||[],error:JSON.stringify(parsed.error||{})});}
-  catch{resolve({ok:false,rows:[],error:"transport_failure"});}
- }));}finally{fs.rmSync(file,{force:true});}
+ return new Promise(resolve=>{
+  const child=execFile(process.env.FMZ_PYTHON||"python",[path.join(__dirname,"phase6d0-staging-query.py")],
+   {windowsHide:true,timeout:60000,maxBuffer:1048576},(err,out)=>{
+    try{resolve(JSON.parse(out));}catch{resolve({ok:false,rows:[],error:"transport_failure"});}
+   });
+  child.stdin.end(sql);
+ });
 }
 const asMember=sql=>"begin; select set_config('request.jwt.claim.sub',"+lit(member)+",true); set local role authenticated; "+sql+"; commit;";
 const checks=[];const check=(name,ok)=>{if(!ok)throw new Error(name);checks.push(name);};
@@ -26,7 +25,7 @@ const checks=[];const check=(name,ok)=>{if(!ok)throw new Error(name);checks.push
   const fastAccept=asMember("select (public.fmz_phase6d0_accept_client_invite("+lit(token)+")).role as linked");
   const accept=await Promise.all([query(slowAccept),query(fastAccept)]);
   check("concurrent_accept_exactly_one_success",accept.filter(x=>x.ok).length===1);
-  check("concurrent_replay_rejected",accept.some(x=>!x.ok&&x.error.includes("invitation_used_expired_or_revoked")));
+  check("concurrent_replay_rejected:"+accept.filter(x=>!x.ok).map(x=>x.error).join(","),accept.some(x=>!x.ok&&x.error.includes("invitation_used_expired_or_revoked")));
   const read=await query(asMember("select public.fmz_phase6d0_read_own_workspace() as workspace"));
   check("own_workspace_read",read.ok&&read.rows[0]?.workspace?.revision);
   const w=read.rows[0].workspace,rev=w.revision,item=w.state.clients[0];
@@ -36,8 +35,6 @@ const checks=[];const check=(name,ok)=>{if(!ok)throw new Error(name);checks.push
  }finally{
   const cleanup=await query("begin; do $$ begin if exists(select 1 from auth.users where id in ("+lit(member)+"::uuid,"+lit(trainer)+"::uuid) and email not in ("+lit(email)+","+lit(trainerEmail)+")) then raise exception 'fixture_cleanup_identity_mismatch'; end if; end $$; delete from legacy_auth_private.client_invitations where trainer_id="+lit(trainer)+"::uuid; delete from public.coach_workspaces where trainer_id="+lit(trainer)+"::uuid; delete from public.profiles where id="+lit(member)+"::uuid; delete from public.profiles where id="+lit(trainer)+"::uuid; delete from auth.users where id in ("+lit(member)+"::uuid,"+lit(trainer)+"::uuid); commit; select count(*) as remaining from auth.users where id in ("+lit(member)+"::uuid,"+lit(trainer)+"::uuid);");
   check("all_concurrency_fixtures_removed",cleanup.ok&&Number(cleanup.rows[0]?.remaining)===0);
-  if(path.dirname(path.resolve(dir))!==path.resolve(os.tmpdir())||!path.basename(dir).startsWith("fmz-6d0-race-"))throw new Error("unsafe_fixture_directory");
-  fs.rmSync(dir,{recursive:true,force:true});
  }
- console.log(JSON.stringify({scope:"phase6d0_staging_concurrency",overall_pass:true,pass_count:checks.length,checks,external_calls:0}));
+ console.log(JSON.stringify({scope:"phase6d0_staging_concurrency",overall_pass:true,pass_count:checks.length,checks,external_ai_calls:0}));
 })().catch(e=>{console.error(JSON.stringify({scope:"phase6d0_staging_concurrency",overall_pass:false,failed:e.message,checks}));process.exitCode=1;});

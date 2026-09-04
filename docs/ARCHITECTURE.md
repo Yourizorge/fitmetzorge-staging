@@ -1,7 +1,11 @@
 # FitMetZorge Architecture
 
 Status: CURRENT AND TARGET ARCHITECTURE DOCUMENTED
-Last updated: 2026-08-15
+Last updated: 2026-09-04
+
+The Phase 0B Auth/invitation/workspace descriptions below are historical. Their unsafe
+metadata and broad member-access paths are superseded by Package 6D-0 at the end of this
+document and in PHASE6D0_LEGACY_AUTHORIZATION_SECURITY.md.
 
 ## Environment Boundary
 
@@ -335,11 +339,12 @@ Recommended additive boundary: bounded own-user SELECT context, one private memb
 
 ## Package 6D-0 Legacy Authorization Security Gate (2026-09-04)
 
-Owner-authorized focused staging remediation is prepared. Transactional rehearsal: 48/48;
-read-only verifier: 40/40. Bootstrap/metadata authority, direct profile grants and broad
-member workspace access are corrected together with the invitation Edge/frontend bridge.
-Existing links/data and frozen Phase 1-6C semantics remain protected. Package 6D analysis
-implementation and external member AI remain forbidden. Deployment evidence and exact
+Owner-authorized focused staging remediation is COMPLETE / TECHNICALLY VERIFIED.
+Live rollback E2E: 48/48; read-only verifier: 40/40; concurrency: 8/8; browser: 41/41.
+Migration history: 20260904105918. invite-client version 16; cache 20260904-phase6d0-auth1.
+Bootstrap/metadata authority, direct profile grants and broad member workspace access
+are corrected. Existing links/data checksums and frozen Phase 1-6C semantics are preserved.
+Package 6D analyses and external member AI remain forbidden. Deployment evidence and exact
 artifacts are tracked in [the 6D-0 security receipt](PHASE6D0_LEGACY_AUTHORIZATION_SECURITY.md).
 
 
