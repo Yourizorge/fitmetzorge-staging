@@ -148,6 +148,16 @@ export function classifyPhase6cSafety(content: string): "clear" | "hard_stop" {
   return serious || dizziness || (chestDiscomfort && (dizziness || exertion)) ? "hard_stop" : "clear";
 }
 
+export function phase6dRecoveryIntent(content: string): "symptoms_resolved" | "misunderstood" | null {
+  const text = normalizeSafetyText(content);
+  if (classifyPhase6cSafety(content) !== "clear") return null;
+  // Recovery wording can offer a review, never change persistent safety state.
+  if (/\b(maar|but|aber|alleen|still|nog|trotzdem|ondanks|negeer|ignore|ignorier)\b/.test(text)) return null;
+  if (/verkeerd begrepen|misunderstood|missverstanden/.test(text)) return "misunderstood";
+  if (/het gaat weer goed|geen klachten meer|de pijn is weg|weer in orde|i feel (?:well|fine) again|no symptoms (?:now|anymore)|pain is gone|mir geht es wieder gut|keine beschwerden mehr/.test(text)) return "symptoms_resolved";
+  return null;
+}
+
 const medicalAdvicePatterns = [
   /diagnos|medicat|dosage|treatment|prescri/i,
   /diagnos|medicijn|dosering|behandeling|voorschrift/i,
@@ -236,7 +246,8 @@ export function createPhase6cHandler(dependencies: Phase6cDependencies) {
       runId = String(begun.run_id || "");
       if (!UUID_PATTERN.test(runId)) throw new Error("chat_run_invalid");
       if (begun.status === "completed") {
-        return json(origin, 200, { mode: "deterministic_mock", replay: true, external_ai_calls: 0, external_ai_cost_eur: 0 });
+        return json(origin, 200, { mode: "deterministic_mock", replay: true, external_ai_calls: 0, external_ai_cost_eur: 0,
+          recovery_requested: Boolean(phase6dRecoveryIntent(input.content)), recovery_reason: phase6dRecoveryIntent(input.content) });
       }
       if (begun.status !== "reserved") throw new Error("chat_attempt_not_retryable");
       const output = (dependencies.createMockReply || createPhase6cMockReply)(input.content, input.locale);
@@ -248,7 +259,8 @@ export function createPhase6cHandler(dependencies: Phase6cDependencies) {
         p_input_tokens: 0,
         p_output_tokens: 0,
       });
-      return json(origin, 200, { mode: "deterministic_mock", replay: false, external_ai_calls: 0, external_ai_cost_eur: 0, output });
+      return json(origin, 200, { mode: "deterministic_mock", replay: false, external_ai_calls: 0, external_ai_cost_eur: 0, output,
+        recovery_requested: Boolean(phase6dRecoveryIntent(input.content)), recovery_reason: phase6dRecoveryIntent(input.content) });
     } catch (error) {
       const code = safeError(error);
       if (runId) {

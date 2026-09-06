@@ -16,9 +16,9 @@ const check = (name, pass) => checks.push({ name, pass: Boolean(pass) });
 const all = (text, needles) => needles.every((needle) => text.includes(needle));
 
 check("cache and runtime version", all(files.runtime + files.app + files.index, [
-  "20260904-phase6d-analyses1",
-  "assets/phase6c-private-ai-chat.js?v=20260904-phase6d-analyses1",
-  "app.js?v=20260904-phase6d-analyses1",
+  "20260906-owner-hotfix1",
+  "assets/phase6c-private-ai-chat.js?v=20260906-owner-hotfix1",
+  "app.js?v=20260906-owner-hotfix1",
 ]));
 check("frontend analyses tab", all(files.runtime, [
   'tabAnalyses:"Analyses"',

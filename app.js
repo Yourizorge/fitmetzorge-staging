@@ -9,7 +9,7 @@
     INVITE_FUNCTION_NAME: "invite-client"
   };
 
-  const bundleUrl = new URL("app.bundle.js?v=20260904-phase6d-analyses1", document.baseURI);
+  const bundleUrl = new URL("app.bundle.js?v=20260906-owner-hotfix1", document.baseURI);
   const bundleResponse = await fetch(bundleUrl, { cache: "no-cache" });
   if (!bundleResponse.ok) {
     throw new Error(`App bundle laden mislukt: ${bundleResponse.status}`);
@@ -92,18 +92,22 @@
   }
   const phase5ProgressPatchSource = await phase5ProgressPatchResponse.text();
 
-  const phase6cPrivateChatPatchUrl = new URL("assets/phase6c-private-ai-chat.js?v=20260904-phase6d-analyses1", document.baseURI);
+  const phase6cPrivateChatPatchUrl = new URL("assets/phase6c-private-ai-chat.js?v=20260906-owner-hotfix1", document.baseURI);
   const phase6cPrivateChatPatchResponse = await fetch(phase6cPrivateChatPatchUrl, { cache: "no-cache" });
   if (!phase6cPrivateChatPatchResponse.ok) {
     throw new Error(`Package 6C private AI chat laden mislukt: ${phase6cPrivateChatPatchResponse.status}`);
   }
   const phase6cPrivateChatPatchSource = await phase6cPrivateChatPatchResponse.text();
 
+  const ownerSettingsResponse = await fetch(new URL("assets/phase6d-owner-settings.js?v=20260906-owner-hotfix1", document.baseURI), { cache: "no-cache" });
+  if (!ownerSettingsResponse.ok) throw new Error("Staging settings unavailable");
+  const ownerSettingsSource = await ownerSettingsResponse.text();
+
   const phase1InitNeedle = "\ninit();";
   if (!source.includes(phase1InitNeedle)) {
     throw new Error("Phase 1 foundation kon niet voor app-init worden ingevoegd.");
   }
-  source = source.replace(phase1InitNeedle, `\n${legacyAuthSource}\n${phase1PatchSource}\n${phase2PatchSource}\n${phase3PatchSource}\n${phase4NutritionPatchSource}\n${phase4NutritionSlice3PatchSource}\n${memberUxPatchSource}\n${phase5ProgressPatchSource}\n${phase6cPrivateChatPatchSource}\nwindow.FMZ_PUBLIC_AUTH.bindLifecycle();\ninit();`);
+  source = source.replace(phase1InitNeedle, `\n${legacyAuthSource}\n${phase1PatchSource}\n${phase2PatchSource}\n${phase3PatchSource}\n${phase4NutritionPatchSource}\n${phase4NutritionSlice3PatchSource}\n${memberUxPatchSource}\n${phase5ProgressPatchSource}\n${phase6cPrivateChatPatchSource}\n${ownerSettingsSource}\nwindow.FMZ_PUBLIC_AUTH.bindLifecycle();\ninit();`);
 
   (0, eval)(`${source}\n//# sourceURL=app.bundle.js`);
 

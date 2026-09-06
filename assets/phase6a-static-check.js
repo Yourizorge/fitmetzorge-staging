@@ -5,10 +5,10 @@ const vm = require("vm");
 const root = path.resolve(__dirname, "..");
 const read = (file) => fs.readFileSync(path.join(root, file), "utf8");
 const files = {
-  migration: read("supabase/migrations/20260901193000_phase6a_ai_trust_foundation.sql"),
-  consentOrdering: read("supabase/migrations/20260901203000_phase6a_ai_consent_event_ordering.sql"),
-  pgcryptoPath: read("supabase/migrations/20260901204500_phase6a_pgcrypto_search_path.sql"),
-  fkIndexes: read("supabase/migrations/20260901211500_phase6a_foreign_key_indexes.sql"),
+  migration: read("supabase/migrations/20260901183914_phase6a_ai_trust_foundation.sql"),
+  consentOrdering: read("supabase/migrations/20260901184418_phase6a_ai_consent_event_ordering.sql"),
+  pgcryptoPath: read("supabase/migrations/20260901190328_phase6a_pgcrypto_search_path.sql"),
+  fkIndexes: read("supabase/migrations/20260901191328_phase6a_foreign_key_indexes.sql"),
   verifier: read("supabase/verification/20260901193000_phase6a_ai_trust_foundation_verification.sql"),
   e2e: read("supabase/tests/20260901193000_phase6a_ai_trust_transactional_e2e.sql"),
   contracts: read("supabase/functions/youri-ai/contracts.ts"),

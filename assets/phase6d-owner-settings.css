@@ -1,0 +1,97 @@
+/* Package 6D owner UX foundation; existing avatar and application palette. */
+:root { --fmz-safe-left:env(safe-area-inset-left,0px); --fmz-safe-right:env(safe-area-inset-right,0px); --fmz-safe-top:env(safe-area-inset-top,0px); --fmz-safe-bottom:env(safe-area-inset-bottom,0px) }
+#fmz-top-tools { display:flex; align-items:center; gap:6px; margin-left:auto; flex:0 0 auto }
+#fmz-top-tools[hidden],#fmz-avatar[hidden] { display:none!important }
+.fmz-icon { width:44px; height:44px; min-width:44px; padding:10px; display:inline-flex; align-items:center; justify-content:center; background:var(--surface,#202020); color:var(--text,#eee); border:1px solid var(--line,#444); border-radius:6px; cursor:pointer }
+.fmz-icon img { display:block; flex:0 0 22px; filter:brightness(0) invert(1) }
+body.light .fmz-icon img { filter:none }
+.fmz-language-button { width:68px; gap:4px; padding:7px; font-size:12px }
+.fmz-language-wrap { position:relative }
+.fmz-language-menu { position:absolute; top:50px; right:0; width:160px; z-index:80; display:grid; border:1px solid var(--line,#444); border-radius:6px; padding:6px; background:#17191b; box-shadow:0 6px 24px #0005 }
+body.light .fmz-language-menu { background:#fff }
+.fmz-language-menu button { min-height:44px; text-align:left; border:0; background:transparent; color:inherit }
+.fmz-language-menu [aria-pressed=true] { background:var(--panel,#333); font-weight:700; border-left:3px solid #d7b24d }
+#fmz-avatar { position:fixed; z-index:70; width:60px; height:60px; min-width:60px; min-height:60px; border-radius:50%; padding:0; border:2px solid #d7b24d; background:var(--panel,#222); box-shadow:0 4px 14px #0006; touch-action:none; user-select:none; -webkit-user-select:none; cursor:grab; overflow:hidden }
+#fmz-avatar:active { cursor:grabbing }
+#fmz-avatar img { width:100%; height:100%; display:block; object-fit:cover; pointer-events:none }
+.fmz-dialog { position:fixed; inset:0; margin:auto; box-sizing:border-box; width:min(880px,calc(100% - 32px)); max-width:100%; height:min(820px,calc(100dvh - 40px)); max-height:calc(100dvh - 40px); padding:0; border:1px solid var(--line,#444); border-radius:8px; background:#17191b; color:var(--text,#eee); overflow:hidden; font:inherit; letter-spacing:0 }
+body.light .fmz-dialog { background:#fff }
+.fmz-dialog[open] { display:grid; grid-template-rows:auto auto minmax(0,1fr) }
+.fmz-dialog::backdrop { background:#0009 }
+body.fmz-modal-open { overflow:hidden }
+.fmz-dialog-head { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 16px; border-bottom:1px solid var(--line,#444) }
+.fmz-dialog h2 { font-size:20px; line-height:1.3; margin:0 }
+.fmz-dialog h3 { font-size:16px; margin:24px 0 10px }
+.fmz-dialog p { font-size:14px; line-height:1.55; margin:10px 0; overflow-wrap:anywhere }
+.fmz-settings-nav { display:flex; flex-wrap:wrap; padding:8px 12px; gap:4px; border-bottom:1px solid var(--line,#444) }
+.fmz-settings-nav button { border:0; border-radius:4px; background:transparent; color:inherit; font:inherit; font-size:14px; padding:8px 10px; min-height:44px }
+.fmz-settings-nav [aria-current=page] { background:var(--panel,#303030); box-shadow:inset 0 -2px #d7b24d; font-weight:700 }
+.fmz-settings-content { padding:20px; overflow-y:auto; min-width:0; overscroll-behavior:contain }
+.fmz-settings-content>h2 { margin-bottom:12px }
+.fmz-form { display:grid; gap:14px; padding:12px 0; min-width:0 }
+.fmz-field-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px }
+.fmz-field { display:grid; gap:6px; min-width:0; color:var(--muted,#bbb); font-size:14px }
+.fmz-field input,.fmz-field select { width:100%; min-width:0; max-width:100%; min-height:44px; padding:9px 10px; color:var(--text,#eee); background:var(--panel,#292929); border:1px solid var(--line,#555); border-radius:5px; font:inherit; box-sizing:border-box; color-scheme:dark }
+body.light .fmz-field input,body.light .fmz-field select { color-scheme:light }
+.fmz-check { display:flex; align-items:flex-start; gap:10px; min-height:44px; padding:8px 0; font-size:14px; line-height:1.5 }
+.fmz-check input { flex:0 0 22px; width:22px!important; height:22px; margin:0; accent-color:#d7b24d }
+.fmz-dialog button { max-width:100%; white-space:normal; overflow-wrap:anywhere; letter-spacing:0 }
+.fmz-form>button,.fmz-settings-content>.secondary-btn { justify-self:start; min-height:44px }
+.fmz-disclosure { padding:14px 0; border-bottom:1px solid var(--line,#444) }
+.fmz-disclosure summary { display:flex; align-items:center; justify-content:space-between; gap:12px; cursor:pointer; min-height:44px; font-size:15px; font-weight:600 }
+.fmz-disclosure summary::after { content:"+"; font-size:20px; flex:0 0 auto }
+.fmz-disclosure[open] summary::after { content:"-"; }
+.fmz-disclosure summary small { font-size:12px; font-weight:400; color:var(--muted,#bbb); margin-left:auto }
+.fmz-consent-text { white-space:pre-wrap }
+.fmz-value-row { display:grid; grid-template-columns:minmax(100px,1fr) minmax(0,1.2fr); gap:12px; padding:10px 0; border-bottom:1px solid var(--line,#444); font-size:14px }
+.fmz-value-row dt { color:var(--muted,#bbb) }
+.fmz-value-row dd { margin:0; text-align:right; overflow-wrap:anywhere }
+.fmz-data-list { list-style:none; padding:0; margin:10px 0 }
+.fmz-data-list li { display:flex; justify-content:space-between; align-items:center; gap:12px; border-bottom:1px solid var(--line,#444); padding:10px 0; font-size:14px }
+.fmz-data-list button { flex:0 1 auto; min-height:44px }
+.fmz-feedback { min-height:24px; color:#71c58f }
+.fmz-feedback:empty { display:none }
+.fmz-feedback.error { color:#ef9b9b }
+.fmz-safety { border-left:3px solid #d87575; border-radius:0; padding:14px; background:var(--panel,#292929); margin:12px 0 }
+.fmz-safety p { margin:10px 0 }
+.fmz-actions { display:flex; flex-wrap:wrap; gap:8px }
+.fmz-recovery-dialog { width:min(640px,calc(100% - 24px)); height:auto; }
+.fmz-recovery-dialog[open] { grid-template-rows:auto minmax(0,1fr) }
+.fmz-chat-dialog { width:min(780px,calc(100% - 32px)); margin:16px 16px 16px auto; height:calc(100dvh - 32px); max-height:calc(100dvh - 32px) }
+.fmz-chat-dialog[open] { grid-template-rows:auto minmax(0,1fr) }
+.fmz-chat-close { display:flex; justify-content:flex-end; align-items:center; gap:8px; padding:8px 12px; border-bottom:1px solid var(--line,#444) }
+.fmz-chat-dialog #ai-coach { overflow-y:auto; min-height:0; padding:12px; display:block!important; overscroll-behavior:contain }
+.fmz-chat-dialog .p6c-shell { padding-bottom:0 }
+.fmz-chat-dialog .p6c-layout { grid-template-columns:1fr }
+.fmz-chat-dialog .p6c-list { display:none }
+.fmz-chat-dialog .p6c-list.open { display:block }
+.fmz-chat-dialog .p6c-list-head [data-p6c-history] { display:block }
+.fmz-chat-dialog .p6c-chat { min-height:300px; grid-template-rows:auto minmax(140px,1fr) auto }
+.fmz-chat-dialog .p6c-messages { min-height:140px; max-height:calc(100dvh - 414px) }
+.fmz-chat-dialog .p6c-composer { position:sticky; bottom:0 }
+.fmz-chat-dialog .p6d-grid { grid-template-columns:1fr }
+.fmz-chat-dialog .p6c-ready { display:none }
+.fmz-dialog :focus-visible,#fmz-avatar:focus-visible,#fmz-top-tools :focus-visible { outline:2px solid #d7b24d; outline-offset:3px }
+body.client-mode .topbar-controls { flex-wrap:nowrap; min-width:0; gap:8px }
+body.client-mode .topbar .brand { min-width:0 }
+@media(max-width:760px) {
+  .fmz-dialog { width:calc(100% - 16px); height:calc(100dvh - 16px); max-height:calc(100dvh - 16px) }
+  .fmz-chat-dialog { margin:8px; }
+  .fmz-dialog-head { padding:8px 12px }
+  .fmz-settings-content { padding:16px 12px calc(16px + env(safe-area-inset-bottom)) }
+  .fmz-field-grid { grid-template-columns:1fr }
+  .fmz-settings-nav { gap:2px; padding:5px 6px }
+  .fmz-settings-nav button { font-size:13px; padding:8px }
+  .fmz-data-list li { flex-wrap:wrap }
+  .fmz-recovery-dialog { height:auto }
+  body.client-mode .topbar { display:flex; flex-wrap:nowrap; gap:8px; padding:10px 12px; }
+  body.client-mode .topbar .brand { flex:1 1 auto; }
+  body.client-mode .topbar .brand strong { font-size:15px; white-space:normal }
+  body.client-mode .topbar .brand span { display:none }
+  body.client-mode .topbar .brand-logo-wrap { display:none }
+  body.client-mode #currentUserLabel,body.client-mode #syncStatus,body.client-mode #logoutButton { display:none }
+  body.client-mode #themeToggle { display:none }
+}
+@media(prefers-reduced-motion:reduce) {
+  .fmz-dialog *,#fmz-avatar { animation:none!important; transition:none!important; scroll-behavior:auto!important }
+}

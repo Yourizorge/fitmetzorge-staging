@@ -27,7 +27,7 @@ values(current_setting('phase6c.continue.user1')::uuid,'hard_stop','serious_heal
 
 select set_config('request.jwt.claim.sub',current_setting('phase6c.continue.user1'),true);
 set local role authenticated;
-select public.fmz_phase6a_record_consent('ai_processing','granted','phase6a-ai-processing-v1','nl',true,gen_random_uuid());
+select public.fmz_phase6a_record_consent('private_chat','granted','phase6d-private-chat-v1','nl',true,gen_random_uuid());
 
 do $continued_chat$
 declare
@@ -67,7 +67,7 @@ reset role;
 
 select set_config('request.jwt.claim.sub',current_setting('phase6c.continue.user2'),true);
 set local role authenticated;
-select public.fmz_phase6a_record_consent('ai_processing','granted','phase6a-ai-processing-v1','nl',true,gen_random_uuid());
+select public.fmz_phase6a_record_consent('private_chat','granted','phase6d-private-chat-v1','nl',true,gen_random_uuid());
 do $member_isolation$
 declare v_status jsonb;
 begin
@@ -80,7 +80,7 @@ reset role;
 
 select set_config('request.jwt.claim.sub',current_setting('phase6c.continue.user1'),true);
 set local role authenticated;
-select public.fmz_phase6a_record_consent('ai_processing','withdrawn','phase6a-ai-processing-v1','nl',true,gen_random_uuid());
+select public.fmz_phase6a_record_consent('private_chat','withdrawn','phase6d-private-chat-v1','nl',true,gen_random_uuid());
 do $consent_block$
 declare v_status jsonb;
 begin

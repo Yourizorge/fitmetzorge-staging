@@ -180,7 +180,7 @@ begin
   end;
 
   v_pref := public.fmz_phase6d_update_preferences(
-    'Europe/Amsterdam'::text, true, '07:45'::text, true, true, 5::smallint, '08:15'::text, null::bigint, current_setting('phase6d.req.pref1')::uuid
+    'Europe/Amsterdam'::text, true, '07:45'::text, true, true, 5::smallint, '08:15'::text, 0::bigint, current_setting('phase6d.req.pref1')::uuid
   );
   if v_pref->>'daily_time' <> '07:45' or (v_pref->>'weekly_day')::integer <> 5 then
     raise exception 'preferences did not save';

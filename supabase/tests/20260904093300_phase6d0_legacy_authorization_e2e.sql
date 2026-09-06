@@ -142,7 +142,7 @@ values(current_setting('gate.member')::uuid,'ai','active','6d0_fixture',now()-in
 select set_config('request.jwt.claim.sub',current_setting('gate.member'),true);
 set local role authenticated;
 select pg_temp.assert_gate(not (public.fmz_phase6c_get_chat_status()->>'chat_write_allowed')::boolean,'trainer_link_does_not_grant_ai_consent');
-select public.fmz_phase6a_record_consent('ai_processing','granted','phase6a-ai-processing-v1','nl',true,gen_random_uuid());
+select public.fmz_phase6a_record_consent('private_chat','granted','phase6d-private-chat-v1','nl',true,gen_random_uuid());
 select set_config('gate.thread',gen_random_uuid()::text,true);
 select public.fmz_phase6c_create_thread(current_setting('gate.thread')::uuid,'nl',gen_random_uuid());
 select pg_temp.assert_gate((public.fmz_phase6c_get_chat_status()->>'chat_write_allowed')::boolean,'existing_chat_consent_gate_preserved');
@@ -154,7 +154,7 @@ select pg_temp.denied('select public.fmz_phase6c_read_thread('||quote_literal(cu
 reset role;
 select set_config('request.jwt.claim.sub',current_setting('gate.member'),true);
 set local role authenticated;
-select public.fmz_phase6a_record_consent('ai_processing','withdrawn','phase6a-ai-processing-v1','nl',true,gen_random_uuid());
+select public.fmz_phase6a_record_consent('private_chat','withdrawn','phase6d-private-chat-v1','nl',true,gen_random_uuid());
 select pg_temp.assert_gate(not (public.fmz_phase6c_get_chat_status()->>'chat_write_allowed')::boolean,'withdrawal_still_blocks_processing');
 reset role;
 select jsonb_build_object('overall_pass',bool_and(pass),'pass_count',count(*),'fail_count',0,'fixture_mode','transaction_rollback') as result from gate_checks;

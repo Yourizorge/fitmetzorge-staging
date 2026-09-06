@@ -5,7 +5,7 @@ const vm = require("vm");
 const root = path.resolve(__dirname, "..");
 const read = (file) => fs.readFileSync(path.join(root, file), "utf8");
 const files = {
-  migration: read("supabase/migrations/20260901230000_phase6b_provider_privacy_cost_gate.sql"),
+  migration: read("supabase/migrations/20260902045834_phase6b_provider_privacy_cost_gate.sql"),
   verifier: read("supabase/verification/20260901230000_phase6b_provider_privacy_cost_gate_verification.sql"),
   e2e: read("supabase/tests/20260901230000_phase6b_provider_privacy_cost_gate_transactional_e2e.sql"),
   contracts: read("supabase/functions/youri-ai/provider-contracts.ts"),

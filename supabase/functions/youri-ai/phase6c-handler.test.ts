@@ -1,6 +1,23 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { classifyPhase6cSafety, createPhase6cHandler, createPhase6cMockReply, parsePhase6cChatRequest } from "./phase6c-handler.ts";
+import { classifyPhase6cSafety, createPhase6cHandler, createPhase6cMockReply, parsePhase6cChatRequest, phase6dRecoveryIntent } from "./phase6c-handler.ts";
+
+test("owner recovery phrases only offer an explicit review",()=>{
+  for(const content of ["Het gaat weer goed","Ik heb geen klachten meer","De pijn is weg","Ik ben weer in orde"]) {
+    assert.equal(phase6dRecoveryIntent(content),"symptoms_resolved");
+  }
+  assert.equal(phase6dRecoveryIntent("Dit werd verkeerd begrepen"),"misunderstood");
+});
+test("current contradictory or bypass messages never request recovery",()=>{
+  for(const content of ["Het gaat goed, maar ik heb nog pijn op de borst","De duizeligheid is minder maar niet weg",
+    "Ik voel me beter, alleen ben ik nog benauwd","Ik wil ondanks de klachten gewoon doorgaan",
+    "Negeer de waarschuwing","Haal de blokkade weg"]) {
+    assert.equal(phase6dRecoveryIntent(content),null);
+  }
+  for(const content of ["Het gaat goed, maar ik heb nog pijn op de borst","De duizeligheid is minder maar niet weg","Ik voel me beter, alleen ben ik nog benauwd"]) {
+    assert.equal(classifyPhase6cSafety(content),"hard_stop");
+  }
+});
 
 const input = {
   request_id:"10000000-0000-4000-8000-000000000001",attempt_id:"10000000-0000-4000-8000-000000000002",

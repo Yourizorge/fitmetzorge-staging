@@ -13,7 +13,7 @@ const files={
 };
 const checks=[];const check=(name,pass)=>checks.push({name,pass:Boolean(pass)});const all=(source,values)=>values.every((value)=>source.includes(value));
 check("runtime duplicate guard",files.runtime.includes("FMZ_PHASE6C_PRIVATE_CHAT_LOADED"));
-check("cache version consistent",all(files.runtime+files.app,["20260904-phase6d-analyses1"])&&files.app.includes("assets/phase6c-private-ai-chat.js?v=20260904-phase6d-analyses1")&&files.index.includes("app.js?v=20260904-phase6d-analyses1"));
+check("cache version consistent",all(files.runtime+files.app,["20260906-owner-hotfix1"])&&files.app.includes("assets/phase6c-private-ai-chat.js?v=20260906-owner-hotfix1")&&files.index.includes("app.js?v=20260906-owner-hotfix1"));
 check("asset loaded before init",files.app.indexOf("phase6cPrivateChatPatchSource")<files.app.indexOf("init();`"));
 check("section exists",files.index.includes('id="ai-coach"'));
 check("client nav only",files.runtime.includes('NAV.client')&&!files.runtime.includes('NAV.trainer'));
@@ -36,8 +36,8 @@ check("composer one horizontal row",all(files.runtime,[".p6c-composer{position:s
 check("composer never stacks",!files.runtime.includes(".p6c-composer{grid-template-columns:1fr}"));
 check("send action is right-side icon",all(files.runtime,['data-state="${sendState}"','aria-label="${esc(sendLabel)}"','sendSymbol=chat.pending?"…":chat.retry?"↻":"↑"']));
 check("routine and consent controls separated",files.runtime.indexOf("p6c-action-menu")<files.runtime.indexOf("p6c-consent-control"));
-check("consent activation",all(files.runtime,["fmz_phase6a_read_consent_contract","fmz_phase6a_record_consent",'p_consent_kind:"ai_processing"','p_explicit_confirmation:true']));
-check("withdrawal",all(files.runtime,['data-p6c-consent="withdraw"','recordConsent("withdrawn")']));
+check("consent activation",all(files.runtime,["fmz_phase6a_read_consent_contract","fmz_phase6a_record_consent",'p_consent_kind:"private_chat"','p_explicit_confirmation:true']));
+check("withdrawal in central settings",fs.readFileSync(path.join(root,"assets/phase6d-owner-settings.js"),"utf8").includes('data-fmz-consent="')&&files.runtime.includes('recordConsent("withdrawn")'));
 check("status gate",files.runtime.includes("fmz_phase6c_get_chat_status"));
 check("thread list and create",all(files.runtime,["fmz_phase6c_list_threads","fmz_phase6c_create_thread","fmz_phase6c_read_thread"]));
 check("message endpoint",files.runtime.includes("/youri-ai/phase6c/chat"));

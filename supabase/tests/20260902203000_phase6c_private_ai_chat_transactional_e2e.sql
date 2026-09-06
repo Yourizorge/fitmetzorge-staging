@@ -31,7 +31,7 @@ declare v jsonb;
 begin
   v:=public.fmz_phase6c_get_chat_status();
   if v->>'deny_reason'<>'ai_consent_required' then raise exception 'consent gate failed'; end if;
-  perform public.fmz_phase6a_record_consent('ai_processing','granted','phase6a-ai-processing-v1','nl',true,gen_random_uuid());
+  perform public.fmz_phase6a_record_consent('private_chat','granted','phase6d-private-chat-v1','nl',true,gen_random_uuid());
   v:=public.fmz_phase6c_get_chat_status();
   if not (v->>'chat_write_allowed')::boolean or (v->>'external_ai_enabled')::boolean then raise exception 'chat gate failed'; end if;
   v:=public.fmz_phase6c_create_thread(current_setting('phase6c.thread')::uuid,'nl',current_setting('phase6c.thread.req')::uuid);
@@ -87,7 +87,7 @@ set local role authenticated;
 do $deny_matrix$
 declare v jsonb;
 begin
-  perform public.fmz_phase6a_record_consent('ai_processing','granted','phase6a-ai-processing-v1','nl',true,gen_random_uuid());
+  perform public.fmz_phase6a_record_consent('private_chat','granted','phase6d-private-chat-v1','nl',true,gen_random_uuid());
   v:=public.fmz_phase6c_get_chat_status();
   if v->>'deny_reason'<>'ai_entitlement_required' then raise exception 'Free Pro deny failed'; end if;
 end $deny_matrix$;
