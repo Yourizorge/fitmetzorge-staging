@@ -94,13 +94,24 @@
       "Youri AI is available with an active AI or personal coaching plan. View your current plan in Settings.",
       "Youri AI ist mit einem aktiven KI- oder Personal-Coaching-Tarif verfuegbar. Deinen Tarif findest du in den Einstellungen."]
   };
-  const sections = ["account","privacy","time","language","ai","subscription","legal"];
+  Object.assign(copy, {
+    home:copy.settings, back:["Terug","Back","Zurueck"], consent:["Toestemmingen","Consents","Einwilligungen"],
+    avatar:["Zwevende avatar","Floating avatar","Schwebender Avatar"], analysisData:["Analysegegevens","Analysis data","Analysedaten"],
+    languageChange:["Taal wijzigen","Change language","Sprache aendern"],
+    deviceZone:["Apparaattijdzone","Device timezone","Geraetezeitzone"],
+    zoneUpdated:["Tijdzone bijgewerkt naar","Timezone updated to","Zeitzone aktualisiert auf"]
+  });
+  const sections = ["home","account","privacy","language","ai","subscription","terms","privacyDoc","logout","schedule","consent","avatar","chatData","analysisData"];
+  const homeRows = [["account","user"],["privacy","shield"],["ai","message-circle"],["subscription","credit-card"],["language","languages"],["terms","file-text"],["privacyDoc","file-text"],["logout","log-out"]];
+  const aiRows = [["consent","shield"],["schedule","calendar"],["avatar","user"],["chatData","message-circle"],["analysisData","history"]];
+  const flag = language => '<img class="fmz-flag" src="assets/vendor/flag-'+({nl:"nl",en:"gb",de:"de"})[language]+'.svg" alt="" width="24" height="18">';
+  const deviceTimezone = () => Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
   const languages = ["nl","en","de"];
   const languageNames = ["Nederlands","English","Deutsch"];
-  let ownerId = "", data = null, loading = null, epoch = 0, section = "account";
+  let ownerId = "", data = null, loading = null, epoch = 0, section = "home";
   let message = "", error = "", busy = false, dirty = false, settingsDialog = null, chatDialog = null, recoveryDialog = null;
   let chatMarker = null, chatOrigin = null, settingsOpener = null, chatOpener = null, recoveryRevision = null, recoveryReason = "reassessment", routedUser = "";
-  let drag = null, avatarDraft = null, ignoreClickUntil = 0, positionQueue = Promise.resolve(), languageOpen = false;
+  let drag = null, avatarDraft = null, ignoreClickUntil = 0, positionQueue = Promise.resolve(), languageOpen = false, timezoneSync = null;
   const esc = value => String(value == null ? "" : value).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);
   const lang = () => languages.includes(state.accountSettings?.language) ? state.accountSettings.language : "nl";
   const t = key => copy[key]?.[languages.indexOf(lang())] || copy[key]?.[0] || key;
@@ -111,8 +122,7 @@
   const formatDate = value => {
     if (!value) return t("unknown");
     const date = new Date(value);
-    if (data?.display?.date_format === "iso") return date.toISOString().slice(0,10);
-    return date.toLocaleDateString(data?.display?.date_format === "day_first" ? "en-GB" : locale());
+    return date.toLocaleDateString(locale(), {timeZone:deviceTimezone()});
   };
   const icon = name => '<img src="assets/vendor/lucide-' + name + '.svg" alt="" width="22" height="22">';
   const button = (label,attrs,style="secondary-btn") => '<button type="button" class="' + style + '" ' + attrs + '>' + esc(label) + '</button>';
@@ -146,6 +156,7 @@
         if (uid()!==user||epoch!==generation) return;
         const languageChanged=lang()!==next.language;
         applySettings(next);
+        if(member()) await syncDeviceTimezone();
         if(languageChanged){renderNav();renderAll();}
         if (settingsDialog&&!dirty) renderSettings();
         route();
@@ -155,6 +166,25 @@
       } finally { if(epoch===generation)loading=null; }
     })();
     return loading;
+  }
+  async function syncDeviceTimezone() {
+    if(!uid()||!member()||!data||timezoneSync) return timezoneSync;
+    const timezone=deviceTimezone(),user=uid(),generation=epoch;
+    if(data.analysis_preferences?.timezone_name===timezone)return;
+    timezoneSync=(async()=>{
+      try {
+        const pref=await rpc("fmz_phase6d_sync_device_timezone",{p_timezone_name:timezone});
+        if(uid()!==user||epoch!==generation)return;
+        if(!pref?.timezone_name)throw new Error("timezone_response_invalid");
+        data.analysis_preferences=pref;
+        if(AI.snapshot().analysisStatus)AI.snapshot().analysisStatus.preferences=pref;
+        message=t("zoneUpdated")+" "+timezone;
+        if(settingsDialog&&!dirty&&!busy)renderSettings();
+      } catch {
+        if(uid()===user)error=t("error");
+      } finally { if(epoch===generation)timezoneSync=null; }
+    })();
+    return timezoneSync;
   }
   async function savePatch(patch) {
     const user=uid(),generation=epoch;
@@ -182,12 +212,13 @@
   function modalState() {
     document.body.classList.toggle("fmz-modal-open",Boolean(settingsDialog||chatDialog||recoveryDialog));
     syncTools();
+    window.dispatchEvent(new Event("fmz:surface-change"));
   }
   function closeSettings() {
     if(!settingsDialog)return;
     settingsDialog.close();settingsDialog.remove();settingsDialog=null;dirty=false;
     modalState();
-    (settingsOpener?.isConnected?settingsOpener:chatDialog?.querySelector('[data-fmz-settings]')||document.querySelector('#fmz-top-tools [data-fmz-settings]'))?.focus();
+    (settingsOpener?.isConnected?settingsOpener:chatDialog?.querySelector('#p6cMessage,button')||document.querySelector('#fmz-top-tools [data-fmz-settings]'))?.focus();
   }
   function closeChat() {
     if(!chatDialog)return;
@@ -206,16 +237,16 @@
   function closeTop() {
     if(recoveryDialog)closeRecovery();else if(settingsDialog)closeSettings();else closeChat();
   }
-  async function openSettings(next="account") {
+  async function openSettings(next="home") {
     if(!uid())return;
     if(!settingsDialog)settingsOpener=document.activeElement;
-    section=sections.includes(next)?next:"account";message="";error="";dirty=false;
+    section=sections.includes(next)?next:"home";message="";error="";dirty=false;
     if(!settingsDialog)settingsDialog=makeDialog("fmz-settings",t("settings"));
     renderSettings();if(!settingsDialog.open)settingsDialog.showModal();modalState();
     await hydrate();
     if(member())await AI.hydrate({force:true});
     renderSettings();
-    settingsDialog?.querySelector('[data-fmz-section="'+section+'"]')?.focus();
+    settingsDialog?.querySelector('main button,main input,main select')?.focus();
   }
   async function openChat() {
     if(!uid()||!member())return;
@@ -226,8 +257,7 @@
     chatOrigin=target.parentNode;chatMarker=document.createComment("youri-ai-route");target.before(chatMarker);
     chatDialog=makeDialog("fmz-youri-chat","Youri AI");
     chatDialog.classList.add("fmz-chat-dialog");
-    chatDialog.innerHTML='<div class="fmz-chat-close"><button type="button" class="fmz-icon" data-fmz-settings="ai" aria-label="'+esc(t("settings"))+'" title="'+esc(t("settings"))+'">'+icon("settings")+'</button>'+
-      '<button type="button" class="fmz-icon" data-fmz-close aria-label="'+esc(t("close"))+'" title="'+esc(t("close"))+'">'+icon("x")+'</button></div>';
+    chatDialog.innerHTML="";
     chatDialog.appendChild(target);target.classList.add("active");
     chatDialog.showModal();modalState();
     await AI.hydrate({force:true});
@@ -261,22 +291,13 @@
   function scheduleForm() {
     const pref=analysisPreferences();
     if(!pref)return '<p>'+esc(t("loading"))+'</p>';
-    const zones=[...new Set([pref.timezone_name,"Europe/Amsterdam","Europe/Berlin","Europe/London","UTC",...(Intl.supportedValuesOf?.("timeZone")||[])])];
-    return '<form data-fmz-form="schedule" class="fmz-form"><div class="fmz-field-grid">'+
-      field(t("timezone"),select("timezone_name",zones.map(z=>[z,z]),pref.timezone_name))+
+    return '<p class="fmz-device-zone">'+esc(t("deviceZone"))+': '+esc(deviceTimezone())+'</p><form data-fmz-form="schedule" class="fmz-form"><div class="fmz-field-grid">'+
       field(t("dailyTime"),input("daily_time",pref.daily_time,'type="time" step="60" required'))+
       field(t("weeklyDay"),select("weekly_day",weekdays(),pref.weekly_day))+
       field(t("weeklyTime"),input("weekly_time",pref.weekly_time,'type="time" step="60" required'))+'</div>'+
       [["daily_enabled","daily"],["post_workout_enabled","post"],["weekly_enabled","weekly"]].map(([name,label])=>
         '<label class="fmz-check"><input type="checkbox" name="'+name+'" '+(pref[name]?'checked':'')+'>'+esc(t(label))+'</label>').join("")+
       '<button type="submit" class="primary-btn">'+esc(t("save"))+'</button></form>';
-  }
-  function timeSection() {
-    return '<form data-fmz-form="display" class="fmz-form"><div class="fmz-field-grid">'+
-      field(t("dateFormat"),select("date_format",[["locale",t("localDate")],["day_first",t("dayFirst")],["iso","ISO 8601"]],data.display.date_format))+
-      field(t("hourCycle"),select("hour_cycle",[["24",t("hours24")],["12",t("hours12")]],data.display.hour_cycle))+
-      '</div><button type="submit" class="primary-btn">'+esc(t("save"))+'</button></form>'+
-      (member()?'<h3>'+esc(t("schedule"))+'</h3>'+scheduleForm():"");
   }
   function consentSections() {
     const snapshot=AI.snapshot(),contracts=[...(snapshot.consent?.contracts||[]),...(snapshot.analysisConsent?.contracts||[])];
@@ -310,38 +331,42 @@
       button(t("resetAvatar"),"data-fmz-avatar-reset");
   }
   function privacySection() {
-    return (member()?consentSections()+chatData()+analysisData():"")+
-      '<h3>'+esc(t("retention"))+'</h3><p>'+esc(t("retentionCopy"))+'</p><h3>'+esc(t("deleteAccount"))+'</h3><p>'+esc(t("deletionGate"))+'</p>';
+    return '<h3>'+esc(t("retention"))+'</h3><p>'+esc(t("retentionCopy"))+'</p><h3>'+esc(t("deleteAccount"))+'</h3><p>'+esc(t("deletionGate"))+'</p>';
   }
   function subscriptionSection() {
     const plan=data.subscription;
     return '<dl>'+row(t("plan"),plan.plan)+row(t("status"),t(plan.status))+row(t("trial"),plan.trial_status==="trial"?t("trialActive"):t("unknown"))+
       row(t("start"),formatDate(plan.starts_at))+row(t("end"),formatDate(plan.ends_at))+'</dl><p>'+esc(t("billingGate"))+'</p>';
   }
-  function legalSection() {
-    return ["terms","privacyDoc"].map(key=>'<details class="fmz-disclosure"><summary>'+esc(t(key))+'</summary><p><strong>'+esc(t("draft"))+'</strong></p><p>'+esc(t("draftCopy"))+'</p><p>2026-09-06</p></details>').join("")+
-      (member()?'<h3>'+esc(t("aiTerms"))+'</h3>'+consentSections():"");
+  function navigationRows(rows) {
+    return '<nav class="fmz-settings-list" aria-label="'+esc(t(section))+'">'+rows.map(([key,symbol])=>
+      '<button type="button" class="fmz-settings-row" data-fmz-section="'+key+'">'+icon(symbol)+'<span>'+esc(t(key))+'</span>'+icon("chevron-right")+'</button>').join("")+'</nav>';
   }
   function renderSettings() {
     if(!settingsDialog)return;
-    const activeId=document.activeElement?.getAttribute("data-fmz-section");
     let body='<p>'+esc(t("loading"))+'</p>';
     if(data){
+      if(section==="home")body=navigationRows(homeRows.filter(([key])=>key!=="ai"||member()));
       if(section==="account")body=accountSection();
       if(section==="privacy")body=privacySection();
-      if(section==="time")body=timeSection();
-      if(section==="language")body=field(t("language"),languageControl());
-      if(section==="ai")body=member()?consentSections()+safetyPanel(AI.snapshot().analysisStatus?.recovery)+
-        '<h3>'+esc(t("schedule"))+'</h3>'+scheduleForm()+avatarSettings()+chatData()+analysisData():'<p>'+esc(t("entitlement"))+'</p>';
+      if(section==="language")body='<div class="fmz-language-list">'+languages.map((id,i)=>'<button type="button" data-fmz-language="'+id+'" aria-pressed="'+(lang()===id)+'">'+flag(id)+'<span>'+languageNames[i]+'</span>'+(lang()===id?icon("check"):"")+'</button>').join("")+'</div>';
+      if(section==="ai")body=member()?safetyPanel(AI.snapshot().analysisStatus?.recovery)+navigationRows(aiRows):'<p>'+esc(t("entitlement"))+'</p>';
+      if(member()&&section==="consent")body=consentSections();
+      if(member()&&section==="schedule")body=scheduleForm();
+      if(member()&&section==="avatar")body=avatarSettings();
+      if(member()&&section==="chatData")body=chatData();
+      if(member()&&section==="analysisData")body=analysisData();
       if(section==="subscription")body=subscriptionSection();
-      if(section==="legal")body=legalSection();
+      if(["terms","privacyDoc"].includes(section))body='<p><strong>'+esc(t("draft"))+'</strong></p><p>'+esc(t("draftCopy"))+'</p><p>2026-09-06</p>';
+      if(section==="logout")body='<p>'+esc(data.profile.email)+'</p>'+button(t("logout"),"data-fmz-logout");
     }
-    settingsDialog.innerHTML='<header class="fmz-dialog-head"><h2>'+esc(t("settings"))+'</h2><button type="button" class="fmz-icon" data-fmz-close aria-label="'+esc(t("close"))+'">'+icon("x")+'</button></header>'+
-      '<nav class="fmz-settings-nav" aria-label="'+esc(t("settings"))+'">'+sections.map(key=>'<button type="button" data-fmz-section="'+key+'" aria-current="'+(key===section?"page":"false")+'">'+esc(t(key))+'</button>').join("")+
-      '</nav><main class="fmz-settings-content"><h2>'+esc(t(section))+'</h2>'+notice()+body+
+    const parent=aiRows.some(([key])=>key===section)?"ai":"home";
+    settingsDialog.innerHTML='<header class="fmz-dialog-head">'+
+      (section!=="home"?'<button type="button" class="fmz-icon" data-fmz-section="'+parent+'" aria-label="'+esc(t("back"))+'" title="'+esc(t("back"))+'">'+icon("arrow-left")+'</button>':"")+
+      '<h2>'+esc(t(section))+'</h2><button type="button" class="fmz-icon" data-fmz-close aria-label="'+esc(t("close"))+'" title="'+esc(t("close"))+'">'+icon("x")+'</button></header>'+
+      '<main class="fmz-settings-content" data-fmz-current-section="'+section+'">'+notice()+body+
       (error?button(t("retry"),"data-fmz-reload"):"")+'</main>';
     if(busy)settingsDialog.querySelectorAll("input,select,button").forEach(el=>{if(!el.matches("[data-fmz-close]"))el.disabled=true;});
-    if(activeId)settingsDialog.querySelector('[data-fmz-section="'+activeId+'"]')?.focus();
   }
   function safetyPanel(recovery) {
     if(!recovery?.analysis_blocked)return "";
@@ -399,13 +424,13 @@
       tools=document.createElement("div");tools.id="fmz-top-tools";host.appendChild(tools);
     }
     tools.hidden=!allowed;
-    tools.innerHTML='<button type="button" class="fmz-icon" data-fmz-settings="account" aria-label="'+esc(t("settings"))+'" title="'+esc(t("settings"))+'">'+icon("settings")+'</button>'+
-      '<div class="fmz-language-wrap"><button type="button" class="fmz-icon fmz-language-button" data-fmz-language-toggle aria-label="'+esc(t("language"))+'" aria-expanded="'+languageOpen+'" title="'+esc(t("language"))+'">'+icon("globe")+'<span>'+lang().toUpperCase()+'</span></button>'+
-      (languageOpen?'<div class="fmz-language-menu">'+languages.map((id,i)=>'<button type="button" data-fmz-language="'+id+'" aria-pressed="'+(lang()===id)+'">'+languageNames[i]+'</button>').join("")+'</div>':"")+'</div>';
+    tools.innerHTML='<button type="button" class="fmz-icon" data-fmz-settings="home" aria-label="'+esc(t("settings"))+'" title="'+esc(t("settings"))+'">'+icon("settings")+'</button>'+
+      '<div class="fmz-language-wrap"><button type="button" class="fmz-icon fmz-language-button" data-fmz-language-toggle aria-label="'+esc(t("languageChange"))+'" aria-expanded="'+languageOpen+'" title="'+esc(t("language"))+'">'+flag(lang())+'</button>'+
+      (languageOpen?'<div class="fmz-language-menu">'+languages.map((id,i)=>'<button type="button" data-fmz-language="'+id+'" aria-pressed="'+(lang()===id)+'">'+flag(id)+'<span>'+languageNames[i]+'</span>'+(lang()===id?icon("check"):"")+'</button>').join("")+'</div>':"")+'</div>';
     let avatar=document.getElementById("fmz-avatar");
     if(!avatar){
       avatar=document.createElement("button");avatar.id="fmz-avatar";avatar.type="button";
-      avatar.innerHTML='<img src="'+avatarSource+'" alt="" width="256" height="256" draggable="false">';
+      avatar.innerHTML='<img src="'+avatarSource+'" alt="" width="256" height="256" draggable="false" class="fmz-avatar-face"><span class="fmz-avatar-chat" aria-hidden="true">'+icon("message-circle")+'</span><span class="fmz-avatar-unread" hidden aria-hidden="true"></span>';
       document.body.appendChild(avatar);
       avatar.addEventListener("pointerdown",startDrag);
       avatar.addEventListener("pointermove",moveDrag);
@@ -422,7 +447,7 @@
     }
     avatar.setAttribute("aria-label",t("openAI"));avatar.title=t("openAI");
     avatar.hidden=!allowed||!member()||!data||data.avatar.visible===false||Boolean(settingsDialog||chatDialog||recoveryDialog)||Boolean(unsafeSurface());
-    document.querySelectorAll('#nav [data-view="ai-coach"]').forEach(node=>node.remove());
+    document.querySelectorAll('#nav [data-view="ai-coach"],#nav [data-view="settings"]').forEach(node=>node.remove());
     placeAvatar();
   }
   function startDrag(event) {
@@ -480,8 +505,9 @@
     });
   }
   async function saveSchedule(form) {
+    await syncDeviceTimezone();
     const values=new FormData(form),pref=analysisPreferences();
-    const args={p_timezone_name:values.get("timezone_name"),p_daily_time:values.get("daily_time"),
+    const args={p_timezone_name:deviceTimezone(),p_daily_time:values.get("daily_time"),
       p_weekly_day:Number(values.get("weekly_day")),p_weekly_time:values.get("weekly_time"),
       p_daily_enabled:values.has("daily_enabled"),p_post_workout_enabled:values.has("post_workout_enabled"),
       p_weekly_enabled:values.has("weekly_enabled"),p_expected_revision:Number(pref.revision),p_request_id:uuid()};
@@ -528,14 +554,14 @@
     } finally {busy=false;}
   }
   function reset() {
-    epoch++;ownerId="";data=null;loading=null;message="";error="";busy=false;languageOpen=false;drag=null;avatarDraft=null;routedUser="";
+    epoch++;ownerId="";data=null;loading=null;message="";error="";busy=false;languageOpen=false;drag=null;avatarDraft=null;routedUser="";timezoneSync=null;
     closeRecovery();closeSettings();closeChat();AI.reset();syncTools();
   }
   document.addEventListener("click",async event=>{
     const target=event.target.closest("button");if(!target)return;
     if(target.matches("[data-fmz-close]")){event.preventDefault();event.stopImmediatePropagation();closeTop();return;}
     if(target.dataset.fmzSettings){event.stopImmediatePropagation();await openSettings(target.dataset.fmzSettings);return;}
-    if(target.dataset.fmzSection){dirty=false;section=target.dataset.fmzSection;message="";error="";renderSettings();return;}
+    if(target.dataset.fmzSection&&sections.includes(target.dataset.fmzSection)){dirty=false;section=target.dataset.fmzSection;message="";error="";renderSettings();settingsDialog?.querySelector("main button,main input,main select")?.focus();return;}
     if(target.hasAttribute("data-fmz-language-toggle")){languageOpen=!languageOpen;syncTools();document.querySelector(".fmz-language-menu button")?.focus();return;}
     if(target.dataset.fmzLanguage){await setLanguage(target.dataset.fmzLanguage);return;}
     if(target.hasAttribute("data-fmz-reload")){error="";await hydrate(true);if(member())await AI.hydrate({force:true});renderSettings();return;}
@@ -579,7 +605,6 @@
     const values=new FormData(form),kind=form.dataset.fmzForm;
     if(kind==="schedule")saveSchedule(form);
     if(kind==="account")mutate(()=>savePatch({name:String(values.get("name")),country:String(values.get("country"))}));
-    if(kind==="display")mutate(()=>savePatch({date_format:values.get("date_format"),hour_cycle:values.get("hour_cycle")}));
     if(kind==="password")changePassword(form);
     if(kind==="recovery")recover(form);
   },true);
@@ -600,9 +625,18 @@
     if(event.key==="Escape"&&languageOpen){languageOpen=false;syncTools();document.querySelector("[data-fmz-language-toggle]")?.focus();}
   });
   window.addEventListener("fmz:ai-state",()=>{if(settingsDialog&&!dirty&&!busy)renderSettings();});
-  window.addEventListener("resize",placeAvatar);
-  window.visualViewport?.addEventListener("resize",placeAvatar);
-  window.visualViewport?.addEventListener("scroll",placeAvatar);
+  function updateViewport() {
+    const viewport=window.visualViewport;
+    document.documentElement.style.setProperty("--fmz-visual-height",(viewport?.height||innerHeight)+"px");
+    document.documentElement.style.setProperty("--fmz-visual-top",(viewport?.offsetTop||0)+"px");
+    placeAvatar();
+  }
+  document.addEventListener("visibilitychange",()=>{if(!document.hidden)syncDeviceTimezone();});
+  window.addEventListener("focus",syncDeviceTimezone);
+  window.addEventListener("resize",updateViewport);
+  updateViewport();
+  window.visualViewport?.addEventListener("resize",updateViewport);
+  window.visualViewport?.addEventListener("scroll",updateViewport);
   // Only class changes on the body are observed, to hide the avatar in existing fullscreen flows.
   new MutationObserver(()=>{const avatar=document.getElementById("fmz-avatar");if(avatar)avatar.hidden=Boolean(unsafeSurface()||settingsDialog||chatDialog||recoveryDialog||!data?.avatar.visible||!member());}).observe(document.body,{attributes:true,attributeFilter:["class"]});
   const oldRender=renderAll,oldNav=renderNav,oldView=showView;
@@ -614,7 +648,7 @@
     return result;
   };
   showView=function(id){
-    if(id==="settings"&&uid()){openSettings("account");return;}
+    if(id==="settings"&&uid()){openSettings("home");return;}
     return oldView(id);
   };
   const route=(force=false)=>{
@@ -623,8 +657,8 @@
     }
   };
   window.addEventListener("hashchange",()=>route(true));
-  window.FMZ_OWNER_SETTINGS=Object.freeze({open:openSettings,openChat,openRecovery,hydrate,safetyPanel,analysisSummary,reset,
-    snapshot:()=>data,formatDate,formatTime:value=>new Date(value).toLocaleTimeString(locale(),{hour:"2-digit",minute:"2-digit",hour12:data?.display?.hour_cycle==="12",timeZone:analysisPreferences()?.timezone_name||"Europe/Amsterdam"})});
+  window.FMZ_OWNER_SETTINGS=Object.freeze({open:openSettings,openChat,closeChat,openRecovery,syncDeviceTimezone,hydrate,safetyPanel,analysisSummary,unsafeSurface,reset,
+    snapshot:()=>data,formatDate,formatTime:value=>new Date(value).toLocaleTimeString(locale(),{hour:"2-digit",minute:"2-digit",hourCycle:Intl.DateTimeFormat(undefined,{hour:"numeric"}).resolvedOptions().hourCycle,timeZone:deviceTimezone()})});
   window.addEventListener("fmz:ai-state",syncTools);
   supabaseClient?.auth.onAuthStateChange?.(event=>{if(event==="SIGNED_OUT")reset();});
   hydrate();

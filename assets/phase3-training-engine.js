@@ -2507,6 +2507,14 @@
     const session = phase3State.activeSession;
     if (!session) return;
     const focus = phase3EnsureSessionFocus(session);
+    // Persist pending sets before the completed-session event becomes visible to analysis jobs.
+    const flushed = await phase3SyncActiveSession();
+    if (phase3UsesSupabase() && !flushed.ok) {
+      focus.feedback = phase3Text("setSaveFailed");
+      phase3SaveLocal();
+      renderTraining();
+      return;
+    }
     const previousStatus = session.status;
     const previousCompletedAt = session.completedAt;
     if (focus.pauseStartedAt) {

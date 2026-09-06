@@ -4,7 +4,7 @@ const commit=process.env.FMZ_VERIFY_COMMIT,git=process.env.FMZ_GIT||"git";
 if(!/^[0-9a-f]{40}$/.test(commit||""))throw new Error("immutable_commit_required");
 async function main(){
   const files=[];
-  for(const name of ["index.html","app.js","app.bundle.js","assets/phase1-foundation.js","assets/phase5-progress.js","assets/phase6d0-legacy-auth.js","assets/phase6c-private-ai-chat.js","assets/phase6d-owner-settings.js","assets/phase6d-owner-settings.css","assets/youri-ai-avatar-3d-v3-256.webp","assets/vendor/lucide-settings.svg","assets/vendor/lucide-globe.svg","assets/vendor/lucide-x.svg"]){
+  for(const name of ["index.html","app.js","app.bundle.js","assets/phase1-foundation.js","assets/phase5-progress.js","assets/phase6d0-legacy-auth.js","assets/phase6c-private-ai-chat.js","assets/phase6d-owner-settings.js","assets/phase6d-owner-settings.css","assets/phase6d-hotfix2.css","assets/phase6d-analysis-inbox.js","assets/phase3-training-engine.js","assets/youri-ai-avatar-3d-v3-256.webp","assets/vendor/lucide-settings.svg","assets/vendor/lucide-globe.svg","assets/vendor/lucide-x.svg",...fs.readdirSync(path.join(root,"assets/vendor")).filter(name=>/^flag-(nl|gb|de)\.svg$/.test(name)||/^lucide-.*\.svg$/.test(name)&&!["lucide-settings.svg","lucide-globe.svg","lucide-x.svg"].includes(name)).map(name=>"assets/vendor/"+name)]){
     const expected=execFileSync(git,["show",commit+":"+name],{cwd:root,windowsHide:true,maxBuffer:5000000});
     let verified=false;
     for(let attempt=0;attempt<8;attempt++){
@@ -44,7 +44,7 @@ async function main(){
       await context.close();
     }
   }finally{await browser.close();}
-  const result={overall_pass:true,commit,cache:"20260906-owner-hotfix1",files,viewports,databaseMutation:false};
+  const result={overall_pass:true,commit,cache:"20260906-owner-hotfix2",files,viewports,databaseMutation:false};
   fs.writeFileSync(path.join(root,"supabase/.temp/public-auth-live-result.json"),JSON.stringify(result,null,2));
   console.log(JSON.stringify(result,null,2));
 }

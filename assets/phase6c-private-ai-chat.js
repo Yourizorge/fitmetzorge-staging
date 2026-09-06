@@ -2,7 +2,7 @@
   if (window.FMZ_PHASE6C_PRIVATE_CHAT_LOADED) return;
   window.FMZ_PHASE6C_PRIVATE_CHAT_LOADED = true;
 
-  const VERSION = "20260906-owner-hotfix1";
+  const VERSION = "20260906-owner-hotfix2";
   const AVATAR_SRC = "assets/youri-ai-avatar-3d-v3-256.webp";
   const LANGUAGES = ["nl", "en", "de"];
   const I18N = {
@@ -84,9 +84,15 @@
     NAV.client.splice(settingsIndex>=0?settingsIndex:NAV.client.length,0,["ai-coach",text("nav")]);
   }
 
-  async function rpc(name,args={}){if(!supabaseClient)throw new Error("auth_required");const result=await supabaseClient.rpc(name,args);if(result.error)throw result.error;return result.data;}
+  async function rpc(name,args={}){
+    if(!supabaseClient)throw new Error("auth_required");
+    const generation=hydrationEpoch,profile=activeProfile();
+    const result=await supabaseClient.rpc(name,args);
+    if(generation!==hydrationEpoch||profile!==activeProfile()||!isLoggedIn())throw new Error("auth_context_changed");
+    if(result.error)throw result.error;return result.data;
+  }
 
-  function reset(){hydrationEpoch++;Object.assign(chat,{profileId:"",loaded:false,loading:false,status:null,consent:null,threads:[],thread:null,messages:[],error:"",notice:"",pending:false,draft:"",retry:null,opener:null,historyOpen:false,activeTab:"chat",analysisStatus:null,analysisConsent:null,analyses:[],analysisSettingsOpen:false,analysisPendingKind:""});}
+  function reset(){hydrationEpoch++;drafts.clear();renderedThread="";forceFollow=false;threadReadSequence++;chat.messagesMore=false;chat.threadsMore=false;chat.historyLoading=false;chat.prependMessages=false;Object.assign(chat,{profileId:"",loaded:false,loading:false,status:null,consent:null,threads:[],thread:null,messages:[],error:"",notice:"",pending:false,draft:"",retry:null,opener:null,historyOpen:false,activeTab:"chat",analysisStatus:null,analysisConsent:null,analyses:[],analysisSettingsOpen:false,analysisPendingKind:""});}
 
   async function hydrate({force=false,threadId=""}={}){
     const profileId=activeProfile();
@@ -105,22 +111,46 @@
         rpc("fmz_phase6d_list_analyses",{p_limit:20,p_before_created_at:null,p_before_id:null}).catch(()=>({results:[]}))
       ]);
       if(generation!==hydrationEpoch||activeProfile()!==profileId||!isLoggedIn())return;
-      chat.status=status;chat.consent=consent;chat.threads=threads?.threads||[];
+      chat.status=status;chat.consent=consent;chat.threads=threads?.threads||[];chat.threadsMore=chat.threads.length===20;
       chat.analysisStatus=analysisStatus;chat.analysisConsent=analysisConsent;chat.analyses=analyses?.results||[];
       const wanted=threadId||chat.thread?.id||chat.threads[0]?.id||"";
-      if(wanted&&chat.threads.some((item)=>item.id===wanted))await loadThread(wanted,{renderNow:false});else{chat.thread=null;chat.messages=[];}
+      if(wanted)await loadThread(wanted,{renderNow:false});else{chat.thread=null;chat.messages=[];}
       chat.loaded=true;
     }catch(error){if(generation===hydrationEpoch)chat.error=errorText(error);}finally{if(generation===hydrationEpoch){chat.loading=false;render();window.dispatchEvent(new Event("fmz:ai-state"));}}
   }
 
   async function loadThread(threadId,{renderNow=true}={}){
-    const generation=hydrationEpoch,profile=activeProfile();
+    const generation=hydrationEpoch,profile=activeProfile(),sequence=++threadReadSequence;
     const data=await rpc("fmz_phase6c_read_thread",{p_thread_id:threadId,p_limit:50,p_before_sequence:null});
-    if(generation!==hydrationEpoch||activeProfile()!==profile||!isLoggedIn())return;
-    chat.thread=data.thread;chat.messages=data.messages||[];chat.retry=null;
+    if(generation!==hydrationEpoch||sequence!==threadReadSequence||activeProfile()!==profile||!isLoggedIn())return;
+    const sameThread=chat.thread?.id===data.thread?.id;
+    const earlier=sameThread?chat.messages.filter(item=>item.sequence_number<(data.messages?.[0]?.sequence_number||0)):[];
+    if(!sameThread){
+      if(chat.thread)drafts.set(chat.thread.id,chat.draft);
+      chat.draft=drafts.get(data.thread?.id)||"";
+      forceFollow=true;
+    }
+    chat.thread=data.thread;chat.messages=[...earlier,...(data.messages||[])];chat.messagesMore=chat.messages[0]?.sequence_number>1;chat.retry=null;
     if(renderNow)render();
   }
 
+  async function loadEarlier(messages=false){
+    if(chat.historyLoading||chat.pending)return;
+    const profile=activeProfile(),generation=hydrationEpoch,thread=chat.thread?.id;
+    chat.historyLoading=true;render();
+    try {
+      if(messages){
+        const next=await rpc("fmz_phase6c_read_thread",{p_thread_id:thread,p_limit:50,p_before_sequence:chat.messages[0]?.sequence_number});
+        if(generation!==hydrationEpoch||profile!==activeProfile()||thread!==chat.thread?.id)return;
+        chat.messages=[...(next.messages||[]),...chat.messages];chat.messagesMore=(next.messages||[]).length===50;chat.prependMessages=true;
+      }else{
+        const last=chat.threads.at(-1),next=await rpc("fmz_phase6c_list_threads",{p_limit:20,p_before_updated_at:last?.updated_at||null,p_before_id:last?.id||null});
+        if(generation!==hydrationEpoch||profile!==activeProfile())return;
+        chat.threads=[...chat.threads,...(next.threads||[])];chat.threadsMore=(next.threads||[]).length===20;
+      }
+    }catch(error){if(generation===hydrationEpoch)chat.error=errorText(error);}
+    finally{if(generation===hydrationEpoch){chat.historyLoading=false;render();}}
+  }
   function currentConsent(){return chat.consent?.current?.private_chat||{};}
   function consentDocument(){return (chat.consent?.contracts||[]).find((item)=>item.consent_kind==="private_chat");}
   function currentAnalysisConsent(){return chat.analysisConsent?.current?.ai_analysis||chat.analysisStatus?.contract?.current?.ai_analysis||{};}
@@ -148,7 +178,12 @@
     return "";
   }
 
-  function renderThreads(){return `<aside class="p6c-list ${chat.historyOpen?"open":""}" aria-label="${esc(text("conversations"))}"><div class="p6c-list-head"><h2>${esc(text("conversations"))}</h2><button class="secondary-btn" type="button" data-p6c-history aria-label="${esc(text("close"))}">×</button></div><div class="p6c-thread-list">${chat.threads.length?chat.threads.map((item)=>`<button type="button" class="secondary-btn p6c-thread ${chat.thread?.id===item.id?"active":""}" data-p6c-thread="${esc(item.id)}" aria-current="${chat.thread?.id===item.id?"true":"false"}"><span>${esc(item.last_message||text("newChat"))}</span><small>${esc(date(item.updated_at))}${item.processing_status==="failed"?` · ${esc(text("failed"))}`:""}</small></button>`).join(""):`<p class="p6c-empty">${esc(text("empty"))}</p>`}</div></aside>`;}
+  const uiIcon = name => '<img src="assets/vendor/lucide-'+name+'.svg" alt="" width="22" height="22">';
+  const iconButton = (name,label,attrs) => '<button type="button" class="fmz-icon" '+attrs+' aria-label="'+esc(label)+'" title="'+esc(label)+'">'+uiIcon(name)+'</button>';
+  const drafts = new Map();
+  let renderedThread = "", forceFollow = false, threadReadSequence = 0;
+  const moreText=()=>({nl:"Eerder laden",en:"Load earlier",de:"Fruehere laden"})[lang()];
+  function renderThreads(){return `<aside class="p6c-list ${chat.historyOpen?"open":""}" aria-label="${esc(text("conversations"))}"><div class="p6c-list-head"><h2>${esc(text("conversations"))}</h2>${iconButton("x",text("close"),"data-p6c-history")}</div><div class="p6c-thread-list">${chat.threads.length?chat.threads.map((item)=>`<button type="button" class="secondary-btn p6c-thread ${chat.thread?.id===item.id?"active":""}" data-p6c-thread="${esc(item.id)}" aria-current="${chat.thread?.id===item.id?"true":"false"}"><span>${esc(item.title||item.last_message||text("newChat"))}</span><small>${esc(date(item.updated_at))}${item.processing_status==="failed"?` · ${esc(text("failed"))}`:""}</small></button>`).join(""):`<p class="p6c-empty">${esc(text("empty"))}</p>`}${chat.threadsMore?`<button type="button" class="secondary-btn" data-p6c-earlier-threads ${chat.historyLoading?"disabled":""}>${esc(moreText())}</button>`:""}</div></aside>`;}
   function avatarMarkup(message=false){return `<span class="p6c-avatar${message?" p6c-avatar-message":""}" aria-hidden="true"><img src="${AVATAR_SRC}" alt="" width="256" height="256" decoding="async" data-p6c-avatar-image><span class="p6c-avatar-fallback" hidden>AI</span></span>`;}
   function isSafetyMessage(item){return item.message_role==="assistant"&&/^(Stop direct met sporten|Stop exercising now|Beende das Training sofort)/.test(String(item.content_text||""));}
   function renderMessages(){return chat.messages.length?chat.messages.map((item)=>{const safety=isSafetyMessage(item),isAssistant=item.message_role==='assistant',sender=isAssistant?text("coach"):text("you"),label=safety?text("safetyLabel"):sender,heading=isAssistant?`<span class="p6c-message-identity">${avatarMarkup(true)}<strong>${esc(label)}</strong></span>`:`<strong>${esc(label)}</strong>`;return `<article class="p6c-message ${isAssistant?'assistant':'user'} ${safety?'safety':''}" aria-label="${esc(sender)}">${heading}<p>${esc(item.content_text)}</p><time>${esc(time(item.created_at))}</time></article>`;}).join(""):`<div class="p6c-empty"><h2>${esc(text("emptyMessages"))}</h2><p>${esc(text("emptyHint"))}</p><div class="p6c-prompts">${["promptOne","promptTwo","promptThree"].map((key)=>`<button class="secondary-btn p6c-prompt" type="button" data-p6c-prompt="${esc(text(key))}">${esc(text(key))}</button>`).join("")}</div></div>`;}
@@ -156,9 +191,9 @@
     if(!chat.thread)return `<section class="p6c-chat"><div class="p6c-empty"><h2>${esc(text("emptyMessages"))}</h2><p>${esc(text("emptyHint"))}</p></div></section>`;
     const canWrite=Boolean(chat.status?.chat_write_allowed);
     const processing=chat.pending?`<article class="p6c-message assistant"><span class="p6c-message-identity">${avatarMarkup(true)}<strong>${esc(text("coach"))}</strong></span><span class="p6c-typing"><span class="p6c-typing-dots" aria-hidden="true"><i></i><i></i><i></i></span>${esc(text("sending"))}</span></article>`:"";
-    const feedback=chat.error||chat.notice?`<div class="p6c-feedback ${chat.error?"error":""}" aria-live="polite">${esc(chat.error||chat.notice)}</div>`:"";
+    const feedback=`<div class="p6c-feedback ${chat.error?"error":""}" role="status" aria-live="polite">${esc(chat.error||chat.notice||"")}</div>`;
     const sendState=chat.pending?"pending":chat.retry?"retry":"send",sendSymbol=chat.pending?"…":chat.retry?"↻":"↑",sendLabel=chat.pending?text("sending"):chat.retry?text("retry"):text("send");
-    return `<section class="p6c-chat"><header class="p6c-chat-head"><h2>${esc(date(chat.thread.created_at)||text("today"))}</h2><details class="p6c-actions"><summary aria-label="${esc(text("options"))}" title="${esc(text("options"))}">•••</summary><div class="p6c-action-menu"><button class="secondary-btn" type="button" data-p6c-export>${esc(text("export"))}</button><button class="secondary-btn p6c-danger" type="button" data-p6c-delete>${esc(text("delete"))}</button></div></details></header><div class="p6c-messages" data-p6c-messages>${renderMessages()}${processing}</div>${feedback}${canWrite?`<form class="p6c-composer" data-p6c-form><label class="sr-only" for="p6cMessage">${esc(text("placeholder"))}</label><textarea id="p6cMessage" rows="1" maxlength="4000" enterkeyhint="enter" autocomplete="off" placeholder="${esc(text("placeholder"))}" ${chat.pending?"disabled":""}>${esc(chat.draft)}</textarea><button class="primary-btn p6c-gold p6c-send" type="submit" data-state="${sendState}" aria-label="${esc(sendLabel)}" title="${esc(sendLabel)}" ${chat.pending||!navigator.onLine?"disabled":""}>${sendSymbol}</button></form>`:""}</section>`;
+    return `<section class="p6c-chat"><header class="p6c-chat-head"><h2>${esc(date(chat.thread.created_at)||text("today"))}</h2><details class="p6c-actions"><summary aria-label="${esc(text("options"))}" title="${esc(text("options"))}">•••</summary><div class="p6c-action-menu"><button class="secondary-btn" type="button" data-p6c-export>${esc(text("export"))}</button><button class="secondary-btn p6c-danger" type="button" data-p6c-delete>${esc(text("delete"))}</button></div></details></header><div class="p6c-messages" data-p6c-messages>${chat.messagesMore?`<button type="button" class="secondary-btn p6c-older" data-p6c-earlier-messages ${chat.historyLoading?"disabled":""}>${esc(moreText())}</button>`:""}${renderMessages()}${processing}</div>${feedback}${canWrite?`<form class="p6c-composer" data-p6c-form><label class="sr-only" for="p6cMessage">${esc(text("placeholder"))}</label><textarea id="p6cMessage" rows="1" maxlength="4000" enterkeyhint="enter" autocomplete="off" placeholder="${esc(text("placeholder"))}" ${chat.pending?"disabled":""}>${esc(chat.draft)}</textarea><button class="primary-btn p6c-gold p6c-send" type="submit" data-state="${sendState}" aria-label="${esc(sendLabel)}" title="${esc(sendLabel)}" ${chat.pending||!navigator.onLine?"disabled":""}>${uiIcon(chat.pending?"loader-circle":chat.retry?"rotate-cw":"arrow-up")}</button></form>`:""}</section>`;
   }
 
   function renderTabs(){return `<div class="p6c-tabs" role="tablist"><button class="secondary-btn p6c-tab" type="button" role="tab" data-p6c-tab="chat" aria-selected="${chat.activeTab==="chat"}">${esc(text("tabChat"))}</button><button class="secondary-btn p6c-tab" type="button" role="tab" data-p6c-tab="analyses" aria-selected="${chat.activeTab==="analyses"}">${esc(text("tabAnalyses"))}</button></div>`;}
@@ -182,6 +217,7 @@
     return `<section class="p6d-panel wide"><div class="p6d-headline"><h2>${esc(text("analysisHistory"))}</h2><button class="secondary-btn" type="button" data-p6d-export>${esc(text("analysisExport"))}</button></div><div class="p6d-history">${items.length?items.map((item)=>`<article class="p6d-result"><div class="p6d-result-head"><h3>${esc(kindLabel(item.analysis_kind))}</h3><span class="p6d-pill">${esc(item.status||"")}</span></div><p>${esc(item.summary||item.result_payload?.summary||text("analysisInsufficient"))}</p><time>${esc(date(item.created_at))}${item.model_tier?` · ${esc(item.model_tier)}`:""}</time><div class="p6d-actions"><button class="secondary-btn p6c-danger" type="button" data-p6d-delete="${esc(item.id)}" data-p6d-revision="${esc(item.revision||1)}">${esc(text("analysisDelete"))}</button></div></article>`).join(""):`<p class="p6c-empty">${esc(text("analysisEmpty"))}</p>`}</div></section>`;
   }
   function renderAnalysisView(){
+    if(window.FMZ_ANALYSIS_INBOX)return window.FMZ_ANALYSIS_INBOX.renderHistory(chat.analyses,chat.analysisStatus);
     const consent=renderAnalysisConsent(),feedback=chat.error||chat.notice?`<div class="p6c-feedback ${chat.error?"error":""}" aria-live="polite">${esc(chat.error||chat.notice)}</div>`:"";
     if(!chat.analysisStatus)return `<section class="p6d-panel"><p>${esc(text("loading"))}</p></section>`;
     return `<div class="p6d-grid">${window.FMZ_OWNER_SETTINGS?.safetyPanel(chat.analysisStatus?.recovery)||""}${consent||[renderAnalysisCard("daily"),renderAnalysisCard("post_workout"),renderAnalysisCard("weekly"),window.FMZ_OWNER_SETTINGS?window.FMZ_OWNER_SETTINGS.analysisSummary(chat.analysisStatus):renderAnalysisSettings(),renderAnalysisHistory()].join("")}${feedback}</div>`;
@@ -192,50 +228,97 @@
     if(!isLoggedIn()||state.ui.role!=="client"){target.innerHTML="";return;}
     const gate=renderGate();
     const layout=`<div class="p6c-layout">${renderThreads()}${renderChat()}</div>`;
-    const chatBody=chat.loading?`<p class="p6c-empty" aria-live="polite">${esc(text("loading"))}</p>`:chat.error&&!chat.loaded?`<section class="p6c-gate"><p>${esc(chat.error)}</p><button class="secondary-btn" data-p6c-retry>${esc(text("retry"))}</button></section>`:gate?`${gate}${chat.threads.length?layout:""}`:layout;
-    const analysisBody=chat.loading?`<p class="p6c-empty" aria-live="polite">${esc(text("loading"))}</p>`:renderAnalysisView();
-    target.innerHTML=`<div class="p6c-shell"><header class="p6c-head"><div class="p6c-identity">${avatarMarkup()}<div><h1>${esc(text("title"))}</h1><p class="muted">${esc(text("intro"))}</p></div></div><div class="p6c-badges"><span class="p6c-ready"><i class="p6c-ready-dot" aria-hidden="true"></i>${esc(text("ready"))}</span><span class="p6c-test">${esc(text("testOnly"))}</span></div></header><div class="p6c-mode">${esc(text("mock"))}</div>${renderTabs()}${chat.status?.grace_deadline?`<div class="p6c-retention">${esc(format("grace",{date:date(chat.status.grace_deadline)}))}</div>`:""}${chat.activeTab==="chat"?`<div class="p6c-toolbar"><button class="primary-btn p6c-gold" type="button" data-p6c-new ${!chat.status?.chat_write_allowed||chat.pending?"disabled":""}>${esc(text("newChat"))}</button><button class="secondary-btn" type="button" data-p6c-history aria-expanded="${chat.historyOpen}">${esc(text("history"))} (${chat.threads.length})</button></div>${chatBody}`:analysisBody}</div>`;
-    requestAnimationFrame(()=>{const timeline=target.querySelector("[data-p6c-messages]");if(timeline)timeline.scrollTop=timeline.scrollHeight;const composer=target.querySelector("#p6cMessage");if(composer){composer.style.height="auto";composer.style.height=`${Math.min(composer.scrollHeight,132)}px`;}});
+    const chatBody=chat.loading&&!chat.loaded?`<p class="p6c-empty" aria-live="polite">${esc(text("loading"))}</p>`:chat.error&&!chat.loaded?`<section class="p6c-gate"><p>${esc(chat.error)}</p><button class="secondary-btn" data-p6c-retry>${esc(text("retry"))}</button></section>`:gate?`${gate}${chat.threads.length?layout:""}`:layout;
+    const analysisBody=chat.loading&&!chat.loaded?`<p class="p6c-empty" aria-live="polite">${esc(text("loading"))}</p>`:renderAnalysisView();
+    const olderTimeline=target.querySelector("[data-p6c-messages]"),olderComposer=target.querySelector("#p6cMessage");
+    const position=olderTimeline?.scrollTop||0,follow=forceFollow||renderedThread!==chat.thread?.id||!olderTimeline||olderTimeline.scrollHeight-olderTimeline.clientHeight-position<60;
+    const restoreFocus=document.activeElement===olderComposer,selection=restoreFocus?[olderComposer.selectionStart,olderComposer.selectionEnd]:null;
+    const prepend=chat.prependMessages,previousHeight=olderTimeline?.scrollHeight||0;chat.prependMessages=false;
+    forceFollow=false;renderedThread=chat.thread?.id||"";
+    const header=window.FMZ_OWNER_SETTINGS?
+      '<header class="p6c-head"><div class="p6c-identity">'+avatarMarkup()+'<div><h1>Youri AI</h1><p class="muted">FitMetZorge AI Coach</p></div></div><div class="p6c-header-actions">'+
+      iconButton("history",text("history"),'data-p6c-history aria-expanded="'+chat.historyOpen+'"')+
+      iconButton("plus",text("newChat"),'data-p6c-new '+(!chat.status?.chat_write_allowed||chat.pending?'disabled':''))+
+      iconButton("x",text("close"),"data-fmz-close")+'</div></header>':
+      '<header class="p6c-head"><div class="p6c-identity">'+avatarMarkup()+'<div><h1>'+esc(text("title"))+'</h1><p class="muted">'+esc(text("intro"))+'</p></div></div></header>';
+    target.innerHTML='<div class="p6c-shell">'+header+'<div class="p6c-tabbar">'+renderTabs()+'<span class="p6c-test">'+esc(text("testOnly"))+'</span></div>'+
+      (chat.status?.grace_deadline?'<div class="p6c-retention">'+esc(format("grace",{date:date(chat.status.grace_deadline)}))+'</div>':"")+
+      (!window.FMZ_OWNER_SETTINGS?`<div class="p6c-mode">${esc(text("mock"))}</div><div class="p6c-toolbar"><button class="primary-btn p6c-gold" type="button" data-p6c-new ${!chat.status?.chat_write_allowed||chat.pending?"disabled":""}>${esc(text("newChat"))}</button><button class="secondary-btn" type="button" data-p6c-history aria-expanded="${chat.historyOpen}">${esc(text("history"))}</button></div>`:"")+
+      (chat.activeTab==="chat"?chatBody:analysisBody)+'</div>';
+    requestAnimationFrame(()=>{
+      const timeline=target.querySelector("[data-p6c-messages]"),composer=target.querySelector("#p6cMessage");
+      if(composer){
+        composer.style.height="auto";composer.style.height=Math.min(composer.scrollHeight,132)+"px";
+        if(restoreFocus&&!composer.disabled){composer.focus({preventScroll:true});composer.setSelectionRange(...selection);}
+      }
+      if(timeline)timeline.scrollTop=prepend?position+timeline.scrollHeight-previousHeight:follow?timeline.scrollHeight:position;
+    });
+
   }
 
   async function recordConsent(action){
     if(chat.pending)return;const doc=consentDocument();if(!doc)return;chat.pending=true;chat.error="";render();
-    try{await rpc("fmz_phase6a_record_consent",{p_consent_kind:"private_chat",p_action:action,p_document_version:doc.document_version,p_locale:lang(),p_explicit_confirmation:true,p_request_id:uuid()});chat.notice=text(action==="granted"?"consentSaved":"consentWithdrawn");chat.loaded=false;await hydrate({force:true});}catch(error){chat.error=errorText(error);}finally{chat.pending=false;render();}
+    try{await rpc("fmz_phase6a_record_consent",{p_consent_kind:"private_chat",p_action:action,p_document_version:doc.document_version,p_locale:lang(),p_explicit_confirmation:true,p_request_id:uuid()});chat.notice=text(action==="granted"?"consentSaved":"consentWithdrawn");await hydrate({force:true});}catch(error){chat.error=errorText(error);}finally{chat.pending=false;render();}
   }
   async function newThread(){
-    if(chat.pending)return;chat.pending=true;chat.error="";render();const threadId=uuid();
-    try{await rpc("fmz_phase6c_create_thread",{p_thread_id:threadId,p_locale:lang(),p_request_id:uuid()});chat.loaded=false;await hydrate({force:true,threadId});setTimeout(()=>document.getElementById("p6cMessage")?.focus(),0);}catch(error){chat.error=errorText(error);}finally{chat.pending=false;render();}
+    if(chat.pending)return;chat.pending=true;chat.error="";render();const threadId=uuid();drafts.set(threadId,chat.draft);
+    try{await rpc("fmz_phase6c_create_thread",{p_thread_id:threadId,p_locale:lang(),p_request_id:uuid()});await hydrate({force:true,threadId});setTimeout(()=>document.getElementById("p6cMessage")?.focus(),0);}catch(error){chat.error=errorText(error);}finally{chat.pending=false;render();}
   }
   async function send(){
-    if(chat.pending||!chat.thread)return;if(!navigator.onLine){chat.error=text("offline");render();return;}const content=chat.draft.trim();if(!content)return;
-    const retry=chat.retry||{requestId:uuid(),attemptId:uuid(),content};chat.retry=retry;chat.pending=true;chat.error="";render();let gotResponse=false;
-    try{const session=(await supabaseClient.auth.getSession()).data?.session;if(!session?.access_token)throw new Error("auth_required");const response=await fetch(`${FMZ_CONFIG.SUPABASE_URL}/functions/v1/youri-ai/phase6c/chat`,{method:"POST",headers:{Authorization:`Bearer ${session.access_token}`,apikey:FMZ_CONFIG.SUPABASE_ANON_KEY,"Content-Type":"application/json"},body:JSON.stringify({request_id:retry.requestId,attempt_id:retry.attemptId,thread_id:chat.thread.id,expected_revision:chat.thread.revision,locale:lang(),content:retry.content})});gotResponse=true;const payload=await response.json().catch(()=>({error:"chat_unexpected_error"}));if(!response.ok)throw new Error(payload.error||"chat_unexpected_error");chat.draft="";chat.retry=null;chat.loaded=false;await hydrate({force:true,threadId:chat.thread.id});if(payload.recovery_requested)window.FMZ_OWNER_SETTINGS?.openRecovery(payload.recovery_reason||"reassessment");}catch(error){if(gotResponse&& !/stale_conflict/.test(String(error?.message||"")))chat.retry={...retry,attemptId:uuid()};chat.error=errorText(error);if(/stale_conflict/.test(String(error?.message||"")))await hydrate({force:true,threadId:chat.thread.id});}finally{chat.pending=false;render();}
+    if(chat.pending||!chat.thread)return;
+    if(!navigator.onLine){chat.error=text("offline");render();return;}
+    const content=chat.draft.trim();if(!content)return;
+    const generation=hydrationEpoch,profile=activeProfile(),threadId=chat.thread.id,revision=chat.thread.revision;
+    const stillCurrent=()=>generation===hydrationEpoch&&profile===activeProfile()&&isLoggedIn();
+    const retry=chat.retry||{requestId:uuid(),attemptId:uuid(),content};
+    chat.retry=retry;chat.pending=true;chat.error="";forceFollow=true;render();let gotResponse=false;
+    try{
+      const session=(await supabaseClient.auth.getSession()).data?.session;
+      if(!stillCurrent())return;
+      if(!session?.access_token)throw new Error("auth_required");
+      const response=await fetch(FMZ_CONFIG.SUPABASE_URL+"/functions/v1/youri-ai/phase6c/chat",{
+        method:"POST",headers:{Authorization:"Bearer "+session.access_token,apikey:FMZ_CONFIG.SUPABASE_ANON_KEY,"Content-Type":"application/json"},
+        body:JSON.stringify({request_id:retry.requestId,attempt_id:retry.attemptId,thread_id:threadId,expected_revision:revision,locale:lang(),content:retry.content})
+      });
+      gotResponse=true;
+      const payload=await response.json().catch(()=>({error:"chat_unexpected_error"}));
+      if(!stillCurrent())return;
+      if(!response.ok)throw new Error(payload.error||"chat_unexpected_error");
+      chat.draft="";chat.retry=null;drafts.set(threadId,"");
+      await hydrate({force:true,threadId});
+      if(stillCurrent()&&payload.recovery_requested)window.FMZ_OWNER_SETTINGS?.openRecovery(payload.recovery_reason||"reassessment");
+    }catch(error){
+      if(!stillCurrent())return;
+      if(gotResponse&&!/stale_conflict/.test(String(error?.message||"")))chat.retry={...retry,attemptId:uuid()};
+      chat.error=errorText(error);
+      if(/stale_conflict/.test(String(error?.message||"")))await hydrate({force:true,threadId});
+    }finally{if(stillCurrent()){chat.pending=false;render();}}
   }
   async function exportChat(){
     if(chat.pending)return;chat.pending=true;render();try{const data=await rpc("fmz_phase6c_export_chat",{p_request_id:uuid()});const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});const link=document.createElement("a");link.href=URL.createObjectURL(blob);link.download=`fitmetzorge-ai-chat-${new Date().toISOString().slice(0,10)}.json`;link.click();setTimeout(()=>URL.revokeObjectURL(link.href),0);chat.notice=text("exported");}catch(error){chat.error=errorText(error);}finally{chat.pending=false;render();}
   }
   async function deleteThread(){
-    if(!chat.thread||chat.pending||!window.confirm(text("deleteConfirm")))return;chat.pending=true;render();try{await rpc("fmz_phase6c_delete_thread",{p_thread_id:chat.thread.id,p_expected_revision:chat.thread.revision,p_request_id:uuid()});chat.notice=text("deleted");chat.thread=null;chat.messages=[];chat.loaded=false;await hydrate({force:true});}catch(error){chat.error=errorText(error);if(/stale/.test(chat.error))await hydrate({force:true,threadId:chat.thread?.id||""});}finally{chat.pending=false;render();}
+    if(!chat.thread||chat.pending||!window.confirm(text("deleteConfirm")))return;chat.pending=true;render();try{await rpc("fmz_phase6c_delete_thread",{p_thread_id:chat.thread.id,p_expected_revision:chat.thread.revision,p_request_id:uuid()});chat.notice=text("deleted");chat.thread=null;chat.messages=[];await hydrate({force:true});}catch(error){chat.error=errorText(error);if(/stale/.test(chat.error))await hydrate({force:true,threadId:chat.thread?.id||""});}finally{chat.pending=false;render();}
   }
   async function recordAnalysisConsent(action){
     if(chat.pending)return;const doc=analysisDocument();if(!doc)return;chat.pending=true;chat.error="";render();
-    try{await rpc("fmz_phase6d_record_analysis_consent",{p_action:action,p_document_version:doc.document_version,p_locale:lang(),p_explicit_confirmation:true,p_request_id:uuid()});chat.notice=text(action==="granted"?"consentSaved":"consentWithdrawn");chat.loaded=false;await hydrate({force:true});}catch(error){chat.error=errorText(error);}finally{chat.pending=false;render();}
+    try{await rpc("fmz_phase6d_record_analysis_consent",{p_action:action,p_document_version:doc.document_version,p_locale:lang(),p_explicit_confirmation:true,p_request_id:uuid()});chat.notice=text(action==="granted"?"consentSaved":"consentWithdrawn");await hydrate({force:true});}catch(error){chat.error=errorText(error);}finally{chat.pending=false;render();}
   }
   async function runAnalysis(kind){
     if(chat.pending||!navigator.onLine)return;chat.pending=true;chat.analysisPendingKind=kind;chat.error="";render();let gotResponse=false;
-    try{const session=(await supabaseClient.auth.getSession()).data?.session;if(!session?.access_token)throw new Error("auth_required");const body={request_id:uuid(),analysis_kind:kind,locale:lang()};if(kind==="post_workout"&&chat.analysisStatus?.latest_completed_workout?.id)body.event_id=chat.analysisStatus.latest_completed_workout.id;const response=await fetch(`${FMZ_CONFIG.SUPABASE_URL}/functions/v1/youri-ai/phase6d/analyze`,{method:"POST",headers:{Authorization:`Bearer ${session.access_token}`,apikey:FMZ_CONFIG.SUPABASE_ANON_KEY,"Content-Type":"application/json"},body:JSON.stringify(body)});gotResponse=true;const payload=await response.json().catch(()=>({error:"analysis_unexpected_error"}));if(!response.ok)throw new Error(payload.error||"analysis_unexpected_error");chat.notice=text("analysisSaved");chat.loaded=false;await hydrate({force:true});}catch(error){chat.error=errorText(error);if(gotResponse&&/stale/.test(String(error?.message||"")))await hydrate({force:true});}finally{chat.pending=false;chat.analysisPendingKind="";render();}
+    try{const session=(await supabaseClient.auth.getSession()).data?.session;if(!session?.access_token)throw new Error("auth_required");const body={request_id:uuid(),analysis_kind:kind,locale:lang()};if(kind==="post_workout"&&chat.analysisStatus?.latest_completed_workout?.id)body.event_id=chat.analysisStatus.latest_completed_workout.id;const response=await fetch(`${FMZ_CONFIG.SUPABASE_URL}/functions/v1/youri-ai/phase6d/analyze`,{method:"POST",headers:{Authorization:`Bearer ${session.access_token}`,apikey:FMZ_CONFIG.SUPABASE_ANON_KEY,"Content-Type":"application/json"},body:JSON.stringify(body)});gotResponse=true;const payload=await response.json().catch(()=>({error:"analysis_unexpected_error"}));if(!response.ok)throw new Error(payload.error||"analysis_unexpected_error");chat.notice=text("analysisSaved");await hydrate({force:true});}catch(error){chat.error=errorText(error);if(gotResponse&&/stale/.test(String(error?.message||"")))await hydrate({force:true});}finally{chat.pending=false;chat.analysisPendingKind="";render();}
   }
   async function saveAnalysisPreferences(form){
     if(chat.pending)return;chat.pending=true;chat.error="";render();
     const value=(name)=>form.querySelector(`[data-p6d-pref="${name}"]`);
-    try{const pref=chat.analysisStatus?.preferences||{};await rpc("fmz_phase6d_update_preferences",{p_timezone_name:value("timezone_name")?.value||"Europe/Amsterdam",p_daily_enabled:Boolean(value("daily_enabled")?.checked),p_daily_time:value("daily_time")?.value||"07:30",p_post_workout_enabled:Boolean(value("post_workout_enabled")?.checked),p_weekly_enabled:Boolean(value("weekly_enabled")?.checked),p_weekly_day:Number(value("weekly_day")?.value||1),p_weekly_time:value("weekly_time")?.value||"08:00",p_expected_revision:Number(pref.revision||0),p_request_id:uuid()});chat.notice=text("analysisPrefsSaved");chat.loaded=false;await hydrate({force:true});}catch(error){chat.error=errorText(error);}finally{chat.pending=false;render();}
+    try{const pref=chat.analysisStatus?.preferences||{};await rpc("fmz_phase6d_update_preferences",{p_timezone_name:value("timezone_name")?.value||"Europe/Amsterdam",p_daily_enabled:Boolean(value("daily_enabled")?.checked),p_daily_time:value("daily_time")?.value||"07:30",p_post_workout_enabled:Boolean(value("post_workout_enabled")?.checked),p_weekly_enabled:Boolean(value("weekly_enabled")?.checked),p_weekly_day:Number(value("weekly_day")?.value||1),p_weekly_time:value("weekly_time")?.value||"08:00",p_expected_revision:Number(pref.revision||0),p_request_id:uuid()});chat.notice=text("analysisPrefsSaved");await hydrate({force:true});}catch(error){chat.error=errorText(error);}finally{chat.pending=false;render();}
   }
   async function exportAnalyses(){
     if(chat.pending)return;chat.pending=true;render();try{const data=await rpc("fmz_phase6d_export_analyses",{p_request_id:uuid()});const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});const link=document.createElement("a");link.href=URL.createObjectURL(blob);link.download=`fitmetzorge-ai-analyses-${new Date().toISOString().slice(0,10)}.json`;link.click();setTimeout(()=>URL.revokeObjectURL(link.href),0);chat.notice=text("exported");}catch(error){chat.error=errorText(error);}finally{chat.pending=false;render();}
   }
   async function deleteAnalysis(button){
     if(chat.pending||!window.confirm(text("analysisDeleteConfirm")))return;chat.pending=true;render();
-    try{await rpc("fmz_phase6d_delete_analysis",{p_result_id:button.dataset.p6dDelete,p_expected_revision:Number(button.dataset.p6dRevision||1),p_request_id:uuid()});chat.notice=text("deleted");chat.loaded=false;await hydrate({force:true});}catch(error){chat.error=errorText(error);if(/stale/.test(chat.error))await hydrate({force:true});}finally{chat.pending=false;render();}
+    try{await rpc("fmz_phase6d_delete_analysis",{p_result_id:button.dataset.p6dDelete,p_expected_revision:Number(button.dataset.p6dRevision||1),p_request_id:uuid()});chat.notice=text("deleted");await hydrate({force:true});}catch(error){chat.error=errorText(error);if(/stale/.test(chat.error))await hydrate({force:true});}finally{chat.pending=false;render();}
   }
 
   const originalRenderAll=renderAll,originalRenderNav=renderNav;
@@ -245,10 +328,12 @@
   document.addEventListener("click",async(event)=>{const button=event.target.closest("button");if(!button)return;
     if(button.dataset.view==="ai-coach")queueMicrotask(()=>hydrate());
     if(button.dataset.p6cTab){chat.activeTab=button.dataset.p6cTab;render();queueMicrotask(()=>hydrate());}
-    if(button.dataset.p6cRetry!==undefined){chat.loaded=false;await hydrate({force:true});}
+    if(button.dataset.p6cRetry!==undefined){await hydrate({force:true});}
     if(button.dataset.p6cNew!==undefined)await newThread();
-    if(button.dataset.p6cHistory!==undefined){chat.historyOpen=!chat.historyOpen;render();}
-    if(button.dataset.p6cThread){chat.historyOpen=false;await loadThread(button.dataset.p6cThread);}
+    if(button.dataset.p6cHistory!==undefined){chat.activeTab="chat";chat.historyOpen=!chat.historyOpen;render();}
+    if(button.dataset.p6cThread){chat.historyOpen=false;try{await loadThread(button.dataset.p6cThread);}catch(error){chat.error=errorText(error);render();}}
+    if(button.hasAttribute("data-p6c-earlier-messages"))await loadEarlier(true);
+    if(button.hasAttribute("data-p6c-earlier-threads"))await loadEarlier(false);
     if(button.dataset.p6cPrompt!==undefined){chat.draft=button.dataset.p6cPrompt;render();setTimeout(()=>document.getElementById("p6cMessage")?.focus(),0);}
     if(button.dataset.p6cConsent==="grant")await recordConsent("granted");
     if(button.dataset.p6cConsent==="withdraw"&&window.confirm(text("withdrawConfirm")))await recordConsent("withdrawn");
@@ -262,10 +347,10 @@
   },true);
   document.addEventListener("change",(event)=>{if(event.target.matches("[data-p6c-consent-check]")){const button=document.querySelector('[data-p6c-consent="grant"]');if(button)button.disabled=!event.target.checked;}if(event.target.matches("[data-p6d-consent-check]")){const button=document.querySelector('[data-p6d-consent="granted"]');if(button)button.disabled=!event.target.checked;}},true);
   document.addEventListener("input",(event)=>{if(event.target.id==="p6cMessage"){chat.draft=event.target.value;if(chat.retry?.content!==chat.draft.trim())chat.retry=null;event.target.style.height="auto";event.target.style.height=`${Math.min(event.target.scrollHeight,132)}px`;}},true);
-  document.addEventListener("keydown",(event)=>{if(event.target.id==="p6cMessage"&&(event.ctrlKey||event.metaKey)&&event.key==="Enter"){event.preventDefault();event.target.form?.requestSubmit();}},true);
+  document.addEventListener("keydown",(event)=>{if(event.target.id==="p6cMessage"&&event.key==="Enter"&&!event.isComposing&&!event.shiftKey&&(event.ctrlKey||event.metaKey||matchMedia("(hover: hover) and (pointer: fine)").matches)){event.preventDefault();event.target.form?.requestSubmit();}},true);
   document.addEventListener("submit",(event)=>{if(event.target.matches("[data-p6d-preferences-form]")){event.preventDefault();event.stopImmediatePropagation();saveAnalysisPreferences(event.target);return;}if(!event.target.matches("[data-p6c-form]"))return;event.preventDefault();event.stopImmediatePropagation();send();},true);
   document.addEventListener("error",(event)=>{if(!event.target.matches?.("[data-p6c-avatar-image]"))return;event.target.hidden=true;const fallback=event.target.nextElementSibling;if(fallback)fallback.hidden=false;},true);
-  window.addEventListener("online",()=>{if(currentView==="ai-coach"){chat.error="";render();}});
+  window.addEventListener("online",()=>{if(currentView==="ai-coach"||document.querySelector("#fmz-youri-chat[open]")){chat.error="";render();}});
   window.addEventListener("offline",()=>{if(currentView==="ai-coach"){chat.error=text("offline");render();}});
 
   ensureNav();
