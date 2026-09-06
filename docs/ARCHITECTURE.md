@@ -12,13 +12,36 @@ Migration reproducibility: project-wide history reconciliation is RESOLVED for s
 The 19 older timestamp differences were renamed to canonical live versions, duplicate
 old `20260819` history was removed, the missing Phase 1-3/source SQL is represented by
 a conservative forward-only source baseline, and the current post-6D chain is
-synchronized at 29 local and 29 remote migration rows. No historical SQL replay,
+synchronized at 30 local and 30 remote migration rows. No historical SQL replay,
 remote reset, destructive reconstruction or member-data rewrite occurred. The 6D-0
 canonical ID and security contract stay frozen. See PROJECT_MIGRATION_RECONCILIATION.md.
 
 The Phase 0B Auth/invitation/workspace descriptions below are historical. Their unsafe
 metadata and broad member-access paths are superseded by Package 6D-0 at the end of this
 document and in PHASE6D0_LEGACY_AUTHORIZATION_SECURITY.md.
+
+## Recent Analysis Read Model - Final Mobile Hotfix
+
+Migration 20260906134827 replaces only get_inbox and mark_notification. get_inbox
+starts at available own results and LEFT JOINs member_notifications. Missing status
+is new in the response only; this GET never backfills. recent contains max three,
+including opened; items contains max five unread new/later entries for the toast.
+Eligibility excludes deleted content, expiry and archived state. Completed/created
+timestamp plus result ID gives deterministic newest-first order. Title is bounded at 120 characters.
+Explicit mark on a missing notification uses the unique member/result upsert, after
+auth.uid()/assert_member and exact-result checks. Archived dominates; late Later
+cannot regress opened. A result row lock serializes with deletion, without result edits.
+No new table or browser grant, worker/provider change or historical data rewrite.
+The client invalidates pre-mark inbox snapshots, refreshes on dashboard return/AI state
+and retains existing visible-only polling and member/epoch guards. Read cards persist.
+
+Scoped detail CSS resets inherited table min-width:860px, bounds grid/flex children,
+wraps long words/code, scales media and stacks current/previous rows below 481px.
+No global overflow hiding was added. The new full-app test measures every visible
+descendant, not only html/body or the outer dialog. The prior outer-only check missed
+the scrolling main. New local/fresh/live-assets tests inject synthetic Auth/RPC JS only,
+never CSS, and pass 180 checks / 25 layouts at five viewports. Exact evidence:
+PACKAGE6D_FINAL_OWNER_MOBILE_HOTFIX_REPORT.md. Not owner-accepted/frozen.
 
 ## Automatic Analysis Inbox - Hotfix 2
 
@@ -52,7 +75,7 @@ new -> later/opened/archived, with opened protected against a late Later respons
 deleted results archive their notifications. Detail, export and delete use the exact ID.
 
 assets/phase6d-analysis-inbox.js is the single in-app inbox reader: visible-only 45s
-polling and lifecycle refresh, profile/epoch guards, max-five dashboard entries and
+polling and lifecycle refresh, profile/epoch guards, max-three recent dashboard entries and
 paged history. Native detail deep links are #analysis=UUID or ?analysis=UUID. The
 non-focusing toast hides during critical surfaces/dialogs/input. No OS push API exists.
 Browser/device timezone is an own-user scheduling preference only, never authorization.

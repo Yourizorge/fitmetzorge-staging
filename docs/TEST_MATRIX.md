@@ -1,20 +1,20 @@
 # FitMetZorge Test Matrix
 
 Status: MASTER PLAN COVERAGE MATRIX
-Latest execution: 2026-09-06 Package 6D owner retest hotfix 2,
+Latest execution: 2026-09-06 Package 6D final owner mobile hotfix,
 after the public Auth hotfix and project migration reconciliation. Migration history
-is synchronized 29/29; `db push --dry-run --skip-vault` is clean. Public Auth hotfix
+is synchronized 30/30; `db push --dry-run --skip-vault` is clean. Public Auth hotfix
 checks remain valid, the owner received the confirmation email, and no new resend,
 Brevo investigation, manual confirmation, trainer role or trainer link was performed.
 Last updated: 2026-09-06
 
-Live receipt: runtime 333954a68a1429634e49bafbcc08720ea688131a,
+Historical public-auth receipt: runtime 333954a68a1429634e49bafbcc08720ea688131a,
 cache 20260904-auth-lifecycle2. Seven checked assets HTTP 200 / commit-identical;
 public routes at 320x700, 390x844, tablet and desktop: zero console/page errors,
 zero mutating requests. The owner later received the new account confirmation email.
 
 Project migration gate: PASS for staging. Official CLI `migration list` is synchronized
-at 29 local / 29 remote rows after Package 6D and the owner hotfixes; `db push --dry-run
+at 30 local / 30 remote rows after Package 6D and the owner hotfixes; `db push --dry-run
 --skip-vault` reports the remote database is up to date. The original 19 timestamp
 drifts are renamed to canonical live versions, the duplicate old `20260819` conflict is
 gone, the missing Phase 1-3/source SQL is covered by a forward-only source baseline,
@@ -25,7 +25,39 @@ PROJECT_MIGRATION_RECONCILIATION.md and PROJECT_MIGRATION_RECONCILIATION_MANIFES
 
 This matrix records the required functional, security, entitlement, AI, migration, and release checks for the Master Build. No implementation tests are executed by this document.
 
-## Owner Retest Hotfix 2 - Current Execution
+## Final Owner Mobile Hotfix - Current Execution
+
+PACKAGE 6D FINAL OWNER MOBILE HOTFIX - READY FOR FINAL OWNER RETEST only.
+[Exact 25-case mapping and causes](PACKAGE6D_FINAL_OWNER_MOBILE_HOTFIX_REPORT.md);
+PACKAGE6D_FINAL_OWNER_MOBILE_HOTFIX_EVIDENCE.json contains compact measured proof.
+
+| Suite / layer | Result |
+| --- | --- |
+| New SQL / post-apply metadata and availability | 40/40 rollback / 18/18 |
+| Retained worker SQL with new definitions | 59/59 rollback before apply |
+| Live function bodies vs reviewed migration | Both identical, fixed search_path/ACL |
+| New complete-app mobile browser, local/fresh/live-assets | 180/180 each |
+| Layouts 320x700, 360x800, 390x844, 820x1180, 1440x900 | 25; every visible descendant bounded; no CSS injected |
+| Long NL/EN/DE, current/previous, no previous, refresh/deep link | All five sizes PASS |
+| Opened/New/Later, top three, missing notification, archive/delete/history | SQL and browser PASS |
+| Delayed pre-mark inbox snapshot | Cannot resurrect unread badge/toast |
+| Owner assembled browser / public Auth / handlers / workout event order | 323 / 88 / 27 / 6 PASS |
+| Focused Auth / 6D static | 26 / 17 PASS |
+| Frozen static and browser runner | Every suite exit 0, counts in evidence |
+| Live assets / public routes | 41 byte-identical HTTP 200 assets; four sizes, zero errors/writes |
+| Migration list / dry-run, also fresh checkout | 30/30 / upToDate true; no migrations/seeds/roles |
+| Fresh member-data fingerprints | All 23 unchanged; synthetic fixture remnants zero |
+| Security advisors | 96 before/after; zero added/removed; not all-green |
+
+Important correction to historical test scope: the isolated 6D test used minimal CSS,
+and the prior assembled test checked only the outer dialog. Neither proved bounded
+internal detail. Before this fix html/body were already 320/320 while main was 3772/302.
+The new full-app test checks every visible descendant with real global styles.css.
+Live-assets mode substitutes synthetic Auth/RPC JS only and sends no real member requests.
+Physical-phone owner acceptance and full local pg_cron replay/global schema-diff are
+still pending; no old partial rebuild is relabelled a full 30-migration PASS.
+
+## Owner Retest Hotfix 2 - Historical Execution
 
 READY FOR OWNER RETEST only. [Full 47-case mapping](PACKAGE6D_OWNER_RETEST_HOTFIX2_REPORT.md)
 and PACKAGE6D_OWNER_RETEST_HOTFIX2_EVIDENCE.json distinguish real SQL/cron evidence,

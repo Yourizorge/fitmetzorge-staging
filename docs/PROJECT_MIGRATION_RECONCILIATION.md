@@ -4,10 +4,27 @@ Date: 2026-09-04. Target: staging `mokxyyullfhkfalopbzd` only.
 Result: RESOLVED / VERIFIED. Later Package 6D work appended forward-only migrations
 without reopening the historical repair.
 
-## Owner Retest Hotfix 2 Addendum - 2026-09-06
+## Final Owner Mobile Hotfix Addendum - Current 2026-09-06
+
+Forward-only 20260906134827_phase6d_recent_dashboard_analyses.sql replaces two RPCs
+only, without backfill or result writes. Migration list 30/30; dry-run upToDate=true
+with empty migrations/seeds/roles, also from a fresh committed runtime checkout.
+New SQL 40/40 rollback, retained worker 59/59 rollback, verifier 18/18 and exact live
+function-body parity PASS. All 23 checked member/notification/settings hashes/counts
+match the fresh before snapshot. No history repair/replay/reset or baseline rewrite.
+Runtime 468d450329700028add8d13eb74c44931ab0389e; fresh browser 180/180, clean checkout.
+See PACKAGE6D_FINAL_OWNER_MOBILE_HOTFIX_REPORT.md and its evidence JSON.
+
+No new full local database rebuild was claimed: the historical 22-applied/7-skipped
+pg_cron-limited replay below is not a complete 30-migration build or global schema diff.
+No PostgreSQL filesystem cleanup. The three known retained paths were re-inspected
+read-only; the full 971-item OneDrive manifest is still unavailable, so nothing is
+certified disposable. The exact current paths/boundaries are in the mobile report.
+
+## Owner Retest Hotfix 2 Addendum - Historical 2026-09-06
 
 Forward-only 20260906092905_phase6d_automatic_inbox.sql is applied to staging only.
-Current chain is 29 local / 29 live, including a clean fresh-clone migration list and
+At that receipt the chain was 29 local / 29 live, including a clean fresh-clone migration list and
 db push --dry-run --skip-vault (upToDate=true, empty migrations/seeds/roles). No historical
 repair, SQL replay, remote reset or source baseline rewrite was performed in this task.
 The worker was enabled only after transactional tests and frontend asset verification;

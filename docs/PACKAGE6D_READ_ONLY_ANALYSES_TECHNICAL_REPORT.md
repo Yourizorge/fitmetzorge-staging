@@ -1,10 +1,12 @@
 # Package 6D Read-Only Analyses Technical Report
 
-Current follow-up: PACKAGE 6D OWNER UX HOTFIX 2 - READY FOR OWNER RETEST.
-See [current technical report](PACKAGE6D_OWNER_RETEST_HOTFIX2_REPORT.md) for the active
-automatic mock worker, exact-result inbox/detail, renewed chat, vertical settings,
-device timezone and flags. Recovery, separate private-chat consent and the approved
-floating avatar are preserved. Current chain is 29/29; Edge v43 is unchanged.
+Current follow-up: PACKAGE 6D FINAL OWNER MOBILE HOTFIX - READY FOR FINAL OWNER RETEST.
+See [current technical report](PACKAGE6D_FINAL_OWNER_MOBILE_HOTFIX_REPORT.md) for
+opened/missing-notification dashboard persistence, the newest-three read model and
+fully bounded mobile comparison/detail. New live-assets browser 180/180, 25 layouts,
+41 assets commit-identical, 23 member-table hashes unchanged. Current chain 30/30.
+The automatic mock worker, renewed chat, vertical settings, device timezone/flags,
+recovery, private-chat consent, approved floating avatar and Edge v43 are preserved.
 The initial implementation receipt below remains historical evidence, not the latest
 runtime/cache. Package 6D is not owner-accepted/frozen.
 

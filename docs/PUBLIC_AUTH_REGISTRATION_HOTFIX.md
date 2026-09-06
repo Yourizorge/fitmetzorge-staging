@@ -3,7 +3,17 @@
 Date: 2026-09-04. Scope: staging only, mokxyyullfhkfalopbzd.
 Status: DEPLOYED / LIVE TECHNICAL PASS / OWNER MAIL RECEIVED.
 
-## Owner Retest Hotfix 2 Regression Receipt - 2026-09-06
+## Final Owner Mobile Hotfix Regression Receipt - Current 2026-09-06
+
+Public Auth remains PASS. Runtime 468d450329700028add8d13eb74c44931ab0389e,
+entry cache 20260906-final-mobile1; 41 live assets are byte-identical, including global
+styles.css/config.js. Public routes at 320x700, 390x844, 820x1180, 1440x900 have zero
+console/page errors and mutating requests. Auth browser 88/88/static 26/26 remain PASS.
+Only dashboard/detail runtime changed; Auth sources and received-email outcome retained.
+No resend, Brevo investigation, manual confirmation or existing trainer role/link.
+See PACKAGE6D_FINAL_OWNER_MOBILE_HOTFIX_REPORT.md for current scope and evidence.
+
+## Owner Retest Hotfix 2 Regression Receipt - Historical 2026-09-06
 
 Public Auth remains PASS. Runtime 2e1fd983385ad360632667c954d7f63725555b3c and
 cache 20260906-owner-hotfix2 are live; 39 checked assets match the commit. Public

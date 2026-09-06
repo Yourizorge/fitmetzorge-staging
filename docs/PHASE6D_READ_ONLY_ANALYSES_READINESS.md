@@ -1,6 +1,6 @@
 # Package 6D Read-Only Analyses - Architecture And Readiness
 
-Status: PACKAGE 6D OWNER UX HOTFIX 2 - READY FOR OWNER RETEST
+Status: PACKAGE 6D FINAL OWNER MOBILE HOTFIX - READY FOR FINAL OWNER RETEST
 
 Date: 2026-09-04 audit; 2026-09-06 implementation addendum.
 Scope: Yourizorge/fitmetzorge-staging / main; Supabase mokxyyullfhkfalopbzd only.
@@ -10,7 +10,22 @@ The original sections below are the 2026-09-04 readiness audit. The owner later 
 the initial scope and authorized a mock-only staging implementation; current technical
 evidence is in `docs/PACKAGE6D_READ_ONLY_ANALYSES_TECHNICAL_REPORT.md`.
 
-## Owner Retest Hotfix 2 - Current
+## Final Owner Mobile Hotfix - Current
+
+Runtime 468d450329700028add8d13eb74c44931ab0389e, cache 20260906-final-mobile1.
+Only recent dashboard selection and mobile detail changed. Own available results,
+including opened and missing-notification results, now remain in the newest three.
+New/Later keeps New; read keeps the card without New. Exact-ID history/archive/delete
+and a stale-response guard retain one server authority. The inherited 860px table
+minimum and long-word overflow are fixed in scoped runtime CSS; comparisons stack.
+New full-app browser local/fresh/live-assets 180/180, all 25 layouts bounded without
+protective test CSS. SQL 40/40, verifier 18/18, 30/30 history, empty dry-run, 23 hashes
+unchanged, 41 live assets commit-identical. Existing owner browser 323/Auth 88/frozen
+regressions pass. Edge v43 and all previously owner-confirmed flows are preserved.
+See PACKAGE6D_FINAL_OWNER_MOBILE_HOTFIX_REPORT.md and evidence JSON for all 25 cases.
+Physical owner retest pending; full local pg_cron replay/diff still unproven. Not frozen.
+
+## Owner Retest Hotfix 2 - Historical
 
 Runtime 2e1fd983385ad360632667c954d7f63725555b3c, cache 20260906-owner-hotfix2.
 Migration 20260906092905 makes daily/post-workout/weekly generation truly automatic

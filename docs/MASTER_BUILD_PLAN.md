@@ -35,8 +35,8 @@ The project-wide migration reconciliation gate is RESOLVED for staging. The 19 o
 timestamp differences are renamed to canonical live migration versions, the duplicate
 old `20260819` conflict is removed, the missing Phase 1-3/source SQL is represented by
 a forward-only source baseline, and the four previously local-only versions were marked
-applied as history metadata only. Package 6D and its owner hotfixes add four later forward-only migrations,
-so the current canonical chain is synchronized at 29 local and 29 remote rows. No
+applied as history metadata only. Package 6D and its owner hotfixes add five later forward-only migrations,
+so the current canonical chain is synchronized at 30 local and 30 remote rows. No
 historical SQL replay, member-data rewrite, remote reset or production access occurred.
 Official migration list and `db push --dry-run --skip-vault` are clean for staging;
 local rebuild PASSes through Phase 6B and full local 6C/6D0/6D replay still needs a
@@ -54,7 +54,22 @@ but inactive, and shared 6A budget gates. See
 PACKAGE6D_READ_ONLY_ANALYSES_TECHNICAL_REPORT.md. Real-member external provider
 activation remains forbidden until the separate legal/provider gate passes.
 
-## Owner Retest Hotfix 2 - Current Contract
+## Final Owner Mobile Hotfix - Current Contract
+
+PACKAGE 6D FINAL OWNER MOBILE HOTFIX - READY FOR FINAL OWNER RETEST, not accepted/frozen.
+The latest owner request changes only recent dashboard selection and mobile detail.
+One auth.uid()-bound RPC derives availability from results, including opened and
+missing-notification results. Dashboard maximum three newest, separate from max-five
+unread toast items. New/Later shows New; opened remains without New. Archive/delete,
+expiry or replacement by newer results removes a recent card; permitted history remains.
+Current/previous comparisons stack on narrow phones. Every detail descendant must fit
+at 320/360/390px, tablet and desktop with full runtime CSS, not protective test CSS.
+Runtime 468d450329700028add8d13eb74c44931ab0389e, migration 20260906134827.
+See PACKAGE6D_FINAL_OWNER_MOBILE_HOTFIX_REPORT.md for all 25 owner cases and live proof.
+All previously owner-confirmed chat/avatar/settings/timezone/recovery behavior below
+is retained. Billing, provider activation and production remain separate blocked gates.
+
+## Owner Retest Hotfix 2 - Retained Contract
 
 PACKAGE 6D OWNER UX HOTFIX 2 - READY FOR OWNER RETEST, not accepted/frozen. The later
 owner request supersedes the old manual-start/settings layout: one chat timeline with
@@ -64,7 +79,8 @@ Daily, completed-workout and weekly jobs now execute through an enabled minute D
 using deterministic mock output and the shared consent/safety/entitlement/budget gates.
 Daily/post-workout record Luna; weekly records Terra; no external provider is enabled.
 Exact-ID own-user detail, one authoritative in-app notification inbox, persistent
-Now/Later, max-five dashboard items and paged history are implemented. Workout comparison
+Now/Later and paged history are implemented; the latest hotfix replaces the old max-five
+unread-only dashboard with three recent available analyses. Workout comparison
 uses the previous matching program day or exact exercise set, never invented values.
 Device IANA timezone automatically synchronizes while chosen schedule clock/day remains
 editable. Current language flags are NL, GB (English) and DE with accessible labels.

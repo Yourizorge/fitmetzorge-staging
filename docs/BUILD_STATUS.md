@@ -2,7 +2,27 @@
 
 Last updated: 2026-09-06
 
-## Owner Retest Hotfix 2 - Current
+## Final Owner Mobile Hotfix - Current
+
+Status: PACKAGE 6D FINAL OWNER MOBILE HOTFIX - READY FOR FINAL OWNER RETEST.
+Not owner-accepted/frozen. Runtime 468d450329700028add8d13eb74c44931ab0389e;
+entry/inbox/detail CSS cache 20260906-final-mobile1. Dashboard now retains the three
+newest available own analyses including opened and missing-notification results.
+Read removes New, not the card. Scoped detail CSS fixes the actual 860px table
+minimum and long-word overflow; mobile comparison rows stack vertically.
+Local/fresh/live-assets browser each 180/180, 25 layouts at five viewport sizes,
+all visible descendants bounded without injected test CSS. SQL 40/40, verifier 18/18,
+retained worker SQL 59/59, owner browser 323/323, Auth 88/88, handlers 27/27 and frozen
+regressions PASS. Forty-one live assets are byte-identical to the runtime commit.
+Migration 20260906134827 applied; 30/30 list and empty dry-run, also fresh checkout.
+All 23 checked member-table counts/hashes unchanged; fixtures zero; no new advisories.
+Edge v43, mock worker, chat, avatar, settings, flags, timezone and recovery preserved.
+No external provider calls/cost, memberdata edits, PostgreSQL deletion or production.
+Full local pg_cron replay/global schema-diff remains unproven; owner phone retest pending.
+See [full report and 25-case mapping](PACKAGE6D_FINAL_OWNER_MOBILE_HOTFIX_REPORT.md)
+and PACKAGE6D_FINAL_OWNER_MOBILE_HOTFIX_EVIDENCE.json. Earlier receipts are historical.
+
+## Owner Retest Hotfix 2 - Historical
 
 Status: PACKAGE 6D OWNER UX HOTFIX 2 - READY FOR OWNER RETEST. Not owner-accepted/frozen.
 Runtime 2e1fd983385ad360632667c954d7f63725555b3c; cache 20260906-owner-hotfix2.
@@ -35,8 +55,8 @@ console errors or mutating requests; 88 assembled-browser, 26 focused static and
 Project-wide migration reconciliation remains RESOLVED. The original 25/25 history
 repair fixed the 19 older timestamp differences, duplicate old `20260819` conflict,
 three missing live-history registrations and missing Phase 1-3/source SQL through a
-safe forward-only baseline. Package 6D and its owner hotfixes added four forward-only migrations;
-the canonical chain is now synchronized at 29 Git migrations and 29 live history rows.
+safe forward-only baseline. Package 6D and its owner hotfixes added five forward-only migrations;
+the canonical chain is now synchronized at 30 Git migrations and 30 live history rows.
 No historical SQL replay, remote reset, destructive reconstruction or member-data
 rewrite occurred. `supabase migration list` and `db push --dry-run --skip-vault` are
 clean for staging. See [migration audit](PROJECT_MIGRATION_RECONCILIATION.md).
@@ -53,12 +73,13 @@ clean for staging. See [migration audit](PROJECT_MIGRATION_RECONCILIATION.md).
 - Phase 0B Storage verification: COMPLETE
 - Master Plan Specification: COMPLETE
 - Master Plan Final Review: COMPLETE
-- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6C COMPLETE / OWNER-ACCEPTED / FROZEN; PACKAGE 6D OWNER UX HOTFIX 2 - READY FOR OWNER RETEST
+- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6C COMPLETE / OWNER-ACCEPTED / FROZEN; PACKAGE 6D FINAL OWNER MOBILE HOTFIX - READY FOR FINAL OWNER RETEST
 - Production Migration: NOT STARTED
 
-Current next step: owner real-phone retest of chat/keyboard, automatic workout analysis,
-Now/Later dashboard persistence, vertical settings, device timezone and language flags.
-Use the 47-point mapping in PACKAGE6D_OWNER_RETEST_HOTFIX2_REPORT.md.
+Current next step: owner real-phone retest of the retained recent dashboard analysis
+after viewing/refresh/login and fully bounded portrait detail/comparison. Preserve
+the owner-confirmed chat/avatar/settings/flags/timezone/recovery flows. Use the exact
+retest and 25-point mapping in PACKAGE6D_FINAL_OWNER_MOBILE_HOTFIX_REPORT.md.
 Package 6D is implemented on staging as a mock-only, read-only analysis surface for
 daily, post-workout and weekly analyses, with separate `ai_analysis` consent, no
 trainer access, no private-chat context, no domain writes, no provider call and EUR
