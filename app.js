@@ -9,7 +9,7 @@
     INVITE_FUNCTION_NAME: "invite-client"
   };
 
-  const bundleUrl = new URL("app.bundle.js?v=20260904-auth-lifecycle2", document.baseURI);
+  const bundleUrl = new URL("app.bundle.js?v=20260904-phase6d-analyses1", document.baseURI);
   const bundleResponse = await fetch(bundleUrl, { cache: "no-cache" });
   if (!bundleResponse.ok) {
     throw new Error(`App bundle laden mislukt: ${bundleResponse.status}`);
@@ -92,7 +92,7 @@
   }
   const phase5ProgressPatchSource = await phase5ProgressPatchResponse.text();
 
-  const phase6cPrivateChatPatchUrl = new URL("assets/phase6c-private-ai-chat.js?v=20260903-phase6c-approved-avatar1", document.baseURI);
+  const phase6cPrivateChatPatchUrl = new URL("assets/phase6c-private-ai-chat.js?v=20260904-phase6d-analyses1", document.baseURI);
   const phase6cPrivateChatPatchResponse = await fetch(phase6cPrivateChatPatchUrl, { cache: "no-cache" });
   if (!phase6cPrivateChatPatchResponse.ok) {
     throw new Error(`Package 6C private AI chat laden mislukt: ${phase6cPrivateChatPatchResponse.status}`);

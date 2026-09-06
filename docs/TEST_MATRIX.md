@@ -1,13 +1,12 @@
 # FitMetZorge Test Matrix
 
 Status: MASTER PLAN COVERAGE MATRIX
-Latest execution: 2026-09-04 project migration reconciliation, after the public Auth
-hotfix. Migration history is synchronized 25/25; `db push --dry-run --skip-vault`
-is clean. Public Auth hotfix checks remain 88 assembled browser + 26 focused
-static/security PASS; frozen runtime suites PASS and 228 live read-only database
-checks PASS. See PUBLIC_AUTH_REGISTRATION_HOTFIX.md for exact counts, four viewports,
-mail-dispatch limits and the staging deployment receipt.
-Last updated: 2026-09-04
+Latest execution: 2026-09-06 Package 6D mock-only read-only analyses technical pass,
+after the public Auth hotfix and project migration reconciliation. Migration history
+is synchronized 27/27; `db push --dry-run --skip-vault` is clean. Public Auth hotfix
+checks remain valid, the owner received the confirmation email, and no new resend,
+Brevo investigation, manual confirmation, trainer role or trainer link was performed.
+Last updated: 2026-09-06
 
 Live receipt: runtime 333954a68a1429634e49bafbcc08720ea688131a,
 cache 20260904-auth-lifecycle2. Seven checked assets HTTP 200 / commit-identical;
@@ -15,12 +14,13 @@ public routes at 320x700, 390x844, tablet and desktop: zero console/page errors,
 zero mutating requests. The owner later received the new account confirmation email.
 
 Project migration gate: PASS for staging. Official CLI `migration list` is synchronized
-at 25 local / 25 remote rows; `db push --dry-run --skip-vault` reports the remote
-database is up to date. The 19 timestamp drifts are renamed to canonical live versions,
-the duplicate old `20260819` conflict is gone, the missing Phase 1-3/source SQL is
-covered by a forward-only source baseline, and four previously local-only versions were
-marked applied as history metadata only. Local rebuild PASSes through Phase 6B; full
-local replay of 6C/6D0 still requires a local `pg_cron` extension. Details are in
+at 27 local / 27 remote rows after the two Package 6D migrations; `db push --dry-run
+--skip-vault` reports the remote database is up to date. The original 19 timestamp
+drifts are renamed to canonical live versions, the duplicate old `20260819` conflict is
+gone, the missing Phase 1-3/source SQL is covered by a forward-only source baseline,
+and four previously local-only versions were marked applied as history metadata only.
+Local rebuild PASSes through Phase 6B; full local replay of 6C/6D0/6D still requires a
+local `pg_cron` extension. Details are in
 PROJECT_MIGRATION_RECONCILIATION.md and PROJECT_MIGRATION_RECONCILIATION_MANIFEST.json.
 
 This matrix records the required functional, security, entitlement, AI, migration, and release checks for the Master Build. No implementation tests are executed by this document.
@@ -82,11 +82,11 @@ This matrix records the required functional, security, entitlement, AI, migratio
 | Phase 5 | Measurements | Optional logical body measurements, immutable corrections and archive | OWNER ACCEPTANCE GATE | PASS - COMPLETE / OWNER-ACCEPTED / FROZEN |
 | Phase 5 | Photos | Private progress photos, signed access, no public default, AI photo consent gate | SEPARATE PRIVACY GATE | DEFERRED - NO TABLE, BUCKET OR MEMBER FILE INPUT |
 | Phase 5 | Milestones | Strength and consistency from frozen Training sources; truthful unavailable running state | OWNER ACCEPTANCE GATE | PASS - COMPLETE / OWNER-ACCEPTED / FROZEN |
-| Phase 6 | Architecture/readiness | Frozen context sources, backend boundary, privacy, safety, provider, costs, packages and decisions | ARCHITECTURE GATE | PASS - 6A + 6B + 6C OWNER-ACCEPTED / FROZEN; 6D AUDIT COMPLETE |
-| Phase 6 | Youri AI | Backend-mediated AI, no browser-to-AI provider call, entitlement check before call | BLOCKING GATE | PLANNED |
-| Phase 6 | AI context | Goals, training, nutrition, progress, recovery context only when authorized | BLOCKING GATE | PLANNED |
-| Phase 6 | AI quality | Missing data handled honestly; no hallucinated facts; structured responses validated | BLOCKING GATE | PLANNED |
-| Phase 6 | AI cost | Usage/cost/rate-limit logging; no paid AI call without valid entitlement | BLOCKING GATE | PLANNED |
+| Phase 6 | Architecture/readiness | Frozen context sources, backend boundary, privacy, safety, provider, costs, packages and decisions | ARCHITECTURE GATE | PASS - 6A + 6B + 6C OWNER-ACCEPTED / FROZEN; 6D MOCK TECHNICAL PASS |
+| Phase 6 | Youri AI | Backend-mediated AI, no browser-to-AI provider call, entitlement check before call | BLOCKING GATE | PARTIAL PASS - 6C PRIVATE CHAT AND 6D READ-ONLY ANALYSES MOCK-ONLY; REAL PROVIDER/ACTIONS PLANNED |
+| Phase 6 | AI context | Goals, training, nutrition, progress, recovery context only when authorized | BLOCKING GATE | PASS FOR 6D BOUNDED AGGREGATES; BROADER AI CONTEXT PLANNED |
+| Phase 6 | AI quality | Missing data handled honestly; no hallucinated facts; structured responses validated | BLOCKING GATE | PASS FOR 6D MOCK ANALYSES; REAL PROVIDER OUTPUT STILL BLOCKED |
+| Phase 6 | AI cost | Usage/cost/rate-limit logging; no paid AI call without valid entitlement | BLOCKING GATE | PASS FOR 6D ZERO-COST MOCK; PAID MEMBER PROVIDER CALLS BLOCKED |
 | Phase 6 | Avatar | Owner-supplied approved Youri avatar, local optimized assets, circular header/message presentation and stable error fallback | BLOCKING GATE | OWNER-ACCEPTED / FROZEN 2026-09-04 |
 | Phase 7 | Entitlements | Free/Pro/AI/trial/referral/goal/PT entitlements enforced server-side | BLOCKING GATE | PLANNED |
 | Phase 7 | AI trial | 30-day no-payment-details trial starts, reminds, ends, locks generation and preserves data | BLOCKING GATE | PLANNED - OWNER PRODUCT CONTRACT LOCKED |
@@ -123,7 +123,7 @@ This matrix records the required functional, security, entitlement, AI, migratio
 | Phase 3 | Legacy training preserved until replacement accepted; workout data restoration path documented | PASS FOR FUNCTIONAL FREEZE; LEGACY DATA PRESERVED |
 | Phase 4 | Nutrition data changes reversible or forward-fixable; invoices remain outside consumer nutrition | PASS - MIGRATION EXECUTED ON EMPTY STAGING FOUNDATION; CORRECTED LIVE VERIFICATION `overall_pass: true` |
 | Phase 5 | Private storage/RLS rollback notes required before progress photos go live | PASS FOR CURRENT PACKAGE - PHOTOS EXCLUDED AND SEPARATE GATE LOCKED |
-| Phase 6 | AI calls gated by entitlement; no secret exposure; AI proposal/action rollback rules documented | PLANNED |
+| Phase 6 | AI calls gated by entitlement; no secret exposure; AI proposal/action rollback rules documented | PASS FOR 6A-6D MOCK BOUNDARIES; REAL PROVIDER/ACTION FLOWS PLANNED |
 | Phase 7 | Payment/growth lifecycle changes staging test mode only; entitlement rollback/credit correction path documented | PLANNED |
 | Phase 8 | Notification and reward triggers can be disabled or corrected; frequency caps tested | PLANNED |
 | Phase 9 | Trainer/client data migration has rollback or compatibility bridge; cross-trainer isolation tested | PLANNED |
@@ -787,7 +787,7 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | --- | --- |
 | Additive schema / verifier | PASS - migration history `20260903085454`; read-only verifier 37/37 |
 | Transactional database E2E | PASS - consent, entitlement, age, isolation, trainer denial, sequencing, replay, stale conflict, export, deletion and grace retention; rollback left 0 fixtures |
-| Edge mock route | PASS - `youri-ai` v41 ACTIVE, JWT verification enabled, exact request schema, strict mock response, no provider call; bundle SHA-256 `b4c61d47baa620cf7af62842dec3b660fdd40da30cc58c5da221147ab86a3fc2` |
+| Edge mock route | PASS - accepted 6C freeze evidence was `youri-ai` v41 ACTIVE with JWT verification, exact request schema, strict mock response and no provider call; current v42 preserves 6C and adds 6D |
 | Consent / entitlement | PASS - current active `ai` or `personal_coaching` plus active versioned consent and age 18+ required |
 | History / export / deletion | PASS - own-user only, bounded deterministic ordering, JSON export without private operational metadata, raw content scrubbed on deletion |
 | Retention | PASS - read/export/delete-only grace, maximum 90 days, minute server sweep, deterministic reactivation |
@@ -806,6 +806,28 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | Package result | COMPLETE / OWNER-ACCEPTED / FROZEN 2026-09-04 |
 | Production | UNTOUCHED |
 
+## Package 6D Read-Only Analyses Gate
+
+| Check | Result |
+| --- | --- |
+| Additive schema | PASS - migrations `20260904230850` and `20260904235253` live on staging |
+| Migration list / dry-run | PASS - 27/27 local/remote rows; `db push --dry-run --skip-vault` clean |
+| Read-only live verifier | PASS - 13/13 named checks: tables, RLS, ACL, consent docs, schema, RPC grants, model routes, provider disabled and retention cron |
+| Transactional database E2E | PASS - consent, preferences, own-user reads, service isolation, preparation/replay/event identity, deletion/export, safety, budget, age/entitlement and trainer denial; rollback retained zero fixtures |
+| Cleanup snapshot | PASS - 0 analysis results, 0 lifecycle rows, 0 6D private run rows, 0 6D usage-ledger rows, 0 synthetic auth users, 0 synthetic profiles and 0 synthetic workouts |
+| Edge mock route | PASS - `youri-ai/phase6d/analyze` deployed on staging; exact request schema, authenticated only, no provider/model/fixture/browser authority |
+| Consent / entitlement | PASS - separate `ai_analysis` consent plus current adult `ai` or `personal_coaching`; Free/Pro/missing/expired/future/withdrawn/underage denied |
+| Context minimization | PASS - bounded aggregates from frozen Identity, Training, Nutrition, Recovery and Progress; no private chat, trainer notes/messages, photos, GPS, legacy water or free text |
+| Output authority | PASS - strict `phase6d.analysis.v1`, actions always empty, no proposals, no target/schedule/domain writes |
+| Retention / lifecycle | PASS - result content max 90 days, minimized lifecycle/tombstones max 180 days, export/delete own-user only |
+| Package 6D handler | PASS - 8/8 Node tests |
+| Package 6D static | PASS - 17/17 |
+| Package 6D browser | PASS - 48/48 at 320x700, 390x844, 820x1180 and 1440x900 |
+| Frozen private chat regression | PASS - Phase 6C static 117/117, browser 85/85 and combined 6C+6D handler tests 25/25 |
+| External AI | PASS - 0 calls, EUR 0.00; external provider activation false |
+| Production | UNTOUCHED |
+| Package result | MOCK-ONLY TECHNICAL PASS / OWNER TESTING PENDING |
+
 ## Package 6C Freeze / Package 6D Audit - 2026-09-04
 
 | Gate | Current result |
@@ -817,11 +839,11 @@ Known non-functional Phase 3 gates: reviewed Dutch exercise instructions, review
 | Live 6B read-only | PASS36/36; real-member processing blocked |
 | Historical 6A installation verifier | 44PASS/3expected post-install mismatches: empty-state assumptions and six accepted6C columns; not a current empty-database gate |
 | Current-state 6A freeze verifier | PASS47/47; other44 contracts unchanged plus exact accepted schema, no proposals/decisions, zero-cost mock-only runs |
-| Runtime preservation | PASS Edgev41, nine source files match bb5076a; five frontend/avatar files HTTP200 and byte-identical; cache unchanged |
+| Runtime preservation | PASS - accepted freeze evidence was Edgev41 with nine source files matching bb5076a; current v42 preserves 6C and adds mock-only 6D |
 | Source RLS / entitlement | PASS18/18 source tables; one owner test entitlement unchanged through2026-09-10T23:59:59Z |
 | Read-only discipline | No fixture writes, application RPC, provider call, schema/runtime change or deployment; prior live/rollback E2E proof retained, not rerun |
 | 6D readiness deliverable | PASS15 sections: source-field matrix, per-type manifests, no-action schema, safety, entitlement, lifecycle, cost, flags, impact, slices/tests, decisions, scope |
-| 6D functional implementation | NOT STARTED; proposed tests are future criteria, not executed features |
+| 6D functional implementation | SUPERSEDED - later owner-authorized mock-only implementation has technical PASS; see Package 6D Read-Only Analyses Gate |
 
 Legacy Phase1/2/3/Member UX/navigation suites reside in the original staging source workspace; current6C/6B/6A/Phase5/Phase4 suites run in the synchronized checkout. Frozen runtime files are unchanged. Source-string metadata checks supplement prior E2E and owner proof. A false-empty installation assertion must never trigger deletion of valid owner data.
 
@@ -844,5 +866,7 @@ Whole-project dry-run is now clean after the later project-wide reconciliation. 
 [identity receipt](PHASE6D0_MIGRATION_IDENTITY_RECONCILIATION.md).
 Bootstrap/metadata authority, direct profile grants and broad member workspace access
 are corrected. Existing links/data checksums and frozen Phase 1-6C semantics are preserved.
-Package 6D analyses and external member AI remain forbidden. Deployment evidence and exact
-artifacts are tracked in [the 6D-0 security receipt](PHASE6D0_LEGACY_AUTHORIZATION_SECURITY.md).
+Package 6D analyses are implemented separately as mock-only read-only staging
+functionality; external member AI remains forbidden. Deployment evidence and exact
+artifacts are tracked in [the 6D-0 security receipt](PHASE6D0_LEGACY_AUTHORIZATION_SECURITY.md)
+and [the 6D technical report](PACKAGE6D_READ_ONLY_ANALYSES_TECHNICAL_REPORT.md).

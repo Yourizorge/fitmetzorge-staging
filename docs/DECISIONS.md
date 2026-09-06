@@ -530,7 +530,7 @@ Date:2026-09-04. Status: OWNER-APPROVED FREEZE / READINESS AUDIT COMPLETE.
 
 The owner accepts final natural-language medical hard stops, clear normal conversation afterward, ordinary chest-training controls, current chat layout/horizontal composer/Youri identity/approved avatar, persistence and deletion. Package6C is COMPLETE / OWNER-ACCEPTED / FROZEN. Later visual polish may not silently change its frozen safety/privacy/functionality. The temporary owner AI entitlement remains unchanged through2026-09-10T23:59:59Z.
 
-Only the6D read-only readiness audit is complete. Its six decisions and proposed slices are in `docs/PHASE6D_READ_ONLY_ANALYSES_READINESS.md`; none is an implicit implementation approval. No6D migration/runtime/deployment or external member processing is authorized. Private6C chat is excluded from analysis context absent a future separate purpose/consent review. Production remains forbidden.
+Only the6D read-only readiness audit was complete at this freeze point. Its six decisions and proposed slices are in `docs/PHASE6D_READ_ONLY_ANALYSES_READINESS.md`; none was an implicit implementation approval. Private6C chat is excluded from analysis context absent a future separate purpose/consent review. Production remains forbidden. The later owner-authorized mock-only Package6D staging implementation is recorded separately below and does not reopen the Package6C freeze.
 
 ## Package 6D-0 Closure (2026-09-04)
 
@@ -541,5 +541,24 @@ email-bound one-use invitations, protected profile fields and own-client workspa
 replace editable metadata and broad member workspace access. Existing relationships and
 data are unchanged; live verifier 40/40, rollback E2E 48/48 and concurrency 8/8 PASS.
 See [the security receipt](PHASE6D0_LEGACY_AUTHORIZATION_SECURITY.md).
-This closes that security prerequisite only. Package 6D analysis implementation and real
-member external AI remain unapproved; existing 6D product/privacy decisions are unchanged.
+This closes that security prerequisite only. The later Package 6D analysis implementation
+is mock-only on staging; real member external AI remains unapproved.
+
+## Decision 0038: Package 6D read-only analyses mock implementation
+
+Date: 2026-09-06. Status: TECHNICAL PASS ON STAGING / OWNER TESTING PENDING.
+
+The owner-authorized initial Package6D implementation is daily, post-workout and weekly
+read-only analyses inside Youri AI. It requires separate `ai_analysis` consent, current
+adult `ai` or `personal_coaching` entitlement, bounded aggregate context, no private6C
+chat context, no trainer access, no domain writes, no proposals/actions and no automatic
+trainer sharing. Result content retention is capped at 90 days and minimized lifecycle
+metadata/tombstones at 180 days.
+
+The implementation is staging mock-only. Daily and post-workout are routed to Luna and
+weekly to Terra for future policy/budget accounting, but external provider activation
+is false and no member data may be sent to OpenAI or another provider. The shared6A
+budget boundary remains EUR3 included, EUR2.40 warning, Luna-only grace up to EUR4 hard
+cap, no automatic billing and no Terra grace. Real-member external provider activation
+still requires the separate ZDR/DPA/DPIA/EU-route/privacy/medical/transfer/lifecycle
+evidence and explicit owner activation GO. Production remains forbidden.

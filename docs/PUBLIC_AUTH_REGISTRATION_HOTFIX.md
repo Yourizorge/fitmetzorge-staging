@@ -120,5 +120,6 @@ The mail-delivery question is closed for this test account because the owner rec
 the confirmation email. Do not resend again automatically, inspect Brevo, reset
 credentials, confirm manually, or add a trainer role/link for this account.
 
-Package 6D functionality NOT STARTED. External member AI stays disabled. No external
-AI calls or cost. Production UNTOUCHED.
+This hotfix did not start Package 6D. Later Package 6D work is documented separately
+and remains mock-only on staging. External member AI stays disabled. No external AI
+calls or cost. Production UNTOUCHED.

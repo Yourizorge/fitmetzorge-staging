@@ -1,12 +1,35 @@
 # Package 6D Read-Only Analyses - Architecture And Readiness
 
-Status: AUDIT COMPLETE / OWNER DECISIONS REQUIRED / IMPLEMENTATION NOT STARTED
+Status: AUDIT COMPLETE / OWNER DECISIONS LOCKED / MOCK-ONLY IMPLEMENTATION TECHNICAL PASS / OWNER TESTING PENDING
 
-Date: 2026-09-04
+Date: 2026-09-04 audit; 2026-09-06 implementation addendum.
 Scope: Yourizorge/fitmetzorge-staging / main; Supabase mokxyyullfhkfalopbzd only.
 Audit baseline: f8050c26e9b773b7954901ded780b13efa6fe040.
 Package 6C: COMPLETE / OWNER-ACCEPTED / FROZEN.
-All designs, names, retention periods and cadence below are recommendations, not implemented or silently approved product decisions.
+The original sections below are the 2026-09-04 readiness audit. The owner later locked
+the initial scope and authorized a mock-only staging implementation; current technical
+evidence is in `docs/PACKAGE6D_READ_ONLY_ANALYSES_TECHNICAL_REPORT.md`.
+
+## Implementation Addendum - 2026-09-06
+
+Package 6D now has a staging mock-only technical pass. It implements daily,
+post-workout and weekly read-only analyses inside Youri AI with separate
+`ai_analysis` consent, own-user preferences/results/lifecycle records, strict
+`phase6d.analysis.v1` no-action output, retention sweep, member RPCs, service-only
+begin/complete/fail/due-selection RPCs and the `youri-ai/phase6d/analyze` Edge route.
+
+The implemented route authenticates the member, accepts only `request_id`,
+`analysis_kind`, `locale` and optional `event_id`, uses bounded aggregate context,
+generates deterministic mock output and records zero external calls/cost. External
+provider activation is false; no OpenAI member-data call, provider fallback, browser
+model selection, trainer access, private chat context, domain write, proposal or action
+exists in this package.
+
+Live evidence: migrations `20260904230850` and `20260904235253` are present in both
+Git and staging history; migration list is 27/27; `db push --dry-run --skip-vault` is
+clean; read-only verifier 13/13, rollback E2E, static 17/17, browser 48/48 and combined
+6C+6D handler tests 25/25 pass. Owner real-phone acceptance is still pending, so
+Package 6D is not frozen.
 
 ## 1. Current Reusable Architecture
 
@@ -18,7 +41,7 @@ Evidence inspected:
 - Frozen Phase 3 foundation/ownership, Phase 4 logging/replacement/provider snapshots, Phase 5 foundation/dashboard and unit-preference migrations; member Tracker rendering in `assets/member-ux-consistency.js`.
 - Read-only staging catalog metadata, not member health values or chat contents.
 
-Live audit: 6B 36/36; 6C 37/37; request-scoped safety 16/16. The post-6C 6A freeze variant passes 47/47. All 18 inspected domain source tables retain RLS. Edge v41 has JWT enabled and all nine source files match implementation commit `bb5076a6d19e304a5e093af38090314fa85379dc`. Mock chat is enabled, member provider processing and all 6A feature flags are disabled. No OpenAI call, provider probe, application RPC or fixture write was performed.
+Live audit on 2026-09-04: 6B 36/36; 6C 37/37; request-scoped safety 16/16. The post-6C 6A freeze variant passes 47/47. All 18 inspected domain source tables retain RLS. Edge v41 had JWT enabled and all nine source files matched implementation commit `bb5076a6d19e304a5e093af38090314fa85379dc`. Mock chat was enabled, member provider processing and all 6A feature flags were disabled. No OpenAI call, provider probe, application RPC or fixture write was performed.
 
 ## 2. Gaps And Blockers
 
@@ -36,7 +59,11 @@ Live audit: 6B 36/36; 6C 37/37; request-scoped safety 16/16. The post-6C 6A free
 
 12. Additional material legacy authorization finding from the read-only advisor follow-up: `public.fmz_bootstrap_trainer_profile(uuid,text,text)` is SECURITY DEFINER with anon/authenticated EXECUTE and accepts a supplied user ID without an auth.uid/service authorization guard in its body. It can write profiles/workspaces. `accept_client_invite` uses user-editable JWT user_metadata to choose trainer/client linkage; the Auth trigger also reads raw_user_meta_data role. These are pre-existing paths outside 6C, not 6D changes. No exploit or mutating test was run. Separate owner-scoped security review/correction is required before relying on these identity/linkage boundaries for 6D or real-member provider activation. Do not fix them automatically in a frozen read-only audit.
 
-These are readiness gaps, not changes made to frozen 6C. Do not repair domain data, broaden access or deploy a partial analysis route during this audit.
+These were readiness gaps at audit time. The Package 6D implementation resolves the
+analysis-specific consent, timezone, event identity, strict no-action schema,
+independent lifecycle and legacy-authorization prerequisite for the current mock-only
+scope. Domain data remains read-only, and real-member external provider activation
+still remains blocked by the separate legal/provider gate.
 
 ## 3. Authoritative Source Matrix
 
@@ -251,9 +278,13 @@ Daily/weekly/post-workout scheduling beyond request-time execution needs explici
 
 ## 13. Tests And Acceptance Criteria
 
-Audit-time rerun results are in `TEST_MATRIX.md` and the6C freeze evidence. Database E2Es that write then rollback were NOT rerun because this assignment is read-only. Prior accepted12/12 live safety and transactional proofs remain historical evidence, not new tests.
+Audit-time rerun results are in `TEST_MATRIX.md` and the6C freeze evidence. The
+implementation addendum supersedes the audit-only limitation for the mock-only package:
+6D now has a reviewed migration, live verifier, rollback E2E, Edge handler tests,
+static checks and browser checks. The remaining provider/legal tests apply only before
+real-member external provider activation.
 
-Required before6D technical PASS:
+Historical criteria before 6D technical PASS:
 - Schema/ACL: own-user results only; PUBLIC/anon/direct browser writes/trainer reads denied; closed service RPC inventory and no frozen domain writes.
 - Sources: exact snapshot totals for canonical/custom/USDA/OFF, null-food isolation, archives/replacements excluded, no ml=g, matching historic targets, sparse/partial days, completed vs open workouts, missing exercise IDs, timezone/DST/day-crossing and future-date boundaries.
 - Manifest: reject every unallowlisted field; no names/email/IDs/chat/notes/photos/GPS; owner joins; max rows/bytes/tokens; missing/conflicting/stale sources never invented.
@@ -269,18 +300,24 @@ Required before6D technical PASS:
 
 Verifier limitations: source-string checks prove contracts are present, not every runtime behavior. The legacy request-scoped verifier's `package6d_absent` checks a trainer table, which is not sufficient6D absence proof. This audit separately inspected repo routes/schema scope and enforced a docs/status-verifier-only diff. Its `no_action_rows_added` literal is not a row-count proof; the separate read-only count query confirmed no proposals/decisions. Never relabel those literals as new E2E evidence.
 
-## 14. Exact Owner Decisions Required
+## 14. Owner Decisions
 
-Before 6D implementation, approve or amend these recommendations together:
+The owner locked the initial mock-only implementation decisions as follows:
 
-1. Initial categories/placement: demand-driven daily, post-workout and weekly with optional domain details; separate member analysis surface, no frozen Today/Trackers/chat redesign; no automatic scheduler initially.
-2. Privacy scope: allowlisted aggregates only; separate analysis-purpose consent with selectable domain categories; NO6C chat context, water/legacy details, trainer messages, photos or free-text harvesting.
-3. Calendar/quality: dedicated member-confirmed AI timezone, no silent Nutrition/Progress timezone merge; <=28d windows; minimum trend samples above; incomplete intake explicitly not adherence proof.
-4. Storage/lifecycle: one result table, <=90d content, proposed180d minimized metadata/tombstones, withdrawal stops processing while preserving bounded read/export/delete, backup deletion policy.
-5. Cost/cadence: token envelopes, exact criteria for Terra weekly complexity, per-kind frequency, global budget/concurrency/unknown-charge policy; shared6B user caps stay unchanged.
-6. Safety/authority: approve analysis-specific escalation/missingness copy and unresolved-state behavior, no diagnosis or new prescriptions, no actions/proposals, no automatic trainer sharing.
-
-7. Authorize a separate narrowly scoped legacy identity/ACL security review and remediation gate for the findings in section 2 before 6D relies on those authorities. No profile/linkage/ACL repair is approved by this documentation task.
+1. Initial categories/placement: daily, post-workout and weekly inside Youri AI >
+   Analyses.
+2. Privacy scope: allowlisted aggregates only; separate analysis-purpose consent; no
+   6C chat context, water/legacy details, trainer messages, photos or free-text
+   harvesting.
+3. Calendar/quality: dedicated AI timezone preference; honest insufficient-data and
+   partial-day labels; no invented adherence or trends.
+4. Storage/lifecycle: one result table, <=90d content, <=180d minimized
+   metadata/tombstones, own export/delete, withdrawal stops processing.
+5. Cost/cadence: Luna for daily/post-workout, Terra for weekly, shared6A EUR caps,
+   no Terra grace and no automatic billing. Provider calls remain inactive.
+6. Safety/authority: no diagnosis, prescriptions, proposals, actions, domain writes or
+   trainer sharing.
+7. The legacy identity/ACL security prerequisite is closed by Package6D-0 on staging.
 
 Separately, before ANY real-member provider activation: owner must supply/approve actual ZDR/DPA/DPIA/EU-route/privacy/medical/transfer/lifecycle evidence and give explicit activation GO. Technical mock readiness is not that approval.
 
@@ -288,11 +325,15 @@ The temporary6C owner entitlement is unchanged: one active AI test row through20
 
 ## 15. Explicit Out Of Scope
 
-No6D implementation, migration creation/execution, frontend/Edge deployment, member source writes, consent changes, entitlement changes, OpenAI/provider calls (including synthetic), provider key inspection, real-member activation or production access. No proposals/actions/automatic changes, reminders, continuous risk monitoring, trainer sharing or6H/9 work. No new nutrition/provider import, exercise catalog modification, progress measurement rewrite, legacy cleanup or frozen6C redesign.
+Still out of scope after the mock-only implementation: OpenAI/provider member calls,
+provider key inspection, real-member external AI activation, production access,
+proposals/actions/automatic changes, continuous risk monitoring, trainer sharing,
+6E/6F/6G/6H/9 work, nutrition/provider import, exercise catalog modification, progress
+measurement rewrite, legacy cleanup and frozen6C redesign.
 
-This assignment changes documentation and one SELECT-only status verifier only. The verifier preserves the immutable6A installation checker and adapts its six accepted6C columns plus two no-longer-empty lifecycle expectations; it is not a database repair. Rollback is reverting documentation/verifier commits only, never a database rollback.
-
-Conclusion: architecture/readiness audit COMPLETE; implementation NOT STARTED. Await the six owner product/architecture decisions, the separate legacy security gate and a new implementation GO.
+Conclusion: architecture/readiness audit COMPLETE; mock-only staging implementation
+TECHNICAL PASS; owner real-phone acceptance and freeze are pending. Real-member
+external provider activation remains separately blocked.
 
 ## Audit Evidence: Existing Advisor Findings
 
@@ -311,5 +352,5 @@ email-bound one-use invitations, protected profile fields and own-client workspa
 replace editable metadata and broad member workspace access. Existing relationships and
 data are unchanged; live verifier 40/40, rollback E2E 48/48 and concurrency 8/8 PASS.
 See [the security receipt](PHASE6D0_LEGACY_AUTHORIZATION_SECURITY.md).
-This closes that security prerequisite only. Package 6D analysis implementation and real
-member external AI remain unapproved; existing 6D product/privacy decisions are unchanged.
+This closes that security prerequisite. Package 6D analysis implementation is now
+mock-only on staging; real member external AI remains unapproved.

@@ -1,7 +1,7 @@
 # FitMetZorge Master Build Plan
 
 Status: APPROVED PRODUCT SPECIFICATION CAPTURED
-Last updated: 2026-09-04
+Last updated: 2026-09-06
 
 This document is the product and execution source of truth for the FitMetZorge Master Build after Phase 0A Governance and Phase 0B Live Staging Infrastructure Verification.
 
@@ -35,13 +35,24 @@ The project-wide migration reconciliation gate is RESOLVED for staging. The 19 o
 timestamp differences are renamed to canonical live migration versions, the duplicate
 old `20260819` conflict is removed, the missing Phase 1-3/source SQL is represented by
 a forward-only source baseline, and the four previously local-only versions were marked
-applied as history metadata only. No historical SQL replay, member-data rewrite, Edge
-deploy, frontend deploy or production access occurred. Official migration list and
-`db push --dry-run --skip-vault` are clean for staging; local rebuild PASSes through
-Phase 6B and full local 6C/6D0 replay still needs a local `pg_cron` extension.
+applied as history metadata only. Package 6D adds two later forward-only migrations,
+so the current canonical chain is synchronized at 27 local and 27 remote rows. No
+historical SQL replay, member-data rewrite, remote reset or production access occurred.
+Official migration list and `db push --dry-run --skip-vault` are clean for staging;
+local rebuild PASSes through Phase 6B and full local 6C/6D0/6D replay still needs a
+local `pg_cron` extension.
 Package 6D-0's canonical `20260904105918` identity remains unchanged. See
 PROJECT_MIGRATION_RECONCILIATION.md. This gate does not authorize another build phase
 or production access.
+
+Package 6D read-only analyses are implemented on staging as a mock-only technical pass
+and await owner testing. The locked initial scope is daily, post-workout and weekly
+analysis inside Youri AI, with separate `ai_analysis` consent, maximum 90-day result
+retention, 180-day minimized audit metadata, no trainer access, no private-chat
+context, no domain writes, no real provider calls, Luna/Terra routing policy recorded
+but inactive, and shared 6A budget gates. See
+PACKAGE6D_READ_ONLY_ANALYSES_TECHNICAL_REPORT.md. Real-member external provider
+activation remains forbidden until the separate legal/provider gate passes.
 
 ## Strategic Product Addendum - 2026-08-31
 
@@ -861,7 +872,7 @@ Scope: AI backend, entitlement checks, context retrieval, structured responses, 
 
 Gate: no browser-to-AI calls, no AI call without entitlement from the single entitlement source, no secrets exposed, missing data handled without hallucinated facts, rollback/safety notes exist, tests/review complete.
 
-Status: PACKAGES 6A, 6B AND 6C COMPLETE / OWNER-ACCEPTED / FROZEN. PACKAGE 6D READINESS AUDIT COMPLETE / IMPLEMENTATION NOT STARTED. The provider-neutral trust schema and disabled `youri-ai` Edge scaffold are live on staging. The exact live verifier passed 47/47 and the transactional E2E rolled back all fixtures with zero external calls and zero provider cost. The frozen Identity, Recovery, Training, Nutrition and Progress sources remain authority. All operational feature flags remain OFF. Full architecture, implementation and verification evidence are in `docs/PHASE6_AI_CORE_ARCHITECTURE_READINESS.md` and `docs/PHASE6A_AI_TRUST_FOUNDATION.md`.
+Status: PACKAGES 6A, 6B AND 6C COMPLETE / OWNER-ACCEPTED / FROZEN. PACKAGE 6D MOCK-ONLY READ-ONLY ANALYSES TECHNICAL PASS / OWNER TESTING PENDING. The provider-neutral trust schema and `youri-ai` Edge boundary are live on staging for frozen 6C private chat and 6D mock analyses. The frozen Identity, Recovery, Training, Nutrition and Progress sources remain authority. External member-provider processing remains OFF. Full architecture, implementation and verification evidence is in `docs/PHASE6_AI_CORE_ARCHITECTURE_READINESS.md`, `docs/PHASE6A_AI_TRUST_FOUNDATION.md` and `docs/PACKAGE6D_READ_ONLY_ANALYSES_TECHNICAL_REPORT.md`.
 
 Owner-locked 6A contracts (with subsequent 6B acceptance): OpenAI remains the sole approved provider, with exact frozen routes `gpt-5.6-luna` and `gpt-5.6-terra` proved on synthetic fixtures only; real-member processing is disabled; separate explicit AI and trainer-summary consent; 90-day maximum raw-chat grace after entitlement loss; EUR 3 included operating ceiling, warning at 80 percent, at most EUR 1 Luna grace and EUR 4 hard stop; strict reversible action allowlists; and a deterministic medical/risk hard stop. Provider privacy/legal/DPA/transfer/DPIA completion and separate controlled staging approval remain mandatory before Package 6B can activate an external AI service.
 
@@ -1020,7 +1031,7 @@ Package 6B is the staging-only provider/privacy/cost gate. It uses OpenAI Respon
 
 Package 6B reached technical acceptance PASS and was explicitly owner-accepted and frozen on staging on 2026-09-02: one locked Luna fixture and one locked Terra fixture returned the exact requested models and strict schemas, with reconciled successful-call estimates of EUR 0.000548 and EUR 0.003970. The separate conservative internal ledger is EUR 0.011688 because two earlier credential failures remain charged at their maximum reservations. The test flag is off, a further call is blocked before accounting, raw prompts/outputs are not persisted, and real-member flags remain off.
 
-Package 6C reached technical PASS on 2026-09-03 and was explicitly owner real-phone accepted and frozen on 2026-09-04. It provides private member-only chat with versioned consent, age and current AI/PT entitlement gates; deterministic mock-only replies; immutable ordered messages; exact retry; own JSON export; content deletion; and a maximum 90-day entitlement-loss grace period. Natural NL/EN/DE chest pain/pressure/tightness, dizziness/fainting, breathlessness and exertion combinations are classified only by the Edge and produce a hard stop with no actions. Bounded negation, non-personal educational questions, normal chest training and ordinary post-training soreness remain clear. That hard stop is request-scoped for communication: retained safety metadata blocks automatic execution, never later messages or new conversations. Repeated risk and override attempts remain blocked, while a normal follow-up is allowed. The member surface identifies the coach as `Youri AI`, keeps `FitMetZorge AI Coach` as product subtitle, displays the owner-supplied and owner-approved avatar, and keeps its growing textarea left of the send action even at 320px. Browser access remains RPC-only, trainers have zero chat-content access, all external member AI processing is disabled, and Package 6D implementation has not started (readiness audit complete). Safety commit `bb5076a`, unchanged avatar/cache `20260903-phase6c-approved-avatar1`, migration history `20260903125150` and Edge v41 are live; 12/12 isolated authenticated safety checks passed and all fixtures were removed. Package 6C is COMPLETE / OWNER-ACCEPTED / FROZEN. Implementation commit: `bb5076a6d19e304a5e093af38090314fa85379dc`; accepted pre-freeze documentation: `f8050c26e9b773b7954901ded780b13efa6fe040`. See `docs/PHASE6C_PRIVATE_AI_CHAT.md` and `docs/PHASE6C_FREEZE_RECEIPT.md`.
+Package 6C reached technical PASS on 2026-09-03 and was explicitly owner real-phone accepted and frozen on 2026-09-04. It provides private member-only chat with versioned consent, age and current AI/PT entitlement gates; deterministic mock-only replies; immutable ordered messages; exact retry; own JSON export; content deletion; and a maximum 90-day entitlement-loss grace period. Natural NL/EN/DE chest pain/pressure/tightness, dizziness/fainting, breathlessness and exertion combinations are classified only by the Edge and produce a hard stop with no actions. Bounded negation, non-personal educational questions, normal chest training and ordinary post-training soreness remain clear. That hard stop is request-scoped for communication: retained safety metadata blocks automatic execution, never later messages or new conversations. Repeated risk and override attempts remain blocked, while a normal follow-up is allowed. The member surface identifies the coach as `Youri AI`, keeps `FitMetZorge AI Coach` as product subtitle, displays the owner-supplied and owner-approved avatar, and keeps its growing textarea left of the send action even at 320px. Browser access remains RPC-only, trainers have zero chat-content access, and all external member AI processing is disabled. Safety commit `bb5076a`, unchanged avatar/cache `20260903-phase6c-approved-avatar1`, migration history `20260903125150` and Edge v41 were the accepted freeze evidence; the current Edge v42 preserves 6C and adds the mock-only 6D route. Package 6C is COMPLETE / OWNER-ACCEPTED / FROZEN. Implementation commit: `bb5076a6d19e304a5e093af38090314fa85379dc`; accepted pre-freeze documentation: `f8050c26e9b773b7954901ded780b13efa6fe040`. See `docs/PHASE6C_PRIVATE_AI_CHAT.md`, `docs/PHASE6C_FREEZE_RECEIPT.md` and `docs/PACKAGE6D_READ_ONLY_ANALYSES_TECHNICAL_REPORT.md`.
 
 Before any later member data transfer, ZDR must be verified for the exact OpenAI project, the owner must execute the DPA, the DPIA and international-transfer/subprocessor assessment must be complete, the exact Europe project/endpoint must be verified, privacy/consent/safety copy must be approved, lifecycle flows must be proven, and the owner must separately activate real-member processing. `store:false` is necessary but never sufficient proof of ZDR. Package 6B acceptance and the mock-only Package 6C runtime do not authorize real-member provider processing.
 
@@ -1047,6 +1058,8 @@ dry-run is clean, while production remains forbidden. See
 [identity receipt](PHASE6D0_MIGRATION_IDENTITY_RECONCILIATION.md).
 Bootstrap/metadata authority, direct profile grants and broad member workspace access
 are corrected. Existing links/data checksums and frozen Phase 1-6C semantics are preserved.
-Package 6D analyses and external member AI remain forbidden. Deployment evidence and exact
-artifacts are tracked in [the 6D-0 security receipt](PHASE6D0_LEGACY_AUTHORIZATION_SECURITY.md).
+Package 6D analyses are implemented separately as mock-only read-only staging
+functionality; external member AI remains forbidden. Deployment evidence and exact
+artifacts are tracked in [the 6D-0 security receipt](PHASE6D0_LEGACY_AUTHORIZATION_SECURITY.md)
+and [the 6D technical report](PACKAGE6D_READ_ONLY_ANALYSES_TECHNICAL_REPORT.md).
 

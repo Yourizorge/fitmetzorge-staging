@@ -1,19 +1,19 @@
 # FitMetZorge Architecture
 
 Status: CURRENT AND TARGET ARCHITECTURE DOCUMENTED
-Last updated: 2026-09-04
+Last updated: 2026-09-06
 
 Public Auth lifecycle: Phase 1 owns the session/profile-ready render boundary.
 Registration/login/password/confirmation/error screens must never dispatch member
 renderers or member hydration before explicit valid application entry. See
 PUBLIC_AUTH_REGISTRATION_HOTFIX.md. This does not add Package 6D functionality.
 
-Migration reproducibility: project-wide history reconciliation is BLOCKED as of
-2026-09-04. Four historical files reuse version 20260819; core profiles/workspaces/
-settings/entitlements creation baselines are absent from the committed migration chain.
-Exact or line-ending-equivalent recorded SQL is separate from proof of current object
-definitions and dependency completeness. No broad db push, blind history repair or
-historical replay is safe while execution identity remains uncertain. The 6D-0
+Migration reproducibility: project-wide history reconciliation is RESOLVED for staging.
+The 19 older timestamp differences were renamed to canonical live versions, duplicate
+old `20260819` history was removed, the missing Phase 1-3/source SQL is represented by
+a conservative forward-only source baseline, and the current post-6D chain is
+synchronized at 27 local and 27 remote migration rows. No historical SQL replay,
+remote reset, destructive reconstruction or member-data rewrite occurred. The 6D-0
 canonical ID and security contract stay frozen. See PROJECT_MIGRATION_RECONCILIATION.md.
 
 The Phase 0B Auth/invitation/workspace descriptions below are historical. Their unsafe
@@ -321,7 +321,7 @@ The existing `user_settings.unit_system` stores the presentation choice. No impe
 
 ### Phase 6 Youri AI Core Readiness
 
-Status: PACKAGES 6A, 6B AND 6C COMPLETE / OWNER-ACCEPTED / FROZEN; PACKAGE 6D READINESS AUDIT COMPLETE / IMPLEMENTATION NOT STARTED
+Status: PACKAGES 6A, 6B AND 6C COMPLETE / OWNER-ACCEPTED / FROZEN; PACKAGE 6D MOCK-ONLY READ-ONLY ANALYSES TECHNICAL PASS / OWNER TESTING PENDING
 
 Live staging now contains the additive Package 6A AI trust schema. Normalized own-user Identity, Recovery, Training, Nutrition and Progress inputs remain the frozen authorities. No provider credential, external provider call or member-facing AI runtime is active.
 
@@ -343,11 +343,37 @@ The member calls `youri-ai/phase6c/chat` with a verified JWT and exact request s
 
 The browser only presents the server result. Its compact mobile chat identifies the persona as `Youri AI` under the unchanged `FitMetZorge AI Coach` product and uses the owner-supplied, owner-approved Youri AI avatar in the header and assistant-message identity. A metadata-free lossless PNG master and 256px lossless WebP derivative are project-local; fixed 44px and 26px circular containers prevent layout shift and fall back to neutral `AI` text only on load failure. The growing textarea and send action remain in one horizontal bottom row. History, message bubbles, prompt chips, processing/retry states and secondary export/delete controls add no classifier or domain authority. The path has no provider import or provider call, and cannot select a model or action. It is live on staging as `youri-ai` v41 with JWT verification; natural-language safety commit `bb5076a`, unchanged approved-avatar runtime commit `abc724fec6115ce85c810fb2f53ff2e5e6a01740`, unchanged cache `20260903-phase6c-approved-avatar1`, migration history `20260903125150` and bundle SHA-256 `b4c61d47baa620cf7af62842dec3b660fdd40da30cc58c5da221147ab86a3fc2`. Package 6C was owner-accepted and frozen on 2026-09-04. The visual finish is accepted for this phase; later polish cannot silently alter safety/privacy/functionality.
 
-### Package 6D Read-Only Analyses Readiness
+### Package 6D Read-Only Analyses
 
-The 2026-09-04 audit is complete in `docs/PHASE6D_READ_ONLY_ANALYSES_READINESS.md`. It does not implement analyses. Reuse 6A Auth/consent/entitlements, run/manifest/budget and lifecycle plus 6B adapter primitives, not synthetic-only endpoints. The existing context RPC supplies availability rather than full analytic aggregates; Phase5 dashboard output is too broad to forward directly.
+Package 6D is live on staging as mock-only read-only analysis functionality inside the
+existing Youri AI member surface. It implements daily, post-workout and weekly analyses
+after a separate `ai_analysis` consent and current adult `ai` or `personal_coaching`
+entitlement gate. The browser cannot choose provider, model, entitlement, user ID,
+fixture, prompt or domain writes.
 
-Recommended additive boundary: bounded own-user SELECT context, one private member-result lifecycle, exact event/retry identity, no-action strict schema and service-only atomic completion. Domain data remains read-only; no trainer access, private-chat context, legacy water authority, proposals or execution. Consent, timezone, retention, quality/cadence/cost and safety details require owner decisions. Mock-only implementation precedes separate legal/provider activation. No schema/runtime/config change was made.
+The database boundary is additive. Public own-user records hold analysis preferences,
+validated analysis results and minimized lifecycle/export/delete metadata. Private
+configuration and helpers keep external provider activation false, route daily and
+post-workout to Luna and weekly to Terra for future policy accounting, register strict
+`phase6d.analysis.v1` output, enforce no actions/proposals, apply the 6A budget cap
+model and schedule a retention sweep. Result content expires within 90 days; audit
+metadata/tombstones expire within 180 days. Base-table privileges are revoked from
+browser roles, RLS is own-user defense in depth, and service RPCs are not executable by
+authenticated members.
+
+The `youri-ai/phase6d/analyze` route authenticates the member, calls
+`fmz_phase6d_prepare_analysis`, starts and completes a zero-cost service run, and
+returns deterministic localized mock output. It performs no OpenAI/provider call and
+returns zero external calls/cost. Context assembly uses bounded aggregates from frozen
+Identity, Training, Nutrition, Recovery and Progress authorities. Legacy water,
+private 6C chat, trainer notes/messages, photos, GPS and free text are excluded.
+
+6D does not write Training, Nutrition, Recovery, Progress, profile, entitlement,
+trainer-link or chat source data. Trainers have no analysis result path. External
+member AI remains blocked by the separate ZDR/DPA/DPIA/EU-route/privacy/medical/
+transfer/lifecycle/owner activation gate. Full technical evidence is in
+`docs/PACKAGE6D_READ_ONLY_ANALYSES_TECHNICAL_REPORT.md`; the original readiness audit
+is retained in `docs/PHASE6D_READ_ONLY_ANALYSES_READINESS.md`.
 
 
 ## Package 6D-0 Legacy Authorization Security Gate (2026-09-04)
@@ -360,7 +386,9 @@ alone are not migration identity: the CLI compares timestamp versions. Older his
 drift still blocks a general db push; see [identity receipt](PHASE6D0_MIGRATION_IDENTITY_RECONCILIATION.md).
 Bootstrap/metadata authority, direct profile grants and broad member workspace access
 are corrected. Existing links/data checksums and frozen Phase 1-6C semantics are preserved.
-Package 6D analyses and external member AI remain forbidden. Deployment evidence and exact
-artifacts are tracked in [the 6D-0 security receipt](PHASE6D0_LEGACY_AUTHORIZATION_SECURITY.md).
+Package 6D analyses are implemented separately as mock-only read-only staging
+functionality; external member AI remains forbidden. Deployment evidence and exact
+artifacts are tracked in [the 6D-0 security receipt](PHASE6D0_LEGACY_AUTHORIZATION_SECURITY.md)
+and [the 6D technical report](PACKAGE6D_READ_ONLY_ANALYSES_TECHNICAL_REPORT.md).
 
 

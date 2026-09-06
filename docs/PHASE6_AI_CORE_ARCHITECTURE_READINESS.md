@@ -1,11 +1,16 @@
 # Phase 6 Youri AI Core - Architecture And Readiness
 
-Status: PACKAGES 6A, 6B AND 6C COMPLETE / OWNER-ACCEPTED / FROZEN; PACKAGE 6D READINESS AUDIT COMPLETE / IMPLEMENTATION NOT STARTED
+Status: PACKAGES 6A, 6B AND 6C COMPLETE / OWNER-ACCEPTED / FROZEN; PACKAGE 6D MOCK-ONLY READ-ONLY ANALYSES TECHNICAL PASS / OWNER TESTING PENDING
 
 Initial audit date: 2026-09-01
-Current acceptance/readiness update: 2026-09-04
+Current acceptance/readiness update: 2026-09-06
 
-Historical context: sections 1-20 retain the initial pre-implementation audit and are not current live-state claims. Sections 21-24 record subsequent delivery. The current Package 6D source/minimization/cost/decision contract is `docs/PHASE6D_READ_ONLY_ANALYSES_READINESS.md`. Current freeze evidence is `docs/PHASE6C_PRIVATE_AI_CHAT.md`.
+Historical context: sections 1-20 retain the initial pre-implementation audit and are
+not current live-state claims. Sections 21-24 record subsequent 6A-6C delivery. The
+current Package 6D source/minimization/cost/decision contract is
+`docs/PHASE6D_READ_ONLY_ANALYSES_READINESS.md`, and the 6D implementation receipt is
+`docs/PACKAGE6D_READ_ONLY_ANALYSES_TECHNICAL_REPORT.md`. Current freeze evidence for
+the private chat remains `docs/PHASE6C_PRIVATE_AI_CHAT.md`.
 Target repository: `Yourizorge/fitmetzorge-staging` / `main`
 Target Supabase: `mokxyyullfhkfalopbzd`
 Production: FORBIDDEN
@@ -385,7 +390,7 @@ Package 6C is live only on staging as a deterministic mock chat. It reuses the f
 
 Member browser access is RPC-only. Threads and immutable messages are ordered by server sequence and revision, retries replay exact request/attempt identities, and stale writes fail. Trainers and other members have no content path. Export returns the member's own JSON without provider/budget metadata; deletion scrubs raw message content and removes it from member reads while retaining only non-content lifecycle evidence. Entitlement loss starts a maximum 90-day read/export/delete grace period, with deterministic restoration on timely reactivation and a server sweep for expiry.
 
-The `youri-ai/phase6c/chat` route verifies the member JWT and accepts an exact bounded payload. It uses only deterministic localized mock output with an empty action list, safe medical refusal and serious-signal hard stop. External AI calls are 0 and external cost is EUR 0.00. Migration history `20260903085454`, read-only verifier 37/37, rollback E2E with zero fixtures, Edge v39 and responsive NL/EN/DE frontend checks all pass. This was the initial technical evidence. Final accepted runtime is Edge v41, safety commit `bb5076a6d19e304a5e093af38090314fa85379dc`, approved-avatar cache `20260903-phase6c-approved-avatar1`. Package 6C was owner real-phone accepted and frozen on 2026-09-04. Package 6D readiness is complete; implementation has not started.
+The `youri-ai/phase6c/chat` route verifies the member JWT and accepts an exact bounded payload. It uses only deterministic localized mock output with an empty action list, safe medical refusal and serious-signal hard stop. External AI calls are 0 and external cost is EUR 0.00. Migration history `20260903085454`, read-only verifier 37/37, rollback E2E with zero fixtures, Edge v39 and responsive NL/EN/DE frontend checks all pass. This was the initial technical evidence. Final accepted 6C freeze runtime was Edge v41, safety commit `bb5076a6d19e304a5e093af38090314fa85379dc`, approved-avatar cache `20260903-phase6c-approved-avatar1`. Package 6C was owner real-phone accepted and frozen on 2026-09-04. Current Edge v42 preserves 6C and adds the mock-only 6D read-only analyses route; 6D owner testing is pending.
 
 ## 25. Package 6C Freeze And 6D Audit Result
 

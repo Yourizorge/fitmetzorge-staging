@@ -7,13 +7,13 @@ const files={
   runtime:read("assets/phase6c-private-ai-chat.js"),app:read("app.js"),index:read("index.html"),bundle:read("app.bundle.js"),
   phase1:read("assets/phase1-foundation.js"),phase2:read("assets/phase2-home-recovery.js"),phase3:read("assets/phase3-training-engine.js"),
   phase4a:read("assets/phase4-nutrition-slice2.js"),phase4b:read("assets/phase4-nutrition-slice3.js"),member:read("assets/member-ux-consistency.js"),phase5:read("assets/phase5-progress.js"),
-  migration:read("supabase/migrations/20260902203000_phase6c_private_ai_chat.sql"),verifier:read("supabase/verification/20260902203000_phase6c_private_ai_chat_verification.sql"),e2e:read("supabase/tests/20260902203000_phase6c_private_ai_chat_transactional_e2e.sql"),
-  continuationMigration:read("supabase/migrations/20260903145000_phase6c_request_scoped_safety.sql"),continuationVerifier:read("supabase/verification/20260903145000_phase6c_request_scoped_safety_verification.sql"),continuationE2e:read("supabase/tests/20260903145000_phase6c_request_scoped_safety_e2e.sql"),
+  migration:read("supabase/migrations/20260903085454_phase6c_private_ai_chat.sql"),verifier:read("supabase/verification/20260902203000_phase6c_private_ai_chat_verification.sql"),e2e:read("supabase/tests/20260902203000_phase6c_private_ai_chat_transactional_e2e.sql"),
+  continuationMigration:read("supabase/migrations/20260903125150_phase6c_request_scoped_safety.sql"),continuationVerifier:read("supabase/verification/20260903145000_phase6c_request_scoped_safety_verification.sql"),continuationE2e:read("supabase/tests/20260903145000_phase6c_request_scoped_safety_e2e.sql"),
   edge:read("supabase/functions/youri-ai/phase6c-handler.ts"),edgeIndex:read("supabase/functions/youri-ai/index.ts"),edgeTest:read("supabase/functions/youri-ai/phase6c-handler.test.ts")
 };
 const checks=[];const check=(name,pass)=>checks.push({name,pass:Boolean(pass)});const all=(source,values)=>values.every((value)=>source.includes(value));
 check("runtime duplicate guard",files.runtime.includes("FMZ_PHASE6C_PRIVATE_CHAT_LOADED"));
-check("cache version consistent",all(files.runtime+files.app,["20260903-phase6c-approved-avatar1"])&&files.app.includes("assets/phase6c-private-ai-chat.js?v=20260903-phase6c-approved-avatar1")&&files.index.includes("app.js?v=20260904-auth-lifecycle2"));
+check("cache version consistent",all(files.runtime+files.app,["20260904-phase6d-analyses1"])&&files.app.includes("assets/phase6c-private-ai-chat.js?v=20260904-phase6d-analyses1")&&files.index.includes("app.js?v=20260904-phase6d-analyses1"));
 check("asset loaded before init",files.app.indexOf("phase6cPrivateChatPatchSource")<files.app.indexOf("init();`"));
 check("section exists",files.index.includes('id="ai-coach"'));
 check("client nav only",files.runtime.includes('NAV.client')&&!files.runtime.includes('NAV.trainer'));

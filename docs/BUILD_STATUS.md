@@ -1,6 +1,6 @@
 # FitMetZorge Build Status
 
-Last updated: 2026-09-04
+Last updated: 2026-09-06
 
 ## Urgent Public Auth Hotfix (2026-09-04)
 
@@ -13,13 +13,13 @@ role or trainer link was performed. Four live public-route viewports PASS withou
 console errors or mutating requests; 88 assembled-browser, 26 focused static and
 228 live DB checks PASS.
 
-Project-wide migration reconciliation is RESOLVED: 25 Git migrations and 25 live
-history rows are synchronized, the 19 older timestamp differences were renamed to
-canonical live versions, the duplicate old `20260819` conflict is gone, the missing
-Phase 1-3/source SQL is represented by a safe forward-only baseline, and the four
-previously local-only versions were marked applied as history metadata only. No
-historical SQL replay, member-data rewrite, Edge deploy, frontend deploy or production
-access occurred. `supabase migration list` and `db push --dry-run --skip-vault` are
+Project-wide migration reconciliation remains RESOLVED. The original 25/25 history
+repair fixed the 19 older timestamp differences, duplicate old `20260819` conflict,
+three missing live-history registrations and missing Phase 1-3/source SQL through a
+safe forward-only baseline. Package 6D then added two new forward-only migrations;
+the canonical chain is now synchronized at 27 Git migrations and 27 live history rows.
+No historical SQL replay, remote reset, destructive reconstruction or member-data
+rewrite occurred. `supabase migration list` and `db push --dry-run --skip-vault` are
 clean for staging. See [migration audit](PROJECT_MIGRATION_RECONCILIATION.md).
 
 - Baseline audit: COMPLETE
@@ -34,17 +34,26 @@ clean for staging. See [migration audit](PROJECT_MIGRATION_RECONCILIATION.md).
 - Phase 0B Storage verification: COMPLETE
 - Master Plan Specification: COMPLETE
 - Master Plan Final Review: COMPLETE
-- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6C COMPLETE / OWNER-ACCEPTED / FROZEN; PACKAGE 6D READINESS AUDIT COMPLETE / IMPLEMENTATION NOT STARTED
+- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6C COMPLETE / OWNER-ACCEPTED / FROZEN; PACKAGE 6D MOCK-ONLY READ-ONLY ANALYSES TECHNICAL PASS / OWNER TESTING PENDING
 - Production Migration: NOT STARTED
 
-Current next step: Package 6D may remain queued behind its existing owner decisions on scope/consent, timezone/quality, result retention, cadence/cost and safety copy, followed by separate implementation GO. Package 6C was owner real-phone accepted and frozen on 2026-09-04. The 6D readiness audit is complete; no implementation or deployment has started. All earlier baselines remain frozen; external member-provider processing and production remain blocked. See `docs/PHASE6D_READ_ONLY_ANALYSES_READINESS.md`.
+Current next step: owner real-phone test of Package 6D inside Youri AI > Analyses.
+Package 6D is implemented on staging as a mock-only, read-only analysis surface for
+daily, post-workout and weekly analyses, with separate `ai_analysis` consent, no
+trainer access, no private-chat context, no domain writes, no provider call and EUR
+0.00 external cost. Earlier frozen baselines remain frozen; real-member external
+provider activation and production remain blocked. See
+`docs/PACKAGE6D_READ_ONLY_ANALYSES_TECHNICAL_REPORT.md` and
+`docs/PHASE6D_READ_ONLY_ANALYSES_READINESS.md`.
 
 ## Environment Guardrail
 
 - Staging Supabase project ref: `mokxyyullfhkfalopbzd`.
 - Production Supabase project ref: `hgoygcviutmynaihcvpd`.
 - Production is strictly forbidden without explicit owner approval.
-- No application code, database, Supabase configuration, Edge Function, SMTP, deployment, or production change was made for the Master Plan Specification documentation update.
+- Current 6D work touched staging application code, staging database schema, the
+  staging `youri-ai` Edge Function and documentation only. SMTP, production GitHub,
+  production Supabase and production deployment remain untouched.
 
 ## Phase Log
 
@@ -212,7 +221,7 @@ Current checks: Phase 5 static 116/116 and responsive browser 53/53; selector, p
 
 ### Phase 6 Youri AI Core
 
-Status: PACKAGES 6A AND 6B COMPLETE / OWNER-ACCEPTED / FROZEN
+Status: PACKAGES 6A, 6B AND 6C COMPLETE / OWNER-ACCEPTED / FROZEN; PACKAGE 6D TECHNICAL PASS / OWNER TESTING PENDING
 
 Summary: the additive Phase 6A public/private trust schema, RLS/ACL/RPC boundary and disabled provider-neutral `youri-ai` Edge scaffold are live only on staging `mokxyyullfhkfalopbzd`. Frozen Identity, Recovery, Training, Nutrition and Progress sources remain authoritative and unchanged.
 
@@ -242,9 +251,25 @@ Original migration history `20260903085454` remains live; request-scoped gate mi
 
 ### Package 6D Read-Only Analyses
 
-Status: READINESS AUDIT COMPLETE / OWNER DECISIONS REQUIRED / IMPLEMENTATION NOT STARTED
+Status: MOCK-ONLY READ-ONLY ANALYSES TECHNICAL PASS / OWNER TESTING PENDING
 
-The dedicated 15-section report covers authoritative sources, minimized manifests, no-action output, consent/entitlements, lifecycle, legal gates, frozen Luna/Terra cost envelopes, kill switches, additive recommendations and tests. Legacy water/bedtime data and private chat are excluded. No runtime, migration, provider call, member-data write or deployment occurred. The only non-documentation addition is a read-only current-state foundation verifier; the historical 6A installation verifier is unchanged.
+Package 6D implements daily, post-workout and weekly read-only analyses inside the
+existing Youri AI member surface. It adds two staging migrations:
+`20260904230850_phase6d_read_only_ai_analyses.sql` and
+`20260904235253_phase6d_analysis_lifecycle_safe_code_fix.sql`. The database boundary
+adds separate `ai_analysis` consent documents/events, own-user analysis preferences,
+own-user analysis result/lifecycle records, retention cron, strict no-action schema
+registration, member RPCs and service-only begin/complete/fail/due-selection RPCs.
+Domain data remains read-only and existing member data is not changed.
+
+The `youri-ai` Edge Function now has `phase6d/analyze`, which accepts only
+`request_id`, `analysis_kind`, `locale` and optional `event_id`, authenticates the
+member, calls database gates and returns deterministic mock output with
+`external_ai_calls: 0` and `external_ai_cost_eur: 0`. External provider activation is
+still false and no OpenAI member-data route exists. Frontend cache
+`20260904-phase6d-analyses1` exposes the Analyses tab, consent, settings, generation,
+history, export and delete. Technical evidence is recorded in
+`docs/PACKAGE6D_READ_ONLY_ANALYSES_TECHNICAL_REPORT.md`.
 
 ### Production Migration
 
@@ -274,6 +299,8 @@ see [the migration audit](PROJECT_MIGRATION_RECONCILIATION.md) and
 [the identity receipt](PHASE6D0_MIGRATION_IDENTITY_RECONCILIATION.md).
 Bootstrap/metadata authority, direct profile grants and broad member workspace access
 are corrected. Existing links/data checksums and frozen Phase 1-6C semantics are preserved.
-Package 6D analyses and external member AI remain forbidden. Deployment evidence and exact
-artifacts are tracked in [the 6D-0 security receipt](PHASE6D0_LEGACY_AUTHORIZATION_SECURITY.md).
+Package 6D analyses are now implemented separately as mock-only read-only staging
+functionality; external member AI remains forbidden. Deployment evidence and exact
+artifacts are tracked in [the 6D-0 security receipt](PHASE6D0_LEGACY_AUTHORIZATION_SECURITY.md)
+and [the 6D technical report](PACKAGE6D_READ_ONLY_ANALYSES_TECHNICAL_REPORT.md).
 

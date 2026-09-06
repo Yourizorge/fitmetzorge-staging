@@ -1,7 +1,8 @@
 # Project-Wide Migration History Reconciliation Gate
 
 Date: 2026-09-04. Target: staging `mokxyyullfhkfalopbzd` only.
-Result: RESOLVED / VERIFIED. Package 6D functionality was not started.
+Result: RESOLVED / VERIFIED. Later Package 6D work appended forward-only migrations
+without reopening the historical repair.
 
 ## Root Cause
 
@@ -79,8 +80,8 @@ not replayed.
 ## Evidence
 
 The refreshed manifest at
-`docs/PROJECT_MIGRATION_RECONCILIATION_MANIFEST.json` records 25 local migrations and
-25 live history rows with:
+`docs/PROJECT_MIGRATION_RECONCILIATION_MANIFEST.json` records the original repaired
+25 local migrations and 25 live history rows with:
 
 - zero local-only versions;
 - zero remote-only versions;
@@ -92,7 +93,9 @@ The refreshed manifest at
 
 Official Supabase CLI checks:
 
-- `supabase migration list --project-ref mokxyyullfhkfalopbzd`: synchronized 25/25.
+- `supabase migration list --project-ref mokxyyullfhkfalopbzd`: synchronized 25/25
+  at the reconciliation close, and 27/27 after the later Package 6D migrations
+  `20260904230850` and `20260904235253`.
 - `supabase db push --dry-run --skip-vault --project-ref mokxyyullfhkfalopbzd`:
   `Remote database is up to date`, with no migrations, seeds or roles pending.
 - `supabase db diff --linked --schema public,ai_private,legacy_auth_private`:
@@ -129,16 +132,20 @@ Data preservation:
 
 OneDrive/temp safety:
 
-- The only deletion candidates found after the OneDrive prompt were:
+- The only local rebuild delete candidates from the original reconciliation were:
   `C:\Users\Fitme\OneDrive\Documenten\Fit Met Zorge\Zip github fitmetzorge staging\fitmetzorge-staging-main\supabase\.temp\phase4fb-staging-deploy\supabase\.temp\local-rebuild-tc26YR`
   and
   `C:\Users\Fitme\OneDrive\Documenten\Fit Met Zorge\Zip github fitmetzorge staging\fitmetzorge-staging-main\supabase\.temp\phase4fb-staging-deploy\supabase\.temp\local-rebuild-YIC31o`.
-- They contain only temporary PostgreSQL 18 rebuild-cluster files, including
-  `PG_VERSION`, `base`, `global`/WAL/config data, and no `.git`, canonical migrations,
-  docs, assets, functions or source paths.
-- No `postmaster.pid` was present. They are ignored by `.gitignore`. Because OneDrive
-  restored them after the owner chose to keep items, the verifier was changed to use
-  the system temp directory instead of a repo/OneDrive temp path.
+- On 2026-09-06 they were rechecked as directory reparse points at those exact paths,
+  with no resolved target exposed by PowerShell. The same directory also held old
+  proof artifacts such as `auth-hotfix-*.png`, `live_public_schema_20260904.sql`,
+  `public-auth-live-result.json` and `registration-confirmation-resend-20260904.json`.
+- A full recursive file scan under the current workrepo for `pg_control`,
+  `config_exec_params` and `postmaster.pid` returned zero results. `git ls-files
+  supabase/.temp` also returned zero tracked files.
+- No files were deleted. Future local rebuilds should continue to use the system temp
+  directory outside OneDrive unless the exact target path is proven to be only a
+  rebuildable local Supabase/PostgreSQL cluster.
 
 ## Outcome
 
@@ -157,3 +164,18 @@ email for the new test account, so no new resend, Brevo investigation, manual ac
 confirmation, trainer role or trainer linkage was performed.
 
 Production remains untouched and forbidden.
+
+## Package 6D Addendum - 2026-09-06
+
+After this reconciliation closed, Package 6D added two ordinary forward-only staging
+migrations:
+
+- `20260904230850_phase6d_read_only_ai_analyses.sql`
+- `20260904235253_phase6d_analysis_lifecycle_safe_code_fix.sql`
+
+Both are present in Git and live staging history. The official Supabase CLI result is
+now 27 synchronized local/remote migration rows, and `db push --dry-run --skip-vault`
+returns `Remote database is up to date` with no pending migrations, seeds or roles.
+This addendum did not alter the historical reconstruction strategy: no blind replay,
+history reset, remote reset, production access or existing member-data mutation was
+performed.

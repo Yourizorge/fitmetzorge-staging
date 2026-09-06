@@ -5,6 +5,7 @@ import { createPhase6bHandler } from "./phase6b-handler.ts";
 import type { BeginResult } from "./phase6b-handler.ts";
 import { inspectOpenAiCredential, probeOpenAiModelRead } from "./openai-adapter.ts";
 import { createPhase6cHandler } from "./phase6c-handler.ts";
+import { createPhase6dHandler } from "./phase6d-handler.ts";
 
 function requiredEnvironment(name: string): string {
   const value = Deno.env.get(name)?.trim();
@@ -123,7 +124,7 @@ const phase6bHandler = createPhase6bHandler({
 
 function rpcSafeCode(error: { code?: string; message?: string } | null): string {
   const raw = `${error?.code || ""} ${error?.message || ""}`;
-  const match = raw.match(/\b(ai_[a-z0-9_]+|mock_[a-z0-9_]+|chat_[a-z0-9_]+|safety_hard_stop)\b/i);
+  const match = raw.match(/\b(ai_[a-z0-9_]+|mock_[a-z0-9_]+|chat_[a-z0-9_]+|analysis_[a-z0-9_]+|budget_[a-z0-9_]+|terra_grace_forbidden|safety_hard_stop)\b/i);
   return match?.[1]?.toLowerCase() || "chat_rpc_unavailable";
 }
 
@@ -145,9 +146,28 @@ const phase6cHandler = createPhase6cHandler({
   },
 });
 
+const phase6dHandler = createPhase6dHandler({
+  async verifyBearer(token) {
+    const { data, error } = await memberClient(token).auth.getUser(token);
+    return error || !data.user ? null : { id: data.user.id };
+  },
+  async memberRpc(token, name, input = {}) {
+    const { data, error } = await memberClient(token).rpc(name, input);
+    if (error || !data) throw new Error(rpcSafeCode(error));
+    return data as Record<string, unknown>;
+  },
+  async serviceRpc(name, input = {}) {
+    if (!adminClient) throw new Error("analysis_service_unavailable");
+    const { data, error } = await adminClient.rpc(name, input);
+    if (error || !data) throw new Error(rpcSafeCode(error));
+    return data as Record<string, unknown>;
+  },
+});
+
 Deno.serve((request) => {
   const path = new URL(request.url).pathname;
   if (path.includes("/phase6b/")) return phase6bHandler(request);
   if (path.endsWith("/phase6c/chat")) return phase6cHandler(request);
+  if (path.endsWith("/phase6d/analyze")) return phase6dHandler(request);
   return handler(request);
 });
