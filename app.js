@@ -103,7 +103,7 @@
   if (!ownerSettingsResponse.ok) throw new Error("Staging settings unavailable");
   const ownerSettingsSource = await ownerSettingsResponse.text();
 
-  const inboxResponse = await fetch(new URL("assets/phase6d-analysis-inbox.js?v=20260906-owner-hotfix2", document.baseURI), { cache: "no-cache" });
+  const inboxResponse = await fetch(new URL("assets/phase6d-analysis-inbox.js?v=20260906-final-mobile1", document.baseURI), { cache: "no-cache" });
   if (!inboxResponse.ok) throw new Error("Staging analysis inbox unavailable");
   const inboxSource = await inboxResponse.text();
 

@@ -44,7 +44,7 @@ async function main(){
       await context.close();
     }
   }finally{await browser.close();}
-  const result={overall_pass:true,commit,cache:"20260906-owner-hotfix2",files,viewports,databaseMutation:false};
+  const result={overall_pass:true,commit,cache:"20260906-final-mobile1",files,viewports,databaseMutation:false};
   fs.writeFileSync(path.join(root,"supabase/.temp/public-auth-live-result.json"),JSON.stringify(result,null,2));
   console.log(JSON.stringify(result,null,2));
 }

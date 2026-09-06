@@ -70,7 +70,8 @@
   const number=value=>typeof value==="number"&&Number.isFinite(value)?value.toLocaleString(lang(),{maximumFractionDigits:1}):t("noValue");
   const dateOnly=value=>/^\d{4}-\d{2}-\d{2}$/.test(value||"")?new Date(value+"T12:00:00Z").toLocaleDateString(lang(),{timeZone:"UTC"}):t("noValue");
   const validId=id=>/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id||"");
-  let owner="",generation=0,inFlight=null,inbox={items:[],unread_count:0},dialog=null,result=null,detailId="",detailError="",detailBusy=false,detailOpener=null,readSequence=0;
+  let owner="",generation=0,inFlight=null,inboxVersion=0,inbox={items:[],recent:[],unread_count:0},dialog=null,result=null,detailId="",detailError="",detailBusy=false,detailOpener=null,readSequence=0;
+  let archiveBusy=false;
   let toast=null,toastBusy=false,inboxError="",timer=null,routed="",oldHash="",historyExtra=[],historyEnd=false,historyBusy=false;
   async function rpc(name,args={}) {
     const user=uid(),epoch=generation;
@@ -81,7 +82,7 @@
     return response.data;
   }
   function reset(){
-    generation++;owner="";inFlight=null;inbox={items:[],unread_count:0};inboxError="";historyExtra=[];historyEnd=false;historyBusy=false;routed="";
+    generation++;owner="";inFlight=null;inboxVersion++;archiveBusy=false;inbox={items:[],recent:[],unread_count:0};inboxError="";historyExtra=[];historyEnd=false;historyBusy=false;routed="";
     clearTimeout(timer);timer=null;toastBusy=false;closeDetail(false);toast?.remove();toast=null;
     document.getElementById("fmz-analysis-inbox")?.remove();updateBadge();
   }
@@ -95,14 +96,15 @@
     clearTimeout(timer);timer=null;
     if(uid()&&!document.hidden&&navigator.onLine)timer=setTimeout(()=>hydrate(),45000);
   }
-  async function hydrate(){
+  async function hydrate({force=false}={}){
     if(!ensureOwner())return;
-    if(inFlight)return inFlight;
-    const epoch=generation;
+    if(inFlight){if(!force)return inFlight;await inFlight;return hydrate();}
+    const epoch=generation,version=inboxVersion;
     inFlight=(async()=>{
       try{
         const next=await rpc("fmz_phase6d_get_inbox");
-        if(!Array.isArray(next?.items))throw new Error("inbox_invalid");
+        if(!Array.isArray(next?.items)||!Array.isArray(next?.recent))throw new Error("inbox_invalid");
+        if(version!==inboxVersion)return;
         inbox=next;inboxError="";
       }catch{if(epoch===generation)inboxError=t("error");}
       finally{if(epoch===generation){inFlight=null;renderDashboard();renderToast();updateBadge();route();schedulePoll();}}
@@ -116,8 +118,11 @@
     if(!node){node=document.createElement("section");node.id="fmz-analysis-inbox";node.setAttribute("aria-labelledby","fmz-inbox-title");home.prepend(node);}
     node.innerHTML='<header><h2 id="fmz-inbox-title">'+esc(t("ready"))+'</h2><button type="button" class="secondary-btn" data-fmz-all-analyses>'+esc(t("all"))+'</button></header>'+
       (inboxError?'<p role="status">'+esc(inboxError)+'</p><button type="button" class="secondary-btn" data-fmz-inbox-retry>'+esc(t("retry"))+'</button>':"")+
-      '<div class="fmz-inbox-items">'+inbox.items.slice(0,5).map(item=>'<article class="fmz-inbox-item"><div><span class="fmz-inbox-state">'+esc(t(item.state==="later"?"laterState":"new"))+'</span><h3>'+esc(t(item.analysis_kind))+'</h3><time>'+esc(when(item.completed_at||item.created_at))+'</time></div><button type="button" class="secondary-btn" data-fmz-analysis-open="'+esc(item.analysis_id)+'">'+esc(t("view"))+'</button></article>').join("")+'</div>';
-    node.hidden=!inbox.items.length&&!inboxError;
+      '<div class="fmz-inbox-items">'+inbox.recent.slice(0,3).map(item=>'<article class="fmz-inbox-item"><div><span class="fmz-inbox-type">'+esc(t(item.analysis_kind))+'</span>'+
+        (["new","later"].includes(item.state)?'<span class="fmz-inbox-state">'+esc(t("new"))+'</span>':"")+
+        '<h3>'+esc(item.title||t(item.analysis_kind))+'</h3><time>'+esc(when(item.completed_at||item.created_at))+'</time></div><div class="fmz-inbox-actions"><button type="button" class="secondary-btn" data-fmz-analysis-open="'+esc(item.analysis_id)+'">'+esc(t("view"))+'</button>'+
+        command("archive","archive",'data-fmz-analysis-archive="'+esc(item.analysis_id)+'" '+(archiveBusy?'disabled':""))+'</div></article>').join("")+'</div>';
+    node.hidden=!inbox.recent.length&&!inboxError;
   }
   function renderToast(){
     const hidden=document.hidden||!uid()||Settings.unsafeSurface()||Boolean(document.querySelector("dialog[open],[aria-modal=true]"))||document.activeElement?.matches("input,textarea,[contenteditable=true]");
@@ -130,7 +135,13 @@
   }
   async function mark(id,action){
     await rpc("fmz_phase6d_mark_notification",{p_analysis_id:id,p_action:action});
-    await hydrate();
+    inboxVersion++;await hydrate({force:true});
+  }
+  async function archive(id){
+    if(archiveBusy)return;archiveBusy=true;renderDashboard();
+    try{await mark(id,"archived");document.querySelector("[data-fmz-all-analyses]")?.focus({preventScroll:true});}
+    catch{inboxError=t("error");}
+    finally{archiveBusy=false;renderDashboard();}
   }
   async function defer(id){
     if(toastBusy)return;toastBusy=true;
@@ -174,7 +185,7 @@
     const session=(key,item)=>'<div class="fmz-workout-reference"><h3>'+esc(t(key))+'</h3>'+(item?'<time>'+esc(when(item.completed_at))+'</time><code>'+esc(item.id)+'</code><p>'+esc(t("duration"))+': '+number(typeof item.elapsed_seconds==="number"?item.elapsed_seconds/60:null)+'</p>':'<p>'+esc(t("noValue"))+'</p>')+'</div>';
     return '<section class="fmz-comparison"><h2>'+esc(t("compare"))+'</h2><p>'+esc(t(comparison.available?comparison.reason:"first"))+'</p><div class="fmz-workout-pair">'+session("current",current)+session("previous",previous)+'</div><p>'+esc(t("noActiveDuration"))+'</p>'+
       (comparison.exercises||[]).map(ex=>'<section class="fmz-exercise-comparison"><h3>'+esc((ex.label||"").replace(/[-_]/g," "))+'</h3><table><thead><tr><th scope="col"></th><th scope="col">'+esc(t("current"))+'</th><th scope="col">'+esc(t("previous"))+'</th></tr></thead><tbody>'+
-      ["sets","reps","max_weight_kg","volume_kg","rpe","rir"].map(key=>'<tr><th scope="row">'+esc(t(key))+'</th><td>'+esc(number(ex.current?.[key]))+'</td><td>'+esc(number(ex.previous?.[key]))+'</td></tr>').join("")+'</tbody></table>'+
+      ["sets","reps","max_weight_kg","volume_kg","rpe","rir"].map(key=>'<tr><th scope="row">'+esc(t(key))+'</th><td data-label="'+esc(t("current"))+'">'+esc(number(ex.current?.[key]))+'</td><td data-label="'+esc(t("previous"))+'">'+esc(number(ex.previous?.[key]))+'</td></tr>').join("")+'</tbody></table>'+
       (ex.volume_change?'<p class="fmz-observed-change '+esc(ex.volume_change)+'">'+esc(t(ex.volume_change))+'</p>':"")+'</section>').join("")+'<p>'+esc(t("observationsOnly"))+'</p></section>';
   }
   function resultBody(item){
@@ -241,6 +252,7 @@
     const button=event.target.closest("button");if(!button)return;
     if(button.dataset.fmzAnalysisOpen)openDetail(button.dataset.fmzAnalysisOpen);
     if(button.dataset.fmzAnalysisLater)defer(button.dataset.fmzAnalysisLater);
+    if(button.dataset.fmzAnalysisArchive)archive(button.dataset.fmzAnalysisArchive);
     if(button.hasAttribute("data-fmz-all-analyses"))openHistory();
     if(button.hasAttribute("data-fmz-detail-close"))closeDetail();
     if(button.hasAttribute("data-fmz-detail-retry"))openDetail(detailId,{deep:true});
@@ -254,12 +266,12 @@
   document.addEventListener("visibilitychange",()=>{if(document.hidden){clearTimeout(timer);timer=null;}else hydrate();});
   window.addEventListener("online",hydrate);
   window.addEventListener("focus",()=>{Settings.syncDeviceTimezone();hydrate();});
-  window.addEventListener("fmz:ai-state",()=>{renderDashboard();updateBadge();});
+  window.addEventListener("fmz:ai-state",()=>{renderDashboard();updateBadge();hydrate();});
   window.addEventListener("fmz:surface-change",renderToast);
   // Hook renders, not DOM mutations: existing dashboard modules keep ownership of their content.
   const previousRender=renderAll,previousView=showView;
   renderAll=function(){const value=previousRender();if(ensureOwner()){renderDashboard();updateBadge();if(!inFlight&&!timer)queueMicrotask(hydrate);}return value;};
-  showView=function(id){const value=previousView(id);if(uid()){renderDashboard();renderToast();}return value;};
+  showView=function(id){const value=previousView(id);if(uid()){renderDashboard();renderToast();if(id==="client-home")hydrate();}return value;};
   supabaseClient?.auth.onAuthStateChange?.(event=>{if(event==="SIGNED_OUT")reset();});
   window.FMZ_ANALYSIS_INBOX=Object.freeze({hydrate,open:openDetail,openHistory,renderHistory,reset,snapshot:()=>({inbox,owner}),mockOnly:true});
   if(uid())hydrate();

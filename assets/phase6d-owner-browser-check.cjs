@@ -43,9 +43,20 @@ function serverFixture(){
  function rpc(name,args) {
   calls.push({name,args});
   if(name==="fmz_phase6d_sync_device_timezone"){if(pref.timezone_name!==args.p_timezone_name){pref.timezone_name=args.p_timezone_name;pref.revision++;}return pref;}
-  if(name==="fmz_phase6d_get_inbox"){const items=notes.filter(n=>["new","later"].includes(n.state)&&results.some(r=>r.id===n.analysis_id&&r.status!=="deleted"));return {items:items.slice(0,5),unread_count:items.length};}
-  if(name==="fmz_phase6d_read_analysis"){const result=results.find(r=>r.id===args.p_result_id&&r.status!=="deleted");return result?{result}:{error:"analysis_result_forbidden"};}
-  if(name==="fmz_phase6d_mark_notification"){const note=notes.find(n=>n.analysis_id===args.p_analysis_id);if(note&&!(note.state==="opened"&&args.p_action==="later"))note.state=args.p_action;return {state:note?.state};}
+  if(name==="fmz_phase6d_get_inbox"){
+   const available=results.filter(r=>(!r.user_id||r.user_id===profile.id)&&["ready","partial","insufficient_data"].includes(r.status)&&!r.content_deleted_at&&(!r.result_expires_at||new Date(r.result_expires_at)>new Date()))
+    .map(r=>({...r,analysis_id:r.id,state:notes.find(n=>n.analysis_id===r.id)?.state||"new",title:(r.summary_text||r.analysis_kind).slice(0,120)})).filter(r=>r.state!=="archived")
+    .sort((a,b)=>(b.completed_at||b.created_at).localeCompare(a.completed_at||a.created_at)||b.id.localeCompare(a.id));
+   const items=available.filter(n=>["new","later"].includes(n.state));return {items:items.slice(0,5),recent:available.slice(0,3),unread_count:items.length};
+  }
+  if(name==="fmz_phase6d_read_analysis"){const result=results.find(r=>r.id===args.p_result_id&&(!r.user_id||r.user_id===profile.id)&&r.status!=="deleted");return result?{result}:{error:"analysis_result_forbidden"};}
+  if(name==="fmz_phase6d_mark_notification"){
+   const result=results.find(r=>r.id===args.p_analysis_id&&(!r.user_id||r.user_id===profile.id)&&r.status!=="deleted");if(!result)return {error:"analysis_result_forbidden"};
+   let note=notes.find(n=>n.analysis_id===args.p_analysis_id);
+   if(!note){note={analysis_id:result.id,state:args.p_action,analysis_kind:result.analysis_kind,created_at:result.created_at};notes.push(note);}
+   else if(note.state!=="archived"&&!(note.state==="opened"&&args.p_action==="later"))note.state=args.p_action;
+   return {state:note.state};
+  }
   if(name==="fmz_phase6d_get_member_settings")return {...settings,analysis_preferences:pref};
   if(name==="fmz_phase6d_update_member_settings"){
    assert.equal(args.p_expected_revision,settings.revision);
@@ -76,7 +87,8 @@ function serverFixture(){
  }
  return {settings,pref,recovery,calls,messages,results,notes,threads,rpc};
 }
-(async()=>{
+module.exports={root,base,profile,probe,mockSetup,serverFixture};
+if(require.main===module)(async()=>{
  const browser=await chromium.launch({headless:true,executablePath:"C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe"});
  try {
  for(const [width,height] of [[320,700],[390,844],[820,1180],[1440,900]]){
@@ -267,7 +279,7 @@ function serverFixture(){
   await page.screenshot({path:path.join(root,"supabase/.temp/owner-hotfix2-detail-"+width+".png"),fullPage:true});
   check(width+" detail no horizontal overflow",await page.locator("#fmz-analysis-detail").evaluate(n=>n.scrollWidth<=n.clientWidth+1));
   await page.click("[data-fmz-detail-close]");await page.evaluate(()=>window.FMZ_ANALYSIS_INBOX.openHistory());
-  await page.click('[data-fmz-analysis-open="'+analysisId+'"]');await page.waitForSelector("#fmz-analysis-detail table");
+  await page.click('#fmz-youri-chat [data-fmz-analysis-open="'+analysisId+'"]');await page.waitForSelector("#fmz-analysis-detail table");
   check(width+" history exact result",server.calls.filter(c=>c.name==="fmz_phase6d_read_analysis").at(-1).args.p_result_id===analysisId);
   await page.click("[data-fmz-detail-close]");await page.click('#fmz-youri-chat [data-fmz-close]');
   await page.evaluate(id=>location.hash="analysis="+id,otherId);await page.waitForSelector("#fmz-analysis-detail .error");
@@ -283,7 +295,7 @@ function serverFixture(){
    server.notes.push({analysis_id:id,state:"new",analysis_kind:"weekly",created_at:created});
   }
   await page.evaluate(()=>window.FMZ_ANALYSIS_INBOX.hydrate());
-  check(width+" dashboard limited to five",await page.locator("#fmz-analysis-inbox .fmz-inbox-item").count()===5);
+  check(width+" dashboard limited to three",await page.locator("#fmz-analysis-inbox .fmz-inbox-item").count()===3);
   await page.waitForSelector(".fmz-analysis-toast");
   const nowId=await page.locator(".fmz-analysis-toast [data-fmz-analysis-open]").getAttribute("data-fmz-analysis-open");
   await page.click(".fmz-analysis-toast [data-fmz-analysis-open]");await page.waitForSelector("#fmz-analysis-detail .fmz-mock-label");

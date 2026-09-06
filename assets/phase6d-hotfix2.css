@@ -109,6 +109,37 @@ body.light .fmz-analysis-dialog .fmz-mock-label { color:#286854 }
 .fmz-observed-change.lower { color:#eab986 }
 body.light .fmz-observed-change.higher { color:#286854 }
 body.light .fmz-observed-change.lower { color:#94612f }
+/* Final mobile hotfix: bound the actual detail content, including legacy table defaults. */
+.fmz-analysis-dialog[open] { grid-template-columns:minmax(0,1fr); min-width:0; max-width:calc(100% - 16px) }
+.fmz-analysis-dialog .fmz-dialog-head,.fmz-analysis-dialog .fmz-settings-content { min-width:0; max-width:100%; box-sizing:border-box }
+.fmz-analysis-dialog .fmz-settings-content { width:100% }
+.fmz-analysis-dialog .fmz-settings-content * { min-width:0; max-width:100%; box-sizing:border-box; overflow-wrap:anywhere }
+.fmz-analysis-dialog .fmz-dialog-head h2 { flex:1; max-width:100% }
+.fmz-analysis-dialog .fmz-detail-actions { flex-wrap:wrap; max-width:100% }
+.fmz-analysis-dialog table { min-width:0; max-width:100% }
+.fmz-analysis-dialog pre,.fmz-analysis-dialog code { white-space:pre-wrap; overflow-wrap:anywhere }
+.fmz-analysis-dialog img,.fmz-analysis-dialog svg,.fmz-analysis-dialog canvas { max-width:100%; height:auto }
+.fmz-analysis-dialog .fmz-workout-reference h3 { overflow-wrap:anywhere }
+#fmz-analysis-inbox .fmz-inbox-item { display:grid; grid-template-columns:minmax(0,1fr) auto }
+#fmz-analysis-inbox .fmz-inbox-item h3 { overflow-wrap:anywhere; max-width:100% }
+.fmz-inbox-type { font-size:12px; color:var(--muted,#bbb); margin-right:8px }
+.fmz-inbox-actions { display:flex; flex-wrap:wrap; align-items:center; justify-content:flex-end; gap:8px; min-width:0 }
+#fmz-analysis-inbox .fmz-inbox-actions button { max-width:100% }
+.fmz-inbox-actions .fmz-icon img { filter:brightness(0) invert(1) }
+body.light .fmz-inbox-actions .fmz-icon img { filter:none }
+@media(max-width:480px) {
+ .fmz-analysis-dialog .fmz-value-row { grid-template-columns:minmax(0,1fr); gap:4px }
+ .fmz-analysis-dialog .fmz-value-row dd { text-align:left }
+ .fmz-analysis-dialog table,.fmz-analysis-dialog tbody { display:block; width:100% }
+ .fmz-analysis-dialog thead { display:none }
+ .fmz-analysis-dialog tbody tr { display:grid; grid-template-columns:minmax(0,1fr); padding:10px 0; border-bottom:1px solid var(--line,#444) }
+ .fmz-analysis-dialog th,.fmz-analysis-dialog td { border:0; padding:5px 0; width:100% }
+ .fmz-analysis-dialog th:first-child { width:100% }
+ .fmz-analysis-dialog td { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:12px; text-align:right }
+ .fmz-analysis-dialog td::before { content:attr(data-label); text-align:left; color:var(--muted,#bbb); overflow-wrap:anywhere; min-width:0 }
+ #fmz-analysis-inbox .fmz-inbox-item { grid-template-columns:minmax(0,1fr); gap:12px }
+ .fmz-inbox-actions { justify-content:flex-start }
+}
 @media(max-width:480px) {
   .fmz-chat-dialog #ai-coach .p6c-head { padding:10px 8px; gap:4px }
   .fmz-chat-dialog #ai-coach .p6c-identity { gap:6px }
