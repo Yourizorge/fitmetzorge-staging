@@ -3,7 +3,7 @@ const path = require("path");
 const vm = require("vm");
 
 const root = path.resolve(__dirname, "..");
-const read = (file) => fs.readFileSync(path.join(root, file), "utf8");
+const read = (file) => fs.readFileSync(path.join(root, file), "utf8").replace(/\r\n/g, "\n");
 const files = {
   migration: read("supabase/migrations/20260902045834_phase6b_provider_privacy_cost_gate.sql"),
   verifier: read("supabase/verification/20260901230000_phase6b_provider_privacy_cost_gate_verification.sql"),
