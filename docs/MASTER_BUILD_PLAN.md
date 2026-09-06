@@ -35,8 +35,8 @@ The project-wide migration reconciliation gate is RESOLVED for staging. The 19 o
 timestamp differences are renamed to canonical live migration versions, the duplicate
 old `20260819` conflict is removed, the missing Phase 1-3/source SQL is represented by
 a forward-only source baseline, and the four previously local-only versions were marked
-applied as history metadata only. Package 6D and its combined owner hotfix add three later forward-only migrations,
-so the current canonical chain is synchronized at 28 local and 28 remote rows. No
+applied as history metadata only. Package 6D and its owner hotfixes add four later forward-only migrations,
+so the current canonical chain is synchronized at 29 local and 29 remote rows. No
 historical SQL replay, member-data rewrite, remote reset or production access occurred.
 Official migration list and `db push --dry-run --skip-vault` are clean for staging;
 local rebuild PASSes through Phase 6B and full local 6C/6D0/6D replay still needs a
@@ -54,7 +54,32 @@ but inactive, and shared 6A budget gates. See
 PACKAGE6D_READ_ONLY_ANALYSES_TECHNICAL_REPORT.md. Real-member external provider
 activation remains forbidden until the separate legal/provider gate passes.
 
-## Combined Owner UX/Safety Contract - 2026-09-06
+## Owner Retest Hotfix 2 - Current Contract
+
+PACKAGE 6D OWNER UX HOTFIX 2 - READY FOR OWNER RETEST, not accepted/frozen. The later
+owner request supersedes the old manual-start/settings layout: one chat timeline with
+keyboard-aware composer; same approved draggable avatar with chat badge; vertical
+settings home and separate full-width subviews; settings/AI absent from bottom tabs.
+Daily, completed-workout and weekly jobs now execute through an enabled minute DB cron
+using deterministic mock output and the shared consent/safety/entitlement/budget gates.
+Daily/post-workout record Luna; weekly records Terra; no external provider is enabled.
+Exact-ID own-user detail, one authoritative in-app notification inbox, persistent
+Now/Later, max-five dashboard items and paged history are implemented. Workout comparison
+uses the previous matching program day or exact exercise set, never invented values.
+Device IANA timezone automatically synchronizes while chosen schedule clock/day remains
+editable. Current language flags are NL, GB (English) and DE with accessible labels.
+See PACKAGE6D_OWNER_RETEST_HOTFIX2_REPORT.md for the live cron proof and all 47 owner cases.
+
+Phase 7 will connect cancellation, month/year choice, upgrades/downgrades, payment
+details and invoices at Instellingen > Abonnement. Current plan/status is read-only
+server authority; no fake success, browser entitlement, payment or new cost is allowed.
+No service-worker/push subscription/VAPID delivery contract exists. Real OS/browser
+push is explicitly assigned to Phase 8 notification controls and Phase 12 mobile/PWA
+delivery, including consent, quiet hours, frequency caps, token lifecycle and exact-ID
+own-user routing. In-app notifications are the working current authority; no browser
+permission is requested and no OS delivery claim is made.
+
+## Combined Owner UX/Safety Contract - Historical Hotfix 1
 
 The owner-approved combined 6D hotfix is implemented on staging and READY FOR OWNER
 RETEST, not accepted/frozen. It adds revision-bound explicit analysis recovery without
@@ -71,8 +96,8 @@ idempotence and reconciliation must precede any successful billing UI.
 A separate mandatory account privacy/security gate must establish reauthentication,
 session revocation, retention/legal holds, audit minimization, domain/storage deletion
 and verified retries before exposing account deletion. Draft legal destinations are not
-approval. An unattended mock-analysis dispatcher remains an operational gate; saved
-settings and due-selection tests do not assert background delivery is running.
+approval. The unattended mock dispatcher was still an operational gate in hotfix 1;
+hotfix 2 closes that gate with an enabled DB worker and observed real cron executions.
 
 ## Strategic Product Addendum - 2026-08-31
 

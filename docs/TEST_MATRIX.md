@@ -1,9 +1,9 @@
 # FitMetZorge Test Matrix
 
 Status: MASTER PLAN COVERAGE MATRIX
-Latest execution: 2026-09-06 combined Package 6D owner UX/safety hotfix,
+Latest execution: 2026-09-06 Package 6D owner retest hotfix 2,
 after the public Auth hotfix and project migration reconciliation. Migration history
-is synchronized 28/28; `db push --dry-run --skip-vault` is clean. Public Auth hotfix
+is synchronized 29/29; `db push --dry-run --skip-vault` is clean. Public Auth hotfix
 checks remain valid, the owner received the confirmation email, and no new resend,
 Brevo investigation, manual confirmation, trainer role or trainer link was performed.
 Last updated: 2026-09-06
@@ -14,7 +14,7 @@ public routes at 320x700, 390x844, tablet and desktop: zero console/page errors,
 zero mutating requests. The owner later received the new account confirmation email.
 
 Project migration gate: PASS for staging. Official CLI `migration list` is synchronized
-at 28 local / 28 remote rows after Package 6D and the owner hotfix; `db push --dry-run
+at 29 local / 29 remote rows after Package 6D and the owner hotfixes; `db push --dry-run
 --skip-vault` reports the remote database is up to date. The original 19 timestamp
 drifts are renamed to canonical live versions, the duplicate old `20260819` conflict is
 gone, the missing Phase 1-3/source SQL is covered by a forward-only source baseline,
@@ -25,7 +25,40 @@ PROJECT_MIGRATION_RECONCILIATION.md and PROJECT_MIGRATION_RECONCILIATION_MANIFES
 
 This matrix records the required functional, security, entitlement, AI, migration, and release checks for the Master Build. No implementation tests are executed by this document.
 
-## Combined Owner Hotfix Execution
+## Owner Retest Hotfix 2 - Current Execution
+
+READY FOR OWNER RETEST only. [Full 47-case mapping](PACKAGE6D_OWNER_RETEST_HOTFIX2_REPORT.md)
+and PACKAGE6D_OWNER_RETEST_HOTFIX2_EVIDENCE.json distinguish real SQL/cron evidence,
+assembled synthetic browser tests and the remaining physical-device owner checks.
+
+| Suite / layer | Current result |
+| --- | --- |
+| New rollback SQL / retained recovery SQL | 59/59 / 50/50 |
+| Current 6A security contract / new worker metadata | 47/47 / 23/23 |
+| Live 6B / 6D0 metadata / basic 6D metadata | 36/36 / 40/40 / 4/4 |
+| Live 6C transaction + request safety / 6D transaction | PASS, rollback |
+| Live 6D0 authorization | 48/48, rollback |
+| Real enabled minute cron | 4 results + 4 notifications; second tick no duplicate; cleanup zero |
+| Owner assembled browser, four sizes | 323/323, also fresh clone |
+| Workout flush-before-completion order | 6/6 |
+| Public Auth assembled / focused static | 88/88 / 26/26 |
+| Phase 1 / Member UX / Phase 2 / Phase 3 static | 75 / 56 / 46 / 222 PASS |
+| Phase 4 / 4F-E / 5 / 6A / 6B / 6C / 6D static | 90 / 45 / 116 / 93 / 98 / 117 / 17 PASS |
+| 6D / 6D0 / 6C / Phase 5 / Nutrition browsers | 48 / 41 / 85 / 53 / 138 PASS |
+| Chat + analysis handlers | 27/27, mock only |
+| Latest frozen regression runner | All suites exit 0 |
+| Live public frontend | 39 commit-identical HTTP-200 assets, four sizes, zero errors/writes |
+| Migration list / dry-run from fresh clone | 29/29 / upToDate true, no pending changes |
+| Member-table fingerprints | 21/21 unchanged before DDL, after DDL and after cron fixture cleanup |
+| Local PostgreSQL 18.6 replay | 22 applied, 7 skipped (missing pg_cron); not a full schema-diff PASS |
+
+Original installation/freeze verifier snapshots have obsolete global policy/document
+counts and old digest search-path names after approved 6C/6D migrations. Their raw
+failures are not relabelled PASS: the new 47-check current-contract verifier scopes the
+original objects while the new consent/RLS/RPC objects have dedicated tests. Mobile
+keyboard testing uses visualViewport simulation; actual phone/OS behavior needs retest.
+
+## Combined Owner Hotfix Execution - Historical Hotfix 1
 
 READY FOR OWNER RETEST, not owner-accepted/frozen. See
 [report and owner checks 1-50 mapping](PACKAGE6D_COMBINED_OWNER_HOTFIX_REPORT.md)

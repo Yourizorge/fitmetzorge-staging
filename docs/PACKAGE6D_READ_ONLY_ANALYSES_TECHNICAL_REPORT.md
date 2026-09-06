@@ -1,10 +1,12 @@
 # Package 6D Read-Only Analyses Technical Report
 
-Current follow-up: the combined owner UX/safety hotfix is READY FOR OWNER RETEST.
-See [current technical report](PACKAGE6D_COMBINED_OWNER_HOTFIX_REPORT.md) for explicit
-recovery, central settings, independent private-chat consent, floating avatar/chat,
-28/28 migration history and Edge v43. The initial implementation receipt below remains
-historical evidence, not the latest runtime/cache.
+Current follow-up: PACKAGE 6D OWNER UX HOTFIX 2 - READY FOR OWNER RETEST.
+See [current technical report](PACKAGE6D_OWNER_RETEST_HOTFIX2_REPORT.md) for the active
+automatic mock worker, exact-result inbox/detail, renewed chat, vertical settings,
+device timezone and flags. Recovery, separate private-chat consent and the approved
+floating avatar are preserved. Current chain is 29/29; Edge v43 is unchanged.
+The initial implementation receipt below remains historical evidence, not the latest
+runtime/cache. Package 6D is not owner-accepted/frozen.
 
 Date: 2026-09-06. Scope: staging only, `Yourizorge/fitmetzorge-staging` branch `main`,
 Supabase project `mokxyyullfhkfalopbzd`. Production remains forbidden and untouched.

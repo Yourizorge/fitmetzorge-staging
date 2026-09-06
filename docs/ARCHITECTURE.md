@@ -12,13 +12,57 @@ Migration reproducibility: project-wide history reconciliation is RESOLVED for s
 The 19 older timestamp differences were renamed to canonical live versions, duplicate
 old `20260819` history was removed, the missing Phase 1-3/source SQL is represented by
 a conservative forward-only source baseline, and the current post-6D chain is
-synchronized at 28 local and 28 remote migration rows. No historical SQL replay,
+synchronized at 29 local and 29 remote migration rows. No historical SQL replay,
 remote reset, destructive reconstruction or member-data rewrite occurred. The 6D-0
 canonical ID and security contract stay frozen. See PROJECT_MIGRATION_RECONCILIATION.md.
 
 The Phase 0B Auth/invitation/workspace descriptions below are historical. Their unsafe
 metadata and broad member-access paths are superseded by Package 6D-0 at the end of this
 document and in PHASE6D0_LEGACY_AUTHORIZATION_SECURITY.md.
+
+## Automatic Analysis Inbox - Hotfix 2
+
+Migration 20260906092905 adds ai_private.analysis_jobs (browser-denied, unique member/
+kind/event identity) and public.member_notifications (own-user RLS, RPC-only access,
+unique member/result). No existing rows are backfilled. AFTER completed-workout writes
+queue one job; Phase 3 flushes the authoritative final sets before completing the
+session. Failed online flush does not commit completion; offline local state is not
+treated as a server event. AFTER terminal analysis results creates one notification.
+
+The enabled fmz-phase6d-inbox-mock-worker cron runs each minute, batch 10, bounded 50,
+with a singleton advisory lock and SKIP LOCKED. It queues due daily/local-ISO-week jobs,
+rechecks current settings and shared entitlement, analysis consent, age, safety, quality
+and budget gates, and reuses private prepare/service begin/complete and run/usage tables.
+Retries are delayed with minimized error codes. Changed calendar periods cancel stale
+scheduled jobs; current chosen weekday/time is checked again at execution. The worker
+does not backfill historical completed workouts. Existing/deleted result event identities
+remain dedupe tombstones. It only runs with mock enabled and external provider disabled.
+Daily/post-workout register Luna, weekly Terra, all cost zero and actions empty.
+
+Comparison selects the nearest earlier own completed matching program day, or an exact
+nonempty exercise-identity set when no program day is available. Sets, reps, known
+weights, volume, RPE/RIR and both timestamps remain authoritative. Incomplete metric
+coverage stays null; no previous match is explicitly first-suitable. Duration means
+elapsed timestamps including pauses, not active training time. At most 20 exercises.
+
+read_analysis/get_inbox/mark_notification/sync_device_timezone bind auth.uid(), deny
+anonymous/cross-member/trainer private access and expose no service secrets. Detail
+removes internal ownership/request/manifest/run/event metadata. Notifications transition
+new -> later/opened/archived, with opened protected against a late Later response;
+deleted results archive their notifications. Detail, export and delete use the exact ID.
+
+assets/phase6d-analysis-inbox.js is the single in-app inbox reader: visible-only 45s
+polling and lifecycle refresh, profile/epoch guards, max-five dashboard entries and
+paged history. Native detail deep links are #analysis=UUID or ?analysis=UUID. The
+non-focusing toast hides during critical surfaces/dialogs/input. No OS push API exists.
+Browser/device timezone is an own-user scheduling preference only, never authorization.
+It is rechecked on init/login/refresh/focus/visibility, retaining selected local clocks.
+Vertical settings and the single-column chat reuse existing DOM and source authorities;
+private_chat consent and revision-bound safety recovery are unchanged. New chat titles
+derive from the first own user message; no title provider or second chat store exists.
+
+Evidence: PACKAGE6D_OWNER_RETEST_HOTFIX2_REPORT.md. Real OS push stays Phase 8/12;
+central billing remains Phase 7. Full local replay/diff still needs Docker/pg_cron.
 
 ## Combined Owner Settings And Recovery
 

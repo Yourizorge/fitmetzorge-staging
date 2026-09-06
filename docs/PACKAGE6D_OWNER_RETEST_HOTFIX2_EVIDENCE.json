@@ -1,0 +1,2874 @@
+{
+  "schema_version": 1,
+  "task": "PACKAGE 6D OWNER RETEST HOTFIX 2",
+  "date": "2026-09-06",
+  "status": "PACKAGE 6D OWNER UX HOTFIX 2 - READY FOR OWNER RETEST",
+  "scope": {
+    "repository": "Yourizorge/fitmetzorge-staging",
+    "branch": "main",
+    "supabase_project": "mokxyyullfhkfalopbzd",
+    "working_repository": "C:\\Users\\Fitme\\OneDrive\\Documenten\\Fit Met Zorge\\Zip github fitmetzorge staging\\fitmetzorge-staging-main\\supabase\\.temp\\phase4fb-staging-deploy",
+    "production_touched": false
+  },
+  "preflight": {
+    "local_head": "5c10ccf9ffec8871a6c3e7fb63143591c449c265",
+    "remote_head": "5c10ccf9ffec8871a6c3e7fb63143591c449c265",
+    "clean": true,
+    "approval_policy": "on-request",
+    "approvals_reviewer": "auto_review",
+    "sandbox_mode": "workspace-write",
+    "project_network_access": true,
+    "managed_network_restriction_respected": true,
+    "permanent_staging_autonomy": true
+  },
+  "runtime_commit": "2e1fd983385ad360632667c954d7f63725555b3c",
+  "migration": "20260906092905_phase6d_automatic_inbox.sql",
+  "live_frontend": {
+    "overall_pass": true,
+    "commit": "2e1fd983385ad360632667c954d7f63725555b3c",
+    "cache": "20260906-owner-hotfix2",
+    "files": [
+      {
+        "file": "index.html",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "9fc0bd8fd962ffca080685098ba84799664dc13110c342d777a88902f515cf84"
+      },
+      {
+        "file": "app.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "214bd21fe1206b656d227b384653ae0713b62cdbb18f118e73363756a74d253d"
+      },
+      {
+        "file": "app.bundle.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "9c92c4e7257c20f85c41641a494228446bbd7d035f464a705aa386e1246e76e0"
+      },
+      {
+        "file": "assets/phase1-foundation.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "f275ad98e4680f4e4436858911fc5800e39a4094ab144ec78d0a92adb75addf6"
+      },
+      {
+        "file": "assets/phase5-progress.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "b47b9ac07d1b21a9aad014d824e398690546e385eed7c249a98e95564d704b7b"
+      },
+      {
+        "file": "assets/phase6d0-legacy-auth.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "fdaca0d3637ca2dcd36fad7a3698ff6c4edae709c582ef3c6709530e2012d4e3"
+      },
+      {
+        "file": "assets/phase6c-private-ai-chat.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "f841e8c68f79d481157c7c4bfd0194b406ce1f980a26539667910c32baccae97"
+      },
+      {
+        "file": "assets/phase6d-owner-settings.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "fce610cf27a732adc5eb39e260cd9b7b786944ca31ddfa42669ff540b3a78c39"
+      },
+      {
+        "file": "assets/phase6d-owner-settings.css",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "ec01925fbae7ac8549d3e9a574dd7ccf1397bff7390c9b5bf074abd91970eca4"
+      },
+      {
+        "file": "assets/phase6d-hotfix2.css",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "beb4717afbdb2c3120528b056a2c024c7013a3264200a1dcf7c4d41395e50adf"
+      },
+      {
+        "file": "assets/phase6d-analysis-inbox.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "c2418ee5f7f66823897fa4728f26871ea2f022836f3489d1380de8c76a153cf5"
+      },
+      {
+        "file": "assets/phase3-training-engine.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "e87b01034544dd72c91a91fb40dd0d1b78364d62603dfbf1ed2babed7df944db"
+      },
+      {
+        "file": "assets/youri-ai-avatar-3d-v3-256.webp",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "257f31e6fe4faa7fecf5fb9874eed06d4018dc8c60958aa714e7d4b79a7517dc"
+      },
+      {
+        "file": "assets/vendor/lucide-settings.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "ceea1a72d04b112291222ba9ad0779a12d47d816079fe4174900c724f360b55c"
+      },
+      {
+        "file": "assets/vendor/lucide-globe.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "c3543ac3883a0841aa5d37ff974708fbc37d9c6afe64e14b03d56ed798b0b788"
+      },
+      {
+        "file": "assets/vendor/lucide-x.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "0f38855d9d5775c10960ae53e46b745f77914b43f78c43bf8abc39f4d5e06de1"
+      },
+      {
+        "file": "assets/vendor/flag-de.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "efd480af5a154a7651f29da23ee0d09dbc892410fb4041898ddf8face336c575"
+      },
+      {
+        "file": "assets/vendor/flag-gb.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "c8be1e7208798a4ae692ee1e937065d498bb29e741943f6172b29118b8ed8066"
+      },
+      {
+        "file": "assets/vendor/flag-nl.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "8f691f17fe70894537af8e92f2ca47761d353639b0defc15cbe561eb503ab010"
+      },
+      {
+        "file": "assets/vendor/lucide-archive.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "1a6e1c540c9a1a9b489893cc14ab9f597496c69aab5ba222fdd5b456de9e2fac"
+      },
+      {
+        "file": "assets/vendor/lucide-arrow-left.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "e31ed0af85ffbed2b54f78f37af197c3b84b24e776cba1d27613d6a9ad555a16"
+      },
+      {
+        "file": "assets/vendor/lucide-arrow-up.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "df0ff279d41bba93ae6797ef519ba442b895cd5d546fb36f22b7a656c3b05fd1"
+      },
+      {
+        "file": "assets/vendor/lucide-bell.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "129a018bd5025fc992a510e9c95e7868300d888b69c38c69a3466d310919ea13"
+      },
+      {
+        "file": "assets/vendor/lucide-calendar.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "2e2a7df92c2cca71dd6de34bb3f7187e276e8e8e003abe2e80b2ffd13347af60"
+      },
+      {
+        "file": "assets/vendor/lucide-check.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "538432eec072ceeccf5a7aacf347a2ad2bff9937d203dbd0b4f4245d7accd93c"
+      },
+      {
+        "file": "assets/vendor/lucide-chevron-right.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "fea488a3b60fd7738bbbf8ca98826ef5c0381347c5fd1048d45ee70a75a51cfe"
+      },
+      {
+        "file": "assets/vendor/lucide-credit-card.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "4d0394710733a8ca0db566208b0281708ebde7b167b6903491fde0be060bded1"
+      },
+      {
+        "file": "assets/vendor/lucide-download.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "f68a21e11115edc0aef51ac6f8f4618e14d2b92055f1cb9f5d670efc696bea85"
+      },
+      {
+        "file": "assets/vendor/lucide-file-text.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "512f414d72aabc5218b94a9da571df70d8e0b014cfb32ec366b559ec868952d6"
+      },
+      {
+        "file": "assets/vendor/lucide-history.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "682b5fc882578a3bdaac72c72fc27709cb806b61c2d1d51194327b31dde7f239"
+      },
+      {
+        "file": "assets/vendor/lucide-languages.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "a33a7bd34876dde0c5a470914dac09fca77f97da75e93e1b1687de2294874c65"
+      },
+      {
+        "file": "assets/vendor/lucide-loader-circle.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "44ad0f822a89b28a3feecf7276686c818a92a4a9c77cc51404c58929e30f0f3a"
+      },
+      {
+        "file": "assets/vendor/lucide-log-out.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "3f28d1eedd9a71ec6933578fc1b7cd21c56618e8b9b8339e55bfc133b4eb6bee"
+      },
+      {
+        "file": "assets/vendor/lucide-message-circle.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "f62830d9fbbbf697e53555398d31a342ddec8dd008d707f21cd90bb19befcc87"
+      },
+      {
+        "file": "assets/vendor/lucide-plus.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "b29207ee8f5cc0e829c0bab2e5b223fc88687599c6bd40b94ba35f52327615d6"
+      },
+      {
+        "file": "assets/vendor/lucide-rotate-cw.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "2c2c5d1f147e829f431182eee79d8d74e81aedcf8177f9e1878a4180ec990a9c"
+      },
+      {
+        "file": "assets/vendor/lucide-shield.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "276e603595736fcb698b0309b04c44ebb88afb28e4753c5670f92c11a01ed043"
+      },
+      {
+        "file": "assets/vendor/lucide-trash-2.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "9268a35cfb4f9d852c3d13f2c91476dd067c21c20e2bcdb0093fd93fd0bf34b7"
+      },
+      {
+        "file": "assets/vendor/lucide-user.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "bb1e0531065db51238a34b348cf8fb8267cd31932dc3f680c9f204a58d1520ea"
+      }
+    ],
+    "viewports": [
+      {
+        "width": 320,
+        "height": 700,
+        "public": true,
+        "resendButtons": 2,
+        "memberNavEmpty": true,
+        "errors": 0,
+        "mutatingRequests": 0
+      },
+      {
+        "width": 390,
+        "height": 844,
+        "public": true,
+        "resendButtons": 2,
+        "memberNavEmpty": true,
+        "errors": 0,
+        "mutatingRequests": 0
+      },
+      {
+        "width": 820,
+        "height": 1180,
+        "public": true,
+        "resendButtons": 2,
+        "memberNavEmpty": true,
+        "errors": 0,
+        "mutatingRequests": 0
+      },
+      {
+        "width": 1440,
+        "height": 900,
+        "public": true,
+        "resendButtons": 2,
+        "memberNavEmpty": true,
+        "errors": 0,
+        "mutatingRequests": 0
+      }
+    ],
+    "databaseMutation": false
+  },
+  "fresh_checkout": {
+    "path": "C:\\Users\\Fitme\\OneDrive\\Documenten\\Fit Met Zorge\\Zip github fitmetzorge staging\\fitmetzorge-staging-main\\supabase\\.temp\\phase4fb-staging-deploy\\supabase\\.temp\\hf2-fresh-checkout",
+    "commit": "2e1fd983385ad360632667c954d7f63725555b3c",
+    "clone_local_longpaths": true,
+    "clean": true,
+    "owner_browser_pass": 323,
+    "migration_list": {
+      "migrations": [
+        {
+          "local": "20260812000000",
+          "remote": "20260812000000",
+          "time": "2026-08-12 00:00:00"
+        },
+        {
+          "local": "20260813",
+          "remote": "20260813",
+          "time": "20260813"
+        },
+        {
+          "local": "20260818",
+          "remote": "20260818",
+          "time": "20260818"
+        },
+        {
+          "local": "20260819134024",
+          "remote": "20260819134024",
+          "time": "2026-08-19 13:40:24"
+        },
+        {
+          "local": "20260819163738",
+          "remote": "20260819163738",
+          "time": "2026-08-19 16:37:38"
+        },
+        {
+          "local": "20260819175756",
+          "remote": "20260819175756",
+          "time": "2026-08-19 17:57:56"
+        },
+        {
+          "local": "20260820082018",
+          "remote": "20260820082018",
+          "time": "2026-08-20 08:20:18"
+        },
+        {
+          "local": "20260820150513",
+          "remote": "20260820150513",
+          "time": "2026-08-20 15:05:13"
+        },
+        {
+          "local": "20260822172635",
+          "remote": "20260822172635",
+          "time": "2026-08-22 17:26:35"
+        },
+        {
+          "local": "20260824113551",
+          "remote": "20260824113551",
+          "time": "2026-08-24 11:35:51"
+        },
+        {
+          "local": "20260826143000",
+          "remote": "20260826143000",
+          "time": "2026-08-26 14:30:00"
+        },
+        {
+          "local": "20260827125343",
+          "remote": "20260827125343",
+          "time": "2026-08-27 12:53:43"
+        },
+        {
+          "local": "20260827152727",
+          "remote": "20260827152727",
+          "time": "2026-08-27 15:27:27"
+        },
+        {
+          "local": "20260831145357",
+          "remote": "20260831145357",
+          "time": "2026-08-31 14:53:57"
+        },
+        {
+          "local": "20260831150434",
+          "remote": "20260831150434",
+          "time": "2026-08-31 15:04:34"
+        },
+        {
+          "local": "20260831153512",
+          "remote": "20260831153512",
+          "time": "2026-08-31 15:35:12"
+        },
+        {
+          "local": "20260901161314",
+          "remote": "20260901161314",
+          "time": "2026-09-01 16:13:14"
+        },
+        {
+          "local": "20260901183914",
+          "remote": "20260901183914",
+          "time": "2026-09-01 18:39:14"
+        },
+        {
+          "local": "20260901184418",
+          "remote": "20260901184418",
+          "time": "2026-09-01 18:44:18"
+        },
+        {
+          "local": "20260901190328",
+          "remote": "20260901190328",
+          "time": "2026-09-01 19:03:28"
+        },
+        {
+          "local": "20260901191328",
+          "remote": "20260901191328",
+          "time": "2026-09-01 19:13:28"
+        },
+        {
+          "local": "20260902045834",
+          "remote": "20260902045834",
+          "time": "2026-09-02 04:58:34"
+        },
+        {
+          "local": "20260903085454",
+          "remote": "20260903085454",
+          "time": "2026-09-03 08:54:54"
+        },
+        {
+          "local": "20260903125150",
+          "remote": "20260903125150",
+          "time": "2026-09-03 12:51:50"
+        },
+        {
+          "local": "20260904105918",
+          "remote": "20260904105918",
+          "time": "2026-09-04 10:59:18"
+        },
+        {
+          "local": "20260904230850",
+          "remote": "20260904230850",
+          "time": "2026-09-04 23:08:50"
+        },
+        {
+          "local": "20260904235253",
+          "remote": "20260904235253",
+          "time": "2026-09-04 23:52:53"
+        },
+        {
+          "local": "20260906080455",
+          "remote": "20260906080455",
+          "time": "2026-09-06 08:04:55"
+        },
+        {
+          "local": "20260906092905",
+          "remote": "20260906092905",
+          "time": "2026-09-06 09:29:05"
+        }
+      ],
+      "message": "Migrations listed"
+    },
+    "dry_run": {
+      "upToDate": true,
+      "dryRun": true,
+      "migrations": [],
+      "seeds": [],
+      "roles": [],
+      "message": "Remote database is up to date."
+    }
+  },
+  "owner_browser": {
+    "overall_pass": true,
+    "pass_count": 323,
+    "checks": [
+      {
+        "name": "320 auth hides avatar",
+        "pass": true
+      },
+      {
+        "name": "320 AI removed from bottom nav",
+        "pass": true
+      },
+      {
+        "name": "320 top gear and language visible",
+        "pass": true
+      },
+      {
+        "name": "320 avatar badge same click target",
+        "pass": true
+      },
+      {
+        "name": "320 approved avatar loaded",
+        "pass": true
+      },
+      {
+        "name": "320 recovery starts without silently clearing block",
+        "pass": true
+      },
+      {
+        "name": "320 all confirmations required",
+        "pass": true
+      },
+      {
+        "name": "320 recovery lifts only analysis block",
+        "pass": true
+      },
+      {
+        "name": "320 chat returns exact previous screen",
+        "pass": true
+      },
+      {
+        "name": "320 drag does not open chat",
+        "pass": true
+      },
+      {
+        "name": "320 position saved per user",
+        "pass": true
+      },
+      {
+        "name": "320 real touch drag stays bounded without opening",
+        "pass": true
+      },
+      {
+        "name": "320 keyboard placement saved",
+        "pass": true
+      },
+      {
+        "name": "320 avatar across navigation",
+        "pass": true
+      },
+      {
+        "name": "320 position survives refresh",
+        "pass": true
+      },
+      {
+        "name": "320 settings is vertical home list",
+        "pass": true
+      },
+      {
+        "name": "320 settings removed bottom nav",
+        "pass": true
+      },
+      {
+        "name": "320 settings account separate view",
+        "pass": true
+      },
+      {
+        "name": "320 settings privacy separate view",
+        "pass": true
+      },
+      {
+        "name": "320 settings language separate view",
+        "pass": true
+      },
+      {
+        "name": "320 settings ai separate view",
+        "pass": true
+      },
+      {
+        "name": "320 settings subscription separate view",
+        "pass": true
+      },
+      {
+        "name": "320 settings terms separate view",
+        "pass": true
+      },
+      {
+        "name": "320 settings privacyDoc separate view",
+        "pass": true
+      },
+      {
+        "name": "320 settings logout separate view",
+        "pass": true
+      },
+      {
+        "name": "320 legal draft accurate",
+        "pass": true
+      },
+      {
+        "name": "320 avatar hidden during settings",
+        "pass": true
+      },
+      {
+        "name": "320 general consent withdrawal leaves chat and analyses separate",
+        "pass": true
+      },
+      {
+        "name": "320 no manual device date time zone",
+        "pass": true
+      },
+      {
+        "name": "320 schedule saved clock and weekday",
+        "pass": true
+      },
+      {
+        "name": "320 device travel sync preserves clocks",
+        "pass": true
+      },
+      {
+        "name": "320 hide avatar persists",
+        "pass": true
+      },
+      {
+        "name": "320 avatar restored",
+        "pass": true
+      },
+      {
+        "name": "320 quick language en saved",
+        "pass": true
+      },
+      {
+        "name": "320 current flag en",
+        "pass": true
+      },
+      {
+        "name": "320 quick language de saved",
+        "pass": true
+      },
+      {
+        "name": "320 current flag de",
+        "pass": true
+      },
+      {
+        "name": "320 quick language nl saved",
+        "pass": true
+      },
+      {
+        "name": "320 current flag nl",
+        "pass": true
+      },
+      {
+        "name": "320 language source agrees after refresh",
+        "pass": true
+      },
+      {
+        "name": "320 schedule survives reload",
+        "pass": true
+      },
+      {
+        "name": "320 settings no overflow",
+        "pass": true
+      },
+      {
+        "name": "320 scanner hides avatar",
+        "pass": true
+      },
+      {
+        "name": "320 chat has no settings forms",
+        "pass": true
+      },
+      {
+        "name": "320 composer horizontal {\"t\":{\"x\":36.765625,\"y\":635.279296875,\"width\":196.46875,\"height\":44,\"top\":635.279296875,\"right\":233.234375,\"bottom\":679.279296875,\"left\":36.765625},\"b\":{\"x\":239.234375,\"y\":635.279296875,\"width\":44,\"height\":44,\"top\":635.279296875,\"right\":283.234375,\"bottom\":679.279296875,\"left\":239.234375},\"grid\":\"196.469px 44px\"}",
+        "pass": true
+      },
+      {
+        "name": "320 only message column scrolls",
+        "pass": true
+      },
+      {
+        "name": "320 composer grows",
+        "pass": true
+      },
+      {
+        "name": "320 mobile Enter stays draft",
+        "pass": true
+      },
+      {
+        "name": "320 composer above simulated keyboard",
+        "pass": true
+      },
+      {
+        "name": "320 reading old messages does not jump",
+        "pass": true
+      },
+      {
+        "name": "320 chat no horizontal overflow",
+        "pass": true
+      },
+      {
+        "name": "320 history opens",
+        "pass": true
+      },
+      {
+        "name": "320 new conversation works",
+        "pass": true
+      },
+      {
+        "name": "320 contradictory message keeps block and no recovery",
+        "pass": true
+      },
+      {
+        "name": "320 no manual analysis start",
+        "pass": true
+      },
+      {
+        "name": "320 analyses no horizontal overflow",
+        "pass": true
+      },
+      {
+        "name": "320 deep link route works",
+        "pass": true
+      },
+      {
+        "name": "320 deep link survives refresh and late session hydration",
+        "pass": true
+      },
+      {
+        "name": "320 nested settings returns focus to chat",
+        "pass": true
+      },
+      {
+        "name": "320 closing deep link does not reopen during hydration",
+        "pass": true
+      },
+      {
+        "name": "320 unread separate from chat badge",
+        "pass": true
+      },
+      {
+        "name": "320 Later is server persistent",
+        "pass": true
+      },
+      {
+        "name": "320 Later survives refresh login on dashboard",
+        "pass": true
+      },
+      {
+        "name": "320 exact result and comparison visible",
+        "pass": true
+      },
+      {
+        "name": "320 server content escaped",
+        "pass": true
+      },
+      {
+        "name": "320 opened status persisted",
+        "pass": true
+      },
+      {
+        "name": "320 single analysis export",
+        "pass": true
+      },
+      {
+        "name": "320 detail no horizontal overflow",
+        "pass": true
+      },
+      {
+        "name": "320 history exact result",
+        "pass": true
+      },
+      {
+        "name": "320 changed id cannot show another analysis",
+        "pass": true
+      },
+      {
+        "name": "320 direct own deep link works",
+        "pass": true
+      },
+      {
+        "name": "320 delete exact own result",
+        "pass": true
+      },
+      {
+        "name": "320 dashboard limited to five",
+        "pass": true
+      },
+      {
+        "name": "320 Now opens exact notification ID",
+        "pass": true
+      },
+      {
+        "name": "320 insufficient detail makes no comparison",
+        "pass": true
+      },
+      {
+        "name": "320 invalid current password cannot update password",
+        "pass": true
+      },
+      {
+        "name": "320 password error releases busy controls",
+        "pass": true
+      },
+      {
+        "name": "320 logout clears private surfaces",
+        "pass": true
+      },
+      {
+        "name": "320 password verifies separately and revokes sessions",
+        "pass": true
+      },
+      {
+        "name": "320 password change clears member surfaces",
+        "pass": true
+      },
+      {
+        "name": "320 no page or console errors: ",
+        "pass": true
+      },
+      {
+        "name": "390 auth hides avatar",
+        "pass": true
+      },
+      {
+        "name": "390 AI removed from bottom nav",
+        "pass": true
+      },
+      {
+        "name": "390 top gear and language visible",
+        "pass": true
+      },
+      {
+        "name": "390 avatar badge same click target",
+        "pass": true
+      },
+      {
+        "name": "390 approved avatar loaded",
+        "pass": true
+      },
+      {
+        "name": "390 recovery starts without silently clearing block",
+        "pass": true
+      },
+      {
+        "name": "390 all confirmations required",
+        "pass": true
+      },
+      {
+        "name": "390 recovery lifts only analysis block",
+        "pass": true
+      },
+      {
+        "name": "390 chat returns exact previous screen",
+        "pass": true
+      },
+      {
+        "name": "390 drag does not open chat",
+        "pass": true
+      },
+      {
+        "name": "390 position saved per user",
+        "pass": true
+      },
+      {
+        "name": "390 real touch drag stays bounded without opening",
+        "pass": true
+      },
+      {
+        "name": "390 keyboard placement saved",
+        "pass": true
+      },
+      {
+        "name": "390 avatar across navigation",
+        "pass": true
+      },
+      {
+        "name": "390 position survives refresh",
+        "pass": true
+      },
+      {
+        "name": "390 settings is vertical home list",
+        "pass": true
+      },
+      {
+        "name": "390 settings removed bottom nav",
+        "pass": true
+      },
+      {
+        "name": "390 settings account separate view",
+        "pass": true
+      },
+      {
+        "name": "390 settings privacy separate view",
+        "pass": true
+      },
+      {
+        "name": "390 settings language separate view",
+        "pass": true
+      },
+      {
+        "name": "390 settings ai separate view",
+        "pass": true
+      },
+      {
+        "name": "390 settings subscription separate view",
+        "pass": true
+      },
+      {
+        "name": "390 settings terms separate view",
+        "pass": true
+      },
+      {
+        "name": "390 settings privacyDoc separate view",
+        "pass": true
+      },
+      {
+        "name": "390 settings logout separate view",
+        "pass": true
+      },
+      {
+        "name": "390 legal draft accurate",
+        "pass": true
+      },
+      {
+        "name": "390 avatar hidden during settings",
+        "pass": true
+      },
+      {
+        "name": "390 general consent withdrawal leaves chat and analyses separate",
+        "pass": true
+      },
+      {
+        "name": "390 no manual device date time zone",
+        "pass": true
+      },
+      {
+        "name": "390 schedule saved clock and weekday",
+        "pass": true
+      },
+      {
+        "name": "390 device travel sync preserves clocks",
+        "pass": true
+      },
+      {
+        "name": "390 hide avatar persists",
+        "pass": true
+      },
+      {
+        "name": "390 avatar restored",
+        "pass": true
+      },
+      {
+        "name": "390 quick language en saved",
+        "pass": true
+      },
+      {
+        "name": "390 current flag en",
+        "pass": true
+      },
+      {
+        "name": "390 quick language de saved",
+        "pass": true
+      },
+      {
+        "name": "390 current flag de",
+        "pass": true
+      },
+      {
+        "name": "390 quick language nl saved",
+        "pass": true
+      },
+      {
+        "name": "390 current flag nl",
+        "pass": true
+      },
+      {
+        "name": "390 language source agrees after refresh",
+        "pass": true
+      },
+      {
+        "name": "390 schedule survives reload",
+        "pass": true
+      },
+      {
+        "name": "390 settings no overflow",
+        "pass": true
+      },
+      {
+        "name": "390 scanner hides avatar",
+        "pass": true
+      },
+      {
+        "name": "390 chat has no settings forms",
+        "pass": true
+      },
+      {
+        "name": "390 composer horizontal {\"t\":{\"x\":71.765625,\"y\":779.1315307617188,\"width\":196.46875,\"height\":44,\"top\":779.1315307617188,\"right\":268.234375,\"bottom\":823.1315307617188,\"left\":71.765625},\"b\":{\"x\":274.234375,\"y\":779.1315307617188,\"width\":44,\"height\":44,\"top\":779.1315307617188,\"right\":318.234375,\"bottom\":823.1315307617188,\"left\":274.234375},\"grid\":\"196.469px 44px\"}",
+        "pass": true
+      },
+      {
+        "name": "390 only message column scrolls",
+        "pass": true
+      },
+      {
+        "name": "390 composer grows",
+        "pass": true
+      },
+      {
+        "name": "390 mobile Enter stays draft",
+        "pass": true
+      },
+      {
+        "name": "390 composer above simulated keyboard",
+        "pass": true
+      },
+      {
+        "name": "390 reading old messages does not jump",
+        "pass": true
+      },
+      {
+        "name": "390 chat no horizontal overflow",
+        "pass": true
+      },
+      {
+        "name": "390 history opens",
+        "pass": true
+      },
+      {
+        "name": "390 new conversation works",
+        "pass": true
+      },
+      {
+        "name": "390 contradictory message keeps block and no recovery",
+        "pass": true
+      },
+      {
+        "name": "390 no manual analysis start",
+        "pass": true
+      },
+      {
+        "name": "390 analyses no horizontal overflow",
+        "pass": true
+      },
+      {
+        "name": "390 deep link route works",
+        "pass": true
+      },
+      {
+        "name": "390 deep link survives refresh and late session hydration",
+        "pass": true
+      },
+      {
+        "name": "390 nested settings returns focus to chat",
+        "pass": true
+      },
+      {
+        "name": "390 closing deep link does not reopen during hydration",
+        "pass": true
+      },
+      {
+        "name": "390 unread separate from chat badge",
+        "pass": true
+      },
+      {
+        "name": "390 Later is server persistent",
+        "pass": true
+      },
+      {
+        "name": "390 Later survives refresh login on dashboard",
+        "pass": true
+      },
+      {
+        "name": "390 exact result and comparison visible",
+        "pass": true
+      },
+      {
+        "name": "390 server content escaped",
+        "pass": true
+      },
+      {
+        "name": "390 opened status persisted",
+        "pass": true
+      },
+      {
+        "name": "390 single analysis export",
+        "pass": true
+      },
+      {
+        "name": "390 detail no horizontal overflow",
+        "pass": true
+      },
+      {
+        "name": "390 history exact result",
+        "pass": true
+      },
+      {
+        "name": "390 changed id cannot show another analysis",
+        "pass": true
+      },
+      {
+        "name": "390 direct own deep link works",
+        "pass": true
+      },
+      {
+        "name": "390 delete exact own result",
+        "pass": true
+      },
+      {
+        "name": "390 dashboard limited to five",
+        "pass": true
+      },
+      {
+        "name": "390 Now opens exact notification ID",
+        "pass": true
+      },
+      {
+        "name": "390 insufficient detail makes no comparison",
+        "pass": true
+      },
+      {
+        "name": "390 invalid current password cannot update password",
+        "pass": true
+      },
+      {
+        "name": "390 password error releases busy controls",
+        "pass": true
+      },
+      {
+        "name": "390 logout clears private surfaces",
+        "pass": true
+      },
+      {
+        "name": "390 password verifies separately and revokes sessions",
+        "pass": true
+      },
+      {
+        "name": "390 password change clears member surfaces",
+        "pass": true
+      },
+      {
+        "name": "390 no page or console errors: ",
+        "pass": true
+      },
+      {
+        "name": "820 auth hides avatar",
+        "pass": true
+      },
+      {
+        "name": "820 AI removed from bottom nav",
+        "pass": true
+      },
+      {
+        "name": "820 top gear and language visible",
+        "pass": true
+      },
+      {
+        "name": "820 avatar badge same click target",
+        "pass": true
+      },
+      {
+        "name": "820 approved avatar loaded",
+        "pass": true
+      },
+      {
+        "name": "820 recovery starts without silently clearing block",
+        "pass": true
+      },
+      {
+        "name": "820 all confirmations required",
+        "pass": true
+      },
+      {
+        "name": "820 recovery lifts only analysis block",
+        "pass": true
+      },
+      {
+        "name": "820 chat returns exact previous screen",
+        "pass": true
+      },
+      {
+        "name": "820 drag does not open chat",
+        "pass": true
+      },
+      {
+        "name": "820 position saved per user",
+        "pass": true
+      },
+      {
+        "name": "820 real touch drag stays bounded without opening",
+        "pass": true
+      },
+      {
+        "name": "820 keyboard placement saved",
+        "pass": true
+      },
+      {
+        "name": "820 avatar across navigation",
+        "pass": true
+      },
+      {
+        "name": "820 position survives refresh",
+        "pass": true
+      },
+      {
+        "name": "820 settings is vertical home list",
+        "pass": true
+      },
+      {
+        "name": "820 settings removed bottom nav",
+        "pass": true
+      },
+      {
+        "name": "820 settings account separate view",
+        "pass": true
+      },
+      {
+        "name": "820 settings privacy separate view",
+        "pass": true
+      },
+      {
+        "name": "820 settings language separate view",
+        "pass": true
+      },
+      {
+        "name": "820 settings ai separate view",
+        "pass": true
+      },
+      {
+        "name": "820 settings subscription separate view",
+        "pass": true
+      },
+      {
+        "name": "820 settings terms separate view",
+        "pass": true
+      },
+      {
+        "name": "820 settings privacyDoc separate view",
+        "pass": true
+      },
+      {
+        "name": "820 settings logout separate view",
+        "pass": true
+      },
+      {
+        "name": "820 legal draft accurate",
+        "pass": true
+      },
+      {
+        "name": "820 avatar hidden during settings",
+        "pass": true
+      },
+      {
+        "name": "820 general consent withdrawal leaves chat and analyses separate",
+        "pass": true
+      },
+      {
+        "name": "820 no manual device date time zone",
+        "pass": true
+      },
+      {
+        "name": "820 schedule saved clock and weekday",
+        "pass": true
+      },
+      {
+        "name": "820 device travel sync preserves clocks",
+        "pass": true
+      },
+      {
+        "name": "820 hide avatar persists",
+        "pass": true
+      },
+      {
+        "name": "820 avatar restored",
+        "pass": true
+      },
+      {
+        "name": "820 quick language en saved",
+        "pass": true
+      },
+      {
+        "name": "820 current flag en",
+        "pass": true
+      },
+      {
+        "name": "820 quick language de saved",
+        "pass": true
+      },
+      {
+        "name": "820 current flag de",
+        "pass": true
+      },
+      {
+        "name": "820 quick language nl saved",
+        "pass": true
+      },
+      {
+        "name": "820 current flag nl",
+        "pass": true
+      },
+      {
+        "name": "820 language source agrees after refresh",
+        "pass": true
+      },
+      {
+        "name": "820 schedule survives reload",
+        "pass": true
+      },
+      {
+        "name": "820 settings no overflow",
+        "pass": true
+      },
+      {
+        "name": "820 scanner hides avatar",
+        "pass": true
+      },
+      {
+        "name": "820 chat has no settings forms",
+        "pass": true
+      },
+      {
+        "name": "820 composer horizontal {\"t\":{\"x\":267.125,\"y\":911,\"width\":257.75,\"height\":44,\"top\":911,\"right\":524.875,\"bottom\":955,\"left\":267.125},\"b\":{\"x\":532.875,\"y\":911,\"width\":44,\"height\":44,\"top\":911,\"right\":576.875,\"bottom\":955,\"left\":532.875},\"grid\":\"257.75px 44px\"}",
+        "pass": true
+      },
+      {
+        "name": "820 only message column scrolls",
+        "pass": true
+      },
+      {
+        "name": "820 composer grows",
+        "pass": true
+      },
+      {
+        "name": "820 mobile Enter stays draft",
+        "pass": true
+      },
+      {
+        "name": "820 composer above simulated keyboard",
+        "pass": true
+      },
+      {
+        "name": "820 reading old messages does not jump",
+        "pass": true
+      },
+      {
+        "name": "820 chat no horizontal overflow",
+        "pass": true
+      },
+      {
+        "name": "820 history opens",
+        "pass": true
+      },
+      {
+        "name": "820 new conversation works",
+        "pass": true
+      },
+      {
+        "name": "820 contradictory message keeps block and no recovery",
+        "pass": true
+      },
+      {
+        "name": "820 no manual analysis start",
+        "pass": true
+      },
+      {
+        "name": "820 analyses no horizontal overflow",
+        "pass": true
+      },
+      {
+        "name": "820 deep link route works",
+        "pass": true
+      },
+      {
+        "name": "820 deep link survives refresh and late session hydration",
+        "pass": true
+      },
+      {
+        "name": "820 nested settings returns focus to chat",
+        "pass": true
+      },
+      {
+        "name": "820 closing deep link does not reopen during hydration",
+        "pass": true
+      },
+      {
+        "name": "820 unread separate from chat badge",
+        "pass": true
+      },
+      {
+        "name": "820 Later is server persistent",
+        "pass": true
+      },
+      {
+        "name": "820 Later survives refresh login on dashboard",
+        "pass": true
+      },
+      {
+        "name": "820 exact result and comparison visible",
+        "pass": true
+      },
+      {
+        "name": "820 server content escaped",
+        "pass": true
+      },
+      {
+        "name": "820 opened status persisted",
+        "pass": true
+      },
+      {
+        "name": "820 single analysis export",
+        "pass": true
+      },
+      {
+        "name": "820 detail no horizontal overflow",
+        "pass": true
+      },
+      {
+        "name": "820 history exact result",
+        "pass": true
+      },
+      {
+        "name": "820 changed id cannot show another analysis",
+        "pass": true
+      },
+      {
+        "name": "820 direct own deep link works",
+        "pass": true
+      },
+      {
+        "name": "820 delete exact own result",
+        "pass": true
+      },
+      {
+        "name": "820 dashboard limited to five",
+        "pass": true
+      },
+      {
+        "name": "820 Now opens exact notification ID",
+        "pass": true
+      },
+      {
+        "name": "820 insufficient detail makes no comparison",
+        "pass": true
+      },
+      {
+        "name": "820 invalid current password cannot update password",
+        "pass": true
+      },
+      {
+        "name": "820 password error releases busy controls",
+        "pass": true
+      },
+      {
+        "name": "820 logout clears private surfaces",
+        "pass": true
+      },
+      {
+        "name": "820 password verifies separately and revokes sessions",
+        "pass": true
+      },
+      {
+        "name": "820 password change clears member surfaces",
+        "pass": true
+      },
+      {
+        "name": "820 no page or console errors: ",
+        "pass": true
+      },
+      {
+        "name": "1440 auth hides avatar",
+        "pass": true
+      },
+      {
+        "name": "1440 AI removed from bottom nav",
+        "pass": true
+      },
+      {
+        "name": "1440 top gear and language visible",
+        "pass": true
+      },
+      {
+        "name": "1440 avatar badge same click target",
+        "pass": true
+      },
+      {
+        "name": "1440 approved avatar loaded",
+        "pass": true
+      },
+      {
+        "name": "1440 recovery starts without silently clearing block",
+        "pass": true
+      },
+      {
+        "name": "1440 all confirmations required",
+        "pass": true
+      },
+      {
+        "name": "1440 recovery lifts only analysis block",
+        "pass": true
+      },
+      {
+        "name": "1440 chat returns exact previous screen",
+        "pass": true
+      },
+      {
+        "name": "1440 drag does not open chat",
+        "pass": true
+      },
+      {
+        "name": "1440 position saved per user",
+        "pass": true
+      },
+      {
+        "name": "1440 real touch drag stays bounded without opening",
+        "pass": true
+      },
+      {
+        "name": "1440 keyboard placement saved",
+        "pass": true
+      },
+      {
+        "name": "1440 avatar across navigation",
+        "pass": true
+      },
+      {
+        "name": "1440 position survives refresh",
+        "pass": true
+      },
+      {
+        "name": "1440 settings is vertical home list",
+        "pass": true
+      },
+      {
+        "name": "1440 settings removed bottom nav",
+        "pass": true
+      },
+      {
+        "name": "1440 settings account separate view",
+        "pass": true
+      },
+      {
+        "name": "1440 settings privacy separate view",
+        "pass": true
+      },
+      {
+        "name": "1440 settings language separate view",
+        "pass": true
+      },
+      {
+        "name": "1440 settings ai separate view",
+        "pass": true
+      },
+      {
+        "name": "1440 settings subscription separate view",
+        "pass": true
+      },
+      {
+        "name": "1440 settings terms separate view",
+        "pass": true
+      },
+      {
+        "name": "1440 settings privacyDoc separate view",
+        "pass": true
+      },
+      {
+        "name": "1440 settings logout separate view",
+        "pass": true
+      },
+      {
+        "name": "1440 legal draft accurate",
+        "pass": true
+      },
+      {
+        "name": "1440 avatar hidden during settings",
+        "pass": true
+      },
+      {
+        "name": "1440 general consent withdrawal leaves chat and analyses separate",
+        "pass": true
+      },
+      {
+        "name": "1440 no manual device date time zone",
+        "pass": true
+      },
+      {
+        "name": "1440 schedule saved clock and weekday",
+        "pass": true
+      },
+      {
+        "name": "1440 device travel sync preserves clocks",
+        "pass": true
+      },
+      {
+        "name": "1440 hide avatar persists",
+        "pass": true
+      },
+      {
+        "name": "1440 avatar restored",
+        "pass": true
+      },
+      {
+        "name": "1440 quick language en saved",
+        "pass": true
+      },
+      {
+        "name": "1440 current flag en",
+        "pass": true
+      },
+      {
+        "name": "1440 quick language de saved",
+        "pass": true
+      },
+      {
+        "name": "1440 current flag de",
+        "pass": true
+      },
+      {
+        "name": "1440 quick language nl saved",
+        "pass": true
+      },
+      {
+        "name": "1440 current flag nl",
+        "pass": true
+      },
+      {
+        "name": "1440 language source agrees after refresh",
+        "pass": true
+      },
+      {
+        "name": "1440 schedule survives reload",
+        "pass": true
+      },
+      {
+        "name": "1440 settings no overflow",
+        "pass": true
+      },
+      {
+        "name": "1440 scanner hides avatar",
+        "pass": true
+      },
+      {
+        "name": "1440 chat has no settings forms",
+        "pass": true
+      },
+      {
+        "name": "1440 composer horizontal {\"t\":{\"x\":887.125,\"y\":835,\"width\":257.75,\"height\":44,\"top\":835,\"right\":1144.875,\"bottom\":879,\"left\":887.125},\"b\":{\"x\":1152.875,\"y\":835,\"width\":44,\"height\":44,\"top\":835,\"right\":1196.875,\"bottom\":879,\"left\":1152.875},\"grid\":\"257.75px 44px\"}",
+        "pass": true
+      },
+      {
+        "name": "1440 only message column scrolls",
+        "pass": true
+      },
+      {
+        "name": "1440 composer grows",
+        "pass": true
+      },
+      {
+        "name": "1440 composer above simulated keyboard",
+        "pass": true
+      },
+      {
+        "name": "1440 reading old messages does not jump",
+        "pass": true
+      },
+      {
+        "name": "1440 chat no horizontal overflow",
+        "pass": true
+      },
+      {
+        "name": "1440 history opens",
+        "pass": true
+      },
+      {
+        "name": "1440 new conversation works",
+        "pass": true
+      },
+      {
+        "name": "1440 contradictory message keeps block and no recovery",
+        "pass": true
+      },
+      {
+        "name": "1440 no manual analysis start",
+        "pass": true
+      },
+      {
+        "name": "1440 analyses no horizontal overflow",
+        "pass": true
+      },
+      {
+        "name": "1440 deep link route works",
+        "pass": true
+      },
+      {
+        "name": "1440 deep link survives refresh and late session hydration",
+        "pass": true
+      },
+      {
+        "name": "1440 nested settings returns focus to chat",
+        "pass": true
+      },
+      {
+        "name": "1440 closing deep link does not reopen during hydration",
+        "pass": true
+      },
+      {
+        "name": "1440 unread separate from chat badge",
+        "pass": true
+      },
+      {
+        "name": "1440 Later is server persistent",
+        "pass": true
+      },
+      {
+        "name": "1440 Later survives refresh login on dashboard",
+        "pass": true
+      },
+      {
+        "name": "1440 exact result and comparison visible",
+        "pass": true
+      },
+      {
+        "name": "1440 server content escaped",
+        "pass": true
+      },
+      {
+        "name": "1440 opened status persisted",
+        "pass": true
+      },
+      {
+        "name": "1440 single analysis export",
+        "pass": true
+      },
+      {
+        "name": "1440 detail no horizontal overflow",
+        "pass": true
+      },
+      {
+        "name": "1440 history exact result",
+        "pass": true
+      },
+      {
+        "name": "1440 changed id cannot show another analysis",
+        "pass": true
+      },
+      {
+        "name": "1440 direct own deep link works",
+        "pass": true
+      },
+      {
+        "name": "1440 delete exact own result",
+        "pass": true
+      },
+      {
+        "name": "1440 dashboard limited to five",
+        "pass": true
+      },
+      {
+        "name": "1440 Now opens exact notification ID",
+        "pass": true
+      },
+      {
+        "name": "1440 insufficient detail makes no comparison",
+        "pass": true
+      },
+      {
+        "name": "1440 invalid current password cannot update password",
+        "pass": true
+      },
+      {
+        "name": "1440 password error releases busy controls",
+        "pass": true
+      },
+      {
+        "name": "1440 logout clears private surfaces",
+        "pass": true
+      },
+      {
+        "name": "1440 password verifies separately and revokes sessions",
+        "pass": true
+      },
+      {
+        "name": "1440 password change clears member surfaces",
+        "pass": true
+      },
+      {
+        "name": "1440 no page or console errors: ",
+        "pass": true
+      }
+    ]
+  },
+  "frozen_regressions": [
+    {
+      "suite": "assets/phase6d0-frozen-regression-check.cjs",
+      "exit": 0,
+      "summary": [
+        "Phase 1 static check passed: 75",
+        "Member UX static check passed: 56"
+      ]
+    },
+    {
+      "suite": "C:\\Users\\Fitme\\OneDrive\\Documenten\\Fit Met Zorge\\Zip github fitmetzorge staging\\fitmetzorge-staging-main\\supabase\\.temp\\phase4fb-staging-deploy\\assets\\public-auth-regression-check.cjs --historical phase2-static-check.js",
+      "exit": 0,
+      "summary": [
+        "Phase 2 static check passed: 46"
+      ]
+    },
+    {
+      "suite": "C:\\Users\\Fitme\\OneDrive\\Documenten\\Fit Met Zorge\\Zip github fitmetzorge staging\\fitmetzorge-staging-main\\supabase\\.temp\\phase4fb-staging-deploy\\assets\\public-auth-regression-check.cjs --historical phase3-static-check.js",
+      "exit": 0,
+      "summary": [
+        "Phase 3 static check passed: 222"
+      ]
+    },
+    {
+      "suite": "assets/phase4-static-check.js",
+      "exit": 0,
+      "summary": [
+        "Phase 4 static check passed: 90"
+      ]
+    },
+    {
+      "suite": "assets/phase4-nutrition-slice4fe-static-check.js",
+      "exit": 0,
+      "summary": [
+        "Phase 4F-E static check passed: 45"
+      ]
+    },
+    {
+      "suite": "assets/phase5-static-check.js",
+      "exit": 0,
+      "summary": [
+        "  \"pass_count\": 116,",
+        "  \"fail_count\": 0,"
+      ]
+    },
+    {
+      "suite": "assets/phase6a-static-check.js",
+      "exit": 0,
+      "summary": [
+        "  \"pass_count\": 93,",
+        "  \"fail_count\": 0,"
+      ]
+    },
+    {
+      "suite": "assets/phase6b-static-check.js",
+      "exit": 0,
+      "summary": [
+        "  \"pass_count\": 98,",
+        "  \"fail_count\": 0,"
+      ]
+    },
+    {
+      "suite": "assets/phase6c-static-check.js",
+      "exit": 0,
+      "summary": [
+        "  \"pass_count\": 117,",
+        "  \"fail_count\": 0,"
+      ]
+    },
+    {
+      "suite": "--test supabase/functions/invite-client/handler.test.ts",
+      "exit": 0,
+      "summary": []
+    },
+    {
+      "suite": "--test supabase/functions/youri-ai/phase6c-handler.test.ts",
+      "exit": 0,
+      "summary": []
+    },
+    {
+      "suite": "--test supabase/tests/phase6d0-migration-identity-check.test.cjs",
+      "exit": 0,
+      "summary": []
+    },
+    {
+      "suite": "assets/phase6d0-browser-check.js",
+      "exit": 0,
+      "summary": [
+        "  \"pass_count\": 41,",
+        "  \"fail_count\": 0,"
+      ]
+    },
+    {
+      "suite": "assets/phase5-browser-check.js",
+      "exit": 0,
+      "summary": [
+        "  \"pass_count\": 53,",
+        "  \"fail_count\": 0,"
+      ]
+    },
+    {
+      "suite": "assets/phase6c-browser-check.js",
+      "exit": 0,
+      "summary": [
+        "  \"pass_count\": 85,",
+        "  \"fail_count\": 0,"
+      ]
+    },
+    {
+      "suite": "assets/phase4-nutrition-slice3-browser-check.js",
+      "exit": 0,
+      "summary": [
+        "Phase 4 Nutrition Slice 3 browser check passed: 138"
+      ]
+    }
+  ],
+  "frozen_regressions_reexecuted_after_final_runtime": true,
+  "live_worker": [
+    {
+      "hotfix2_verification": {
+        "cron_runs": [
+          {
+            "end_time": "2026-09-06T13:06:00.452048+00:00",
+            "return_message": "1 row",
+            "start_time": "2026-09-06T13:06:00.095556+00:00",
+            "status": "succeeded"
+          },
+          {
+            "end_time": "2026-09-06T13:05:00.964422+00:00",
+            "return_message": "1 row",
+            "start_time": "2026-09-06T13:05:00.043809+00:00",
+            "status": "succeeded"
+          },
+          {
+            "end_time": "2026-09-06T13:04:03.951385+00:00",
+            "return_message": "1 row",
+            "start_time": "2026-09-06T13:04:00.535964+00:00",
+            "status": "succeeded"
+          }
+        ],
+        "failed": [],
+        "notifications": 0,
+        "overall_pass": true,
+        "pass_count": 23,
+        "queued_jobs": 0,
+        "worker_enabled": true
+      }
+    }
+  ],
+  "live_cron_proof": {
+    "fixture_created": [
+      {
+        "fixture_user": "cba55bb3-aa68-4d8f-b705-347cf724626f",
+        "email": "hf2-cron-proof-20260906@example.invalid",
+        "activated_at": "2026-09-06 12:52:12.292917+00",
+        "workouts": [
+          {
+            "id": "65c53d83-4862-489d-9e21-354ca305af22",
+            "key": "hf2-cron-previous"
+          },
+          {
+            "id": "ceb98e91-1e69-4b2d-a217-9c4814b4755f",
+            "key": "hf2-cron-current"
+          }
+        ],
+        "queued_jobs": 2
+      }
+    ],
+    "first_actual_tick": [
+      {
+        "checked_at": "2026-09-06 12:53:04.880302+00",
+        "jobs": [
+          {
+            "kind": "daily",
+            "error": null,
+            "event": "daily:2026-09-06",
+            "status": "completed",
+            "attempts": 1,
+            "result_id": "79b9a5b0-f0a5-4873-bc7e-c3915d1fcc7e"
+          },
+          {
+            "kind": "post_workout",
+            "error": null,
+            "event": "post_workout:65c53d83-4862-489d-9e21-354ca305af22",
+            "status": "completed",
+            "attempts": 1,
+            "result_id": "bcb71cc6-c84f-4f0b-91ae-22375282b021"
+          },
+          {
+            "kind": "post_workout",
+            "error": null,
+            "event": "post_workout:ceb98e91-1e69-4b2d-a217-9c4814b4755f",
+            "status": "completed",
+            "attempts": 1,
+            "result_id": "bee98e77-bec7-4fd5-b868-1fd29171ad90"
+          },
+          {
+            "kind": "weekly",
+            "error": null,
+            "event": "weekly:2026-36",
+            "status": "completed",
+            "attempts": 1,
+            "result_id": "7dfada63-39ae-4d33-ae64-7db89374e759"
+          }
+        ],
+        "results": [
+          {
+            "id": "79b9a5b0-f0a5-4873-bc7e-c3915d1fcc7e",
+            "kind": "daily",
+            "model": "luna",
+            "status": "partial",
+            "adapter": "mock",
+            "payload": {
+              "mock": true,
+              "period": {
+                "end_local": "2026-09-06",
+                "start_local": "2026-09-06",
+                "timezone_name": "UTC",
+                "max_lookback_days": 30
+              },
+              "safety": {
+                "status": "clear",
+                "category": "none",
+                "message_key": "safety.clear",
+                "automatic_execution_blocked": true
+              },
+              "status": "partial",
+              "actions": [],
+              "privacy": {
+                "trainer_visible": false,
+                "raw_notes_included": false,
+                "raw_prompts_included": false,
+                "domain_writes_allowed": false,
+                "private_chat_included": false
+              },
+              "summary": "Je analyse van de opgeslagen meetpunten staat klaar. Dit is een deterministische stagingtest.",
+              "comparison": null,
+              "suggestions": [
+                {
+                  "kind": "read_only_reflection",
+                  "text": "Vergelijk alleen gelijksoortige meetpunten. Lagere prestaties bewijzen op zichzelf geen vermoeidheid. Er is geen schema gewijzigd."
+                }
+              ],
+              "data_quality": {
+                "level": "partial",
+                "reliable": true,
+                "domain_count": 1,
+                "missing_sources": [
+                  "recovery",
+                  "nutrition",
+                  "progress"
+                ],
+                "observation_count": 1,
+                "stop_before_provider": false
+              },
+              "feature_code": "daily_analysis",
+              "observations": [
+                {
+                  "source": "progress",
+                  "metrics": {
+                    "weight_logs": 0,
+                    "body_measurement_logs": 0
+                  },
+                  "evidence": [
+                    "aggregate_progress"
+                  ]
+                },
+                {
+                  "source": "recovery",
+                  "metrics": {
+                    "days_logged": 0,
+                    "load_statuses": []
+                  },
+                  "evidence": [
+                    "aggregate_recovery"
+                  ]
+                },
+                {
+                  "source": "training",
+                  "metrics": {
+                    "set_count": 2,
+                    "completed_workouts": 1,
+                    "avg_sets_per_workout": 2
+                  },
+                  "evidence": [
+                    "aggregate_training"
+                  ]
+                },
+                {
+                  "source": "nutrition",
+                  "metrics": {
+                    "days_logged": 0,
+                    "items_logged": 0
+                  },
+                  "evidence": [
+                    "aggregate_nutrition"
+                  ]
+                }
+              ],
+              "analysis_kind": "daily",
+              "uncertainties": [
+                "recovery",
+                "nutrition",
+                "progress"
+              ],
+              "schema_version": "phase6d.analysis.v1"
+            }
+          },
+          {
+            "id": "bcb71cc6-c84f-4f0b-91ae-22375282b021",
+            "kind": "post_workout",
+            "model": "luna",
+            "status": "partial",
+            "adapter": "mock",
+            "payload": {
+              "mock": true,
+              "period": {
+                "end_local": "2026-08-30",
+                "start_local": "2026-08-30",
+                "timezone_name": "UTC",
+                "max_lookback_days": 30
+              },
+              "safety": {
+                "status": "clear",
+                "category": "none",
+                "message_key": "safety.clear",
+                "automatic_execution_blocked": true
+              },
+              "status": "partial",
+              "actions": [],
+              "privacy": {
+                "trainer_visible": false,
+                "raw_notes_included": false,
+                "raw_prompts_included": false,
+                "domain_writes_allowed": false,
+                "private_chat_included": false
+              },
+              "summary": "Je analyse van de opgeslagen meetpunten staat klaar. Dit is een deterministische stagingtest.",
+              "comparison": {
+                "reason": "first_suitable_workout",
+                "current": {
+                  "id": "65c53d83-4862-489d-9e21-354ca305af22",
+                  "completed_at": "2026-08-30T12:52:12.292917+00:00",
+                  "elapsed_seconds": 3600
+                },
+                "previous": null,
+                "available": false,
+                "exercises": [
+                  {
+                    "key": "slug:squat",
+                    "label": "squat",
+                    "current": {
+                      "rir": 2,
+                      "rpe": 7,
+                      "reps": 20,
+                      "sets": 2,
+                      "volume_kg": 600,
+                      "max_weight_kg": 30,
+                      "reps_observations": 2,
+                      "weight_observations": 2
+                    },
+                    "previous": null,
+                    "volume_change": null
+                  }
+                ],
+                "duration_kind": "elapsed_including_pauses",
+                "exercise_limit": 20,
+                "interpretation": "observed_performance_not_fatigue_diagnosis",
+                "active_duration_available": false
+              },
+              "suggestions": [
+                {
+                  "kind": "read_only_reflection",
+                  "text": "Vergelijk alleen gelijksoortige meetpunten. Lagere prestaties bewijzen op zichzelf geen vermoeidheid. Er is geen schema gewijzigd."
+                }
+              ],
+              "data_quality": {
+                "level": "partial",
+                "reliable": true,
+                "domain_count": 1,
+                "missing_sources": [
+                  "recovery",
+                  "nutrition",
+                  "progress"
+                ],
+                "observation_count": 1,
+                "stop_before_provider": false
+              },
+              "feature_code": "post_workout",
+              "observations": [
+                {
+                  "text": "Dit is de eerste geschikte vergelijking. Er zijn geen eerdere prestaties ingevuld.",
+                  "source": "training",
+                  "evidence": [
+                    "completed_workout_pair"
+                  ]
+                }
+              ],
+              "analysis_kind": "post_workout",
+              "uncertainties": [
+                "recovery",
+                "nutrition",
+                "progress"
+              ],
+              "schema_version": "phase6d.analysis.v1"
+            }
+          },
+          {
+            "id": "bee98e77-bec7-4fd5-b868-1fd29171ad90",
+            "kind": "post_workout",
+            "model": "luna",
+            "status": "partial",
+            "adapter": "mock",
+            "payload": {
+              "mock": true,
+              "period": {
+                "end_local": "2026-09-06",
+                "start_local": "2026-09-06",
+                "timezone_name": "UTC",
+                "max_lookback_days": 30
+              },
+              "safety": {
+                "status": "clear",
+                "category": "none",
+                "message_key": "safety.clear",
+                "automatic_execution_blocked": true
+              },
+              "status": "partial",
+              "actions": [],
+              "privacy": {
+                "trainer_visible": false,
+                "raw_notes_included": false,
+                "raw_prompts_included": false,
+                "domain_writes_allowed": false,
+                "private_chat_included": false
+              },
+              "summary": "Je analyse van de opgeslagen meetpunten staat klaar. Dit is een deterministische stagingtest.",
+              "comparison": {
+                "reason": "same_exercise_set",
+                "current": {
+                  "id": "ceb98e91-1e69-4b2d-a217-9c4814b4755f",
+                  "completed_at": "2026-09-06T12:52:12.292917+00:00",
+                  "elapsed_seconds": 3600
+                },
+                "previous": {
+                  "id": "65c53d83-4862-489d-9e21-354ca305af22",
+                  "completed_at": "2026-08-30T12:52:12.292917+00:00",
+                  "elapsed_seconds": 3600
+                },
+                "available": true,
+                "exercises": [
+                  {
+                    "key": "slug:squat",
+                    "label": "squat",
+                    "current": {
+                      "rir": 1,
+                      "rpe": 8,
+                      "reps": 20,
+                      "sets": 2,
+                      "volume_kg": 700,
+                      "max_weight_kg": 35,
+                      "reps_observations": 2,
+                      "weight_observations": 2
+                    },
+                    "previous": {
+                      "rir": 2,
+                      "rpe": 7,
+                      "reps": 20,
+                      "sets": 2,
+                      "volume_kg": 600,
+                      "max_weight_kg": 30,
+                      "reps_observations": 2,
+                      "weight_observations": 2
+                    },
+                    "volume_change": "higher"
+                  }
+                ],
+                "duration_kind": "elapsed_including_pauses",
+                "exercise_limit": 20,
+                "interpretation": "observed_performance_not_fatigue_diagnosis",
+                "active_duration_available": false
+              },
+              "suggestions": [
+                {
+                  "kind": "read_only_reflection",
+                  "text": "Vergelijk alleen gelijksoortige meetpunten. Lagere prestaties bewijzen op zichzelf geen vermoeidheid. Er is geen schema gewijzigd."
+                }
+              ],
+              "data_quality": {
+                "level": "partial",
+                "reliable": true,
+                "domain_count": 1,
+                "missing_sources": [
+                  "recovery",
+                  "nutrition",
+                  "progress"
+                ],
+                "observation_count": 1,
+                "stop_before_provider": false
+              },
+              "feature_code": "post_workout",
+              "observations": [
+                {
+                  "text": "Hieronder staat de vorige relevante voltooide training met de gemeten verschillen.",
+                  "source": "training",
+                  "evidence": [
+                    "completed_workout_pair"
+                  ]
+                }
+              ],
+              "analysis_kind": "post_workout",
+              "uncertainties": [
+                "recovery",
+                "nutrition",
+                "progress"
+              ],
+              "schema_version": "phase6d.analysis.v1"
+            }
+          },
+          {
+            "id": "7dfada63-39ae-4d33-ae64-7db89374e759",
+            "kind": "weekly",
+            "model": "terra",
+            "status": "insufficient_data",
+            "adapter": "mock",
+            "payload": {
+              "mock": true,
+              "period": {
+                "end_local": "2026-09-06",
+                "start_local": "2026-08-31",
+                "timezone_name": "UTC",
+                "max_lookback_days": 30
+              },
+              "safety": {
+                "status": "clear",
+                "category": "none",
+                "message_key": "safety.clear",
+                "automatic_execution_blocked": true
+              },
+              "status": "partial",
+              "actions": [],
+              "privacy": {
+                "trainer_visible": false,
+                "raw_notes_included": false,
+                "raw_prompts_included": false,
+                "domain_writes_allowed": false,
+                "private_chat_included": false
+              },
+              "summary": "Er is nog niet genoeg betrouwbare data voor een analyse.",
+              "suggestions": [
+                {
+                  "kind": "data_quality",
+                  "text": "Nieuwe meetpunten worden meegenomen in een volgende analyse."
+                }
+              ],
+              "data_quality": {
+                "level": "insufficient",
+                "reliable": false,
+                "domain_count": 1,
+                "missing_sources": [
+                  "recovery",
+                  "nutrition",
+                  "progress"
+                ],
+                "observation_count": 1,
+                "stop_before_provider": true
+              },
+              "feature_code": "weekly_checkin",
+              "observations": [],
+              "analysis_kind": "weekly",
+              "uncertainties": [
+                "insufficient_reliable_data"
+              ],
+              "schema_version": "phase6d.analysis.v1"
+            }
+          }
+        ],
+        "notifications": [
+          {
+            "state": "new",
+            "analysis_id": "bcb71cc6-c84f-4f0b-91ae-22375282b021"
+          },
+          {
+            "state": "new",
+            "analysis_id": "bee98e77-bec7-4fd5-b868-1fd29171ad90"
+          },
+          {
+            "state": "new",
+            "analysis_id": "79b9a5b0-f0a5-4873-bc7e-c3915d1fcc7e"
+          },
+          {
+            "state": "new",
+            "analysis_id": "7dfada63-39ae-4d33-ae64-7db89374e759"
+          }
+        ],
+        "cost_micros": "0",
+        "cron_runs": [
+          {
+            "status": "succeeded",
+            "end_time": "2026-09-06T12:53:00.701524+00:00",
+            "start_time": "2026-09-06T12:53:00.02196+00:00",
+            "return_message": "1 row"
+          }
+        ]
+      }
+    ],
+    "repeat_actual_tick": [
+      {
+        "checked_at": "2026-09-06 12:54:43.58259+00",
+        "result_count": 4,
+        "notification_count": 4,
+        "jobs_once": true,
+        "actual_cron_runs": [
+          {
+            "status": "succeeded",
+            "end_time": "2026-09-06T12:54:01.766929+00:00",
+            "start_time": "2026-09-06T12:54:00.11007+00:00"
+          },
+          {
+            "status": "succeeded",
+            "end_time": "2026-09-06T12:53:00.701524+00:00",
+            "start_time": "2026-09-06T12:53:00.02196+00:00"
+          }
+        ]
+      }
+    ],
+    "cleanup": [
+      {
+        "cleaned_at": "2026-09-06 12:59:19.70009+00",
+        "auth_remaining": 0,
+        "profiles_remaining": 0,
+        "workouts_remaining": 0,
+        "sets_remaining": 0,
+        "results_remaining": 0,
+        "jobs_remaining": 0,
+        "notifications_remaining": 0,
+        "runs_remaining": 0,
+        "worker_enabled_mock_only": true
+      }
+    ],
+    "manually_called_worker": false,
+    "email_sent": false,
+    "auth_login_or_token_issued": false,
+    "existing_members_used": false
+  },
+  "member_fingerprints": {
+    "before": [
+      {
+        "content_md5": "45c75f45f2c23c2c26de2440b695cd66",
+        "row_count": 3,
+        "table_name": "ai_private.safety_events"
+      },
+      {
+        "content_md5": "d41d8cd98f00b204e9800998ecf8427e",
+        "row_count": 0,
+        "table_name": "public.ai_analysis_preferences"
+      },
+      {
+        "content_md5": "98bae13ea350e102ac8cf5789a986d90",
+        "row_count": 1,
+        "table_name": "public.ai_analysis_results"
+      },
+      {
+        "content_md5": "7813f35f06bd18b04593c1496327dc5a",
+        "row_count": 3,
+        "table_name": "public.ai_consent_events"
+      },
+      {
+        "content_md5": "22ff6b6339a6d2fb9384b6e13e2f40ab",
+        "row_count": 1,
+        "table_name": "public.ai_member_safety_state"
+      },
+      {
+        "content_md5": "1c11c5aaf485a03fe872545f7423a6fe",
+        "row_count": 24,
+        "table_name": "public.ai_messages"
+      },
+      {
+        "content_md5": "fd360987f95681de974d8ad28ab97391",
+        "row_count": 4,
+        "table_name": "public.ai_threads"
+      },
+      {
+        "content_md5": "7b59177b0bb0137cb502d4f2712d3cc4",
+        "row_count": 1,
+        "table_name": "public.body_measurements"
+      },
+      {
+        "content_md5": "c4d6bf730ba300af0268b29fd18da550",
+        "row_count": 2,
+        "table_name": "public.coach_workspaces"
+      },
+      {
+        "content_md5": "b962df642c4a4dfbdb1a5521fb4d87cd",
+        "row_count": 4,
+        "table_name": "public.entitlements"
+      },
+      {
+        "content_md5": "54243acf4feeb4fca9ec2d50e532dd7b",
+        "row_count": 22,
+        "table_name": "public.food_log_items"
+      },
+      {
+        "content_md5": "9868fc027be0fe4c8c95859ba87984d8",
+        "row_count": 5,
+        "table_name": "public.food_logs"
+      },
+      {
+        "content_md5": "974b9205f725fcf6778e8574c1a6a5e5",
+        "row_count": 3,
+        "table_name": "public.nutrition_targets"
+      },
+      {
+        "content_md5": "bc8dc45ce70a60d92271a0f94f4cbd65",
+        "row_count": 7,
+        "table_name": "public.profiles"
+      },
+      {
+        "content_md5": "44a0c21bbda733b50c63ffe0110fac7f",
+        "row_count": 1,
+        "table_name": "public.recovery_logs"
+      },
+      {
+        "content_md5": "603f9ed62387f36b9a37133e7f4f4781",
+        "row_count": 6,
+        "table_name": "public.training_plans"
+      },
+      {
+        "content_md5": "d182d4d132eb2ec3fff6ce588dd931e1",
+        "row_count": 3,
+        "table_name": "public.user_onboarding"
+      },
+      {
+        "content_md5": "527cc5aacc8ce8e60b83b9014a1082eb",
+        "row_count": 3,
+        "table_name": "public.user_settings"
+      },
+      {
+        "content_md5": "a67260438a7ebfd6f77ca6cc52a6b615",
+        "row_count": 2,
+        "table_name": "public.weight_logs"
+      },
+      {
+        "content_md5": "f3f50a7b2183b507b62c7c42c63f06ef",
+        "row_count": 15,
+        "table_name": "public.workout_sessions"
+      },
+      {
+        "content_md5": "d4d72b0aed695389eaeaafecbd26b14c",
+        "row_count": 15,
+        "table_name": "public.workout_set_logs"
+      }
+    ],
+    "post_migration": [
+      {
+        "content_md5": "45c75f45f2c23c2c26de2440b695cd66",
+        "row_count": 3,
+        "table_name": "ai_private.safety_events"
+      },
+      {
+        "content_md5": "d41d8cd98f00b204e9800998ecf8427e",
+        "row_count": 0,
+        "table_name": "public.ai_analysis_preferences"
+      },
+      {
+        "content_md5": "98bae13ea350e102ac8cf5789a986d90",
+        "row_count": 1,
+        "table_name": "public.ai_analysis_results"
+      },
+      {
+        "content_md5": "7813f35f06bd18b04593c1496327dc5a",
+        "row_count": 3,
+        "table_name": "public.ai_consent_events"
+      },
+      {
+        "content_md5": "22ff6b6339a6d2fb9384b6e13e2f40ab",
+        "row_count": 1,
+        "table_name": "public.ai_member_safety_state"
+      },
+      {
+        "content_md5": "1c11c5aaf485a03fe872545f7423a6fe",
+        "row_count": 24,
+        "table_name": "public.ai_messages"
+      },
+      {
+        "content_md5": "fd360987f95681de974d8ad28ab97391",
+        "row_count": 4,
+        "table_name": "public.ai_threads"
+      },
+      {
+        "content_md5": "7b59177b0bb0137cb502d4f2712d3cc4",
+        "row_count": 1,
+        "table_name": "public.body_measurements"
+      },
+      {
+        "content_md5": "c4d6bf730ba300af0268b29fd18da550",
+        "row_count": 2,
+        "table_name": "public.coach_workspaces"
+      },
+      {
+        "content_md5": "b962df642c4a4dfbdb1a5521fb4d87cd",
+        "row_count": 4,
+        "table_name": "public.entitlements"
+      },
+      {
+        "content_md5": "54243acf4feeb4fca9ec2d50e532dd7b",
+        "row_count": 22,
+        "table_name": "public.food_log_items"
+      },
+      {
+        "content_md5": "9868fc027be0fe4c8c95859ba87984d8",
+        "row_count": 5,
+        "table_name": "public.food_logs"
+      },
+      {
+        "content_md5": "974b9205f725fcf6778e8574c1a6a5e5",
+        "row_count": 3,
+        "table_name": "public.nutrition_targets"
+      },
+      {
+        "content_md5": "bc8dc45ce70a60d92271a0f94f4cbd65",
+        "row_count": 7,
+        "table_name": "public.profiles"
+      },
+      {
+        "content_md5": "44a0c21bbda733b50c63ffe0110fac7f",
+        "row_count": 1,
+        "table_name": "public.recovery_logs"
+      },
+      {
+        "content_md5": "603f9ed62387f36b9a37133e7f4f4781",
+        "row_count": 6,
+        "table_name": "public.training_plans"
+      },
+      {
+        "content_md5": "d182d4d132eb2ec3fff6ce588dd931e1",
+        "row_count": 3,
+        "table_name": "public.user_onboarding"
+      },
+      {
+        "content_md5": "527cc5aacc8ce8e60b83b9014a1082eb",
+        "row_count": 3,
+        "table_name": "public.user_settings"
+      },
+      {
+        "content_md5": "a67260438a7ebfd6f77ca6cc52a6b615",
+        "row_count": 2,
+        "table_name": "public.weight_logs"
+      },
+      {
+        "content_md5": "f3f50a7b2183b507b62c7c42c63f06ef",
+        "row_count": 15,
+        "table_name": "public.workout_sessions"
+      },
+      {
+        "content_md5": "d4d72b0aed695389eaeaafecbd26b14c",
+        "row_count": 15,
+        "table_name": "public.workout_set_logs"
+      }
+    ],
+    "after_cleanup": [
+      {
+        "content_md5": "45c75f45f2c23c2c26de2440b695cd66",
+        "row_count": 3,
+        "table_name": "ai_private.safety_events"
+      },
+      {
+        "content_md5": "d41d8cd98f00b204e9800998ecf8427e",
+        "row_count": 0,
+        "table_name": "public.ai_analysis_preferences"
+      },
+      {
+        "content_md5": "98bae13ea350e102ac8cf5789a986d90",
+        "row_count": 1,
+        "table_name": "public.ai_analysis_results"
+      },
+      {
+        "content_md5": "7813f35f06bd18b04593c1496327dc5a",
+        "row_count": 3,
+        "table_name": "public.ai_consent_events"
+      },
+      {
+        "content_md5": "22ff6b6339a6d2fb9384b6e13e2f40ab",
+        "row_count": 1,
+        "table_name": "public.ai_member_safety_state"
+      },
+      {
+        "content_md5": "1c11c5aaf485a03fe872545f7423a6fe",
+        "row_count": 24,
+        "table_name": "public.ai_messages"
+      },
+      {
+        "content_md5": "fd360987f95681de974d8ad28ab97391",
+        "row_count": 4,
+        "table_name": "public.ai_threads"
+      },
+      {
+        "content_md5": "7b59177b0bb0137cb502d4f2712d3cc4",
+        "row_count": 1,
+        "table_name": "public.body_measurements"
+      },
+      {
+        "content_md5": "c4d6bf730ba300af0268b29fd18da550",
+        "row_count": 2,
+        "table_name": "public.coach_workspaces"
+      },
+      {
+        "content_md5": "b962df642c4a4dfbdb1a5521fb4d87cd",
+        "row_count": 4,
+        "table_name": "public.entitlements"
+      },
+      {
+        "content_md5": "54243acf4feeb4fca9ec2d50e532dd7b",
+        "row_count": 22,
+        "table_name": "public.food_log_items"
+      },
+      {
+        "content_md5": "9868fc027be0fe4c8c95859ba87984d8",
+        "row_count": 5,
+        "table_name": "public.food_logs"
+      },
+      {
+        "content_md5": "974b9205f725fcf6778e8574c1a6a5e5",
+        "row_count": 3,
+        "table_name": "public.nutrition_targets"
+      },
+      {
+        "content_md5": "bc8dc45ce70a60d92271a0f94f4cbd65",
+        "row_count": 7,
+        "table_name": "public.profiles"
+      },
+      {
+        "content_md5": "44a0c21bbda733b50c63ffe0110fac7f",
+        "row_count": 1,
+        "table_name": "public.recovery_logs"
+      },
+      {
+        "content_md5": "603f9ed62387f36b9a37133e7f4f4781",
+        "row_count": 6,
+        "table_name": "public.training_plans"
+      },
+      {
+        "content_md5": "d182d4d132eb2ec3fff6ce588dd931e1",
+        "row_count": 3,
+        "table_name": "public.user_onboarding"
+      },
+      {
+        "content_md5": "527cc5aacc8ce8e60b83b9014a1082eb",
+        "row_count": 3,
+        "table_name": "public.user_settings"
+      },
+      {
+        "content_md5": "a67260438a7ebfd6f77ca6cc52a6b615",
+        "row_count": 2,
+        "table_name": "public.weight_logs"
+      },
+      {
+        "content_md5": "f3f50a7b2183b507b62c7c42c63f06ef",
+        "row_count": 15,
+        "table_name": "public.workout_sessions"
+      },
+      {
+        "content_md5": "d4d72b0aed695389eaeaafecbd26b14c",
+        "row_count": 15,
+        "table_name": "public.workout_set_logs"
+      }
+    ],
+    "unchanged": true
+  },
+  "tests": {
+    "new_rollback_sql": 59,
+    "previous_recovery_sql": 50,
+    "current_6a_contract": 47,
+    "worker_schema_acl": 23,
+    "phase6b_read_only": 36,
+    "phase6d0_read_only": 40,
+    "phase6d_schema": 4,
+    "phase6d0_authorization_sql": 48,
+    "phase6c_transaction_and_safety": "PASS / rollback / fixtures_remaining=0",
+    "phase6d_transaction": "exit 0 / rollback",
+    "workout_event_order": 6,
+    "public_auth_browser": 88,
+    "public_auth_static": 26,
+    "phase6d_static": 17,
+    "phase6d_browser": 48,
+    "chat_analysis_node_handlers": 27,
+    "real_phone_owner_retest": "PENDING",
+    "obsolete_6a_install_verifier_failures": 6,
+    "obsolete_6a_freeze_verifier_failures": 3,
+    "obsolete_verifier_note": "Historical snapshots are not relabelled PASS. A new scoped 47-check current contract plus new 6D objects verifies current authorization."
+  },
+  "edge": {
+    "name": "youri-ai",
+    "version": 43,
+    "status": "ACTIVE",
+    "verify_jwt": true,
+    "redeployed": false,
+    "unauthenticated_analysis_http": 401
+  },
+  "security_advisors": {
+    "before": {
+      "total": 91,
+      "info": 27,
+      "warn": 64,
+      "error": 0
+    },
+    "after": {
+      "total": 96,
+      "info": 28,
+      "warn": 68,
+      "error": 0
+    },
+    "added": [
+      {
+        "name": "rls_enabled_no_policy",
+        "level": "INFO",
+        "detail": "Table \\`ai_private.analysis_jobs\\` has RLS enabled, but no policies exist",
+        "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy"
+      },
+      {
+        "name": "authenticated_security_definer_function_executable",
+        "level": "WARN",
+        "detail": "Function `public.fmz_phase6d_get_inbox()` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/fmz_phase6d_get_inbox`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+        "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable"
+      },
+      {
+        "name": "authenticated_security_definer_function_executable",
+        "level": "WARN",
+        "detail": "Function `public.fmz_phase6d_mark_notification(p_analysis_id uuid, p_action text)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/fmz_phase6d_mark_notification`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+        "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable"
+      },
+      {
+        "name": "authenticated_security_definer_function_executable",
+        "level": "WARN",
+        "detail": "Function `public.fmz_phase6d_read_analysis(p_result_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/fmz_phase6d_read_analysis`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+        "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable"
+      },
+      {
+        "name": "authenticated_security_definer_function_executable",
+        "level": "WARN",
+        "detail": "Function `public.fmz_phase6d_sync_device_timezone(p_timezone_name text)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/fmz_phase6d_sync_device_timezone`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+        "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable"
+      }
+    ],
+    "existing_open": [
+      {
+        "name": "function_search_path_mutable",
+        "detail": "Function \\`public.touch_updated_at\\` has a role mutable search_path",
+        "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0011_function_search_path_mutable"
+      },
+      {
+        "name": "auth_leaked_password_protection",
+        "detail": "Supabase Auth prevents the use of compromised passwords by checking against HaveIBeenPwned.org. Enable this feature to enhance security.",
+        "remediation": "https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection"
+      }
+    ]
+  },
+  "performance_advisors": {
+    "unindexed_foreign_keys_info": 16,
+    "unused_index_info": 34,
+    "auth_rls_initplan_warn": 47,
+    "new_table_notices": [],
+    "errors": 0
+  },
+  "local_rebuild": {
+    "postgres": "18.6",
+    "applied": 22,
+    "skipped": 7,
+    "last_applied": "20260902045834_phase6b_provider_privacy_cost_gate.sql",
+    "object_rls_snapshot_pass": 15,
+    "skip_reason": "local_pg_cron_extension_missing; Docker unavailable",
+    "full_29_replay_proven": false,
+    "zero_full_schema_diff_proven": false,
+    "cluster_stopped": true,
+    "kept_temp": "C:\\Users\\Fitme\\AppData\\Local\\Temp\\fmz-local-rebuild-YsUaP4",
+    "deleted": false
+  },
+  "one_drive": {
+    "pending_971_complete_manifest_available": false,
+    "filesystem_deletions_performed": 0,
+    "items_retained": true,
+    "known_prior_paths": [
+      "C:\\Users\\Fitme\\OneDrive\\Documenten\\Fit Met Zorge\\Zip github fitmetzorge staging\\fitmetzorge-staging-main\\supabase\\.temp\\phase4fb-staging-deploy\\supabase\\.temp\\local-rebuild-tc26YR",
+      "C:\\Users\\Fitme\\OneDrive\\Documenten\\Fit Met Zorge\\Zip github fitmetzorge staging\\fitmetzorge-staging-main\\supabase\\.temp\\phase4fb-staging-deploy\\supabase\\.temp\\local-rebuild-YIC31o"
+    ]
+  },
+  "boundaries": {
+    "external_ai_calls": 0,
+    "external_ai_cost_eur": 0,
+    "existing_member_data_modified_for_tests": false,
+    "confirmation_email_sent": false,
+    "brevo_investigation": false,
+    "manual_confirmation": false,
+    "real_trainer_role_or_link_added": false,
+    "billing_or_payment": false,
+    "production": false
+  },
+  "follow_up": {
+    "owner_phone_retest": "Report section 10, cases 1-47",
+    "billing": "Phase 7 / Instellingen > Abonnement",
+    "real_os_push": "Phase 8 policy + Phase 12 mobile/PWA infrastructure",
+    "local_full_replay": "Supabase-compatible local pg_cron runtime required",
+    "provider_activation": "Separate legal/privacy/provider approval",
+    "owner_accepted_or_frozen": false
+  }
+}

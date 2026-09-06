@@ -3,6 +3,20 @@
 Date: 2026-09-04. Scope: staging only, mokxyyullfhkfalopbzd.
 Status: DEPLOYED / LIVE TECHNICAL PASS / OWNER MAIL RECEIVED.
 
+## Owner Retest Hotfix 2 Regression Receipt - 2026-09-06
+
+Public Auth remains PASS. Runtime 2e1fd983385ad360632667c954d7f63725555b3c and
+cache 20260906-owner-hotfix2 are live; 39 checked assets match the commit. Public
+routes at 320x700, 390x844, 820x1180 and 1440x900 have zero console/page errors and
+zero mutating requests. Auth assembled browser 88/88 and focused static 26/26 pass.
+No new confirmation email was sent, no Brevo investigation was run, and no existing
+account was manually confirmed or given a trainer role/link. The received email outcome
+is retained; account confirmation state is not re-inferred from historical observations.
+The isolated cron proof used one raw synthetic Auth fixture, no email or login token,
+and was completely removed. See PACKAGE6D_OWNER_RETEST_HOTFIX2_REPORT.md.
+Earlier runtime hashes and untouched-training statements below describe the original
+Auth hotfix, not the later approved Phase 3 final-set flush integration.
+
 ## Root Cause
 
 The legacy renderAll dispatches every dashboard renderer, including Progress, without

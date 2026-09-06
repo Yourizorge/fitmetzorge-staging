@@ -1,6 +1,6 @@
 # Package 6D Read-Only Analyses - Architecture And Readiness
 
-Status: PACKAGE 6D COMBINED OWNER UX/SAFETY HOTFIX - READY FOR OWNER RETEST
+Status: PACKAGE 6D OWNER UX HOTFIX 2 - READY FOR OWNER RETEST
 
 Date: 2026-09-04 audit; 2026-09-06 implementation addendum.
 Scope: Yourizorge/fitmetzorge-staging / main; Supabase mokxyyullfhkfalopbzd only.
@@ -10,7 +10,22 @@ The original sections below are the 2026-09-04 readiness audit. The owner later 
 the initial scope and authorized a mock-only staging implementation; current technical
 evidence is in `docs/PACKAGE6D_READ_ONLY_ANALYSES_TECHNICAL_REPORT.md`.
 
-## Combined Owner Hotfix - Current
+## Owner Retest Hotfix 2 - Current
+
+Runtime 2e1fd983385ad360632667c954d7f63725555b3c, cache 20260906-owner-hotfix2.
+Migration 20260906092905 makes daily/post-workout/weekly generation truly automatic
+through an enabled deterministic DB mock worker. Actual cron executions produced four
+synthetic results and notifications with no duplicate; all synthetic rows were removed.
+Own-user exact-ID detail, Now/Later inbox, bounded dashboard/history, single-column chat,
+vertical settings, device timezone and NL/GB/DE flags are live. Existing safety recovery
+and approved draggable avatar are preserved. Luna/Terra are recorded routes only, with
+zero external provider calls/cost and no domain writes or trainer private access.
+29/29 migrations, dry-run clean, SQL 59/59, current trust verifier 47/47, worker 23/23,
+owner browser 323/323 including a fresh checkout; 21 member hashes unchanged.
+See PACKAGE6D_OWNER_RETEST_HOTFIX2_REPORT.md and its evidence JSON for exact retest,
+advisor findings and the 22/29 local-replay limitation. Not owner-accepted/frozen.
+
+## Combined Owner Hotfix - Historical Hotfix 1
 
 The later combined hotfix adds explicit revision-bound recovery, separate private-chat
 consent, central settings/planning/language and the existing approved floating avatar.

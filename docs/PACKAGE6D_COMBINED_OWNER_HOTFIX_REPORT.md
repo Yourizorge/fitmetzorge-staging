@@ -1,5 +1,10 @@
 # Package 6D Combined Owner Hotfix Technical Report
 
+Historical hotfix-1 receipt. The current owner-authorized follow-up is
+[Package 6D owner retest hotfix 2](PACKAGE6D_OWNER_RETEST_HOTFIX2_REPORT.md), with
+automatic mock delivery, inbox/detail, renewed chat and vertical settings. Its status
+is READY FOR OWNER RETEST, not accepted/frozen. Evidence below is preserved historically.
+
 Date: 2026-09-06. Staging only: Yourizorge/fitmetzorge-staging, main,
 Supabase mokxyyullfhkfalopbzd.
 

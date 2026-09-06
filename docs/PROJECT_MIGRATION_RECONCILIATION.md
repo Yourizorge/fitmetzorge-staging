@@ -4,7 +4,33 @@ Date: 2026-09-04. Target: staging `mokxyyullfhkfalopbzd` only.
 Result: RESOLVED / VERIFIED. Later Package 6D work appended forward-only migrations
 without reopening the historical repair.
 
-## Combined Owner Hotfix Addendum - 2026-09-06
+## Owner Retest Hotfix 2 Addendum - 2026-09-06
+
+Forward-only 20260906092905_phase6d_automatic_inbox.sql is applied to staging only.
+Current chain is 29 local / 29 live, including a clean fresh-clone migration list and
+db push --dry-run --skip-vault (upToDate=true, empty migrations/seeds/roles). No historical
+repair, SQL replay, remote reset or source baseline rewrite was performed in this task.
+The worker was enabled only after transactional tests and frontend asset verification;
+actual cron processing and complete synthetic cleanup are recorded in
+PACKAGE6D_OWNER_RETEST_HOTFIX2_REPORT.md. All 21 checked member-table hashes/counts match
+before/after migration and after the committed cron fixture was removed.
+
+Fresh committed checkout: runtime 2e1fd983385ad360632667c954d7f63725555b3c,
+supabase/.temp/hf2-fresh-checkout. Windows core.longpaths=true is clone-local; without
+it Git emits Filename too long/misleading modified-file status. With it the checkout
+is clean and the assembled browser passes 323/323. No canonical SQL was rewritten.
+
+Local PostgreSQL 18.6 rebuild with --keep-temp applied 22 migrations through
+20260902045834; seven 6C/6D migrations were explicitly skipped for missing pg_cron.
+Docker is unavailable. This is not full 29-migration replay or zero schema-diff proof.
+The database was stopped and the generated cluster was retained outside OneDrive at
+C:\Users\Fitme\AppData\Local\Temp\fmz-local-rebuild-YsUaP4.
+No PostgreSQL filesystem deletion occurred; the full 971-item OneDrive deletion
+manifest remains unavailable, so no pending item is certified disposable. Exact known
+paths and next verification boundary are in the new report. The historical 25-row
+reconciliation manifest below is preserved, not retrospectively treated as 29-row evidence.
+
+## Combined Owner Hotfix Addendum - Historical Hotfix 1
 
 The reviewed additive 20260906080455_phase6d_owner_safety_settings.sql follows the
 original 25 and two initial 6D migrations: current list is 28 local / 28 remote.
