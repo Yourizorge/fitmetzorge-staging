@@ -1,5 +1,11 @@
 # Package 6D Read-Only Analyses Technical Report
 
+Current follow-up: the combined owner UX/safety hotfix is READY FOR OWNER RETEST.
+See [current technical report](PACKAGE6D_COMBINED_OWNER_HOTFIX_REPORT.md) for explicit
+recovery, central settings, independent private-chat consent, floating avatar/chat,
+28/28 migration history and Edge v43. The initial implementation receipt below remains
+historical evidence, not the latest runtime/cache.
+
 Date: 2026-09-06. Scope: staging only, `Yourizorge/fitmetzorge-staging` branch `main`,
 Supabase project `mokxyyullfhkfalopbzd`. Production remains forbidden and untouched.
 

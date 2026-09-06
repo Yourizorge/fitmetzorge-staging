@@ -16,8 +16,8 @@ console errors or mutating requests; 88 assembled-browser, 26 focused static and
 Project-wide migration reconciliation remains RESOLVED. The original 25/25 history
 repair fixed the 19 older timestamp differences, duplicate old `20260819` conflict,
 three missing live-history registrations and missing Phase 1-3/source SQL through a
-safe forward-only baseline. Package 6D then added two new forward-only migrations;
-the canonical chain is now synchronized at 27 Git migrations and 27 live history rows.
+safe forward-only baseline. Package 6D and its combined owner hotfix added three forward-only migrations;
+the canonical chain is now synchronized at 28 Git migrations and 28 live history rows.
 No historical SQL replay, remote reset, destructive reconstruction or member-data
 rewrite occurred. `supabase migration list` and `db push --dry-run --skip-vault` are
 clean for staging. See [migration audit](PROJECT_MIGRATION_RECONCILIATION.md).
@@ -34,10 +34,11 @@ clean for staging. See [migration audit](PROJECT_MIGRATION_RECONCILIATION.md).
 - Phase 0B Storage verification: COMPLETE
 - Master Plan Specification: COMPLETE
 - Master Plan Final Review: COMPLETE
-- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6C COMPLETE / OWNER-ACCEPTED / FROZEN; PACKAGE 6D MOCK-ONLY READ-ONLY ANALYSES TECHNICAL PASS / OWNER TESTING PENDING
+- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6C COMPLETE / OWNER-ACCEPTED / FROZEN; PACKAGE 6D COMBINED OWNER UX/SAFETY HOTFIX - READY FOR OWNER RETEST
 - Production Migration: NOT STARTED
 
-Current next step: owner real-phone test of Package 6D inside Youri AI > Analyses.
+Current next step: owner real-phone retest of explicit recovery, central
+Instellingen > AI, saved scheduling/language and the floating Youri AI chat.
 Package 6D is implemented on staging as a mock-only, read-only analysis surface for
 daily, post-workout and weekly analyses, with separate `ai_analysis` consent, no
 trainer access, no private-chat context, no domain writes, no provider call and EUR
@@ -45,6 +46,22 @@ trainer access, no private-chat context, no domain writes, no provider call and 
 provider activation and production remain blocked. See
 `docs/PACKAGE6D_READ_ONLY_ANALYSES_TECHNICAL_REPORT.md` and
 `docs/PHASE6D_READ_ONLY_ANALYSES_READINESS.md`.
+
+## Combined Owner Hotfix - 2026-09-06
+
+Status: PACKAGE 6D COMBINED OWNER UX/SAFETY HOTFIX - READY FOR OWNER RETEST.
+Runtime a9f14d9306eee17bd44033132a3d95e20e447428; cache 20260906-owner-hotfix1;
+Edge youri-ai v43, JWT enabled. New migration 20260906080455, 28/28 history, clean
+dry-run. New SQL 50/50, assembled owner browser 196/196, handlers 27/27, selected
+frozen regressions and live public routes PASS. Thirteen live assets match the commit.
+All 21 checked member-table fingerprints/counts are unchanged; fixtures remaining zero.
+No external AI calls/cost, silent member recovery, new email, billing or production.
+Full report and exact retest: [combined hotfix](PACKAGE6D_COMBINED_OWNER_HOTFIX_REPORT.md).
+
+The new private_chat purpose requires explicit member consent, without backfill.
+Recovery applies only to its confirmed safety revision, not historical/action safety.
+Full local rebuild/diff still needs Docker/pg_cron. Account deletion, Phase 7 billing
+and legal/provider activation remain separate gates.
 
 ## Environment Guardrail
 

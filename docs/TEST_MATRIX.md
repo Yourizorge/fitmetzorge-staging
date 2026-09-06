@@ -1,9 +1,9 @@
 # FitMetZorge Test Matrix
 
 Status: MASTER PLAN COVERAGE MATRIX
-Latest execution: 2026-09-06 Package 6D mock-only read-only analyses technical pass,
+Latest execution: 2026-09-06 combined Package 6D owner UX/safety hotfix,
 after the public Auth hotfix and project migration reconciliation. Migration history
-is synchronized 27/27; `db push --dry-run --skip-vault` is clean. Public Auth hotfix
+is synchronized 28/28; `db push --dry-run --skip-vault` is clean. Public Auth hotfix
 checks remain valid, the owner received the confirmation email, and no new resend,
 Brevo investigation, manual confirmation, trainer role or trainer link was performed.
 Last updated: 2026-09-06
@@ -14,7 +14,7 @@ public routes at 320x700, 390x844, tablet and desktop: zero console/page errors,
 zero mutating requests. The owner later received the new account confirmation email.
 
 Project migration gate: PASS for staging. Official CLI `migration list` is synchronized
-at 27 local / 27 remote rows after the two Package 6D migrations; `db push --dry-run
+at 28 local / 28 remote rows after Package 6D and the owner hotfix; `db push --dry-run
 --skip-vault` reports the remote database is up to date. The original 19 timestamp
 drifts are renamed to canonical live versions, the duplicate old `20260819` conflict is
 gone, the missing Phase 1-3/source SQL is covered by a forward-only source baseline,
@@ -24,6 +24,34 @@ local `pg_cron` extension. Details are in
 PROJECT_MIGRATION_RECONCILIATION.md and PROJECT_MIGRATION_RECONCILIATION_MANIFEST.json.
 
 This matrix records the required functional, security, entitlement, AI, migration, and release checks for the Master Build. No implementation tests are executed by this document.
+
+## Combined Owner Hotfix Execution
+
+READY FOR OWNER RETEST, not owner-accepted/frozen. See
+[report and owner checks 1-50 mapping](PACKAGE6D_COMBINED_OWNER_HOTFIX_REPORT.md)
+and PACKAGE6D_COMBINED_OWNER_HOTFIX_EVIDENCE.json.
+
+| Suite / layer | Result |
+| --- | --- |
+| Hotfix live rollback SQL | 50/50 |
+| Live 6D metadata verifier | 13/13 |
+| 6C live transaction and safety | PASS; zero fixtures |
+| 6D0 live authorization | 48/48 |
+| 6D live transactional | exit 0, rollback |
+| Owner assembled browser, synthetic RPC/Auth/Edge | 196/196, four viewports |
+| 6D / 6D0 / 6C browsers | 48/48, 41/41, 85/85 |
+| Public Auth assembled browser | 88/88; no real email |
+| Phase 5 / 6A / 6B / 6C / 6D static | 116/116, 93/93, 98/98, 117/117, 17/17 |
+| Auth static + parse | 26/26 |
+| 6C + 6D Node handlers | 27/27 |
+| Live public frontend | four sizes, zero errors/writes, 13 identical assets |
+| Migration list / dry-run | 28/28, no pending migration/seed/role |
+| Member hashes + row counts | 21/21 unchanged |
+
+Touch/mouse/keyboard, bounds, separate consent, explicit recovery, nested focus,
+delayed-auth deep-link refresh and password sequences are covered in assembled tests.
+Real authenticated phone/password behavior still needs owner retest. Full Docker/
+pg_cron rebuild and full schema diff are not claimed. Earlier receipts are historical.
 
 ## Test Status Values
 

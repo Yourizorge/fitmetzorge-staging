@@ -1,6 +1,6 @@
 # Package 6D Read-Only Analyses - Architecture And Readiness
 
-Status: AUDIT COMPLETE / OWNER DECISIONS LOCKED / MOCK-ONLY IMPLEMENTATION TECHNICAL PASS / OWNER TESTING PENDING
+Status: PACKAGE 6D COMBINED OWNER UX/SAFETY HOTFIX - READY FOR OWNER RETEST
 
 Date: 2026-09-04 audit; 2026-09-06 implementation addendum.
 Scope: Yourizorge/fitmetzorge-staging / main; Supabase mokxyyullfhkfalopbzd only.
@@ -9,6 +9,16 @@ Package 6C: COMPLETE / OWNER-ACCEPTED / FROZEN.
 The original sections below are the 2026-09-04 readiness audit. The owner later locked
 the initial scope and authorized a mock-only staging implementation; current technical
 evidence is in `docs/PACKAGE6D_READ_ONLY_ANALYSES_TECHNICAL_REPORT.md`.
+
+## Combined Owner Hotfix - Current
+
+The later combined hotfix adds explicit revision-bound recovery, separate private-chat
+consent, central settings/planning/language and the existing approved floating avatar.
+Current evidence: migration 20260906080455, 28/28 chain, Edge v43, owner browser 196/196,
+hotfix SQL 50/50, handlers 27/27, no external calls/cost or changed member fingerprints.
+See PACKAGE6D_COMBINED_OWNER_HOTFIX_REPORT.md for evidence, limitations and exact retest.
+Package 6D is not accepted/frozen. Initial implementation/audit sections below are
+historical where superseded.
 
 ## Implementation Addendum - 2026-09-06
 

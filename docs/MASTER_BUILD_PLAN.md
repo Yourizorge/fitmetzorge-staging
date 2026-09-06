@@ -35,8 +35,8 @@ The project-wide migration reconciliation gate is RESOLVED for staging. The 19 o
 timestamp differences are renamed to canonical live migration versions, the duplicate
 old `20260819` conflict is removed, the missing Phase 1-3/source SQL is represented by
 a forward-only source baseline, and the four previously local-only versions were marked
-applied as history metadata only. Package 6D adds two later forward-only migrations,
-so the current canonical chain is synchronized at 27 local and 27 remote rows. No
+applied as history metadata only. Package 6D and its combined owner hotfix add three later forward-only migrations,
+so the current canonical chain is synchronized at 28 local and 28 remote rows. No
 historical SQL replay, member-data rewrite, remote reset or production access occurred.
 Official migration list and `db push --dry-run --skip-vault` are clean for staging;
 local rebuild PASSes through Phase 6B and full local 6C/6D0/6D replay still needs a
@@ -53,6 +53,26 @@ context, no domain writes, no real provider calls, Luna/Terra routing policy rec
 but inactive, and shared 6A budget gates. See
 PACKAGE6D_READ_ONLY_ANALYSES_TECHNICAL_REPORT.md. Real-member external provider
 activation remains forbidden until the separate legal/provider gate passes.
+
+## Combined Owner UX/Safety Contract - 2026-09-06
+
+The owner-approved combined 6D hotfix is implemented on staging and READY FOR OWNER
+RETEST, not accepted/frozen. It adds revision-bound explicit analysis recovery without
+clearing historical/action safety; persistent own-user planning; central Account,
+Privacy/data, Time/date, Language, AI, Subscription and Legal settings; independent
+private_chat consent; NL/EN/DE quick choice; and the unchanged approved floating avatar
+opening the same chat. Bottom AI navigation is removed, deep links remain. Read-only/
+mock-only, zero provider calls/cost and no trainer private access remain hard boundaries.
+See PACKAGE6D_COMBINED_OWNER_HOTFIX_REPORT.md.
+
+Phase 7 owns the central Subscription destination: upgrade/downgrade, cancellation,
+monthly/annual plans, payment details and invoices; provider/webhook verification,
+idempotence and reconciliation must precede any successful billing UI.
+A separate mandatory account privacy/security gate must establish reauthentication,
+session revocation, retention/legal holds, audit minimization, domain/storage deletion
+and verified retries before exposing account deletion. Draft legal destinations are not
+approval. An unattended mock-analysis dispatcher remains an operational gate; saved
+settings and due-selection tests do not assert background delivery is running.
 
 ## Strategic Product Addendum - 2026-08-31
 

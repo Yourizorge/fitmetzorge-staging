@@ -1,0 +1,1165 @@
+{
+  "schema_version": "phase6d.owner-hotfix.evidence.v1",
+  "date": "2026-09-06",
+  "scope": {
+    "repository": "Yourizorge/fitmetzorge-staging",
+    "branch": "main",
+    "supabase_project_ref": "mokxyyullfhkfalopbzd",
+    "production_touched": false
+  },
+  "initial_head": "79f9c587f31cc766f0d24f5597fbcaecfe35ff20",
+  "runtime_commit": "a9f14d9306eee17bd44033132a3d95e20e447428",
+  "verification_commit": "f6e5b0ba3202742b72c7a72c09b64564a7d25945",
+  "migration": {
+    "applied_once": "20260906080455_phase6d_owner_safety_settings.sql",
+    "local_count": 28,
+    "remote_count": 28,
+    "history_synchronized": true,
+    "history_repairs_this_hotfix": 0,
+    "files": [
+      "20260812000000_legacy_phase1_3_source_baseline.sql",
+      "20260813_trainer_signup_bootstrap.sql",
+      "20260818_phase4_nutrition_schema_slice1.sql",
+      "20260819134024_phase4_nutrition_slice3_atomic_log_item_replacement.sql",
+      "20260819163738_phase4_nutrition_slice4b_alias_search.sql",
+      "20260819175756_phase4_nutrition_slice4c_operational_state.sql",
+      "20260820082018_phase4_nutrition_slice4d_provider_snapshot_logging.sql",
+      "20260820150513_phase4_nutrition_slice4d_historical_provider_resolver.sql",
+      "20260822172635_phase4_nutrition_slice4e_ingestion_alias_search.sql",
+      "20260824113551_phase4_nutrition_slice4f_off_catalog_search.sql",
+      "20260826143000_phase4_nutrition_slice4fc_off_authoritative_logging.sql",
+      "20260827125343_phase4_nutrition_slice4fd_transient_off_barcode.sql",
+      "20260827152727_phase4_nutrition_slice4fd_transient_off_parent_context_fix.sql",
+      "20260831145357_phase5_progress_foundation.sql",
+      "20260831150434_phase5_progress_unit_preference.sql",
+      "20260831153512_phase5_progress_revision_indexes.sql",
+      "20260901161314_phase5_unit_system_constraint_fix.sql",
+      "20260901183914_phase6a_ai_trust_foundation.sql",
+      "20260901184418_phase6a_ai_consent_event_ordering.sql",
+      "20260901190328_phase6a_pgcrypto_search_path.sql",
+      "20260901191328_phase6a_foreign_key_indexes.sql",
+      "20260902045834_phase6b_provider_privacy_cost_gate.sql",
+      "20260903085454_phase6c_private_ai_chat.sql",
+      "20260903125150_phase6c_request_scoped_safety.sql",
+      "20260904105918_phase6d0_legacy_authorization_gate.sql",
+      "20260904230850_phase6d_read_only_ai_analyses.sql",
+      "20260904235253_phase6d_analysis_lifecycle_safe_code_fix.sql",
+      "20260906080455_phase6d_owner_safety_settings.sql"
+    ],
+    "dry_run": {
+      "upToDate": true,
+      "migrations": [],
+      "seeds": [],
+      "roles": []
+    }
+  },
+  "data_preservation": {
+    "method": "Sorted to_jsonb(row)::text MD5 plus counts, exact same SQL before/after",
+    "checked_table_count": 21,
+    "all_counts_and_hashes_equal": true,
+    "tables": [
+      {
+        "content_md5": "9da8316fae1c62f7e3ec1ebb3999be2f",
+        "row_count": 2,
+        "table_name": "ai_private.safety_events"
+      },
+      {
+        "content_md5": "d41d8cd98f00b204e9800998ecf8427e",
+        "row_count": 0,
+        "table_name": "public.ai_analysis_preferences"
+      },
+      {
+        "content_md5": "d41d8cd98f00b204e9800998ecf8427e",
+        "row_count": 0,
+        "table_name": "public.ai_analysis_results"
+      },
+      {
+        "content_md5": "89eed9077ddf0e2c596d7239f79f1e76",
+        "row_count": 2,
+        "table_name": "public.ai_consent_events"
+      },
+      {
+        "content_md5": "8accf94c9a262f7bf11dbc3ea0ff3469",
+        "row_count": 1,
+        "table_name": "public.ai_member_safety_state"
+      },
+      {
+        "content_md5": "4157557c453784a7fc8928ba8b681f7d",
+        "row_count": 20,
+        "table_name": "public.ai_messages"
+      },
+      {
+        "content_md5": "e8be41b711c76ff6733989bc9806eb56",
+        "row_count": 4,
+        "table_name": "public.ai_threads"
+      },
+      {
+        "content_md5": "7b59177b0bb0137cb502d4f2712d3cc4",
+        "row_count": 1,
+        "table_name": "public.body_measurements"
+      },
+      {
+        "content_md5": "c4d6bf730ba300af0268b29fd18da550",
+        "row_count": 2,
+        "table_name": "public.coach_workspaces"
+      },
+      {
+        "content_md5": "5d29e89749ff5fdc8863f3dedc1398fd",
+        "row_count": 4,
+        "table_name": "public.entitlements"
+      },
+      {
+        "content_md5": "54243acf4feeb4fca9ec2d50e532dd7b",
+        "row_count": 22,
+        "table_name": "public.food_log_items"
+      },
+      {
+        "content_md5": "9868fc027be0fe4c8c95859ba87984d8",
+        "row_count": 5,
+        "table_name": "public.food_logs"
+      },
+      {
+        "content_md5": "974b9205f725fcf6778e8574c1a6a5e5",
+        "row_count": 3,
+        "table_name": "public.nutrition_targets"
+      },
+      {
+        "content_md5": "8e30b4be5dbb06834c37487457170337",
+        "row_count": 7,
+        "table_name": "public.profiles"
+      },
+      {
+        "content_md5": "44a0c21bbda733b50c63ffe0110fac7f",
+        "row_count": 1,
+        "table_name": "public.recovery_logs"
+      },
+      {
+        "content_md5": "603f9ed62387f36b9a37133e7f4f4781",
+        "row_count": 6,
+        "table_name": "public.training_plans"
+      },
+      {
+        "content_md5": "997e8ec39a09fa2e09b9ae129dfa5a8b",
+        "row_count": 3,
+        "table_name": "public.user_onboarding"
+      },
+      {
+        "content_md5": "65b538b014ca67c745a5df2b6760226b",
+        "row_count": 3,
+        "table_name": "public.user_settings"
+      },
+      {
+        "content_md5": "a67260438a7ebfd6f77ca6cc52a6b615",
+        "row_count": 2,
+        "table_name": "public.weight_logs"
+      },
+      {
+        "content_md5": "ad37d3149cec592893615ec171536f5a",
+        "row_count": 15,
+        "table_name": "public.workout_sessions"
+      },
+      {
+        "content_md5": "d4d72b0aed695389eaeaafecbd26b14c",
+        "row_count": 15,
+        "table_name": "public.workout_set_logs"
+      }
+    ],
+    "remaining_hotfix_auth_fixtures": 0,
+    "remaining_hotfix_profile_fixtures": 0,
+    "new_ui_preference_rows": 0,
+    "new_recovery_rows": 0,
+    "no_real_member_rows_changed_by_tests_or_migration": true
+  },
+  "provider": {
+    "external_calls": 0,
+    "external_cost_eur": 0,
+    "external_provider_enabled": false,
+    "mock_only": true,
+    "automatic_generation_dispatcher_activated": false
+  },
+  "edge": {
+    "slug": "youri-ai",
+    "version": 43,
+    "status": "ACTIVE",
+    "verify_jwt": true,
+    "bundle_sha256": "627c883a9b001e6215d101c827f96fbb94825c7f1437077088ec09fbba7460c6",
+    "unauthenticated_chat_http": 401,
+    "unauthenticated_analysis_http": 401
+  },
+  "frontend": {
+    "overall_pass": true,
+    "commit": "a9f14d9306eee17bd44033132a3d95e20e447428",
+    "cache": "20260906-owner-hotfix1",
+    "files": [
+      {
+        "file": "index.html",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "4869798a53671ae1b1d08e0ff46485ae2d9a0fb08f37d5a74e43be395904525d"
+      },
+      {
+        "file": "app.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "e711dfb3f451f4753d5124b23cfa0d009b2a0e3e72f7d2645ceeba39e733d77b"
+      },
+      {
+        "file": "app.bundle.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "9c92c4e7257c20f85c41641a494228446bbd7d035f464a705aa386e1246e76e0"
+      },
+      {
+        "file": "assets/phase1-foundation.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "f275ad98e4680f4e4436858911fc5800e39a4094ab144ec78d0a92adb75addf6"
+      },
+      {
+        "file": "assets/phase5-progress.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "b47b9ac07d1b21a9aad014d824e398690546e385eed7c249a98e95564d704b7b"
+      },
+      {
+        "file": "assets/phase6d0-legacy-auth.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "fdaca0d3637ca2dcd36fad7a3698ff6c4edae709c582ef3c6709530e2012d4e3"
+      },
+      {
+        "file": "assets/phase6c-private-ai-chat.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "e7a7f4857cb6e5b969a4d3f719ca0bad06c7bb3ef8b0274d2d9580308f14f0ad"
+      },
+      {
+        "file": "assets/phase6d-owner-settings.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "ca05185d9916365ab1bc3748793c5260aa0524c60bbbcaf57d16f35c901a29ea"
+      },
+      {
+        "file": "assets/phase6d-owner-settings.css",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "ec01925fbae7ac8549d3e9a574dd7ccf1397bff7390c9b5bf074abd91970eca4"
+      },
+      {
+        "file": "assets/youri-ai-avatar-3d-v3-256.webp",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "257f31e6fe4faa7fecf5fb9874eed06d4018dc8c60958aa714e7d4b79a7517dc"
+      },
+      {
+        "file": "assets/vendor/lucide-settings.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "ceea1a72d04b112291222ba9ad0779a12d47d816079fe4174900c724f360b55c"
+      },
+      {
+        "file": "assets/vendor/lucide-globe.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "c3543ac3883a0841aa5d37ff974708fbc37d9c6afe64e14b03d56ed798b0b788"
+      },
+      {
+        "file": "assets/vendor/lucide-x.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "0f38855d9d5775c10960ae53e46b745f77914b43f78c43bf8abc39f4d5e06de1"
+      }
+    ],
+    "viewports": [
+      {
+        "width": 320,
+        "height": 700,
+        "public": true,
+        "resendButtons": 2,
+        "memberNavEmpty": true,
+        "errors": 0,
+        "mutatingRequests": 0
+      },
+      {
+        "width": 390,
+        "height": 844,
+        "public": true,
+        "resendButtons": 2,
+        "memberNavEmpty": true,
+        "errors": 0,
+        "mutatingRequests": 0
+      },
+      {
+        "width": 820,
+        "height": 1180,
+        "public": true,
+        "resendButtons": 2,
+        "memberNavEmpty": true,
+        "errors": 0,
+        "mutatingRequests": 0
+      },
+      {
+        "width": 1440,
+        "height": 900,
+        "public": true,
+        "resendButtons": 2,
+        "memberNavEmpty": true,
+        "errors": 0,
+        "mutatingRequests": 0
+      }
+    ],
+    "databaseMutation": false
+  },
+  "tests": {
+    "new_sql": 50,
+    "live_schema": 13,
+    "authorization_sql": 48,
+    "existing_chat_sql": true,
+    "request_scoped_safety_sql": true,
+    "existing_analysis_sql_exit_code": 0,
+    "existing_browser": {
+      "phase6c": 85,
+      "phase6d0": 41,
+      "phase6d": 48,
+      "public_auth": 88
+    },
+    "static": {
+      "phase5": 116,
+      "phase6a": 93,
+      "phase6b": 98,
+      "phase6c": 117,
+      "phase6d": 17,
+      "public_auth": 26
+    },
+    "node_handlers": 27,
+    "owner_browser": {
+      "overall_pass": true,
+      "pass_count": 196,
+      "checks": [
+        {
+          "name": "320 auth hides avatar",
+          "pass": true
+        },
+        {
+          "name": "320 AI removed from bottom nav",
+          "pass": true
+        },
+        {
+          "name": "320 top gear and language visible",
+          "pass": true
+        },
+        {
+          "name": "320 approved avatar loaded",
+          "pass": true
+        },
+        {
+          "name": "320 recovery starts without silently clearing block",
+          "pass": true
+        },
+        {
+          "name": "320 all confirmations required",
+          "pass": true
+        },
+        {
+          "name": "320 recovery lifts only analysis block",
+          "pass": true
+        },
+        {
+          "name": "320 chat returns exact previous screen",
+          "pass": true
+        },
+        {
+          "name": "320 drag does not open chat",
+          "pass": true
+        },
+        {
+          "name": "320 position saved per user",
+          "pass": true
+        },
+        {
+          "name": "320 real touch drag stays bounded without opening",
+          "pass": true
+        },
+        {
+          "name": "320 keyboard placement saved",
+          "pass": true
+        },
+        {
+          "name": "320 avatar across navigation",
+          "pass": true
+        },
+        {
+          "name": "320 position survives refresh",
+          "pass": true
+        },
+        {
+          "name": "320 settings account reachable",
+          "pass": true
+        },
+        {
+          "name": "320 settings privacy reachable",
+          "pass": true
+        },
+        {
+          "name": "320 settings time reachable",
+          "pass": true
+        },
+        {
+          "name": "320 settings language reachable",
+          "pass": true
+        },
+        {
+          "name": "320 settings ai reachable",
+          "pass": true
+        },
+        {
+          "name": "320 settings subscription reachable",
+          "pass": true
+        },
+        {
+          "name": "320 settings legal reachable",
+          "pass": true
+        },
+        {
+          "name": "320 legal destinations reachable",
+          "pass": true
+        },
+        {
+          "name": "320 legal draft accurate",
+          "pass": true
+        },
+        {
+          "name": "320 avatar hidden during settings",
+          "pass": true
+        },
+        {
+          "name": "320 general consent withdrawal leaves chat and analyses separate",
+          "pass": true
+        },
+        {
+          "name": "320 schedule saved all fields",
+          "pass": true
+        },
+        {
+          "name": "320 AI and time use same source",
+          "pass": true
+        },
+        {
+          "name": "320 hide avatar persists",
+          "pass": true
+        },
+        {
+          "name": "320 avatar restored",
+          "pass": true
+        },
+        {
+          "name": "320 quick language en saved",
+          "pass": true
+        },
+        {
+          "name": "320 quick language de saved",
+          "pass": true
+        },
+        {
+          "name": "320 quick language nl saved",
+          "pass": true
+        },
+        {
+          "name": "320 language source agrees after refresh",
+          "pass": true
+        },
+        {
+          "name": "320 schedule survives reload",
+          "pass": true
+        },
+        {
+          "name": "320 settings no overflow",
+          "pass": true
+        },
+        {
+          "name": "320 scanner hides avatar",
+          "pass": true
+        },
+        {
+          "name": "320 chat has no settings forms",
+          "pass": true
+        },
+        {
+          "name": "320 contradictory message keeps block and no recovery",
+          "pass": true
+        },
+        {
+          "name": "320 analyses no horizontal overflow",
+          "pass": true
+        },
+        {
+          "name": "320 deep link route works",
+          "pass": true
+        },
+        {
+          "name": "320 deep link survives refresh and late session hydration",
+          "pass": true
+        },
+        {
+          "name": "320 nested settings returns focus to chat",
+          "pass": true
+        },
+        {
+          "name": "320 closing deep link does not reopen during hydration",
+          "pass": true
+        },
+        {
+          "name": "320 invalid current password cannot update password",
+          "pass": true
+        },
+        {
+          "name": "320 password error releases busy controls",
+          "pass": true
+        },
+        {
+          "name": "320 logout clears private surfaces",
+          "pass": true
+        },
+        {
+          "name": "320 password verifies separately and revokes sessions",
+          "pass": true
+        },
+        {
+          "name": "320 password change clears member surfaces",
+          "pass": true
+        },
+        {
+          "name": "320 no page or console errors",
+          "pass": true
+        },
+        {
+          "name": "390 auth hides avatar",
+          "pass": true
+        },
+        {
+          "name": "390 AI removed from bottom nav",
+          "pass": true
+        },
+        {
+          "name": "390 top gear and language visible",
+          "pass": true
+        },
+        {
+          "name": "390 approved avatar loaded",
+          "pass": true
+        },
+        {
+          "name": "390 recovery starts without silently clearing block",
+          "pass": true
+        },
+        {
+          "name": "390 all confirmations required",
+          "pass": true
+        },
+        {
+          "name": "390 recovery lifts only analysis block",
+          "pass": true
+        },
+        {
+          "name": "390 chat returns exact previous screen",
+          "pass": true
+        },
+        {
+          "name": "390 drag does not open chat",
+          "pass": true
+        },
+        {
+          "name": "390 position saved per user",
+          "pass": true
+        },
+        {
+          "name": "390 real touch drag stays bounded without opening",
+          "pass": true
+        },
+        {
+          "name": "390 keyboard placement saved",
+          "pass": true
+        },
+        {
+          "name": "390 avatar across navigation",
+          "pass": true
+        },
+        {
+          "name": "390 position survives refresh",
+          "pass": true
+        },
+        {
+          "name": "390 settings account reachable",
+          "pass": true
+        },
+        {
+          "name": "390 settings privacy reachable",
+          "pass": true
+        },
+        {
+          "name": "390 settings time reachable",
+          "pass": true
+        },
+        {
+          "name": "390 settings language reachable",
+          "pass": true
+        },
+        {
+          "name": "390 settings ai reachable",
+          "pass": true
+        },
+        {
+          "name": "390 settings subscription reachable",
+          "pass": true
+        },
+        {
+          "name": "390 settings legal reachable",
+          "pass": true
+        },
+        {
+          "name": "390 legal destinations reachable",
+          "pass": true
+        },
+        {
+          "name": "390 legal draft accurate",
+          "pass": true
+        },
+        {
+          "name": "390 avatar hidden during settings",
+          "pass": true
+        },
+        {
+          "name": "390 general consent withdrawal leaves chat and analyses separate",
+          "pass": true
+        },
+        {
+          "name": "390 schedule saved all fields",
+          "pass": true
+        },
+        {
+          "name": "390 AI and time use same source",
+          "pass": true
+        },
+        {
+          "name": "390 hide avatar persists",
+          "pass": true
+        },
+        {
+          "name": "390 avatar restored",
+          "pass": true
+        },
+        {
+          "name": "390 quick language en saved",
+          "pass": true
+        },
+        {
+          "name": "390 quick language de saved",
+          "pass": true
+        },
+        {
+          "name": "390 quick language nl saved",
+          "pass": true
+        },
+        {
+          "name": "390 language source agrees after refresh",
+          "pass": true
+        },
+        {
+          "name": "390 schedule survives reload",
+          "pass": true
+        },
+        {
+          "name": "390 settings no overflow",
+          "pass": true
+        },
+        {
+          "name": "390 scanner hides avatar",
+          "pass": true
+        },
+        {
+          "name": "390 chat has no settings forms",
+          "pass": true
+        },
+        {
+          "name": "390 contradictory message keeps block and no recovery",
+          "pass": true
+        },
+        {
+          "name": "390 analyses no horizontal overflow",
+          "pass": true
+        },
+        {
+          "name": "390 deep link route works",
+          "pass": true
+        },
+        {
+          "name": "390 deep link survives refresh and late session hydration",
+          "pass": true
+        },
+        {
+          "name": "390 nested settings returns focus to chat",
+          "pass": true
+        },
+        {
+          "name": "390 closing deep link does not reopen during hydration",
+          "pass": true
+        },
+        {
+          "name": "390 invalid current password cannot update password",
+          "pass": true
+        },
+        {
+          "name": "390 password error releases busy controls",
+          "pass": true
+        },
+        {
+          "name": "390 logout clears private surfaces",
+          "pass": true
+        },
+        {
+          "name": "390 password verifies separately and revokes sessions",
+          "pass": true
+        },
+        {
+          "name": "390 password change clears member surfaces",
+          "pass": true
+        },
+        {
+          "name": "390 no page or console errors",
+          "pass": true
+        },
+        {
+          "name": "820 auth hides avatar",
+          "pass": true
+        },
+        {
+          "name": "820 AI removed from bottom nav",
+          "pass": true
+        },
+        {
+          "name": "820 top gear and language visible",
+          "pass": true
+        },
+        {
+          "name": "820 approved avatar loaded",
+          "pass": true
+        },
+        {
+          "name": "820 recovery starts without silently clearing block",
+          "pass": true
+        },
+        {
+          "name": "820 all confirmations required",
+          "pass": true
+        },
+        {
+          "name": "820 recovery lifts only analysis block",
+          "pass": true
+        },
+        {
+          "name": "820 chat returns exact previous screen",
+          "pass": true
+        },
+        {
+          "name": "820 drag does not open chat",
+          "pass": true
+        },
+        {
+          "name": "820 position saved per user",
+          "pass": true
+        },
+        {
+          "name": "820 real touch drag stays bounded without opening",
+          "pass": true
+        },
+        {
+          "name": "820 keyboard placement saved",
+          "pass": true
+        },
+        {
+          "name": "820 avatar across navigation",
+          "pass": true
+        },
+        {
+          "name": "820 position survives refresh",
+          "pass": true
+        },
+        {
+          "name": "820 settings account reachable",
+          "pass": true
+        },
+        {
+          "name": "820 settings privacy reachable",
+          "pass": true
+        },
+        {
+          "name": "820 settings time reachable",
+          "pass": true
+        },
+        {
+          "name": "820 settings language reachable",
+          "pass": true
+        },
+        {
+          "name": "820 settings ai reachable",
+          "pass": true
+        },
+        {
+          "name": "820 settings subscription reachable",
+          "pass": true
+        },
+        {
+          "name": "820 settings legal reachable",
+          "pass": true
+        },
+        {
+          "name": "820 legal destinations reachable",
+          "pass": true
+        },
+        {
+          "name": "820 legal draft accurate",
+          "pass": true
+        },
+        {
+          "name": "820 avatar hidden during settings",
+          "pass": true
+        },
+        {
+          "name": "820 general consent withdrawal leaves chat and analyses separate",
+          "pass": true
+        },
+        {
+          "name": "820 schedule saved all fields",
+          "pass": true
+        },
+        {
+          "name": "820 AI and time use same source",
+          "pass": true
+        },
+        {
+          "name": "820 hide avatar persists",
+          "pass": true
+        },
+        {
+          "name": "820 avatar restored",
+          "pass": true
+        },
+        {
+          "name": "820 quick language en saved",
+          "pass": true
+        },
+        {
+          "name": "820 quick language de saved",
+          "pass": true
+        },
+        {
+          "name": "820 quick language nl saved",
+          "pass": true
+        },
+        {
+          "name": "820 language source agrees after refresh",
+          "pass": true
+        },
+        {
+          "name": "820 schedule survives reload",
+          "pass": true
+        },
+        {
+          "name": "820 settings no overflow",
+          "pass": true
+        },
+        {
+          "name": "820 scanner hides avatar",
+          "pass": true
+        },
+        {
+          "name": "820 chat has no settings forms",
+          "pass": true
+        },
+        {
+          "name": "820 contradictory message keeps block and no recovery",
+          "pass": true
+        },
+        {
+          "name": "820 analyses no horizontal overflow",
+          "pass": true
+        },
+        {
+          "name": "820 deep link route works",
+          "pass": true
+        },
+        {
+          "name": "820 deep link survives refresh and late session hydration",
+          "pass": true
+        },
+        {
+          "name": "820 nested settings returns focus to chat",
+          "pass": true
+        },
+        {
+          "name": "820 closing deep link does not reopen during hydration",
+          "pass": true
+        },
+        {
+          "name": "820 invalid current password cannot update password",
+          "pass": true
+        },
+        {
+          "name": "820 password error releases busy controls",
+          "pass": true
+        },
+        {
+          "name": "820 logout clears private surfaces",
+          "pass": true
+        },
+        {
+          "name": "820 password verifies separately and revokes sessions",
+          "pass": true
+        },
+        {
+          "name": "820 password change clears member surfaces",
+          "pass": true
+        },
+        {
+          "name": "820 no page or console errors",
+          "pass": true
+        },
+        {
+          "name": "1440 auth hides avatar",
+          "pass": true
+        },
+        {
+          "name": "1440 AI removed from bottom nav",
+          "pass": true
+        },
+        {
+          "name": "1440 top gear and language visible",
+          "pass": true
+        },
+        {
+          "name": "1440 approved avatar loaded",
+          "pass": true
+        },
+        {
+          "name": "1440 recovery starts without silently clearing block",
+          "pass": true
+        },
+        {
+          "name": "1440 all confirmations required",
+          "pass": true
+        },
+        {
+          "name": "1440 recovery lifts only analysis block",
+          "pass": true
+        },
+        {
+          "name": "1440 chat returns exact previous screen",
+          "pass": true
+        },
+        {
+          "name": "1440 drag does not open chat",
+          "pass": true
+        },
+        {
+          "name": "1440 position saved per user",
+          "pass": true
+        },
+        {
+          "name": "1440 real touch drag stays bounded without opening",
+          "pass": true
+        },
+        {
+          "name": "1440 keyboard placement saved",
+          "pass": true
+        },
+        {
+          "name": "1440 avatar across navigation",
+          "pass": true
+        },
+        {
+          "name": "1440 position survives refresh",
+          "pass": true
+        },
+        {
+          "name": "1440 settings account reachable",
+          "pass": true
+        },
+        {
+          "name": "1440 settings privacy reachable",
+          "pass": true
+        },
+        {
+          "name": "1440 settings time reachable",
+          "pass": true
+        },
+        {
+          "name": "1440 settings language reachable",
+          "pass": true
+        },
+        {
+          "name": "1440 settings ai reachable",
+          "pass": true
+        },
+        {
+          "name": "1440 settings subscription reachable",
+          "pass": true
+        },
+        {
+          "name": "1440 settings legal reachable",
+          "pass": true
+        },
+        {
+          "name": "1440 legal destinations reachable",
+          "pass": true
+        },
+        {
+          "name": "1440 legal draft accurate",
+          "pass": true
+        },
+        {
+          "name": "1440 avatar hidden during settings",
+          "pass": true
+        },
+        {
+          "name": "1440 general consent withdrawal leaves chat and analyses separate",
+          "pass": true
+        },
+        {
+          "name": "1440 schedule saved all fields",
+          "pass": true
+        },
+        {
+          "name": "1440 AI and time use same source",
+          "pass": true
+        },
+        {
+          "name": "1440 hide avatar persists",
+          "pass": true
+        },
+        {
+          "name": "1440 avatar restored",
+          "pass": true
+        },
+        {
+          "name": "1440 quick language en saved",
+          "pass": true
+        },
+        {
+          "name": "1440 quick language de saved",
+          "pass": true
+        },
+        {
+          "name": "1440 quick language nl saved",
+          "pass": true
+        },
+        {
+          "name": "1440 language source agrees after refresh",
+          "pass": true
+        },
+        {
+          "name": "1440 schedule survives reload",
+          "pass": true
+        },
+        {
+          "name": "1440 settings no overflow",
+          "pass": true
+        },
+        {
+          "name": "1440 scanner hides avatar",
+          "pass": true
+        },
+        {
+          "name": "1440 chat has no settings forms",
+          "pass": true
+        },
+        {
+          "name": "1440 contradictory message keeps block and no recovery",
+          "pass": true
+        },
+        {
+          "name": "1440 analyses no horizontal overflow",
+          "pass": true
+        },
+        {
+          "name": "1440 deep link route works",
+          "pass": true
+        },
+        {
+          "name": "1440 deep link survives refresh and late session hydration",
+          "pass": true
+        },
+        {
+          "name": "1440 nested settings returns focus to chat",
+          "pass": true
+        },
+        {
+          "name": "1440 closing deep link does not reopen during hydration",
+          "pass": true
+        },
+        {
+          "name": "1440 invalid current password cannot update password",
+          "pass": true
+        },
+        {
+          "name": "1440 password error releases busy controls",
+          "pass": true
+        },
+        {
+          "name": "1440 logout clears private surfaces",
+          "pass": true
+        },
+        {
+          "name": "1440 password verifies separately and revokes sessions",
+          "pass": true
+        },
+        {
+          "name": "1440 password change clears member surfaces",
+          "pass": true
+        },
+        {
+          "name": "1440 no page or console errors",
+          "pass": true
+        }
+      ]
+    }
+  },
+  "security_advisor_counts": {
+    "INFO:rls_enabled_no_policy": 27,
+    "WARN:function_search_path_mutable": 1,
+    "WARN:authenticated_security_definer_function_executable": 62,
+    "WARN:auth_leaked_password_protection": 1
+  },
+  "fresh_checkout": {
+    "directory": "supabase/.temp/fresh6d",
+    "runtime_commit": "a9f14d9306eee17bd44033132a3d95e20e447428",
+    "test_commit": "f6e5b0ba3202742b72c7a72c09b64564a7d25945",
+    "clean_initial_checkout": true,
+    "owner_browser_pass_count": 196,
+    "static_suite_counts": [
+      116,
+      93,
+      98,
+      117,
+      17,
+      26
+    ],
+    "windows_longpaths_clone_local": true,
+    "phase6b_crlf_reader_fixed": true
+  },
+  "limitations": {
+    "full_local_db_replay": "Prior local PostgreSQL replay passed through 6B; missing pg_cron blocks extension-complete replay.",
+    "full_schema_diff": "Not run successfully: Docker Desktop unavailable. Live metadata/RLS/ACL and rollback tests do not substitute for full schema equivalence.",
+    "real_authenticated_phone": "Owner retest pending.",
+    "real_password_change": "Only mocked Auth sequence tested; no real account password altered.",
+    "account_deletion": "Separate mandatory privacy/security contract gate.",
+    "billing": "Phase 7 only; no provider/billing write.",
+    "real_member_provider": "Separate legal/privacy/activation gate; remains OFF."
+  },
+  "onedrive": {
+    "deleted_files": 0,
+    "all_971_pending_targets_proven_disposable": false,
+    "reason": "No full pending-deletion manifest; old rebuild directories are unresolved reparse points. Retained."
+  },
+  "owner_acceptance": false,
+  "final_status": "PACKAGE 6D COMBINED OWNER UX/SAFETY HOTFIX - READY FOR OWNER RETEST"
+}

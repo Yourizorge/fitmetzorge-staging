@@ -12,13 +12,44 @@ Migration reproducibility: project-wide history reconciliation is RESOLVED for s
 The 19 older timestamp differences were renamed to canonical live versions, duplicate
 old `20260819` history was removed, the missing Phase 1-3/source SQL is represented by
 a conservative forward-only source baseline, and the current post-6D chain is
-synchronized at 27 local and 27 remote migration rows. No historical SQL replay,
+synchronized at 28 local and 28 remote migration rows. No historical SQL replay,
 remote reset, destructive reconstruction or member-data rewrite occurred. The 6D-0
 canonical ID and security contract stay frozen. See PROJECT_MIGRATION_RECONCILIATION.md.
 
 The Phase 0B Auth/invitation/workspace descriptions below are historical. Their unsafe
 metadata and broad member-access paths are superseded by Package 6D-0 at the end of this
 document and in PHASE6D0_LEGACY_AUTHORIZATION_SECURITY.md.
+
+## Combined Owner Settings And Recovery
+
+The 2026-09-06 owner-settings JS/CSS module loads after 6C and before public-auth
+lifecycle binding. Native dialogs reuse the same chat DOM, preserve previous navigation
+and restore focus. No parallel chat/provider/entitlement authority is introduced.
+Async hydration is guarded by member identity and epoch.
+
+member_app_preferences is own-user/RPC-only with revoked direct table grants.
+fmz_phase6d_get_member_settings/update_member_settings bind to auth.uid(), strict
+field allowlists and expected revision. user_settings remains the language source;
+ai_analysis_preferences remains the schedule source. Current saved timezone/day/time
+controls due-selection. Daily date, ISO-week and authoritative completed-workout identity
+deduplicate including existing/deleted results.
+
+analysis_safety_recoveries stores minimal user/revision/reason/request/policy/time.
+Three explicit confirmations and the serious-signal advisory lock guard recovery.
+Original safety state/events stay intact; a new serious revision blocks analyses again.
+Request-scoped chat classification and future action safety remain independent.
+No executable action or external provider was added.
+
+private_chat now requires an independent explicit purpose grant, without backfill.
+Central exports/deletes reuse own RPCs and cannot erase safety as a bypass.
+Password change verifies the current password in an isolated Auth session, revokes it,
+updates through Auth and revokes member sessions. Actual account deletion needs the
+separate reauthentication/session/retention/audit/deletion contract. Phase 7 owns central
+plan changes/cancellation, monthly/annual choices, billing details/invoices and webhook
+authority. Neither unavailable billing nor deletion is represented as successful.
+
+Full evidence and the Docker/pg_cron rebuild/diff limitation:
+[combined report](PACKAGE6D_COMBINED_OWNER_HOTFIX_REPORT.md).
 
 ## Environment Boundary
 

@@ -4,6 +4,20 @@ Date: 2026-09-04. Target: staging `mokxyyullfhkfalopbzd` only.
 Result: RESOLVED / VERIFIED. Later Package 6D work appended forward-only migrations
 without reopening the historical repair.
 
+## Combined Owner Hotfix Addendum - 2026-09-06
+
+The reviewed additive 20260906080455_phase6d_owner_safety_settings.sql follows the
+original 25 and two initial 6D migrations: current list is 28 local / 28 remote.
+Post-apply db push --dry-run --skip-vault reports upToDate=true, migrations=[], seeds=[],
+roles=[]. No history repair/replay/reset occurred in this hotfix. All 21 allowlisted
+member/safety/domain table fingerprints/counts match before/after; rollback Auth/profile
+fixtures and new recovery/UI preference rows are zero. See
+PACKAGE6D_COMBINED_OWNER_HOTFIX_REPORT.md and its machine-readable evidence.
+
+Fresh source verification uses clone-local core.longpaths=true on Windows. Full local
+database replay/diff still needs Docker/pg_cron. No PostgreSQL cleanup was performed.
+The original 25-row manifest and historical observations below remain unchanged.
+
 ## Root Cause
 
 The repository migration chain and the live staging migration history had drifted:
