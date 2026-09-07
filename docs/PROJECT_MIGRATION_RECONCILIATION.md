@@ -17,7 +17,10 @@ No history repair/replay/reset, memberdata reconstruction or PostgreSQL deletion
 No new complete local 31-migration replay/global schema-diff claim. The existing
 Docker/pg_cron/971-item-manifest limitations remain explicit. See the exact paths,
 tests and boundaries in PACKAGE6D_THEME_RESTORATION_REPORT.md and its evidence.
-Definitive Package 6D freeze is postponed pending the owner's physical theme retest.
+The owner has now passed the physical theme retest. The corrected definitive 6D
+freeze includes this existing migration; current read-only history is 31/31. No migration,
+repair, replay, reset or memberdata change occurs in the corrected freeze task.
+See PHASE6D_FREEZE_RECEIPT.md; broader local rebuild limitations are unchanged.
 
 ## Frontend Placement Note - Historical 2026-09-07
 

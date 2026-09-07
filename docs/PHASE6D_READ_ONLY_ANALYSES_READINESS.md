@@ -1,8 +1,12 @@
 # Package 6D Read-Only Analyses - Architecture And Readiness
 
-Status: PACKAGE 6D THEME RESTORATION - READY FOR FINAL OWNER RETEST.
-The later owner theme request postpones definitive 6D freeze. Earlier acceptance is
-historical functional evidence. See PACKAGE6D_THEME_RESTORATION_REPORT.md.
+Current status: COMPLETE / OWNER-ACCEPTED / FROZEN, including theme restoration.
+Explicit real-phone acceptance includes Automatisch/Licht/Donker and preference
+persistence, plus all previously accepted 6D flows. Runtime:
+bc6308fbf0f914b04c7faa711219d9ae46e9cbe3; 31 migrations; theme cache 20260907-theme1.
+See PHASE6D_FREEZE_RECEIPT.md for the corrected authoritative receipt and publication
+status. Earlier dated retest/freeze statements below are superseded historical evidence.
+Package 6E audit COMPLETE; implementation NOT STARTED. D1-D12 remain unselected.
 
 Explicit final real-phone owner acceptance: 2026-09-07. All pending-owner/freeze
 statements in the dated historical sections below were superseded at that time.

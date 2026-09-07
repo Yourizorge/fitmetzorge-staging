@@ -1,8 +1,12 @@
 # Package 6D Read-Only Analyses Technical Report
 
-Current status: PACKAGE 6D THEME RESTORATION - READY FOR FINAL OWNER RETEST.
-The later owner theme request postpones definitive 6D freeze. Earlier acceptance is
-retained as historical evidence. See PACKAGE6D_THEME_RESTORATION_REPORT.md.
+Current status: COMPLETE / OWNER-ACCEPTED / FROZEN, including theme restoration.
+Explicit real-phone acceptance includes Automatisch/Licht/Donker and preference
+persistence, plus all previously accepted 6D flows. Runtime:
+bc6308fbf0f914b04c7faa711219d9ae46e9cbe3; 31 migrations; theme cache 20260907-theme1.
+See PHASE6D_FREEZE_RECEIPT.md for the corrected authoritative receipt and publication
+status. Earlier dated retest/freeze statements below are superseded historical evidence.
+Package 6E audit COMPLETE; implementation NOT STARTED. D1-D12 remain unselected.
 
 Historical status: COMPLETE / OWNER-ACCEPTED / FROZEN, explicitly accepted on a real
 phone on 2026-09-07. See PHASE6D_FREEZE_RECEIPT.md and PHASE6D_FREEZE_EVIDENCE.json.
@@ -25,7 +29,7 @@ fully bounded mobile comparison/detail. New live-assets browser 180/180, 25 layo
 The automatic mock worker, renewed chat, vertical settings, device timezone/flags,
 recovery, private-chat consent, approved floating avatar and Edge v43 are preserved.
 The initial implementation receipt below remains historical evidence, not the latest
-runtime/cache. Prior evidence is preserved; the current theme owner retest is pending.
+runtime/cache. Prior evidence is preserved; the subsequent theme retest is now accepted.
 
 Date: 2026-09-06. Scope: staging only, `Yourizorge/fitmetzorge-staging` branch `main`,
 Supabase project `mokxyyullfhkfalopbzd`. Production remains forbidden and untouched.

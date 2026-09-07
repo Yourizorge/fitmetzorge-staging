@@ -2,16 +2,24 @@
 
 Last updated: 2026-09-07
 
-## Package 6D Theme Restoration - Current
+## Package 6D Corrected Owner Freeze - Current
 
-Status: PACKAGE 6D THEME RESTORATION - READY FOR FINAL OWNER RETEST.
-Runtime bc6308fbf0f914b04c7faa711219d9ae46e9cbe3; cache 20260907-theme1.
-Local/live theme browser 1080/1080; 44 live assets Git-identical; 31/31 migrations,
-empty dry-run also fresh; SQL 33/33, verifier 11/11; 24 member hashes unchanged.
-The owner's later theme request postpones the definitive 6D freeze. Earlier real-phone
-functional acceptance remains historical evidence, not final acceptance of this change.
-See PACKAGE6D_THEME_RESTORATION_REPORT.md for the current runtime and evidence.
-Package 6E implementation remains NOT STARTED; production is forbidden.
+Status: COMPLETE / OWNER-ACCEPTED / FROZEN, including theme restoration.
+The owner explicitly confirms Automatisch follows the phone theme, Licht/Donker work
+and the preference persists on a real phone; all previously accepted 6D flows still work.
+Runtime: bc6308fbf0f914b04c7faa711219d9ae46e9cbe3.
+Accepted theme documentation: 3453ea2e14a1737922b53e106c04c3aea747f65b.
+Current baseline: 31/31 migrations, Youri AI v43, theme cache 20260907-theme1.
+New read-only freeze checks: theme unit 10/10, theme SQL 11/11, foundation SQL 47/47,
+44 live files Git-identical, four public viewports with zero mutation requests.
+Earlier local/live theme 1080/1080 and fresh-checkout evidence remain accepted history.
+See PHASE6D_FREEZE_RECEIPT.md and PHASE6D_CORRECTED_FREEZE_EVIDENCE.json.
+Full technical report and unselected D1-D12 choices:
+PACKAGE6D_CORRECTED_FREEZE_AND_6E_OWNER_DECISIONS.md.
+Package 6E readiness COMPLETE; implementation NOT STARTED. Production forbidden.
+The older pre-theme freeze below is superseded, not deleted.
+Documentation publication is held pending resolution of the Pages auto-deployment
+conflict described in the corrected freeze report; runtime acceptance is final.
 
 ## Package 6D Owner Freeze - Historical, Superseded
 
@@ -111,8 +119,9 @@ console errors or mutating requests; 88 assembled-browser, 26 focused static and
 Project-wide migration reconciliation remains RESOLVED. The original 25/25 history
 repair fixed the 19 older timestamp differences, duplicate old `20260819` conflict,
 three missing live-history registrations and missing Phase 1-3/source SQL through a
-safe forward-only baseline. Package 6D and its owner hotfixes added five forward-only migrations;
-the canonical chain is now synchronized at 30 Git migrations and 30 live history rows.
+safe forward-only baseline. Package 6D, owner hotfixes and theme restoration added six forward-only migrations;
+the canonical chain is now synchronized at 31 Git migrations and 31 live history rows,
+including the accepted theme preference migration.
 No historical SQL replay, remote reset, destructive reconstruction or member-data
 rewrite occurred. `supabase migration list` and `db push --dry-run --skip-vault` are
 clean for staging. See [migration audit](PROJECT_MIGRATION_RECONCILIATION.md).
@@ -129,7 +138,7 @@ clean for staging. See [migration audit](PROJECT_MIGRATION_RECONCILIATION.md).
 - Phase 0B Storage verification: COMPLETE
 - Master Plan Specification: COMPLETE
 - Master Plan Final Review: COMPLETE
-- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6C COMPLETE / OWNER-ACCEPTED / FROZEN; PACKAGE 6D THEME RESTORATION - READY FOR FINAL OWNER RETEST
+- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6C COMPLETE / OWNER-ACCEPTED / FROZEN; PACKAGE 6D COMPLETE / OWNER-ACCEPTED / FROZEN, INCLUDING THEME RESTORATION
 - Production Migration: NOT STARTED
 
 Current next step: owner decisions D1-D12 and assignment of qualified reviewers,

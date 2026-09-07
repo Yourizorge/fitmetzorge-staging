@@ -1,9 +1,9 @@
 # FitMetZorge Test Matrix
 
 Status: MASTER PLAN COVERAGE MATRIX
-Latest execution: 2026-09-07 Package 6D theme restoration; final owner retest required.
-The later theme request postpones definitive freeze and retains prior acceptance as
-historical functional evidence. Migration history is now synchronized 31/31 with an
+Latest execution: 2026-09-07 corrected Package 6D documentation-only owner freeze.
+Explicit real-phone theme and prior-flow acceptance received: COMPLETE /
+OWNER-ACCEPTED / FROZEN, including theme restoration. Migration history is now synchronized 31/31 with an
 empty dry-run after additive 20260907095307_phase6d_theme_preference.sql. Public Auth hotfix
 checks remain valid, the owner received the confirmation email, and no new resend,
 Brevo investigation, manual confirmation, trainer role or trainer link was performed.
@@ -26,7 +26,19 @@ PROJECT_MIGRATION_RECONCILIATION.md and PROJECT_MIGRATION_RECONCILIATION_MANIFES
 
 This matrix records the required functional, security, entitlement, AI, migration, and release checks for the Master Build. No implementation tests are executed by this document.
 
-## Package 6D Theme Restoration - Current Execution
+## Package 6D Corrected Freeze - Current Execution
+
+Theme unit 10/10, SELECT-only theme contract 11/11 and foundation contract 47/47 PASS.
+Current MCP history equals all 31 Git versions/names in order; all three Edge versions
+and bundle hashes match accepted theme evidence. All 44 live assets are byte-identical
+to bc6308fbf0f914b04c7faa711219d9ae46e9cbe3. Four public viewports PASS without
+page errors or mutating requests. No member RPC, temporary SQL fixture or provider call.
+No new CLI dry-run, fresh checkout, full database rebuild or broad browser E2E rerun.
+The accepted evidence below is not represented as execution in this freeze task.
+See PHASE6D_CORRECTED_FREEZE_EVIDENCE.json and PHASE6D_FREEZE_RECEIPT.md.
+Publication is held for the documented Pages auto-deployment conflict, not a test failure.
+
+## Package 6D Theme Restoration - Accepted Prior Execution
 
 Theme unit suites 10/10; strict local browser 1080/1080 across 312 surfaces at
 320x700, 390x844, 820x1180 and 1440x900; zero measured text-contrast failures,
@@ -39,7 +51,8 @@ All 24 member-table counts/content hashes unchanged, five schema-boundary finger
 unchanged, old 30 migration Git hashes unchanged, no new security advisories.
 Deployment/live/fresh-checkout receipts and the required 21-case mapping:
 PACKAGE6D_THEME_RESTORATION_REPORT.md and PACKAGE6D_THEME_RESTORATION_EVIDENCE.json.
-Technical verification does not replace the owner's final physical theme retest.
+The owner has now explicitly passed the physical theme retest and reconfirmed the
+previously accepted flows. The implementation evidence above remains dated history.
 
 ## Package 6D Owner Freeze - Historical, Superseded Execution
 
@@ -53,7 +66,7 @@ PHASE6D_FREEZE_RECEIPT.md / PHASE6D_FREEZE_EVIDENCE.json.
 No runtime/database/memberdata change or external AI call. Historical pending-owner
 statuses below are superseded. Package 6E read-only audit is complete, not implemented.
 
-## Package 6E Audit - Current Execution
+## Package 6E Audit - Retained Read-Only Evidence
 
 Eight read-only live catalog/ACL/gate predicates PASS. Thirty-six synthetic probes
 execute the existing frozen classifier/recovery-intent module, with 12 retained

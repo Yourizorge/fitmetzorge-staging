@@ -1,8 +1,11 @@
 # Package 6D Theme Restoration - Technisch Rapport
 
-Status: PACKAGE 6D THEME RESTORATION - READY FOR FINAL OWNER RETEST.
-Datum: 2026-09-07. Definitieve owneracceptatie/freeze: NOG NIET.
-De eerdere telefonische functionele acceptatie blijft historisch testbewijs.
+Actuele status: COMPLETE / OWNER-ACCEPTED / FROZEN, inclusief theme restoration.
+Datum: 2026-09-07. De owner bevestigt op een echte telefoon Automatisch met
+systeemthema, Licht, Donker en blijvende voorkeur, plus alle eerder geaccepteerde flows.
+Zie PHASE6D_FREEZE_RECEIPT.md voor de gecorrigeerde freeze en publicatiestatus.
+Het implementatie-/deploy-/testbewijs hieronder blijft de eerdere uitvoeringshistorie;
+de documentatie-only freeze heeft die wijzigingen niet opnieuw uitgevoerd.
 Package 6E: uitsluitend documentair/read-only; implementatie NIET gestart.
 
 ## Scope En Preflight
@@ -18,7 +21,8 @@ Package 6E: uitsluitend documentair/read-only; implementatie NIET gestart.
   netwerk aan en permanente staging-autonomie. Managed sandbox/netwerkbeperkingen
   blijven leidend; vereiste netwerkcommando's liepen via de bestaande auto-review.
 - Runtimecommit: `bc6308fbf0f914b04c7faa711219d9ae46e9cbe3`.
-- Rapport/statuscommit: de commit die dit bestand introduceert, exact opvraagbaar met
+- Geaccepteerde rapport/statuscommit: `3453ea2e14a1737922b53e106c04c3aea747f65b`.
+  Dit is de commit die dit bestand introduceert, exact opvraagbaar met
   `git log -1 --diff-filter=A --format=%H -- docs/PACKAGE6D_THEME_RESTORATION_REPORT.md`.
   Deze documentatie verandert geen runtime of SQL.
 
@@ -186,15 +190,16 @@ De historische lokale replay liep door 6B; volledige replay/diff van de huidige
 31 migrations is niet opnieuw bewezen. De eerder vastgelegde Docker/pg_cron-
 beschikbaarheid beperkt die lokale omgeving. Deze themataak heropent geen history-
 reconciliation en voert geen SQL-replay of remote reset uit.
-Dit is geen blocker voor de huidige themaretest, wel een open bredere verificatiegrens.
+Dit was geen blocker voor de inmiddels geaccepteerde themaretest en blijft een open
+bredere verificatiegrens, ook na de gecorrigeerde freeze.
 
 ## Volgende Stap En Terugval
 
-Owner test op een echte telefoon: Instellingen > Weergave; kies Automatisch,
-wissel het apparaatthema, test Licht/Donker, refresh en logout/login. Controleer
-dashboard, analyse, chat en terugkeer naar Instellingen. Pas na expliciete bevestiging
-mag de definitieve Package 6D-freeze opnieuw worden vastgelegd.
-Geen Package 6E-implementatie of productiestap hierna zonder afzonderlijke opdracht.
+De gevraagde fysieke themaretest is expliciet door de owner geaccepteerd.
+De gecorrigeerde freeze is vastgelegd in PHASE6D_FREEZE_RECEIPT.md; de automatische
+Pages-publicatievoorwaarde staat apart in het nieuwe technische eindrapport.
+Daarna beslist de owner over de open D1-D12 en een afzonderlijke vervolgopdracht.
+Geen Package 6E-implementatie of productiestap zonder afzonderlijke opdracht.
 
 Veilige terugval bij een nieuw defect: gerichte frontendcorrectie of terugkeer naar
 de voorafgaande frontendruntime, met behoud van de additive kolom en opgeslagen

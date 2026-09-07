@@ -3,18 +3,21 @@
 Status: CURRENT AND TARGET ARCHITECTURE DOCUMENTED
 Last updated: 2026-09-07
 
-Package 6D: THEME RESTORATION - READY FOR FINAL OWNER RETEST.
-The later owner request postpones definitive freeze. Earlier real-phone acceptance
-is retained as historical functional evidence, not acceptance of the theme change.
+Package 6D: COMPLETE / OWNER-ACCEPTED / FROZEN, including theme restoration.
+The owner explicitly tested Automatisch/Licht/Donker, system following and persistence
+on a real phone, and reconfirmed all previously accepted 6D behavior.
 One early FMZ_THEME authority resolves system/light/dark and mirrors body.light.
 An own-user cosmetic bootstrap cache precedes server-authoritative settings hydration.
 Public Auth uses system. The existing own-user settings RPC contract gains nullable
 member_app_preferences.theme_mode, without default/backfill; missing means system.
 Revision locking, RLS/ACLs, consent, safety, AI and domain-write boundaries are unchanged.
 See PACKAGE6D_THEME_RESTORATION_REPORT.md for deployment and test evidence.
-See PHASE6D_FREEZE_RECEIPT.md for runtime 7fec9da, Edge v43, cache and 30/30 history.
+See PHASE6D_FREEZE_RECEIPT.md for runtime
+bc6308fbf0f914b04c7faa711219d9ae46e9cbe3, Edge v43, theme cache
+20260907-theme1 and 31/31 history. The older 7fec9da freeze is superseded.
 The read-only 6E safety/readiness audit is COMPLETE; no new risk taxonomy or recovery
-rule is implemented. The current owner theme retest is still required.
+rule is implemented. The owner theme retest has passed; D1-D12 remain unselected.
+The corrected report documents the Pages publication conflict separately from acceptance.
 See [6E readiness architecture](PHASE6E_SAFETY_RISK_READINESS.md) and its evidence:
 eight live catalog/ACL/gate checks, 36 synthetic existing-classifier probes and
 documented negation/education/recovery/retention gaps. Five help/action levels,
@@ -31,7 +34,7 @@ Migration reproducibility: project-wide history reconciliation is RESOLVED for s
 The 19 older timestamp differences were renamed to canonical live versions, duplicate
 old `20260819` history was removed, the missing Phase 1-3/source SQL is represented by
 a conservative forward-only source baseline, and the current post-6D chain is
-synchronized at 30 local and 30 remote migration rows. No historical SQL replay,
+synchronized at 31 local and 31 remote migration rows, including the accepted theme migration. No historical SQL replay,
 remote reset, destructive reconstruction or member-data rewrite occurred. The 6D-0
 canonical ID and security contract stay frozen. See PROJECT_MIGRATION_RECONCILIATION.md.
 
@@ -454,9 +457,9 @@ The existing `user_settings.unit_system` stores the presentation choice. No impe
 
 ### Phase 6 Youri AI Core Readiness
 
-Status: PACKAGES 6A, 6B AND 6C FROZEN; 6D THEME OWNER RETEST REQUIRED; EXTERNAL MEMBER AI AND AUTOMATIC DOMAIN ACTIONS NOT AUTHORIZED
+Status: PACKAGES 6A, 6B AND 6C FROZEN; 6D COMPLETE / OWNER-ACCEPTED / FROZEN INCLUDING THEME RESTORATION; EXTERNAL MEMBER AI AND AUTOMATIC DOMAIN ACTIONS NOT AUTHORIZED
 
-Live staging now contains the additive Package 6A AI trust schema. Normalized own-user Identity, Recovery, Training, Nutrition and Progress inputs remain the frozen authorities. No provider credential, external provider call or member-facing AI runtime is active.
+Live staging contains the additive Package 6A AI trust schema and frozen mock-only private chat and analyses through Package 6D. Normalized own-user Identity, Recovery, Training, Nutrition and Progress inputs remain the frozen authorities. External member-provider processing and automatic domain actions remain inactive; Package 6E is not implemented.
 
 Phase 6 uses a dedicated provider-neutral `youri-ai` Edge boundary. It authenticates the member, resolves current time-valid `ai` or `personal_coaching` entitlement, verifies AI consent, reads minimized context through member-JWT-scoped RPCs, applies rate/budget/safety/idempotency gates, invokes one approved provider, validates a strict structured response and persists only allowed private member and operational records. The browser never supplies data authority, model choice, entitlement, provider credentials or executable domain changes.
 

@@ -1,5 +1,106 @@
 # Package 6D Owner Freeze Receipt
 
+## Corrected Definitive Freeze - 2026-09-07
+
+Current status: COMPLETE / OWNER-ACCEPTED / FROZEN.
+Theme restoration included in frozen baseline: YES.
+The owner explicitly confirms Automatisch follows the real phone's light/dark theme,
+Licht and Donker work and the chosen preference persists. All previously accepted
+dashboard, analysis, chat, avatar, settings, language and safety flows still work.
+Authority: explicit owner attachment 10e3fa79-80c4-4c6a-a076-055234b05574.
+This forward-only receipt supersedes the pre-theme freeze below; no history is removed.
+
+### Exact Commit Authority
+
+- Accepted current runtime: `bc6308fbf0f914b04c7faa711219d9ae46e9cbe3`.
+- Accepted theme documentation: `3453ea2e14a1737922b53e106c04c3aea747f65b`.
+- Corrected freeze documentation: the commit introducing
+  PACKAGE6D_CORRECTED_FREEZE_AND_6E_OWNER_DECISIONS.md, to be pinned in the
+  subsequent documentation-only provenance commit.
+- Superseded pre-theme runtime: `7fec9da7cb00cb7dff4a601810ddd2c977db0f5f`.
+- Superseded freeze documentation: `d53fea94f50c23c059104045f899fde4da25c2ec`.
+- Preflight HEAD/origin/main/actual remote: `3453ea2e14a1737922b53e106c04c3aea747f65b`,
+  main, clean worktree in the single authorized phase4fb-staging-deploy Git root.
+- AGENTS.md/config read: on-request/auto_review/workspace-write/network/staging autonomy
+  configured; effective managed sandbox/network restrictions remain authoritative.
+
+### Current Frozen Baselines
+
+| Item | Current baseline |
+| --- | --- |
+| Migration history | 31 Git / 31 live; ordered version/name parity, no new migration |
+| Latest existing migration | 20260907095307_phase6d_theme_preference.sql |
+| Reconciliation plus additive 6D | 25 canonical versions plus 6 forward-only 6D versions |
+| Early theme/entry/styles/settings/app/bundle cache | 20260907-theme1 |
+| Inbox/hotfix2 CSS cache retained | 20260907-dashboard-placement1 |
+| Chat/training-engine cache retained | 20260906-owner-hotfix2 |
+| Live assets | 44 HTTP 200; byte-identical to full runtime hash above |
+| Public viewports | 320x700, 390x844, 820x1180, 1440x900; no errors/mutating requests |
+| Youri AI Edge | v43 ACTIVE, verify_jwt=true |
+| Youri AI bundle SHA-256 | 627c883a9b001e6215d101c827f96fbb94825c7f1437077088ec09fbba7460c6 |
+| Other Edge Functions | invite-client v16, nutrition-provider v20; ACTIVE/JWT, hashes unchanged |
+| All Edge sources | No Git change from pre-theme audit runtime to accepted theme runtime |
+| Provider/worker | External member AI disabled; existing deterministic mock worker retained |
+| Automatic domain actions | Not activated; frozen analysis/action safety separation retained |
+
+All 31 migration hashes, 44 live asset hashes and three Edge bundle hashes are in
+[corrected freeze evidence](PHASE6D_CORRECTED_FREEZE_EVIDENCE.json).
+The immutable original PHASE6D_FREEZE_EVIDENCE.json and theme evidence remain history.
+
+### Verification Ledger
+
+| Check | Current read-only freeze | Accepted prior evidence, not rerun |
+| --- | --- | --- |
+| Theme authority unit | 10/10 PASS | Same frozen source |
+| Theme SELECT verifier | 11/11 PASS | No fixtures or member RPC |
+| Foundation SELECT verifier | 47/47 PASS | Provider off, member runs mock/zero cost |
+| Live assets / public browser | 44 files / 4 viewports PASS | No authenticated mutation |
+| Migration metadata | MCP 31/31 exact ordered identities | CLI list31/31 and empty dry-run, also fresh checkout |
+| Edge metadata | 3/3 versions/status/JWT/bundlehash parity | No Edge redeployment |
+| Theme browser local/live-assets | Not rerun | Each 1080/1080, 312 surfaces, 3788 measured text nodes |
+| Contrast / overflow | Not rerun | Zero failures/overflow in both theme runs |
+| Owner browser fresh checkout | Not rerun | 327/327 |
+| Mobile / placement browser | Not rerun | 180/180; placement local/live each426/426 |
+| Frozen regression runner | Not rerun | All20 suites PASS |
+| Transactional SQL / other verifiers | Not rerun | Theme33/33 before/after apply; recent18, worker23 |
+| Memberdata/schema fingerprint | No new content export | 24 tables and5 boundaries outside explicit themechange unchanged |
+| Real phone | Explicit owner acceptance received | Theme and all previously accepted 6D flows |
+
+Current staging SQL used BEGIN READ ONLY and ROLLBACK, SELECT/catalog/aggregate only.
+No full local31-migration rebuild/global schema-diff is claimed. Docker/pg_cron remains
+unavailable in the previously verified environment; historical22-applied/7-skipped replay
+through6B is partial evidence. No cluster started, removed or reconstructed.
+
+### Impact And Publication Status
+
+Database/schema/memberdata changed by this freeze task: NO. Migration created/executed: NO.
+Runtime/frontend/Edge/configuration changed: NO. Frontend/Edge deployed by this task: NO.
+External member-AI calls/cost: 0 / EUR0.00. Production touched: NO.
+No mail/Brevo/manual confirmation/trainer changes or file deletion.
+Existing mock cron may independently process authorized jobs; no whole-database
+byte-static claim is made. The unverified971-item OneDrive manifest remains unverified.
+
+Publication is held: read-only GitHub Pages metadata reports legacy deployment from
+main at /. The requested docs-push can therefore trigger automatic Pages publication,
+conflicting with the explicit no-frontend-deployment requirement. No push, workflow
+cancellation, Pages configuration change or manual deployment has been performed.
+Owner clarification is requested only for this conflict: allow automatic publication
+of byte-identical runtime as a consequence of the authorized documentation push?
+Until resolved, local/remote synchronization is NOT COMPLETE; the functional ownerfreeze
+is final. See the [complete technical report](PACKAGE6D_CORRECTED_FREEZE_AND_6E_OWNER_DECISIONS.md).
+
+Package6E readiness audit COMPLETE; implementation NOT STARTED; no6E migration/runtime/
+provider activation/member-AI call. D1-D12 remain unselected; the report gives all choices.
+D5's mixed dataclasses are explicitly clarified, not converted into approved retention policy.
+Next product step: owner decisions and qualified review, followed only by a separately
+authorized offline6E-0 assignment. This freeze is no medical/legal/production certification.
+
+## Historical Pre-Theme Freeze - Superseded
+
+Everything below is the retained earlier receipt, including its dated verification ledger.
+Its pending-theme wording and30-migration/42-asset/runtime baseline are historical,
+not current requirements or current-run claims. The corrected receipt above is authority.
+
 Current status: HISTORICAL FREEZE POSTPONED BY LATER OWNER THEME REQUEST.
 The earlier functional acceptance and immutable evidence below remain valid history.
 Definitive Package 6D freeze now requires a final owner theme retest after restoration.

@@ -7,9 +7,17 @@ Uitsluitend staging Yourizorge/fitmetzorge-staging / main / mokxyyullfhkfalopbzd
 
 ## 1. Uitkomst En Freeze
 
-Actuele aanvulling: de latere owneropdracht voor themarestauratie stelt de definitieve
-6D-freeze uit tot de owner Automatisch/Licht/Donker opnieuw heeft getest.
-Zie PACKAGE6D_THEME_RESTORATION_REPORT.md. Package 6E blijft alleen documentair.
+Actuele gecorrigeerde baseline: Package 6D COMPLETE / OWNER-ACCEPTED / FROZEN,
+inclusief expliciet op een echte telefoon geaccepteerde Automatisch/Licht/Donker,
+systeemvolging en blijvende voorkeur; eerdere geaccepteerde flows zijn herbevestigd.
+Runtime: bc6308fbf0f914b04c7faa711219d9ae46e9cbe3.
+Geaccepteerde theme-documentatie: 3453ea2e14a1737922b53e106c04c3aea747f65b.
+31 canonical migrations, Youri AI v43, theme cache 20260907-theme1; 44 live assets
+Git-identiek. Zie PHASE6D_FREEZE_RECEIPT.md voor de gecorrigeerde documentatiecommit
+en publicatiestatus. De eerdere baseline hieronder is superseded/historisch.
+Edge-bronnen zijn tussen 7fec9da en bc6308f ongewijzigd; de oorspronkelijke
+6E-probes/evidence blijven historisch bewijs, geen nieuwe klinische validatie.
+Package 6E blijft alleen documentair: audit COMPLETE, implementatie NOT STARTED.
 
 Historisch was Package 6D COMPLETE / OWNER-ACCEPTED / FROZEN op basis van expliciete
 owneracceptatie van de volledige flow op een echte telefoon. Dat bewijs blijft behouden.
@@ -538,7 +546,8 @@ Selectieve bronpredicaten bewijzen lockaanwezigheid, niet alle race-interleaving
 Geen slice wordt door deze tabel gestart. Geen 6E-flag aangemaakt.
 Package 6E betekent niet automatisch voorstellen/uitvoering bouwen; daarvoor blijven
 de volgende masterplanpackages en trainerautoriteit leidend.
-Een nieuwe migration mag nooit de 30 applied files herschrijven of historische SQL replayen.
+Een eventuele toekomstige migration mag nooit de huidige 31 applied files herschrijven
+of historische SQL replayen. De oorspronkelijke audit gebruikte de pre-theme keten van 30.
 
 ## 18. Eerste Veilige Slice En Ownerbeslissingen
 
@@ -564,6 +573,15 @@ Zonder medische review kan de corpusstructuur klaar zijn, niet de medische relea
 | D11 Hulpbereikbaarheid | Alleen betaalde chat of apart statisch hulppad | Statische hulp onafhankelijk van login/AI-entitlement/ratecap, na product/copyreview |
 | D12 Vervolgopdracht | Offline 6E-0 of direct nieuwe runtime | Alleen 6E-0; runtimecorrecties expliciet apart scopegeven |
 
+Structuurcontrole: D1-D12 bestaan elk eenmaal, zonder ontbrekend of dubbel nummer.
+D5 is niet eenduidig als keuzelijst: episodevenster, afgesloten details en minimale audit
+zijn verschillende dataklassen, geen onderling uitwisselbare opties. De tabel blijft
+inhoudelijk ongewijzigd. Het volledige begrijpelijke keuzerapport onderscheidt daarom
+het bestaande 30/90/180-bespreekvoorstel van een korter doelgebonden beleid; exacte
+termijnen en de onopgeloste-statusregel blijven open voor owner/DPO/review.
+Zie PACKAGE6D_CORRECTED_FREEZE_AND_6E_OWNER_DECISIONS.md voor vraag, keuzes, gevolgen,
+aanbeveling en vereiste review per D-nummer. Dit voegt geen gekozen beleid toe.
+
 Geen optie is namens de owner gekozen of technisch geactiveerd.
 De aanbevelingen zijn beslisvoorstellen, geen verzoek om tussentijdse toestemming
 voor de huidige documentatieopdracht.
@@ -580,14 +598,15 @@ Voor volledige lokale DBreproduceerbaarheid blijft Docker/pg_cron ontbreken;
 geen oude partial replay als volledige rebuild presenteren.
 Geen blokkade voor de voltooiing van deze read-only audit zelf.
 
-Eerst volgt de afzonderlijke 6D-themaretest; de definitieve freeze is uitgesteld.
-Een eventuele volgende 6E-stap: owner beslist over D1-D12, wijst bevoegde reviewers aan en
+De 6D-themaretest is geaccepteerd en de gecorrigeerde definitieve freeze is vastgelegd;
+de eventuele publicatieblokkade staat apart in het freeze receipt.
+De volgende inhoudelijke 6E-stap: owner beslist over D1-D12, wijst bevoegde reviewers aan en
 geeft uitsluitend een expliciete 6E-0-opdracht binnen de genoemde offlinegrenzen.
 Nieuwe runtime-, schema-, trainer-, provider- of productiebeslissingen volgen apart.
 Er worden nu geen credentials gevraagd, kosten gemaakt of beslissingen geforceerd.
 
 Eindstatus:
-- Package 6D definitief owner-accepted/frozen: NO, uitgesteld voor themaretest.
+- Package 6D definitief owner-accepted/frozen: YES, inclusief theme restoration.
 - Package 6E readiness audit: COMPLETE.
 - Package 6E implementation started: NO.
 - Database changed by this task: NO.

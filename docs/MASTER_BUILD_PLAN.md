@@ -5,13 +5,24 @@ Last updated: 2026-09-07
 
 This document is the product and execution source of truth for the FitMetZorge Master Build after Phase 0A Governance and Phase 0B Live Staging Infrastructure Verification.
 
-## Package 6D Theme Restoration - Current
+## Package 6D Corrected Owner Freeze - Current
 
-The later owner request postpones definitive 6D freeze until the restored
-Settings > Appearance system/light/dark feature passes final owner retest.
-Status: PACKAGE 6D THEME RESTORATION - READY FOR FINAL OWNER RETEST.
-Technical verification and staging deployment PASS. Earlier functional acceptance is retained.
-See PACKAGE6D_THEME_RESTORATION_REPORT.md. No Package 6E implementation is authorized.
+Status: COMPLETE / OWNER-ACCEPTED / FROZEN, including theme restoration.
+The owner explicitly confirms Automatisch follows the phone theme, Licht/Donker work
+and the preference persists on a real phone; all previously accepted 6D flows still work.
+Runtime: bc6308fbf0f914b04c7faa711219d9ae46e9cbe3.
+Accepted theme documentation: 3453ea2e14a1737922b53e106c04c3aea747f65b.
+Current baseline: 31/31 migrations, Youri AI v43, theme cache 20260907-theme1.
+New read-only freeze checks: theme unit 10/10, theme SQL 11/11, foundation SQL 47/47,
+44 live files Git-identical, four public viewports with zero mutation requests.
+Earlier local/live theme 1080/1080 and fresh-checkout evidence remain accepted history.
+See PHASE6D_FREEZE_RECEIPT.md and PHASE6D_CORRECTED_FREEZE_EVIDENCE.json.
+Full technical report and unselected D1-D12 choices:
+PACKAGE6D_CORRECTED_FREEZE_AND_6E_OWNER_DECISIONS.md.
+Package 6E readiness COMPLETE; implementation NOT STARTED. Production forbidden.
+The older pre-theme freeze below is superseded, not deleted.
+Documentation publication is held pending resolution of the Pages auto-deployment
+conflict described in the corrected freeze report; runtime acceptance is final.
 
 ## Package 6D Owner Freeze - Historical, Superseded 2026-09-07
 
@@ -77,8 +88,8 @@ Package 6D-0's canonical `20260904105918` identity remains unchanged. See
 PROJECT_MIGRATION_RECONCILIATION.md. This gate does not authorize another build phase
 or production access.
 
-Package 6D theme restoration is READY FOR FINAL OWNER RETEST on staging.
-Earlier functional acceptance is retained; definitive freeze is postponed.
+Package 6D is COMPLETE / OWNER-ACCEPTED / FROZEN on staging, including the
+explicitly accepted system/light/dark theme restoration.
 The locked initial scope is daily, post-workout and weekly
 analysis inside Youri AI, with separate `ai_analysis` consent, maximum 90-day result
 retention, 180-day minimized audit metadata, no trainer access, no private-chat
@@ -89,8 +100,8 @@ activation remains forbidden until the separate legal/provider gate passes.
 
 ## Final Dashboard Placement Hotfix - Current Presentation Contract
 
-The final dashboard placement hotfix retains its prior functional owner acceptance;
-definitive Package 6D freeze now waits for the theme retest.
+The final dashboard placement hotfix and subsequent theme restoration are both
+explicitly owner-accepted and included in the corrected definitive Package 6D freeze.
 Owner confirms the analysis lifecycle, mobile detail and other 6D behavior work.
 The dashboard order is greeting/intro, Check-in, training, recent analyses, then other
 existing components. Up to three analyses use the existing dashboard card styling,
@@ -979,7 +990,7 @@ Scope: AI backend, entitlement checks, context retrieval, structured responses, 
 
 Gate: no browser-to-AI calls, no AI call without entitlement from the single entitlement source, no secrets exposed, missing data handled without hallucinated facts, rollback/safety notes exist, tests/review complete.
 
-Status: PACKAGES 6A, 6B AND 6C COMPLETE / OWNER-ACCEPTED / FROZEN. PACKAGE 6D MOCK-ONLY READ-ONLY ANALYSES TECHNICAL PASS / OWNER TESTING PENDING. The provider-neutral trust schema and `youri-ai` Edge boundary are live on staging for frozen 6C private chat and 6D mock analyses. The frozen Identity, Recovery, Training, Nutrition and Progress sources remain authority. External member-provider processing remains OFF. Full architecture, implementation and verification evidence is in `docs/PHASE6_AI_CORE_ARCHITECTURE_READINESS.md`, `docs/PHASE6A_AI_TRUST_FOUNDATION.md` and `docs/PACKAGE6D_READ_ONLY_ANALYSES_TECHNICAL_REPORT.md`.
+Status: PACKAGES 6A, 6B AND 6C COMPLETE / OWNER-ACCEPTED / FROZEN. PACKAGE 6D MOCK-ONLY READ-ONLY ANALYSES COMPLETE / OWNER-ACCEPTED / FROZEN, INCLUDING THEME RESTORATION. The provider-neutral trust schema and `youri-ai` Edge boundary are live on staging for frozen 6C private chat and 6D mock analyses. The frozen Identity, Recovery, Training, Nutrition and Progress sources remain authority. External member-provider processing remains OFF. Full architecture, implementation and verification evidence is in `docs/PHASE6_AI_CORE_ARCHITECTURE_READINESS.md`, `docs/PHASE6A_AI_TRUST_FOUNDATION.md` and `docs/PACKAGE6D_READ_ONLY_ANALYSES_TECHNICAL_REPORT.md`.
 
 Owner-locked 6A contracts (with subsequent 6B acceptance): OpenAI remains the sole approved provider, with exact frozen routes `gpt-5.6-luna` and `gpt-5.6-terra` proved on synthetic fixtures only; real-member processing is disabled; separate explicit AI and trainer-summary consent; 90-day maximum raw-chat grace after entitlement loss; EUR 3 included operating ceiling, warning at 80 percent, at most EUR 1 Luna grace and EUR 4 hard stop; strict reversible action allowlists; and a deterministic medical/risk hard stop. Provider privacy/legal/DPA/transfer/DPIA completion and separate controlled staging approval remain mandatory before Package 6B can activate an external AI service.
 
