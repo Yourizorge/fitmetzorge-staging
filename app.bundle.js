@@ -3956,7 +3956,7 @@ function renderSettingsPage() {
 }
 
 function renderRoleVisibility() {
-  document.body.classList.toggle("light", state.ui.theme === "light");
+  window.FMZ_THEME?.apply();
   document.body.classList.toggle("password-required", passwordSetupRequired);
   document.body.classList.toggle("logged-in", isLoggedIn() && !passwordSetupRequired);
   document.body.classList.toggle("logged-out", !isLoggedIn() || passwordSetupRequired);
@@ -4533,15 +4533,11 @@ document.addEventListener("click", async (event) => {
     return;
   }
   if (target.id === "themeToggle") {
-    state.ui.theme = state.ui.theme === "dark" ? "light" : "dark";
-    saveState();
-    renderAll();
+    window.FMZ_OWNER_SETTINGS?.open("appearance");
     return;
   }
   if (target.id === "settingsThemeToggle") {
-    state.ui.theme = state.ui.theme === "dark" ? "light" : "dark";
-    saveState();
-    renderAll();
+    window.FMZ_OWNER_SETTINGS?.open("appearance");
     return;
   }
   if (target.dataset.selectClient) {
@@ -5760,7 +5756,7 @@ document.addEventListener("change", async (event) => {
 });
 
 async function init() {
-  document.body.classList.toggle("light", state.ui.theme === "light");
+  window.FMZ_THEME?.apply();
   updateRememberControls();
   renderNav();
   renderAll();
@@ -5769,6 +5765,7 @@ async function init() {
     try {
       const { data } = await supabaseClient.auth.getSession();
       const publicConfirmation = window.FMZ_PUBLIC_AUTH.handleLink(data?.session);
+      if (!data?.session || publicConfirmation || ["invite", "recovery"].includes(INITIAL_AUTH_LINK_TYPE)) window.FMZ_THEME?.clear();
       if (data?.session && !publicConfirmation) {
         if (INITIAL_AUTH_LINK_TYPE === "recovery") {
           requirePasswordSetup("recovery");
@@ -5802,6 +5799,7 @@ async function init() {
         }
       });
     } catch (error) {
+      if (!isLoggedIn()) window.FMZ_THEME?.clear();
       onlineErrorMessage = "Online fout";
       syncStatus("Online fout", "error");
       const message = $("#loginMessage");

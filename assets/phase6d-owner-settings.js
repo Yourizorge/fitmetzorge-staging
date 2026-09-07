@@ -95,14 +95,16 @@
       "Youri AI ist mit einem aktiven KI- oder Personal-Coaching-Tarif verfuegbar. Deinen Tarif findest du in den Einstellungen."]
   };
   Object.assign(copy, {
+    appearance:["Weergave","Appearance","Darstellung"], system:["Automatisch","System / Automatic","Automatisch / System"],
+    light:["Licht","Light","Hell"], dark:["Donker","Dark","Dunkel"],
     home:copy.settings, back:["Terug","Back","Zurueck"], consent:["Toestemmingen","Consents","Einwilligungen"],
     avatar:["Zwevende avatar","Floating avatar","Schwebender Avatar"], analysisData:["Analysegegevens","Analysis data","Analysedaten"],
     languageChange:["Taal wijzigen","Change language","Sprache aendern"],
     deviceZone:["Apparaattijdzone","Device timezone","Geraetezeitzone"],
     zoneUpdated:["Tijdzone bijgewerkt naar","Timezone updated to","Zeitzone aktualisiert auf"]
   });
-  const sections = ["home","account","privacy","language","ai","subscription","terms","privacyDoc","logout","schedule","consent","avatar","chatData","analysisData"];
-  const homeRows = [["account","user"],["privacy","shield"],["ai","message-circle"],["subscription","credit-card"],["language","languages"],["terms","file-text"],["privacyDoc","file-text"],["logout","log-out"]];
+  const sections = ["home","account","privacy","language","appearance","ai","subscription","terms","privacyDoc","logout","schedule","consent","avatar","chatData","analysisData"];
+  const homeRows = [["account","user"],["privacy","shield"],["ai","message-circle"],["subscription","credit-card"],["language","languages"],["appearance","settings"],["terms","file-text"],["privacyDoc","file-text"],["logout","log-out"]];
   const aiRows = [["consent","shield"],["schedule","calendar"],["avatar","user"],["chatData","message-circle"],["analysisData","history"]];
   const flag = language => '<img class="fmz-flag" src="assets/vendor/flag-'+({nl:"nl",en:"gb",de:"de"})[language]+'.svg" alt="" width="24" height="18">';
   const deviceTimezone = () => Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
@@ -139,6 +141,8 @@
   function applySettings(next) {
     if(!next?.profile||!next?.avatar||!next?.display||!languages.includes(next.language))throw new Error("settings_response_invalid");
     data = next;
+    window.FMZ_THEME?.setUser(uid());
+    window.FMZ_THEME?.accept(uid(), next.display.theme_mode || "system");
     state.accountSettings = {...state.accountSettings,language:next.language,country:next.country,unitSystem:next.unit_system};
     document.documentElement.lang = next.language;
     syncTools();
@@ -146,7 +150,7 @@
   async function hydrate(force=false) {
     const user = uid();
     if (!user) return;
-    if (ownerId!==user) { ownerId=user; data=null; loading=null; epoch++; }
+    if (ownerId!==user) { ownerId=user; data=null; loading=null; epoch++; window.FMZ_THEME?.setUser(user); }
     if (loading) return loading;
     if (data&&!force) return data;
     const generation=epoch;
@@ -340,7 +344,8 @@
   }
   function navigationRows(rows) {
     return '<nav class="fmz-settings-list" aria-label="'+esc(t(section))+'">'+rows.map(([key,symbol])=>
-      '<button type="button" class="fmz-settings-row" data-fmz-section="'+key+'">'+icon(symbol)+'<span>'+esc(t(key))+'</span>'+icon("chevron-right")+'</button>').join("")+'</nav>';
+      '<button type="button" class="fmz-settings-row" data-fmz-section="'+key+'">'+icon(symbol)+'<span>'+esc(t(key))+
+      (key==="appearance"?'<small>'+esc(t(data.display.theme_mode||"system"))+'</small>':"")+'</span>'+icon("chevron-right")+'</button>').join("")+'</nav>';
   }
   function renderSettings() {
     if(!settingsDialog)return;
@@ -348,6 +353,8 @@
     if(data){
       if(section==="home")body=navigationRows(homeRows.filter(([key])=>key!=="ai"||member()));
       if(section==="account")body=accountSection();
+      if(section==="appearance")body='<fieldset class="fmz-theme-options"><legend>'+esc(t("appearance"))+'</legend>'+["system","light","dark"].map(value=>
+        '<label><input type="radio" name="theme_mode" value="'+value+'"'+((data.display.theme_mode||"system")===value?' checked':"")+'><span>'+esc(t(value))+'</span></label>').join("")+'</fieldset>';
       if(section==="privacy")body=privacySection();
       if(section==="language")body='<div class="fmz-language-list">'+languages.map((id,i)=>'<button type="button" data-fmz-language="'+id+'" aria-pressed="'+(lang()===id)+'">'+flag(id)+'<span>'+languageNames[i]+'</span>'+(lang()===id?icon("check"):"")+'</button>').join("")+'</div>';
       if(section==="ai")body=member()?safetyPanel(AI.snapshot().analysisStatus?.recovery)+navigationRows(aiRows):'<p>'+esc(t("entitlement"))+'</p>';
@@ -554,6 +561,7 @@
     } finally {busy=false;}
   }
   function reset() {
+    window.FMZ_THEME?.clear();
     epoch++;ownerId="";data=null;loading=null;message="";error="";busy=false;languageOpen=false;drag=null;avatarDraft=null;routedUser="";timezoneSync=null;
     closeRecovery();closeSettings();closeChat();AI.reset();syncTools();
   }
@@ -612,6 +620,17 @@
     const target=event.target;
     if(target.closest("#fmz-settings"))dirty=true;
     if(target.matches('#fmz-settings [name="language"]'))setLanguage(target.value);
+    if(target.matches('#fmz-settings [name="theme_mode"]')){
+      event.stopImmediatePropagation();
+      if(busy)return;
+      const user=uid(),generation=epoch,value=target.value;
+      window.FMZ_THEME?.preview(user,value);
+      settingsDialog.querySelectorAll('[name="theme_mode"]').forEach(node=>{node.disabled=true;});
+      mutate(async()=>{
+        try { await savePatch({theme_mode:value}); }
+        catch(e) { if(uid()===user&&epoch===generation){dirty=false;window.FMZ_THEME?.accept(user,data?.display.theme_mode||"system");} throw e; }
+      }).then(()=>{if(uid()===user)settingsDialog?.querySelector('[name="theme_mode"]:checked')?.focus();});
+    }
     if(target.matches("[data-fmz-avatar-visible]"))mutate(()=>savePatch({avatar_visible:target.checked}));
     if(target.dataset.fmzConsentCheck){
       const block=target.closest("[data-fmz-consent-block]");block.querySelector('[data-action="granted"]').disabled=!target.checked;
@@ -633,6 +652,9 @@
   }
   document.addEventListener("visibilitychange",()=>{if(!document.hidden)syncDeviceTimezone();});
   window.addEventListener("focus",syncDeviceTimezone);
+  const refreshTheme=()=>{if(uid()&&!dirty&&!busy)hydrate(true);};
+  window.addEventListener("fmz:theme-refresh",refreshTheme);
+  window.addEventListener("focus",refreshTheme);
   window.addEventListener("resize",updateViewport);
   updateViewport();
   window.visualViewport?.addEventListener("resize",updateViewport);
@@ -643,6 +665,7 @@
   renderNav=function(){const result=oldNav();syncTools();return result;};
   renderAll=function(){
     if(!uid()){if(ownerId)reset();const result=oldRender();syncTools();return result;}
+    window.FMZ_THEME?.setUser(uid());
     const result=oldRender();syncTools();if(!data||ownerId!==uid())queueMicrotask(()=>hydrate());
     if(chatDialog)document.getElementById("ai-coach")?.classList.add("active");
     return result;

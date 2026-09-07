@@ -4,11 +4,14 @@
   --surface: rgba(255, 255, 255, 0.075);
   --surface-2: rgba(255, 255, 255, 0.055);
   --surface-3: rgba(255, 255, 255, 0.105);
+  --panel: #20262e;
   --text: #f4f7f8;
-  --muted: #9aa7b2;
+  --muted: #bac6cf;
   --line: rgba(255, 255, 255, 0.12);
   --gold: #d7b24d;
   --gold-2: #f0ce73;
+  --action-bg: #d7b24d;
+  --action-text: #17120a;
   --blue: #073b5a;
   --blue-2: #0b4f78;
   --danger: #f07171;
@@ -17,19 +20,22 @@
   --shadow: 0 28px 80px rgba(0, 0, 0, 0.34);
 }
 
-body.light {
+:root[data-theme="light"], body.light {
   color-scheme: light;
   --bg: #f7f8fa;
   --surface: #ffffff;
   --surface-2: #eef3f7;
   --surface-3: #e6edf2;
+  --panel: #eef3f7;
   --text: #111315;
-  --muted: #5d6872;
+  --muted: #45515e;
   --line: #d8e0e7;
   --gold: #94680a;
   --gold-2: #7b5608;
   --blue: #073b5a;
   --blue-2: #e7f0f6;
+  --danger: #a52a32;
+  --ok: #246a43;
   --shadow: 0 14px 34px rgba(24, 35, 45, 0.12);
 }
 
@@ -148,8 +154,8 @@ button {
 }
 
 .auth-tab.active {
-  background: var(--gold);
-  color: #111;
+  background: var(--action-bg);
+  color: var(--action-text);
 }
 
 .link-btn {
@@ -3597,8 +3603,8 @@ body.light .tracker-input-card select {
 }
 
 .primary-btn {
-  background: linear-gradient(135deg, var(--gold), #e2b848);
-  color: #17120a;
+  background: var(--action-bg);
+  color: var(--action-text);
 }
 
 .secondary-btn,
@@ -3881,17 +3887,7 @@ body {
 }
 
 body.light {
-  --bg: #f5f2e9;
-  --surface: rgba(255, 255, 255, 0.82);
-  --surface-2: rgba(255, 255, 255, 0.72);
-  --surface-3: #eef1f3;
-  --text: #101417;
-  --muted: #64748b;
-  --line: rgba(15, 23, 42, 0.12);
-  background:
-    radial-gradient(circle at 20% -10%, rgba(184, 138, 21, 0.18), transparent 34%),
-    radial-gradient(circle at 96% 8%, rgba(16, 35, 60, 0.16), transparent 36%),
-    var(--bg);
+  background: var(--bg);
 }
 
 .app-shell {

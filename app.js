@@ -9,7 +9,7 @@
     INVITE_FUNCTION_NAME: "invite-client"
   };
 
-  const bundleUrl = new URL("app.bundle.js?v=20260906-owner-hotfix2", document.baseURI);
+  const bundleUrl = new URL("app.bundle.js?v=20260907-theme1", document.baseURI);
   const bundleResponse = await fetch(bundleUrl, { cache: "no-cache" });
   if (!bundleResponse.ok) {
     throw new Error(`App bundle laden mislukt: ${bundleResponse.status}`);
@@ -99,7 +99,7 @@
   }
   const phase6cPrivateChatPatchSource = await phase6cPrivateChatPatchResponse.text();
 
-  const ownerSettingsResponse = await fetch(new URL("assets/phase6d-owner-settings.js?v=20260906-owner-hotfix2", document.baseURI), { cache: "no-cache" });
+  const ownerSettingsResponse = await fetch(new URL("assets/phase6d-owner-settings.js?v=20260907-theme1", document.baseURI), { cache: "no-cache" });
   if (!ownerSettingsResponse.ok) throw new Error("Staging settings unavailable");
   const ownerSettingsSource = await ownerSettingsResponse.text();
 

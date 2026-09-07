@@ -33,7 +33,7 @@ function mockSetup(profile) {
 }
 function serverFixture(){
  const settings={profile:{name:"Synthetic",email:profile.email,role:"client",trainer_linked:false},language:"nl",country:"Nederland",unit_system:"metric",
- display:{date_format:"locale",hour_cycle:"24"},avatar:{visible:true,side:"right",y:.72},revision:0,
+ display:{date_format:"locale",hour_cycle:"24",theme_mode:"system"},avatar:{visible:true,side:"right",y:.72},revision:0,
  subscription:{plan:"ai",status:"active",starts_at:"2026-09-01",ends_at:"2026-10-01",trial_status:"not_recorded",billing_available:false},account_deletion_available:false};
  const pref={timezone_name:"Europe/Amsterdam",daily_enabled:true,daily_time:"07:30",post_workout_enabled:true,weekly_enabled:true,weekly_day:1,weekly_time:"08:00",revision:0};
  const recovery={safety_revision:2,historical_status:"hard_stop",analysis_blocked:true,automatic_execution_blocked:true,analysis_status:"hard_stop"};
@@ -66,7 +66,7 @@ function serverFixture(){
    for(const [key,value] of Object.entries(args.p_patch)){
     if(["language","country"].includes(key))settings[key]=value;
     if(key==="name")settings.profile.name=value;
-    if(["date_format","hour_cycle"].includes(key))settings.display[key]=value;
+    if(["date_format","hour_cycle","theme_mode"].includes(key))settings.display[key]=value;
     if(key.startsWith("avatar_"))settings.avatar[key.slice(7)]=value;
    }settings.revision++;return {...settings,analysis_preferences:pref};
   }
@@ -162,9 +162,9 @@ if(require.main===module)(async()=>{
   await page.waitForFunction(()=>window.FMZ_OWNER_SETTINGS.snapshot()?.avatar.side==="left");
   check(width+" position survives refresh",server.settings.avatar.side==="left");
   await page.click('[data-fmz-settings="home"]');await page.waitForSelector("#fmz-settings[open]");
-  check(width+" settings is vertical home list",await page.locator(".fmz-settings-row").count()===8);
+  check(width+" settings is vertical home list",await page.locator(".fmz-settings-row").count()===9);
   check(width+" settings removed bottom nav",await page.locator('#nav [data-view="settings"]').count()===0);
-  for(const key of ["account","privacy","language","ai","subscription","terms","privacyDoc","logout"]){
+  for(const key of ["account","privacy","language","appearance","ai","subscription","terms","privacyDoc","logout"]){
    await page.click('[data-fmz-section="'+key+'"]');
    check(width+" settings "+key+" separate view",await page.locator('[data-fmz-current-section="'+key+'"]').count()===1&&await page.locator("#fmz-settings .fmz-dialog-head h2").count()===1);
    await page.click('#fmz-settings [data-fmz-section="home"]');

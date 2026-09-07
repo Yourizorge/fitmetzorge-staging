@@ -18,7 +18,7 @@ const all = (text, needles) => needles.every((needle) => text.includes(needle));
 check("cache and runtime version", all(files.runtime + files.app + files.index, [
   "20260906-owner-hotfix2",
   "assets/phase6c-private-ai-chat.js?v=20260906-owner-hotfix2",
-  "app.js?v=20260907-dashboard-placement1",
+  "app.js?v=20260907-theme1",
 ]));
 check("frontend analyses tab", all(files.runtime, [
   'tabAnalyses:"Analyses"',

@@ -11,7 +11,7 @@ if(process.argv[2]==="--historical"){
     };
   }});
   let source=fs.readFileSync(path.join(archive,"assets",name),"utf8")
-    .replace('const currentAppVersion = "20260826-phase4f-c1";','const currentAppVersion = "20260907-dashboard-placement1";')
+    .replace('const currentAppVersion = "20260826-phase4f-c1";','const currentAppVersion = "20260907-theme1";')
     .replace('const frozenPhase3AssetVersion = "20260818-phase3-disclosure-focusfix1";','const frozenPhase3AssetVersion = "20260906-owner-hotfix2";')
     .replace('const phase1Version = "20260818-member-ux-today-hydration1";','const phase1Version = "20260904-auth-lifecycle2";');
   const historicalRequire=name=>{

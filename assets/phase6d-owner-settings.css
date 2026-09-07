@@ -52,6 +52,29 @@ body.light .fmz-field input,body.light .fmz-field select { color-scheme:light }
 .fmz-feedback { min-height:24px; color:#71c58f }
 .fmz-feedback:empty { display:none }
 .fmz-feedback.error { color:#ef9b9b }
+body.light .fmz-feedback { color:var(--ok) }
+body.light .fmz-feedback.error { color:var(--danger) }
+/* Shared legacy controls inherit the same semantic theme palette. */
+body.client-mode.light { background:var(--bg) }
+body.client-mode.light .topbar,body.client-mode.light .sidebar { background:var(--surface) }
+body.client-mode.light .nav-btn.active { background:var(--action-bg); color:var(--action-text) }
+body .member-ux-primary-action,body .phase5-unit-toggle button[aria-pressed=true] { background:var(--action-bg); color:var(--action-text) }
+body.light .eyebrow { color:var(--gold-2) }
+body.light .phase4-status.active { color:var(--ok) }
+body.light .phase4-feedback.error { color:var(--danger) }
+body.light .p6c-danger { color:var(--danger)!important }
+body.light .p6c-feedback.error,body.light .fmz-notification-error { color:var(--danger) }
+body.light .status.ok,body.light .status.warn,body.light .status.bad { color:#fff }
+body.light :focus-visible,body.light .fmz-dialog :focus-visible,body.light #fmz-top-tools :focus-visible { outline-color:var(--gold-2) }
+.fmz-settings-row small { display:block; margin-top:4px; color:var(--muted); font-size:13px; font-weight:400 }
+.fmz-theme-options { border:0; padding:0; margin:0; min-width:0; display:grid }
+.fmz-theme-options legend { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%) }
+.fmz-theme-options label { display:flex; align-items:center; gap:14px; min-height:62px; padding:14px 4px; border-bottom:1px solid var(--line); cursor:pointer }
+.fmz-theme-options label:hover { background:var(--panel) }
+.fmz-theme-options input { width:22px; height:22px; flex:0 0 22px; margin:0; accent-color:var(--gold); color-scheme:inherit }
+.fmz-theme-options span { min-width:0; overflow-wrap:anywhere }
+.fmz-theme-options input:checked+span { font-weight:700 }
+.fmz-theme-options label:has(input:disabled) { cursor:wait; opacity:.7 }
 .fmz-safety { border-left:3px solid #d87575; border-radius:0; padding:14px; background:var(--panel,#292929); margin:12px 0 }
 .fmz-safety p { margin:10px 0 }
 .fmz-actions { display:flex; flex-wrap:wrap; gap:8px }
@@ -93,5 +116,6 @@ body.client-mode .topbar .brand { min-width:0 }
   body.client-mode #themeToggle { display:none }
 }
 @media(prefers-reduced-motion:reduce) {
+  html { scroll-behavior:auto }
   .fmz-dialog *,#fmz-avatar { animation:none!important; transition:none!important; scroll-behavior:auto!important }
 }
