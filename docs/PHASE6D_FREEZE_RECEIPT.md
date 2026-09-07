@@ -14,9 +14,12 @@ This forward-only receipt supersedes the pre-theme freeze below; no history is r
 
 - Accepted current runtime: `bc6308fbf0f914b04c7faa711219d9ae46e9cbe3`.
 - Accepted theme documentation: `3453ea2e14a1737922b53e106c04c3aea747f65b`.
-- Corrected freeze documentation: the commit introducing
-  PACKAGE6D_CORRECTED_FREEZE_AND_6E_OWNER_DECISIONS.md, to be pinned in the
-  subsequent documentation-only provenance commit.
+- Corrected freeze documentation commit: `43a9665f8b520931aa45cfd3f6d1d3f4f0a40975`.
+  This introduces PACKAGE6D_CORRECTED_FREEZE_AND_6E_OWNER_DECISIONS.md and the
+  corrected evidence/status. A following metadata-only documentation commit pins
+  this full hash; its current local HEAD is reported separately in the handoff.
+  Resolve the authoritative freeze commit independently with
+  `git log --diff-filter=A -1 --format=%H -- docs/PACKAGE6D_CORRECTED_FREEZE_AND_6E_OWNER_DECISIONS.md`.
 - Superseded pre-theme runtime: `7fec9da7cb00cb7dff4a601810ddd2c977db0f5f`.
 - Superseded freeze documentation: `d53fea94f50c23c059104045f899fde4da25c2ec`.
 - Preflight HEAD/origin/main/actual remote: `3453ea2e14a1737922b53e106c04c3aea747f65b`,

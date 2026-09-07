@@ -33,8 +33,11 @@ De eerdere freeze d53fea94f50c23c059104045f899fde4da25c2ec is superseded/histori
   `3453ea2e14a1737922b53e106c04c3aea747f65b`; worktree schoon.
 - Geaccepteerde actuele runtime: `bc6308fbf0f914b04c7faa711219d9ae46e9cbe3`.
 - Geaccepteerde theme-rapport/statuscommit: `3453ea2e14a1737922b53e106c04c3aea747f65b`.
-- Gecorrigeerde freeze-documentatiecommit: wordt na lokale commit exact gepind
-  in het [freeze receipt](PHASE6D_FREEZE_RECEIPT.md), zonder runtimewijziging.
+- Gecorrigeerde freeze-documentatiecommit: `43a9665f8b520931aa45cfd3f6d1d3f4f0a40975`.
+  Deze introduceert dit rapport, het gecorrigeerde receipt en evidence.
+  De daaropvolgende documentatiecommit pint deze volledige hash; dat is uitsluitend
+  provenance, geen andere functionele freeze. De lokale eind-HEAD staat in de overdracht.
+  Exacte freeze-authoriteit: `git log --diff-filter=A -1 --format=%H -- docs/PACKAGE6D_CORRECTED_FREEZE_AND_6E_OWNER_DECISIONS.md`.
 - Historische runtime: `7fec9da7cb00cb7dff4a601810ddd2c977db0f5f`.
 - Historische freeze-documentatie: `d53fea94f50c23c059104045f899fde4da25c2ec`.
 - Historische 6E-auditdocumentatie: `37cee137153448289a948e32c20b9d7cfb484601`.
