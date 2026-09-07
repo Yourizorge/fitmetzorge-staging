@@ -103,7 +103,7 @@ Geen bestand, database of echte gebruiker wordt verwijderd of aangepast.
 | unresolved_signal / niet-afgesloten details | Doel, verantwoordelijke, maximum en verwijderingsgevolgen nog niet vastgesteld | review_ids; geen automatische 'bewaren voor altijd' of 'veilig door verwijderen' |
 
 Niet-noodzakelijke afgesloten/minimale records worden direct voor verwijdering
-voorgesteld. Grenzen mogen korter, nooit langer dan 30/90/180. retentiePlan/episodeCount
+voorgesteld. Grenzen mogen korter, nooit langer dan 30/90/180. retentionPlan/episodeCount
 schrijven niets; delete_ids zijn alleen een synthetisch plan. Zelfs bij onnodig
 genoemde onopgeloste data kiest het model geen beleid: review_ids is een blocker voor
 latere opslag, geen toestemming deze data te verzamelen/bewaren. Chat en bestaande

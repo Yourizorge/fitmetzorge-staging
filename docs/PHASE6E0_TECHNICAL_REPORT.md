@@ -3,7 +3,7 @@
 Datum: 2026-09-07.
 PACKAGE 6E-0 OFFLINE PREPARATION - TECHNICAL PASS / READY FOR OWNER REVIEW.
 Alleen technisch offline resultaat; geen deskundige goedkeuring of gebruikersvrijgave.
-Publicatie wordt na de toegestane push vastgelegd in PHASE6E0_PUBLICATION_RECEIPT.md
+De gecontroleerde eerste publicatie staat in PHASE6E0_PUBLICATION_RECEIPT.md
 en PHASE6E0_EVIDENCE.json. Dit rapport en die receipt vormen samen de technische oplevering.
 
 ## 1. Aanleiding En Bevoegdheid
@@ -20,7 +20,7 @@ C:\Users\Fitme\OneDrive\Documenten\Fit Met Zorge\Zip github fitmetzorge staging\
 Preflight: Git-root hierboven, branch main, origin
 https://github.com/Yourizorge/fitmetzorge-staging.git, lokale HEAD, origin/main en
 rechtstreeks opgevraagde remote main alle
-0c47dd450b27443b4a4328933d87e26d9156a786; initiële werkboom schoon.
+0c47dd450b27443b4a4328933d87e26d9156a786; initiele werkboom schoon.
 Frozen runtime: bc6308fbf0f914b04c7faa711219d9ae46e9cbe3.
 
 AGENTS.md/config en gevraagde status/architectuur/freezereceipt/readiness/decisionreport
@@ -124,10 +124,11 @@ git diff bc6308fbf0f914b04c7faa711219d9ae46e9cbe3 -- . ':(exclude)docs/**' ':(ex
 | isolation.test.cjs | PASS 6 | Frozen non-doc diff leeg, beperkte paden, geen imports, Nodeguard, geen deps, core zonder IO/clock/secrets |
 | limitations.test.cjs | PASS 7 technische assertions | 3 actuele-sinds-cases en 4 KNOWN GAP observaties; de 4 missers zijn geen correcte herkenning |
 | Offline totaal | PASS 576, FAIL 0, skipped 0, todo 0 | Eigen technische tests; geen sensitiviteit/specificiteit of klinische score |
+| Herkenning vier bekende gapvoorbeelden | FAIL / KNOWN LIMITATION | Observatietests blijven groen omdat ze de tekortkoming registreren; geen live vrijgave |
 | Bestaande frozen theme unit | PASS 10 | In-memory bestaande tests, geen browser/sessie of member-RPC |
 | Runtime protected diff | PASS leeg | Alle bestaande non-doc bestanden gelijk aan frozen Git |
 | Voor-publicatie static assets | PASS 56/56 | HTTP 200, exacte buffers en SHA-256 gelijk aan frozen Git; details in evidence |
-| Na-publicatie static assets / Pages | Receipt na push | Niet vervangen door een lokale Gitvergelijking |
+| Na-publicatie static assets / Pages | PASS 56/56; Pages-run 34137984776 SUCCESS | Eerste commit 1648b04; zie exacte receipt en evidence |
 | Live SQL/DB/Auth/member/Edge/migration tests | NOT RUN | Buiten huidige offline bevoegdheid |
 | Browser/mobile E2E, nieuwe fresh checkout, Docker/pg_cron rebuild | NOT RUN | Geen nieuwe runtime; offline suite vereist geen database/tempcheckout |
 | Medische/privacy/juridische/moedertaalreview | NOT RUN / OPEN | Geen reviewercontact, kosten of automatische activatie |
@@ -170,7 +171,11 @@ Chat-only hulp is niet gegarandeerd bij uitloggen, geen entitlement of volledige
 
 ## 6. Git, Publicatie En Datagevolgen
 
-Commits en Pages-run worden na publicatie gepind in PHASE6E0_PUBLICATION_RECEIPT.md.
+Offline implementatiecommit: 1648b0486a438b392e28d9fcf2420d5719c4e57d, succesvol
+gepusht naar staging main. Pages-run 34137984776 SUCCESS op diezelfde commit.
+Publieke static assets voor en na: 56/56 exact gelijk; drie offline entrypaden HTTP404.
+De aparte docs-only receiptcommit is de commit die PHASE6E0_PUBLICATION_RECEIPT.md
+toevoegt; exacte hash en afsluitende Pages/assetcontrole staan in de owneroplevering.
 De push bevat uitsluitend de hierboven opgesomde offline bestanden en documentatie.
 Geen nieuwe runtimecommit. Automatische staging-Pages is expliciet toegestaan;
 geen handmatige frontend-, Edge- of cron-deploy.

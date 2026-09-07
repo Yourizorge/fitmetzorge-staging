@@ -48,7 +48,8 @@
       "command": "node --test assets/phase6d-theme-authority.test.cjs",
       "pass": 10,
       "fail": 0
-    }
+    },
+    "recognition_gap_status": "FAIL_KNOWN_LIMITATION_NOT_RUNTIME_READY"
   },
   "initial_failures": {
     "engine": 8,
@@ -498,8 +499,423 @@
       }
     ]
   },
-  "post_publication": null,
-  "publication_status": "PENDING_COMMIT_AND_AUTHORIZED_PUSH",
+  "post_publication": {
+    "checked_at": "2026-09-07T15:25:35.635Z",
+    "head": "1648b0486a438b392e28d9fcf2420d5719c4e57d",
+    "frozen": "bc6308fbf0f914b04c7faa711219d9ae46e9cbe3",
+    "scope": "Repository-owned static assets only; no app execution or Supabase/Edge request.",
+    "asset_count": 56,
+    "overall_pass": true,
+    "offline_paths": [
+      {
+        "file": "_offline/phase6e0/engine.cjs",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e0/contract.json",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e0/package.json",
+        "http": 404
+      }
+    ],
+    "files": [
+      {
+        "file": "Fit_Met_Zorge_Coach_App_standalone.html",
+        "http": 200,
+        "bytes": 192602,
+        "sha256": "1592d6ecebb2527c34dd3a9fa9b1381db18c8dc4af9e64ad7b1ae7c65d357bc4",
+        "frozen_identical": true
+      },
+      {
+        "file": "app.bundle.js",
+        "http": 200,
+        "bytes": 274987,
+        "sha256": "0aedc9e0c5ef05b96b4b0313090a5f6a5481c8d5a585eaac4f4b61ea9fd459d6",
+        "frozen_identical": true
+      },
+      {
+        "file": "app.js",
+        "http": 200,
+        "bytes": 7300,
+        "sha256": "c4f2e966598b65f82dde4c8d546debe4a440fedd935b2897f85b30008560ddb0",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/fit-met-zorge-logo-cropped.png",
+        "http": 200,
+        "bytes": 15620,
+        "sha256": "c82010c6b05025acc33c69c3eee185775f7e935f53dfdce99b73f4318ce59008",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/fit-met-zorge-logo.png",
+        "http": 200,
+        "bytes": 17316,
+        "sha256": "4b156a6d55569683703b30e4c349d692cdcffc5b0785114fecb7341c81734897",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/logo.svg",
+        "http": 200,
+        "bytes": 521,
+        "sha256": "17ab07e30519df3052e539e9839a9b4009598ce9f5d93ba4d1e455fcf9e956b8",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/member-ux-consistency.js",
+        "http": 200,
+        "bytes": 54499,
+        "sha256": "549beca9ebfe6b1b3f63d254280c5e61b8641809903a2f81dd7c415807314dea",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/phase1-foundation.js",
+        "http": 200,
+        "bytes": 120779,
+        "sha256": "f275ad98e4680f4e4436858911fc5800e39a4094ab144ec78d0a92adb75addf6",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/phase2-home-recovery.js",
+        "http": 200,
+        "bytes": 43727,
+        "sha256": "5e642249fc7a1af297e5035f3c5d219cd3ff9f9dbdc19d20c24be59089ba2707",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/phase3-training-engine.js",
+        "http": 200,
+        "bytes": 215817,
+        "sha256": "e87b01034544dd72c91a91fb40dd0d1b78364d62603dfbf1ed2babed7df944db",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/phase4-nutrition-slice2.js",
+        "http": 200,
+        "bytes": 69176,
+        "sha256": "42c00580ac2574787b7deea19b3e70009562c8b628863a09409536f265ee28c2",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/phase4-nutrition-slice3.js",
+        "http": 200,
+        "bytes": 149097,
+        "sha256": "e07bdd2949f7d87bca19edd8160c23ccae7cddf4279494dc12551b61ea275396",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/phase5-progress.js",
+        "http": 200,
+        "bytes": 61444,
+        "sha256": "b47b9ac07d1b21a9aad014d824e398690546e385eed7c249a98e95564d704b7b",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/phase6c-private-ai-chat.js",
+        "http": 200,
+        "bytes": 57754,
+        "sha256": "f841e8c68f79d481157c7c4bfd0194b406ce1f980a26539667910c32baccae97",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/phase6d-analysis-inbox.js",
+        "http": 200,
+        "bytes": 26016,
+        "sha256": "428c81aab07c815aab74828790c028b0839cdbd83a607b0c9eddbbcc8fc28fbe",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/phase6d-hotfix2.css",
+        "http": 200,
+        "bytes": 16706,
+        "sha256": "2c7444c64b34183c7a13241c42286f6109e6db782a4026f45b396318b72c25f9",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/phase6d-owner-settings.css",
+        "http": 200,
+        "bytes": 10468,
+        "sha256": "e03ac8dd7752620bb72d4d5bcea4e3c586c7fddce9d2ad2c95fa0a6db1332f58",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/phase6d-owner-settings.js",
+        "http": 200,
+        "bytes": 52905,
+        "sha256": "edecdce2425970ca38f6e62b741e88ebed9a49ab6e3c0061821d8be021b26f10",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/phase6d0-legacy-auth.js",
+        "http": 200,
+        "bytes": 4560,
+        "sha256": "fdaca0d3637ca2dcd36fad7a3698ff6c4edae709c582ef3c6709530e2012d4e3",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/theme-authority.js",
+        "http": 200,
+        "bytes": 3126,
+        "sha256": "7927a84cc5a686e186fadd8de92f8afc0f05d6f256121dcfa92da8d2b6605188",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/flag-de.svg",
+        "http": 200,
+        "bytes": 221,
+        "sha256": "efd480af5a154a7651f29da23ee0d09dbc892410fb4041898ddf8face336c575",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/flag-gb.svg",
+        "http": 200,
+        "bytes": 504,
+        "sha256": "c8be1e7208798a4ae692ee1e937065d498bb29e741943f6172b29118b8ed8066",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/flag-icons-LICENSE.txt",
+        "http": 200,
+        "bytes": 1087,
+        "sha256": "8f1195d55a2fd315a07d812328470ca9ba2abb78c8d317ff19619d5125e00cea",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/flag-nl.svg",
+        "http": 200,
+        "bytes": 225,
+        "sha256": "8f691f17fe70894537af8e92f2ca47761d353639b0defc15cbe561eb503ab010",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-LICENSE.txt",
+        "http": 200,
+        "bytes": 880,
+        "sha256": "1e7290b35280a048667bbf0ebabac1c7fd52a75300e8b2946ac165715997f2bc",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-archive.svg",
+        "http": 200,
+        "bytes": 419,
+        "sha256": "1a6e1c540c9a1a9b489893cc14ab9f597496c69aab5ba222fdd5b456de9e2fac",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-arrow-left.svg",
+        "http": 200,
+        "bytes": 344,
+        "sha256": "e31ed0af85ffbed2b54f78f37af197c3b84b24e776cba1d27613d6a9ad555a16",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-arrow-up.svg",
+        "http": 200,
+        "bytes": 341,
+        "sha256": "df0ff279d41bba93ae6797ef519ba442b895cd5d546fb36f22b7a656c3b05fd1",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-bell.svg",
+        "http": 200,
+        "bytes": 469,
+        "sha256": "129a018bd5025fc992a510e9c95e7868300d888b69c38c69a3466d310919ea13",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-calendar.svg",
+        "http": 200,
+        "bytes": 410,
+        "sha256": "2e2a7df92c2cca71dd6de34bb3f7187e276e8e8e003abe2e80b2ffd13347af60",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-check.svg",
+        "http": 200,
+        "bytes": 316,
+        "sha256": "538432eec072ceeccf5a7aacf347a2ad2bff9937d203dbd0b4f4245d7accd93c",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-chevron-right.svg",
+        "http": 200,
+        "bytes": 322,
+        "sha256": "fea488a3b60fd7738bbbf8ca98826ef5c0381347c5fd1048d45ee70a75a51cfe",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-credit-card.svg",
+        "http": 200,
+        "bytes": 386,
+        "sha256": "4d0394710733a8ca0db566208b0281708ebde7b167b6903491fde0be060bded1",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-download.svg",
+        "http": 200,
+        "bytes": 428,
+        "sha256": "f68a21e11115edc0aef51ac6f8f4618e14d2b92055f1cb9f5d670efc696bea85",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-file-text.svg",
+        "http": 200,
+        "bytes": 473,
+        "sha256": "512f414d72aabc5218b94a9da571df70d8e0b014cfb32ec366b559ec868952d6",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-globe.svg",
+        "http": 200,
+        "bytes": 408,
+        "sha256": "c3543ac3883a0841aa5d37ff974708fbc37d9c6afe64e14b03d56ed798b0b788",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-history.svg",
+        "http": 200,
+        "bytes": 403,
+        "sha256": "682b5fc882578a3bdaac72c72fc27709cb806b61c2d1d51194327b31dde7f239",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-languages.svg",
+        "http": 200,
+        "bytes": 443,
+        "sha256": "a33a7bd34876dde0c5a470914dac09fca77f97da75e93e1b1687de2294874c65",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-loader-circle.svg",
+        "http": 200,
+        "bytes": 336,
+        "sha256": "44ad0f822a89b28a3feecf7276686c818a92a4a9c77cc51404c58929e30f0f3a",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-log-out.svg",
+        "http": 200,
+        "bytes": 425,
+        "sha256": "3f28d1eedd9a71ec6933578fc1b7cd21c56618e8b9b8339e55bfc133b4eb6bee",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-message-circle.svg",
+        "http": 200,
+        "bytes": 340,
+        "sha256": "f62830d9fbbbf697e53555398d31a342ddec8dd008d707f21cd90bb19befcc87",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-plus.svg",
+        "http": 200,
+        "bytes": 332,
+        "sha256": "b29207ee8f5cc0e829c0bab2e5b223fc88687599c6bd40b94ba35f52327615d6",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-rotate-cw.svg",
+        "http": 200,
+        "bytes": 380,
+        "sha256": "2c2c5d1f147e829f431182eee79d8d74e81aedcf8177f9e1878a4180ec990a9c",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-settings.svg",
+        "http": 200,
+        "bytes": 904,
+        "sha256": "ceea1a72d04b112291222ba9ad0779a12d47d816079fe4174900c724f360b55c",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-shield.svg",
+        "http": 200,
+        "bytes": 464,
+        "sha256": "276e603595736fcb698b0309b04c44ebb88afb28e4753c5670f92c11a01ed043",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-trash-2.svg",
+        "http": 200,
+        "bytes": 499,
+        "sha256": "9268a35cfb4f9d852c3d13f2c91476dd067c21c20e2bcdb0093fd93fd0bf34b7",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-user.svg",
+        "http": 200,
+        "bytes": 375,
+        "sha256": "bb1e0531065db51238a34b348cf8fb8267cd31932dc3f680c9f204a58d1520ea",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-x.svg",
+        "http": 200,
+        "bytes": 333,
+        "sha256": "0f38855d9d5775c10960ae53e46b745f77914b43f78c43bf8abc39f4d5e06de1",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/zxing-browser-0.2.1.LICENSE.txt",
+        "http": 200,
+        "bytes": 1069,
+        "sha256": "4c26c3077daa7ce4d56ad91f279fafc395bf33c3a0f1ba9ab8cf511bad148ea5",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/zxing-browser-0.2.1.min.js",
+        "http": 200,
+        "bytes": 441121,
+        "sha256": "066bc34edfcdd4a33f0964aeec967752a0dea1ccaf36e58e319ac9fcb5070f6a",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/youri-ai-avatar-3d-v3-256.webp",
+        "http": 200,
+        "bytes": 53188,
+        "sha256": "257f31e6fe4faa7fecf5fb9874eed06d4018dc8c60958aa714e7d4b79a7517dc",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/youri-ai-avatar-3d-v3-master.png",
+        "http": 200,
+        "bytes": 1864738,
+        "sha256": "53edc8c376f097417abde7b74f4c9d85cebad4e2a676ae65620a4cbd65da2e57",
+        "frozen_identical": true
+      },
+      {
+        "file": "config.js",
+        "http": 200,
+        "bytes": 196,
+        "sha256": "07cc826304b5a9343ef26a21aabae6d00a21fe4c55a1d9feefef6067bcecd6fa",
+        "frozen_identical": true
+      },
+      {
+        "file": "fit-met-zorge-logo.png",
+        "http": 200,
+        "bytes": 257147,
+        "sha256": "940c6c9e66d73a642d67f453fc12e46e78f233e60432ea0ad426324af1493ecf",
+        "frozen_identical": true
+      },
+      {
+        "file": "index.html",
+        "http": 200,
+        "bytes": 52340,
+        "sha256": "5dcbd22107f955fd67be9a57df7c27d9fd4ad8b6f30dd3149495badbb41ddc51",
+        "frozen_identical": true
+      },
+      {
+        "file": "styles.css",
+        "http": 200,
+        "bytes": 105343,
+        "sha256": "29d376ad4efbaee61dfc65adaced629753cdc5d126c58f5c60ee472324e2a20e",
+        "frozen_identical": true
+      }
+    ]
+  },
+  "publication_status": "VERIFIED_FOR_IMPLEMENTATION_COMMIT",
   "not_run": [
     "Supabase migration list",
     "db push --dry-run",
@@ -533,5 +949,108 @@
     "D3 bounded facts and D4 self-report do not alter frozen 6D gates.",
     "D5 unresolved owner/max lifetime/deletion consequences are undecided; no real storage or cleanup."
   ],
-  "next_step": "Owner productreview of D1-D12 register, bounded-facts content boundary, recovery/copy/reachability and separate 6E-1 proposal. No automatic activation."
+  "next_step": "Owner productreview of D1-D12 register, bounded-facts content boundary, recovery/copy/reachability and separate 6E-1 proposal. No automatic activation.",
+  "implementation_commit": "1648b0486a438b392e28d9fcf2420d5719c4e57d",
+  "push": {
+    "status": "SUCCESS",
+    "remote_head": "1648b0486a438b392e28d9fcf2420d5719c4e57d",
+    "target": "origin HEAD:refs/heads/main",
+    "worktree_clean_after_first_push": true
+  },
+  "pages": {
+    "id": 34137984776,
+    "name": "pages build and deployment",
+    "head_sha": "1648b0486a438b392e28d9fcf2420d5719c4e57d",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/Yourizorge/fitmetzorge-staging/actions/runs/34137984776"
+  },
+  "offline_git_blob_manifest": [
+    {
+      "file": "_offline/phase6e0/README.md",
+      "bytes": 2473,
+      "sha256": "e0b333938afa07ebdd5537f5a60c6fb6885ff95079ce754feb96ed072152fb14"
+    },
+    {
+      "file": "_offline/phase6e0/contract.json",
+      "bytes": 2815,
+      "sha256": "501853e226834204d39f0e08de1d7b6ea4508076364e7992c180607bb777fd5e"
+    },
+    {
+      "file": "_offline/phase6e0/copy.json",
+      "bytes": 4746,
+      "sha256": "535df3811aecc0a648c65c922f7faf9186586537e52e9517e2491add18f489f8"
+    },
+    {
+      "file": "_offline/phase6e0/corpus.cjs",
+      "bytes": 2253,
+      "sha256": "b6ce83db89a1290bc7c7477845082dd3d9b985ba5126ba983bd1d2d2dddac7bf"
+    },
+    {
+      "file": "_offline/phase6e0/engine.cjs",
+      "bytes": 14761,
+      "sha256": "aaea0a866aba39b0143c05217f3f8ee195540f9ec1e9e920612f9d2bf8832f41"
+    },
+    {
+      "file": "_offline/phase6e0/fixture-seeds.json",
+      "bytes": 10417,
+      "sha256": "9a5f6e631755d58e4cf458f54a318cbcebe8090678d43f60b18add3e604ee2ef"
+    },
+    {
+      "file": "_offline/phase6e0/known-limitations.json",
+      "bytes": 1153,
+      "sha256": "e5649d1059282b23ee9176702c507f8add4b36f3366f7bf639dc91dceecdb347"
+    },
+    {
+      "file": "_offline/phase6e0/package.json",
+      "bytes": 303,
+      "sha256": "efc6e99e99c534c7d237693d7dba2e52c0d4a017a9e0c3ac0410859f0a2ed68f"
+    },
+    {
+      "file": "_offline/phase6e0/retention.cjs",
+      "bytes": 3324,
+      "sha256": "81b7734c70f9b9ad5c21ad3220b1bc810cbe3825dae8ef4207c283c1673faa63"
+    },
+    {
+      "file": "_offline/phase6e0/rules.json",
+      "bytes": 3823,
+      "sha256": "22f06280095c4d22cc88bc7cff0447bd69fb52a7a4e0df3d1c8af938f825118b"
+    },
+    {
+      "file": "_offline/phase6e0/state.cjs",
+      "bytes": 6862,
+      "sha256": "7879d0089d81a9b219f6d427aa018def80579f3660c813c60fe77950136d6675"
+    },
+    {
+      "file": "_offline/phase6e0/test/engine.test.cjs",
+      "bytes": 12876,
+      "sha256": "2fef20510c403545623a1adf7e46e0d975bb95ac769ea6f00f84e710711837c6"
+    },
+    {
+      "file": "_offline/phase6e0/test/helpers.cjs",
+      "bytes": 629,
+      "sha256": "80ed39772ddba08474ecafe012fd959031e3784ba55259a7e6759c2df5442860"
+    },
+    {
+      "file": "_offline/phase6e0/test/isolation.test.cjs",
+      "bytes": 4920,
+      "sha256": "066bcee4261e3c23c5e0079b7d46dbf3731fbc4bad27771e41dfe6fa68b53104"
+    },
+    {
+      "file": "_offline/phase6e0/test/limitations.test.cjs",
+      "bytes": 956,
+      "sha256": "ec335d0c6aa6ba3dabb0e23ae00cd4c2414a8d54bb086970e272b7381f6649fa"
+    },
+    {
+      "file": "_offline/phase6e0/test/retention.test.cjs",
+      "bytes": 4677,
+      "sha256": "d911f3f5a18f48bd5b5de971209d3481a1f572d265b551c2da6672360fa69480"
+    },
+    {
+      "file": "_offline/phase6e0/test/state.test.cjs",
+      "bytes": 8314,
+      "sha256": "9657c917763a556e1c19c2c376c45eca8132f3b2033d1775453ee87b392253f9"
+    }
+  ],
+  "receipt_commit": "The later docs-only commit containing PHASE6E0_PUBLICATION_RECEIPT.md; its final HEAD/Pages/asset recheck are reported in the owner handoff to avoid a self-referential commit hash."
 }

@@ -20,8 +20,9 @@ See [technical report](PHASE6E0_TECHNICAL_REPORT.md),
 The prior docs-only publication hold is resolved by explicit owner permission:
 43a9665 and 0c47dd4 were published with 56/56 runtime assets unchanged.
 Automatic Pages publication from this authorized offline/docs push is allowed only
-with byte-identical frozen assets and no offline module inclusion; its new receipt
-is PHASE6E0_EVIDENCE.json / PHASE6E0_PUBLICATION_RECEIPT.md when completed.
+with byte-identical frozen assets and no offline module inclusion. First publication
+1648b04 / Pages-run 34137984776 SUCCESS; assets 56/56 identical before and after,
+offline entrypaden HTTP404. See PHASE6E0_EVIDENCE.json / PHASE6E0_PUBLICATION_RECEIPT.md.
 Older audit/release execution statements below retain their original historical scope.
 
 Status: MASTER PLAN COVERAGE MATRIX
