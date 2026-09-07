@@ -1,0 +1,1540 @@
+{
+  "baseline": "e5dc0ef948d22225f8b2907a2be41f74f4b15d3d",
+  "tests": 83,
+  "pass": 15,
+  "fail": 68,
+  "observation_tests_are_not_recognition": true,
+  "cases": [
+    {
+      "id": "gap-heavy-chest",
+      "text": "Mijn borst voelt loodzwaar",
+      "locale": "nl",
+      "kind": "original",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "gap-breathing-de",
+      "text": "Ich kriege kaum noch Luft",
+      "locale": "de",
+      "kind": "original",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "gap-mixed-breathing",
+      "text": "Ik heb geen pijn op de borst. Nu heb ik moeite met ademhalen",
+      "locale": "nl",
+      "kind": "original",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [
+          "negated"
+        ],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "gap-arm-weakness",
+      "text": "Ik voel me prima terwijl mijn linkerarm plots kracht verliest",
+      "locale": "nl",
+      "kind": "original",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-paraphrase-nl-1",
+      "text": "Mijn borst voelt zwaar",
+      "locale": "nl",
+      "kind": "paraphrase",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-paraphrase-nl-2",
+      "text": "Loodzwaar voelt mijn borst",
+      "locale": "nl",
+      "kind": "paraphrase",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-paraphrase-nl-3",
+      "text": "Ademhalen kost mij moeite",
+      "locale": "nl",
+      "kind": "paraphrase",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-paraphrase-nl-4",
+      "text": "Ik krijg nauwelijks lucht",
+      "locale": "nl",
+      "kind": "paraphrase",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-paraphrase-nl-5",
+      "text": "Mijn rechterarm verliest ineens kracht",
+      "locale": "nl",
+      "kind": "paraphrase",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-paraphrase-nl-6",
+      "text": "Plots voelt mijn linkerarm slap",
+      "locale": "nl",
+      "kind": "paraphrase",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-paraphrase-en-1",
+      "text": "My chest feels very heavy",
+      "locale": "en",
+      "kind": "paraphrase",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-paraphrase-en-2",
+      "text": "Heavy is how my chest feels",
+      "locale": "en",
+      "kind": "paraphrase",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-paraphrase-en-3",
+      "text": "Breathing is difficult for me",
+      "locale": "en",
+      "kind": "paraphrase",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-paraphrase-en-4",
+      "text": "I can barely get any air",
+      "locale": "en",
+      "kind": "paraphrase",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-paraphrase-en-5",
+      "text": "My left arm is suddenly weak",
+      "locale": "en",
+      "kind": "paraphrase",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-paraphrase-en-6",
+      "text": "Suddenly my right arm is losing strength",
+      "locale": "en",
+      "kind": "paraphrase",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-paraphrase-de-1",
+      "text": "Meine Brust fuehlt sich schwer an",
+      "locale": "de",
+      "kind": "paraphrase",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-paraphrase-de-2",
+      "text": "Schwer fuehlt sich meine Brust an",
+      "locale": "de",
+      "kind": "paraphrase",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-paraphrase-de-3",
+      "text": "Das Atmen faellt mir schwer",
+      "locale": "de",
+      "kind": "paraphrase",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-paraphrase-de-4",
+      "text": "Ich bekomme nur wenig Luft",
+      "locale": "de",
+      "kind": "paraphrase",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-paraphrase-de-5",
+      "text": "Mein linker Arm verliert ploetzlich Kraft",
+      "locale": "de",
+      "kind": "paraphrase",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-paraphrase-de-6",
+      "text": "Ploetzlich ist mein rechter Arm schwach",
+      "locale": "de",
+      "kind": "paraphrase",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-negation-nl-1",
+      "text": "Mijn borst voelt niet loodzwaar",
+      "locale": "nl",
+      "kind": "negation",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-negation-nl-2",
+      "text": "Ik heb geen moeite met ademhalen",
+      "locale": "nl",
+      "kind": "negation",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-negation-nl-3",
+      "text": "Mijn linkerarm verliest geen kracht",
+      "locale": "nl",
+      "kind": "negation",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-negation-en-1",
+      "text": "My chest does not feel heavy",
+      "locale": "en",
+      "kind": "negation",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-negation-en-2",
+      "text": "I have no difficulty breathing",
+      "locale": "en",
+      "kind": "negation",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-negation-en-3",
+      "text": "My arm is not losing strength",
+      "locale": "en",
+      "kind": "negation",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-negation-de-1",
+      "text": "Meine Brust fuehlt sich nicht schwer an",
+      "locale": "de",
+      "kind": "negation",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-negation-de-2",
+      "text": "Ich habe keine Schwierigkeiten beim Atmen",
+      "locale": "de",
+      "kind": "negation",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-negation-de-3",
+      "text": "Mein linker Arm verliert keine Kraft",
+      "locale": "de",
+      "kind": "negation",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-historical-nl-1",
+      "text": "Gisteren voelde mijn borst loodzwaar",
+      "locale": "nl",
+      "kind": "historical",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-historical-nl-2",
+      "text": "Gisteren had ik moeite met ademhalen en voelde mijn borst loodzwaar",
+      "locale": "nl",
+      "kind": "historical",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-historical-en-1",
+      "text": "Yesterday my chest felt heavy",
+      "locale": "en",
+      "kind": "historical",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-historical-en-2",
+      "text": "Yesterday breathing was difficult and my left arm felt weak",
+      "locale": "en",
+      "kind": "historical",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-historical-de-1",
+      "text": "Gestern fuehlte sich meine Brust schwer an",
+      "locale": "de",
+      "kind": "historical",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-historical-de-2",
+      "text": "Gestern fiel mir das Atmen schwer und mein linker Arm war schwach",
+      "locale": "de",
+      "kind": "historical",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-educational-nl-1",
+      "text": "Wat betekent een loodzwaar gevoel op de borst?",
+      "locale": "nl",
+      "kind": "educational",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-educational-nl-2",
+      "text": "Leg uit wat moeite met ademhalen betekent",
+      "locale": "nl",
+      "kind": "educational",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-educational-en-1",
+      "text": "Explain why breathing is difficult",
+      "locale": "en",
+      "kind": "educational",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-educational-en-2",
+      "text": "What does a heavy feeling in the chest mean?",
+      "locale": "en",
+      "kind": "educational",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-educational-de-1",
+      "text": "Was bedeutet ein schweres Gefuehl in der Brust?",
+      "locale": "de",
+      "kind": "educational",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-educational-de-2",
+      "text": "Erklaere Schwierigkeiten beim Atmen",
+      "locale": "de",
+      "kind": "educational",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-quoted-nl-1",
+      "text": "Citaat: \"Mijn linkerarm verliest plots kracht\"",
+      "locale": "nl",
+      "kind": "quoted",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-quoted-en-1",
+      "text": "Quote: \"My chest feels heavy\"",
+      "locale": "en",
+      "kind": "quoted",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-quoted-de-1",
+      "text": "Zitat: \"Ich kriege kaum noch Luft\"",
+      "locale": "de",
+      "kind": "quoted",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-hypothetical-nl-1",
+      "text": "Stel dat mijn borst loodzwaar voelt",
+      "locale": "nl",
+      "kind": "hypothetical",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-hypothetical-en-1",
+      "text": "Imagine my left arm suddenly feels weak",
+      "locale": "en",
+      "kind": "hypothetical",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-hypothetical-de-1",
+      "text": "Angenommen meine Brust fuehlt sich schwer an",
+      "locale": "de",
+      "kind": "hypothetical",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-training-nl-1",
+      "text": "Ik train mijn borst en armen met zware gewichten",
+      "locale": "nl",
+      "kind": "training",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-training-nl-2",
+      "text": "De halter voelt loodzwaar bij borsttraining",
+      "locale": "nl",
+      "kind": "training",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-training-nl-3",
+      "text": "Mijn armspieren zijn moe na tien curls",
+      "locale": "nl",
+      "kind": "training",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-training-nl-4",
+      "text": "Ik oefen een rustige ademhaling",
+      "locale": "nl",
+      "kind": "training",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-training-nl-5",
+      "text": "Bij de warming-up let ik op mijn ademhaling",
+      "locale": "nl",
+      "kind": "training",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-training-en-1",
+      "text": "Today I train chest and arms with heavy weights",
+      "locale": "en",
+      "kind": "training",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-training-en-2",
+      "text": "The dumbbell feels heavy during curls",
+      "locale": "en",
+      "kind": "training",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-training-en-3",
+      "text": "My arm muscles are tired after the set",
+      "locale": "en",
+      "kind": "training",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-training-en-4",
+      "text": "I practise slow breathing between sets",
+      "locale": "en",
+      "kind": "training",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-training-en-5",
+      "text": "I want to improve my arm strength",
+      "locale": "en",
+      "kind": "training",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-training-de-1",
+      "text": "Heute trainiere ich Brust und Arme mit schweren Gewichten",
+      "locale": "de",
+      "kind": "training",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-training-de-2",
+      "text": "Die Hantel fuehlt sich beim Brusttraining schwer an",
+      "locale": "de",
+      "kind": "training",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-training-de-3",
+      "text": "Meine Armmuskeln sind nach dem Satz muede",
+      "locale": "de",
+      "kind": "training",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-training-de-4",
+      "text": "Ich uebe eine ruhige Atmung",
+      "locale": "de",
+      "kind": "training",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-training-de-5",
+      "text": "Ich moechte meine Armkraft verbessern",
+      "locale": "de",
+      "kind": "training",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-compound-nl-1",
+      "text": "Geen koorts, mijn borst voelt loodzwaar",
+      "locale": "nl",
+      "kind": "compound",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-compound-nl-2",
+      "text": "Mijn borst voelt loodzwaar maar verder voel ik me prima",
+      "locale": "nl",
+      "kind": "compound",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-compound-nl-3",
+      "text": "Ik heb geen borstpijn, maar wel vreemde klachten",
+      "locale": "nl",
+      "kind": "compound",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [
+          "negated"
+        ],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-compound-nl-4",
+      "text": "Wat is borstpijn? Nu kost ademhalen mij moeite",
+      "locale": "nl",
+      "kind": "compound",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [
+          "educational"
+        ],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-compound-en-1",
+      "text": "I have no chest pain; breathing is difficult",
+      "locale": "en",
+      "kind": "compound",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [
+          "negated"
+        ],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-compound-en-2",
+      "text": "I feel fine while my left arm is suddenly weak",
+      "locale": "en",
+      "kind": "compound",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-compound-en-3",
+      "text": "I have no chest pain but unusual symptoms",
+      "locale": "en",
+      "kind": "compound",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [
+          "negated"
+        ],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-compound-en-4",
+      "text": "Explain chest pain. Now my chest feels heavy",
+      "locale": "en",
+      "kind": "compound",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [
+          "educational"
+        ],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-compound-de-1",
+      "text": "Ich habe keine Brustschmerzen, aber bekomme kaum Luft",
+      "locale": "de",
+      "kind": "compound",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [
+          "negated"
+        ],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-compound-de-2",
+      "text": "Mir geht es gut, waehrend mein rechter Arm Kraft verliert",
+      "locale": "de",
+      "kind": "compound",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-compound-de-3",
+      "text": "Ich habe keine Brustschmerzen aber seltsame Beschwerden",
+      "locale": "de",
+      "kind": "compound",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [
+          "negated"
+        ],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-compound-de-4",
+      "text": "Was ist Brustschmerz? Jetzt faellt mir das Atmen schwer",
+      "locale": "de",
+      "kind": "compound",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R0",
+        "signal_codes": [],
+        "context_states": [
+          "educational"
+        ],
+        "uncertainty_codes": [],
+        "warning_key": "no_signal",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-retain-level-nl",
+      "text": "Ik heb borstpijn en ademhalen kost mij moeite",
+      "locale": "nl",
+      "kind": "retain_existing_level",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R3",
+        "signal_codes": [
+          "chest"
+        ],
+        "context_states": [
+          "current"
+        ],
+        "uncertainty_codes": [],
+        "warning_key": "professional_review",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-retain-level-en",
+      "text": "I have chest pain and breathing is difficult",
+      "locale": "en",
+      "kind": "retain_existing_level",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R3",
+        "signal_codes": [
+          "chest"
+        ],
+        "context_states": [
+          "current"
+        ],
+        "uncertainty_codes": [],
+        "warning_key": "professional_review",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    },
+    {
+      "id": "followup-retain-level-de",
+      "text": "Ich habe Brustschmerzen und bekomme kaum Luft",
+      "locale": "de",
+      "kind": "retain_existing_level",
+      "old": {
+        "contract_version": "phase6e0.safety.v0.1.0",
+        "review_status": "PROVISIONAL_REVIEW_REQUIRED",
+        "evaluation_state": "known",
+        "help_level": "R3",
+        "signal_codes": [
+          "chest"
+        ],
+        "context_states": [
+          "current"
+        ],
+        "uncertainty_codes": [],
+        "warning_key": "professional_review",
+        "recovery_intent": null,
+        "medical_clearance": false,
+        "automatic_actions_allowed": false
+      }
+    }
+  ]
+}
