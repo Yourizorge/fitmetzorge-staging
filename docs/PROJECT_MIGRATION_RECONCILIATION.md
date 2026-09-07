@@ -4,7 +4,15 @@ Date: 2026-09-04. Target: staging `mokxyyullfhkfalopbzd` only.
 Result: RESOLVED / VERIFIED. Later Package 6D work appended forward-only migrations
 without reopening the historical repair.
 
-## Final Owner Mobile Hotfix Addendum - Current 2026-09-06
+## Frontend Placement Note - 2026-09-07
+
+The dashboard placement hotfix changes no tracked Supabase file and creates no migration.
+No database command, history repair, replay, dry-run, reset or Edge deployment was run.
+The last verified 30/30 chain below is preserved, not relabelled as a new SQL audit.
+No PostgreSQL/OneDrive cleanup; existing manifest/pg_cron limitations remain.
+Current frontend evidence: PACKAGE6D_DASHBOARD_PLACEMENT_HOTFIX_REPORT.md.
+
+## Final Owner Mobile Hotfix Addendum - Verified 2026-09-06
 
 Forward-only 20260906134827_phase6d_recent_dashboard_analyses.sql replaces two RPCs
 only, without backfill or result writes. Migration list 30/30; dry-run upToDate=true

@@ -1,7 +1,7 @@
 # FitMetZorge Architecture
 
 Status: CURRENT AND TARGET ARCHITECTURE DOCUMENTED
-Last updated: 2026-09-06
+Last updated: 2026-09-07
 
 Public Auth lifecycle: Phase 1 owns the session/profile-ready render boundary.
 Registration/login/password/confirmation/error screens must never dispatch member
@@ -19,6 +19,22 @@ canonical ID and security contract stay frozen. See PROJECT_MIGRATION_RECONCILIA
 The Phase 0B Auth/invitation/workspace descriptions below are historical. Their unsafe
 metadata and broad member-access paths are superseded by Package 6D-0 at the end of this
 document and in PHASE6D0_LEGACY_AUTHORIZATION_SECURITY.md.
+
+## Dashboard Composition - Final Placement Hotfix
+
+Frontend-only runtime 7fec9da7cb00cb7dff4a601810ddd2c977db0f5f. The inbox is composed
+inside #clientSummary > .member-ux-today-simplified immediately after the existing
+training card, or the profile CTA when onboarding is incomplete. It never prepends
+to client-home. Direct renderClientHome is followed by inbox composition, alongside
+existing renderAll/showView hooks. Without the personal dashboard anchor, no orphan
+analysis section is mounted above the greeting. No MutationObserver/data authority added.
+
+Each result reuses member-ux-card; the surrounding group is unframed, with 12px gaps
+and a quiet history action. Title/status space is stable; primary actions keep a clear
+lane for either avatar side without changing the avatar. Dashboard-only content grid
+row2 avoids the legacy empty sidebar row on tablet and resulting hydration movement.
+All RPC/notification/worker/detail contracts below are unchanged. No migration/Edge
+change. See PACKAGE6D_DASHBOARD_PLACEMENT_HOTFIX_REPORT.md for 426-check live proof.
 
 ## Recent Analysis Read Model - Final Mobile Hotfix
 

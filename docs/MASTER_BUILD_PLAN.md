@@ -1,7 +1,7 @@
 # FitMetZorge Master Build Plan
 
 Status: APPROVED PRODUCT SPECIFICATION CAPTURED
-Last updated: 2026-09-06
+Last updated: 2026-09-07
 
 This document is the product and execution source of truth for the FitMetZorge Master Build after Phase 0A Governance and Phase 0B Live Staging Infrastructure Verification.
 
@@ -54,7 +54,19 @@ but inactive, and shared 6A budget gates. See
 PACKAGE6D_READ_ONLY_ANALYSES_TECHNICAL_REPORT.md. Real-member external provider
 activation remains forbidden until the separate legal/provider gate passes.
 
-## Final Owner Mobile Hotfix - Current Contract
+## Final Dashboard Placement Hotfix - Current Presentation Contract
+
+PACKAGE 6D FINAL DASHBOARD PLACEMENT HOTFIX - READY FOR OWNER RETEST, not accepted/frozen.
+Owner confirms the analysis lifecycle, mobile detail and other 6D behavior work.
+The dashboard order is greeting/intro, Check-in, training, recent analyses, then other
+existing components. Up to three analyses use the existing dashboard card styling,
+spacing, width and primary buttons; the group is not a floating notification. Opened
+cards remain without New; history/deep links and server authority are unchanged.
+This is a presentation-only correction, no migration, new provider/billing or next phase.
+Runtime 7fec9da7cb00cb7dff4a601810ddd2c977db0f5f; current proof and 18 owner cases:
+PACKAGE6D_DASHBOARD_PLACEMENT_HOTFIX_REPORT.md.
+
+## Final Owner Mobile Hotfix - Retained Contract
 
 PACKAGE 6D FINAL OWNER MOBILE HOTFIX - READY FOR FINAL OWNER RETEST, not accepted/frozen.
 The latest owner request changes only recent dashboard selection and mobile detail.

@@ -1,6 +1,6 @@
 # Package 6D Read-Only Analyses - Architecture And Readiness
 
-Status: PACKAGE 6D FINAL OWNER MOBILE HOTFIX - READY FOR FINAL OWNER RETEST
+Status: PACKAGE 6D FINAL DASHBOARD PLACEMENT HOTFIX - READY FOR OWNER RETEST
 
 Date: 2026-09-04 audit; 2026-09-06 implementation addendum.
 Scope: Yourizorge/fitmetzorge-staging / main; Supabase mokxyyullfhkfalopbzd only.
@@ -10,7 +10,19 @@ The original sections below are the 2026-09-04 readiness audit. The owner later 
 the initial scope and authorized a mock-only staging implementation; current technical
 evidence is in `docs/PACKAGE6D_READ_ONLY_ANALYSES_TECHNICAL_REPORT.md`.
 
-## Final Owner Mobile Hotfix - Current
+## Final Dashboard Placement Hotfix - Current 2026-09-07
+
+Owner confirms the prior lifecycle/mobile detail and other 6D parts work. The only
+remaining placement/style defect is corrected in frontend runtime
+7fec9da7cb00cb7dff4a601810ddd2c977db0f5f, cache 20260907-dashboard-placement1.
+Analyses sit below Check-in/training inside the personal dashboard, using matching
+member-ux-card styles. A scoped tablet grid-row correction prevents hydration movement.
+Local/live placement 426/426,36 layouts; prior mobile180/owner323/Auth88 and frozen
+regressions PASS;42 live assets Git-identical. No SQL, migration, Edge, memberdata,
+provider or avatar/settings/chat change. Physical owner retest still required; not frozen.
+Full evidence and18-case mapping: PACKAGE6D_DASHBOARD_PLACEMENT_HOTFIX_REPORT.md.
+
+## Final Owner Mobile Hotfix - Historical
 
 Runtime 468d450329700028add8d13eb74c44931ab0389e, cache 20260906-final-mobile1.
 Only recent dashboard selection and mobile detail changed. Own available results,

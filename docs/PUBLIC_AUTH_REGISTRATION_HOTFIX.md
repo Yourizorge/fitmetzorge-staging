@@ -3,7 +3,15 @@
 Date: 2026-09-04. Scope: staging only, mokxyyullfhkfalopbzd.
 Status: DEPLOYED / LIVE TECHNICAL PASS / OWNER MAIL RECEIVED.
 
-## Final Owner Mobile Hotfix Regression Receipt - Current 2026-09-06
+## Dashboard Placement Regression Receipt - Current 2026-09-07
+
+Public Auth remains PASS: assembled88/88, static26/26 and four live public viewports
+without errors or mutating requests. Runtime7fec9da7cb00cb7dff4a601810ddd2c977db0f5f,
+entry cache20260907-dashboard-placement1;42 checked assets are Git-identical.
+No Auth source, mail, confirmation, Brevo or trainer-link change. No database commands.
+The owner-received mail outcome remains valid. See PACKAGE6D_DASHBOARD_PLACEMENT_HOTFIX_REPORT.md.
+
+## Final Owner Mobile Hotfix Regression Receipt - Historical 2026-09-06
 
 Public Auth remains PASS. Runtime 468d450329700028add8d13eb74c44931ab0389e,
 entry cache 20260906-final-mobile1; 41 live assets are byte-identical, including global

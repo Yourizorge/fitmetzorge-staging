@@ -1,8 +1,25 @@
 # FitMetZorge Build Status
 
-Last updated: 2026-09-06
+Last updated: 2026-09-07
 
-## Final Owner Mobile Hotfix - Current
+## Final Dashboard Placement Hotfix - Current
+
+Status: PACKAGE 6D FINAL DASHBOARD PLACEMENT HOTFIX - READY FOR OWNER RETEST.
+Not owner-accepted/frozen. Owner confirms the prior analysis lifecycle/mobile detail
+and other 6D behavior work. The only remaining placement/style correction is now live.
+Runtime 7fec9da7cb00cb7dff4a601810ddd2c977db0f5f; cache 20260907-dashboard-placement1.
+Analyses follow greeting/intro, Check-in and training inside the existing dashboard
+shell, using member-ux-card surfaces, spacing and primary buttons. Tablet grid-row
+hydration shift is fixed only on this dashboard. Up to three read-persistent cards,
+the original server lifecycle/detail and all chat/settings/avatar behavior remain.
+Local/live placement suite 426/426 with 36 layouts at six sizes; prior mobile 180,
+owner 323, Auth 88 and all 20 frozen regression suites PASS. Forty-two live assets
+are byte-identical. No migration, database command/write, Edge change, memberdata,
+provider call/cost, mail, PostgreSQL cleanup or production operation.
+See [placement report and 18-case mapping](PACKAGE6D_DASHBOARD_PLACEMENT_HOTFIX_REPORT.md)
+and PACKAGE6D_DASHBOARD_PLACEMENT_HOTFIX_EVIDENCE.json. Physical owner retest pending.
+
+## Final Owner Mobile Hotfix - Historical
 
 Status: PACKAGE 6D FINAL OWNER MOBILE HOTFIX - READY FOR FINAL OWNER RETEST.
 Not owner-accepted/frozen. Runtime 468d450329700028add8d13eb74c44931ab0389e;
@@ -73,13 +90,13 @@ clean for staging. See [migration audit](PROJECT_MIGRATION_RECONCILIATION.md).
 - Phase 0B Storage verification: COMPLETE
 - Master Plan Specification: COMPLETE
 - Master Plan Final Review: COMPLETE
-- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6C COMPLETE / OWNER-ACCEPTED / FROZEN; PACKAGE 6D FINAL OWNER MOBILE HOTFIX - READY FOR FINAL OWNER RETEST
+- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6C COMPLETE / OWNER-ACCEPTED / FROZEN; PACKAGE 6D FINAL DASHBOARD PLACEMENT HOTFIX - READY FOR OWNER RETEST
 - Production Migration: NOT STARTED
 
-Current next step: owner real-phone retest of the retained recent dashboard analysis
-after viewing/refresh/login and fully bounded portrait detail/comparison. Preserve
-the owner-confirmed chat/avatar/settings/flags/timezone/recovery flows. Use the exact
-retest and 25-point mapping in PACKAGE6D_FINAL_OWNER_MOBILE_HOTFIX_REPORT.md.
+Current next step: owner real-phone retest of dashboard order and matching analysis
+card styling below Check-in/training. Confirm read/refresh/login persistence and
+avatar-free actions without changing the already confirmed detail/chat/settings flows.
+Use the 18-case mapping in PACKAGE6D_DASHBOARD_PLACEMENT_HOTFIX_REPORT.md.
 Package 6D is implemented on staging as a mock-only, read-only analysis surface for
 daily, post-workout and weekly analyses, with separate `ai_analysis` consent, no
 trainer access, no private-chat context, no domain writes, no provider call and EUR

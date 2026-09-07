@@ -1,7 +1,13 @@
 # Package 6D Read-Only Analyses Technical Report
 
-Current follow-up: PACKAGE 6D FINAL OWNER MOBILE HOTFIX - READY FOR FINAL OWNER RETEST.
-See [current technical report](PACKAGE6D_FINAL_OWNER_MOBILE_HOTFIX_REPORT.md) for
+Current follow-up: PACKAGE 6D FINAL DASHBOARD PLACEMENT HOTFIX - READY FOR OWNER RETEST.
+See [current presentation report](PACKAGE6D_DASHBOARD_PLACEMENT_HOTFIX_REPORT.md) for
+the exact order below greeting/Check-in/training, matching card styles and stable
+hydration. Runtime 7fec9da7cb00cb7dff4a601810ddd2c977db0f5f; local/live426 checks,
+42 live assets Git-identical. No migration, databasewrite or Edge change.
+Owner confirms the prior lifecycle and mobile detail work; Package6D is not frozen.
+
+See [preceding mobile report](PACKAGE6D_FINAL_OWNER_MOBILE_HOTFIX_REPORT.md) for
 opened/missing-notification dashboard persistence, the newest-three read model and
 fully bounded mobile comparison/detail. New live-assets browser 180/180, 25 layouts,
 41 assets commit-identical, 23 member-table hashes unchanged. Current chain 30/30.

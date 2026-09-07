@@ -1,12 +1,13 @@
 # FitMetZorge Test Matrix
 
 Status: MASTER PLAN COVERAGE MATRIX
-Latest execution: 2026-09-06 Package 6D final owner mobile hotfix,
+Latest execution: 2026-09-07 Package 6D final dashboard placement hotfix,
 after the public Auth hotfix and project migration reconciliation. Migration history
-is synchronized 30/30; `db push --dry-run --skip-vault` is clean. Public Auth hotfix
+was synchronized 30/30 with a clean dry-run on 2026-09-06; this frontend-only task
+does not alter or rerun migration history. Public Auth hotfix
 checks remain valid, the owner received the confirmation email, and no new resend,
 Brevo investigation, manual confirmation, trainer role or trainer link was performed.
-Last updated: 2026-09-06
+Last updated: 2026-09-07
 
 Historical public-auth receipt: runtime 333954a68a1429634e49bafbcc08720ea688131a,
 cache 20260904-auth-lifecycle2. Seven checked assets HTTP 200 / commit-identical;
@@ -25,7 +26,33 @@ PROJECT_MIGRATION_RECONCILIATION.md and PROJECT_MIGRATION_RECONCILIATION_MANIFES
 
 This matrix records the required functional, security, entitlement, AI, migration, and release checks for the Master Build. No implementation tests are executed by this document.
 
-## Final Owner Mobile Hotfix - Current Execution
+## Final Dashboard Placement Hotfix - Current Execution
+
+READY FOR OWNER RETEST only. Owner confirms prior lifecycle/detail behavior.
+[Full 18-case mapping](PACKAGE6D_DASHBOARD_PLACEMENT_HOTFIX_REPORT.md) and
+PACKAGE6D_DASHBOARD_PLACEMENT_HOTFIX_EVIDENCE.json contain current evidence.
+
+| Layer | Result |
+| --- | --- |
+| Real dashboard composition, local and live-assets | 426/426 each; 36 layouts |
+| Viewports | 320x700,360x800,390x844,820x1180,1180x900,1440x900 |
+| Order/style/hydration | Greeting first; analyses directly after training; card styles/widths match; stable refresh geometry |
+| Languages/theme/actions | NL/EN/DE, light/dark, long titles and both saved avatar sides PASS |
+| Lifecycle/history/isolation/detail retained | Prior complete-app mobile suite 180/180,25 layouts |
+| Complete owner browser / public Auth browser | 323/323 / 88/88 |
+| Frozen runner | All 20 suites exit0; static/browser/handler/workout-order/identity checks retained |
+| Live asset/public-page check | 42 byte-identical HTTP200 assets; four public sizes; zero errors/writes |
+| Runtime boundary | Protected SQL/Edge/worker/chat/settings/training/Auth/avatar sources unchanged |
+
+Tests now seed a selected synthetic client so the real onboarding/dashboard branch
+renders. No dashboard HTML or protective CSS substitution. A reproduced Edge fullPage
+screenshot side effect disabled touch emulation; tests use viewport captures and assert
+coarse-pointer before mobile Enter. Scroll tests wait for existing render frames.
+No product chat fix or weakened assertions. No new live SQL/RLS audit is claimed:
+this task executed no database command, mutation, migration or Edge deployment.
+Physical owner confirmation remains pending. Earlier SQL/rebuild receipts are historical.
+
+## Final Owner Mobile Hotfix - Historical Execution
 
 PACKAGE 6D FINAL OWNER MOBILE HOTFIX - READY FOR FINAL OWNER RETEST only.
 [Exact 25-case mapping and causes](PACKAGE6D_FINAL_OWNER_MOBILE_HOTFIX_REPORT.md);
