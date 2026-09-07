@@ -1,0 +1,1162 @@
+{
+  "date": "2026-09-07",
+  "status": "COMPLETE / OWNER-ACCEPTED / FROZEN",
+  "owner_acceptance": "Explicit real-phone acceptance in owner attachment 7dba3395-a8a7-47f7-971b-4c28a9a5adf3",
+  "repo": "Yourizorge/fitmetzorge-staging",
+  "branch": "main",
+  "project": "mokxyyullfhkfalopbzd",
+  "starting_commit": "c1a71dea1bd651a12c738a94ce8ac2e56bcc26b9",
+  "runtime_commit": "7fec9da7cb00cb7dff4a601810ddd2c977db0f5f",
+  "cache": "20260907-dashboard-placement1",
+  "migrations": {
+    "local_count": 30,
+    "live_count": 30,
+    "exact": true,
+    "files": [
+      {
+        "file": "20260812000000_legacy_phase1_3_source_baseline.sql",
+        "version": "20260812000000",
+        "name": "legacy_phase1_3_source_baseline",
+        "git_sha256": "ae06ca53771d90baa12c12af8d8b43e3bd0464d926d8795197859c4a8b8ae26b"
+      },
+      {
+        "file": "20260813_trainer_signup_bootstrap.sql",
+        "version": "20260813",
+        "name": "trainer_signup_bootstrap",
+        "git_sha256": "304f1a9876196a1734ea5de94574ec45667bf631771fd091121c080559917dbf"
+      },
+      {
+        "file": "20260818_phase4_nutrition_schema_slice1.sql",
+        "version": "20260818",
+        "name": "phase4_nutrition_schema_slice1",
+        "git_sha256": "d70a589fef997c14fcc9805e746536c86556e22622c8952b33de9ca222b36188"
+      },
+      {
+        "file": "20260819134024_phase4_nutrition_slice3_atomic_log_item_replacement.sql",
+        "version": "20260819134024",
+        "name": "phase4_nutrition_slice3_atomic_log_item_replacement",
+        "git_sha256": "6f3b59207b2974b771a0677720377aaad7500e31df16a645b606b99088a8ee40"
+      },
+      {
+        "file": "20260819163738_phase4_nutrition_slice4b_alias_search.sql",
+        "version": "20260819163738",
+        "name": "phase4_nutrition_slice4b_alias_search",
+        "git_sha256": "4c0e63dc09a8cc1de7f93dba278cd36f714c52bedab32ffc98147a5da0d5c88f"
+      },
+      {
+        "file": "20260819175756_phase4_nutrition_slice4c_operational_state.sql",
+        "version": "20260819175756",
+        "name": "phase4_nutrition_slice4c_operational_state",
+        "git_sha256": "0a2d2ca5b4caad30a17b73f66c018a742dc1d9326335aa7c9307d0021cf0ae2f"
+      },
+      {
+        "file": "20260820082018_phase4_nutrition_slice4d_provider_snapshot_logging.sql",
+        "version": "20260820082018",
+        "name": "phase4_nutrition_slice4d_provider_snapshot_logging",
+        "git_sha256": "10228d7cdec07341c85bff80d2464ed4f46995fb732976f3045dfb2cb72f9dd0"
+      },
+      {
+        "file": "20260820150513_phase4_nutrition_slice4d_historical_provider_resolver.sql",
+        "version": "20260820150513",
+        "name": "phase4_nutrition_slice4d_historical_provider_resolver",
+        "git_sha256": "2b28ba69d89892d9cd52e852db7f6e12d9849977c646c2e596c5464ea39f44cd"
+      },
+      {
+        "file": "20260822172635_phase4_nutrition_slice4e_ingestion_alias_search.sql",
+        "version": "20260822172635",
+        "name": "phase4_nutrition_slice4e_ingestion_alias_search",
+        "git_sha256": "a19ff1aa8daec57cd61a8db5feb19f1a98fd049838ea1f1b7b6c7e3b3c32b54c"
+      },
+      {
+        "file": "20260824113551_phase4_nutrition_slice4f_off_catalog_search.sql",
+        "version": "20260824113551",
+        "name": "phase4_nutrition_slice4f_off_catalog_search",
+        "git_sha256": "606658f53ea29083e315f43546b507b40c9d0cf7d02fb074591b542e71d89af4"
+      },
+      {
+        "file": "20260826143000_phase4_nutrition_slice4fc_off_authoritative_logging.sql",
+        "version": "20260826143000",
+        "name": "phase4_nutrition_slice4fc_off_authoritative_logging",
+        "git_sha256": "15c3abafdb7d77e85397006ba1d62c9221da0820c1052af284911b9edf2dff45"
+      },
+      {
+        "file": "20260827125343_phase4_nutrition_slice4fd_transient_off_barcode.sql",
+        "version": "20260827125343",
+        "name": "phase4_nutrition_slice4fd_transient_off_barcode",
+        "git_sha256": "476f829a2c669c029b87bec9f24459f7e1f5430d02fb32559c50cd9c418c2a2b"
+      },
+      {
+        "file": "20260827152727_phase4_nutrition_slice4fd_transient_off_parent_context_fix.sql",
+        "version": "20260827152727",
+        "name": "phase4_nutrition_slice4fd_transient_off_parent_context_fix",
+        "git_sha256": "80eb696450adc81a38be12ebec1631f660c85425cc8453e836047815be3ea0bf"
+      },
+      {
+        "file": "20260831145357_phase5_progress_foundation.sql",
+        "version": "20260831145357",
+        "name": "phase5_progress_foundation",
+        "git_sha256": "deb29504de883b6cb1f0573e7e60744a81be878952c22f85e28d066baf6661d6"
+      },
+      {
+        "file": "20260831150434_phase5_progress_unit_preference.sql",
+        "version": "20260831150434",
+        "name": "phase5_progress_unit_preference",
+        "git_sha256": "b0b83cfe565cb8d7a1a7e88c0097052b657e6a2c6cd9849450bb32de5b07e8fb"
+      },
+      {
+        "file": "20260831153512_phase5_progress_revision_indexes.sql",
+        "version": "20260831153512",
+        "name": "phase5_progress_revision_indexes",
+        "git_sha256": "d7434837e2d37b5f6ef54c3535a1d0d264d439eda0b79a481553858c997744b7"
+      },
+      {
+        "file": "20260901161314_phase5_unit_system_constraint_fix.sql",
+        "version": "20260901161314",
+        "name": "phase5_unit_system_constraint_fix",
+        "git_sha256": "77ef7c490a9430ecacb3c8be2f9a3e021fda391fd45bc7ee698891003b0c1177"
+      },
+      {
+        "file": "20260901183914_phase6a_ai_trust_foundation.sql",
+        "version": "20260901183914",
+        "name": "phase6a_ai_trust_foundation",
+        "git_sha256": "5b48b142fbdc2298bf268cf5804f99053c9346e554faa12b558409e3aa98ee6f"
+      },
+      {
+        "file": "20260901184418_phase6a_ai_consent_event_ordering.sql",
+        "version": "20260901184418",
+        "name": "phase6a_ai_consent_event_ordering",
+        "git_sha256": "7f653bf3be688d294d68af80689ccb4804eaf65cde1d7c77559a8fdd2134c82c"
+      },
+      {
+        "file": "20260901190328_phase6a_pgcrypto_search_path.sql",
+        "version": "20260901190328",
+        "name": "phase6a_pgcrypto_search_path",
+        "git_sha256": "b93b711519796958a2569a363cc1d3131a444eace34ec04395e08aba82ee4325"
+      },
+      {
+        "file": "20260901191328_phase6a_foreign_key_indexes.sql",
+        "version": "20260901191328",
+        "name": "phase6a_foreign_key_indexes",
+        "git_sha256": "5997fe0bacd706503c8bf7397685eb14720c58e946b9bcf70db58c70e6d52c9d"
+      },
+      {
+        "file": "20260902045834_phase6b_provider_privacy_cost_gate.sql",
+        "version": "20260902045834",
+        "name": "phase6b_provider_privacy_cost_gate",
+        "git_sha256": "6b432da3aa389920d5a8eea4f15f74d35e2a9e2d6f7bf44c7b0fbf62473cc526"
+      },
+      {
+        "file": "20260903085454_phase6c_private_ai_chat.sql",
+        "version": "20260903085454",
+        "name": "phase6c_private_ai_chat",
+        "git_sha256": "131e63ff165069a4d2861eadec838ad47906cf74a382c0f7ce8ab99f91d8d26f"
+      },
+      {
+        "file": "20260903125150_phase6c_request_scoped_safety.sql",
+        "version": "20260903125150",
+        "name": "phase6c_request_scoped_safety",
+        "git_sha256": "35ef14f978ad6500abd086b5db80dbec2d875a2a8ddeb39825e8b0ac2b57a831"
+      },
+      {
+        "file": "20260904105918_phase6d0_legacy_authorization_gate.sql",
+        "version": "20260904105918",
+        "name": "phase6d0_legacy_authorization_gate",
+        "git_sha256": "5b91b22f823a30f86e329b381fe797fd28655d237ad977d6b80d2c99af5485b3"
+      },
+      {
+        "file": "20260904230850_phase6d_read_only_ai_analyses.sql",
+        "version": "20260904230850",
+        "name": "phase6d_read_only_ai_analyses",
+        "git_sha256": "a4339bcc4714cdaf4dc7e6b4ad1b448703fb35da6189a9a1fa73842517666953"
+      },
+      {
+        "file": "20260904235253_phase6d_analysis_lifecycle_safe_code_fix.sql",
+        "version": "20260904235253",
+        "name": "phase6d_analysis_lifecycle_safe_code_fix",
+        "git_sha256": "ecc48734b187c48af699c9639ef369ccb4a5a911e92e743f49082105d73371f0"
+      },
+      {
+        "file": "20260906080455_phase6d_owner_safety_settings.sql",
+        "version": "20260906080455",
+        "name": "phase6d_owner_safety_settings",
+        "git_sha256": "708d6f547bb0662d4804739fb3c635178305bda2af88c3fd2b62d718c843cdf3"
+      },
+      {
+        "file": "20260906092905_phase6d_automatic_inbox.sql",
+        "version": "20260906092905",
+        "name": "phase6d_automatic_inbox",
+        "git_sha256": "546de1b06ff8c84c48ac39dd714afe585777adf7a9b7daad16ffb984c059df6a"
+      },
+      {
+        "file": "20260906134827_phase6d_recent_dashboard_analyses.sql",
+        "version": "20260906134827",
+        "name": "phase6d_recent_dashboard_analyses",
+        "git_sha256": "6647ea555c175060b139dba6011f67f6397895338c8b9b9a1eedccdf9de3ffbd"
+      }
+    ]
+  },
+  "edge": {
+    "slug": "youri-ai",
+    "version": 43,
+    "active": true,
+    "verify_jwt": true,
+    "bundle_sha256": "627c883a9b001e6215d101c827f96fbb94825c7f1437077088ec09fbba7460c6",
+    "source_parity": [
+      {
+        "file": "supabase/functions/youri-ai/index.ts",
+        "git_identical": true,
+        "newline_normalized": true
+      },
+      {
+        "file": "supabase/functions/youri-ai/handler.ts",
+        "git_identical": true,
+        "newline_normalized": true
+      },
+      {
+        "file": "supabase/functions/youri-ai/contracts.ts",
+        "git_identical": true,
+        "newline_normalized": true
+      },
+      {
+        "file": "supabase/functions/youri-ai/mock-adapter.ts",
+        "git_identical": true,
+        "newline_normalized": true
+      },
+      {
+        "file": "supabase/functions/youri-ai/phase6b-handler.ts",
+        "git_identical": true,
+        "newline_normalized": true
+      },
+      {
+        "file": "supabase/functions/youri-ai/provider-contracts.ts",
+        "git_identical": true,
+        "newline_normalized": true
+      },
+      {
+        "file": "supabase/functions/youri-ai/openai-adapter.ts",
+        "git_identical": true,
+        "newline_normalized": true
+      },
+      {
+        "file": "supabase/functions/youri-ai/phase6c-handler.ts",
+        "git_identical": true,
+        "newline_normalized": true
+      },
+      {
+        "file": "supabase/functions/youri-ai/phase6d-handler.ts",
+        "git_identical": true,
+        "newline_normalized": true
+      },
+      {
+        "file": "supabase/functions/youri-ai/deno.json",
+        "git_identical": true,
+        "newline_normalized": true
+      }
+    ]
+  },
+  "live_assets": {
+    "overall_pass": true,
+    "commit": "7fec9da7cb00cb7dff4a601810ddd2c977db0f5f",
+    "cache": "20260907-dashboard-placement1",
+    "files": [
+      {
+        "file": "index.html",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "cf793f359b1c539dfea8d577ec33caedf9d77fb8d0912e7e0f20896edda1d1b5"
+      },
+      {
+        "file": "styles.css",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "b46b572615adce4aec46465fd1214e077a36b6f35566486e73cf1b540c337c1e"
+      },
+      {
+        "file": "config.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "07cc826304b5a9343ef26a21aabae6d00a21fe4c55a1d9feefef6067bcecd6fa"
+      },
+      {
+        "file": "app.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "53d5144cba01f9ab76e947366c7bfd0a505dcd8567141a68825bec23d0951de5"
+      },
+      {
+        "file": "app.bundle.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "9c92c4e7257c20f85c41641a494228446bbd7d035f464a705aa386e1246e76e0"
+      },
+      {
+        "file": "assets/member-ux-consistency.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "549beca9ebfe6b1b3f63d254280c5e61b8641809903a2f81dd7c415807314dea"
+      },
+      {
+        "file": "assets/phase1-foundation.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "f275ad98e4680f4e4436858911fc5800e39a4094ab144ec78d0a92adb75addf6"
+      },
+      {
+        "file": "assets/phase5-progress.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "b47b9ac07d1b21a9aad014d824e398690546e385eed7c249a98e95564d704b7b"
+      },
+      {
+        "file": "assets/phase6d0-legacy-auth.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "fdaca0d3637ca2dcd36fad7a3698ff6c4edae709c582ef3c6709530e2012d4e3"
+      },
+      {
+        "file": "assets/phase6c-private-ai-chat.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "f841e8c68f79d481157c7c4bfd0194b406ce1f980a26539667910c32baccae97"
+      },
+      {
+        "file": "assets/phase6d-owner-settings.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "fce610cf27a732adc5eb39e260cd9b7b786944ca31ddfa42669ff540b3a78c39"
+      },
+      {
+        "file": "assets/phase6d-owner-settings.css",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "ec01925fbae7ac8549d3e9a574dd7ccf1397bff7390c9b5bf074abd91970eca4"
+      },
+      {
+        "file": "assets/phase6d-hotfix2.css",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "2c7444c64b34183c7a13241c42286f6109e6db782a4026f45b396318b72c25f9"
+      },
+      {
+        "file": "assets/phase6d-analysis-inbox.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "428c81aab07c815aab74828790c028b0839cdbd83a607b0c9eddbbcc8fc28fbe"
+      },
+      {
+        "file": "assets/phase3-training-engine.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "e87b01034544dd72c91a91fb40dd0d1b78364d62603dfbf1ed2babed7df944db"
+      },
+      {
+        "file": "assets/youri-ai-avatar-3d-v3-256.webp",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "257f31e6fe4faa7fecf5fb9874eed06d4018dc8c60958aa714e7d4b79a7517dc"
+      },
+      {
+        "file": "assets/vendor/lucide-settings.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "ceea1a72d04b112291222ba9ad0779a12d47d816079fe4174900c724f360b55c"
+      },
+      {
+        "file": "assets/vendor/lucide-globe.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "c3543ac3883a0841aa5d37ff974708fbc37d9c6afe64e14b03d56ed798b0b788"
+      },
+      {
+        "file": "assets/vendor/lucide-x.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "0f38855d9d5775c10960ae53e46b745f77914b43f78c43bf8abc39f4d5e06de1"
+      },
+      {
+        "file": "assets/vendor/flag-de.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "efd480af5a154a7651f29da23ee0d09dbc892410fb4041898ddf8face336c575"
+      },
+      {
+        "file": "assets/vendor/flag-gb.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "c8be1e7208798a4ae692ee1e937065d498bb29e741943f6172b29118b8ed8066"
+      },
+      {
+        "file": "assets/vendor/flag-nl.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "8f691f17fe70894537af8e92f2ca47761d353639b0defc15cbe561eb503ab010"
+      },
+      {
+        "file": "assets/vendor/lucide-archive.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "1a6e1c540c9a1a9b489893cc14ab9f597496c69aab5ba222fdd5b456de9e2fac"
+      },
+      {
+        "file": "assets/vendor/lucide-arrow-left.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "e31ed0af85ffbed2b54f78f37af197c3b84b24e776cba1d27613d6a9ad555a16"
+      },
+      {
+        "file": "assets/vendor/lucide-arrow-up.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "df0ff279d41bba93ae6797ef519ba442b895cd5d546fb36f22b7a656c3b05fd1"
+      },
+      {
+        "file": "assets/vendor/lucide-bell.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "129a018bd5025fc992a510e9c95e7868300d888b69c38c69a3466d310919ea13"
+      },
+      {
+        "file": "assets/vendor/lucide-calendar.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "2e2a7df92c2cca71dd6de34bb3f7187e276e8e8e003abe2e80b2ffd13347af60"
+      },
+      {
+        "file": "assets/vendor/lucide-check.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "538432eec072ceeccf5a7aacf347a2ad2bff9937d203dbd0b4f4245d7accd93c"
+      },
+      {
+        "file": "assets/vendor/lucide-chevron-right.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "fea488a3b60fd7738bbbf8ca98826ef5c0381347c5fd1048d45ee70a75a51cfe"
+      },
+      {
+        "file": "assets/vendor/lucide-credit-card.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "4d0394710733a8ca0db566208b0281708ebde7b167b6903491fde0be060bded1"
+      },
+      {
+        "file": "assets/vendor/lucide-download.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "f68a21e11115edc0aef51ac6f8f4618e14d2b92055f1cb9f5d670efc696bea85"
+      },
+      {
+        "file": "assets/vendor/lucide-file-text.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "512f414d72aabc5218b94a9da571df70d8e0b014cfb32ec366b559ec868952d6"
+      },
+      {
+        "file": "assets/vendor/lucide-history.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "682b5fc882578a3bdaac72c72fc27709cb806b61c2d1d51194327b31dde7f239"
+      },
+      {
+        "file": "assets/vendor/lucide-languages.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "a33a7bd34876dde0c5a470914dac09fca77f97da75e93e1b1687de2294874c65"
+      },
+      {
+        "file": "assets/vendor/lucide-loader-circle.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "44ad0f822a89b28a3feecf7276686c818a92a4a9c77cc51404c58929e30f0f3a"
+      },
+      {
+        "file": "assets/vendor/lucide-log-out.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "3f28d1eedd9a71ec6933578fc1b7cd21c56618e8b9b8339e55bfc133b4eb6bee"
+      },
+      {
+        "file": "assets/vendor/lucide-message-circle.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "f62830d9fbbbf697e53555398d31a342ddec8dd008d707f21cd90bb19befcc87"
+      },
+      {
+        "file": "assets/vendor/lucide-plus.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "b29207ee8f5cc0e829c0bab2e5b223fc88687599c6bd40b94ba35f52327615d6"
+      },
+      {
+        "file": "assets/vendor/lucide-rotate-cw.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "2c2c5d1f147e829f431182eee79d8d74e81aedcf8177f9e1878a4180ec990a9c"
+      },
+      {
+        "file": "assets/vendor/lucide-shield.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "276e603595736fcb698b0309b04c44ebb88afb28e4753c5670f92c11a01ed043"
+      },
+      {
+        "file": "assets/vendor/lucide-trash-2.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "9268a35cfb4f9d852c3d13f2c91476dd067c21c20e2bcdb0093fd93fd0bf34b7"
+      },
+      {
+        "file": "assets/vendor/lucide-user.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "bb1e0531065db51238a34b348cf8fb8267cd31932dc3f680c9f204a58d1520ea"
+      }
+    ],
+    "viewports": [
+      {
+        "width": 320,
+        "height": 700,
+        "public": true,
+        "resendButtons": 2,
+        "memberNavEmpty": true,
+        "errors": 0,
+        "mutatingRequests": 0
+      },
+      {
+        "width": 390,
+        "height": 844,
+        "public": true,
+        "resendButtons": 2,
+        "memberNavEmpty": true,
+        "errors": 0,
+        "mutatingRequests": 0
+      },
+      {
+        "width": 820,
+        "height": 1180,
+        "public": true,
+        "resendButtons": 2,
+        "memberNavEmpty": true,
+        "errors": 0,
+        "mutatingRequests": 0
+      },
+      {
+        "width": 1440,
+        "height": 900,
+        "public": true,
+        "resendButtons": 2,
+        "memberNavEmpty": true,
+        "errors": 0,
+        "mutatingRequests": 0
+      }
+    ],
+    "databaseMutation": false
+  },
+  "read_only_verifiers": {
+    "foundation": {
+      "verification_result": {
+        "checks": [
+          {
+            "pass": true,
+            "check": "action_allowlist_exact",
+            "detail": "five allowed proposal types"
+          },
+          {
+            "pass": true,
+            "check": "action_bounds_locked",
+            "detail": "20 percent training and min(10 percent,300 kcal)"
+          },
+          {
+            "pass": true,
+            "check": "budget_exact_3_plus_1",
+            "detail": "EUR 3 included, warning 80%, EUR 1 grace, EUR 4 hard"
+          },
+          {
+            "pass": true,
+            "check": "consent_documents_nl_en_de",
+            "detail": "six original AI and trainer-summary documents"
+          },
+          {
+            "pass": true,
+            "check": "consent_explicit_unselected",
+            "detail": "affirmative action required"
+          },
+          {
+            "pass": true,
+            "check": "consent_monotonic_ordering",
+            "detail": "latest grant or withdrawal is deterministic"
+          },
+          {
+            "pass": true,
+            "check": "context_minimized_authority",
+            "detail": "references/aggregates, explicit unavailable sources"
+          },
+          {
+            "pass": true,
+            "check": "eight_own_select_policies",
+            "detail": "[\"ai_action_decisions_select_own\", \"ai_action_proposals_select_own\", \"ai_consent_events_select_own\", \"ai_context_manifests_select_own\", \"ai_data_lifecycle_requests_select_own\", \"ai_member_safety_state_select_own\", \"ai_messages_select_own\", \"ai_threads_select_own\"]"
+          },
+          {
+            "pass": true,
+            "check": "entitlement_exact",
+            "detail": "AI/PT current window only"
+          },
+          {
+            "pass": true,
+            "check": "export_delete_lifecycle",
+            "detail": "request and manifest readiness"
+          },
+          {
+            "pass": true,
+            "check": "feature_flags_default_off",
+            "detail": "[{\"enabled\": false, \"flag_code\": \"ai_coach_enabled\", \"environment\": \"staging\"}, {\"enabled\": false, \"flag_code\": \"provider_calls_enabled\", \"environment\": \"staging\"}, {\"enabled\": false, \"flag_code\": \"staging_mock_enabled\", \"environment\": \"staging\"}]"
+          },
+          {
+            "pass": true,
+            "check": "foreign_key_indexes",
+            "detail": "all Phase 6A foreign keys have covering indexes"
+          },
+          {
+            "pass": true,
+            "check": "free_and_pro_denied",
+            "detail": "Free and Pro do not grant generation"
+          },
+          {
+            "pass": true,
+            "check": "frozen_guard_rls",
+            "detail": "frozen RLS retained"
+          },
+          {
+            "pass": true,
+            "check": "frozen_guard_tables",
+            "detail": "Phase 1-5 source tables present"
+          },
+          {
+            "pass": true,
+            "check": "function_inventory",
+            "detail": "[\"ai_private.assert_member\", \"ai_private.can_share_trainer_summary\", \"ai_private.current_consent\", \"ai_private.current_entitlement\", \"ai_private.evaluate_budget\", \"ai_private.subscription_period\", \"ai_private.touch_updated_at\", \"ai_private.trust_status\", \"ai_private.validate_action_contract\", \"ai_private.validate_structured_response\", \"public.fmz_phase6a_get_context_manifest\", \"public.fmz_phase6a_get_trust_status\", \"public.fmz_phase6a_read_consent_contract\", \"public.fmz_phase6a_read_export_manifest\", \"public.fmz_phase6a_read_thread_history\", \"public.fmz_phase6a_record_consent\", \"public.fmz_phase6a_request_data_lifecycle\", \"public.fmz_phase6a_service_begin_run\", \"public.fmz_phase6a_service_complete_run\", \"public.fmz_phase6a_service_fail_run\", \"public.fmz_phase6a_service_reconcile_retention\", \"public.fmz_phase6a_service_record_safety_event\", \"public.fmz_phase6a_submit_user_message\"]"
+          },
+          {
+            "pass": true,
+            "check": "history_and_operational_indexes",
+            "detail": "bounded lookup indexes"
+          },
+          {
+            "pass": true,
+            "check": "idempotency_uniques",
+            "detail": "request identities unique"
+          },
+          {
+            "pass": true,
+            "check": "medication_and_diagnosis_not_allowlisted",
+            "detail": "medical actions absent"
+          },
+          {
+            "pass": true,
+            "check": "member_rpc_acl",
+            "detail": "eight authenticated RPCs only"
+          },
+          {
+            "pass": true,
+            "check": "member_runs_mock_zero_cost",
+            "detail": "accepted mock runs may exist; no member provider run or reservation"
+          },
+          {
+            "pass": true,
+            "check": "no_actions_or_decisions",
+            "detail": "accepted private chat may exist; no proposal/action package active"
+          },
+          {
+            "pass": true,
+            "check": "no_automatic_billing_contract",
+            "detail": "budget evaluator never bills"
+          },
+          {
+            "pass": true,
+            "check": "no_browser_table_privileges",
+            "detail": "[]"
+          },
+          {
+            "pass": true,
+            "check": "no_domain_mutation_sql",
+            "detail": "proposal foundation cannot mutate frozen domains"
+          },
+          {
+            "pass": true,
+            "check": "no_network_or_provider_sql",
+            "detail": "database cannot call a provider"
+          },
+          {
+            "pass": true,
+            "check": "no_write_or_trainer_policy",
+            "detail": "no browser write or trainer policy"
+          },
+          {
+            "pass": true,
+            "check": "operational_logs_minimized",
+            "detail": "no raw prompt/content columns"
+          },
+          {
+            "pass": true,
+            "check": "private_helpers_no_app_execute",
+            "detail": "private helpers isolated"
+          },
+          {
+            "pass": true,
+            "check": "private_schema_isolated",
+            "detail": "[{\"grantee\": \"postgres\", \"privilege_type\": \"USAGE\"}, {\"grantee\": \"postgres\", \"privilege_type\": \"CREATE\"}]"
+          },
+          {
+            "pass": true,
+            "check": "private_table_count",
+            "detail": "12 private contract/operational tables"
+          },
+          {
+            "pass": true,
+            "check": "production_and_secret_scan",
+            "detail": "no production ref or credential lookup material"
+          },
+          {
+            "pass": true,
+            "check": "profile_ownership_fks",
+            "detail": "member ownership references profiles"
+          },
+          {
+            "pass": true,
+            "check": "public_table_count",
+            "detail": "8 public own-user foundations"
+          },
+          {
+            "pass": true,
+            "check": "relational_owner_fks",
+            "detail": "cross-member relational links blocked"
+          },
+          {
+            "pass": true,
+            "check": "retention_90_days",
+            "detail": "grace, restore and raw-content deletion"
+          },
+          {
+            "pass": true,
+            "check": "rls_all_twenty",
+            "detail": "RLS enabled on public and private tables"
+          },
+          {
+            "pass": true,
+            "check": "safe_search_paths",
+            "detail": "fixed search_path; two exact remaining unqualified digest consumers"
+          },
+          {
+            "pass": true,
+            "check": "safety_hard_stop",
+            "detail": "serious or unclear signals block"
+          },
+          {
+            "pass": true,
+            "check": "security_definer_only_when_needed",
+            "detail": "RPCs bridge revoked tables; pure helpers invoker"
+          },
+          {
+            "pass": true,
+            "check": "service_rpc_acl",
+            "detail": "five service-only RPCs"
+          },
+          {
+            "pass": true,
+            "check": "strict_schema_live",
+            "detail": "schema and validator"
+          },
+          {
+            "pass": true,
+            "check": "target_is_staging_contract",
+            "detail": "staging ref locked in artifact"
+          },
+          {
+            "pass": true,
+            "check": "trainer_summary_separate",
+            "detail": "separate consent; no trainer chat path"
+          },
+          {
+            "pass": true,
+            "check": "twenty_exact_tables",
+            "detail": "[]"
+          },
+          {
+            "pass": true,
+            "check": "updated_at_triggers",
+            "detail": "[\"ai_action_proposals_touch_updated_at\", \"ai_budget_accounts_touch_updated_at\", \"ai_feature_flags_touch_updated_at\", \"ai_member_safety_state_touch_updated_at\", \"ai_messages_assign_sequence\", \"ai_messages_protect_content\", \"ai_rate_buckets_touch_updated_at\", \"ai_threads_touch_updated_at\"]"
+          },
+          {
+            "pass": true,
+            "check": "withdrawal_blocks_processing",
+            "detail": "latest granted consent required"
+          }
+        ],
+        "fail_count": 0,
+        "pass_count": 47,
+        "overall_pass": true
+      }
+    },
+    "recent": {
+      "verification": {
+        "checks": [
+          {
+            "name": "migration recorded",
+            "pass": true
+          },
+          {
+            "name": "recent read model declared",
+            "pass": true
+          },
+          {
+            "name": "results are availability source",
+            "pass": true
+          },
+          {
+            "name": "member-bound read",
+            "pass": true
+          },
+          {
+            "name": "member-bound mark",
+            "pass": true
+          },
+          {
+            "name": "read does not backfill",
+            "pass": true
+          },
+          {
+            "name": "explicit action missing-state upsert",
+            "pass": true
+          },
+          {
+            "name": "anonymous read denied",
+            "pass": true
+          },
+          {
+            "name": "anonymous mark denied",
+            "pass": true
+          },
+          {
+            "name": "browser notifications read write denied",
+            "pass": true
+          },
+          {
+            "name": "browser results write denied",
+            "pass": true
+          },
+          {
+            "name": "two tables RLS",
+            "pass": true
+          },
+          {
+            "name": "no mismatched notification owner",
+            "pass": true
+          },
+          {
+            "name": "no duplicate notifications",
+            "pass": true
+          },
+          {
+            "name": "mock worker preserved",
+            "pass": true
+          },
+          {
+            "name": "no mobile fixtures",
+            "pass": true
+          },
+          {
+            "name": "zero analysis provider cost",
+            "pass": true
+          },
+          {
+            "name": "cron active",
+            "pass": true
+          }
+        ],
+        "fail_count": 0,
+        "pass_count": 18,
+        "overall_pass": true
+      }
+    },
+    "worker": {
+      "verification": {
+        "checks": [
+          {
+            "name": "migration recorded",
+            "pass": true
+          },
+          {
+            "name": "job RLS",
+            "pass": true
+          },
+          {
+            "name": "inbox RLS",
+            "pass": true
+          },
+          {
+            "name": "workout trigger installed",
+            "pass": true
+          },
+          {
+            "name": "result trigger installed",
+            "pass": true
+          },
+          {
+            "name": "one active DB mock cron",
+            "pass": true
+          },
+          {
+            "name": "browser cannot write inbox",
+            "pass": true
+          },
+          {
+            "name": "browser cannot read jobs",
+            "pass": true
+          },
+          {
+            "name": "anonymous cannot read detail",
+            "pass": true
+          },
+          {
+            "name": "anonymous cannot read inbox",
+            "pass": true
+          },
+          {
+            "name": "anonymous cannot mark inbox",
+            "pass": true
+          },
+          {
+            "name": "anonymous cannot sync timezone",
+            "pass": true
+          },
+          {
+            "name": "member cannot call private prepare",
+            "pass": true
+          },
+          {
+            "name": "member cannot execute worker",
+            "pass": true
+          },
+          {
+            "name": "member cannot complete results",
+            "pass": true
+          },
+          {
+            "name": "inbox own-user predicate",
+            "pass": true
+          },
+          {
+            "name": "zero orphan inbox owners",
+            "pass": true
+          },
+          {
+            "name": "zero duplicate notification results",
+            "pass": true
+          },
+          {
+            "name": "zero duplicate jobs",
+            "pass": true
+          },
+          {
+            "name": "zero mock provider cost",
+            "pass": true
+          },
+          {
+            "name": "all analyses have no executable actions",
+            "pass": true
+          },
+          {
+            "name": "external provider disabled",
+            "pass": true
+          },
+          {
+            "name": "no transactional fixture users",
+            "pass": true
+          }
+        ],
+        "fail_count": 0,
+        "pass_count": 23,
+        "overall_pass": true
+      }
+    }
+  },
+  "frozen_regression_rerun": {
+    "overall_pass": true,
+    "results": [
+      {
+        "suite": "assets/phase6d0-frozen-regression-check.cjs",
+        "exit": 0,
+        "summary": [
+          "Phase 1 static check passed: 75",
+          "Member UX static check passed: 56"
+        ]
+      },
+      {
+        "suite": "assets/public-auth-regression-check.cjs --historical phase2-static-check.js",
+        "exit": 0,
+        "summary": [
+          "Phase 2 static check passed: 46"
+        ]
+      },
+      {
+        "suite": "assets/public-auth-regression-check.cjs --historical phase3-static-check.js",
+        "exit": 0,
+        "summary": [
+          "Phase 3 static check passed: 222"
+        ]
+      },
+      {
+        "suite": "assets/phase4-static-check.js",
+        "exit": 0,
+        "summary": [
+          "Phase 4 static check passed: 90"
+        ]
+      },
+      {
+        "suite": "assets/phase4-nutrition-slice4fe-static-check.js",
+        "exit": 0,
+        "summary": [
+          "Phase 4F-E static check passed: 45"
+        ]
+      },
+      {
+        "suite": "assets/phase5-static-check.js",
+        "exit": 0,
+        "summary": [
+          "  \"pass_count\": 116,",
+          "  \"fail_count\": 0,"
+        ]
+      },
+      {
+        "suite": "assets/phase6a-static-check.js",
+        "exit": 0,
+        "summary": [
+          "  \"pass_count\": 93,",
+          "  \"fail_count\": 0,"
+        ]
+      },
+      {
+        "suite": "assets/phase6b-static-check.js",
+        "exit": 0,
+        "summary": [
+          "  \"pass_count\": 98,",
+          "  \"fail_count\": 0,"
+        ]
+      },
+      {
+        "suite": "assets/phase6c-static-check.js",
+        "exit": 0,
+        "summary": [
+          "  \"pass_count\": 117,",
+          "  \"fail_count\": 0,"
+        ]
+      },
+      {
+        "suite": "assets/phase6d-static-check.js",
+        "exit": 0,
+        "summary": [
+          "  \"pass_count\": 17,",
+          "  \"fail_count\": 0,"
+        ]
+      },
+      {
+        "suite": "assets/public-auth-static-check.cjs",
+        "exit": 0,
+        "summary": [
+          "  \"pass_count\": 26,",
+          "  \"fail_count\": 0,"
+        ]
+      },
+      {
+        "suite": "assets/phase6d-workout-event-check.cjs",
+        "exit": 0,
+        "summary": [
+          "{\"suite\":\"hotfix2_workout_event_order\",\"overall_pass\":true,\"pass_count\":6,\"checks\":[\"flush happens before completion\",\"authoritative completion sees saved sets\",\"success retains completion lifecycle\",\"failed flush never completes workout\",\"failed flush adds no history\",\"local-only completion remains local, no invented server event\"]}"
+        ]
+      },
+      {
+        "suite": "--test supabase/functions/invite-client/handler.test.ts",
+        "exit": 0,
+        "summary": []
+      },
+      {
+        "suite": "--test supabase/functions/youri-ai/phase6c-handler.test.ts supabase/functions/youri-ai/phase6d-handler.test.ts",
+        "exit": 0,
+        "summary": []
+      },
+      {
+        "suite": "--test supabase/tests/phase6d0-migration-identity-check.test.cjs",
+        "exit": 0,
+        "summary": []
+      },
+      {
+        "suite": "assets/phase6d0-browser-check.js",
+        "exit": 0,
+        "summary": [
+          "  \"pass_count\": 41,",
+          "  \"fail_count\": 0,"
+        ]
+      },
+      {
+        "suite": "assets/phase5-browser-check.js",
+        "exit": 0,
+        "summary": [
+          "  \"pass_count\": 53,",
+          "  \"fail_count\": 0,"
+        ]
+      },
+      {
+        "suite": "assets/phase6c-browser-check.js",
+        "exit": 0,
+        "summary": [
+          "  \"pass_count\": 85,",
+          "  \"fail_count\": 0,"
+        ]
+      },
+      {
+        "suite": "assets/phase4-nutrition-slice3-browser-check.js",
+        "exit": 0,
+        "summary": [
+          "Phase 4 Nutrition Slice 3 browser check passed: 138"
+        ]
+      },
+      {
+        "suite": "assets/phase6d-browser-check.js",
+        "exit": 0,
+        "summary": [
+          "  \"pass_count\": 48,",
+          "  \"fail_count\": 0,"
+        ]
+      }
+    ]
+  },
+  "prior_accepted_browser_baselines": {
+    "placement_local": 426,
+    "placement_live": 426,
+    "placement_layouts": 36,
+    "mobile": 180,
+    "mobile_layouts": 25,
+    "owner": 323,
+    "public_auth": 88
+  },
+  "impact": {
+    "runtime_changed": false,
+    "database_changed_by_task": false,
+    "migrations_created_or_executed": 0,
+    "member_writes_by_task": 0,
+    "live_fixtures_created": 0,
+    "edge_deployed": false,
+    "external_ai_calls": 0,
+    "external_ai_cost_eur": 0,
+    "production_touched": false,
+    "files_deleted": 0
+  },
+  "limitations": [
+    "Historical full Docker/pg_cron rebuild and global schema diff remain unproven.",
+    "No live mutating E2E rerun or member content export.",
+    "Live background cron may process existing authorized jobs; this task did not pause or invoke it.",
+    "Two initial generated SELECT verifier wrappers had syntax errors; corrected SELECT-only CTE versions passed. No temp DDL/DML executed.",
+    "Freeze is limited to accepted mock-only staging contracts, not medical validation or provider/production authorization."
+  ]
+}
+

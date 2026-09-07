@@ -3,6 +3,12 @@
 Status: CURRENT AND TARGET ARCHITECTURE DOCUMENTED
 Last updated: 2026-09-07
 
+Package 6D: COMPLETE / OWNER-ACCEPTED / FROZEN on 2026-09-07 after explicit
+real-phone acceptance. The freeze changes no architecture/runtime/schema.
+See PHASE6D_FREEZE_RECEIPT.md for runtime 7fec9da, Edge v43, cache and 30/30 history.
+Only a read-only 6E safety/readiness audit is authorized; no new risk taxonomy or
+recovery rule is implemented. Historical pending-owner statements are superseded.
+
 Public Auth lifecycle: Phase 1 owns the session/profile-ready render boundary.
 Registration/login/password/confirmation/error screens must never dispatch member
 renderers or member hydration before explicit valid application entry. See
@@ -57,7 +63,7 @@ No global overflow hiding was added. The new full-app test measures every visibl
 descendant, not only html/body or the outer dialog. The prior outer-only check missed
 the scrolling main. New local/fresh/live-assets tests inject synthetic Auth/RPC JS only,
 never CSS, and pass 180 checks / 25 layouts at five viewports. Exact evidence:
-PACKAGE6D_FINAL_OWNER_MOBILE_HOTFIX_REPORT.md. Not owner-accepted/frozen.
+PACKAGE6D_FINAL_OWNER_MOBILE_HOTFIX_REPORT.md. Included in the 2026-09-07 owner freeze.
 
 ## Automatic Analysis Inbox - Hotfix 2
 
@@ -435,7 +441,7 @@ The existing `user_settings.unit_system` stores the presentation choice. No impe
 
 ### Phase 6 Youri AI Core Readiness
 
-Status: PACKAGES 6A, 6B AND 6C COMPLETE / OWNER-ACCEPTED / FROZEN; PACKAGE 6D MOCK-ONLY READ-ONLY ANALYSES TECHNICAL PASS / OWNER TESTING PENDING
+Status: PACKAGES 6A, 6B, 6C AND 6D COMPLETE / OWNER-ACCEPTED / FROZEN; EXTERNAL MEMBER AI AND AUTOMATIC DOMAIN ACTIONS NOT AUTHORIZED
 
 Live staging now contains the additive Package 6A AI trust schema. Normalized own-user Identity, Recovery, Training, Nutrition and Progress inputs remain the frozen authorities. No provider credential, external provider call or member-facing AI runtime is active.
 

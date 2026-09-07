@@ -1,11 +1,17 @@
 # Package 6D Read-Only Analyses Technical Report
 
-Current follow-up: PACKAGE 6D FINAL DASHBOARD PLACEMENT HOTFIX - READY FOR OWNER RETEST.
+Current status: COMPLETE / OWNER-ACCEPTED / FROZEN, explicitly accepted on a real
+phone on 2026-09-07. See PHASE6D_FREEZE_RECEIPT.md and PHASE6D_FREEZE_EVIDENCE.json.
+All pending-owner statuses in historical implementation/hotfix sections below are
+superseded. Frozen runtime 7fec9da; Edge v43; cache 20260907-dashboard-placement1;
+current migration parity 30/30. Only a read-only 6E readiness audit is authorized.
+
+Accepted final follow-up: PACKAGE 6D FINAL DASHBOARD PLACEMENT HOTFIX.
 See [current presentation report](PACKAGE6D_DASHBOARD_PLACEMENT_HOTFIX_REPORT.md) for
 the exact order below greeting/Check-in/training, matching card styles and stable
 hydration. Runtime 7fec9da7cb00cb7dff4a601810ddd2c977db0f5f; local/live426 checks,
 42 live assets Git-identical. No migration, databasewrite or Edge change.
-Owner confirms the prior lifecycle and mobile detail work; Package6D is not frozen.
+Owner confirms the lifecycle, mobile detail and final dashboard placement work.
 
 See [preceding mobile report](PACKAGE6D_FINAL_OWNER_MOBILE_HOTFIX_REPORT.md) for
 opened/missing-notification dashboard persistence, the newest-three read model and
@@ -14,7 +20,7 @@ fully bounded mobile comparison/detail. New live-assets browser 180/180, 25 layo
 The automatic mock worker, renewed chat, vertical settings, device timezone/flags,
 recovery, private-chat consent, approved floating avatar and Edge v43 are preserved.
 The initial implementation receipt below remains historical evidence, not the latest
-runtime/cache. Package 6D is not owner-accepted/frozen.
+runtime/cache. Package 6D is now owner-accepted/frozen; prior evidence is preserved.
 
 Date: 2026-09-06. Scope: staging only, `Yourizorge/fitmetzorge-staging` branch `main`,
 Supabase project `mokxyyullfhkfalopbzd`. Production remains forbidden and untouched.

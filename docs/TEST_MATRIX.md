@@ -1,10 +1,10 @@
 # FitMetZorge Test Matrix
 
 Status: MASTER PLAN COVERAGE MATRIX
-Latest execution: 2026-09-07 Package 6D final dashboard placement hotfix,
+Latest execution: 2026-09-07 Package 6D owner freeze read-only verification,
 after the public Auth hotfix and project migration reconciliation. Migration history
 was synchronized 30/30 with a clean dry-run on 2026-09-06; this frontend-only task
-does not alter or rerun migration history. Public Auth hotfix
+does not alter migration history; a fresh MCP listing confirms exact 30/30 parity. Public Auth hotfix
 checks remain valid, the owner received the confirmation email, and no new resend,
 Brevo investigation, manual confirmation, trainer role or trainer link was performed.
 Last updated: 2026-09-07
@@ -26,7 +26,19 @@ PROJECT_MIGRATION_RECONCILIATION.md and PROJECT_MIGRATION_RECONCILIATION_MANIFES
 
 This matrix records the required functional, security, entitlement, AI, migration, and release checks for the Master Build. No implementation tests are executed by this document.
 
-## Final Dashboard Placement Hotfix - Current Execution
+## Package 6D Owner Freeze - Current Execution
+
+COMPLETE / OWNER-ACCEPTED / FROZEN by explicit real-phone owner acceptance.
+Current rerun: SELECT-only foundation 47/47, recent dashboard 18/18, worker/inbox
+23/23; all 20 local frozen regression suites exit 0. Live assets 42/42 byte-identical,
+four public viewports PASS; Edge v43 source 10/10 equal after newline normalization.
+Accepted browser baselines retained without new mutating E2E: placement 426 local
+and live, mobile 180, owner 323, public Auth 88. Exact ledger and limits:
+PHASE6D_FREEZE_RECEIPT.md / PHASE6D_FREEZE_EVIDENCE.json.
+No runtime/database/memberdata change or external AI call. Historical pending-owner
+statuses below are superseded. Package 6E is read-only audit only, not implemented.
+
+## Final Dashboard Placement Hotfix - Historical Execution
 
 READY FOR OWNER RETEST only. Owner confirms prior lifecycle/detail behavior.
 [Full 18-case mapping](PACKAGE6D_DASHBOARD_PLACEMENT_HOTFIX_REPORT.md) and

@@ -5,6 +5,16 @@ Last updated: 2026-09-07
 
 This document is the product and execution source of truth for the FitMetZorge Master Build after Phase 0A Governance and Phase 0B Live Staging Infrastructure Verification.
 
+## Package 6D Owner Freeze - 2026-09-07
+
+Package 6D is COMPLETE / OWNER-ACCEPTED / FROZEN by explicit real-phone acceptance.
+Runtime 7fec9da7cb00cb7dff4a601810ddd2c977db0f5f, cache 20260907-dashboard-placement1,
+Edge v43 and 30-migration chain remain unchanged. The exact receipt and test ledger
+are PHASE6D_FREEZE_RECEIPT.md and PHASE6D_FREEZE_EVIDENCE.json.
+Only a read-only Package 6E Risk, Safety and Escalation readiness audit follows.
+No 6E feature, migration, flag, frontend, Edge or provider activation is authorized.
+Pending-owner language in the dated historical hotfix/audit sections is superseded.
+
 ## Hard Rules
 
 - Build and verify in staging first.
@@ -45,8 +55,8 @@ Package 6D-0's canonical `20260904105918` identity remains unchanged. See
 PROJECT_MIGRATION_RECONCILIATION.md. This gate does not authorize another build phase
 or production access.
 
-Package 6D read-only analyses are implemented on staging as a mock-only technical pass
-and await owner testing. The locked initial scope is daily, post-workout and weekly
+Package 6D read-only analyses are COMPLETE / OWNER-ACCEPTED / FROZEN on staging.
+The locked initial scope is daily, post-workout and weekly
 analysis inside Youri AI, with separate `ai_analysis` consent, maximum 90-day result
 retention, 180-day minimized audit metadata, no trainer access, no private-chat
 context, no domain writes, no real provider calls, Luna/Terra routing policy recorded
@@ -56,7 +66,7 @@ activation remains forbidden until the separate legal/provider gate passes.
 
 ## Final Dashboard Placement Hotfix - Current Presentation Contract
 
-PACKAGE 6D FINAL DASHBOARD PLACEMENT HOTFIX - READY FOR OWNER RETEST, not accepted/frozen.
+The final dashboard placement hotfix is included in the accepted Package 6D freeze.
 Owner confirms the analysis lifecycle, mobile detail and other 6D behavior work.
 The dashboard order is greeting/intro, Check-in, training, recent analyses, then other
 existing components. Up to three analyses use the existing dashboard card styling,

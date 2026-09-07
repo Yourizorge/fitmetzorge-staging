@@ -2,7 +2,21 @@
 
 Last updated: 2026-09-07
 
-## Final Dashboard Placement Hotfix - Current
+## Package 6D Owner Freeze - Current
+
+Status: COMPLETE / OWNER-ACCEPTED / FROZEN, explicitly accepted on a real phone
+on 2026-09-07. The owner confirms the complete avatar/chat/settings/language/timezone/
+planning/recovery/automatic-analysis/mobile-detail/dashboard-placement/persistence flow.
+Runtime 7fec9da7cb00cb7dff4a601810ddd2c977db0f5f; accepted documentation c1a71de;
+cache 20260907-dashboard-placement1; Edge v43 ACTIVE/JWT; 30/30 migration names/versions.
+Read-only freeze rerun: foundation 47, recent 18, worker 23, all 20 frozen suites PASS;
+42 live assets Git-identical, 10 Edge source files equal after newline normalization.
+See PHASE6D_FREEZE_RECEIPT.md and PHASE6D_FREEZE_EVIDENCE.json for exact baselines.
+No runtime/schema/memberdata/flag changes, migrations, external AI cost or production.
+Only the subsequent Package 6E read-only readiness audit is authorized.
+Historical pending-owner statements below are superseded by this explicit freeze.
+
+## Final Dashboard Placement Hotfix - Historical
 
 Status: PACKAGE 6D FINAL DASHBOARD PLACEMENT HOTFIX - READY FOR OWNER RETEST.
 Not owner-accepted/frozen. Owner confirms the prior analysis lifecycle/mobile detail
@@ -90,13 +104,11 @@ clean for staging. See [migration audit](PROJECT_MIGRATION_RECONCILIATION.md).
 - Phase 0B Storage verification: COMPLETE
 - Master Plan Specification: COMPLETE
 - Master Plan Final Review: COMPLETE
-- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6C COMPLETE / OWNER-ACCEPTED / FROZEN; PACKAGE 6D FINAL DASHBOARD PLACEMENT HOTFIX - READY FOR OWNER RETEST
+- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6C COMPLETE / OWNER-ACCEPTED / FROZEN; PACKAGE 6D COMPLETE / OWNER-ACCEPTED / FROZEN
 - Production Migration: NOT STARTED
 
-Current next step: owner real-phone retest of dashboard order and matching analysis
-card styling below Check-in/training. Confirm read/refresh/login persistence and
-avatar-free actions without changing the already confirmed detail/chat/settings flows.
-Use the 18-case mapping in PACKAGE6D_DASHBOARD_PLACEMENT_HOTFIX_REPORT.md.
+Current next step: complete the owner-authorized Package 6E Risk, Safety and
+Escalation read-only readiness audit. No 6E implementation is authorized.
 Package 6D is implemented on staging as a mock-only, read-only analysis surface for
 daily, post-workout and weekly analyses, with separate `ai_analysis` consent, no
 trainer access, no private-chat context, no domain writes, no provider call and EUR
@@ -126,7 +138,7 @@ and legal/provider activation remain separate gates.
 - Staging Supabase project ref: `mokxyyullfhkfalopbzd`.
 - Production Supabase project ref: `hgoygcviutmynaihcvpd`.
 - Production is strictly forbidden without explicit owner approval.
-- Current 6D work touched staging application code, staging database schema, the
+- Historical 6D implementation touched staging application code, staging database schema, the
   staging `youri-ai` Edge Function and documentation only. SMTP, production GitHub,
   production Supabase and production deployment remain untouched.
 
