@@ -5,7 +5,10 @@ const checks=[];function check(name,pass){checks.push({name,pass:!!pass});assert
 const profile={id:"30000000-0000-4000-8000-000000000001",role:"client",name:"Synthetic",email:"synthetic@example.invalid",trainer_id:null,email_confirmed_at:"2026-09-06T06:00:00Z"};
 const probe=String.raw`
 window.__hotfix={
- enter:async()=>{window.__memberSession=true;window.FMZ_PUBLIC_AUTH.enterApp();passwordSetupRequired=false;onlineProfile=window.__mockProfile;onlineReady=true;state.ui.loggedIn=true;state.ui.role="client";currentView="client-home";renderNav();renderAll();showView("client-home");await window.FMZ_OWNER_SETTINGS.hydrate(true);},
+ enter:async()=>{window.__memberSession=true;window.FMZ_PUBLIC_AUTH.enterApp();passwordSetupRequired=false;onlineProfile=window.__mockProfile;onlineReady=true;state.ui.loggedIn=true;state.ui.role="client";state.ui.authEmail=window.__mockProfile.email;
+  if(!state.clients.some(c=>c.email===state.ui.authEmail)){const selected=createClientProfile({name:window.__mockProfile.name,email:state.ui.authEmail,goal:"Synthetic general health",profile:{firstName:window.__mockProfile.name,age:30,height:180,currentWeight:80,gender:"not_relevant",goalDirection:"health"}});selected.id=window.__mockProfile.id;state.clients.push(selected);}
+  currentView="client-home";renderNav();renderAll();showView("client-home");await window.FMZ_OWNER_SETTINGS.hydrate(true);},
+ dashboard:()=>renderClientHome(),incomplete:value=>{client().profile.age=value?"":30;renderAll();},
  view:id=>showView(id),current:()=>currentView,render:()=>renderAll(),logout:()=>{state.ui.loggedIn=false;onlineProfile=null;onlineReady=false;renderAll();},
  safety:()=>window.FMZ_PHASE6C_PRIVATE_CHAT.hydrate({force:true})
 };
@@ -92,7 +95,7 @@ if(require.main===module)(async()=>{
  const browser=await chromium.launch({headless:true,executablePath:"C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe"});
  try {
  for(const [width,height] of [[320,700],[390,844],[820,1180],[1440,900]]){
-  const server=serverFixture(),context=await browser.newContext({viewport:{width,height},hasTouch:width<1000});
+  const server=serverFixture(),context=await browser.newContext({viewport:{width,height},hasTouch:width<1000,isMobile:width<1000});
   await context.addInitScript("const base="+JSON.stringify(base)+";("+mockSetup.toString()+")("+JSON.stringify(profile)+");");
   await context.route("**/*",async route=>{
    const url=new URL(route.request().url());
@@ -205,7 +208,7 @@ if(require.main===module)(async()=>{
   check(width+" language source agrees after refresh",await page.locator('#fmz-settings [data-fmz-language="'+server.settings.language+'"]').getAttribute("aria-pressed")==="true");
   await page.click('[data-fmz-section="home"]');await page.click('[data-fmz-section="ai"]');await page.click('[data-fmz-section="schedule"]');
   check(width+" schedule survives reload",await page.inputValue('[name="daily_time"]')==="10:40");
-  await page.screenshot({path:path.join(root,"supabase/.temp/owner-hotfix-settings-"+width+".png"),fullPage:true});
+  await page.screenshot({path:path.join(root,"supabase/.temp/owner-hotfix-settings-"+width+".png"),fullPage:false});
   check(width+" settings no overflow",await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth&&document.getElementById("fmz-settings").scrollWidth<=document.getElementById("fmz-settings").clientWidth+1));
   await page.click('#fmz-settings [data-fmz-close]');
   await page.evaluate(()=>{document.body.classList.add("phase4-s3-dialog-open");});
@@ -214,25 +217,26 @@ if(require.main===module)(async()=>{
   await page.evaluate(()=>document.body.classList.remove("phase4-s3-dialog-open"));
   await page.click("#fmz-avatar");await page.waitForSelector("#p6cMessage");
   check(width+" chat has no settings forms",await page.locator('#fmz-youri-chat [data-fmz-form],#fmz-youri-chat [data-p6d-preferences-form]').count()===0);
-  await page.screenshot({path:path.join(root,"supabase/.temp/owner-hotfix2-chat-"+width+".png"),fullPage:true});
+  await page.screenshot({path:path.join(root,"supabase/.temp/owner-hotfix2-chat-"+width+".png"),fullPage:false});
   const composerGeometry=await page.evaluate(()=>{const t=document.querySelector("#p6cMessage").getBoundingClientRect().toJSON(),b=document.querySelector(".p6c-send").getBoundingClientRect().toJSON();return {t,b,grid:getComputedStyle(document.querySelector(".p6c-composer")).gridTemplateColumns};});
   check(width+" composer horizontal "+JSON.stringify(composerGeometry),composerGeometry.t.right<=composerGeometry.b.left&&Math.abs(composerGeometry.t.bottom-composerGeometry.b.bottom)<2);
   check(width+" only message column scrolls",await page.evaluate(()=>getComputedStyle(document.querySelector("#ai-coach")).overflowY==="hidden"&&getComputedStyle(document.querySelector(".p6c-messages")).overflowY==="auto"));
   await page.fill("#p6cMessage","Regel 1\nRegel 2\nRegel 3");
   check(width+" composer grows",await page.locator("#p6cMessage").evaluate(node=>node.clientHeight>65));
-  if(width<1000){await page.keyboard.press("Enter");check(width+" mobile Enter stays draft",await page.inputValue("#p6cMessage")==="Regel 1\nRegel 2\nRegel 3\n");}
+  if(width<1000){assert(await page.evaluate(()=>matchMedia("(pointer: coarse)").matches),"mobile touch context required");await page.locator("#p6cMessage").press("Enter");check(width+" mobile Enter stays draft",await page.inputValue("#p6cMessage")==="Regel 1\nRegel 2\nRegel 3\n");}
   await page.fill("#p6cMessage","");
   await page.evaluate(()=>{window.__vvHeight=window.visualViewport.height;Object.defineProperty(window.visualViewport,"height",{configurable:true,get:()=>350});window.visualViewport.dispatchEvent(new Event("resize"));});
   check(width+" composer above simulated keyboard",await page.locator(".p6c-composer").evaluate(n=>n.getBoundingClientRect().bottom<=350));
   await page.evaluate(()=>{delete window.visualViewport.height;window.visualViewport.dispatchEvent(new Event("resize"));});
   server.messages.push(...Array.from({length:24},(_,i)=>({message_role:i%2?"assistant":"user",content_text:("Synthetic long reply "+i+" ").repeat(20),created_at:"2026-09-06T08:00:00Z"})));
   await page.evaluate(()=>__hotfix.safety());
+  await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
   await page.locator("[data-p6c-messages]").evaluate(node=>node.scrollTop=40);
   await page.evaluate(()=>window.FMZ_PHASE6C_PRIVATE_CHAT.render());
-  await page.waitForTimeout(50);
+  await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
   check(width+" reading old messages does not jump",await page.locator("[data-p6c-messages]").evaluate(n=>n.scrollTop<80));
   await page.locator("[data-p6c-messages]").evaluate(n=>n.scrollTop=n.scrollHeight);
-  await page.screenshot({path:path.join(root,"supabase/.temp/owner-hotfix2-chat-"+width+".png"),fullPage:true});
+  await page.screenshot({path:path.join(root,"supabase/.temp/owner-hotfix2-chat-"+width+".png"),fullPage:false});
   check(width+" chat no horizontal overflow",await page.evaluate(()=>document.getElementById("ai-coach").scrollWidth<=document.getElementById("ai-coach").clientWidth+1&&document.documentElement.scrollWidth<=innerWidth));
   await page.click("[data-p6c-history]");check(width+" history opens",await page.locator(".p6c-list.open").isVisible());
   await page.click("[data-p6c-thread]");await page.waitForSelector("#p6cMessage");
@@ -242,7 +246,7 @@ if(require.main===module)(async()=>{
   await page.fill("#p6cMessage","Het gaat goed, maar ik heb nog pijn op de borst");await page.click(".p6c-send");
   await page.waitForFunction(()=>window.FMZ_PHASE6C_PRIVATE_CHAT.snapshot().analysisStatus?.recovery?.analysis_blocked);
   check(width+" contradictory message keeps block and no recovery",server.recovery.analysis_blocked&&await page.locator("#fmz-safety-recovery").count()===0);
-  await page.click('[data-p6c-tab="analyses"]');check(width+" no manual analysis start",await page.locator("[data-p6d-run]").count()===0);await page.screenshot({path:path.join(root,"supabase/.temp/owner-hotfix-analyses-"+width+".png"),fullPage:true});
+  await page.click('[data-p6c-tab="analyses"]');check(width+" no manual analysis start",await page.locator("[data-p6d-run]").count()===0);await page.screenshot({path:path.join(root,"supabase/.temp/owner-hotfix-analyses-"+width+".png"),fullPage:false});
   check(width+" analyses no horizontal overflow",await page.evaluate(()=>document.getElementById("ai-coach").scrollWidth<=document.getElementById("ai-coach").clientWidth+1));
   await page.click('#fmz-youri-chat [data-fmz-close]');
   await page.evaluate(()=>location.hash="ai-coach");await page.waitForSelector("#fmz-youri-chat[open]");
@@ -276,7 +280,7 @@ if(require.main===module)(async()=>{
   await page.waitForFunction(()=>window.FMZ_ANALYSIS_INBOX.snapshot().inbox.unread_count===0);
   check(width+" opened status persisted",server.notes[0].state==="opened");
   const download=page.waitForEvent("download");await page.click("[data-fmz-detail-export]");check(width+" single analysis export",((await download).suggestedFilename()).includes(analysisId));
-  await page.screenshot({path:path.join(root,"supabase/.temp/owner-hotfix2-detail-"+width+".png"),fullPage:true});
+  await page.screenshot({path:path.join(root,"supabase/.temp/owner-hotfix2-detail-"+width+".png"),fullPage:false});
   check(width+" detail no horizontal overflow",await page.locator("#fmz-analysis-detail").evaluate(n=>n.scrollWidth<=n.clientWidth+1));
   await page.click("[data-fmz-detail-close]");await page.evaluate(()=>window.FMZ_ANALYSIS_INBOX.openHistory());
   await page.click('#fmz-youri-chat [data-fmz-analysis-open="'+analysisId+'"]');await page.waitForSelector("#fmz-analysis-detail table");

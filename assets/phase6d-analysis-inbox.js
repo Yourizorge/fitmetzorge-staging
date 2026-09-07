@@ -114,14 +114,18 @@
   function renderDashboard(){
     if(!uid())return;
     const home=document.getElementById("client-home");if(!home)return;
+    const shell=home.querySelector("#clientSummary > .member-ux-today-simplified");
+    const anchor=shell?.querySelector(":scope > .member-ux-training-today")||shell?.querySelector(":scope > .member-ux-profile-cta");
+    if(!anchor){document.getElementById("fmz-analysis-inbox")?.remove();return;}
     let node=document.getElementById("fmz-analysis-inbox");
-    if(!node){node=document.createElement("section");node.id="fmz-analysis-inbox";node.setAttribute("aria-labelledby","fmz-inbox-title");home.prepend(node);}
-    node.innerHTML='<header><h2 id="fmz-inbox-title">'+esc(t("ready"))+'</h2><button type="button" class="secondary-btn" data-fmz-all-analyses>'+esc(t("all"))+'</button></header>'+
+    if(!node){node=document.createElement("section");node.id="fmz-analysis-inbox";node.setAttribute("aria-labelledby","fmz-inbox-title");}
+    if(anchor.nextElementSibling!==node)anchor.after(node);
+    node.innerHTML='<header><h2 id="fmz-inbox-title">'+esc(t("ready"))+'</h2></header>'+
       (inboxError?'<p role="status">'+esc(inboxError)+'</p><button type="button" class="secondary-btn" data-fmz-inbox-retry>'+esc(t("retry"))+'</button>':"")+
-      '<div class="fmz-inbox-items">'+inbox.recent.slice(0,3).map(item=>'<article class="fmz-inbox-item"><div><span class="fmz-inbox-type">'+esc(t(item.analysis_kind))+'</span>'+
-        (["new","later"].includes(item.state)?'<span class="fmz-inbox-state">'+esc(t("new"))+'</span>':"")+
-        '<h3>'+esc(item.title||t(item.analysis_kind))+'</h3><time>'+esc(when(item.completed_at||item.created_at))+'</time></div><div class="fmz-inbox-actions"><button type="button" class="secondary-btn" data-fmz-analysis-open="'+esc(item.analysis_id)+'">'+esc(t("view"))+'</button>'+
-        command("archive","archive",'data-fmz-analysis-archive="'+esc(item.analysis_id)+'" '+(archiveBusy?'disabled':""))+'</div></article>').join("")+'</div>';
+      '<div class="fmz-inbox-items">'+inbox.recent.slice(0,3).map(item=>'<article class="member-ux-card fmz-inbox-item"><div class="fmz-inbox-meta"><p class="eyebrow">'+esc(t(item.analysis_kind))+'</p><span class="fmz-inbox-marker">'+
+        (["new","later"].includes(item.state)?'<span class="fmz-inbox-state">'+esc(t("new"))+'</span>':"")+'</span></div>'+
+        '<h3 title="'+esc(item.title||t(item.analysis_kind))+'">'+esc(item.title||t(item.analysis_kind))+'</h3><time class="muted">'+esc(when(item.completed_at||item.created_at))+'</time><div class="member-ux-card-actions fmz-inbox-actions"><button type="button" class="primary-btn" data-fmz-analysis-open="'+esc(item.analysis_id)+'">'+esc(t("view"))+'</button>'+
+        command("archive","archive",'data-fmz-analysis-archive="'+esc(item.analysis_id)+'" '+(archiveBusy?'disabled':""))+'</div></article>').join("")+'</div><footer class="fmz-inbox-actions"><button type="button" class="fmz-inbox-history-link" data-fmz-all-analyses>'+esc(t("all"))+'</button></footer>';
     node.hidden=!inbox.recent.length&&!inboxError;
   }
   function renderToast(){
@@ -269,7 +273,8 @@
   window.addEventListener("fmz:ai-state",()=>{renderDashboard();updateBadge();hydrate();});
   window.addEventListener("fmz:surface-change",renderToast);
   // Hook renders, not DOM mutations: existing dashboard modules keep ownership of their content.
-  const previousRender=renderAll,previousView=showView;
+  const previousRender=renderAll,previousView=showView,previousHome=renderClientHome;
+  renderClientHome=function(){const value=previousHome();if(ensureOwner())renderDashboard();return value;};
   renderAll=function(){const value=previousRender();if(ensureOwner()){renderDashboard();updateBadge();if(!inFlight&&!timer)queueMicrotask(hydrate);}return value;};
   showView=function(id){const value=previousView(id);if(uid()){renderDashboard();renderToast();if(id==="client-home")hydrate();}return value;};
   supabaseClient?.auth.onAuthStateChange?.(event=>{if(event==="SIGNED_OUT")reset();});

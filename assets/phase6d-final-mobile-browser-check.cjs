@@ -65,7 +65,7 @@ async function geometry(page,label){
   if(before){
    const openedCard=await page.locator('#fmz-analysis-inbox [data-fmz-analysis-open="'+current.id+'"]').count();
    await page.evaluate(value=>FMZ_ANALYSIS_INBOX.open(value),current.id);await page.waitForSelector("#fmz-analysis-detail table");
-   await geometry(page,"before-320");await page.screenshot({path:path.join(root,"supabase/.temp/final-mobile-before-320.png"),fullPage:true});
+   await geometry(page,"before-320");await page.screenshot({path:path.join(root,"supabase/.temp/final-mobile-before-320.png"),fullPage:false});
    layouts[0].opened_dashboard_card_count=openedCard;
   }else{
    check(width+" previously opened analysis is recent",await page.locator('#fmz-analysis-inbox [data-fmz-analysis-open="'+current.id+'"]').count()===1);
@@ -90,9 +90,9 @@ async function geometry(page,label){
    await geometry(page,width+" NL comparison");
    check(width+" escaped content",await page.locator("#fmz-analysis-detail script").count()===0);
    const download=page.waitForEvent("download");await page.click("[data-fmz-detail-export]");check(width+" exact export",(await download).suggestedFilename().includes(current.id));
-   await page.screenshot({path:path.join(root,"supabase/.temp/final-mobile-detail-"+width+".png"),fullPage:true});
+   await page.screenshot({path:path.join(root,"supabase/.temp/final-mobile-detail-"+width+".png"),fullPage:false});
    await page.locator(".fmz-exercise-comparison").scrollIntoViewIfNeeded();
-   await page.screenshot({path:path.join(root,"supabase/.temp/final-mobile-comparison-"+width+".png"),fullPage:true});
+   await page.screenshot({path:path.join(root,"supabase/.temp/final-mobile-comparison-"+width+".png"),fullPage:false});
    for(const language of ["en","de"]){
     server.settings.language=language;await page.evaluate(()=>FMZ_OWNER_SETTINGS.hydrate(true));await page.evaluate(value=>FMZ_ANALYSIS_INBOX.open(value),current.id);
     await geometry(page,width+" "+language+" comparison");
@@ -108,7 +108,7 @@ async function geometry(page,label){
    await page.evaluate(()=>FMZ_ANALYSIS_INBOX.hydrate());
    check(width+" three recent including missing notification",await page.locator("#fmz-analysis-inbox .fmz-inbox-item").count()===3);
    check(width+" newest exact three",JSON.stringify(await page.locator("#fmz-analysis-inbox [data-fmz-analysis-open]").evaluateAll(nodes=>nodes.map(n=>n.dataset.fmzAnalysisOpen)))===JSON.stringify([id(5),id(4),id(3)]));
-   await page.screenshot({path:path.join(root,"supabase/.temp/final-mobile-dashboard-"+width+".png"),fullPage:true});
+   await page.screenshot({path:path.join(root,"supabase/.temp/final-mobile-dashboard-"+width+".png"),fullPage:false});
    await page.evaluate(()=>FMZ_ANALYSIS_INBOX.hydrate());await page.evaluate(()=>FMZ_ANALYSIS_INBOX.hydrate());
    check(width+" retry no duplicate",await page.locator("#fmz-analysis-inbox .fmz-inbox-item").count()===3);
    await page.click('#fmz-analysis-inbox [data-fmz-analysis-archive="'+id(5)+'"]');
