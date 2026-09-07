@@ -1,0 +1,57 @@
+{
+  "version": "phase6e0.copy.v0.1.0",
+  "status": "DRAFT_NOT_EXPERT_APPROVED",
+  "placement": "accessible_chat_only",
+  "country_source": "explicit_session_choice_only",
+  "review_required": [
+    "medical",
+    "privacy",
+    "legal",
+    "native_language"
+  ],
+  "local_directory": "NOT_IMPLEMENTED_LOCAL_REFERENCES_REQUIRE_REVIEW",
+  "nl": {
+    "no_signal": "In dit bericht is geen signaal herkend. Dat zegt niet of trainen geschikt is.",
+    "caution": "Wees voorzichtig. Deze feiten zijn geen persoonlijk trainings- of hersteladvies.",
+    "stop_clarify": "Stop de activiteit waarover je klachten meldt. Gaat dit over klachten die je nu hebt?",
+    "professional_review": "Stop de activiteit waarover je klachten meldt en vraag een bevoegde zorgprofessional om beoordeling. Youri stelt geen diagnose.",
+    "urgent_help": "Zoek bij direct gevaar onmiddellijk noodhulp. Wacht niet op Youri of je trainer. Neem zelf contact op met het lokale noodnummer; er is niemand automatisch gewaarschuwd.",
+    "uncertain": "Youri kan deze context niet betrouwbaar beoordelen. Feiten zijn geen advies om door te trainen. Zoek bij direct gevaar onmiddellijk noodhulp.",
+    "unavailable": "De beoordeling is niet beschikbaar. Wacht bij direct gevaar niet op de app: neem zelf contact op met lokale noodhulp.",
+    "recovery": "Je meldt dat de klachten voorbij zijn. Dit is jouw verklaring, geen medische vrijgave.",
+    "facts": "Dit zijn uitsluitend eerder vastgelegde feiten. Er wordt geen trainings-, voedings- of herstelwijziging voorgesteld.",
+    "eu_help": "Ben je nu in de EU en is er direct gevaar? Bel 112. Buiten de EU: gebruik het lokale noodnummer."
+  },
+  "en": {
+    "no_signal": "No signal was recognized in this message. This does not establish fitness to exercise.",
+    "caution": "Use caution. These facts are not personal training or recovery advice.",
+    "stop_clarify": "Stop the activity associated with the symptoms you report. Are these symptoms happening now?",
+    "professional_review": "Stop the activity associated with the symptoms you report and seek assessment from a qualified health professional. Youri does not diagnose.",
+    "urgent_help": "In immediate danger, seek emergency help now. Do not wait for Youri or your trainer. Contact the local emergency number yourself; nobody has been notified automatically.",
+    "uncertain": "Youri cannot reliably assess this context. Facts are not advice to continue exercising. In immediate danger, seek emergency help now.",
+    "unavailable": "Assessment is unavailable. In immediate danger, do not wait for the app: contact local emergency help yourself.",
+    "recovery": "You report that the symptoms have ended. This is your statement, not medical clearance.",
+    "facts": "These are previously recorded facts only. No training, nutrition or recovery change is proposed.",
+    "eu_help": "Are you currently in the EU and in immediate danger? Call 112. Outside the EU, use the local emergency number."
+  },
+  "de": {
+    "no_signal": "In dieser Nachricht wurde kein Signal erkannt. Das bestaetigt keine Eignung zum Training.",
+    "caution": "Sei vorsichtig. Diese Fakten sind keine persoenliche Trainings- oder Erholungsempfehlung.",
+    "stop_clarify": "Beende die Aktivitaet, bei der du Beschwerden meldest. Hast du diese Beschwerden gerade?",
+    "professional_review": "Beende die Aktivitaet, bei der du Beschwerden meldest, und lass sie von medizinischem Fachpersonal beurteilen. Youri stellt keine Diagnose.",
+    "urgent_help": "Suche bei unmittelbarer Gefahr sofort Notfallhilfe. Warte nicht auf Youri oder deinen Trainer. Kontaktiere selbst den oertlichen Notruf; niemand wurde automatisch benachrichtigt.",
+    "uncertain": "Youri kann diesen Kontext nicht zuverlaessig beurteilen. Fakten sind keine Empfehlung weiterzutrainieren. Suche bei unmittelbarer Gefahr sofort Notfallhilfe.",
+    "unavailable": "Die Beurteilung ist nicht verfuegbar. Warte bei unmittelbarer Gefahr nicht auf die App: kontaktiere selbst die oertliche Notfallhilfe.",
+    "recovery": "Du meldest, dass die Beschwerden vorbei sind. Das ist deine Aussage, keine medizinische Freigabe.",
+    "facts": "Dies sind ausschliesslich zuvor erfasste Fakten. Es wird keine Trainings-, Ernaehrungs- oder Erholungsaenderung vorgeschlagen.",
+    "eu_help": "Bist du gerade in der EU und in unmittelbarer Gefahr? Rufe 112. Ausserhalb der EU gilt die oertliche Notrufnummer."
+  },
+  "help_reference": {
+    "url": "https://digital-strategy.ec.europa.eu/en/policies/112",
+    "basis": "Official EU reference checked 2026-09-07; this does not approve the draft copy or help-level mapping",
+    "phone": "112",
+    "region": "EU",
+    "auto_country_inference": false,
+    "auto_contact": false
+  }
+}

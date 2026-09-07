@@ -1,7 +1,31 @@
 # FitMetZorge Test Matrix
 
+## Package 6E-0 Offline Preparation - Current
+
+Status: TECHNICAL PASS / READY FOR OWNER REVIEW, not activation or expert approval.
+The owner's explicit offline GO and D1-D12 choices are recorded in
+[PHASE6E0_OWNER_DECISIONS.md](PHASE6E0_OWNER_DECISIONS.md).
+Only _offline/phase6e0 and documentation change; frozen runtime remains
+bc6308fbf0f914b04c7faa711219d9ae46e9cbe3. No database, migration, memberdata,
+Edge, provider, frontend implementation or production operation.
+576 offline technical tests PASS, including four KNOWN GAP observation tests
+that explicitly do not certify correct recognition; frozen theme unit tests 10/10.
+Thirty invented seeds produce 360 lexical/context probes, not independent clinical cases.
+Medical/privacy/legal/native-language review and serious recovery/unresolved retention
+remain OPEN. D3 bounded-facts access is not a drop-in change to the existing 6D gate.
+See [technical report](PHASE6E0_TECHNICAL_REPORT.md),
+[contract](PHASE6E0_OFFLINE_CONTRACT.md) and [6E-1 proposal](PHASE6E1_PROPOSAL.md).
+6E-1 NOT STARTED. Next step: owner productreview; no automatic live release.
+
+The prior docs-only publication hold is resolved by explicit owner permission:
+43a9665 and 0c47dd4 were published with 56/56 runtime assets unchanged.
+Automatic Pages publication from this authorized offline/docs push is allowed only
+with byte-identical frozen assets and no offline module inclusion; its new receipt
+is PHASE6E0_EVIDENCE.json / PHASE6E0_PUBLICATION_RECEIPT.md when completed.
+Older audit/release execution statements below retain their original historical scope.
+
 Status: MASTER PLAN COVERAGE MATRIX
-Latest execution: 2026-09-07 corrected Package 6D documentation-only owner freeze.
+Latest execution: 2026-09-07 offline 6E-0 above. The corrected 6D freeze below is prior evidence.
 Explicit real-phone theme and prior-flow acceptance received: COMPLETE /
 OWNER-ACCEPTED / FROZEN, including theme restoration. Migration history is now synchronized 31/31 with an
 empty dry-run after additive 20260907095307_phase6d_theme_preference.sql. Public Auth hotfix
@@ -26,7 +50,7 @@ PROJECT_MIGRATION_RECONCILIATION.md and PROJECT_MIGRATION_RECONCILIATION_MANIFES
 
 This matrix records the required functional, security, entitlement, AI, migration, and release checks for the Master Build. No implementation tests are executed by this document.
 
-## Package 6D Corrected Freeze - Current Execution
+## Package 6D Corrected Freeze - Retained Prior Execution
 
 Theme unit 10/10, SELECT-only theme contract 11/11 and foundation contract 47/47 PASS.
 Current MCP history equals all 31 Git versions/names in order; all three Edge versions
@@ -36,7 +60,7 @@ page errors or mutating requests. No member RPC, temporary SQL fixture or provid
 No new CLI dry-run, fresh checkout, full database rebuild or broad browser E2E rerun.
 The accepted evidence below is not represented as execution in this freeze task.
 See PHASE6D_CORRECTED_FREEZE_EVIDENCE.json and PHASE6D_FREEZE_RECEIPT.md.
-Publication is held for the documented Pages auto-deployment conflict, not a test failure.
+The historical publication hold was subsequently resolved by explicit owner permission.
 
 ## Package 6D Theme Restoration - Accepted Prior Execution
 
@@ -75,9 +99,10 @@ sensitivity/specificity metric or statistically representative validation set.
 No new member RPC, DB fixture, provider call, test-source or runtime implementation.
 See PHASE6E_SAFETY_RISK_READINESS_EVIDENCE.json for exact inputs/results/query and
 [readiness test strategy](PHASE6E_SAFETY_RISK_READINESS.md#16-teststrategie-en-acceptatie).
-The proposed 360-case multilingual core plus state/isolation/privacy/retention/race,
-international-copy and mobile checks is NOT implemented or executed. Clinical labels
-and acceptance gates need independent qualified review before a later release.
+At audit time the proposed corpus was NOT executed. Offline 6E-0 now runs 360 derived
+lexical/context probes plus state/isolation/retention tests; it does not implement the
+whole proposed clinical, real-authority or mobile acceptance matrix. Clinical labels
+and activation gates still require the relevant independent qualified review.
 
 ## Final Dashboard Placement Hotfix - Historical Execution
 

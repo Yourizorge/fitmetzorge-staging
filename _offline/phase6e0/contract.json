@@ -1,0 +1,117 @@
+{
+  "version": "phase6e0.safety.v0.1.0",
+  "status": "UNREVIEWED_OFFLINE_PROPOSAL",
+  "runtime_activation": false,
+  "synthetic_only": true,
+  "owner_instruction": "2c282c20-0e1e-48fe-8879-2acd41891ade",
+  "frozen_runtime": "bc6308fbf0f914b04c7faa711219d9ae46e9cbe3",
+  "locales": [
+    "nl",
+    "en",
+    "de"
+  ],
+  "deferred_locales": [
+    "fr",
+    "it"
+  ],
+  "max_text_length": 4096,
+  "evaluation_states": [
+    "known",
+    "uncertain",
+    "unavailable"
+  ],
+  "context_states": [
+    "current",
+    "negated",
+    "educational",
+    "quoted",
+    "past",
+    "hypothetical",
+    "contradictory",
+    "unspecified"
+  ],
+  "help_levels": {
+    "R0": "no_recognized_signal_not_clearance",
+    "R1": "caution",
+    "R2": "stop_and_clarify",
+    "R3": "professional_review",
+    "R4": "urgent_help"
+  },
+  "uncertainty_codes": [
+    "missing_context",
+    "unsupported_language",
+    "ambiguous_context",
+    "contradictory_context",
+    "instruction_attempt",
+    "unrecognized_health_context",
+    "unrecognized_language",
+    "invalid_input",
+    "technical_unavailable",
+    "unusual_unicode"
+  ],
+  "warning_keys": [
+    "no_signal",
+    "caution",
+    "stop_clarify",
+    "professional_review",
+    "urgent_help",
+    "uncertain",
+    "unavailable"
+  ],
+  "recovery_intents": [
+    "symptoms_resolved",
+    "disputed",
+    null
+  ],
+  "analysis_kinds": [
+    "daily",
+    "post_workout",
+    "weekly"
+  ],
+  "fact_codes": [
+    "completed_workouts",
+    "recorded_sets",
+    "logged_minutes",
+    "reported_sleep_hours"
+  ],
+  "access": {
+    "health_signal_changes_entitlements": false,
+    "chat_and_history_follow_existing_authority": true,
+    "new_analysis_presentation": "bounded_facts_without_personalized_advice",
+    "personalized_advice": "NOT_IMPLEMENTED_REVIEW_REQUIRED",
+    "automatic_actions": false,
+    "provider_calls": false,
+    "trainer_sharing": false,
+    "help_location": "accessible_chat_only"
+  },
+  "retention": {
+    "policy_status": "DRAFT_NOT_PRIVACY_APPROVAL",
+    "episode_window_days": 30,
+    "closed_details_max_days": 90,
+    "minimal_audit_max_days": 180,
+    "unresolved_owner": null,
+    "unresolved_max_days": null,
+    "expiry_is_clearance": false,
+    "chat_and_analysis_retention_changed": false
+  },
+  "open_reviews": [
+    "clinical_levels_and_copy",
+    "bounded_analysis_personalization_boundary",
+    "serious_signal_recovery",
+    "unresolved_retention_owner_maximum_and_deletion",
+    "privacy_legal_intended_purpose",
+    "native_language_and_local_help",
+    "help_reachability_outside_accessible_chat"
+  ],
+  "forbidden_output": [
+    "diagnosis",
+    "medical_clearance",
+    "treatment",
+    "medication_dosage",
+    "training_increase",
+    "calorie_restriction",
+    "automatic_actions",
+    "trainer_notification",
+    "provider_request"
+  ]
+}

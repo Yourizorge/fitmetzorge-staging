@@ -1,5 +1,29 @@
 # FitMetZorge Build Status
 
+## Package 6E-0 Offline Preparation - Current
+
+Status: TECHNICAL PASS / READY FOR OWNER REVIEW, not activation or expert approval.
+The owner's explicit offline GO and D1-D12 choices are recorded in
+[PHASE6E0_OWNER_DECISIONS.md](PHASE6E0_OWNER_DECISIONS.md).
+Only _offline/phase6e0 and documentation change; frozen runtime remains
+bc6308fbf0f914b04c7faa711219d9ae46e9cbe3. No database, migration, memberdata,
+Edge, provider, frontend implementation or production operation.
+576 offline technical tests PASS, including four KNOWN GAP observation tests
+that explicitly do not certify correct recognition; frozen theme unit tests 10/10.
+Thirty invented seeds produce 360 lexical/context probes, not independent clinical cases.
+Medical/privacy/legal/native-language review and serious recovery/unresolved retention
+remain OPEN. D3 bounded-facts access is not a drop-in change to the existing 6D gate.
+See [technical report](PHASE6E0_TECHNICAL_REPORT.md),
+[contract](PHASE6E0_OFFLINE_CONTRACT.md) and [6E-1 proposal](PHASE6E1_PROPOSAL.md).
+6E-1 NOT STARTED. Next step: owner productreview; no automatic live release.
+
+The prior docs-only publication hold is resolved by explicit owner permission:
+43a9665 and 0c47dd4 were published with 56/56 runtime assets unchanged.
+Automatic Pages publication from this authorized offline/docs push is allowed only
+with byte-identical frozen assets and no offline module inclusion; its new receipt
+is PHASE6E0_EVIDENCE.json / PHASE6E0_PUBLICATION_RECEIPT.md when completed.
+Older audit/release execution statements below retain their original historical scope.
+
 Last updated: 2026-09-07
 
 ## Package 6D Corrected Owner Freeze - Current
@@ -14,12 +38,12 @@ New read-only freeze checks: theme unit 10/10, theme SQL 11/11, foundation SQL 4
 44 live files Git-identical, four public viewports with zero mutation requests.
 Earlier local/live theme 1080/1080 and fresh-checkout evidence remain accepted history.
 See PHASE6D_FREEZE_RECEIPT.md and PHASE6D_CORRECTED_FREEZE_EVIDENCE.json.
-Full technical report and unselected D1-D12 choices:
+Historical corrected freeze report and original D1-D12 options:
 PACKAGE6D_CORRECTED_FREEZE_AND_6E_OWNER_DECISIONS.md.
-Package 6E readiness COMPLETE; implementation NOT STARTED. Production forbidden.
+Package 6E readiness COMPLETE; offline 6E-0 prepared above, runtime implementation NOT STARTED. Production forbidden.
 The older pre-theme freeze below is superseded, not deleted.
-Documentation publication is held pending resolution of the Pages auto-deployment
-conflict described in the corrected freeze report; runtime acceptance is final.
+The former documentation publication hold was resolved by explicit owner permission;
+runtime acceptance is final and remains unchanged.
 
 ## Package 6D Owner Freeze - Historical, Superseded
 
@@ -35,7 +59,7 @@ No runtime/schema/memberdata/flag changes, migrations, external AI cost or produ
 Formal freeze documentation: d53fea94f50c23c059104045f899fde4da25c2ec.
 This historical freeze was subsequently postponed by the owner's theme request above.
 
-## Package 6E Readiness Audit - Current
+## Package 6E Readiness Audit - Historical Execution
 
 Status: READ-ONLY AUDIT COMPLETE / IMPLEMENTATION NOT STARTED.
 See [readiness report](PHASE6E_SAFETY_RISK_READINESS.md) and
@@ -141,9 +165,9 @@ clean for staging. See [migration audit](PROJECT_MIGRATION_RECONCILIATION.md).
 - Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6C COMPLETE / OWNER-ACCEPTED / FROZEN; PACKAGE 6D COMPLETE / OWNER-ACCEPTED / FROZEN, INCLUDING THEME RESTORATION
 - Production Migration: NOT STARTED
 
-Current next step: owner decisions D1-D12 and assignment of qualified reviewers,
-then an explicit offline 6E-0 contract/corpus task. The readiness audit is complete;
-no 6E implementation, runtime correction or external member processing is authorized.
+Current next step: owner productreview of offline 6E-0 and its recorded D1-D12 choices.
+Expert review remains OPEN; do not appoint/contact reviewers or incur costs under this task.
+No 6E runtime correction, 6E-1 implementation or external member processing is authorized.
 Package 6D is implemented on staging as a mock-only, read-only analysis surface for
 daily, post-workout and weekly analyses, with separate `ai_analysis` consent, no
 trainer access, no private-chat context, no domain writes, no provider call and EUR

@@ -1,0 +1,102 @@
+[
+  {
+    "code": "chest",
+    "level": "R3",
+    "patterns": [
+      "\\b(?:borst ?pijn|pijn (?:op|in) (?:de |mijn )?borst|mijn borst doet pijn|druk op (?:de |mijn )?borst)\\b",
+      "\\b(?:chest (?:pain|pressure|tightness)|pain (?:in|on) (?:my |the )?chest)\\b",
+      "\\b(?:brustschmerz(?:en)?|brustdruck|schmerzen in (?:der |meiner )?brust)\\b"
+    ],
+    "clinical_label_status": "PROVISIONAL_REVIEW_REQUIRED"
+  },
+  {
+    "code": "dizziness",
+    "level": "R2",
+    "patterns": [
+      "\\b(?:duizelig(?:heid)?|duiselig|draaierig|licht in (?:het |mijn )?hoofd)\\b",
+      "\\b(?:dizz(?:y|iness)|light ?headed)\\b",
+      "\\b(?:schwindel(?:ig)?|benommen)\\b"
+    ],
+    "clinical_label_status": "PROVISIONAL_REVIEW_REQUIRED"
+  },
+  {
+    "code": "breathing",
+    "level": "R4",
+    "patterns": [
+      "\\b(?:kan niet ademen|krijgt? geen adem|geen lucht|bewusteloos|flauwgevallen|zakt in elkaar)\\b",
+      "\\b(?:cannot breathe|cant breathe|struggling to breathe|unconscious|collapsed|passed out)\\b",
+      "\\b(?:kann nicht atmen|bekomme keine luft|bewusstlos|zusammengebrochen)\\b"
+    ],
+    "clinical_label_status": "PROVISIONAL_REVIEW_REQUIRED"
+  },
+  {
+    "code": "neurological",
+    "level": "R4",
+    "patterns": [
+      "\\b(?:mond hangt (?:plots )?scheef|arm doet het niet meer|kan plots niet spreken)\\b",
+      "\\b(?:face is drooping|suddenly cannot speak clearly)\\b",
+      "\\b(?:mund hangt plotzlich schief|mund haengt ploetzlich schief|kann nicht richtig sprechen)\\b"
+    ],
+    "clinical_label_status": "PROVISIONAL_REVIEW_REQUIRED"
+  },
+  {
+    "code": "allergy",
+    "level": "R4",
+    "patterns": [
+      "\\b(?:keel zwelt op|tong en keel zwellen (?:plots )?op|kan niet slikken)\\b",
+      "\\b(?:throat is swelling|cannot swallow|tongue is swelling)\\b",
+      "\\b(?:zunge schwillt an|kann nicht schlucken)\\b"
+    ],
+    "clinical_label_status": "PROVISIONAL_REVIEW_REQUIRED"
+  },
+  {
+    "code": "injury",
+    "level": "R3",
+    "patterns": [
+      "\\b(?:been staat scheef na (?:een|de) val|kan niet staan na (?:een|de) val)\\b",
+      "\\b(?:leg is bent after a fall|cannot stand after a fall)\\b",
+      "\\b(?:bein ist nach einem sturz verformt|kann nach einem sturz nicht stehen)\\b"
+    ],
+    "clinical_label_status": "PROVISIONAL_REVIEW_REQUIRED"
+  },
+  {
+    "code": "temperature",
+    "level": "R4",
+    "patterns": [
+      "\\b(?:verward na (?:extreme hitte|langdurige kou))\\b",
+      "\\b(?:confused after (?:running in extreme heat|prolonged cold))\\b",
+      "\\b(?:nach (?:extremer hitze|langer zeit in der kalte|langer zeit in der kaelte) verwirrt)\\b"
+    ],
+    "clinical_label_status": "PROVISIONAL_REVIEW_REQUIRED"
+  },
+  {
+    "code": "eating_concern",
+    "level": "R3",
+    "patterns": [
+      "\\b(?:eet bijna niets|sport om elke maaltijd te compenseren|braak na elke maaltijd)\\b",
+      "\\b(?:forcing myself to vomit after every meal|exercise to compensate for every meal)\\b",
+      "\\b(?:esse fast nichts|erbreche nach jeder mahlzeit)\\b"
+    ],
+    "clinical_label_status": "PROVISIONAL_REVIEW_REQUIRED"
+  },
+  {
+    "code": "mental_crisis",
+    "level": "R4",
+    "patterns": [
+      "\\b(?:wil niet meer leven|zelfmoord|zelfbeschadiging|direct gevaar)\\b",
+      "\\b(?:want to end my life|suicid(?:e|al)|immediate danger)\\b",
+      "\\b(?:will nicht mehr leben|suizid|unmittelbare gefahr)\\b"
+    ],
+    "clinical_label_status": "PROVISIONAL_REVIEW_REQUIRED"
+  },
+  {
+    "code": "overload",
+    "level": "R1",
+    "patterns": [
+      "\\b(?:traint? door ondanks uitputting|blijft? trainen ondanks pijn)\\b",
+      "\\b(?:keep training despite exhaustion|keep training despite pain)\\b",
+      "\\b(?:trainiere trotz erschopfung weiter|trainiere trotz erschoepfung weiter)\\b"
+    ],
+    "clinical_label_status": "PROVISIONAL_REVIEW_REQUIRED"
+  }
+]

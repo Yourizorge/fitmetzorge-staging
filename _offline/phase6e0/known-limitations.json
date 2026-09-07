@@ -1,0 +1,35 @@
+{
+  "status": "KNOWN_RECOGNITION_GAPS_NOT_ACCEPTANCE_CASES",
+  "clinical_review": "OPEN",
+  "interpretation": "Invented counterexamples. Observed R0 is a limitation, not a correct clinical label or permission to train.",
+  "cases": [
+    {
+      "id": "gap-heavy-chest",
+      "locale": "nl",
+      "text": "Mijn borst voelt loodzwaar",
+      "observed_level": "R0",
+      "gap": "Unlisted description of chest pressure."
+    },
+    {
+      "id": "gap-breathing-de",
+      "locale": "de",
+      "text": "Ich kriege kaum noch Luft",
+      "observed_level": "R0",
+      "gap": "Unlisted German breathing formulation."
+    },
+    {
+      "id": "gap-mixed-breathing",
+      "locale": "nl",
+      "text": "Ik heb geen pijn op de borst. Nu heb ik moeite met ademhalen",
+      "observed_level": "R0",
+      "gap": "Recognized negation does not supply recognition of a different unlisted current symptom."
+    },
+    {
+      "id": "gap-arm-weakness",
+      "locale": "nl",
+      "text": "Ik voel me prima terwijl mijn linkerarm plots kracht verliest",
+      "observed_level": "R0",
+      "gap": "Unlisted neurological wording and compound context."
+    }
+  ]
+}

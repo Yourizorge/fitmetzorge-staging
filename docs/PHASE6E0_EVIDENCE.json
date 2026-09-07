@@ -1,0 +1,537 @@
+{
+  "package": "6E-0",
+  "status": "TECHNICAL_PASS_READY_FOR_OWNER_REVIEW",
+  "date": "2026-09-07",
+  "owner_instruction": "2c282c20-0e1e-48fe-8879-2acd41891ade",
+  "scope": "OFFLINE_ONLY_NO_RUNTIME_INTEGRATION",
+  "repository_root": "C:\\Users\\Fitme\\OneDrive\\Documenten\\Fit Met Zorge\\Zip github fitmetzorge staging\\fitmetzorge-staging-main\\supabase\\.temp\\phase4fb-staging-deploy",
+  "repository": "Yourizorge/fitmetzorge-staging",
+  "branch": "main",
+  "preflight": {
+    "head": "0c47dd450b27443b4a4328933d87e26d9156a786",
+    "origin_main": "0c47dd450b27443b4a4328933d87e26d9156a786",
+    "remote_main": "0c47dd450b27443b4a4328933d87e26d9156a786",
+    "initial_worktree_clean": true,
+    "config": {
+      "approval_policy": "on-request",
+      "reviewer": "auto_review",
+      "sandbox": "workspace-write",
+      "project_network_enabled": true,
+      "managed_restrictions_preserved": true
+    }
+  },
+  "frozen_runtime": "bc6308fbf0f914b04c7faa711219d9ae46e9cbe3",
+  "tests": {
+    "runtime": "Node v24.19.0",
+    "command": "node --test _offline/phase6e0/test/*.test.cjs",
+    "total": 576,
+    "pass": 576,
+    "fail": 0,
+    "skipped": 0,
+    "todo": 0,
+    "by_file": {
+      "engine.test.cjs": 487,
+      "state.test.cjs": 39,
+      "retention.test.cjs": 37,
+      "isolation.test.cjs": 6,
+      "limitations.test.cjs": 7
+    },
+    "known_gap_observation_tests": 4,
+    "clinical_accuracy_claim": false,
+    "independent_clinical_validation": false,
+    "seeds": 30,
+    "derived_context_probes": 360,
+    "seed_categories": 10,
+    "seed_locales": 3,
+    "temporary_files": 0,
+    "theme_regression": {
+      "command": "node --test assets/phase6d-theme-authority.test.cjs",
+      "pass": 10,
+      "fail": 0
+    }
+  },
+  "initial_failures": {
+    "engine": 8,
+    "state": 1,
+    "resolved": true,
+    "details": [
+      "Clause-scoped recovery: quoted/hypothetical/historical reports were initially accepted.",
+      "Two Dutch inflection misses and an English current-subject context omission were corrected.",
+      "Three breathing corpus terms were corrected to existing same-category lexical probes; generated fragments are not clinical cases.",
+      "Test request-id generation was corrected to use the monotone synthetic clock after journal deletion."
+    ]
+  },
+  "open_coverage_gaps": [
+    "gap-heavy-chest",
+    "gap-breathing-de",
+    "gap-mixed-breathing",
+    "gap-arm-weakness"
+  ],
+  "reviews": {
+    "owner_product": "READY_FOR_REVIEW",
+    "medical": "OPEN",
+    "privacy": "OPEN",
+    "legal": "OPEN",
+    "native_language_and_local_help": "OPEN",
+    "reviewer_contacts": 0
+  },
+  "protected_paths": {
+    "git_diff_against_frozen": "PASS_EMPTY_EXCLUDING_docs_AND__offline",
+    "local_canonical_migrations": 31,
+    "migration_sources_changed": 0,
+    "non_docs_and_non_offline_changed": 0,
+    "offline_runtime_imports": 0
+  },
+  "pre_publication": {
+    "checked_at": "2026-09-07T14:59:24.467Z",
+    "head": "0c47dd450b27443b4a4328933d87e26d9156a786",
+    "frozen": "bc6308fbf0f914b04c7faa711219d9ae46e9cbe3",
+    "scope": "Repository-owned static assets only; no app execution or Supabase/Edge request.",
+    "asset_count": 56,
+    "overall_pass": true,
+    "offline_paths": [
+      {
+        "file": "_offline/phase6e0/engine.cjs",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e0/contract.json",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e0/package.json",
+        "http": 404
+      }
+    ],
+    "files": [
+      {
+        "file": "Fit_Met_Zorge_Coach_App_standalone.html",
+        "http": 200,
+        "bytes": 192602,
+        "sha256": "1592d6ecebb2527c34dd3a9fa9b1381db18c8dc4af9e64ad7b1ae7c65d357bc4",
+        "frozen_identical": true
+      },
+      {
+        "file": "app.bundle.js",
+        "http": 200,
+        "bytes": 274987,
+        "sha256": "0aedc9e0c5ef05b96b4b0313090a5f6a5481c8d5a585eaac4f4b61ea9fd459d6",
+        "frozen_identical": true
+      },
+      {
+        "file": "app.js",
+        "http": 200,
+        "bytes": 7300,
+        "sha256": "c4f2e966598b65f82dde4c8d546debe4a440fedd935b2897f85b30008560ddb0",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/fit-met-zorge-logo-cropped.png",
+        "http": 200,
+        "bytes": 15620,
+        "sha256": "c82010c6b05025acc33c69c3eee185775f7e935f53dfdce99b73f4318ce59008",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/fit-met-zorge-logo.png",
+        "http": 200,
+        "bytes": 17316,
+        "sha256": "4b156a6d55569683703b30e4c349d692cdcffc5b0785114fecb7341c81734897",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/logo.svg",
+        "http": 200,
+        "bytes": 521,
+        "sha256": "17ab07e30519df3052e539e9839a9b4009598ce9f5d93ba4d1e455fcf9e956b8",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/member-ux-consistency.js",
+        "http": 200,
+        "bytes": 54499,
+        "sha256": "549beca9ebfe6b1b3f63d254280c5e61b8641809903a2f81dd7c415807314dea",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/phase1-foundation.js",
+        "http": 200,
+        "bytes": 120779,
+        "sha256": "f275ad98e4680f4e4436858911fc5800e39a4094ab144ec78d0a92adb75addf6",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/phase2-home-recovery.js",
+        "http": 200,
+        "bytes": 43727,
+        "sha256": "5e642249fc7a1af297e5035f3c5d219cd3ff9f9dbdc19d20c24be59089ba2707",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/phase3-training-engine.js",
+        "http": 200,
+        "bytes": 215817,
+        "sha256": "e87b01034544dd72c91a91fb40dd0d1b78364d62603dfbf1ed2babed7df944db",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/phase4-nutrition-slice2.js",
+        "http": 200,
+        "bytes": 69176,
+        "sha256": "42c00580ac2574787b7deea19b3e70009562c8b628863a09409536f265ee28c2",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/phase4-nutrition-slice3.js",
+        "http": 200,
+        "bytes": 149097,
+        "sha256": "e07bdd2949f7d87bca19edd8160c23ccae7cddf4279494dc12551b61ea275396",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/phase5-progress.js",
+        "http": 200,
+        "bytes": 61444,
+        "sha256": "b47b9ac07d1b21a9aad014d824e398690546e385eed7c249a98e95564d704b7b",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/phase6c-private-ai-chat.js",
+        "http": 200,
+        "bytes": 57754,
+        "sha256": "f841e8c68f79d481157c7c4bfd0194b406ce1f980a26539667910c32baccae97",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/phase6d-analysis-inbox.js",
+        "http": 200,
+        "bytes": 26016,
+        "sha256": "428c81aab07c815aab74828790c028b0839cdbd83a607b0c9eddbbcc8fc28fbe",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/phase6d-hotfix2.css",
+        "http": 200,
+        "bytes": 16706,
+        "sha256": "2c7444c64b34183c7a13241c42286f6109e6db782a4026f45b396318b72c25f9",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/phase6d-owner-settings.css",
+        "http": 200,
+        "bytes": 10468,
+        "sha256": "e03ac8dd7752620bb72d4d5bcea4e3c586c7fddce9d2ad2c95fa0a6db1332f58",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/phase6d-owner-settings.js",
+        "http": 200,
+        "bytes": 52905,
+        "sha256": "edecdce2425970ca38f6e62b741e88ebed9a49ab6e3c0061821d8be021b26f10",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/phase6d0-legacy-auth.js",
+        "http": 200,
+        "bytes": 4560,
+        "sha256": "fdaca0d3637ca2dcd36fad7a3698ff6c4edae709c582ef3c6709530e2012d4e3",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/theme-authority.js",
+        "http": 200,
+        "bytes": 3126,
+        "sha256": "7927a84cc5a686e186fadd8de92f8afc0f05d6f256121dcfa92da8d2b6605188",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/flag-de.svg",
+        "http": 200,
+        "bytes": 221,
+        "sha256": "efd480af5a154a7651f29da23ee0d09dbc892410fb4041898ddf8face336c575",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/flag-gb.svg",
+        "http": 200,
+        "bytes": 504,
+        "sha256": "c8be1e7208798a4ae692ee1e937065d498bb29e741943f6172b29118b8ed8066",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/flag-icons-LICENSE.txt",
+        "http": 200,
+        "bytes": 1087,
+        "sha256": "8f1195d55a2fd315a07d812328470ca9ba2abb78c8d317ff19619d5125e00cea",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/flag-nl.svg",
+        "http": 200,
+        "bytes": 225,
+        "sha256": "8f691f17fe70894537af8e92f2ca47761d353639b0defc15cbe561eb503ab010",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-LICENSE.txt",
+        "http": 200,
+        "bytes": 880,
+        "sha256": "1e7290b35280a048667bbf0ebabac1c7fd52a75300e8b2946ac165715997f2bc",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-archive.svg",
+        "http": 200,
+        "bytes": 419,
+        "sha256": "1a6e1c540c9a1a9b489893cc14ab9f597496c69aab5ba222fdd5b456de9e2fac",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-arrow-left.svg",
+        "http": 200,
+        "bytes": 344,
+        "sha256": "e31ed0af85ffbed2b54f78f37af197c3b84b24e776cba1d27613d6a9ad555a16",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-arrow-up.svg",
+        "http": 200,
+        "bytes": 341,
+        "sha256": "df0ff279d41bba93ae6797ef519ba442b895cd5d546fb36f22b7a656c3b05fd1",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-bell.svg",
+        "http": 200,
+        "bytes": 469,
+        "sha256": "129a018bd5025fc992a510e9c95e7868300d888b69c38c69a3466d310919ea13",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-calendar.svg",
+        "http": 200,
+        "bytes": 410,
+        "sha256": "2e2a7df92c2cca71dd6de34bb3f7187e276e8e8e003abe2e80b2ffd13347af60",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-check.svg",
+        "http": 200,
+        "bytes": 316,
+        "sha256": "538432eec072ceeccf5a7aacf347a2ad2bff9937d203dbd0b4f4245d7accd93c",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-chevron-right.svg",
+        "http": 200,
+        "bytes": 322,
+        "sha256": "fea488a3b60fd7738bbbf8ca98826ef5c0381347c5fd1048d45ee70a75a51cfe",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-credit-card.svg",
+        "http": 200,
+        "bytes": 386,
+        "sha256": "4d0394710733a8ca0db566208b0281708ebde7b167b6903491fde0be060bded1",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-download.svg",
+        "http": 200,
+        "bytes": 428,
+        "sha256": "f68a21e11115edc0aef51ac6f8f4618e14d2b92055f1cb9f5d670efc696bea85",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-file-text.svg",
+        "http": 200,
+        "bytes": 473,
+        "sha256": "512f414d72aabc5218b94a9da571df70d8e0b014cfb32ec366b559ec868952d6",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-globe.svg",
+        "http": 200,
+        "bytes": 408,
+        "sha256": "c3543ac3883a0841aa5d37ff974708fbc37d9c6afe64e14b03d56ed798b0b788",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-history.svg",
+        "http": 200,
+        "bytes": 403,
+        "sha256": "682b5fc882578a3bdaac72c72fc27709cb806b61c2d1d51194327b31dde7f239",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-languages.svg",
+        "http": 200,
+        "bytes": 443,
+        "sha256": "a33a7bd34876dde0c5a470914dac09fca77f97da75e93e1b1687de2294874c65",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-loader-circle.svg",
+        "http": 200,
+        "bytes": 336,
+        "sha256": "44ad0f822a89b28a3feecf7276686c818a92a4a9c77cc51404c58929e30f0f3a",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-log-out.svg",
+        "http": 200,
+        "bytes": 425,
+        "sha256": "3f28d1eedd9a71ec6933578fc1b7cd21c56618e8b9b8339e55bfc133b4eb6bee",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-message-circle.svg",
+        "http": 200,
+        "bytes": 340,
+        "sha256": "f62830d9fbbbf697e53555398d31a342ddec8dd008d707f21cd90bb19befcc87",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-plus.svg",
+        "http": 200,
+        "bytes": 332,
+        "sha256": "b29207ee8f5cc0e829c0bab2e5b223fc88687599c6bd40b94ba35f52327615d6",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-rotate-cw.svg",
+        "http": 200,
+        "bytes": 380,
+        "sha256": "2c2c5d1f147e829f431182eee79d8d74e81aedcf8177f9e1878a4180ec990a9c",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-settings.svg",
+        "http": 200,
+        "bytes": 904,
+        "sha256": "ceea1a72d04b112291222ba9ad0779a12d47d816079fe4174900c724f360b55c",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-shield.svg",
+        "http": 200,
+        "bytes": 464,
+        "sha256": "276e603595736fcb698b0309b04c44ebb88afb28e4753c5670f92c11a01ed043",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-trash-2.svg",
+        "http": 200,
+        "bytes": 499,
+        "sha256": "9268a35cfb4f9d852c3d13f2c91476dd067c21c20e2bcdb0093fd93fd0bf34b7",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-user.svg",
+        "http": 200,
+        "bytes": 375,
+        "sha256": "bb1e0531065db51238a34b348cf8fb8267cd31932dc3f680c9f204a58d1520ea",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-x.svg",
+        "http": 200,
+        "bytes": 333,
+        "sha256": "0f38855d9d5775c10960ae53e46b745f77914b43f78c43bf8abc39f4d5e06de1",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/zxing-browser-0.2.1.LICENSE.txt",
+        "http": 200,
+        "bytes": 1069,
+        "sha256": "4c26c3077daa7ce4d56ad91f279fafc395bf33c3a0f1ba9ab8cf511bad148ea5",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/vendor/zxing-browser-0.2.1.min.js",
+        "http": 200,
+        "bytes": 441121,
+        "sha256": "066bc34edfcdd4a33f0964aeec967752a0dea1ccaf36e58e319ac9fcb5070f6a",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/youri-ai-avatar-3d-v3-256.webp",
+        "http": 200,
+        "bytes": 53188,
+        "sha256": "257f31e6fe4faa7fecf5fb9874eed06d4018dc8c60958aa714e7d4b79a7517dc",
+        "frozen_identical": true
+      },
+      {
+        "file": "assets/youri-ai-avatar-3d-v3-master.png",
+        "http": 200,
+        "bytes": 1864738,
+        "sha256": "53edc8c376f097417abde7b74f4c9d85cebad4e2a676ae65620a4cbd65da2e57",
+        "frozen_identical": true
+      },
+      {
+        "file": "config.js",
+        "http": 200,
+        "bytes": 196,
+        "sha256": "07cc826304b5a9343ef26a21aabae6d00a21fe4c55a1d9feefef6067bcecd6fa",
+        "frozen_identical": true
+      },
+      {
+        "file": "fit-met-zorge-logo.png",
+        "http": 200,
+        "bytes": 257147,
+        "sha256": "940c6c9e66d73a642d67f453fc12e46e78f233e60432ea0ad426324af1493ecf",
+        "frozen_identical": true
+      },
+      {
+        "file": "index.html",
+        "http": 200,
+        "bytes": 52340,
+        "sha256": "5dcbd22107f955fd67be9a57df7c27d9fd4ad8b6f30dd3149495badbb41ddc51",
+        "frozen_identical": true
+      },
+      {
+        "file": "styles.css",
+        "http": 200,
+        "bytes": 105343,
+        "sha256": "29d376ad4efbaee61dfc65adaced629753cdc5d126c58f5c60ee472324e2a20e",
+        "frozen_identical": true
+      }
+    ]
+  },
+  "post_publication": null,
+  "publication_status": "PENDING_COMMIT_AND_AUTHORIZED_PUSH",
+  "not_run": [
+    "Supabase migration list",
+    "db push --dry-run",
+    "SQL/RPC/schema diff",
+    "database rebuild/Docker/pg_cron",
+    "new fresh checkout",
+    "live memberdata hash comparison",
+    "live Edge inspection/deploy",
+    "browser/mobile E2E",
+    "clinical/legal/privacy/localization expert review"
+  ],
+  "effects": {
+    "database_requests": 0,
+    "memberdata_operations": 0,
+    "consent_or_auth_operations": 0,
+    "migrations": 0,
+    "edge_deploys": 0,
+    "frontend_implementation_changes": 0,
+    "provider_calls": 0,
+    "new_paid_services": 0,
+    "reviewer_contacts": 0,
+    "secret_retrieval": 0,
+    "postgres_or_temp_deletions": 0,
+    "production_touched": false,
+    "phase6e1_started": false
+  },
+  "limits": [
+    "Known R0 lexical misses are documented defects of coverage, not correct clinical predictions.",
+    "Authority objects, revisions and deletion are synthetic in-memory models, not authenticated server guarantees.",
+    "No evidence claim is made about unrelated concurrent live data changes; this task did not connect to the database.",
+    "D3 bounded facts and D4 self-report do not alter frozen 6D gates.",
+    "D5 unresolved owner/max lifetime/deletion consequences are undecided; no real storage or cleanup."
+  ],
+  "next_step": "Owner productreview of D1-D12 register, bounded-facts content boundary, recovery/copy/reachability and separate 6E-1 proposal. No automatic activation."
+}

@@ -1,5 +1,19 @@
 # Package 6D Corrected Freeze En Package 6E Ownerbeslissingen
 
+## Latere Owneropdracht - Offline 6E-0
+
+Dit document bewaart het eerdere audit-/freezebewijs en de toenmalige aanbevelingen.
+De owner heeft daarna D1-D12 expliciet gekozen en uitsluitend offline 6E-0 toegestaan.
+Zie PHASE6E0_OWNER_DECISIONS.md en PHASE6E0_TECHNICAL_REPORT.md voor actuele keuzes,
+voorlopige contracten en open reviewpunten. Vooral D3/D4/D10/D11 mogen niet uit de
+oude aanbevelingen worden afgeleid. 6E-1 en runtime-integratie zijn NIET gestart.
+
+De eerdere publicatieblokkade is opgeheven door expliciete owner-toestemming:
+43a9665 en 0c47dd4 zijn docs-only gepubliceerd; 56/56 assets bleven byte-identiek
+aan bc6308f. Hieronder genoemde open publicatietoestemming en onbeantwoorde
+beslissingen zijn historische status, geen actuele blokkade. Medische/privacy/
+juridische review blijft OPEN; nu alleen ownerproductreview, geen reviewercontact.
+
 Datum: 2026-09-07. Uitsluitend FitMetZorge staging.
 Package 6D: COMPLETE / OWNER-ACCEPTED / FROZEN, inclusief theme restoration.
 Package 6E-readinessaudit: COMPLETE. Implementatie: NOT STARTED.

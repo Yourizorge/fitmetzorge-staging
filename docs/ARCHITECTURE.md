@@ -15,9 +15,10 @@ See PACKAGE6D_THEME_RESTORATION_REPORT.md for deployment and test evidence.
 See PHASE6D_FREEZE_RECEIPT.md for runtime
 bc6308fbf0f914b04c7faa711219d9ae46e9cbe3, Edge v43, theme cache
 20260907-theme1 and 31/31 history. The older 7fec9da freeze is superseded.
-The read-only 6E safety/readiness audit is COMPLETE; no new risk taxonomy or recovery
-rule is implemented. The owner theme retest has passed; D1-D12 remain unselected.
-The corrected report documents the Pages publication conflict separately from acceptance.
+The read-only 6E safety/readiness audit is COMPLETE. The subsequent owner-authorized
+6E-0 contract and tests exist only in _offline/phase6e0, without a runtime import.
+D1-D12 are now recorded in PHASE6E0_OWNER_DECISIONS.md; the original audit options remain history.
+The prior docs-only Pages publication conflict was resolved by explicit owner permission.
 See [6E readiness architecture](PHASE6E_SAFETY_RISK_READINESS.md) and its evidence:
 eight live catalog/ACL/gate checks, 36 synthetic existing-classifier probes and
 documented negation/education/recovery/retention gaps. Five help/action levels,
@@ -41,6 +42,25 @@ canonical ID and security contract stay frozen. See PROJECT_MIGRATION_RECONCILIA
 The Phase 0B Auth/invitation/workspace descriptions below are historical. Their unsafe
 metadata and broad member-access paths are superseded by Package 6D-0 at the end of this
 document and in PHASE6D0_LEGACY_AUTHORIZATION_SECURITY.md.
+
+## Package 6E-0 Offline Boundary
+
+Versioned JSON contract/copy/rules and private Node-only deterministic calculations;
+no npm dependencies, runtime import, storage adapter, provider, bundler or scheduler.
+Tests use invented data and synthetic time in memory, without temporary files.
+The leading underscore directory is excluded from current Pages output, separately
+checked through public 404 probes and unchanged frozen entrypoints/assets.
+
+Access, factual data, personalized advice and execution are separate proposals.
+Health signals never mutate entitlements in the model. Only allowlisted synthetic
+facts plus warnings are represented; advice remains NOT_IMPLEMENTED_REVIEW_REQUIRED
+and actions/provider/trainer sharing remain false. This does NOT modify the actual
+6D safety_hard_stop gate. Five provisional levels cannot replace clear/hard_stop.
+Self-report is revision-bound simulation, never medical clearance; serious/unknown
+recovery and unresolved retention have no invented policy or maximum lifetime.
+All clinical/privacy/legal/localization reviews remain OPEN. Four known lexical gaps
+are tracked explicitly. No 6E-1 runtime implementation or activation has started.
+See PHASE6E0_OFFLINE_CONTRACT.md, PHASE6E0_COMPATIBILITY_MATRIX.md and PHASE6E1_PROPOSAL.md.
 
 ## Dashboard Composition - Final Placement Hotfix
 
