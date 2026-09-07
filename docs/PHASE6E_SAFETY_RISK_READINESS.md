@@ -7,8 +7,12 @@ Uitsluitend staging Yourizorge/fitmetzorge-staging / main / mokxyyullfhkfalopbzd
 
 ## 1. Uitkomst En Freeze
 
-Package 6D is COMPLETE / OWNER-ACCEPTED / FROZEN op basis van de expliciete
-owneracceptatie van de volledige flow op een echte telefoon.
+Actuele aanvulling: de latere owneropdracht voor themarestauratie stelt de definitieve
+6D-freeze uit tot de owner Automatisch/Licht/Donker opnieuw heeft getest.
+Zie PACKAGE6D_THEME_RESTORATION_REPORT.md. Package 6E blijft alleen documentair.
+
+Historisch was Package 6D COMPLETE / OWNER-ACCEPTED / FROZEN op basis van expliciete
+owneracceptatie van de volledige flow op een echte telefoon. Dat bewijs blijft behouden.
 Frozen runtime: `7fec9da7cb00cb7dff4a601810ddd2c977db0f5f`.
 Frozen documentatiecommit: `d53fea94f50c23c059104045f899fde4da25c2ec`.
 Geaccepteerde documentatie voor freeze: `c1a71dea1bd651a12c738a94ce8ac2e56bcc26b9`.
@@ -576,13 +580,14 @@ Voor volledige lokale DBreproduceerbaarheid blijft Docker/pg_cron ontbreken;
 geen oude partial replay als volledige rebuild presenteren.
 Geen blokkade voor de voltooiing van deze read-only audit zelf.
 
-Exacte volgende stap: owner beslist over D1-D12, wijst bevoegde reviewers aan en
+Eerst volgt de afzonderlijke 6D-themaretest; de definitieve freeze is uitgesteld.
+Een eventuele volgende 6E-stap: owner beslist over D1-D12, wijst bevoegde reviewers aan en
 geeft uitsluitend een expliciete 6E-0-opdracht binnen de genoemde offlinegrenzen.
 Nieuwe runtime-, schema-, trainer-, provider- of productiebeslissingen volgen apart.
 Er worden nu geen credentials gevraagd, kosten gemaakt of beslissingen geforceerd.
 
 Eindstatus:
-- Package 6D owner-accepted/frozen: YES.
+- Package 6D definitief owner-accepted/frozen: NO, uitgesteld voor themaretest.
 - Package 6E readiness audit: COMPLETE.
 - Package 6E implementation started: NO.
 - Database changed by this task: NO.

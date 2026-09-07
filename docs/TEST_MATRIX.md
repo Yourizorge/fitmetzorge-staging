@@ -1,10 +1,10 @@
 # FitMetZorge Test Matrix
 
 Status: MASTER PLAN COVERAGE MATRIX
-Latest execution: 2026-09-07 Package 6D owner freeze and 6E read-only readiness audit,
-after the public Auth hotfix and project migration reconciliation. Migration history
-was synchronized 30/30 with a clean dry-run on 2026-09-06; this documentation-only task
-does not alter migration history; a fresh MCP listing confirms exact 30/30 parity. Public Auth hotfix
+Latest execution: 2026-09-07 Package 6D theme restoration; final owner retest required.
+The later theme request postpones definitive freeze and retains prior acceptance as
+historical functional evidence. Migration history is now synchronized 31/31 with an
+empty dry-run after additive 20260907095307_phase6d_theme_preference.sql. Public Auth hotfix
 checks remain valid, the owner received the confirmation email, and no new resend,
 Brevo investigation, manual confirmation, trainer role or trainer link was performed.
 Last updated: 2026-09-07
@@ -15,7 +15,7 @@ public routes at 320x700, 390x844, tablet and desktop: zero console/page errors,
 zero mutating requests. The owner later received the new account confirmation email.
 
 Project migration gate: PASS for staging. Official CLI `migration list` is synchronized
-at 30 local / 30 remote rows after Package 6D and the owner hotfixes; `db push --dry-run
+at 31 local / 31 remote rows after Package 6D theme restoration; `db push --dry-run
 --skip-vault` reports the remote database is up to date. The original 19 timestamp
 drifts are renamed to canonical live versions, the duplicate old `20260819` conflict is
 gone, the missing Phase 1-3/source SQL is covered by a forward-only source baseline,
@@ -26,7 +26,22 @@ PROJECT_MIGRATION_RECONCILIATION.md and PROJECT_MIGRATION_RECONCILIATION_MANIFES
 
 This matrix records the required functional, security, entitlement, AI, migration, and release checks for the Master Build. No implementation tests are executed by this document.
 
-## Package 6D Owner Freeze - Current Execution
+## Package 6D Theme Restoration - Current Execution
+
+Theme unit suites 10/10; strict local browser 1080/1080 across 312 surfaces at
+320x700, 390x844, 820x1180 and 1440x900; zero measured text-contrast failures,
+zero document overflow, no injected test CSS. Includes app chrome, body-level recovery,
+analysis cards/detail/notification, chat/messages/composer, all settings, NL/EN/DE,
+Auth, media switching, own-user persistence, failed saves and warm first-frame colors.
+SQL tests 33/33 before apply and again after apply, always rollback; SELECT verifier
+11/11; retained foundation/recent/worker verifiers 47/18/23. All 20 frozen suites PASS.
+All 24 member-table counts/content hashes unchanged, five schema-boundary fingerprints
+unchanged, old 30 migration Git hashes unchanged, no new security advisories.
+Deployment/live/fresh-checkout receipts and the required 21-case mapping:
+PACKAGE6D_THEME_RESTORATION_REPORT.md and PACKAGE6D_THEME_RESTORATION_EVIDENCE.json.
+Technical verification does not replace the owner's final physical theme retest.
+
+## Package 6D Owner Freeze - Historical, Superseded Execution
 
 COMPLETE / OWNER-ACCEPTED / FROZEN by explicit real-phone owner acceptance.
 Current rerun: SELECT-only foundation 47/47, recent dashboard 18/18, worker/inbox

@@ -3,11 +3,18 @@
 Status: CURRENT AND TARGET ARCHITECTURE DOCUMENTED
 Last updated: 2026-09-07
 
-Package 6D: COMPLETE / OWNER-ACCEPTED / FROZEN on 2026-09-07 after explicit
-real-phone acceptance. The freeze changes no architecture/runtime/schema.
+Package 6D: THEME RESTORATION - READY FOR FINAL OWNER RETEST.
+The later owner request postpones definitive freeze. Earlier real-phone acceptance
+is retained as historical functional evidence, not acceptance of the theme change.
+One early FMZ_THEME authority resolves system/light/dark and mirrors body.light.
+An own-user cosmetic bootstrap cache precedes server-authoritative settings hydration.
+Public Auth uses system. The existing own-user settings RPC contract gains nullable
+member_app_preferences.theme_mode, without default/backfill; missing means system.
+Revision locking, RLS/ACLs, consent, safety, AI and domain-write boundaries are unchanged.
+See PACKAGE6D_THEME_RESTORATION_REPORT.md for deployment and test evidence.
 See PHASE6D_FREEZE_RECEIPT.md for runtime 7fec9da, Edge v43, cache and 30/30 history.
 The read-only 6E safety/readiness audit is COMPLETE; no new risk taxonomy or recovery
-rule is implemented. Historical pending-owner statements are superseded.
+rule is implemented. The current owner theme retest is still required.
 See [6E readiness architecture](PHASE6E_SAFETY_RISK_READINESS.md) and its evidence:
 eight live catalog/ACL/gate checks, 36 synthetic existing-classifier probes and
 documented negation/education/recovery/retention gaps. Five help/action levels,
@@ -447,7 +454,7 @@ The existing `user_settings.unit_system` stores the presentation choice. No impe
 
 ### Phase 6 Youri AI Core Readiness
 
-Status: PACKAGES 6A, 6B, 6C AND 6D COMPLETE / OWNER-ACCEPTED / FROZEN; EXTERNAL MEMBER AI AND AUTOMATIC DOMAIN ACTIONS NOT AUTHORIZED
+Status: PACKAGES 6A, 6B AND 6C FROZEN; 6D THEME OWNER RETEST REQUIRED; EXTERNAL MEMBER AI AND AUTOMATIC DOMAIN ACTIONS NOT AUTHORIZED
 
 Live staging now contains the additive Package 6A AI trust schema. Normalized own-user Identity, Recovery, Training, Nutrition and Progress inputs remain the frozen authorities. No provider credential, external provider call or member-facing AI runtime is active.
 

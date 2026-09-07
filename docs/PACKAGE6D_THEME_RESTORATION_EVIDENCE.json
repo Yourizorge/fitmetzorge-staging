@@ -1,0 +1,1664 @@
+{
+  "date": "2026-09-07",
+  "status": "PACKAGE 6D THEME RESTORATION - READY FOR FINAL OWNER RETEST",
+  "owner_theme_acceptance": false,
+  "definitive_freeze": false,
+  "previous_owner_functional_acceptance_retained": true,
+  "repo": "Yourizorge/fitmetzorge-staging",
+  "branch": "main",
+  "project": "mokxyyullfhkfalopbzd",
+  "starting_commit": "37cee137153448289a948e32c20b9d7cfb484601",
+  "runtime_commit": "bc6308fbf0f914b04c7faa711219d9ae46e9cbe3",
+  "cache": "20260907-theme1",
+  "theme_unit_suites": {
+    "pass": 10,
+    "fail": 0
+  },
+  "local_browser": {
+    "mode": "local",
+    "overall_pass": true,
+    "pass_count": 1080,
+    "surfaces": 312,
+    "text_nodes_checked": 3788,
+    "contrast_failures": 0,
+    "document_overflows": 0,
+    "no_test_css_injected": true,
+    "actual_member_provider_requests": 0,
+    "by_viewport": [
+      {
+        "width": 320,
+        "surfaces": 78,
+        "light": 39,
+        "dark": 39
+      },
+      {
+        "width": 390,
+        "surfaces": 78,
+        "light": 39,
+        "dark": 39
+      },
+      {
+        "width": 820,
+        "surfaces": 78,
+        "light": 39,
+        "dark": 39
+      },
+      {
+        "width": 1440,
+        "surfaces": 78,
+        "light": 39,
+        "dark": 39
+      }
+    ]
+  },
+  "live_browser": {
+    "mode": "live-assets",
+    "overall_pass": true,
+    "pass_count": 1080,
+    "surfaces": 312,
+    "text_nodes_checked": 3788,
+    "contrast_failures": 0,
+    "document_overflows": 0,
+    "no_test_css_injected": true,
+    "actual_member_provider_requests": 0,
+    "by_viewport": [
+      {
+        "width": 320,
+        "surfaces": 78,
+        "light": 39,
+        "dark": 39
+      },
+      {
+        "width": 390,
+        "surfaces": 78,
+        "light": 39,
+        "dark": 39
+      },
+      {
+        "width": 820,
+        "surfaces": 78,
+        "light": 39,
+        "dark": 39
+      },
+      {
+        "width": 1440,
+        "surfaces": 78,
+        "light": 39,
+        "dark": 39
+      }
+    ]
+  },
+  "owner_browser": {
+    "local_pass": true,
+    "fresh_commit": "bc6308fbf0f914b04c7faa711219d9ae46e9cbe3",
+    "fresh_pass": true,
+    "pass_count": 327
+  },
+  "retained_mobile_and_placement": {
+    "mobile": 180,
+    "placement": 426,
+    "public_auth_suite_pass": true
+  },
+  "frozen_regressions": {
+    "overall_pass": true,
+    "results": [
+      {
+        "suite": "assets/phase6d0-frozen-regression-check.cjs",
+        "exit": 0,
+        "summary": [
+          "Phase 1 static check passed: 75",
+          "Member UX static check passed: 56"
+        ]
+      },
+      {
+        "suite": "assets/public-auth-regression-check.cjs --historical phase2-static-check.js",
+        "exit": 0,
+        "summary": [
+          "Phase 2 static check passed: 46"
+        ]
+      },
+      {
+        "suite": "assets/public-auth-regression-check.cjs --historical phase3-static-check.js",
+        "exit": 0,
+        "summary": [
+          "Phase 3 static check passed: 222"
+        ]
+      },
+      {
+        "suite": "assets/phase4-static-check.js",
+        "exit": 0,
+        "summary": [
+          "Phase 4 static check passed: 90"
+        ]
+      },
+      {
+        "suite": "assets/phase4-nutrition-slice4fe-static-check.js",
+        "exit": 0,
+        "summary": [
+          "Phase 4F-E static check passed: 45"
+        ]
+      },
+      {
+        "suite": "assets/phase5-static-check.js",
+        "exit": 0,
+        "summary": [
+          "  \"pass_count\": 116,",
+          "  \"fail_count\": 0,"
+        ]
+      },
+      {
+        "suite": "assets/phase6a-static-check.js",
+        "exit": 0,
+        "summary": [
+          "  \"pass_count\": 93,",
+          "  \"fail_count\": 0,"
+        ]
+      },
+      {
+        "suite": "assets/phase6b-static-check.js",
+        "exit": 0,
+        "summary": [
+          "  \"pass_count\": 98,",
+          "  \"fail_count\": 0,"
+        ]
+      },
+      {
+        "suite": "assets/phase6c-static-check.js",
+        "exit": 0,
+        "summary": [
+          "  \"pass_count\": 117,",
+          "  \"fail_count\": 0,"
+        ]
+      },
+      {
+        "suite": "assets/phase6d-static-check.js",
+        "exit": 0,
+        "summary": [
+          "  \"pass_count\": 17,",
+          "  \"fail_count\": 0,"
+        ]
+      },
+      {
+        "suite": "assets/public-auth-static-check.cjs",
+        "exit": 0,
+        "summary": [
+          "  \"pass_count\": 26,",
+          "  \"fail_count\": 0,"
+        ]
+      },
+      {
+        "suite": "assets/phase6d-workout-event-check.cjs",
+        "exit": 0,
+        "summary": [
+          "{\"suite\":\"hotfix2_workout_event_order\",\"overall_pass\":true,\"pass_count\":6,\"checks\":[\"flush happens before completion\",\"authoritative completion sees saved sets\",\"success retains completion lifecycle\",\"failed flush never completes workout\",\"failed flush adds no history\",\"local-only completion remains local, no invented server event\"]}"
+        ]
+      },
+      {
+        "suite": "--test supabase/functions/invite-client/handler.test.ts",
+        "exit": 0,
+        "summary": []
+      },
+      {
+        "suite": "--test supabase/functions/youri-ai/phase6c-handler.test.ts supabase/functions/youri-ai/phase6d-handler.test.ts",
+        "exit": 0,
+        "summary": []
+      },
+      {
+        "suite": "--test supabase/tests/phase6d0-migration-identity-check.test.cjs",
+        "exit": 0,
+        "summary": []
+      },
+      {
+        "suite": "assets/phase6d0-browser-check.js",
+        "exit": 0,
+        "summary": [
+          "  \"pass_count\": 41,",
+          "  \"fail_count\": 0,"
+        ]
+      },
+      {
+        "suite": "assets/phase5-browser-check.js",
+        "exit": 0,
+        "summary": [
+          "  \"pass_count\": 53,",
+          "  \"fail_count\": 0,"
+        ]
+      },
+      {
+        "suite": "assets/phase6c-browser-check.js",
+        "exit": 0,
+        "summary": [
+          "  \"pass_count\": 85,",
+          "  \"fail_count\": 0,"
+        ]
+      },
+      {
+        "suite": "assets/phase4-nutrition-slice3-browser-check.js",
+        "exit": 0,
+        "summary": [
+          "Phase 4 Nutrition Slice 3 browser check passed: 138"
+        ]
+      },
+      {
+        "suite": "assets/phase6d-browser-check.js",
+        "exit": 0,
+        "summary": [
+          "  \"pass_count\": 48,",
+          "  \"fail_count\": 0,"
+        ]
+      }
+    ]
+  },
+  "sql": {
+    "migration": "20260907095307_phase6d_theme_preference.sql",
+    "ddl_preapply_rollback": {
+      "pass": 33,
+      "fail": 0
+    },
+    "postapply_tests_rollback": {
+      "pass": 33,
+      "fail": 0
+    },
+    "read_only_verifier": {
+      "overall_pass": true,
+      "pass_count": 11,
+      "fail_count": 0,
+      "checks": [
+        {
+          "name": "one_nullable_text_column_no_default",
+          "pass": true
+        },
+        {
+          "name": "validated_three_mode_constraint",
+          "pass": true
+        },
+        {
+          "name": "rls_retained",
+          "pass": true
+        },
+        {
+          "name": "no_direct_authenticated_write",
+          "pass": true
+        },
+        {
+          "name": "no_anon_rpc",
+          "pass": true
+        },
+        {
+          "name": "authenticated_rpc",
+          "pass": true
+        },
+        {
+          "name": "two_definer_functions_safe_path",
+          "pass": true
+        },
+        {
+          "name": "own_user_read_and_system_default",
+          "pass": true
+        },
+        {
+          "name": "own_user_revision_lock_and_validation",
+          "pass": true
+        },
+        {
+          "name": "canonical_live_identity",
+          "pass": true
+        },
+        {
+          "name": "no_theme_fixture_accounts",
+          "pass": true
+        }
+      ]
+    },
+    "function_bodies_normalized": [
+      {
+        "proname": "fmz_phase6d_get_member_settings",
+        "normalized_body_md5": "f8b1b8ffce78f7d626ff3822f6854706"
+      },
+      {
+        "proname": "fmz_phase6d_update_member_settings",
+        "normalized_body_md5": "7f0ce90eea3945ae16909239534a32de"
+      }
+    ],
+    "function_source_parity": true,
+    "prior_30_git_migration_hashes_unchanged": true,
+    "list": {
+      "migrations": [
+        {
+          "local": "20260812000000",
+          "remote": "20260812000000",
+          "time": "2026-08-12 00:00:00"
+        },
+        {
+          "local": "20260813",
+          "remote": "20260813",
+          "time": "20260813"
+        },
+        {
+          "local": "20260818",
+          "remote": "20260818",
+          "time": "20260818"
+        },
+        {
+          "local": "20260819134024",
+          "remote": "20260819134024",
+          "time": "2026-08-19 13:40:24"
+        },
+        {
+          "local": "20260819163738",
+          "remote": "20260819163738",
+          "time": "2026-08-19 16:37:38"
+        },
+        {
+          "local": "20260819175756",
+          "remote": "20260819175756",
+          "time": "2026-08-19 17:57:56"
+        },
+        {
+          "local": "20260820082018",
+          "remote": "20260820082018",
+          "time": "2026-08-20 08:20:18"
+        },
+        {
+          "local": "20260820150513",
+          "remote": "20260820150513",
+          "time": "2026-08-20 15:05:13"
+        },
+        {
+          "local": "20260822172635",
+          "remote": "20260822172635",
+          "time": "2026-08-22 17:26:35"
+        },
+        {
+          "local": "20260824113551",
+          "remote": "20260824113551",
+          "time": "2026-08-24 11:35:51"
+        },
+        {
+          "local": "20260826143000",
+          "remote": "20260826143000",
+          "time": "2026-08-26 14:30:00"
+        },
+        {
+          "local": "20260827125343",
+          "remote": "20260827125343",
+          "time": "2026-08-27 12:53:43"
+        },
+        {
+          "local": "20260827152727",
+          "remote": "20260827152727",
+          "time": "2026-08-27 15:27:27"
+        },
+        {
+          "local": "20260831145357",
+          "remote": "20260831145357",
+          "time": "2026-08-31 14:53:57"
+        },
+        {
+          "local": "20260831150434",
+          "remote": "20260831150434",
+          "time": "2026-08-31 15:04:34"
+        },
+        {
+          "local": "20260831153512",
+          "remote": "20260831153512",
+          "time": "2026-08-31 15:35:12"
+        },
+        {
+          "local": "20260901161314",
+          "remote": "20260901161314",
+          "time": "2026-09-01 16:13:14"
+        },
+        {
+          "local": "20260901183914",
+          "remote": "20260901183914",
+          "time": "2026-09-01 18:39:14"
+        },
+        {
+          "local": "20260901184418",
+          "remote": "20260901184418",
+          "time": "2026-09-01 18:44:18"
+        },
+        {
+          "local": "20260901190328",
+          "remote": "20260901190328",
+          "time": "2026-09-01 19:03:28"
+        },
+        {
+          "local": "20260901191328",
+          "remote": "20260901191328",
+          "time": "2026-09-01 19:13:28"
+        },
+        {
+          "local": "20260902045834",
+          "remote": "20260902045834",
+          "time": "2026-09-02 04:58:34"
+        },
+        {
+          "local": "20260903085454",
+          "remote": "20260903085454",
+          "time": "2026-09-03 08:54:54"
+        },
+        {
+          "local": "20260903125150",
+          "remote": "20260903125150",
+          "time": "2026-09-03 12:51:50"
+        },
+        {
+          "local": "20260904105918",
+          "remote": "20260904105918",
+          "time": "2026-09-04 10:59:18"
+        },
+        {
+          "local": "20260904230850",
+          "remote": "20260904230850",
+          "time": "2026-09-04 23:08:50"
+        },
+        {
+          "local": "20260904235253",
+          "remote": "20260904235253",
+          "time": "2026-09-04 23:52:53"
+        },
+        {
+          "local": "20260906080455",
+          "remote": "20260906080455",
+          "time": "2026-09-06 08:04:55"
+        },
+        {
+          "local": "20260906092905",
+          "remote": "20260906092905",
+          "time": "2026-09-06 09:29:05"
+        },
+        {
+          "local": "20260906134827",
+          "remote": "20260906134827",
+          "time": "2026-09-06 13:48:27"
+        },
+        {
+          "local": "20260907095307",
+          "remote": "20260907095307",
+          "time": "2026-09-07 09:53:07"
+        }
+      ],
+      "message": "Migrations listed"
+    },
+    "dry_run": {
+      "upToDate": true,
+      "dryRun": true,
+      "migrations": [],
+      "seeds": [],
+      "roles": [],
+      "message": "Remote database is up to date."
+    },
+    "fresh_list": {
+      "migrations": [
+        {
+          "local": "20260812000000",
+          "remote": "20260812000000",
+          "time": "2026-08-12 00:00:00"
+        },
+        {
+          "local": "20260813",
+          "remote": "20260813",
+          "time": "20260813"
+        },
+        {
+          "local": "20260818",
+          "remote": "20260818",
+          "time": "20260818"
+        },
+        {
+          "local": "20260819134024",
+          "remote": "20260819134024",
+          "time": "2026-08-19 13:40:24"
+        },
+        {
+          "local": "20260819163738",
+          "remote": "20260819163738",
+          "time": "2026-08-19 16:37:38"
+        },
+        {
+          "local": "20260819175756",
+          "remote": "20260819175756",
+          "time": "2026-08-19 17:57:56"
+        },
+        {
+          "local": "20260820082018",
+          "remote": "20260820082018",
+          "time": "2026-08-20 08:20:18"
+        },
+        {
+          "local": "20260820150513",
+          "remote": "20260820150513",
+          "time": "2026-08-20 15:05:13"
+        },
+        {
+          "local": "20260822172635",
+          "remote": "20260822172635",
+          "time": "2026-08-22 17:26:35"
+        },
+        {
+          "local": "20260824113551",
+          "remote": "20260824113551",
+          "time": "2026-08-24 11:35:51"
+        },
+        {
+          "local": "20260826143000",
+          "remote": "20260826143000",
+          "time": "2026-08-26 14:30:00"
+        },
+        {
+          "local": "20260827125343",
+          "remote": "20260827125343",
+          "time": "2026-08-27 12:53:43"
+        },
+        {
+          "local": "20260827152727",
+          "remote": "20260827152727",
+          "time": "2026-08-27 15:27:27"
+        },
+        {
+          "local": "20260831145357",
+          "remote": "20260831145357",
+          "time": "2026-08-31 14:53:57"
+        },
+        {
+          "local": "20260831150434",
+          "remote": "20260831150434",
+          "time": "2026-08-31 15:04:34"
+        },
+        {
+          "local": "20260831153512",
+          "remote": "20260831153512",
+          "time": "2026-08-31 15:35:12"
+        },
+        {
+          "local": "20260901161314",
+          "remote": "20260901161314",
+          "time": "2026-09-01 16:13:14"
+        },
+        {
+          "local": "20260901183914",
+          "remote": "20260901183914",
+          "time": "2026-09-01 18:39:14"
+        },
+        {
+          "local": "20260901184418",
+          "remote": "20260901184418",
+          "time": "2026-09-01 18:44:18"
+        },
+        {
+          "local": "20260901190328",
+          "remote": "20260901190328",
+          "time": "2026-09-01 19:03:28"
+        },
+        {
+          "local": "20260901191328",
+          "remote": "20260901191328",
+          "time": "2026-09-01 19:13:28"
+        },
+        {
+          "local": "20260902045834",
+          "remote": "20260902045834",
+          "time": "2026-09-02 04:58:34"
+        },
+        {
+          "local": "20260903085454",
+          "remote": "20260903085454",
+          "time": "2026-09-03 08:54:54"
+        },
+        {
+          "local": "20260903125150",
+          "remote": "20260903125150",
+          "time": "2026-09-03 12:51:50"
+        },
+        {
+          "local": "20260904105918",
+          "remote": "20260904105918",
+          "time": "2026-09-04 10:59:18"
+        },
+        {
+          "local": "20260904230850",
+          "remote": "20260904230850",
+          "time": "2026-09-04 23:08:50"
+        },
+        {
+          "local": "20260904235253",
+          "remote": "20260904235253",
+          "time": "2026-09-04 23:52:53"
+        },
+        {
+          "local": "20260906080455",
+          "remote": "20260906080455",
+          "time": "2026-09-06 08:04:55"
+        },
+        {
+          "local": "20260906092905",
+          "remote": "20260906092905",
+          "time": "2026-09-06 09:29:05"
+        },
+        {
+          "local": "20260906134827",
+          "remote": "20260906134827",
+          "time": "2026-09-06 13:48:27"
+        },
+        {
+          "local": "20260907095307",
+          "remote": "20260907095307",
+          "time": "2026-09-07 09:53:07"
+        }
+      ],
+      "message": "Migrations listed"
+    },
+    "fresh_dry_run": {
+      "upToDate": true,
+      "dryRun": true,
+      "migrations": [],
+      "seeds": [],
+      "roles": [],
+      "message": "Remote database is up to date."
+    },
+    "retained_verifiers": {
+      "20260906092905_phase6a_current_contract_verification.sql": {
+        "checks": [
+          {
+            "pass": true,
+            "check": "action_allowlist_exact",
+            "detail": "five allowed proposal types"
+          },
+          {
+            "pass": true,
+            "check": "action_bounds_locked",
+            "detail": "20 percent training and min(10 percent,300 kcal)"
+          },
+          {
+            "pass": true,
+            "check": "budget_exact_3_plus_1",
+            "detail": "EUR 3 included, warning 80%, EUR 1 grace, EUR 4 hard"
+          },
+          {
+            "pass": true,
+            "check": "consent_documents_nl_en_de",
+            "detail": "six original AI and trainer-summary documents"
+          },
+          {
+            "pass": true,
+            "check": "consent_explicit_unselected",
+            "detail": "affirmative action required"
+          },
+          {
+            "pass": true,
+            "check": "consent_monotonic_ordering",
+            "detail": "latest grant or withdrawal is deterministic"
+          },
+          {
+            "pass": true,
+            "check": "context_minimized_authority",
+            "detail": "references/aggregates, explicit unavailable sources"
+          },
+          {
+            "pass": true,
+            "check": "eight_own_select_policies",
+            "detail": "[\"ai_action_decisions_select_own\", \"ai_action_proposals_select_own\", \"ai_consent_events_select_own\", \"ai_context_manifests_select_own\", \"ai_data_lifecycle_requests_select_own\", \"ai_member_safety_state_select_own\", \"ai_messages_select_own\", \"ai_threads_select_own\"]"
+          },
+          {
+            "pass": true,
+            "check": "entitlement_exact",
+            "detail": "AI/PT current window only"
+          },
+          {
+            "pass": true,
+            "check": "export_delete_lifecycle",
+            "detail": "request and manifest readiness"
+          },
+          {
+            "pass": true,
+            "check": "feature_flags_default_off",
+            "detail": "[{\"enabled\": false, \"flag_code\": \"ai_coach_enabled\", \"environment\": \"staging\"}, {\"enabled\": false, \"flag_code\": \"provider_calls_enabled\", \"environment\": \"staging\"}, {\"enabled\": false, \"flag_code\": \"staging_mock_enabled\", \"environment\": \"staging\"}]"
+          },
+          {
+            "pass": true,
+            "check": "foreign_key_indexes",
+            "detail": "all Phase 6A foreign keys have covering indexes"
+          },
+          {
+            "pass": true,
+            "check": "free_and_pro_denied",
+            "detail": "Free and Pro do not grant generation"
+          },
+          {
+            "pass": true,
+            "check": "frozen_guard_rls",
+            "detail": "frozen RLS retained"
+          },
+          {
+            "pass": true,
+            "check": "frozen_guard_tables",
+            "detail": "Phase 1-5 source tables present"
+          },
+          {
+            "pass": true,
+            "check": "function_inventory",
+            "detail": "[\"ai_private.assert_member\", \"ai_private.can_share_trainer_summary\", \"ai_private.current_consent\", \"ai_private.current_entitlement\", \"ai_private.evaluate_budget\", \"ai_private.subscription_period\", \"ai_private.touch_updated_at\", \"ai_private.trust_status\", \"ai_private.validate_action_contract\", \"ai_private.validate_structured_response\", \"public.fmz_phase6a_get_context_manifest\", \"public.fmz_phase6a_get_trust_status\", \"public.fmz_phase6a_read_consent_contract\", \"public.fmz_phase6a_read_export_manifest\", \"public.fmz_phase6a_read_thread_history\", \"public.fmz_phase6a_record_consent\", \"public.fmz_phase6a_request_data_lifecycle\", \"public.fmz_phase6a_service_begin_run\", \"public.fmz_phase6a_service_complete_run\", \"public.fmz_phase6a_service_fail_run\", \"public.fmz_phase6a_service_reconcile_retention\", \"public.fmz_phase6a_service_record_safety_event\", \"public.fmz_phase6a_submit_user_message\"]"
+          },
+          {
+            "pass": true,
+            "check": "history_and_operational_indexes",
+            "detail": "bounded lookup indexes"
+          },
+          {
+            "pass": true,
+            "check": "idempotency_uniques",
+            "detail": "request identities unique"
+          },
+          {
+            "pass": true,
+            "check": "medication_and_diagnosis_not_allowlisted",
+            "detail": "medical actions absent"
+          },
+          {
+            "pass": true,
+            "check": "member_rpc_acl",
+            "detail": "eight authenticated RPCs only"
+          },
+          {
+            "pass": true,
+            "check": "member_runs_mock_zero_cost",
+            "detail": "accepted mock runs may exist; no member provider run or reservation"
+          },
+          {
+            "pass": true,
+            "check": "no_actions_or_decisions",
+            "detail": "accepted private chat may exist; no proposal/action package active"
+          },
+          {
+            "pass": true,
+            "check": "no_automatic_billing_contract",
+            "detail": "budget evaluator never bills"
+          },
+          {
+            "pass": true,
+            "check": "no_browser_table_privileges",
+            "detail": "[]"
+          },
+          {
+            "pass": true,
+            "check": "no_domain_mutation_sql",
+            "detail": "proposal foundation cannot mutate frozen domains"
+          },
+          {
+            "pass": true,
+            "check": "no_network_or_provider_sql",
+            "detail": "database cannot call a provider"
+          },
+          {
+            "pass": true,
+            "check": "no_write_or_trainer_policy",
+            "detail": "no browser write or trainer policy"
+          },
+          {
+            "pass": true,
+            "check": "operational_logs_minimized",
+            "detail": "no raw prompt/content columns"
+          },
+          {
+            "pass": true,
+            "check": "private_helpers_no_app_execute",
+            "detail": "private helpers isolated"
+          },
+          {
+            "pass": true,
+            "check": "private_schema_isolated",
+            "detail": "[{\"grantee\": \"postgres\", \"privilege_type\": \"USAGE\"}, {\"grantee\": \"postgres\", \"privilege_type\": \"CREATE\"}]"
+          },
+          {
+            "pass": true,
+            "check": "private_table_count",
+            "detail": "12 private contract/operational tables"
+          },
+          {
+            "pass": true,
+            "check": "production_and_secret_scan",
+            "detail": "no production ref or credential lookup material"
+          },
+          {
+            "pass": true,
+            "check": "profile_ownership_fks",
+            "detail": "member ownership references profiles"
+          },
+          {
+            "pass": true,
+            "check": "public_table_count",
+            "detail": "8 public own-user foundations"
+          },
+          {
+            "pass": true,
+            "check": "relational_owner_fks",
+            "detail": "cross-member relational links blocked"
+          },
+          {
+            "pass": true,
+            "check": "retention_90_days",
+            "detail": "grace, restore and raw-content deletion"
+          },
+          {
+            "pass": true,
+            "check": "rls_all_twenty",
+            "detail": "RLS enabled on public and private tables"
+          },
+          {
+            "pass": true,
+            "check": "safe_search_paths",
+            "detail": "fixed search_path; two exact remaining unqualified digest consumers"
+          },
+          {
+            "pass": true,
+            "check": "safety_hard_stop",
+            "detail": "serious or unclear signals block"
+          },
+          {
+            "pass": true,
+            "check": "security_definer_only_when_needed",
+            "detail": "RPCs bridge revoked tables; pure helpers invoker"
+          },
+          {
+            "pass": true,
+            "check": "service_rpc_acl",
+            "detail": "five service-only RPCs"
+          },
+          {
+            "pass": true,
+            "check": "strict_schema_live",
+            "detail": "schema and validator"
+          },
+          {
+            "pass": true,
+            "check": "target_is_staging_contract",
+            "detail": "staging ref locked in artifact"
+          },
+          {
+            "pass": true,
+            "check": "trainer_summary_separate",
+            "detail": "separate consent; no trainer chat path"
+          },
+          {
+            "pass": true,
+            "check": "twenty_exact_tables",
+            "detail": "[]"
+          },
+          {
+            "pass": true,
+            "check": "updated_at_triggers",
+            "detail": "[\"ai_action_proposals_touch_updated_at\", \"ai_budget_accounts_touch_updated_at\", \"ai_feature_flags_touch_updated_at\", \"ai_member_safety_state_touch_updated_at\", \"ai_messages_assign_sequence\", \"ai_messages_protect_content\", \"ai_rate_buckets_touch_updated_at\", \"ai_threads_touch_updated_at\"]"
+          },
+          {
+            "pass": true,
+            "check": "withdrawal_blocks_processing",
+            "detail": "latest granted consent required"
+          }
+        ],
+        "fail_count": 0,
+        "pass_count": 47,
+        "overall_pass": true
+      },
+      "20260906134827_phase6d_recent_dashboard_verification.sql": {
+        "failed": [],
+        "pass_count": 18,
+        "overall_pass": true,
+        "existing_availability": null
+      },
+      "20260906092905_phase6d_automatic_inbox_verification.sql": {
+        "failed": [],
+        "cron_runs": [
+          {
+            "status": "succeeded",
+            "end_time": "2026-09-07T10:44:00.461297+00:00",
+            "start_time": "2026-09-07T10:44:00.137949+00:00",
+            "return_message": "1 row"
+          },
+          {
+            "status": "succeeded",
+            "end_time": "2026-09-07T10:43:01.679889+00:00",
+            "start_time": "2026-09-07T10:43:00.091+00:00",
+            "return_message": "1 row"
+          },
+          {
+            "status": "succeeded",
+            "end_time": "2026-09-07T10:42:03.406665+00:00",
+            "start_time": "2026-09-07T10:42:00.170411+00:00",
+            "return_message": "1 row"
+          }
+        ],
+        "pass_count": 23,
+        "queued_jobs": 0,
+        "overall_pass": true,
+        "notifications": 4,
+        "worker_enabled": true
+      }
+    }
+  },
+  "member_data": {
+    "method": "Per-table sorted to_jsonb MD5 and row count. Only new theme_mode omitted from preferences hash; all old fields including revision retained.",
+    "tables": [
+      {
+        "table_name": "ai_private.analysis_safety_recoveries",
+        "row_count": 2,
+        "content_md5": "90bcac0b3d061aac054e850fb35c6b33",
+        "after": {
+          "table_name": "ai_private.analysis_safety_recoveries",
+          "row_count": 2,
+          "content_md5": "90bcac0b3d061aac054e850fb35c6b33"
+        },
+        "unchanged": true
+      },
+      {
+        "table_name": "ai_private.safety_events",
+        "row_count": 3,
+        "content_md5": "45c75f45f2c23c2c26de2440b695cd66",
+        "after": {
+          "table_name": "ai_private.safety_events",
+          "row_count": 3,
+          "content_md5": "45c75f45f2c23c2c26de2440b695cd66"
+        },
+        "unchanged": true
+      },
+      {
+        "table_name": "public.ai_analysis_preferences",
+        "row_count": 0,
+        "content_md5": "d41d8cd98f00b204e9800998ecf8427e",
+        "after": {
+          "table_name": "public.ai_analysis_preferences",
+          "row_count": 0,
+          "content_md5": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        "unchanged": true
+      },
+      {
+        "table_name": "public.ai_analysis_results",
+        "row_count": 4,
+        "content_md5": "8fb0602a503cc8c581a376650117a020",
+        "after": {
+          "table_name": "public.ai_analysis_results",
+          "row_count": 4,
+          "content_md5": "8fb0602a503cc8c581a376650117a020"
+        },
+        "unchanged": true
+      },
+      {
+        "table_name": "public.ai_consent_events",
+        "row_count": 3,
+        "content_md5": "7813f35f06bd18b04593c1496327dc5a",
+        "after": {
+          "table_name": "public.ai_consent_events",
+          "row_count": 3,
+          "content_md5": "7813f35f06bd18b04593c1496327dc5a"
+        },
+        "unchanged": true
+      },
+      {
+        "table_name": "public.ai_member_safety_state",
+        "row_count": 1,
+        "content_md5": "22ff6b6339a6d2fb9384b6e13e2f40ab",
+        "after": {
+          "table_name": "public.ai_member_safety_state",
+          "row_count": 1,
+          "content_md5": "22ff6b6339a6d2fb9384b6e13e2f40ab"
+        },
+        "unchanged": true
+      },
+      {
+        "table_name": "public.ai_messages",
+        "row_count": 28,
+        "content_md5": "2512e645fd536f5132019ef42167a9ae",
+        "after": {
+          "table_name": "public.ai_messages",
+          "row_count": 28,
+          "content_md5": "2512e645fd536f5132019ef42167a9ae"
+        },
+        "unchanged": true
+      },
+      {
+        "table_name": "public.ai_threads",
+        "row_count": 8,
+        "content_md5": "f941cadd7e2cbaf245ee5159c1433012",
+        "after": {
+          "table_name": "public.ai_threads",
+          "row_count": 8,
+          "content_md5": "f941cadd7e2cbaf245ee5159c1433012"
+        },
+        "unchanged": true
+      },
+      {
+        "table_name": "public.body_measurements",
+        "row_count": 1,
+        "content_md5": "7b59177b0bb0137cb502d4f2712d3cc4",
+        "after": {
+          "table_name": "public.body_measurements",
+          "row_count": 1,
+          "content_md5": "7b59177b0bb0137cb502d4f2712d3cc4"
+        },
+        "unchanged": true
+      },
+      {
+        "table_name": "public.coach_workspaces",
+        "row_count": 2,
+        "content_md5": "c4d6bf730ba300af0268b29fd18da550",
+        "after": {
+          "table_name": "public.coach_workspaces",
+          "row_count": 2,
+          "content_md5": "c4d6bf730ba300af0268b29fd18da550"
+        },
+        "unchanged": true
+      },
+      {
+        "table_name": "public.entitlements",
+        "row_count": 4,
+        "content_md5": "d2836731cd0fdad56e908960c0f353f1",
+        "after": {
+          "table_name": "public.entitlements",
+          "row_count": 4,
+          "content_md5": "d2836731cd0fdad56e908960c0f353f1"
+        },
+        "unchanged": true
+      },
+      {
+        "table_name": "public.food_log_items",
+        "row_count": 22,
+        "content_md5": "54243acf4feeb4fca9ec2d50e532dd7b",
+        "after": {
+          "table_name": "public.food_log_items",
+          "row_count": 22,
+          "content_md5": "54243acf4feeb4fca9ec2d50e532dd7b"
+        },
+        "unchanged": true
+      },
+      {
+        "table_name": "public.food_logs",
+        "row_count": 5,
+        "content_md5": "9868fc027be0fe4c8c95859ba87984d8",
+        "after": {
+          "table_name": "public.food_logs",
+          "row_count": 5,
+          "content_md5": "9868fc027be0fe4c8c95859ba87984d8"
+        },
+        "unchanged": true
+      },
+      {
+        "table_name": "public.member_app_preferences",
+        "row_count": 1,
+        "content_md5": "f1ddc073dcb3f0b6f53fb41da4152077",
+        "after": {
+          "table_name": "public.member_app_preferences",
+          "row_count": 1,
+          "content_md5": "f1ddc073dcb3f0b6f53fb41da4152077"
+        },
+        "unchanged": true
+      },
+      {
+        "table_name": "public.member_notifications",
+        "row_count": 4,
+        "content_md5": "bc9bb7914106ec7323443fba686a0017",
+        "after": {
+          "table_name": "public.member_notifications",
+          "row_count": 4,
+          "content_md5": "bc9bb7914106ec7323443fba686a0017"
+        },
+        "unchanged": true
+      },
+      {
+        "table_name": "public.nutrition_targets",
+        "row_count": 3,
+        "content_md5": "974b9205f725fcf6778e8574c1a6a5e5",
+        "after": {
+          "table_name": "public.nutrition_targets",
+          "row_count": 3,
+          "content_md5": "974b9205f725fcf6778e8574c1a6a5e5"
+        },
+        "unchanged": true
+      },
+      {
+        "table_name": "public.profiles",
+        "row_count": 7,
+        "content_md5": "13480a20964bf6f16db99df12dfc8d67",
+        "after": {
+          "table_name": "public.profiles",
+          "row_count": 7,
+          "content_md5": "13480a20964bf6f16db99df12dfc8d67"
+        },
+        "unchanged": true
+      },
+      {
+        "table_name": "public.recovery_logs",
+        "row_count": 1,
+        "content_md5": "44a0c21bbda733b50c63ffe0110fac7f",
+        "after": {
+          "table_name": "public.recovery_logs",
+          "row_count": 1,
+          "content_md5": "44a0c21bbda733b50c63ffe0110fac7f"
+        },
+        "unchanged": true
+      },
+      {
+        "table_name": "public.training_plans",
+        "row_count": 6,
+        "content_md5": "603f9ed62387f36b9a37133e7f4f4781",
+        "after": {
+          "table_name": "public.training_plans",
+          "row_count": 6,
+          "content_md5": "603f9ed62387f36b9a37133e7f4f4781"
+        },
+        "unchanged": true
+      },
+      {
+        "table_name": "public.user_onboarding",
+        "row_count": 3,
+        "content_md5": "d426b3f18e34ace00b511142ebd3e4da",
+        "after": {
+          "table_name": "public.user_onboarding",
+          "row_count": 3,
+          "content_md5": "d426b3f18e34ace00b511142ebd3e4da"
+        },
+        "unchanged": true
+      },
+      {
+        "table_name": "public.user_settings",
+        "row_count": 3,
+        "content_md5": "5e0cfc91e3e8a7df28c852b294ce07a8",
+        "after": {
+          "table_name": "public.user_settings",
+          "row_count": 3,
+          "content_md5": "5e0cfc91e3e8a7df28c852b294ce07a8"
+        },
+        "unchanged": true
+      },
+      {
+        "table_name": "public.weight_logs",
+        "row_count": 2,
+        "content_md5": "a67260438a7ebfd6f77ca6cc52a6b615",
+        "after": {
+          "table_name": "public.weight_logs",
+          "row_count": 2,
+          "content_md5": "a67260438a7ebfd6f77ca6cc52a6b615"
+        },
+        "unchanged": true
+      },
+      {
+        "table_name": "public.workout_sessions",
+        "row_count": 15,
+        "content_md5": "f4096aca6f4bb5bffe0bda7b49697848",
+        "after": {
+          "table_name": "public.workout_sessions",
+          "row_count": 15,
+          "content_md5": "f4096aca6f4bb5bffe0bda7b49697848"
+        },
+        "unchanged": true
+      },
+      {
+        "table_name": "public.workout_set_logs",
+        "row_count": 15,
+        "content_md5": "d4d72b0aed695389eaeaafecbd26b14c",
+        "after": {
+          "table_name": "public.workout_set_logs",
+          "row_count": 15,
+          "content_md5": "d4d72b0aed695389eaeaafecbd26b14c"
+        },
+        "unchanged": true
+      }
+    ],
+    "all_unchanged": true
+  },
+  "schema_boundaries": {
+    "before": [
+      {
+        "boundary": "other_function_definitions_acl",
+        "fingerprint": "6e052c41950f4f0773023d80166b9385"
+      },
+      {
+        "boundary": "policies",
+        "fingerprint": "4bcef370c53800753fe11900c1df8950"
+      },
+      {
+        "boundary": "triggers",
+        "fingerprint": "5caa9d95c9b79be5829eeb4b316bf737"
+      },
+      {
+        "boundary": "columns_except_theme",
+        "fingerprint": "70c14cb6c103fd83b7ce1987f53db6c5"
+      },
+      {
+        "boundary": "constraints_except_theme",
+        "fingerprint": "18d97f8e3a82a9a2c33ec19ec37cbf37"
+      }
+    ],
+    "after": [
+      {
+        "boundary": "other_function_definitions_acl",
+        "fingerprint": "6e052c41950f4f0773023d80166b9385"
+      },
+      {
+        "boundary": "policies",
+        "fingerprint": "4bcef370c53800753fe11900c1df8950"
+      },
+      {
+        "boundary": "triggers",
+        "fingerprint": "5caa9d95c9b79be5829eeb4b316bf737"
+      },
+      {
+        "boundary": "columns_except_theme",
+        "fingerprint": "70c14cb6c103fd83b7ce1987f53db6c5"
+      },
+      {
+        "boundary": "constraints_except_theme",
+        "fingerprint": "18d97f8e3a82a9a2c33ec19ec37cbf37"
+      }
+    ],
+    "all_unchanged": true,
+    "scope": "All public/ai_private functions and ACL except two settings RPCs, policies, triggers, columns except new theme, constraints except new theme CHECK. Not a from-empty database diff."
+  },
+  "advisors": {
+    "before": 96,
+    "after": 96,
+    "added": [],
+    "removed": []
+  },
+  "edge": [
+    {
+      "name": "invite-client",
+      "status": "ACTIVE",
+      "version": 16,
+      "verify_jwt": true,
+      "ezbr_sha256": "06bc95c43054de7630b0a4538d0cbe568f98162717c29be3da84919688a4cc63"
+    },
+    {
+      "name": "nutrition-provider",
+      "status": "ACTIVE",
+      "version": 20,
+      "verify_jwt": true,
+      "ezbr_sha256": "22305274d27d313b21f55ebf3921e891aabc6cabcddbd4160e562652a2f2250f"
+    },
+    {
+      "name": "youri-ai",
+      "status": "ACTIVE",
+      "version": 43,
+      "verify_jwt": true,
+      "ezbr_sha256": "627c883a9b001e6215d101c827f96fbb94825c7f1437077088ec09fbba7460c6"
+    }
+  ],
+  "live_assets": {
+    "overall_pass": true,
+    "commit": "bc6308fbf0f914b04c7faa711219d9ae46e9cbe3",
+    "cache": "20260907-theme1",
+    "files": [
+      {
+        "file": "index.html",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "5dcbd22107f955fd67be9a57df7c27d9fd4ad8b6f30dd3149495badbb41ddc51"
+      },
+      {
+        "file": "fit-met-zorge-logo.png",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "940c6c9e66d73a642d67f453fc12e46e78f233e60432ea0ad426324af1493ecf"
+      },
+      {
+        "file": "assets/theme-authority.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "7927a84cc5a686e186fadd8de92f8afc0f05d6f256121dcfa92da8d2b6605188"
+      },
+      {
+        "file": "styles.css",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "29d376ad4efbaee61dfc65adaced629753cdc5d126c58f5c60ee472324e2a20e"
+      },
+      {
+        "file": "config.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "07cc826304b5a9343ef26a21aabae6d00a21fe4c55a1d9feefef6067bcecd6fa"
+      },
+      {
+        "file": "app.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "c4f2e966598b65f82dde4c8d546debe4a440fedd935b2897f85b30008560ddb0"
+      },
+      {
+        "file": "app.bundle.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "0aedc9e0c5ef05b96b4b0313090a5f6a5481c8d5a585eaac4f4b61ea9fd459d6"
+      },
+      {
+        "file": "assets/member-ux-consistency.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "549beca9ebfe6b1b3f63d254280c5e61b8641809903a2f81dd7c415807314dea"
+      },
+      {
+        "file": "assets/phase1-foundation.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "f275ad98e4680f4e4436858911fc5800e39a4094ab144ec78d0a92adb75addf6"
+      },
+      {
+        "file": "assets/phase5-progress.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "b47b9ac07d1b21a9aad014d824e398690546e385eed7c249a98e95564d704b7b"
+      },
+      {
+        "file": "assets/phase6d0-legacy-auth.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "fdaca0d3637ca2dcd36fad7a3698ff6c4edae709c582ef3c6709530e2012d4e3"
+      },
+      {
+        "file": "assets/phase6c-private-ai-chat.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "f841e8c68f79d481157c7c4bfd0194b406ce1f980a26539667910c32baccae97"
+      },
+      {
+        "file": "assets/phase6d-owner-settings.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "edecdce2425970ca38f6e62b741e88ebed9a49ab6e3c0061821d8be021b26f10"
+      },
+      {
+        "file": "assets/phase6d-owner-settings.css",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "e03ac8dd7752620bb72d4d5bcea4e3c586c7fddce9d2ad2c95fa0a6db1332f58"
+      },
+      {
+        "file": "assets/phase6d-hotfix2.css",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "2c7444c64b34183c7a13241c42286f6109e6db782a4026f45b396318b72c25f9"
+      },
+      {
+        "file": "assets/phase6d-analysis-inbox.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "428c81aab07c815aab74828790c028b0839cdbd83a607b0c9eddbbcc8fc28fbe"
+      },
+      {
+        "file": "assets/phase3-training-engine.js",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "e87b01034544dd72c91a91fb40dd0d1b78364d62603dfbf1ed2babed7df944db"
+      },
+      {
+        "file": "assets/youri-ai-avatar-3d-v3-256.webp",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "257f31e6fe4faa7fecf5fb9874eed06d4018dc8c60958aa714e7d4b79a7517dc"
+      },
+      {
+        "file": "assets/vendor/lucide-settings.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "ceea1a72d04b112291222ba9ad0779a12d47d816079fe4174900c724f360b55c"
+      },
+      {
+        "file": "assets/vendor/lucide-globe.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "c3543ac3883a0841aa5d37ff974708fbc37d9c6afe64e14b03d56ed798b0b788"
+      },
+      {
+        "file": "assets/vendor/lucide-x.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "0f38855d9d5775c10960ae53e46b745f77914b43f78c43bf8abc39f4d5e06de1"
+      },
+      {
+        "file": "assets/vendor/flag-de.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "efd480af5a154a7651f29da23ee0d09dbc892410fb4041898ddf8face336c575"
+      },
+      {
+        "file": "assets/vendor/flag-gb.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "c8be1e7208798a4ae692ee1e937065d498bb29e741943f6172b29118b8ed8066"
+      },
+      {
+        "file": "assets/vendor/flag-nl.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "8f691f17fe70894537af8e92f2ca47761d353639b0defc15cbe561eb503ab010"
+      },
+      {
+        "file": "assets/vendor/lucide-archive.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "1a6e1c540c9a1a9b489893cc14ab9f597496c69aab5ba222fdd5b456de9e2fac"
+      },
+      {
+        "file": "assets/vendor/lucide-arrow-left.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "e31ed0af85ffbed2b54f78f37af197c3b84b24e776cba1d27613d6a9ad555a16"
+      },
+      {
+        "file": "assets/vendor/lucide-arrow-up.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "df0ff279d41bba93ae6797ef519ba442b895cd5d546fb36f22b7a656c3b05fd1"
+      },
+      {
+        "file": "assets/vendor/lucide-bell.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "129a018bd5025fc992a510e9c95e7868300d888b69c38c69a3466d310919ea13"
+      },
+      {
+        "file": "assets/vendor/lucide-calendar.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "2e2a7df92c2cca71dd6de34bb3f7187e276e8e8e003abe2e80b2ffd13347af60"
+      },
+      {
+        "file": "assets/vendor/lucide-check.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "538432eec072ceeccf5a7aacf347a2ad2bff9937d203dbd0b4f4245d7accd93c"
+      },
+      {
+        "file": "assets/vendor/lucide-chevron-right.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "fea488a3b60fd7738bbbf8ca98826ef5c0381347c5fd1048d45ee70a75a51cfe"
+      },
+      {
+        "file": "assets/vendor/lucide-credit-card.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "4d0394710733a8ca0db566208b0281708ebde7b167b6903491fde0be060bded1"
+      },
+      {
+        "file": "assets/vendor/lucide-download.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "f68a21e11115edc0aef51ac6f8f4618e14d2b92055f1cb9f5d670efc696bea85"
+      },
+      {
+        "file": "assets/vendor/lucide-file-text.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "512f414d72aabc5218b94a9da571df70d8e0b014cfb32ec366b559ec868952d6"
+      },
+      {
+        "file": "assets/vendor/lucide-history.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "682b5fc882578a3bdaac72c72fc27709cb806b61c2d1d51194327b31dde7f239"
+      },
+      {
+        "file": "assets/vendor/lucide-languages.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "a33a7bd34876dde0c5a470914dac09fca77f97da75e93e1b1687de2294874c65"
+      },
+      {
+        "file": "assets/vendor/lucide-loader-circle.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "44ad0f822a89b28a3feecf7276686c818a92a4a9c77cc51404c58929e30f0f3a"
+      },
+      {
+        "file": "assets/vendor/lucide-log-out.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "3f28d1eedd9a71ec6933578fc1b7cd21c56618e8b9b8339e55bfc133b4eb6bee"
+      },
+      {
+        "file": "assets/vendor/lucide-message-circle.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "f62830d9fbbbf697e53555398d31a342ddec8dd008d707f21cd90bb19befcc87"
+      },
+      {
+        "file": "assets/vendor/lucide-plus.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "b29207ee8f5cc0e829c0bab2e5b223fc88687599c6bd40b94ba35f52327615d6"
+      },
+      {
+        "file": "assets/vendor/lucide-rotate-cw.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "2c2c5d1f147e829f431182eee79d8d74e81aedcf8177f9e1878a4180ec990a9c"
+      },
+      {
+        "file": "assets/vendor/lucide-shield.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "276e603595736fcb698b0309b04c44ebb88afb28e4753c5670f92c11a01ed043"
+      },
+      {
+        "file": "assets/vendor/lucide-trash-2.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "9268a35cfb4f9d852c3d13f2c91476dd067c21c20e2bcdb0093fd93fd0bf34b7"
+      },
+      {
+        "file": "assets/vendor/lucide-user.svg",
+        "http": 200,
+        "commit_identical": true,
+        "sha256": "bb1e0531065db51238a34b348cf8fb8267cd31932dc3f680c9f204a58d1520ea"
+      }
+    ],
+    "viewports": [
+      {
+        "width": 320,
+        "height": 700,
+        "public": true,
+        "resendButtons": 2,
+        "memberNavEmpty": true,
+        "errors": 0,
+        "mutatingRequests": 0
+      },
+      {
+        "width": 390,
+        "height": 844,
+        "public": true,
+        "resendButtons": 2,
+        "memberNavEmpty": true,
+        "errors": 0,
+        "mutatingRequests": 0
+      },
+      {
+        "width": 820,
+        "height": 1180,
+        "public": true,
+        "resendButtons": 2,
+        "memberNavEmpty": true,
+        "errors": 0,
+        "mutatingRequests": 0
+      },
+      {
+        "width": 1440,
+        "height": 900,
+        "public": true,
+        "resendButtons": 2,
+        "memberNavEmpty": true,
+        "errors": 0,
+        "mutatingRequests": 0
+      }
+    ],
+    "databaseMutation": false
+  },
+  "postgres_retained_paths": [
+    {
+      "path": "C:\\Users\\Fitme\\OneDrive\\Documenten\\Fit Met Zorge\\Zip github fitmetzorge staging\\fitmetzorge-staging-main\\supabase\\.temp\\phase4fb-staging-deploy\\supabase\\.temp\\local-rebuild-tc26YR",
+      "children": [
+        {
+          "FullName": "C:\\Users\\Fitme\\OneDrive\\Documenten\\Fit Met Zorge\\Zip github fitmetzorge staging\\fitmetzorge-staging-main\\supabase\\.temp\\phase4fb-staging-deploy\\supabase\\.temp\\local-rebuild-tc26YR\\data",
+          "Name": "data",
+          "Attributes": 1040
+        },
+        {
+          "FullName": "C:\\Users\\Fitme\\OneDrive\\Documenten\\Fit Met Zorge\\Zip github fitmetzorge staging\\fitmetzorge-staging-main\\supabase\\.temp\\phase4fb-staging-deploy\\supabase\\.temp\\local-rebuild-tc26YR\\bootstrap.sql",
+          "Name": "bootstrap.sql",
+          "Attributes": 4199968
+        },
+        {
+          "FullName": "C:\\Users\\Fitme\\OneDrive\\Documenten\\Fit Met Zorge\\Zip github fitmetzorge staging\\fitmetzorge-staging-main\\supabase\\.temp\\phase4fb-staging-deploy\\supabase\\.temp\\local-rebuild-tc26YR\\postgres.log",
+          "Name": "postgres.log",
+          "Attributes": 4199968
+        }
+      ]
+    },
+    {
+      "path": "C:\\Users\\Fitme\\OneDrive\\Documenten\\Fit Met Zorge\\Zip github fitmetzorge staging\\fitmetzorge-staging-main\\supabase\\.temp\\phase4fb-staging-deploy\\supabase\\.temp\\local-rebuild-YIC31o",
+      "children": [
+        {
+          "FullName": "C:\\Users\\Fitme\\OneDrive\\Documenten\\Fit Met Zorge\\Zip github fitmetzorge staging\\fitmetzorge-staging-main\\supabase\\.temp\\phase4fb-staging-deploy\\supabase\\.temp\\local-rebuild-YIC31o\\data",
+          "Name": "data",
+          "Attributes": 1040
+        }
+      ]
+    },
+    {
+      "path": "C:\\Users\\Fitme\\AppData\\Local\\Temp\\fmz-local-rebuild-YsUaP4",
+      "children": [
+        {
+          "FullName": "C:\\Users\\Fitme\\AppData\\Local\\Temp\\fmz-local-rebuild-YsUaP4\\data",
+          "Name": "data",
+          "Attributes": 16
+        },
+        {
+          "FullName": "C:\\Users\\Fitme\\AppData\\Local\\Temp\\fmz-local-rebuild-YsUaP4\\bootstrap.sql",
+          "Name": "bootstrap.sql",
+          "Attributes": 32
+        },
+        {
+          "FullName": "C:\\Users\\Fitme\\AppData\\Local\\Temp\\fmz-local-rebuild-YsUaP4\\postgres.log",
+          "Name": "postgres.log",
+          "Attributes": 32
+        }
+      ]
+    }
+  ],
+  "boundaries": {
+    "filesystem_deletions": 0,
+    "full_971_item_manifest_available": false,
+    "all_pending_deletion_targets_certified": false,
+    "full_31_migration_local_rebuild": false,
+    "legacy_rebuild_gap": "Docker/pg_cron unavailable in previously verified local environment; no fresh complete rebuild claimed.",
+    "member_provider_calls": 0,
+    "external_cost_eur": 0,
+    "production_touched": false,
+    "real_mail_sent": false,
+    "brevo_investigation": false,
+    "manual_account_confirmation": false,
+    "trainer_role_link_changed": false,
+    "package6e_implementation_started": false
+  }
+}

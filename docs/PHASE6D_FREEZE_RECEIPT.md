@@ -1,6 +1,11 @@
 # Package 6D Owner Freeze Receipt
 
-Status: COMPLETE / OWNER-ACCEPTED / FROZEN
+Current status: HISTORICAL FREEZE POSTPONED BY LATER OWNER THEME REQUEST.
+The earlier functional acceptance and immutable evidence below remain valid history.
+Definitive Package 6D freeze now requires a final owner theme retest after restoration.
+See PACKAGE6D_THEME_RESTORATION_REPORT.md; no Package 6E implementation is authorized.
+
+Historical status: COMPLETE / OWNER-ACCEPTED / FROZEN
 Owner acceptance and verification date: 2026-09-07
 Repository/branch: Yourizorge/fitmetzorge-staging / main
 Environment: STAGING mokxyyullfhkfalopbzd only
@@ -12,7 +17,8 @@ floating Youri AI avatar, chat, central vertical settings, language, automatic t
 analysis scheduling, safety recovery, automatic workout analysis, opening analysis,
 bounded mobile detail, placement after Check-in/training, matching dashboard cards,
 retention after viewing/refresh and all other tested 6D behavior.
-The owner decision is COMPLETE / OWNER-ACCEPTED / FROZEN, not inferred from tests.
+That earlier owner decision was explicit, not inferred from tests, and was subsequently
+superseded for definitive freeze by the later theme restoration request.
 
 This receipt supersedes pending-owner statuses in the dated implementation/hotfix reports.
 It freezes the accepted mock-only product, not a medical diagnosis/classification model.

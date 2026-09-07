@@ -1,10 +1,12 @@
 # Package 6D Read-Only Analyses - Architecture And Readiness
 
-Status: COMPLETE / OWNER-ACCEPTED / FROZEN
+Status: PACKAGE 6D THEME RESTORATION - READY FOR FINAL OWNER RETEST.
+The later owner theme request postpones definitive 6D freeze. Earlier acceptance is
+historical functional evidence. See PACKAGE6D_THEME_RESTORATION_REPORT.md.
 
 Explicit final real-phone owner acceptance: 2026-09-07. All pending-owner/freeze
-statements in the dated historical sections below are superseded.
-Current frozen runtime/cache/Edge/migration/test ledger: PHASE6D_FREEZE_RECEIPT.md.
+statements in the dated historical sections below were superseded at that time.
+Historical pre-theme runtime/cache/Edge/migration/test ledger: PHASE6D_FREEZE_RECEIPT.md.
 This acceptance authorizes no external member provider call or 6E implementation.
 The subsequent read-only 6E audit is COMPLETE; see PHASE6E_SAFETY_RISK_READINESS.md
 for documented gaps and proposals requiring separate owner/qualified review.

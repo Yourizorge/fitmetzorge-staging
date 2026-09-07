@@ -2,7 +2,18 @@
 
 Last updated: 2026-09-07
 
-## Package 6D Owner Freeze - Current
+## Package 6D Theme Restoration - Current
+
+Status: PACKAGE 6D THEME RESTORATION - READY FOR FINAL OWNER RETEST.
+Runtime bc6308fbf0f914b04c7faa711219d9ae46e9cbe3; cache 20260907-theme1.
+Local/live theme browser 1080/1080; 44 live assets Git-identical; 31/31 migrations,
+empty dry-run also fresh; SQL 33/33, verifier 11/11; 24 member hashes unchanged.
+The owner's later theme request postpones the definitive 6D freeze. Earlier real-phone
+functional acceptance remains historical evidence, not final acceptance of this change.
+See PACKAGE6D_THEME_RESTORATION_REPORT.md for the current runtime and evidence.
+Package 6E implementation remains NOT STARTED; production is forbidden.
+
+## Package 6D Owner Freeze - Historical, Superseded
 
 Status: COMPLETE / OWNER-ACCEPTED / FROZEN, explicitly accepted on a real phone
 on 2026-09-07. The owner confirms the complete avatar/chat/settings/language/timezone/
@@ -14,7 +25,7 @@ Read-only freeze rerun: foundation 47, recent 18, worker 23, all 20 frozen suite
 See PHASE6D_FREEZE_RECEIPT.md and PHASE6D_FREEZE_EVIDENCE.json for exact baselines.
 No runtime/schema/memberdata/flag changes, migrations, external AI cost or production.
 Formal freeze documentation: d53fea94f50c23c059104045f899fde4da25c2ec.
-Historical pending-owner statements below are superseded by this explicit freeze.
+This historical freeze was subsequently postponed by the owner's theme request above.
 
 ## Package 6E Readiness Audit - Current
 
@@ -118,7 +129,7 @@ clean for staging. See [migration audit](PROJECT_MIGRATION_RECONCILIATION.md).
 - Phase 0B Storage verification: COMPLETE
 - Master Plan Specification: COMPLETE
 - Master Plan Final Review: COMPLETE
-- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6C COMPLETE / OWNER-ACCEPTED / FROZEN; PACKAGE 6D COMPLETE / OWNER-ACCEPTED / FROZEN
+- Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6C COMPLETE / OWNER-ACCEPTED / FROZEN; PACKAGE 6D THEME RESTORATION - READY FOR FINAL OWNER RETEST
 - Production Migration: NOT STARTED
 
 Current next step: owner decisions D1-D12 and assignment of qualified reviewers,

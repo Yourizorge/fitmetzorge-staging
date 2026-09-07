@@ -4,7 +4,22 @@ Date: 2026-09-04. Target: staging `mokxyyullfhkfalopbzd` only.
 Result: RESOLVED / VERIFIED. Later Package 6D work appended forward-only migrations
 without reopening the historical repair.
 
-## Frontend Placement Note - 2026-09-07
+## Theme Restoration - Verified 2026-09-07
+
+Only forward-only 20260907095307_phase6d_theme_preference.sql was appended:
+nullable own-user preference, no default/backfill; two existing settings RPCs extended.
+All prior 30 migration Git hashes preserved. migration list 31/31 and empty dry-run,
+also from the clean runtime checkout bc6308fbf0f914b04c7faa711219d9ae46e9cbe3.
+SQL 33/33 rollback before/after apply; SELECT verifier 11/11; two function bodies
+match staging after newline normalization. All 24 member-table hashes/counts and
+five schema boundaries outside the explicit theme change are unchanged.
+No history repair/replay/reset, memberdata reconstruction or PostgreSQL deletion.
+No new complete local 31-migration replay/global schema-diff claim. The existing
+Docker/pg_cron/971-item-manifest limitations remain explicit. See the exact paths,
+tests and boundaries in PACKAGE6D_THEME_RESTORATION_REPORT.md and its evidence.
+Definitive Package 6D freeze is postponed pending the owner's physical theme retest.
+
+## Frontend Placement Note - Historical 2026-09-07
 
 The dashboard placement hotfix changes no tracked Supabase file and creates no migration.
 No database command, history repair, replay, dry-run, reset or Edge deployment was run.

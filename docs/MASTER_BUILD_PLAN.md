@@ -5,7 +5,15 @@ Last updated: 2026-09-07
 
 This document is the product and execution source of truth for the FitMetZorge Master Build after Phase 0A Governance and Phase 0B Live Staging Infrastructure Verification.
 
-## Package 6D Owner Freeze - 2026-09-07
+## Package 6D Theme Restoration - Current
+
+The later owner request postpones definitive 6D freeze until the restored
+Settings > Appearance system/light/dark feature passes final owner retest.
+Status: PACKAGE 6D THEME RESTORATION - READY FOR FINAL OWNER RETEST.
+Technical verification and staging deployment PASS. Earlier functional acceptance is retained.
+See PACKAGE6D_THEME_RESTORATION_REPORT.md. No Package 6E implementation is authorized.
+
+## Package 6D Owner Freeze - Historical, Superseded 2026-09-07
 
 Package 6D is COMPLETE / OWNER-ACCEPTED / FROZEN by explicit real-phone acceptance.
 Runtime 7fec9da7cb00cb7dff4a601810ddd2c977db0f5f, cache 20260907-dashboard-placement1,
@@ -14,7 +22,7 @@ are PHASE6D_FREEZE_RECEIPT.md and PHASE6D_FREEZE_EVIDENCE.json.
 Freeze documentation commit: d53fea94f50c23c059104045f899fde4da25c2ec.
 The subsequent read-only Package 6E Risk, Safety and Escalation audit is COMPLETE.
 No 6E feature, migration, flag, frontend, Edge or provider activation is authorized.
-Pending-owner language in the dated historical hotfix/audit sections is superseded.
+The later theme request above supersedes this historical freeze, not its test evidence.
 
 ## Package 6E Readiness - 2026-09-07
 
@@ -59,7 +67,8 @@ timestamp differences are renamed to canonical live migration versions, the dupl
 old `20260819` conflict is removed, the missing Phase 1-3/source SQL is represented by
 a forward-only source baseline, and the four previously local-only versions were marked
 applied as history metadata only. Package 6D and its owner hotfixes add five later forward-only migrations,
-so the current canonical chain is synchronized at 30 local and 30 remote rows. No
+so the pre-theme canonical chain was synchronized at 30 local and 30 remote rows.
+Theme restoration appends 20260907095307; current list/dry-run is synchronized 31/31. No
 historical SQL replay, member-data rewrite, remote reset or production access occurred.
 Official migration list and `db push --dry-run --skip-vault` are clean for staging;
 local rebuild PASSes through Phase 6B and full local 6C/6D0/6D replay still needs a
@@ -68,7 +77,8 @@ Package 6D-0's canonical `20260904105918` identity remains unchanged. See
 PROJECT_MIGRATION_RECONCILIATION.md. This gate does not authorize another build phase
 or production access.
 
-Package 6D read-only analyses are COMPLETE / OWNER-ACCEPTED / FROZEN on staging.
+Package 6D theme restoration is READY FOR FINAL OWNER RETEST on staging.
+Earlier functional acceptance is retained; definitive freeze is postponed.
 The locked initial scope is daily, post-workout and weekly
 analysis inside Youri AI, with separate `ai_analysis` consent, maximum 90-day result
 retention, 180-day minimized audit metadata, no trainer access, no private-chat
@@ -79,7 +89,8 @@ activation remains forbidden until the separate legal/provider gate passes.
 
 ## Final Dashboard Placement Hotfix - Current Presentation Contract
 
-The final dashboard placement hotfix is included in the accepted Package 6D freeze.
+The final dashboard placement hotfix retains its prior functional owner acceptance;
+definitive Package 6D freeze now waits for the theme retest.
 Owner confirms the analysis lifecycle, mobile detail and other 6D behavior work.
 The dashboard order is greeting/intro, Check-in, training, recent analyses, then other
 existing components. Up to three analyses use the existing dashboard card styling,

@@ -1,10 +1,14 @@
 # Package 6D Read-Only Analyses Technical Report
 
-Current status: COMPLETE / OWNER-ACCEPTED / FROZEN, explicitly accepted on a real
+Current status: PACKAGE 6D THEME RESTORATION - READY FOR FINAL OWNER RETEST.
+The later owner theme request postpones definitive 6D freeze. Earlier acceptance is
+retained as historical evidence. See PACKAGE6D_THEME_RESTORATION_REPORT.md.
+
+Historical status: COMPLETE / OWNER-ACCEPTED / FROZEN, explicitly accepted on a real
 phone on 2026-09-07. See PHASE6D_FREEZE_RECEIPT.md and PHASE6D_FREEZE_EVIDENCE.json.
 All pending-owner statuses in historical implementation/hotfix sections below are
 superseded. Frozen runtime 7fec9da; Edge v43; cache 20260907-dashboard-placement1;
-current migration parity 30/30. The subsequent read-only 6E readiness audit is COMPLETE;
+historical migration parity 30/30. The subsequent read-only 6E readiness audit is COMPLETE;
 see PHASE6E_SAFETY_RISK_READINESS.md. No 6E implementation is authorized or started.
 
 Accepted final follow-up: PACKAGE 6D FINAL DASHBOARD PLACEMENT HOTFIX.
@@ -17,11 +21,11 @@ Owner confirms the lifecycle, mobile detail and final dashboard placement work.
 See [preceding mobile report](PACKAGE6D_FINAL_OWNER_MOBILE_HOTFIX_REPORT.md) for
 opened/missing-notification dashboard persistence, the newest-three read model and
 fully bounded mobile comparison/detail. New live-assets browser 180/180, 25 layouts,
-41 assets commit-identical, 23 member-table hashes unchanged. Current chain 30/30.
+41 assets commit-identical, 23 member-table hashes unchanged. That receipt's chain: 30/30.
 The automatic mock worker, renewed chat, vertical settings, device timezone/flags,
 recovery, private-chat consent, approved floating avatar and Edge v43 are preserved.
 The initial implementation receipt below remains historical evidence, not the latest
-runtime/cache. Package 6D is now owner-accepted/frozen; prior evidence is preserved.
+runtime/cache. Prior evidence is preserved; the current theme owner retest is pending.
 
 Date: 2026-09-06. Scope: staging only, `Yourizorge/fitmetzorge-staging` branch `main`,
 Supabase project `mokxyyullfhkfalopbzd`. Production remains forbidden and untouched.
