@@ -2,7 +2,7 @@
 
 Status: 6E-0 OFFLINE RECOGNITION FOLLOW-UP - TECHNICAL PASS / READY FOR OWNER PRODUCT REVIEW.
 Datum: 2026-09-07. Uitsluitend offline; geen 6E-1, owner-freeze of live integratie.
-Publicatiebewijs volgt in PHASE6E0_RECOGNITION_PUBLICATION.md; oude evidence blijft geschiedenis.
+Publicatiebewijs: PHASE6E0_RECOGNITION_PUBLICATION.md; oude evidence blijft geschiedenis.
 
 ## Baseline En Werkwijze
 
