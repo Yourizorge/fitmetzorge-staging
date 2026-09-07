@@ -1,9 +1,9 @@
 # FitMetZorge Test Matrix
 
 Status: MASTER PLAN COVERAGE MATRIX
-Latest execution: 2026-09-07 Package 6D owner freeze read-only verification,
+Latest execution: 2026-09-07 Package 6D owner freeze and 6E read-only readiness audit,
 after the public Auth hotfix and project migration reconciliation. Migration history
-was synchronized 30/30 with a clean dry-run on 2026-09-06; this frontend-only task
+was synchronized 30/30 with a clean dry-run on 2026-09-06; this documentation-only task
 does not alter migration history; a fresh MCP listing confirms exact 30/30 parity. Public Auth hotfix
 checks remain valid, the owner received the confirmation email, and no new resend,
 Brevo investigation, manual confirmation, trainer role or trainer link was performed.
@@ -36,7 +36,20 @@ Accepted browser baselines retained without new mutating E2E: placement 426 loca
 and live, mobile 180, owner 323, public Auth 88. Exact ledger and limits:
 PHASE6D_FREEZE_RECEIPT.md / PHASE6D_FREEZE_EVIDENCE.json.
 No runtime/database/memberdata change or external AI call. Historical pending-owner
-statuses below are superseded. Package 6E is read-only audit only, not implemented.
+statuses below are superseded. Package 6E read-only audit is complete, not implemented.
+
+## Package 6E Audit - Current Execution
+
+Eight read-only live catalog/ACL/gate predicates PASS. Thirty-six synthetic probes
+execute the existing frozen classifier/recovery-intent module, with 12 retained
+controls and 24 gap examples. These are exploratory examples, not a medical PASS,
+sensitivity/specificity metric or statistically representative validation set.
+No new member RPC, DB fixture, provider call, test-source or runtime implementation.
+See PHASE6E_SAFETY_RISK_READINESS_EVIDENCE.json for exact inputs/results/query and
+[readiness test strategy](PHASE6E_SAFETY_RISK_READINESS.md#16-teststrategie-en-acceptatie).
+The proposed 360-case multilingual core plus state/isolation/privacy/retention/race,
+international-copy and mobile checks is NOT implemented or executed. Clinical labels
+and acceptance gates need independent qualified review before a later release.
 
 ## Final Dashboard Placement Hotfix - Historical Execution
 

@@ -6,6 +6,8 @@ Explicit final real-phone owner acceptance: 2026-09-07. All pending-owner/freeze
 statements in the dated historical sections below are superseded.
 Current frozen runtime/cache/Edge/migration/test ledger: PHASE6D_FREEZE_RECEIPT.md.
 This acceptance authorizes no external member provider call or 6E implementation.
+The subsequent read-only 6E audit is COMPLETE; see PHASE6E_SAFETY_RISK_READINESS.md
+for documented gaps and proposals requiring separate owner/qualified review.
 
 Date: 2026-09-04 audit; 2026-09-06 implementation addendum.
 Scope: Yourizorge/fitmetzorge-staging / main; Supabase mokxyyullfhkfalopbzd only.

@@ -13,8 +13,22 @@ Read-only freeze rerun: foundation 47, recent 18, worker 23, all 20 frozen suite
 42 live assets Git-identical, 10 Edge source files equal after newline normalization.
 See PHASE6D_FREEZE_RECEIPT.md and PHASE6D_FREEZE_EVIDENCE.json for exact baselines.
 No runtime/schema/memberdata/flag changes, migrations, external AI cost or production.
-Only the subsequent Package 6E read-only readiness audit is authorized.
+Formal freeze documentation: d53fea94f50c23c059104045f899fde4da25c2ec.
 Historical pending-owner statements below are superseded by this explicit freeze.
+
+## Package 6E Readiness Audit - Current
+
+Status: READ-ONLY AUDIT COMPLETE / IMPLEMENTATION NOT STARTED.
+See [readiness report](PHASE6E_SAFETY_RISK_READINESS.md) and
+[synthetic/catalog evidence](PHASE6E_SAFETY_RISK_READINESS_EVIDENCE.json).
+Eight read-only live metadata predicates PASS; 36 existing-classifier probes include
+12 retained controls and 24 gap examples, not a clinical accuracy score.
+Proven gaps include missed serious signals, negation/educational context exclusions,
+contradictory recovery intents and no demonstrated safety/recovery expiry.
+Five proposed help/action levels, international routes, privacy/retention/trainer
+boundaries and D1-D12 owner decisions are documented, not activated or approved.
+No runtime, database, memberdata, migration, flag or Edge changes; external AI 0/EUR0.
+Production untouched. Only a separately authorized offline 6E-0 slice is recommended.
 
 ## Final Dashboard Placement Hotfix - Historical
 
@@ -107,8 +121,9 @@ clean for staging. See [migration audit](PROJECT_MIGRATION_RECONCILIATION.md).
 - Implementation: PHASE 5 PROGRESSIE COMPLETE / FROZEN; PHASE 6A COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6B COMPLETE / OWNER-ACCEPTED / FROZEN; PHASE 6C COMPLETE / OWNER-ACCEPTED / FROZEN; PACKAGE 6D COMPLETE / OWNER-ACCEPTED / FROZEN
 - Production Migration: NOT STARTED
 
-Current next step: complete the owner-authorized Package 6E Risk, Safety and
-Escalation read-only readiness audit. No 6E implementation is authorized.
+Current next step: owner decisions D1-D12 and assignment of qualified reviewers,
+then an explicit offline 6E-0 contract/corpus task. The readiness audit is complete;
+no 6E implementation, runtime correction or external member processing is authorized.
 Package 6D is implemented on staging as a mock-only, read-only analysis surface for
 daily, post-workout and weekly analyses, with separate `ai_analysis` consent, no
 trainer access, no private-chat context, no domain writes, no provider call and EUR

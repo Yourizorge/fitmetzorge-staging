@@ -22,10 +22,11 @@ It does not authorize external member AI, billing, automatic domain actions or p
 
 - Accepted runtime/test commit: `7fec9da7cb00cb7dff4a601810ddd2c977db0f5f`.
 - Accepted pre-freeze documentation: `c1a71dea1bd651a12c738a94ce8ac2e56bcc26b9`.
-- Formal freeze documentation commit: the commit introducing this receipt. Resolve
-  with `git log --diff-filter=A -1 --format=%H -- docs/PHASE6D_FREEZE_RECEIPT.md`.
-  Its full hash is recorded in the subsequent 6E audit documentation and final delivery.
-  A commit cannot embed its own resulting hash.
+- Formal freeze documentation commit: `d53fea94f50c23c059104045f899fde4da25c2ec`.
+  This is the commit introducing this receipt, independently resolvable with
+  `git log --diff-filter=A -1 --format=%H -- docs/PHASE6D_FREEZE_RECEIPT.md`.
+  The full hash is added by the subsequent documentation-only 6E audit commit;
+  the accepted runtime and original freeze evidence are unchanged.
 - Preflight: exact requested workrepo, clean main, local HEAD/origin/main/actual remote
   all c1a71dea1bd651a12c738a94ce8ac2e56bcc26b9. AGENTS.md/config read; auto_review,
   workspace-write and project network access configured, managed restrictions preserved.
@@ -88,7 +89,8 @@ Prior SQL behavior tests remain explicitly historical, not rerun claims.
 - Separate private_chat and ai_analysis consent; versioned affirmative consent,
   entitlement/age/revocation gates remain authoritative.
 - Private chat is member-only; trainers have no chat or analysis read path.
-- A current serious message produces a safe no-diagnosis stop and zero actions.
+- A current message recognized by the frozen serious-signal classifier produces a
+  no-diagnosis stop and zero actions; unrecognized signals are documented 6E gaps.
   Historical safety state blocks future automatic actions, not ordinary later chat.
 - Recovery requires explicit confirmations, member identity and the exact locked
   safety revision. It releases analysis blocking for that revision only, never
@@ -119,6 +121,6 @@ paths remain untouched. Prior full member-table fingerprints are historical; thi
 task reads no raw member chat/health content and makes no new content-export claim.
 
 This freeze is not project-wide security, medical, privacy or production certification.
-The owner has authorized only a subsequent read-only Package 6E readiness audit.
+The subsequent authorized read-only Package 6E audit is complete; see
+PHASE6E_SAFETY_RISK_READINESS.md for proven gaps, proposals and the next decision gate.
 Implementation and every material new medical/privacy/product decision remain gated.
-

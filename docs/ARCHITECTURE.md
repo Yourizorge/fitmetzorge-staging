@@ -6,8 +6,14 @@ Last updated: 2026-09-07
 Package 6D: COMPLETE / OWNER-ACCEPTED / FROZEN on 2026-09-07 after explicit
 real-phone acceptance. The freeze changes no architecture/runtime/schema.
 See PHASE6D_FREEZE_RECEIPT.md for runtime 7fec9da, Edge v43, cache and 30/30 history.
-Only a read-only 6E safety/readiness audit is authorized; no new risk taxonomy or
-recovery rule is implemented. Historical pending-owner statements are superseded.
+The read-only 6E safety/readiness audit is COMPLETE; no new risk taxonomy or recovery
+rule is implemented. Historical pending-owner statements are superseded.
+See [6E readiness architecture](PHASE6E_SAFETY_RISK_READINESS.md) and its evidence:
+eight live catalog/ACL/gate checks, 36 synthetic existing-classifier probes and
+documented negation/education/recovery/retention gaps. Five help/action levels,
+episode/expiry policy, international copy and trainer sharing are PROPOSALS ONLY.
+The frozen chat/analysis/action-gate separation remains unchanged. No medical
+validation, launch clearance, schema change or provider activation is implied.
 
 Public Auth lifecycle: Phase 1 owns the session/profile-ready render boundary.
 Registration/login/password/confirmation/error screens must never dispatch member

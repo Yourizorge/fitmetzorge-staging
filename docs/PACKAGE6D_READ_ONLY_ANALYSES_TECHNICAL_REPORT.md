@@ -4,7 +4,8 @@ Current status: COMPLETE / OWNER-ACCEPTED / FROZEN, explicitly accepted on a rea
 phone on 2026-09-07. See PHASE6D_FREEZE_RECEIPT.md and PHASE6D_FREEZE_EVIDENCE.json.
 All pending-owner statuses in historical implementation/hotfix sections below are
 superseded. Frozen runtime 7fec9da; Edge v43; cache 20260907-dashboard-placement1;
-current migration parity 30/30. Only a read-only 6E readiness audit is authorized.
+current migration parity 30/30. The subsequent read-only 6E readiness audit is COMPLETE;
+see PHASE6E_SAFETY_RISK_READINESS.md. No 6E implementation is authorized or started.
 
 Accepted final follow-up: PACKAGE 6D FINAL DASHBOARD PLACEMENT HOTFIX.
 See [current presentation report](PACKAGE6D_DASHBOARD_PLACEMENT_HOTFIX_REPORT.md) for
