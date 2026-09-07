@@ -28,7 +28,8 @@ regelrang worden verworpen. Dit valideert het contract, niet een medische uitkom
 | unavailable | Misvormde input of technische onbeschikbaarheid | Eigen foutcode en vaste feedback, nooit vermomd als R0 |
 
 known betekent alleen 'de beperkte regels markeerden geen onzekerheid', niet
-betrouwbaar beoordeeld. De vier gedocumenteerde missers produceren zelfs known/R0.
+betrouwbaar beoordeeld. De vier oorspronkelijke missers gaven eerder known/R0;
+de offline recognition follow-up geeft nu uncertain/null, zonder medische rang.
 Daarom mag geen runtimeadapter deze velden als medische autoriteit gebruiken.
 
 ## Deterministische Herkenning
@@ -44,8 +45,12 @@ deskundig vastgestelde drempel. Alle tien categorieen/rangen zijn reviewplichtig
 Complexe grammatica, referenten, impliciete symptomen, andere talen, sarcasme,
 meerledige ontkenning en onbeperkte spelfouten zijn niet opgelost. De lexicale lijst
 is niet volledig; er is geen model dat onbekende zinnen betrouwbaar kan begrijpen.
-known-limitations.json registreert vier concrete missers. Een groene observatietest
-betekent daar alleen dat de beperking reproduceerbaar is.
+known-limitations.json bewaart de vier historische missers met hun verbeterde verwachting.
+De huidige regressietests vereisen expliciete onzekerheid; ze accepteren geen oude misser.
+context-hints.json voegt geen R-niveaus toe. Gematchte tekstspans worden afzonderlijk
+afgehandeld; een ontkend signaal maskeert niet de resterende gezondheidscontext.
+79 vooraf vastgelegde NL/EN/DE-gevallen toetsen dit, naast bestaande technische tests.
+De regels blijven eindige taalheuristieken, zonder garantie voor alle mogelijke zinnen.
 
 ## Vier Afzonderlijke Beslissingen
 

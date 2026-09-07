@@ -41,7 +41,7 @@ test("private package has no dependencies or runtime integration scripts", () =>
     const source = fs.readFileSync(path.join(directory, name), "utf8");
     assert.doesNotMatch(source, /\b(?:fetch|XMLHttpRequest|WebSocket|setInterval|setTimeout|Date)\b|process\.env|Math\.random|\bimport\s*\(/);
     for (const match of source.matchAll(/require\("([^"]+)"\)/g)) {
-      assert.match(match[1], /^\.\/(?:engine\.cjs|contract\.json|rules\.json|copy\.json|fixture-seeds\.json)$/);
+      assert.match(match[1], /^\.\/(?:engine\.cjs|contract\.json|rules\.json|copy\.json|context-hints\.json|fixture-seeds\.json)$/);
     }
   }
 });
@@ -50,7 +50,7 @@ test("core works with only allowlisted local modules, without network, storage, 
   vm.runInContext("globalThis.Date = undefined; Math.random = () => { throw Error('random_forbidden'); }; globalThis.structuredClone = x => JSON.parse(JSON.stringify(x));", context);
   const cache = new Map();
   function load(name) {
-    assert.match(name, /^\.\/(?:engine\.cjs|state\.cjs|retention\.cjs|corpus\.cjs|contract\.json|rules\.json|copy\.json|fixture-seeds\.json)$/);
+    assert.match(name, /^\.\/(?:engine\.cjs|state\.cjs|retention\.cjs|corpus\.cjs|contract\.json|rules\.json|copy\.json|context-hints\.json|fixture-seeds\.json)$/);
     if (cache.has(name)) return cache.get(name);
     const source = fs.readFileSync(path.join(directory, name), "utf8");
     if (name.endsWith(".json")) {

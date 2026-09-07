@@ -1,5 +1,18 @@
 # Package 6E-0 Technisch Eindrapport
 
+## Recognition Follow-Up - Current
+
+6E-0 OFFLINE RECOGNITION FOLLOW-UP - TECHNICAL PASS / READY FOR OWNER PRODUCT REVIEW.
+The four original known/R0 gaps now produce explicit uncertain/null, without assigning
+new medical levels. 79 pre-registered NL/EN/DE cases and 4 access/recovery checks PASS.
+Full offline suite: 659/659; frozen theme unit: 10/10. Zero remaining failures in that
+bounded set; historical gap observations are not counted as successful recognition.
+D1-D12, existing medical ranks and copy are unchanged. No runtime/data/provider action.
+See PHASE6E0_RECOGNITION_FOLLOWUP.md and PHASE6E0_PRODUCT_REVIEW.md for exact messages.
+Publication evidence: PHASE6E0_RECOGNITION_PUBLICATION.md when finalized.
+Expert reviews and serious recovery conditions stay OPEN; no 6E-1 or owner-freeze.
+Earlier counts and statements about four unresolved gaps below are historical execution.
+
 Datum: 2026-09-07.
 PACKAGE 6E-0 OFFLINE PREPARATION - TECHNICAL PASS / READY FOR OWNER REVIEW.
 Alleen technisch offline resultaat; geen deskundige goedkeuring of gebruikersvrijgave.

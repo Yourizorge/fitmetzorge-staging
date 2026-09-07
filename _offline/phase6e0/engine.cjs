@@ -4,6 +4,7 @@ if (typeof window !== "undefined" || !process.versions.node) throw new Error("of
 const contract = require("./contract.json");
 const rules = require("./rules.json");
 const copy = require("./copy.json");
+const contextHints = require("./context-hints.json");
 function freeze(value) {
   if (value && typeof value === "object") {
     Object.values(value).forEach(freeze);
@@ -11,7 +12,7 @@ function freeze(value) {
   }
   return value;
 }
-freeze(contract); freeze(rules); freeze(copy);
+freeze(contract); freeze(rules); freeze(copy); freeze(contextHints);
 const plain = value => value !== null && typeof value === "object" &&
   !Array.isArray(value) && [Object.prototype, null].includes(Object.getPrototypeOf(value));
 const exact = (value, keys) => plain(value) &&
@@ -23,6 +24,8 @@ const uniqueList = (value, choices) => Array.isArray(value) &&
 const rank = level => level === null ? -1 : Number(level.slice(1));
 const codes = rules.map(rule => rule.code);
 const compiled = rules.map(rule => ({ ...rule, patterns: rule.patterns.map(pattern => new RegExp(pattern, "g")) }));
+const compiledHints = contextHints.hints.map(hint => ({ ...hint,
+  patterns: hint.patterns.map(pattern => new RegExp(pattern, "g")) }));
 const warnings = ["no_signal", "caution", "stop_clarify", "professional_review", "urgent_help"];
 const assessmentKeys = ["contract_version", "review_status", "evaluation_state", "help_level",
   "signal_codes", "context_states", "uncertainty_codes", "warning_key", "recovery_intent",
@@ -31,7 +34,7 @@ function normalize(text) {
   return text.normalize("NFKD").replace(/[\u0300-\u036f]/g, "")
     .replace(/\u00df/g, "ss").replace(/[\u200B-\u200D\uFEFF]/g, "")
     .replace(/[\u201C\u201D]/g, '"').replace(/[\u2018\u2019']/g, "")
-    .toLowerCase().replace(/[^\p{L}\p{N}".!?;\n]+/gu, " ").replace(/[ \t]+/g, " ").trim();
+    .toLowerCase().replace(/[^\p{L}\p{N}",.!?;\n]+/gu, " ").replace(/[ \t]+/g, " ").trim();
 }
 function result(overrides = {}) {
   return {
@@ -83,7 +86,7 @@ function validateAssessment(value) {
 }
 const personalNow = /\b(?:ik (?:heb|ben|voel|wil|kan)|i (?:have|am|feel|want|cannot|cant)|ich (?:habe|bin|will|kann)|mijn partner|my partner|mein partner|nu|now|jetzt|momenteel|currently)\b/;
 const explicitNow = /\b(?:nu|now|jetzt|momenteel|currently)\b/;
-const educational = /\b(?:wat (?:is|zijn|betekent)|leg uit|what (?:is|are|does)|explain|was (?:ist|sind|bedeutet)|erklar|erklaer)\b/;
+const educational = /\b(?:wat (?:is|zijn|betekent)|leg uit|what (?:is|are|does)|explain|was (?:ist|sind|bedeutet)|erklar(?:e|en)?|erklaer(?:e|en)?)\b/;
 const past = /\b(?:vorige maand|last month|letzten monat|vroeger|previously|fruher|frueher|gisteren|yesterday|gestern)\b/;
 const continuing = /\b(?:sinds|since|seit)\b/;
 const hypothetical = /\b(?:stel dat|denkbeeldig|hypothetical|imagine|if i ever|wenn ich jemals|angenommen)\b/;
@@ -91,11 +94,23 @@ const negation = /\b(?:geen|zonder|niet|no|without|not|kein|keine|keinen|ohne|ni
 const afterNegation = /^\s+(?:(?:is|are|ist|sind|zijn)\s+)?(?:afwezig|absent|nicht vorhanden)\b/;
 const recovery = /\b(?:het gaat weer goed|geen klachten meer|de pijn is weg|klachten zijn voorbij|i feel (?:well|fine) again|no symptoms (?:now|anymore)|pain is gone|mir geht es wieder gut|keine beschwerden mehr)\b/;
 const dispute = /\b(?:verkeerd begrepen|misunderstood|missverstanden)\b/;
+const healthWords = /\b(?:klachten|symptomen|symptoms|beschwerden|medicatie|medication|schmerz|pijn|pain|ziek|ill|krank)\b/g;
+function matchedContext(clause, match, context, internalNegation, uncertainties) {
+  if (context !== "current") return context;
+  const before = clause.slice(0, match.index).trimEnd();
+  const after = clause.slice(match.index + match[0].length);
+  const prefix = before.match(negation)?.[0] || "";
+  const scope = prefix + " " + (internalNegation ? match[0] : "");
+  const negatives = scope.match(/\b(?:geen|zonder|niet|no|without|not|kein|keine|keinen|ohne|nicht)\b/g) || [];
+  if (negatives.length > 1) { uncertainties.add("ambiguous_context"); return "current"; }
+  return negatives.length || afterNegation.test(after) ? "negated" : "current";
+}
 function classify(input) {
   if (!validInput(input)) return unavailable("invalid_input");
   if (input.availability === "unavailable") return unavailable("technical_unavailable");
   const text = normalize(input.text), uncertainties = new Set(), contexts = new Set();
   const active = new Set(), inactive = new Set();
+  let activeUnclassified = false;
   let hasRecovery = false, hasDispute = false;
   if (!contract.locales.includes(input.locale)) uncertainties.add("unsupported_language");
   if (!text) uncertainties.add("missing_context");
@@ -105,15 +120,19 @@ function classify(input) {
   const pieces = text.match(/"[^"]*"|[^"]+/g) || [];
   for (const piece of pieces) {
     const quoted = piece.startsWith('"');
-    // Clause boundaries prevent a preceding negation or educational question swallowing a new signal.
-    const clauses = piece.replace(/"/g, "").split(/[.!?;\n]+|\b(?:maar|but|aber|en|and|und)\b/);
-    for (const clause of clauses) {
+    // Retain context within coordinated clauses, but reset it at a new sentence/current report.
+    for (const sentence of piece.replace(/"/g, "").split(/[.!?;\n]+/)) {
+      let inherited = null;
+      const clauses = sentence.split(/,|\b(?:maar|but|aber|en|and|und|terwijl|while|wahrend|waehrend)\b/);
+      for (const clause of clauses) {
       const now = explicitNow.test(clause);
       let context = quoted ? "quoted" : "current";
       if (!quoted && hypothetical.test(clause) && !now) context = "hypothetical";
       else if (!quoted && past.test(clause) && !now && !continuing.test(clause)) context = "past";
       else if (!quoted && educational.test(clause) && !personalNow.test(clause)) context = "educational";
-      if ((past.test(clause) || hypothetical.test(clause)) && now) uncertainties.add("contradictory_context");
+      else if (!quoted && inherited && !now && !personalNow.test(clause)) context = inherited;
+      inherited = ["past", "educational", "hypothetical"].includes(context) ? context : null;
+      if (!quoted && (past.test(clause) || hypothetical.test(clause)) && now) uncertainties.add("contradictory_context");
       const ownCurrentReport = context === "current" && input.context.subject !== "other" &&
         !["past", "hypothetical"].includes(input.context.timing) &&
         !/\b(?:mijn partner|my partner|mein partner)\b/.test(clause);
@@ -123,18 +142,14 @@ function classify(input) {
         hasRecovery ||= Boolean(affirmative(recovered));
         hasDispute ||= Boolean(affirmative(disputed));
       }
+      const covered = [];
       for (const rule of compiled) {
         for (const pattern of rule.patterns) {
           for (const match of clause.matchAll(pattern)) {
-            let matchedContext = context;
-            const before = clause.slice(0, match.index).trimEnd();
-            const after = clause.slice(match.index + match[0].length);
-            const negations = before.match(/\b(?:geen|niet|no|not|kein|keine|nicht)\b/g) || [];
-            if (context === "current" && negation.test(before) && negations.length < 2) matchedContext = "negated";
-            if (context === "current" && afterNegation.test(after)) matchedContext = "negated";
-            if (negations.length >= 2) uncertainties.add("ambiguous_context");
-            contexts.add(matchedContext);
-            if (matchedContext === "current") {
+            covered.push([match.index, match.index + match[0].length]);
+            const scope = matchedContext(clause, match, context, false, uncertainties);
+            contexts.add(scope);
+            if (scope === "current") {
               active.add(rule.code);
               if (!personalNow.test(clause) && input.context.subject === "unspecified") contexts.add("unspecified");
               if (input.context.timing === "past" || input.context.timing === "hypothetical") uncertainties.add("contradictory_context");
@@ -142,14 +157,33 @@ function classify(input) {
           }
         }
       }
+      const markUnclassified = (match, internalNegation) => {
+        const scope = matchedContext(clause, match, context, internalNegation, uncertainties);
+        contexts.add(scope);
+        if (scope === "current") {
+          activeUnclassified = true;
+          uncertainties.add("unrecognized_health_context");
+          if (["past", "hypothetical"].includes(input.context.timing)) uncertainties.add("contradictory_context");
+        }
+      };
+      for (const hint of compiledHints) for (const pattern of hint.patterns) {
+        for (const match of clause.matchAll(pattern)) {
+          if (covered.some(([start, end]) => match.index >= start && match.index + match[0].length <= end)) continue;
+          markUnclassified(match, !hint.intrinsic_shortage);
+          covered.push([match.index, match.index + match[0].length]);
+        }
+      }
+      for (const match of clause.matchAll(new RegExp(recovery.source, "g"))) covered.push([match.index, match.index + match[0].length]);
+      // Only mask matched spans; an unrelated recognized/negated signal cannot hide remaining health context.
+      for (const match of clause.matchAll(healthWords)) {
+        if (!covered.some(([start, end]) => match.index >= start && match.index < end)) markUnclassified(match, false);
+      }
+      }
     }
   }
   if ([...active].some(code => inactive.has(code))) uncertainties.add("contradictory_context");
-  if ((hasRecovery || hasDispute) && active.size) uncertainties.add("contradictory_context");
+  if ((hasRecovery || hasDispute) && (active.size || activeUnclassified)) uncertainties.add("contradictory_context");
   if (quotedHealthWithCurrentOutside(pieces)) uncertainties.add("ambiguous_context");
-  if (!active.size && !inactive.size && /\b(?:klachten|symptoms|beschwerden|medicatie|medication|schmerz|pijn|pain|ziek|ill|krank)\b/.test(text) && !hasRecovery) {
-    uncertainties.add("unrecognized_health_context");
-  }
   if (active.size && !personalNow.test(text) && input.context.timing === "unspecified" &&
       !inactive.size && text.split(/\s+/).length <= 3) uncertainties.add("missing_context");
   let level = active.size ? "R" + Math.max(...rules.filter(rule => active.has(rule.code)).map(rule => rank(rule.level))) : "R0";

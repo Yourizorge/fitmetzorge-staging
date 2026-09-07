@@ -3,10 +3,12 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 const gaps = require("../known-limitations.json");
 const { assess } = require("./helpers.cjs");
-for (const gap of gaps.cases) test("KNOWN GAP observation, NOT clinical acceptance: " + gap.id, () => {
+for (const gap of gaps.cases) test("resolved original gap requires current uncertainty: " + gap.id, () => {
   const observed = assess(gap.text, gap.locale);
-  assert.equal(observed.help_level, gap.observed_level,
-    "Recognition changed: reassess and update the documented gap, do not silently count it as clinical success.");
+  assert.equal(observed.help_level, gap.expected.help_level);
+  assert.equal(observed.evaluation_state, gap.expected.evaluation_state);
+  assert.equal(observed.warning_key, gap.expected.warning_key);
+  assert.ok(observed.uncertainty_codes.includes("unrecognized_health_context"));
   assert.equal(observed.medical_clearance, false);
   assert.equal(observed.automatic_actions_allowed, false);
 });

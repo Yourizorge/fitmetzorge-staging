@@ -1,0 +1,46 @@
+{
+  "version": "phase6e0.context-hints.v1",
+  "status": "UNCLASSIFIED_HEALTH_CONTEXT_ONLY",
+  "medical_level_assignment": false,
+  "hints": [
+    {
+      "code": "chest_weight",
+      "intrinsic_shortage": false,
+      "patterns": [
+        "\\b(?:borst (?:voelt|voelde) (?:(?:niet|erg|heel) )?(?:loodzwaar|zwaar)|borst (?:niet )?(?:loodzwaar|zwaar) (?:voelt|voelde)|(?:loodzwaar|zwaar) (?:voelt|voelde) (?:mijn |de )?borst|(?:loodzwaar|zwaar) gevoel op (?:de |mijn )?borst)\\b",
+        "\\b(?:chest (?:feels?|felt|does not feel) (?:(?:very|not) )?heavy|heavy (?:is how )?(?:my |the )?chest feels?|heavy feeling in (?:the |my )?chest)\\b",
+        "\\b(?:brust (?:fuehlt|fuhlt|fuehlte|fuhlte) sich (?:nicht )?schwer an|schwer (?:fuehlt|fuhlt|fuehlte|fuhlte) sich (?:meine |die )?brust an|schweres (?:gefuehl|gefuhl) in (?:der |meiner )?brust)\\b",
+        "\\b(?:voelt|voelde) (?:mijn |de )?borst (?:niet )?(?:loodzwaar|zwaar)\\b",
+        "\\b(?:fuehlt|fuhlt|fuehlte|fuhlte) sich (?:meine |die )?brust (?:nicht )?schwer an\\b"
+      ]
+    },
+    {
+      "code": "breathing_effort",
+      "intrinsic_shortage": false,
+      "patterns": [
+        "\\b(?:(?:moeite|problemen) (?:met|bij) (?:ademhalen|ademen)|(?:ademhalen|ademen) kost (?:mij |me )?(?:geen )?moeite|kost (?:ademhalen|ademen) (?:mij |me )?moeite)\\b",
+        "\\b(?:(?:difficulty|trouble) (?:with )?breathing|breathing (?:is|was) (?:not )?difficult)\\b",
+        "\\b(?:(?:schwierigkeiten|probleme) (?:beim|mit dem) atmen|atmen (?:faellt|fallt|fiel) (?:mir )?(?:nicht )?schwer|(?:faellt|fallt|fiel) (?:mir )?das atmen schwer)\\b"
+      ]
+    },
+    {
+      "code": "limited_air",
+      "intrinsic_shortage": true,
+      "patterns": [
+        "\\b(?:krijg|krijgt|krijgen) (?:nauwelijks|amper|weinig|niet genoeg) (?:nog )?(?:lucht|adem)\\b",
+        "\\b(?:(?:can )?(?:barely|hardly) (?:get|draw) (?:any )?air|get(?:ting)? (?:very )?little air)\\b",
+        "\\b(?:kriege|kriegt|bekomme|bekommt) (?:(?:kaum|wenig)(?: noch)?|nur wenig) luft\\b"
+      ]
+    },
+    {
+      "code": "limb_function",
+      "intrinsic_shortage": false,
+      "patterns": [
+        "\\b(?:(?:linkerarm|rechterarm|arm) (?:verliest (?:(?:plots|ineens|geen) )?kracht|(?:plots |ineens )?kracht verliest|(?:voelt|voelde) (?:niet )?slap)|(?:voelt|voelde) (?:mijn |de )?(?:linkerarm|rechterarm|arm) slap)\\b",
+        "\\b(?:(?:left |right )?arm (?:is|feels?|felt|was) (?:(?:suddenly|not) )?(?:weak|losing strength))\\b",
+        "\\b(?:(?:(?:linker|rechter|linke|rechte) )?arm (?:verliert (?:(?:plotzlich|ploetzlich|keine) )?kraft|kraft verliert|(?:ist|war) (?:nicht )?schwach)|(?:ist|war) (?:mein |der )?(?:(?:linker|rechter) )?arm schwach)\\b",
+        "\\b(?:left |right )?arm suddenly (?:is|feels?|felt|was) (?:weak|losing strength)\\b"
+      ]
+    }
+  ]
+}

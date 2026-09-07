@@ -30,9 +30,11 @@ the frozen commit, not a shallow export without that history.
 - fixture-seeds.json / corpus.cjs: 30 invented seeds, 10 categories, 3 languages,
   expanded to 360 lexical/context probes. Not 360 independent clinical observations.
   Some variants intentionally use sentence fragments and are not localization approval.
-- known-limitations.json: four recognized gaps with observed R0 results. These are
-  failures of coverage, not correct clinical labels. Their observation tests do not
-  turn them into acceptance cases.
+- context-hints.json: unclassified health-context hints, never new medical ranks.
+- recognition-followup-cases.json: 79 hand-authored, pre-registered NL/EN/DE cases.
+- known-limitations.json: four original R0 gaps are now resolved to explicit uncertainty;
+  historical results remain recorded, while current tests require improved behavior.
+  This is not a claim of complete recognition or clinical accuracy.
 
 The leading underscore directory is excluded from the current Pages publication.
 No frontend, Edge, bundler or scheduler imports this code. Node-only guard, source
