@@ -22,8 +22,9 @@ D1-D12 en de 6E-0-freeze receipt/evidence zijn byte-behouden.
 
 Preregistratiecommit: 086a05feb5a2e10f864f6c2bed9040509006ef32.
 Daarin bestond nog geen uitvoerbare 6E-1-module: alleen verwachtingen en document.
-Exacte implementatie- en publicatiecommits worden gepind in PHASE6E1_PUBLICATION.md
-nadat de eerste publicatie is gecontroleerd; geen zelfverwijzende hashclaim.
+Implementatiecommit: 316dbcd768cda51cbc46574591f0a46d609f771a.
+Gecontroleerde publicatie: [PHASE6E1_PUBLICATION.md](PHASE6E1_PUBLICATION.md).
+Geen zelfverwijzende hashclaim voor de latere docs-only bewijscommit.
 
 ## Wijzigingen En Oorzaken
 
