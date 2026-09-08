@@ -3,14 +3,16 @@
 ## Training Upgrade + Offline Follow-Up - Current
 
 Explicit OWNER GO 2026-09-08 for Training runtime and narrow offline 6E-1 fixes.
-Training runtime commit: 931138bf783fb3f0cb4ac1ff0ed932ff2d8395ca;
-cache 20260908-training-workout1. Seven authorized files change; all other
-runtime assets retain bc6308f identities. Publication receipt follows deployment.
+Training runtime commit: ed1f485af87d68ad7ec6cbee55ba9fda074af9ce;
+cache 20260908-training-workout2. Seven authorized files change; all other
+runtime assets retain bc6308f identities. Pages deployed and live matrix PASS:
+[publication receipt](TRAINING_WORKOUT_PUBLICATION.md), 59/59 runtime assets
+byte-identical to Git; 53 offline/test paths HTTP404 on the staging website.
 Full-screen maker/execution, per-set targets, real supersets, timer and optional
 RIR/RPE/None use the existing normalized Training model.
 One additive staging migration 20260908100106; Git/live 32/32 aligned, dry-run clean.
 34 local + 34 rollback staging SQL checks; 67 table fingerprints/100276 rows unchanged.
-244 browser checks across four sizes, 22 model/preservation/theme and 6 completion
+248 browser checks across four sizes, 22 model/preservation/theme and 6 completion
 regressions PASS. Offline 6E-1: 280 executed PASS, including 36 preregistered
 follow-up cases; two historical blanket app-freeze assertions explicitly excluded,
 not weakened or counted PASS. Current exact-scope preservation replaces that gate.

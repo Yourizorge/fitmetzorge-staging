@@ -97,8 +97,13 @@ async function screenshot(page,label){
    const rel=decodeURIComponent(url.pathname.slice(new URL(base).pathname.length))||"index.html";assert(!rel.includes(".."));
    let body;
    if(process.env.FMZ_TRAINING_LIVE){
-    if(!liveAssets.has(rel)){const response=await fetch(base+rel+"?training-verification="+process.env.FMZ_TRAINING_LIVE);assert.equal(response.status,200,rel);liveAssets.set(rel,Buffer.from(await response.arrayBuffer()));}
-    body=liveAssets.get(rel);assert(body.equals(require("node:child_process").execFileSync("git",["cat-file","blob","HEAD:"+rel],{cwd:root,windowsHide:true,maxBuffer:30000000})),"published bytes "+rel);
+    if(!liveAssets.has(rel)){
+     const response=await fetch(base+rel+"?training-verification="+process.env.FMZ_TRAINING_LIVE);assert.equal(response.status,200,rel);
+     const bytes=Buffer.from(await response.arrayBuffer());
+     assert(bytes.equals(require("node:child_process").execFileSync("git",["cat-file","blob","HEAD:"+rel],{cwd:root,windowsHide:true,maxBuffer:30000000})),"published bytes "+rel);
+     liveAssets.set(rel,bytes);
+    }
+    body=liveAssets.get(rel);
    }else body=fs.readFileSync(path.join(root,rel));
    if(rel==="app.bundle.js")body=Buffer.from(body.toString().replace("\ninit();","\n"+probe+"\ninit();"));
    if(rel==="assets/phase3-training-engine.js")body=Buffer.from(body.toString().replace(/\}\)\(\);\s*$/,'window.__trainingTest={state:()=>phase3State,hydrate:()=>phase3HydrateTraining(onlineProfile),render:()=>renderTraining(),open:()=>phase3OpenFocus(),navigate:phase3Navigate,complete:phase3CompleteWorkout};})();'));
@@ -179,7 +184,8 @@ async function screenshot(page,label){
   await page.evaluate(()=>document.dispatchEvent(new Event("visibilitychange")));await away.close();
   check(width+" background return retains timer",await page.evaluate(()=>__trainingTest.state().activeSession.focus.rest.endsAt)===timerDeadline);
   await page.click("[data-phase3-rest-pause]");check(width+" pause timer",await page.evaluate(()=>__trainingTest.state().activeSession.focus.rest.paused));
-  await page.click("[data-phase3-add-rest]");check(width+" +15 seconds",await page.evaluate(()=>__trainingTest.state().activeSession.focus.rest.remainingMs)>130000);
+  const pausedRemaining=await page.evaluate(()=>__trainingTest.state().activeSession.focus.rest.remainingMs);
+  await page.click("[data-phase3-add-rest]");check(width+" +15 seconds",await page.evaluate(()=>__trainingTest.state().activeSession.focus.rest.remainingMs)===pausedRemaining+15000);
   await page.click("[data-phase3-rest-pause]");await page.click("[data-phase3-skip-rest]");
   await page.waitForFunction(()=>__trainingTest.state().activeSession.focus.currentExerciseIndex===0);
   check(width+" unsaved input survived navigation",await page.locator("[data-phase3-reps]").nth(1).inputValue()==="9");

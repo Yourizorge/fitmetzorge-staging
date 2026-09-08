@@ -14,11 +14,15 @@ AGENTS/config read; on-request + auto_review + workspace-write, scoped staging
 autonomy. Managed boundaries observed through reviewed elevated commands.
 No approval, workflow, provider, entitlement or production configuration change.
 
-New Training runtime source commit: 931138bf783fb3f0cb4ac1ff0ed932ff2d8395ca.
-Cache: 20260908-training-workout1.
+Initial Training implementation: 931138bf783fb3f0cb4ac1ff0ed932ff2d8395ca.
+Final Training runtime source commit: ed1f485af87d68ad7ec6cbee55ba9fda074af9ce.
+Cache: 20260908-training-workout2.
 Historical application baseline bc6308fbf0f914b04c7faa711219d9ae46e9cbe3 remains
 the preservation reference OUTSIDE the exact seven authorized Training files.
-Publication receipt will be recorded after the actual Pages deployment.
+Pages deployed successfully; [publication receipt](TRAINING_WORKOUT_PUBLICATION.md)
+and [machine-readable evidence](TRAINING_WORKOUT_EVIDENCE.json).
+Live matrix 248/248 PASS; 59/59 published assets match Git, 52 unchanged from
+bc6308f, 53 offline/test paths HTTP404 on Pages. Git access settings unchanged.
 Staging: https://yourizorge.github.io/fitmetzorge-staging/
 
 ## A. Narrow Offline Correction
@@ -30,7 +34,7 @@ Correction: cf6c212600b6798a2a2d0a057b9deacc233112bc.
 educational/quoted context, reassuring/denied other clauses, normal training,
 nonsense and simulated technical failure. These are synthetic, not clinical cases.
 
-| Exact original | Cause / previous result | New result |
+| Original / fixture reference | Cause / previous result | New result |
 | --- | --- | --- |
 | Mijn borst brandt van binnen | Missing inner-chest-burning phrasing; unclear/clarification | health_report / current_unclassified / level null |
 | My left arm has gone numb | Missing arm-numbness wording; unclear/clarification | health_report / current_unclassified / level null |
@@ -82,6 +86,10 @@ Execution: one exercise, complete visible/correctable set list, unsaved input ca
 exact exercise-ID previous results, group round sequence, notes/instructions,
 overview and manual navigation that does not register sets.
 Failed set save does not start rest. Correction reuses the same set identity.
+A final additional fixture forced initial session creation to fail and enforced
+the set-log foreign key. The earlier route could not recover on set retry.
+Commit ed1f485 makes set retry save/retry the parent session before flushing sets,
+and shows the unsaved session status. The full matrix now passes 248 checks.
 Completion flushes sets first and retries idempotently; refresh after lost completion
 response cannot lock the UI, duplicate history or silently permit a new session.
 A pending completion is retried before new set edits. No duplicate completion event
@@ -121,8 +129,8 @@ Existing 28 RLS-no-policy INFO notices, touch_updated_at search-path WARN and
 disabled leaked-password protection WARN remain unchanged, outside this package.
 Reference: https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable
 
-Before/after hashes: all 67 public/ai_private/legacy-auth tables plus auth.users
-included by the check's exact schema/table selector; 100276 rows in total.
+Before/after hashes: 67 tables selected from public, ai_private,
+legacy_auth_private and auth.users; 100276 rows in total.
 Counts and content hashes unchanged after excluding ONLY the five new nullable
 columns from row comparisons. No existing member/config/provider rows changed.
 Two synthetic accounts and all associated fixtures were inside BEGIN/ROLLBACK;
@@ -144,7 +152,8 @@ Cluster stopped. No OneDrive/PostgreSQL/source/Git cleanup or file removal.
 | Frozen 6E-0 selected regressions | 90/90 PASS | Original files unchanged |
 | Training model + preservation + theme authority | 22/22 PASS | 6 model, 6 current preservation, 10 unchanged theme assertions |
 | Historical completion regression | 6/6 PASS | Original assertions unchanged; adapter adds only new mutex fixture values |
-| Browser matrix | 244/244 PASS | 320x700, 390x844, 820x1180, 1440x900; 28 geometry probes; 24 screenshots |
+| Browser matrix | 248/248 PASS | 320x700, 390x844, 820x1180, 1440x900; 28 geometry probes; 24 screenshots |
+| Published-asset browser matrix | 248/248 PASS | Same real published JS/CSS, synthetic backend; exact paused-timer +15-second delta |
 | SQL local / staging | 34/34 each PASS | Synthetic transaction rollback, own/cross-user, validation, Free, snapshots, retries |
 | Existing data | 67/67 table hashes equal | 100276 rows; no raw member fields exported |
 | Source identity | 5/5 functions identical | Exact canonical migration version/name |
@@ -184,4 +193,3 @@ timer notification; neutral fallback where licensed exercise media is absent.
 Previous performance retains the existing 25-session hydration window; repeated
 same-exercise occurrences use one deterministic occurrence, not combined records.
 Production touched: NO. No external AI calls, emails, costs or Edge deployment.
-
