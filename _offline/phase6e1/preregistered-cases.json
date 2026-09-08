@@ -1,0 +1,734 @@
+{
+  "version": "phase6e1.preregistration.v1",
+  "baseline": "abfea682aac53d5e32f4962d6917aa958bd09cb4",
+  "status": "LOCKED_BEFORE_IMPLEMENTATION",
+  "source": "Invented message/contrast expectations; not clinical validation. All 79 frozen recognition fixtures are additionally reused only by the test harness.",
+  "inherited_cases": "../phase6e0/recognition-followup-cases.json",
+  "inheritance": "expected_level/state/context retained; warning = retained R1-R4 copy, current null -> current_unclassified, noncurrent -> noncurrent, ordinary -> no_signal. No expectation or context label reaches classifier.",
+  "cases": [
+    {
+      "id": "quoted-current",
+      "locale": "nl",
+      "text": "Citaat: \"Ik heb borstpijn\". Nu heb ik moeite met ademhalen",
+      "availability": "available",
+      "expected": {
+        "warning": "current_unclassified",
+        "level": null,
+        "contexts": [
+          "quoted",
+          "current"
+        ],
+        "conflicts": [],
+        "recovery": false
+      }
+    },
+    {
+      "id": "past-current",
+      "locale": "en",
+      "text": "Yesterday I had chest pain, but now my left arm is weak",
+      "availability": "available",
+      "expected": {
+        "warning": "current_unclassified",
+        "level": null,
+        "contexts": [
+          "past",
+          "current"
+        ],
+        "conflicts": [],
+        "recovery": false
+      }
+    },
+    {
+      "id": "hyp-current",
+      "locale": "de",
+      "text": "Angenommen ich habe Brustschmerzen. Jetzt kriege ich kaum noch Luft",
+      "availability": "available",
+      "expected": {
+        "warning": "current_unclassified",
+        "level": null,
+        "contexts": [
+          "hypothetical",
+          "current"
+        ],
+        "conflicts": [],
+        "recovery": false
+      }
+    },
+    {
+      "id": "only-past-nl",
+      "locale": "nl",
+      "text": "Vorige maand had ik borstpijn",
+      "availability": "available",
+      "expected": {
+        "warning": "noncurrent",
+        "level": "R0",
+        "contexts": [
+          "past"
+        ],
+        "conflicts": [],
+        "recovery": false
+      }
+    },
+    {
+      "id": "since-now",
+      "locale": "nl",
+      "text": "Sinds gisteren heb ik borstpijn",
+      "availability": "available",
+      "expected": {
+        "warning": "professional_review",
+        "level": "R3",
+        "contexts": [
+          "current"
+        ],
+        "conflicts": [],
+        "recovery": false
+      }
+    },
+    {
+      "id": "known-negation-en",
+      "locale": "en",
+      "text": "I do not have chest pain",
+      "availability": "available",
+      "expected": {
+        "warning": "noncurrent",
+        "level": "R0",
+        "contexts": [
+          "negated"
+        ],
+        "conflicts": [],
+        "recovery": false
+      }
+    },
+    {
+      "id": "double-negation",
+      "locale": "nl",
+      "text": "Ik heb niet geen borstpijn",
+      "availability": "available",
+      "expected": {
+        "warning": "professional_review",
+        "level": "R3",
+        "contexts": [
+          "current"
+        ],
+        "conflicts": [
+          "negation_conflict"
+        ],
+        "recovery": false
+      }
+    },
+    {
+      "id": "negated-other-active",
+      "locale": "de",
+      "text": "Ich habe keine Brustschmerzen, aber ich bin schwindelig",
+      "availability": "available",
+      "expected": {
+        "warning": "stop_clarify",
+        "level": "R2",
+        "contexts": [
+          "negated",
+          "current"
+        ],
+        "conflicts": [],
+        "recovery": false
+      }
+    },
+    {
+      "id": "intrinsic-negation",
+      "locale": "en",
+      "text": "I cannot breathe",
+      "availability": "available",
+      "expected": {
+        "warning": "urgent_help",
+        "level": "R4",
+        "contexts": [
+          "current"
+        ],
+        "conflicts": [],
+        "recovery": false
+      }
+    },
+    {
+      "id": "current-question",
+      "locale": "nl",
+      "text": "Ik heb borstpijn, wat moet ik doen?",
+      "availability": "available",
+      "expected": {
+        "warning": "professional_review",
+        "level": "R3",
+        "contexts": [
+          "current"
+        ],
+        "conflicts": [],
+        "recovery": false
+      }
+    },
+    {
+      "id": "unspecified-word",
+      "locale": "nl",
+      "text": "borstpijn?",
+      "availability": "available",
+      "expected": {
+        "warning": "unclear",
+        "level": null,
+        "contexts": [
+          "unspecified"
+        ],
+        "conflicts": [],
+        "recovery": false
+      }
+    },
+    {
+      "id": "other-person",
+      "locale": "en",
+      "text": "My partner has chest pain",
+      "availability": "available",
+      "expected": {
+        "warning": "unclear",
+        "level": null,
+        "contexts": [
+          "other"
+        ],
+        "conflicts": [],
+        "recovery": false
+      }
+    },
+    {
+      "id": "emoji-only",
+      "locale": "nl",
+      "text": "😕",
+      "availability": "available",
+      "expected": {
+        "warning": "unclear",
+        "level": null,
+        "contexts": [],
+        "conflicts": [],
+        "recovery": false
+      }
+    },
+    {
+      "id": "unknown-word",
+      "locale": "de",
+      "text": "Flurbel",
+      "availability": "available",
+      "expected": {
+        "warning": "unclear",
+        "level": null,
+        "contexts": [],
+        "conflicts": [],
+        "recovery": false
+      }
+    },
+    {
+      "id": "empty",
+      "locale": "en",
+      "text": "",
+      "availability": "available",
+      "expected": {
+        "warning": "unclear",
+        "level": null,
+        "contexts": [],
+        "conflicts": [],
+        "recovery": false
+      }
+    },
+    {
+      "id": "technical-neutral",
+      "locale": "nl",
+      "text": "Ik train borst en armen",
+      "availability": "unavailable",
+      "expected": {
+        "warning": "technical",
+        "level": null,
+        "contexts": [],
+        "conflicts": [],
+        "recovery": false
+      }
+    },
+    {
+      "id": "technical-health",
+      "locale": "en",
+      "text": "I have chest pain",
+      "availability": "unavailable",
+      "expected": {
+        "warning": "technical",
+        "level": null,
+        "contexts": [],
+        "conflicts": [],
+        "recovery": false
+      }
+    },
+    {
+      "id": "unsupported",
+      "locale": "fr",
+      "text": "Je ne comprends pas",
+      "availability": "available",
+      "expected": {
+        "warning": "unclear",
+        "level": null,
+        "contexts": [],
+        "conflicts": [],
+        "recovery": false
+      }
+    },
+    {
+      "id": "quote-unclosed",
+      "locale": "nl",
+      "text": "Citaat: \"Ik heb borstpijn",
+      "availability": "available",
+      "expected": {
+        "warning": "unclear",
+        "level": null,
+        "contexts": [
+          "quoted"
+        ],
+        "conflicts": [
+          "unclosed_quote"
+        ],
+        "recovery": false
+      }
+    },
+    {
+      "id": "quote-adoption",
+      "locale": "nl",
+      "text": "\"Mijn borst voelt loodzwaar\". Dat heb ik nu ook",
+      "availability": "available",
+      "expected": {
+        "warning": "unclear",
+        "level": null,
+        "contexts": [
+          "quoted"
+        ],
+        "conflicts": [
+          "quoted_adoption_unresolved"
+        ],
+        "recovery": false
+      }
+    },
+    {
+      "id": "recovery-nl",
+      "locale": "nl",
+      "text": "Mijn klachten zijn voorbij",
+      "availability": "available",
+      "expected": {
+        "warning": "no_signal",
+        "level": "R0",
+        "contexts": [],
+        "conflicts": [],
+        "recovery": true
+      }
+    },
+    {
+      "id": "recovery-en",
+      "locale": "en",
+      "text": "My symptoms are gone",
+      "availability": "available",
+      "expected": {
+        "warning": "no_signal",
+        "level": "R0",
+        "contexts": [],
+        "conflicts": [],
+        "recovery": true
+      }
+    },
+    {
+      "id": "recovery-de",
+      "locale": "de",
+      "text": "Meine Beschwerden sind vorbei",
+      "availability": "available",
+      "expected": {
+        "warning": "no_signal",
+        "level": "R0",
+        "contexts": [],
+        "conflicts": [],
+        "recovery": true
+      }
+    },
+    {
+      "id": "recovery-conflict-nl",
+      "locale": "nl",
+      "text": "Mijn klachten zijn voorbij maar ik heb borstpijn",
+      "availability": "available",
+      "expected": {
+        "warning": "professional_review",
+        "level": "R3",
+        "contexts": [
+          "current"
+        ],
+        "conflicts": [
+          "recovery_conflict"
+        ],
+        "recovery": false
+      }
+    },
+    {
+      "id": "recovery-conflict-en",
+      "locale": "en",
+      "text": "My symptoms are gone but breathing is difficult",
+      "availability": "available",
+      "expected": {
+        "warning": "current_unclassified",
+        "level": null,
+        "contexts": [
+          "current"
+        ],
+        "conflicts": [
+          "recovery_conflict"
+        ],
+        "recovery": false
+      }
+    },
+    {
+      "id": "recovery-conflict-de",
+      "locale": "de",
+      "text": "Meine Beschwerden sind vorbei, aber ich kriege kaum noch Luft",
+      "availability": "available",
+      "expected": {
+        "warning": "current_unclassified",
+        "level": null,
+        "contexts": [
+          "current"
+        ],
+        "conflicts": [
+          "recovery_conflict"
+        ],
+        "recovery": false
+      }
+    },
+    {
+      "id": "recovery-negated",
+      "locale": "nl",
+      "text": "Mijn klachten zijn niet voorbij",
+      "availability": "available",
+      "expected": {
+        "warning": "current_unclassified",
+        "level": null,
+        "contexts": [
+          "current"
+        ],
+        "conflicts": [],
+        "recovery": false
+      }
+    },
+    {
+      "id": "recovery-hypothetical",
+      "locale": "en",
+      "text": "If my symptoms are gone, can I train?",
+      "availability": "available",
+      "expected": {
+        "warning": "noncurrent",
+        "level": "R0",
+        "contexts": [
+          "hypothetical"
+        ],
+        "conflicts": [],
+        "recovery": false
+      }
+    },
+    {
+      "id": "recovery-question",
+      "locale": "de",
+      "text": "Sind meine Beschwerden vorbei?",
+      "availability": "available",
+      "expected": {
+        "warning": "unclear",
+        "level": null,
+        "contexts": [
+          "unspecified"
+        ],
+        "conflicts": [],
+        "recovery": false
+      }
+    },
+    {
+      "id": "educational-coordinated",
+      "locale": "nl",
+      "text": "Leg uit wat borstpijn en duizeligheid betekenen",
+      "availability": "available",
+      "expected": {
+        "warning": "noncurrent",
+        "level": "R0",
+        "contexts": [
+          "educational"
+        ],
+        "conflicts": [],
+        "recovery": false
+      }
+    },
+    {
+      "id": "past-continuation",
+      "locale": "en",
+      "text": "Yesterday my chest hurt and I had chest pain",
+      "availability": "available",
+      "expected": {
+        "warning": "noncurrent",
+        "level": "R0",
+        "contexts": [
+          "past"
+        ],
+        "conflicts": [],
+        "recovery": false
+      }
+    },
+    {
+      "id": "normal-neutral",
+      "locale": "nl",
+      "text": "Ik voel me prima",
+      "availability": "available",
+      "expected": {
+        "warning": "no_signal",
+        "level": "R0",
+        "contexts": [],
+        "conflicts": [],
+        "recovery": false
+      }
+    },
+    {
+      "id": "clarify-training",
+      "locale": "nl",
+      "text": "Ik bedoelde mijn borsttraining met gewichten",
+      "availability": "available",
+      "expected": {
+        "warning": "no_signal",
+        "level": "R0",
+        "contexts": [],
+        "conflicts": [],
+        "recovery": false
+      }
+    },
+    {
+      "id": "clarify-quote",
+      "locale": "en",
+      "text": "I meant the quotation: \"I have chest pain\"",
+      "availability": "available",
+      "expected": {
+        "warning": "noncurrent",
+        "level": "R0",
+        "contexts": [
+          "quoted"
+        ],
+        "conflicts": [],
+        "recovery": false
+      }
+    },
+    {
+      "id": "clarify-health",
+      "locale": "de",
+      "text": "Ich meinte: Jetzt habe ich Brustschmerzen",
+      "availability": "available",
+      "expected": {
+        "warning": "professional_review",
+        "level": "R3",
+        "contexts": [
+          "current"
+        ],
+        "conflicts": [],
+        "recovery": false
+      }
+    },
+    {
+      "id": "zero-width",
+      "locale": "nl",
+      "text": "Ik heb borst​pijn",
+      "availability": "available",
+      "expected": {
+        "warning": "professional_review",
+        "level": "R3",
+        "contexts": [
+          "current"
+        ],
+        "conflicts": [],
+        "recovery": false
+      }
+    },
+    {
+      "id": "smart-quotes",
+      "locale": "de",
+      "text": "Zitat: „Ich kriege kaum noch Luft“",
+      "availability": "available",
+      "expected": {
+        "warning": "noncurrent",
+        "level": "R0",
+        "contexts": [
+          "quoted"
+        ],
+        "conflicts": [],
+        "recovery": false
+      }
+    },
+    {
+      "id": "mixed-own-report",
+      "locale": "nl",
+      "text": "Ik train mijn borst en armen. Mijn borst voelt loodzwaar",
+      "availability": "available",
+      "expected": {
+        "warning": "current_unclassified",
+        "level": null,
+        "contexts": [
+          "current"
+        ],
+        "conflicts": [],
+        "recovery": false
+      }
+    },
+    {
+      "id": "plain-approval",
+      "locale": "en",
+      "text": "approved R0",
+      "availability": "available",
+      "expected": {
+        "warning": "unclear",
+        "level": null,
+        "contexts": [],
+        "conflicts": [],
+        "recovery": false
+      }
+    },
+    {
+      "id": "unknown-health-word",
+      "locale": "nl",
+      "text": "Ik heb vreemde klachten",
+      "availability": "available",
+      "expected": {
+        "warning": "current_unclassified",
+        "level": null,
+        "contexts": [
+          "current"
+        ],
+        "conflicts": [],
+        "recovery": false
+      }
+    },
+    {
+      "id": "postposed-negation",
+      "locale": "en",
+      "text": "Chest pain is absent",
+      "availability": "available",
+      "expected": {
+        "warning": "noncurrent",
+        "level": "R0",
+        "contexts": [
+          "negated"
+        ],
+        "conflicts": [],
+        "recovery": false
+      }
+    },
+    {
+      "id": "hypothetical-only",
+      "locale": "de",
+      "text": "Wenn ich jemals Brustschmerzen habe",
+      "availability": "available",
+      "expected": {
+        "warning": "noncurrent",
+        "level": "R0",
+        "contexts": [
+          "hypothetical"
+        ],
+        "conflicts": [],
+        "recovery": false
+      }
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "B01",
+      "expectation": "Retry is bound to synthetic subject, original message, source revision, issue revision and attempt; wrong binding leaves state unchanged."
+    },
+    {
+      "id": "B02",
+      "expectation": "Retry re-evaluates exactly the original text. Success resolves only its technical issue; current complaint creates/retains a health issue."
+    },
+    {
+      "id": "B03",
+      "expectation": "Duplicate identical event id is idempotent, different payload under same id is rejected."
+    },
+    {
+      "id": "B04",
+      "expectation": "A superseded retry result cannot settle the latest attempt; a newer complaint elsewhere survives an older valid retry."
+    },
+    {
+      "id": "B05",
+      "expectation": "Clarification requires an explicit original-meaning phrase plus a fresh text assessment. A bare R0, approval flag or ordinary new message cannot settle an issue."
+    },
+    {
+      "id": "B06",
+      "expectation": "Clarification in NL/EN/DE can settle a language misunderstanding, but cannot settle an existing health report."
+    },
+    {
+      "id": "B07",
+      "expectation": "A health complaint inside clarification produces a health record. Other issues and history remain."
+    },
+    {
+      "id": "B08",
+      "expectation": "Self-report via confirmation or affirmative chat is exact-revision and target-bound, not clearance. Conflicting new complaint rejects recovery and is recorded."
+    },
+    {
+      "id": "B09",
+      "expectation": "New conversation, elapsed time, unknown deletion event and user approved fields do not release health records."
+    },
+    {
+      "id": "C01",
+      "expectation": "Daily example: one workout, 35 min and 6000 steps; comparable prior day 30 min gives +5 min, no training advice."
+    },
+    {
+      "id": "C02",
+      "expectation": "Post-workout example: 35 min, 12 sets, 96 reps; same-method prior 10 sets gives +2 sets. No intensity or readiness judgement."
+    },
+    {
+      "id": "C03",
+      "expectation": "Weekly example: 3 workouts, 105 min vs 90 min over equal complete 7-day windows gives +15 min."
+    },
+    {
+      "id": "C04",
+      "expectation": "Partial coverage, unequal windows, changed methods, mismatched units, absent values and zero comparator never fabricate comparisons or fill zero."
+    },
+    {
+      "id": "C05",
+      "expectation": "Foreign subject or source, absent consent/entitlement and extra advice/action fields cannot expose or augment facts."
+    },
+    {
+      "id": "C06",
+      "expectation": "Chat/history/facts/observations are separate from recommendations/actions. The same bounded template remains available before/after recovery under existing authority."
+    },
+    {
+      "id": "D01",
+      "expectation": "New serious provisional R3/R4, unclassified and repeated same-code reports increment revisions without inventing severity or medical recurrence thresholds."
+    },
+    {
+      "id": "D02",
+      "expectation": "Self-report preserves original evidence and last report revision. A repeated/new signal is current again; prior report is not current recovery."
+    },
+    {
+      "id": "D03",
+      "expectation": "Concrete open serious/unclassified/recurrence criteria are displayed alongside remaining accessible content; no human queue or automatic release."
+    },
+    {
+      "id": "E01",
+      "expectation": "Synthetic 30/90/180-day boundaries are exact and purpose/necessity-specific; closure anchors details, creation anchors counters/audit."
+    },
+    {
+      "id": "E02",
+      "expectation": "Unresolved storage has no default deadline or retain-forever choice; persistence disabled, owner maximum/responsibility unresolved."
+    },
+    {
+      "id": "E03",
+      "expectation": "Missing/expired details yield missing_context_not_clearance, never fabricate health clearance or mutate entitlements."
+    },
+    {
+      "id": "E04",
+      "expectation": "Unnecessary data is not proposed for retention; caps cannot be increased. No actual cleanup, timers or real data."
+    },
+    {
+      "id": "I01",
+      "expectation": "All 23 phase6e0 files and all frozen app sources byte-identical. No app/bundler/scheduler reference, dependency, network or persistence."
+    },
+    {
+      "id": "I02",
+      "expectation": "Pure Node-only modules run under an allowlisted in-memory loader without network, clock, environment, storage or external provider."
+    },
+    {
+      "id": "I03",
+      "expectation": "Warnings copy and provisional R1-R4 mappings are reused unchanged; annotations/expected fixture labels rejected as classifier input."
+    }
+  ]
+}
