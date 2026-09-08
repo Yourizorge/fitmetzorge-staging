@@ -382,7 +382,7 @@
     "counts_not_additive": true
   },
   "publication": {
-    "freeze_documentation_commit": "PENDING_CREATION",
+    "freeze_documentation_commit": "7512f66d836015a3be35f4d17c09f7f51ff0cc77",
     "pre": {
       "checked_at": "2026-09-08T08:00:17.020Z",
       "head": "1fca337c7695b39f6f81c77798828f7fa7a1a2c0",
@@ -483,8 +483,93 @@
         }
       ]
     },
-    "post": null,
-    "notes": "Post-publication proof will be recorded after the first docs-only freeze commit. Final receipt commit publication is verified separately in task close-out."
+    "post": {
+      "checked_at": "2026-09-08T08:31:08.310Z",
+      "head": "7512f66d836015a3be35f4d17c09f7f51ff0cc77",
+      "asset_count": 56,
+      "raw_http_bytes_equal_frozen_git": true,
+      "manifest_identical_to_pre": true,
+      "offline_path_count": 23,
+      "all_offline_http404": true,
+      "offline_probe_manifest_identical_to_pre": true
+    },
+    "notes": "This evidence pins the first docs-only owner-freeze publication. The subsequent docs-only proof commit is separately checked for Pages, byte identity, remote HEAD and clean worktree in the task close-out; no self-referential commit hash is embedded.",
+    "freeze_pages": {
+      "id": 34204704617,
+      "name": "pages build and deployment",
+      "head_sha": "7512f66d836015a3be35f4d17c09f7f51ff0cc77",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/Yourizorge/fitmetzorge-staging/actions/runs/34204704617"
+    },
+    "push_status": "SUCCESS",
+    "direct_remote_freeze_head_verified": "7512f66d836015a3be35f4d17c09f7f51ff0cc77",
+    "committed_document_checks": {
+      "checked_at": "2026-09-08T08:30:20.437Z",
+      "head": "7512f66d836015a3be35f4d17c09f7f51ff0cc77",
+      "base": "1fca337c7695b39f6f81c77798828f7fa7a1a2c0",
+      "check_count": 13,
+      "checks": [
+        {
+          "name": "exact staging root, branch and origin",
+          "result": "PASS"
+        },
+        {
+          "name": "docs-only changes and no removals",
+          "result": "PASS"
+        },
+        {
+          "name": "frozen application Git diff empty",
+          "result": "PASS"
+        },
+        {
+          "name": "23 exact offline source blobs and versions retained",
+          "result": "PASS"
+        },
+        {
+          "name": "original JSON evidence, preregistration and D1-D12 unchanged",
+          "result": "PASS"
+        },
+        {
+          "name": "eight historical report bodies retained with correction links",
+          "result": "PASS"
+        },
+        {
+          "name": "complete original productreview archived, not silently rewritten",
+          "result": "PASS"
+        },
+        {
+          "name": "all 12 warning texts unchanged and accepted as concept only",
+          "result": "PASS"
+        },
+        {
+          "name": "owner correction and incomplete 6E status in current authoritative docs",
+          "result": "PASS"
+        },
+        {
+          "name": "four main status surfaces distinguish current freeze from history",
+          "result": "PASS"
+        },
+        {
+          "name": "existing 6E-1 proposal covers five concrete outputs and live prerequisites",
+          "result": "PASS"
+        },
+        {
+          "name": "historical test counts not reinterpreted as new tests or medical reliability",
+          "result": "PASS"
+        },
+        {
+          "name": "new and updated local document links resolve",
+          "result": "PASS"
+        }
+      ],
+      "offline_tree": "27ed4679b59fc5909712d4fa927138e5f9f03689",
+      "offline_files": 23,
+      "historical_bodies": 8,
+      "original_warning_texts": 12,
+      "docs_only": true,
+      "application_or_offline_execution_suites_run": false
+    }
   },
   "runtime_manifest": [
     {

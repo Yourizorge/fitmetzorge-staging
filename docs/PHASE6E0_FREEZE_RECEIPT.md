@@ -34,7 +34,7 @@ Bronfreeze is geen blanket goedkeuring van elke experimentele uitgang of testver
 - Laatste offline broncommit: 2705375c85fde451ef6a0a40edb79e7c7a268a62.
 - Frozen offline tree: 27ed4679b59fc5909712d4fa927138e5f9f03689, 23 bestanden onder _offline/phase6e0.
 - Volledige paden, bytes, Gitblob-/SHA256-hashes en laatste broncommits: PHASE6E0_FREEZE_EVIDENCE.json.
-- Freeze-documentatiecommit: de toevoegingscommit van deze receipt; exacte hash wordt na commit gepind.
+- Freeze-documentatiecommit: 7512f66d836015a3be35f4d17c09f7f51ff0cc77.
 - Config gelezen: on-request / auto_review / workspace-write / projectnetwork en staging-autonomie;
   effectieve managed beperkingen blijven leidend. Geen rechten of instellingen gewijzigd.
 
@@ -79,8 +79,14 @@ Voor-publicatiecontrole 2026-09-08T08:00:17.020Z: 56/56 publieke staging-runtime
 byte-identiek aan frozen Git; alle 23 offlinebestandspaden HTTP404.
 Alle non-doc bronnen zijn gelijk aan begin-HEAD; alle applicatiebronnen gelijk aan bc6308f.
 Alleen publieke statische GETs, geen app-JavaScript, database-, Edge- of memberverzoek.
-Push-/Pages- en na-publicatiebewijs worden in deze receipt/evidence aangevuld na de freezecommit.
-De laatste docs-only bewijscommit wordt daarna opnieuw gecontroleerd en in de taakafsluiting vermeld.
+Freezecommit 7512f66d836015a3be35f4d17c09f7f51ff0cc77: push SUCCESS; direct remote gelijk.
+[Pages-run 34204704617](https://github.com/Yourizorge/fitmetzorge-staging/actions/runs/34204704617): completed / success op dezelfde freezecommit.
+Na publicatie 2026-09-08T08:31:08.310Z: opnieuw 56/56 runtime-assets byte-identiek
+en alle 23 offlinebestandspaden HTTP404. Pre/post-manifests zijn exact gelijk.
+De gepushte freezecommit slaagt ook voor alle 13 documentatie-/freezecontrolegroepen.
+Deze latere docs-only bewijscommit pint alleen de freezehash en publicatie-uitkomsten.
+Zijn eigen remote HEAD, Pages-uitkomst en laatste byte-/werkboomcontrole worden afzonderlijk
+in de taakafsluiting gerapporteerd; geen zelfverwijzende hash of onbewezen publicatieclaim.
 
 ## Open Inhoud En Exact Vervolg
 
