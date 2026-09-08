@@ -2,7 +2,7 @@
   if (window.FMZ_PHASE3_TRAINING_ENGINE_LOADED) return;
   window.FMZ_PHASE3_TRAINING_ENGINE_LOADED = true;
 
-  const PHASE3_VERSION = "20260908-training-workout1";
+  const PHASE3_VERSION = "20260908-training-workout2";
   const PHASE3_LANGUAGES = ["nl", "en", "de"];
   const PHASE3_FREE_ACTIVE_DAY_LIMIT = 4;
   const PHASE3_REAL_CATALOG_EXPECTED_COUNT = 898;
@@ -2291,9 +2291,15 @@
     }
     await phase3LoadExerciseDetails(activeExercises.map((exercise) => phase3ExerciseById(exercise.exerciseId) || phase3Exercise(exercise.slug)).filter(Boolean));
     phase3State.activeSession = phase3CreateSession(plan, { ...day, exercises: activeExercises });
+    const session = phase3State.activeSession;
     phase3FocusOpen = true;
     phase3SaveLocal();
-    await phase3SyncActiveSession();
+    const synced = await phase3SyncActiveSession();
+    if (phase3State.activeSession !== session) return;
+    if (phase3UsesSupabase() && !synced.ok) {
+      phase3EnsureSessionFocus(session).feedback = phase3TrainingText("unsaved");
+      phase3SaveLocal();
+    }
     renderTraining();
     } finally {
       phase3StartSaving = false;
@@ -2497,7 +2503,8 @@
     focus.feedback = phase3TrainingText("saving");
     phase3SaveLocal();phase3SyncFocusPortal();
     try {
-      const persisted = phase3UsesSupabase() ? await phase3PersistSetLog(setLog) : {ok:true,local:true};
+      // Retry the parent session first if its initial write failed; then flush its sets.
+      const persisted = phase3UsesSupabase() ? await phase3SyncActiveSession() : {ok:true,local:true};
       if (user !== phase3CurrentUserKey() || session !== phase3State.activeSession) return;
       if (!persisted.ok) {focus.feedback=phase3Text("setSaveFailed");return;}
       if (persisted.local) setLog.localRegistered = true;

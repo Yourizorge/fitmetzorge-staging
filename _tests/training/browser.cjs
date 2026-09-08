@@ -22,7 +22,7 @@ function server(){
  const s=serverFixture(),db={training_plans:[],training_plan_days:[],training_plan_exercises:[],workout_sessions:[],workout_set_logs:[]};
  const pref={effort_mode:"rir",timer_enabled:true,revision:0};let revision=0;
  s.recovery.analysis_blocked=false;
- return {s,db,pref,failSave:false,failSet:false,failCompletion:false,completionEvents:0,
+ return {s,db,pref,failSave:false,failSession:true,failSet:false,failCompletion:false,completionEvents:0,
  rpc(name,args){
   if(name==="fmz_training_get_preferences")return {...pref};
   if(name==="fmz_training_set_preferences"){assert.equal(args.p_expected_revision,pref.revision);Object.assign(pref,{effort_mode:args.p_effort_mode,timer_enabled:args.p_timer_enabled,revision:pref.revision+1});return {...pref};}
@@ -51,6 +51,8 @@ function server(){
   let data=table==="exercises"?catalog:db[table]||[];
   const mutation=ops.find(([key])=>["insert","upsert","update"].includes(key));
   if(mutation){
+   if(table==="workout_sessions"&&this.failSession){this.failSession=false;throw Error("simulated_initial_session_failure");}
+   if(table==="workout_set_logs"&&!db.workout_sessions.some(s=>s.id===mutation[1][0].workout_session_id))throw Error("synthetic_session_foreign_key");
    if(table==="workout_set_logs"&&this.failSet){this.failSet=false;throw Error("simulated_set_failure");}
    writes.push(table);
    const row=mutation[1][0],existing=data.find(x=>x.id===row.id);
@@ -158,6 +160,7 @@ async function screenshot(page,label){
   check(width+" persisted per-set targets + group",backend.db.training_plan_exercises[0].set_targets[0].rir===0&&backend.db.training_plan_exercises[0].superset_rest_seconds===120);
   await page.reload();await page.waitForFunction(()=>window.__hotfix);await page.evaluate(()=>__hotfix.enter());await page.evaluate(()=>__trainingTest.hydrate());await page.evaluate(()=>__hotfix.view("training"));
   await page.click("[data-phase3-start-workout]");await page.waitForSelector(".tw-live-set");
+  check(width+" failed initial session visibly unsaved",backend.db.workout_sessions.length===0&&await page.locator("[data-phase3-focus-feedback]").textContent().then(t=>t.includes("niet opgeslagen")));
   check(width+" only RIR shown",await page.locator("[data-phase3-rpe]").count()===0&&await page.locator("[data-phase3-rir]").count()===3);
   await page.locator("[data-phase3-reps]").nth(1).fill("9");
   await page.locator("[data-phase3-reps]").first().fill("10");
