@@ -1,5 +1,17 @@
 # 6E-0 Productreview: Nederlandse Conceptweergave
 
+## Actuele Ownercorrectie - 2026-09-08
+
+6E-0 is COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE PREPARATION ONLY.
+Phase 6E blijft ONVOLTOOID; 6E-1 is NIET GESTART. Zie [freeze receipt](PHASE6E0_FREEZE_RECEIPT.md)
+en [actuele productafbakening](PHASE6E0_WARNING_RECOVERY_PRODUCT_REVIEW.md).
+De owner accepteert GEEN aparte menselijke aanvraag- of goedkeuringsprocedure voor
+persoonlijke analyses; er bestaat geen beoordelingsdienst. Eventuele aanvraag-/review-
+varianten hieronder of in bevroren experimenten zijn geen actuele productkeuze.
+De onderstaande oorspronkelijke inhoud, testuitslagen, beperkingen en toenmalige
+review-/publicatiestatus blijven historisch bronbewijs, geen nieuwe activatieautoriteit.
+Handmatige synthetische contextselectie blijft een beperking; geen medische goedkeuring.
+
 Dit is een OFFLINE preview bij Nederlandse taalkeuze, geen schermwijziging in de app.
 Alle teksten hieronder zijn exact bestaande copy.json-teksten, DRAFT_NOT_EXPERT_APPROVED.
 Voorgestelde tekstwijzigingen: GEEN. NL/EN/DE-copy en D1-D12 zijn ongewijzigd.

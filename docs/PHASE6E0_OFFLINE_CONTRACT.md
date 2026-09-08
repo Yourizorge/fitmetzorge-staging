@@ -1,5 +1,17 @@
 # Package 6E-0 Offline Contract
 
+## Actuele Ownercorrectie - 2026-09-08
+
+6E-0 is COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE PREPARATION ONLY.
+Phase 6E blijft ONVOLTOOID; 6E-1 is NIET GESTART. Zie [freeze receipt](PHASE6E0_FREEZE_RECEIPT.md)
+en [actuele productafbakening](PHASE6E0_WARNING_RECOVERY_PRODUCT_REVIEW.md).
+De owner accepteert GEEN aparte menselijke aanvraag- of goedkeuringsprocedure voor
+persoonlijke analyses; er bestaat geen beoordelingsdienst. Eventuele aanvraag-/review-
+varianten hieronder of in bevroren experimenten zijn geen actuele productkeuze.
+De onderstaande oorspronkelijke inhoud, testuitslagen, beperkingen en toenmalige
+review-/publicatiestatus blijven historisch bronbewijs, geen nieuwe activatieautoriteit.
+Handmatige synthetische contextselectie blijft een beperking; geen medische goedkeuring.
+
 Versie: phase6e0.safety.v0.1.0. Status: UNREVIEWED_OFFLINE_PROPOSAL.
 Contractbron: _offline/phase6e0/contract.json; uitvoerbare validators: engine.cjs.
 Geen diagnose, medische triage, geschiktheidsverklaring of runtimeadapter.

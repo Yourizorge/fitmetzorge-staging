@@ -1,6 +1,29 @@
 # FitMetZorge Test Matrix
 
-## Warning And Recovery Proposal - Current
+## Package 6E-0 Owner Freeze - Current
+
+Status: COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE PREPARATION ONLY.
+Explicit owner acceptance recorded 2026-09-08; Phase 6E as a whole remains INCOMPLETE.
+6E-1 NOT STARTED. No runtime integration or automatic next-package authority.
+Frozen application: bc6308fbf0f914b04c7faa711219d9ae46e9cbe3.
+Frozen offline source: 23 files at 1fca337c7695b39f6f81c77798828f7fa7a1a2c0;
+last offline change 2705375c85fde451ef6a0a40edb79e7c7a268a62.
+Accepted: preparation/recognition fixes, warning as product concept, separate context
+feedback, existing access/history/designed bounded facts and self-report without clearance.
+NOT accepted: a separate human application/approval procedure for personal analyses.
+No review service exists. Old request-flow fields/tests are historical experiments,
+not accepted product requirements. Content/recovery/retention and expert reviews stay OPEN.
+D1-D12 are preserved; no medical validation inferred from owner acceptance or test scores.
+Historical evidence: 576 initial, 659 follow-up and 193 targeted checks; no suite rerun
+for this docs-only freeze. Manual synthetic warning-context selection remains a limitation.
+See [freeze receipt](PHASE6E0_FREEZE_RECEIPT.md),
+[corrected product scope](PHASE6E0_WARNING_RECOVERY_PRODUCT_REVIEW.md) and
+[bounded next-package proposal](PHASE6E1_PROPOSAL.md).
+Only recommended next package: 6E-1 - Offline context-, content- and resumption contract;
+requires a separate explicit instruction, not started here. Earlier execution blocks
+below are historical, including their then-pending owner-review statements.
+
+## Warning And Recovery Proposal - Historical Execution
 
 2026-09-08: OFFLINE CONCEPT / TECHNICAL PASS / OWNER PRODUCT REVIEW OPEN.
 Separate NL/EN/DE feedback and an explicit nonclinical-resolution / recovery proposal.
@@ -11,7 +34,7 @@ Product overview: PHASE6E0_WARNING_RECOVERY_PRODUCT_REVIEW.md.
 Publication proof: PHASE6E0_WARNING_RECOVERY_PUBLICATION.md (proposal Pages SUCCESS; 56/56 unchanged).
 Earlier follow-up evidence below remains historical and valid for its own scope.
 
-## Recognition Follow-Up - Current
+## Recognition Follow-Up - Historical Execution
 
 6E-0 OFFLINE RECOGNITION FOLLOW-UP - TECHNICAL PASS / READY FOR OWNER PRODUCT REVIEW.
 The four original known/R0 gaps now produce explicit uncertain/null, without assigning
@@ -24,7 +47,7 @@ Publication evidence: PHASE6E0_RECOGNITION_PUBLICATION.md (correction Pages SUCC
 Expert reviews and serious recovery conditions stay OPEN; no 6E-1 or owner-freeze.
 Earlier counts and statements about four unresolved gaps below are historical execution.
 
-## Package 6E-0 Offline Preparation - Current
+## Package 6E-0 Offline Preparation - Historical Execution
 
 Status: TECHNICAL PASS / READY FOR OWNER REVIEW, not activation or expert approval.
 The owner's explicit offline GO and D1-D12 choices are recorded in
@@ -50,7 +73,7 @@ offline entrypaden HTTP404. See PHASE6E0_EVIDENCE.json / PHASE6E0_PUBLICATION_RE
 Older audit/release execution statements below retain their original historical scope.
 
 Status: MASTER PLAN COVERAGE MATRIX
-Latest execution: 2026-09-07 offline 6E-0 above. The corrected 6D freeze below is prior evidence.
+Historical execution: 2026-09-07 offline 6E-0. Current docs-only owner-freeze checks are above.
 Explicit real-phone theme and prior-flow acceptance received: COMPLETE /
 OWNER-ACCEPTED / FROZEN, including theme restoration. Migration history is now synchronized 31/31 with an
 empty dry-run after additive 20260907095307_phase6d_theme_preference.sql. Public Auth hotfix

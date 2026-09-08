@@ -1,15 +1,46 @@
-# 6E-0 Productreview: Waarschuwing En Herstelflow
+# 6E-0 Owneracceptatie En Productafbakening
 
-Status: OFFLINE CONCEPT / TECHNICAL PASS / OWNER PRODUCT REVIEW OPEN.
-Datum: 2026-09-08. Baseline: c1e3b634e95c3d8911f31c414b198e2dfff415be, main, aanvankelijk schoon.
-Geen owneracceptatie, medische vrijgave, freeze, 6E-1 of wijziging van de frozen app.
+Status: COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE PREPARATION ONLY.
+Datum: 2026-09-08. Expliciete owneracceptatie; niet afgeleid uit technische tests.
+Bronbaseline: 1fca337c7695b39f6f81c77798828f7fa7a1a2c0.
+Frozen applicatieruntime: bc6308fbf0f914b04c7faa711219d9ae46e9cbe3.
+Phase 6E als geheel: ONVOLTOOID. 6E-1: NIET GESTART.
 
-## 1. Afzonderlijk Tekstvoorstel
+## Geaccepteerde Productrichting
 
-Alle vier rijen zijn NIEUWE CONCEPTTEKSTEN, niet deskundig goedgekeurd.
-De bestaande copy.json, classifier en medische niveaus zijn NIET gewijzigd.
-Voor bestaande herkende R1-R4 blijven de huidige niveaugebonden conceptteksten staan;
-de nieuwe tekst geeft de vier oorspronkelijke gaten nog steeds GEEN medisch hulpniveau.
+Geaccepteerd zijn de offline voorbereiding en herkenningscorrecties, de nieuwe
+waarschuwing als productconcept en afzonderlijke feedback voor actuele klachten,
+taalproblemen, technische uitval en niet-actuele uitspraken. Chat, historie en
+ontworpen begrensde feitenanalyses blijven binnen bestaande rechten en toestemming.
+Zelf gemeld herstel is geaccepteerd als productrichting, niet als medische vrijgave.
+Nog ontbrekende herstel- en inhoudsvoorwaarden blijven uitdrukkelijk open.
+
+Dit is GEEN acceptatie van een complete herstelimplementatie, deskundige tekst- of
+medische goedkeuring of live integratie. D1-D12 worden niet heropend.
+De huidige app, offline uitvoerbare code, tests en JSON-bronbestanden zijn ongewijzigd.
+
+## Correctie Van Het Eerdere Voorstel
+
+De owner accepteert GEEN aparte menselijke aanvraag- of goedkeuringsprocedure voor
+persoonlijke analyses. Er bestaat geen beoordelingsdienst. Een wachtrij, beoordelaar,
+aanvraagstatus of individuele handmatige goedkeuringsstap is geen gekozen productgedrag.
+De eerdere aanvraag-/goedkeuringsteksten zijn verwijderd uit deze actuele uitwerking,
+niet vervangen door automatische vrijgave.
+
+De oorspronkelijke tekst staat met correctieverwijzing in
+[het historische productreviewvoorstel](PHASE6E0_WARNING_RECOVERY_PRODUCT_REVIEW_HISTORICAL.md).
+De bevroren experimentbron bevat nog bijvoorbeeld personalized_request_entry,
+separate_personalized_content_gate en synthetic_review_outcome. Die namen, hun
+aanvraagteksten en bijbehorende testverwachtingen zijn uitsluitend historische
+ontwerpvarianten, GEEN geaccepteerde productkeuze of toekomstige implementatie-eis.
+Bronbehoud is geen blanket acceptatie van alle experimentele modeluitgangen.
+
+## Waarschuwing Als Productconcept
+
+De exacte onderstaande conceptteksten blijven behouden. Productconcept geaccepteerd;
+medische, juridische en moedertaalbeoordeling zijn NIET afgerond.
+Voor bestaande R1-R4 blijven medische labels voorlopig. De vier oorspronkelijke
+herkenningsgaten leveren uncertain/null op, geen nieuw medisch hulpniveau.
 
 | Situatie | Exact NL | Exact EN | Exact DE |
 | --- | --- | --- | --- |
@@ -18,88 +49,58 @@ de nieuwe tekst geeft de vier oorspronkelijke gaten nog steeds GEEN medisch hulp
 | Technische uitval | De beoordeling is niet beschikbaar. Je kunt het later opnieuw proberen. Er is geen nieuwe beoordeling gedaan. | Assessment is unavailable. You can try again later. No new assessment has been made. | Die Beurteilung ist nicht verfuegbar. Du kannst es spaeter erneut versuchen. Es wurde keine neue Beurteilung vorgenommen. |
 | Alleen educatief, ontkend, historisch, geciteerd of hypothetisch | Ik lees dit als uitleg, een citaat, een ontkenning of een eerdere of denkbeeldige situatie. Gaat het toch om klachten die je nu hebt? | I read this as an explanation, a quotation, a denial, or a past or hypothetical situation. Are you actually describing symptoms you have now? | Ich verstehe dies als Erklaerung, Zitat, Verneinung oder fruehere oder hypothetische Situation. Geht es doch um Beschwerden, die du jetzt hast? |
 
-Toepassing en ontbrekende inhoudelijke beoordeling:
-- De stoptekst hoort bij gemelde actuele klachten die onvoldoende kunnen worden ingedeeld,
-  waaronder de vier oorspronkelijke voorbeelden; niet bij alleen een woord, emoji of uitval.
-  De ernst is NIET vastgesteld. Reikwijdte van stoppen, zorgverwijzing, urgentieformulering
-  en de grens tussen een klachtmelding en een losse gezondheidsvraag vragen medische review.
-- De annotaties in dit voorstel zijn handmatig vastgelegde synthetische casuscontext.
-  De classifier levert nog geen voldoende betrouwbare beslisbron voor al deze verschillen.
-  Een annotation/origin-veld is GEEN door de gebruiker te bedienen vrijgave of productie-ACL.
-- Een actuele klacht in een tweede zinsdeel krijgt eigen feedback. Een ontkenning, citaat
-  of verleden tijd in een ander deel wist haar niet. Een technische fout blijft technische
-  feedback; eerder gemelde klachten blijven afzonderlijk zichtbaar als eerdere melding.
-- Hulp blijft binnen toegankelijke AI-chat. Zonder toegang wordt deze copy niet getoond.
-  Geen automatische trainerdeling, hulpdienstmelding of succesvolle providercall vereist.
+Beperking: de selectie in het waarschuwingsexperiment steunt op handmatig vastgelegde
+synthetische context. Daarmee is de koppeling tussen echt bericht en waarschuwing niet
+betrouwbaar bewezen. Een woord, emoji, technische fout, citaat of ontkenning mag niet
+zonder actuele klacht dezelfde waarschuwing veroorzaken. Inhoudelijke bron-/context-,
+zorgverwijzings- en vertaalreview blijft nodig; er wordt geen deskundige ingeschakeld.
+Hulp blijft binnen toegankelijke AI-chat, zonder automatische trainer- of noodmelding.
 
-## 2. Functies Voor En Na Zelf Gemeld Herstel
+## Zelfrapportage En Functiegrenzen
 
-A = chat en bestaande resultaten. F = nieuwe begrensde feitenanalyses.
-A/F blijven in alle rijen onder bestaande autorisatie, entitlement en toepasselijke consent.
-Feiten zijn geen persoonlijk advies. Het voorstel wijzigt geen werkelijke appfuncties.
+Alle onderstaande beschikbaarheid is ontworpen binnen bestaande autorisatie,
+entitlements, toestemming en bruikbare sessie/data; geen huidige appwijziging.
 
-| Synthetische situatie | Voor 'mijn klachten zijn voorbij' | Na alleen die zelfrapportage | Concrete vervolgstap / bestemming | Automatische acties |
-| --- | --- | --- | --- | --- |
-| Mijn borst voelt loodzwaar; idem de andere drie oorspronkelijke gaten | A + F, nieuwe stoptekst; geen persoonlijke analyse | A + F; herstelmelding vastgelegd, geen vrijgave | Klacht blijft oningedeeld. Herstelbeleid ontbreekt: ownerroute en deskundige criteria nodig; geen fictieve beoordelingswachtrij | UIT |
-| Een los onbekend woord/emoji was geen klachtmelding | A + F; vraag om verduidelijking | A + F; zelfrapportage alleen sluit het misverstand niet | Verduidelijk oorspronkelijke betekenis; afzonderlijke niet-medische afhandeling per revisie. Daarna nieuwe persoonlijke analyseaanvraag via aparte inhoudspoort, niet levenslang tegengehouden door oude onzekerheid | UIT |
-| Een eerdere technische beoordeling viel uit | A + F voor zover de sessie/databron bruikbaar is | A + F; herstelverklaring herstelt geen techniek | Opnieuw beoordelen wanneer beschikbaar; afzonderlijk technisch probleem afhandelen. Andere klachtmeldingen blijven open. Daarna dezelfde aparte inhoudspoort | UIT |
-| Bestaand voorlopig lager niveau, zonder vastgesteld herhalingsgeval | A + F; mogelijkheid tot eigen herstelmelding | A + F; kandidaat voor nieuwe persoonlijke aanvraag | Expliciete aanvraag voor een gekozen analyse; inhoudsvoorwaarden nog open. Geen medische geschiktheidsclaim of automatische hervatting | UIT |
-| Bestaand R3/R4, of expliciet synthetisch terugkerende klacht | A + F; bestaande niveaugebonden feedback | A + F; herstelmelding, geen vrijgave | Ernst-/herhalingsspecifieke route, bevoegde rol, benodigde informatie en besliscriteria ontbreken. Dit deel is uitdrukkelijk NIET af als gebruikersflow | UIT |
-| Nieuwe klacht na herstel of na afhandeling van een taalprobleem | A + F; nieuwe melding krijgt eigen revisie | Oude herstelmelding geldt niet voor de nieuwe melding | Nieuwe klacht opnieuw beoordelen. Oude niet-medische afhandeling blijft staan; niets wissen of herclassificeren | UIT |
-
-Concreet ontworpen pad: melding bekijken -> expliciet herstel melden OF betekenis
-verduidelijken -> specifieke eerdere kwestie afzonderlijk afhandelen -> nieuwe aanvraag
-voor dag-/na-workout-/weekanalyse voorbereiden -> apart inhoudsbesluit voor die aanvraag.
-Pas na later vastgestelde en goedgekeurde inhouds-/herstelcriteria zou een persoonlijke
-read-only uitkomst kunnen volgen; dat eindpunt wordt hier NIET uitgevoerd of vrijgegeven.
-Een aanvraag voorbereiden is geen aanvraag versturen. Er bestaat nog geen beoordelingsdienst.
-
-Exacte Nederlandse flowfeedback:
-- Zelfrapportage, BESTAAND: "Je meldt dat de klachten voorbij zijn. Dit is jouw verklaring, geen medische vrijgave."
-- Niet-medische afhandeling, NIEUW CONCEPT: "De eerdere taal- of technische onzekerheid is in dit concept afgehandeld; de registratie blijft bewaard. Je kunt een nieuwe aanvraag voor persoonlijke analyses voorbereiden. De inhoudelijke toelatingsvoorwaarden moeten nog worden vastgesteld."
-- Ontbrekend gezondheidsherstelpad, NIEUW CONCEPT: "Voor persoonlijke analyses na deze klachtmelding is de vervolgstap nog niet vastgesteld. Chat, bestaande resultaten en begrensde feiten blijven onder je bestaande toegangsrechten beschikbaar. Er is geen beoordeling aangevraagd en niemand gewaarschuwd."
-- Nieuwe melding, NIEUW CONCEPT: "Je nieuwe melding wordt opnieuw beoordeeld. Je eerdere herstelmelding geldt niet voor deze nieuwe melding."
-
-Afhandeling bevat alleen een synthetisch record voor dezelfde persoon/revisie, met
-herbeoordelingsrevisie en conceptbeslisgrond. Oudere bronregistraties blijven onveranderd.
-Een losse nieuwe R0, zelfrapportage, nieuw gesprek, tijdverloop of verwijderen is geen
-afhandeling. Een afhandeling voor taal/techniek mag nooit een aparte gezondheidsmelding
-sluiten. Bewaren in dit testmodel is GEEN keuze voor onbeperkte retentie.
-
-## 3. Verschillen En Exacte Open Beslissingen
-
-Nieuw: vier feedbacksoorten naast bestaande copy, een expliciet vier-assig functiebeeld,
-en afhandeling van niet-medische onzekerheid los van het veiligheidsverleden.
-Het bestaande state.cjs blijft onzekerheid onthouden; alleen het aparte conceptviewmodel
-toont een toekomstige afhandelroute. Geen classifieruitbreiding of daadwerkelijke analysehervatting.
-
-| Punt | Exacte ownerbeslissing | Deskundige beoordeling blijft nodig |
+| Onderdeel | Voor zelfrapportage | Na 'mijn klachten zijn voorbij' |
 | --- | --- | --- |
-| P1 Stoptekst en betekenis | Deze aparte NL/EN/DE-teksten en scheiding accepteren voor verdere offline uitwerking, of tekstwijzigingen aanwijzen? | Medisch: scope en zorg-/urgentieformulering; native taal; juridisch: verwachtingen. Nog geen criteria om ernst automatisch vast te stellen |
-| P2 Misverstand/techniek afhandelen | Akkoord met verduidelijking plus afzonderlijke afhandeling per kwestie, in plaats van herstelcheckbox of wissen? Wie mag de niet-medische afhandeling vaststellen, met welke bron? | Privacy/juridisch: minimale metadata, aantoonbare correctie en toegangsrollen; medisch: grens waar geen niet-medische afhandeling mag plaatsvinden |
-| P3 Persoonlijke analyses | Welke gepersonaliseerde inhoud mag per dag-/na-workout-/weekaanvraag terugkomen, en welk expliciet inhoudsbesluit is daarvoor nodig? Tot die keuze blijft dit alleen aanvraagvoorbereiding | Medisch/product: inhoud die niet tot onbedoeld trainings-/voedings-/hersteladvies leidt. Geen drempel afgeleid uit R0 of zelfrapportage |
-| P4 Ernst, onzekerheid en herhaling | Wie draagt het toekomstige hervattingsproces, waar ziet de gebruiker de aanvraag/status, welke reactie-/escalatietermijn geldt en hoe kan een afwijzing worden herbeoordeeld? Geen aanvraagbelofte voordat dit bestaat | Medisch: welke actuele informatie/bevoegde beoordeling vereist is voor oningedeelde, ernstige en terugkerende signalen; geldigheid en gevolgen van nieuwe signalen. Trainer is niet automatisch medische vrijgever |
-| P5 Ontbrekende details en bewaarbeleid | Wie beslist bij ontbrekende gegevens en wat is de doelgebonden maximale duur van onopgeloste status? | D5 blijft open: privacy/juridisch plus medische gevolgen. Geen permanente restblokkade of automatische vrijgave door wissen/termijnverloop |
+| Chat, historie en bestaande resultaten | Beschikbaar onder bestaande rechten | Blijven beschikbaar |
+| Nieuwe begrensde feitenanalyses | Ontworpen feitenweergave, geen persoonlijk advies | Ontworpen feitenweergave blijft beschikbaar; geen medische vrijgave |
+| Normale persoonlijke analyses | Toegestane inhoud en hervattingsvoorwaarden niet volledig uitgewerkt | Geen automatische hervatting en geen aangenomen menselijke goedkeuringsstap; concrete inhouds-/hervattingsregels ontbreken nog |
+| Automatische acties | UIT | UIT |
 
-D1-D12 blijven ongewijzigd. Voorlopig uitsluitend ownerproductreview; geen reviewers
-benaderd, kosten gemaakt of medische/productkeuzes stilzwijgend goedgekeurd.
+Nieuwe signalen moeten opnieuw worden beoordeeld en maken oude herstelrapportage
+niet actueel voor de nieuwe melding. Een oude taal- of technische onzekerheid mag
+toekomstige hervatting niet zonder uitgewerkt vervolg permanent onmogelijk maken.
+Dat vereist een concrete verduidelijkings-/retry- en afhandelingsregel, niet het wissen
+van veiligheidsinformatie, een goedkeuringsdienst of R0 als vrijgave.
+Ernstige, terugkerende en oningedeelde klachten hebben nog geen complete herstelroute.
+Een open criterium of review required is geen afgeronde gebruikersflow.
 
-## Technisch Bewijs
+## Open Werk, Geen Heropening Van D1-D12
 
-193/193 gerichte offline tests PASS: 58 voorsteltests + 39 state + 83 recognition-followup
-+ 7 beperkingsregressies + 6 isolatie. Dit zijn contractchecks, geen klinische validatie.
-De vier gaten blijven uncertain/null; gewone woorden/emoji en uitval krijgen andere feedback.
-Geen volledige brede suite, theme-, browser-, database- of membertests gestart voor deze scope.
-Nieuwe bestanden: _offline/phase6e0/warning-recovery-proposal.cjs, bijbehorende .json,
-test/warning-recovery-proposal.test.cjs en dit overzicht. README/status/testmatrix verwijzen hierheen.
-Publicatiebewijs en exacte commits: PHASE6E0_WARNING_RECOVERY_PUBLICATION.md.
+| Onderdeel | Nog concreet vast te stellen |
+| --- | --- |
+| Context en waarschuwing | Betrouwbare herkomst, actuele/ontkende/historische/educatieve betekenis en conflictgedrag; relevante medische/native/juridische beoordeling |
+| Taal/techniek | Verduidelijking/retry die alleen het betreffende misverstand afhandelt, met minimale bron-/revisiegegevens en zonder handmatige goedkeuringsprocedure |
+| Persoonlijke inhoud | Toegestane inhoud per dag-/na-workout-/weekanalyse en hervattingsregels na zelfrapportage; geen automatische medische vrijgave |
+| Ernst/herhaling/onduidelijkheid | Inhoudelijke herstel- en hulpvoorwaarden, betekenis van nieuwe signalen en benodigde actuele informatie; deskundige beoordeling blijft open |
+| Retentie/ontbrekende gegevens | Doel, noodzakelijkheid, maximum en gevolgen van onopgeloste of verdwenen details; geen onbeperkte reststatus of vrijgave door wissen |
 
-Reproduceer de gerichte checks vanaf de repositoryroot, zonder installatie of netwerk:
+Het bestaande [6E-1-voorstel](PHASE6E1_PROPOSAL.md) specificeert per onderdeel resultaat,
+besluit/review, uitsluitend offline voorbereiding en voorwaarden voor live integratie.
+Aanbevolen volgende opdracht: 6E-1 - Offline context-, inhouds- en hervattingscontract.
+Die opdracht is NIET gestart of automatisch toegestaan door deze acceptatie.
 
-```powershell
-node --test _offline/phase6e0/test/warning-recovery-proposal.test.cjs _offline/phase6e0/test/state.test.cjs _offline/phase6e0/test/recognition-followup.test.cjs _offline/phase6e0/test/limitations.test.cjs _offline/phase6e0/test/isolation.test.cjs
-```
+## Bewijs En Scope
 
-Geen runtime/frontend/Edge/database/migration/memberdata/entitlement/provider/workflow/
-rechtenwijziging, externe AI-call of bestandsopruiming. Production touched: NO.
-Volgende stap: ownerproductreview van P1-P5. Geen freeze of automatische 6E-1-start.
+193/193 gerichte checks uit 2705375 zijn bestaand technisch bewijs: 58 experimenttests,
+39 state, 83 herkenningsfollow-up, 7 beperkingsregressies en 6 isolatie.
+Daarin geteste aanvraagvarianten zijn niet alsnog productmatig geaccepteerd.
+De eerdere 659/659-suite en 79 taalgevallen blijven herkenningsbewijs met beperkte,
+door ontwikkelaars samengestelde synthetische dekking, geen medische nauwkeurigheid.
+Deze docs-only opdracht herhaalt geen applicatie- of offline uitvoeringssuite.
+
+Zie [freeze receipt](PHASE6E0_FREEZE_RECEIPT.md) voor exacte bronversies, hashes,
+acceptatiegrenzen, bewaard bewijs en publicatiecontrole.
+Geen runtime-, offline code-, database-, Edge-, memberdata-, rechten- of providerwijziging.
+Geen reviewercontact, nieuwe kosten of bestandsopruiming. Productie blijft verboden.
