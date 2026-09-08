@@ -1,0 +1,96 @@
+{
+  "version": "phase6e0.warning-recovery.proposal.v1",
+  "status": "UNAPPROVED_OFFLINE_CONCEPT",
+  "runtime_activation": false,
+  "medical_level_changes": false,
+  "annotation_source": "MANUAL_SYNTHETIC_FIXTURE_NOT_A_CLASSIFIER_OR_USER_AUTHORITY",
+  "review_required": [
+    "owner_product",
+    "medical",
+    "privacy",
+    "legal",
+    "native_language"
+  ],
+  "warnings": {
+    "current_unclassified": {
+      "basis": "Reported current complaint, insufficiently classified. Manual synthetic annotation plus current unrecognized_health_context; no medical urgency inferred.",
+      "nl": "Stop nu met trainen. Je meldt klachten die Youri niet betrouwbaar kan beoordelen. Neem contact op met een bevoegde zorgprofessional voor beoordeling. Zoek bij direct gevaar onmiddellijk noodhulp; wacht dan niet op Youri of je trainer. Er is niemand automatisch gewaarschuwd.",
+      "en": "Stop exercising now. You report symptoms that Youri cannot reliably assess. Contact a qualified healthcare professional for assessment. In immediate danger, seek emergency help immediately; do not wait for Youri or your trainer. Nobody has been notified automatically.",
+      "de": "Beende jetzt das Training. Du meldest Beschwerden, die Youri nicht zuverlaessig beurteilen kann. Wende dich zur Beurteilung an qualifiziertes medizinisches Fachpersonal. Suche bei unmittelbarer Gefahr sofort Notfallhilfe; warte dann nicht auf Youri oder deinen Trainer. Niemand wurde automatisch benachrichtigt."
+    },
+    "unclear": {
+      "basis": "Missing context or unclear language, without an established current complaint. A word, emoji or unfamiliar language alone is not health evidence.",
+      "nl": "Ik begrijp nog niet wat je bedoelt. Kun je je bericht in andere woorden uitleggen?",
+      "en": "I do not yet understand what you mean. Can you explain your message in different words?",
+      "de": "Ich verstehe noch nicht, was du meinst. Kannst du deine Nachricht mit anderen Worten erklaeren?"
+    },
+    "technical": {
+      "basis": "Unavailable or invalid assessment. Does not add a health warning or remove an earlier complaint warning.",
+      "nl": "De beoordeling is niet beschikbaar. Je kunt het later opnieuw proberen. Er is geen nieuwe beoordeling gedaan.",
+      "en": "Assessment is unavailable. You can try again later. No new assessment has been made.",
+      "de": "Die Beurteilung ist nicht verfuegbar. Du kannst es spaeter erneut versuchen. Es wurde keine neue Beurteilung vorgenommen."
+    },
+    "noncurrent": {
+      "basis": "Only educational, quoted, negated, hypothetical or historical context; no separate current signal. This is a reading of the message, not confirmation of health.",
+      "nl": "Ik lees dit als uitleg, een citaat, een ontkenning of een eerdere of denkbeeldige situatie. Gaat het toch om klachten die je nu hebt?",
+      "en": "I read this as an explanation, a quotation, a denial, or a past or hypothetical situation. Are you actually describing symptoms you have now?",
+      "de": "Ich verstehe dies als Erklaerung, Zitat, Verneinung oder fruehere oder hypothetische Situation. Geht es doch um Beschwerden, die du jetzt hast?"
+    }
+  },
+  "recovery_messages": {
+    "report_available": {
+      "nl": "Zijn je klachten voorbij? Je kunt dat zelf melden. Dat is geen medische vrijgave.",
+      "en": "Have your symptoms ended? You can report that yourself. This is not medical clearance.",
+      "de": "Sind deine Beschwerden vorbei? Du kannst das selbst melden. Das ist keine medizinische Freigabe."
+    },
+    "report_recorded": {
+      "nl": "Je meldt dat de klachten voorbij zijn. Dit is jouw verklaring, geen medische vrijgave.",
+      "en": "You report that the symptoms have ended. This is your statement, not medical clearance.",
+      "de": "Du meldest, dass die Beschwerden vorbei sind. Das ist deine Aussage, keine medizinische Freigabe."
+    },
+    "clarify_context": {
+      "nl": "Je eerdere bericht is nog niet opgehelderd. Leg uit wat je bedoelde en of je toen of nu klachten bedoelt. Alleen melden dat klachten voorbij zijn, lost dit misverstand niet op.",
+      "en": "Your earlier message is still unclear. Explain what you meant and whether you meant symptoms then or now. Reporting that symptoms have ended does not by itself resolve this misunderstanding.",
+      "de": "Deine fruehere Nachricht ist noch unklar. Erklaere, was du meintest und ob es um Beschwerden damals oder jetzt geht. Die Meldung, dass Beschwerden vorbei sind, klaert dieses Missverstaendnis allein nicht."
+    },
+    "nonclinical_closed": {
+      "nl": "De eerdere taal- of technische onzekerheid is in dit concept afgehandeld; de registratie blijft bewaard. Je kunt een nieuwe aanvraag voor persoonlijke analyses voorbereiden. De inhoudelijke toelatingsvoorwaarden moeten nog worden vastgesteld.",
+      "en": "The earlier language or technical uncertainty has been resolved in this concept; its record is retained. You can prepare a new request for personalized analyses. Content eligibility requirements still need to be defined.",
+      "de": "Die fruehere sprachliche oder technische Unsicherheit ist in diesem Konzept geklaert; der Eintrag bleibt erhalten. Du kannst eine neue Anfrage fuer persoenliche Analysen vorbereiten. Die inhaltlichen Voraussetzungen muessen noch festgelegt werden."
+    },
+    "content_request": {
+      "nl": "Je kunt een aanvraag voor persoonlijke analyses voorbereiden. Dit hervat nog geen analyses: de inhoudelijke toelatingsvoorwaarden moeten nog worden vastgesteld.",
+      "en": "You can prepare a request for personalized analyses. This does not resume analyses: content eligibility requirements still need to be defined.",
+      "de": "Du kannst eine Anfrage fuer persoenliche Analysen vorbereiten. Dadurch werden noch keine Analysen fortgesetzt: Die inhaltlichen Voraussetzungen muessen noch festgelegt werden."
+    },
+    "health_policy_missing": {
+      "nl": "Voor persoonlijke analyses na deze klachtmelding is de vervolgstap nog niet vastgesteld. Chat, bestaande resultaten en begrensde feiten blijven onder je bestaande toegangsrechten beschikbaar. Er is geen beoordeling aangevraagd en niemand gewaarschuwd.",
+      "en": "The next step for personalized analyses after this symptom report has not yet been defined. Chat, existing results and bounded facts remain available under your existing access permissions. No review has been requested and nobody has been notified.",
+      "de": "Der naechste Schritt fuer persoenliche Analysen nach dieser Beschwerdemeldung ist noch nicht festgelegt. Chat, vorhandene Ergebnisse und begrenzte Fakten bleiben im Rahmen deiner bisherigen Zugriffsrechte verfuegbar. Es wurde keine Beurteilung angefordert und niemand benachrichtigt."
+    },
+    "new_signal": {
+      "nl": "Je nieuwe melding wordt opnieuw beoordeeld. Je eerdere herstelmelding geldt niet voor deze nieuwe melding.",
+      "en": "Your new report is assessed again. Your earlier recovery report does not apply to this new report.",
+      "de": "Deine neue Meldung wird erneut beurteilt. Deine fruehere Erholungsmeldung gilt nicht fuer diese neue Meldung."
+    },
+    "details_missing": {
+      "nl": "De eerdere details ontbreken. Dat betekent niet dat je medisch bent vrijgegeven. De vervolgstap voor persoonlijke analyses moet nog worden vastgesteld.",
+      "en": "The earlier details are missing. This does not mean you have medical clearance. The next step for personalized analyses still needs to be defined.",
+      "de": "Die frueheren Angaben fehlen. Das bedeutet keine medizinische Freigabe. Der naechste Schritt fuer persoenliche Analysen muss noch festgelegt werden."
+    }
+  },
+  "flow_contract": {
+    "scope": "Pure proposal view over immutable synthetic state. No clinical clearance, execution, queue, notification or storage.",
+    "axes": [
+      "existing_chat_and_results",
+      "new_bounded_facts",
+      "personalized_content_gate",
+      "automatic_execution"
+    ],
+    "nonclinical_resolution": "A separate synthetic, revision-bound disposition can close only communication/technical/noncurrent uncertainty. Self-report, time, deletion or a fresh R0 alone cannot do that.",
+    "clinical_resolution": "NOT_IMPLEMENTED: no invented professional clearance, recurrence threshold or return-to-training condition.",
+    "history": "Read-only source records retained. Resolutions refer to revisions; there is no lifetime-storage policy or deletion implementation.",
+    "normal_personalized_execution": false,
+    "automatic_actions": false
+  }
+}

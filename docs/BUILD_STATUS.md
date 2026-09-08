@@ -1,5 +1,16 @@
 # FitMetZorge Build Status
 
+## Warning And Recovery Proposal - Current
+
+2026-09-08: OFFLINE CONCEPT / TECHNICAL PASS / OWNER PRODUCT REVIEW OPEN.
+Separate NL/EN/DE feedback and an explicit nonclinical-resolution / recovery proposal.
+193/193 targeted checks PASS (58 new, 135 relevant existing regressions).
+No new classifier patterns, medical levels, existing copy, state contract or D1-D12 changes.
+No personalized execution, clinical clearance, owner-freeze or 6E-1.
+Product overview: PHASE6E0_WARNING_RECOVERY_PRODUCT_REVIEW.md.
+Publication proof: PHASE6E0_WARNING_RECOVERY_PUBLICATION.md when finalized.
+Earlier follow-up evidence below remains historical and valid for its own scope.
+
 ## Recognition Follow-Up - Current
 
 6E-0 OFFLINE RECOGNITION FOLLOW-UP - TECHNICAL PASS / READY FOR OWNER PRODUCT REVIEW.

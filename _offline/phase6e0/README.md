@@ -20,6 +20,11 @@ the frozen commit, not a shallow export without that history.
 
 ## Scope
 
+- warning-recovery-proposal.cjs / .json: separate UNAPPROVED_OFFLINE_CONCEPT for
+  current-complaint versus language/technical/noncurrent feedback and recovery steps.
+  Manual synthetic annotations, not another classifier, runtime adapter or release API.
+  Nonclinical issue resolution retains source records; personalized execution stays off.
+  See ../../docs/PHASE6E0_WARNING_RECOVERY_PRODUCT_REVIEW.md for exact copy and open decisions.
 - contract.json: versioned strict envelopes, five provisional levels, uncertainty,
   access/content/action separation, review gates and provisional retention bounds.
 - rules.json / engine.cjs: deliberately limited deterministic lexical/context proposal;
