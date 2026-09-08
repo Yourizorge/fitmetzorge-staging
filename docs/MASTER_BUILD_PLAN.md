@@ -1,6 +1,27 @@
 # FitMetZorge Master Build Plan
 
-## Package 6E-1 Offline Contracts - Current
+## Training Upgrade + Offline Follow-Up - Current
+
+Explicit OWNER GO 2026-09-08 for Training runtime and narrow offline 6E-1 fixes.
+Training runtime commit: 931138bf783fb3f0cb4ac1ff0ed932ff2d8395ca;
+cache 20260908-training-workout1. Seven authorized files change; all other
+runtime assets retain bc6308f identities. Publication receipt follows deployment.
+Full-screen maker/execution, per-set targets, real supersets, timer and optional
+RIR/RPE/None use the existing normalized Training model.
+One additive staging migration 20260908100106; Git/live 32/32 aligned, dry-run clean.
+34 local + 34 rollback staging SQL checks; 67 table fingerprints/100276 rows unchanged.
+244 browser checks across four sizes, 22 model/preservation/theme and 6 completion
+regressions PASS. Offline 6E-1: 280 executed PASS, including 36 preregistered
+follow-up cases; two historical blanket app-freeze assertions explicitly excluded,
+not weakened or counted PASS. Current exact-scope preservation replaces that gate.
+Frozen 6E-0: all 23 sources unchanged; selected 90 regressions PASS.
+6E-0 accepted/frozen OFFLINE ONLY; 6E-1 not owner-accepted/frozen; Phase 6E INCOMPLETE.
+D1-D12 and all content/recovery/retention/expert review points remain open/unchanged.
+No live 6E AI, provider activation, entitlement change, production or cleanup.
+See [technical report and phone retest](TRAINING_WORKOUT_FOLLOWUP_REPORT.md).
+Earlier initial-delivery/freeze sections below are retained historical evidence.
+
+## Package 6E-1 Offline Contracts - Initial Delivery History
 
 PACKAGE 6E-1 OFFLINE CONTRACTS - TECHNICAL PASS / READY FOR OWNER REVIEW.
 Explicit offline OWNER GO received 2026-09-08; implementation only in _offline/phase6e1.

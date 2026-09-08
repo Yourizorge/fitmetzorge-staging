@@ -1,5 +1,13 @@
 # Package 6E-1 Owneroverzicht
 
+Follow-up 2026-09-08: de drie hieronder historisch gemelde herkenningsmissers zijn
+gericht gecorrigeerd in cf6c212, met 36 vooraf gecommitteerde tests. Zie het
+[actuele follow-uprapport](TRAINING_WORKOUT_FOLLOWUP_REPORT.md). Oude resultaten
+en beperkingobservaties hieronder blijven historisch bewijs, geen actuele missers
+of extra herkenningssuccessen. 6E-1 blijft uitsluitend offline en niet geaccepteerd.
+De geautoriseerde nieuwe Training-runtime is afzonderlijk vastgelegd; de oude
+algemene app-freezeclaim geldt niet voor die zeven Training-bestanden.
+
 PACKAGE 6E-1 OFFLINE CONTRACTS - TECHNICAL PASS / READY FOR OWNER REVIEW.
 Dit is een offline productvoorstel, geen medische goedkeuring of complete herstelroute.
 6E-0 blijft owner-accepted/frozen. Phase 6E blijft onvoltooid. Geen live integratie.
