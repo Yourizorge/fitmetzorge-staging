@@ -7,6 +7,12 @@ const hints = freeze(require("../phase6e0/context-hints.json"));
 const existingCopy = freeze(require("../phase6e0/copy.json"));
 const warningCopy = freeze(require("../phase6e0/warning-recovery-proposal.json")).warnings;
 const issued = new WeakSet();
+// Owner-reported formulations: context evidence only, never a new medical level.
+const followupHints = [
+  ["inner_chest_burning", /\b(?:borst\s+brand(?:t|de)(?:\s+niet)?\s+van\s+binnen|brand(?:t|de)\s+(?:mijn|de)\s+borst\s+van\s+binnen|van\s+binnen\s+brand(?:t|de)\s+(?:mijn|de)\s+borst|brandend\s+gevoel\s+in\s+(?:mijn|de)\s+borst)\b/g],
+  ["arm_numbness", /\b(?:(?:left|right)\s+arm\s+(?:(?:has|had)\s+gone|is(?:\s+not)?|was(?:\s+not)?)\s+numb|lost\s+feeling\s+in\s+(?:my|the)\s+(?:left|right)\s+arm|numbness\s+in\s+(?:the|my)\s+(?:left|right)\s+arm)\b/g],
+  ["throat_tightness", /\b(?:schnur(?:t|te)\s+(?:(?:es|mir|etwas|nicht|die)\s+){1,5}kehle\s+zu|kehle\s+fuhlt\s+sich\s+(?:nicht\s+)?zugeschnurt\s+an|zugeschnurte\s+kehle)\b/g]
+];
 const now = /\b(?:nu|now|jetzt|momenteel|currently)\b/;
 const personal = /\b(?:ik|mijn|mij|me|i|my|ich|mein(?:e|er)?|mir)\b/;
 const other = /\b(?:mijn partner|my partner|mein partner|zij heeft|he has|she has|er hat|sie hat)\b/;
@@ -94,6 +100,11 @@ function assess(input) {
         c.question && context === "current" ? "unspecified" : context, basis);
     }
     const matches = [];
+    for (const [code, pattern] of followupHints) {
+      for (const m of t.matchAll(pattern)) matches.push({ m, id: "context.followup." + code + ".v1",
+        code, level: null, internal: true });
+    }
+    if (/\bnumb\b/.test(t) && !matches.some(r => r.code === "arm_numbness")) uncertainty.add("unmapped_sensation_context");
     for (const m of t.matchAll(/\b(?:kriege|bekomme) ich (?:(?:kaum|wenig)(?: noch)?|nur wenig) luft\b/g)) {
       matches.push({ m, id: "context.limited_air_inversion.v1", code: "limited_air", level: null, internal: false });
     }
@@ -151,7 +162,7 @@ function assess(input) {
   if (active.length) { key = level ? levels[Number(level.slice(1))] : "current_unclassified"; category = "health_report"; }
   else if (uncertainty.size || conflicts.size) { key = "unclear"; category = "communication"; }
   else if (trace.length) { key = "noncurrent"; level = "R0"; category = "noncurrent"; }
-  else if (recovered || ordinary.test(text)) { key = "no_signal"; level = "R0"; category = "ordinary"; }
+  else if (recovered || ordinary.test(text) || /\bborstspieren\b.*\btrainingsset\b/.test(text)) { key = "no_signal"; level = "R0"; category = "ordinary"; }
   else { key = "unclear"; category = "communication"; uncertainty.add("unresolved_meaning"); }
   return finish({ ...base, category, level, trace, conflicts: [...conflicts].sort(),
     uncertainty: [...uncertainty].sort(), recovery: recovered && category === "ordinary",
