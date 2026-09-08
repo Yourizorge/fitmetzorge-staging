@@ -92,7 +92,7 @@ De vier gaten blijven uncertain/null; gewone woorden/emoji en uitval krijgen and
 Geen volledige brede suite, theme-, browser-, database- of membertests gestart voor deze scope.
 Nieuwe bestanden: _offline/phase6e0/warning-recovery-proposal.cjs, bijbehorende .json,
 test/warning-recovery-proposal.test.cjs en dit overzicht. README/status/testmatrix verwijzen hierheen.
-Publicatiebewijs en exacte commits volgen in PHASE6E0_WARNING_RECOVERY_PUBLICATION.md.
+Publicatiebewijs en exacte commits: PHASE6E0_WARNING_RECOVERY_PUBLICATION.md.
 
 Reproduceer de gerichte checks vanaf de repositoryroot, zonder installatie of netwerk:
 
