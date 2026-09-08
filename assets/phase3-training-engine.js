@@ -2,7 +2,7 @@
   if (window.FMZ_PHASE3_TRAINING_ENGINE_LOADED) return;
   window.FMZ_PHASE3_TRAINING_ENGINE_LOADED = true;
 
-  const PHASE3_VERSION = "20260818-phase3-disclosure-focusfix1";
+  const PHASE3_VERSION = "20260908-training-workout1";
   const PHASE3_LANGUAGES = ["nl", "en", "de"];
   const PHASE3_FREE_ACTIVE_DAY_LIMIT = 4;
   const PHASE3_REAL_CATALOG_EXPECTED_COUNT = 898;
@@ -814,6 +814,13 @@
   let phase3EditingPlanId = "";
   let phase3EditingDayId = "";
   let phase3PlanFeedback = null;
+  let phase3Maker = null;
+  let phase3TrainingPreferences = { effort_mode: "rir", timer_enabled: true, revision: 0 };
+  let phase3PreferencesPending = false;
+  let phase3PreferencesError = "";
+  let phase3SetSaving = false;
+  let phase3FinishSaving = false;
+  let phase3StartSaving = false;
   const phase3CatalogDetails = new Map();
 
   function phase3EmptyBuilderDraft() {
@@ -1423,6 +1430,9 @@
     if (phase3UserKey === nextKey) return;
     phase3StopTimer();
     phase3UserKey = nextKey;
+    phase3TrainingPreferences = { effort_mode: "rir", timer_enabled: true, revision: 0 };
+    phase3PreferencesError = "";
+    phase3Maker?.reset();
     phase3State = phase3EmptyState();
     phase3ResetPlanEditor();
     phase3OpenTrainingSection = "plans";
@@ -1436,6 +1446,7 @@
     phase3RemoveHistoryPortal();
     phase3LoadRestVibrationPreference();
     phase3LoadLocal();
+    phase3LoadTrainingPreferences();
   }
 
   function phase3UsesSupabase() {
@@ -1476,6 +1487,9 @@
         restSeconds: exercise.rest_seconds,
         tempo: exercise.tempo || "",
         notes: exercise.notes || ""
+        ,setTargets: exercise.set_targets || null,
+        supersetId: exercise.superset_id || null,
+        supersetRestSeconds: exercise.superset_rest_seconds ?? null
       }))
     }));
     return {
@@ -1516,7 +1530,7 @@
         if (dayIds.length) {
           const exerciseResult = await supabaseClient
             .from("training_plan_exercises")
-            .select("id,training_plan_day_id,exercise_id,exercise_slug,exercise_name_snapshot,exercise_order,status,archived_at,target_sets,target_reps,target_weight,target_rir,target_rpe,rest_seconds,tempo,notes")
+            .select("id,training_plan_day_id,exercise_id,exercise_slug,exercise_name_snapshot,exercise_order,status,archived_at,target_sets,target_reps,target_weight,target_rir,target_rpe,rest_seconds,tempo,notes,set_targets,superset_id,superset_rest_seconds")
             .in("training_plan_day_id", dayIds)
             .order("exercise_order", { ascending: true });
           if (exerciseResult.error) throw exerciseResult.error;
@@ -1672,6 +1686,9 @@
       rest_seconds: exercise.restSeconds,
       tempo: exercise.tempo || null,
       notes: exercise.notes || null
+      ,set_targets: window.FMZ_WORKOUT_MODEL.targets(exercise),
+      superset_id: exercise.supersetId || null,
+      superset_rest_seconds: exercise.supersetId ? Number(exercise.supersetRestSeconds ?? 90) : null
     };
   }
 
@@ -1757,116 +1774,132 @@
     }
   }
 
-  async function phase3PersistPlan(plan) {
-    phase3EnsurePlanDbIds(plan);
-    if (!phase3UsesSupabase()) {
-      plan.localOnly = true;
-      phase3State.plans.unshift(plan);
-      phase3SaveLocal();
-      return { ok: true, local: true };
+  function phase3Imperial() {
+    return state?.accountSettings?.unitSystem === "imperial";
+  }
+
+  function phase3TrainingText(key) {
+    const copy = {
+      saving: ["Opslaan...", "Saving...", "Speichern..."],
+      unsaved: ["Wijziging nog niet opgeslagen", "Change not saved yet", "Aenderung noch nicht gespeichert"],
+      previous: ["Vorige", "Previous", "Zurueck"], overview: ["Workoutoverzicht", "Workout overview", "Workoutuebersicht"],
+      progress: ["Voltooide sets", "Completed sets", "Abgeschlossene Saetze"],
+      round: ["Ronde", "Round", "Runde"], groupRest: ["Supersetrust", "Superset rest", "Supersatzpause"],
+      noInstructions: ["Nog geen instructies beschikbaar.", "No instructions available yet.", "Noch keine Anleitung verfuegbar."],
+      training: ["Training", "Training", "Training"], effort: ["Inspanning registreren", "Log effort", "Anstrengung erfassen"],
+      none: ["Geen", "None", "Keine"],
+      effortHelp: ["RIR: herhalingen over. RPE: ervaren inspanning. Invullen is optioneel; bestaande scores blijven behouden.",
+        "RIR: reps in reserve. RPE: perceived effort. Entry is optional; existing scores are retained.",
+        "RIR: verbleibende Wiederholungen. RPE: empfundene Anstrengung. Eingabe optional; bestehende Werte bleiben erhalten."]
+    };
+    return copy[key]?.[PHASE3_LANGUAGES.indexOf(phase3Language())] || key;
+  }
+
+  function phase3Navigate(index) {
+    const session = phase3State.activeSession;
+    if (!session || phase3SetSaving || phase3FinishSaving || !session.plannedExercises[index]) return;
+    const focus = phase3EnsureSessionFocus(session);
+    focus.currentExerciseIndex = index;
+    focus.currentSetIndex = 1;
+    focus.allExercisesCompleted = false;
+    // Manual navigation does not complete sets or let an earlier timer redirect it.
+    if (focus.rest) {
+      focus.rest.nextExerciseIndex = index;
+      focus.rest.nextSetIndex = 1;
     }
+    phase3SaveLocal();phase3SyncFocusPortal();
+  }
+
+  async function phase3LoadTrainingPreferences() {
+    const user = phase3CurrentUserKey();
     try {
-      const day = plan.days[0];
-      const exercise = day.exercises[0];
-      const { error: planError } = await supabaseClient.rpc("fmz_phase3_create_training_plan", {
-        p_plan_id: plan.id,
-        p_day_id: day.id,
-        p_plan_exercise_id: exercise.id,
-        p_title: plan.title,
-        p_day_label: day.label,
-        p_day_order: day.order,
-        p_exercise_slug: exercise.slug,
-        p_exercise_name: exercise.name,
-        p_target_sets: exercise.targetSets,
-        p_target_reps: exercise.targetReps,
-        p_target_weight: exercise.targetWeight === "" ? null : exercise.targetWeight,
-        p_target_rir: exercise.targetRir === "" ? null : exercise.targetRir,
-        p_target_rpe: exercise.targetRpe === "" ? null : exercise.targetRpe,
-        p_rest_seconds: exercise.restSeconds,
-        p_notes: exercise.notes || null
-      });
-      if (planError) throw planError;
-
-      try {
-        await phase3PersistFirstExerciseCatalogLink(day.id, exercise);
-        await phase3PersistRemainingExercises(day);
-      } catch (exerciseError) {
-        await phase3HydrateAfterPartialPlanFailure(plan, exerciseError);
-        return { ok: false, partial: true, error: exerciseError };
+      const cached = JSON.parse(localStorage.getItem("fmz-phase3-preferences:" + user) || "null");
+      if (cached && ["rir", "rpe", "none"].includes(cached.effort_mode)) phase3TrainingPreferences = cached;
+      if (phase3UsesSupabase()) {
+        const { data, error } = await supabaseClient.rpc("fmz_training_get_preferences");
+        if (error) throw error;
+        if (user !== phase3CurrentUserKey()) return;
+        if (!data || !["rir","rpe","none"].includes(data.effort_mode) || typeof data.timer_enabled !== "boolean") throw Error("preferences_invalid");
+        phase3TrainingPreferences = data;
       }
-
-      phase3State.pendingPlanRetry = null;
-      plan.localOnly = false;
-      phase3State.plans.unshift(plan);
-      phase3State.migrationReady = true;
-      phase3State.syncMessage = phase3Text("synced");
-      phase3SaveLocal();
-      return { ok: true };
-    } catch (error) {
-      if (phase3MigrationMissing(error)) {
-        plan.localOnly = true;
-        phase3State.migrationReady = false;
-        phase3State.plans.unshift(plan);
-        phase3State.syncMessage = phase3Text("localSafe");
-        phase3SaveLocal();
-        return { ok: true, local: true };
-      }
-      return { ok: false, error };
+      phase3PreferencesError = "";
+      if (!phase3TrainingPreferences.timer_enabled && phase3State.activeSession) phase3EnsureSessionFocus(phase3State.activeSession).rest = null;
+    } catch {
+      if (user === phase3CurrentUserKey()) phase3PreferencesError = phase3Text("setSaveFailed");
     }
   }
 
-  async function phase3PersistEditedPlan(plan) {
-    phase3EnsurePlanDbIds(plan);
-    const day = plan.days?.find((item) => item.id === phase3EditingDayId) || plan.days?.[0];
-    if (!day) return { ok: false, error: new Error("Workout day missing") };
-
-    if (!phase3UsesSupabase() || plan.localOnly) {
-      const planIndex = phase3State.plans.findIndex((item) => item.id === plan.id);
-      if (planIndex < 0) return { ok: false, error: new Error("Workout not found") };
-      plan.localOnly = true;
-      phase3State.plans[planIndex] = plan;
-      phase3State.pendingPlanRetry = null;
-      phase3SaveLocal();
-      return { ok: true, local: true };
-    }
-
+  async function phase3SetTrainingPreferences(patch) {
+    if (phase3PreferencesPending) return false;
+    const user = phase3CurrentUserKey();
+    const next = { ...phase3TrainingPreferences, ...patch };
+    phase3PreferencesPending = true;
+    phase3PreferencesError = "";
     try {
-      const { error: planError } = await supabaseClient
-        .from("training_plans")
-        .update({ title: plan.title })
-        .eq("id", plan.id)
-        .eq("user_id", phase3ProfileId());
-      if (planError) throw planError;
-
-      const { error: dayError } = await supabaseClient
-        .from("training_plan_days")
-        .update({ day_label: day.label, day_order: day.order })
-        .eq("id", day.id)
-        .eq("training_plan_id", plan.id);
-      if (dayError) throw dayError;
-
-      const { error: archiveError } = await supabaseClient
-        .from("training_plan_exercises")
-        .update({ status: "archived" })
-        .eq("training_plan_day_id", day.id)
-        .eq("status", "active");
-      if (archiveError) throw archiveError;
-
-      const exerciseRows = (day.exercises || []).map((exercise, index) => phase3ExerciseInsertRow(day.id, exercise, index));
-      const { error: exerciseError } = await supabaseClient
-        .from("training_plan_exercises")
-        .upsert(exerciseRows, { onConflict: "id" });
-      if (exerciseError) throw exerciseError;
-
-      phase3State.pendingPlanRetry = null;
-      if (onlineProfile?.role === "client") await phase3HydrateTraining(onlineProfile);
-      phase3State.syncMessage = phase3Text("synced");
+      if (phase3UsesSupabase()) {
+        // Read a fresh shared preference revision; unrelated settings are never overwritten.
+        const current = await supabaseClient.rpc("fmz_training_get_preferences");
+        if (current.error) throw current.error;
+        const result = await supabaseClient.rpc("fmz_training_set_preferences", {
+          p_effort_mode: patch.effort_mode ?? current.data.effort_mode,
+          p_timer_enabled: patch.timer_enabled ?? current.data.timer_enabled,
+          p_expected_revision: current.data.revision
+        });
+        if (result.error) throw result.error;
+        if (user !== phase3CurrentUserKey()) return false;
+        phase3TrainingPreferences = result.data;
+      } else phase3TrainingPreferences = next;
+      if (!phase3TrainingPreferences.timer_enabled) {
+        phase3StopTimer();
+        if (phase3State.activeSession) phase3EnsureSessionFocus(phase3State.activeSession).rest = null;
+      }
+      localStorage.setItem("fmz-phase3-preferences:" + user, JSON.stringify(phase3TrainingPreferences));
       phase3SaveLocal();
-      return { ok: true };
-    } catch (error) {
-      await phase3HydrateAfterPartialPlanFailure(plan, error, "edit");
-      return { ok: false, partial: true, error };
+      return true;
+    } catch {
+      if (user === phase3CurrentUserKey()) phase3PreferencesError = phase3Text("setSaveFailed");
+      return false;
+    } finally {
+      phase3PreferencesPending = false;
+      if (user === phase3CurrentUserKey() && currentView === "training") renderTraining();
     }
+  }
+
+  async function phase3SaveWorkoutAtomically(plan, saveId) {
+    const user = phase3CurrentUserKey();
+    const day = plan.days[0];
+    if (!day?.exercises?.length) return { ok:false, error:Error("training_empty") };
+    try {
+      if (phase3UsesSupabase()) {
+        const result = await supabaseClient.rpc("fmz_training_save_workout", {
+          p_plan_id: plan.id, p_day_id: day.id, p_title: plan.title, p_day_label: day.label,
+          p_day_order: day.order, p_exercises: day.exercises.map((e,i)=>phase3ExerciseInsertRow(day.id,e,i)),
+          p_expected_updated_at: plan.localOnly ? null : plan.updatedAt || null, p_save_id:saveId
+        });
+        if (result.error) throw result.error;
+        if (user !== phase3CurrentUserKey()) return {ok:false,error:Error("user_changed")};
+        plan.updatedAt = result.data.updated_at;
+        plan.localOnly = false;
+      } else {
+        if (!phase3State.plans.some(p=>p.id===plan.id) && !phase3CanCreateActiveWorkoutDay()) throw Error("training_limit");
+        plan.localOnly = true;
+        plan.updatedAt = phase3IsoNow();
+      }
+      phase3State.plans = [plan, ...phase3State.plans.filter(p=>p.id!==plan.id)];
+      phase3State.syncMessage = phase3Text(plan.localOnly ? "localSafe" : "synced");
+      phase3SaveLocal();
+      return {ok:true};
+    } catch(error) {
+      return {ok:false,error};
+    }
+  }
+
+  async function phase3PersistPlan(plan, saveId = phase3DbId()) {
+    return phase3SaveWorkoutAtomically(plan, saveId);
+  }
+
+  async function phase3PersistEditedPlan(plan, saveId = phase3DbId()) {
+    return phase3SaveWorkoutAtomically(plan, saveId);
   }
 
   async function phase3ArchivePlan(planId) {
@@ -2218,7 +2251,7 @@
     const plannedExercises = (day.exercises || [])
       .filter((exercise) => (exercise.status || "active") === "active")
       .map((exercise, index) => ({
-      ...exercise,
+      ...window.FMZ_WORKOUT_MODEL.clone(exercise),
       key: exercise.key || exercise.id || `${exercise.slug}-${index}`,
       instructions: phase3ExerciseMeta(exercise.slug).instructions
     }));
@@ -2242,6 +2275,10 @@
   }
 
   async function phase3StartWorkout(planId, dayId) {
+    if (phase3State.activeSession?.completionPending) {phase3OpenFocus();return;}
+    if (phase3StartSaving) return;
+    phase3StartSaving = true;
+    try {
     const plan = phase3PlansForDisplay().find((item) => item.id === planId);
     const day = plan?.days
       .filter((item) => (item.status || "active") === "active")
@@ -2258,13 +2295,28 @@
     phase3SaveLocal();
     await phase3SyncActiveSession();
     renderTraining();
+    } finally {
+      phase3StartSaving = false;
+    }
   }
 
   async function phase3SyncActiveSession() {
     const session = phase3State.activeSession;
     if (!session || !phase3UsesSupabase()) return { ok: false, skipped: true };
+    const user = phase3CurrentUserKey();
     try {
       phase3EnsureSessionDbIds(session);
+      if (session.completionPending || session.status === "completed") {
+        const result = await supabaseClient.rpc("fmz_training_complete_workout", {
+          p_session_id: session.id, p_completed_at: session.completedAt,
+          p_focus: phase3EnsureSessionFocus(session)
+        });
+        if (result.error) throw result.error;
+        if (user !== phase3CurrentUserKey()) return {ok:false};
+        session.status = "completed";
+        session.completedAt = result.data.completed_at;
+        return {ok:true};
+      }
       const { error } = await supabaseClient
         .from("workout_sessions")
         .upsert({
@@ -2289,6 +2341,7 @@
           }
         }, { onConflict: "id" });
       if (error) throw error;
+      if (user !== phase3CurrentUserKey() || session !== phase3State.activeSession) return {ok:false};
       const unsynced = Object.values(session.setLogs || {}).filter((setLog) => !setLog.syncedAt);
       for (const setLog of unsynced) {
         const setResult = await phase3PersistSetLog(setLog);
@@ -2308,6 +2361,7 @@
 
   async function phase3PersistSetLog(setLog) {
     if (!phase3UsesSupabase() || !phase3State.activeSession) return { ok: false, skipped: true };
+    const user = phase3CurrentUserKey(), session = phase3State.activeSession;
     try {
       const { error } = await supabaseClient
         .from("workout_set_logs")
@@ -2338,6 +2392,7 @@
           }
         }, { onConflict: "workout_session_id,planned_exercise_key,set_index" });
       if (error) throw error;
+      if (user !== phase3CurrentUserKey() || session !== phase3State.activeSession) return {ok:false};
       setLog.syncedAt = phase3IsoNow();
       phase3State.syncMessage = phase3Text("synced");
       phase3SaveLocal();
@@ -2354,19 +2409,25 @@
   }
 
   function phase3ReadSetInputs(setKey) {
+    const session = phase3State.activeSession;
+    const previous = session?.setDrafts?.[setKey] || session?.setLogs?.[setKey] || {};
+    const read = (name, fallback) => {
+      const field = document.querySelector('[data-phase3-' + name + '="' + setKey + '"]');
+      return field ? phase3Number(field.value, "") : fallback ?? "";
+    };
+    const weightField = document.querySelector('[data-phase3-weight="' + setKey + '"]');
     return {
-      actualReps: phase3Number(document.querySelector(`[data-phase3-reps="${setKey}"]`)?.value, ""),
-      actualWeight: phase3Number(document.querySelector(`[data-phase3-weight="${setKey}"]`)?.value, ""),
-      rir: phase3Number(document.querySelector(`[data-phase3-rir="${setKey}"]`)?.value, ""),
-      rpe: phase3Number(document.querySelector(`[data-phase3-rpe="${setKey}"]`)?.value, ""),
-      notes: String(document.querySelector(`[data-phase3-notes="${setKey}"]`)?.value || "").trim().slice(0, 500)
+      actualReps: read("reps", previous.actualReps),
+      actualWeight: weightField ? window.FMZ_WORKOUT_MODEL.storedWeight(weightField.value, phase3Imperial()) ?? "" : previous.actualWeight ?? "",
+      rir: read("rir", previous.rir), rpe: read("rpe", previous.rpe),
+      notes: String(previous.notes || "").slice(0, 500)
     };
   }
 
   function phase3ValidateSetInputs(inputs) {
-    const repsValid = Number.isInteger(inputs.actualReps) && inputs.actualReps >= 1;
-    const weightValid = inputs.actualWeight === "" || (Number.isFinite(inputs.actualWeight) && inputs.actualWeight >= 0);
-    const rirValid = inputs.rir === "" || (Number.isFinite(inputs.rir) && inputs.rir >= 0 && inputs.rir <= 10);
+    const repsValid = Number.isInteger(inputs.actualReps) && inputs.actualReps >= 1 && inputs.actualReps <= 999;
+    const weightValid = inputs.actualWeight === "" || (Number.isFinite(inputs.actualWeight) && inputs.actualWeight >= 0 && inputs.actualWeight <= 10000);
+    const rirValid = inputs.rir === "" || (Number.isInteger(inputs.rir) && inputs.rir >= 0 && inputs.rir <= 10);
     const rpeValid = inputs.rpe === "" || (Number.isFinite(inputs.rpe) && inputs.rpe >= 1 && inputs.rpe <= 10);
     return repsValid && weightValid && rirValid && rpeValid;
   }
@@ -2400,69 +2461,59 @@
   }
 
   function phase3NextStepAfterSet(session, exercise, setIndex) {
-    const exerciseIndex = session.plannedExercises.indexOf(exercise);
-    const totalSets = Math.max(1, Number(exercise.targetSets || 1));
-    if (setIndex < totalSets) return { exerciseIndex, setIndex: setIndex + 1, completedExercise: false };
-    const nextExerciseIndex = phase3NextExerciseIndex(session, exerciseIndex + 1);
-    return nextExerciseIndex >= 0
-      ? { exerciseIndex: nextExerciseIndex, setIndex: 1, completedExercise: true }
-      : { exerciseIndex: -1, setIndex: 1, completedExercise: true };
+    const next = window.FMZ_WORKOUT_MODEL.next(session, session.plannedExercises.indexOf(exercise), setIndex);
+    const M = window.FMZ_WORKOUT_MODEL;
+    return { ...next, completedExercise: M.targets(exercise).every((_,i)=>M.registered(session.setLogs[M.key(exercise,i+1)])) };
   }
 
   async function phase3CompleteSet(setKey) {
     const session = phase3State.activeSession;
-    if (!session) return;
+    if (!session || session.status !== "active" || session.completionPending || phase3SetSaving || phase3FinishSaving) return;
+    const user = phase3CurrentUserKey();
     const [exerciseKey, rawSetIndex] = setKey.split("__");
-    const exercise = session.plannedExercises.find((item) => String(item.key) === exerciseKey);
-    if (!exercise) return;
-    const setIndex = Number(rawSetIndex);
-    const inputs = phase3ReadSetInputs(setKey);
-    const focus = phase3EnsureSessionFocus(session);
+    const exercise = session.plannedExercises.find(item => phase3ExerciseKey(item) === exerciseKey);
+    const setIndex = Number(rawSetIndex), M = window.FMZ_WORKOUT_MODEL;
+    if (!exercise || !Number.isInteger(setIndex) || setIndex < 1 || setIndex > M.targets(exercise).length) return;
+    const inputs = phase3ReadSetInputs(setKey), focus = phase3EnsureSessionFocus(session);
+    session.setDrafts ||= {};
+    session.setDrafts[setKey] = inputs;
     if (!phase3ValidateSetInputs(inputs)) {
-      focus.feedback = phase3Text("setValidationFailed");
-      phase3SaveLocal();
-      const feedback = document.querySelector("[data-phase3-focus-feedback]");
-      if (feedback) {
-        feedback.hidden = false;
-        feedback.textContent = focus.feedback;
-      }
-      document.querySelector(`[data-phase3-reps="${setKey}"]`)?.reportValidity?.();
-      return;
+      focus.feedback = phase3Text("setValidationFailed");phase3SaveLocal();phase3SyncFocusPortal();return;
     }
+    const existing = session.setLogs[setKey];
+    const unchanged = M.registered(existing) && ["actualReps","actualWeight","rir","rpe","notes"].every(k=>existing[k]===inputs[k]);
+    if (unchanged) return;
+    const target = M.targets(exercise)[setIndex-1], correction = M.registered(existing);
     const setLog = {
-      id: phase3IsUuid(session.setLogs[setKey]?.id) ? session.setLogs[setKey].id : phase3DbId(),
-      plannedExerciseKey: String(exercise.key),
-      trainingPlanExerciseId: phase3IsUuid(exercise.id) ? exercise.id : "",
+      id: phase3IsUuid(existing?.id) ? existing.id : phase3DbId(),
+      plannedExerciseKey: exerciseKey, trainingPlanExerciseId: session.planId && phase3IsUuid(exercise.id) ? exercise.id : "",
       exerciseId: exercise.catalogBacked && phase3IsUuid(exercise.exerciseId) ? exercise.exerciseId : "",
-      catalogBacked: exercise.catalogBacked === true,
-      exerciseSlug: exercise.slug,
-      exerciseName: exercise.name,
-      setIndex,
-      targetReps: exercise.targetReps || "",
-      targetWeight: exercise.targetWeight === "" ? "" : phase3Number(exercise.targetWeight, ""),
-      actualReps: inputs.actualReps,
-      actualWeight: inputs.actualWeight,
-      rir: inputs.rir,
-      rpe: inputs.rpe,
-      notes: inputs.notes,
-      completedAt: phase3IsoNow(),
-      source: session.source,
-      syncedAt: ""
+      catalogBacked: exercise.catalogBacked === true, exerciseSlug: exercise.slug, exerciseName: exercise.name, setIndex,
+      targetReps: target.reps, targetWeight: target.weight ?? "", ...inputs,
+      completedAt: existing?.completedAt || phase3IsoNow(), source: session.source, syncedAt: ""
     };
+    phase3SetSaving = true;
     session.setLogs[setKey] = setLog;
-    focus.feedback = "";
-    phase3SaveLocal();
-    const persisted = phase3UsesSupabase() ? await phase3PersistSetLog(setLog) : { ok: true, local: true };
-    if (!persisted.ok) {
-      focus.feedback = phase3Text("setSaveFailed");
-      phase3SaveLocal();
-      renderTraining();
-      return;
+    focus.feedback = phase3TrainingText("saving");
+    phase3SaveLocal();phase3SyncFocusPortal();
+    try {
+      const persisted = phase3UsesSupabase() ? await phase3PersistSetLog(setLog) : {ok:true,local:true};
+      if (user !== phase3CurrentUserKey() || session !== phase3State.activeSession) return;
+      if (!persisted.ok) {focus.feedback=phase3Text("setSaveFailed");return;}
+      if (persisted.local) setLog.localRegistered = true;
+      delete session.setDrafts[setKey];
+      focus.feedback = phase3Text("setDone");
+      if (!correction) {
+        const index=session.plannedExercises.indexOf(exercise);
+        const step=M.sequence(session.plannedExercises).find(s=>s.exerciseIndex===index&&s.setIndex===setIndex);
+        const nextStep=phase3NextStepAfterSet(session,exercise,setIndex);
+        phase3StartTimer(step?.restSeconds??0,nextStep);
+      }
+      await phase3SyncActiveSession();
+    } finally {
+      phase3SetSaving = false;
+      if (user === phase3CurrentUserKey() && session === phase3State.activeSession) {phase3SaveLocal();renderTraining();}
     }
-    const nextStep = phase3NextStepAfterSet(session, exercise, setIndex);
-    phase3StartTimer(exercise.restSeconds || 0, nextStep);
-    await phase3SyncActiveSession();
-    renderTraining();
   }
 
   function phase3SkipCurrentExercise() {
@@ -2483,7 +2534,7 @@
 
   async function phase3SetSessionStatus(status) {
     const session = phase3State.activeSession;
-    if (!session) return;
+    if (!session || session.completionPending || phase3FinishSaving || phase3SetSaving) return;
     const focus = phase3EnsureSessionFocus(session);
     const now = phase3IsoNow();
     session.status = status;
@@ -2505,10 +2556,14 @@
 
   async function phase3CompleteWorkout() {
     const session = phase3State.activeSession;
-    if (!session) return;
+    if (!session || phase3FinishSaving || phase3SetSaving) return;
+    phase3FinishSaving = true;
+    renderTraining();
+    try {
     const focus = phase3EnsureSessionFocus(session);
     // Persist pending sets before the completed-session event becomes visible to analysis jobs.
     const flushed = await phase3SyncActiveSession();
+    if (phase3State.activeSession !== session) return;
     if (phase3UsesSupabase() && !flushed.ok) {
       focus.feedback = phase3Text("setSaveFailed");
       phase3SaveLocal();
@@ -2516,18 +2571,19 @@
       return;
     }
     const previousStatus = session.status;
-    const previousCompletedAt = session.completedAt;
     if (focus.pauseStartedAt) {
       focus.accumulatedPausedMs += Math.max(0, Date.now() - phase3TimestampMs(focus.pauseStartedAt));
       focus.pauseStartedAt = "";
     }
     session.status = "completed";
-    session.completedAt = phase3IsoNow();
+    session.completedAt ||= phase3IsoNow();
+    session.completionPending = true;
     phase3StopTimer();
     const synced = await phase3SyncActiveSession();
+    if (phase3State.activeSession !== session) return;
     if (phase3UsesSupabase() && !synced.ok) {
       session.status = previousStatus;
-      session.completedAt = previousCompletedAt;
+      // Retain the final attempt timestamp for idempotent retry after a lost response.
       focus.feedback = phase3Text("setSaveFailed");
       phase3SaveLocal();
       phase3FocusOpen = true;
@@ -2546,12 +2602,16 @@
       durationSeconds: phase3WorkoutElapsedSeconds(session),
       sets: Object.values(session.setLogs || {})
     };
-    phase3State.history.unshift(historyEntry);
+    phase3State.history = [historyEntry, ...phase3State.history.filter(entry=>entry.id!==session.id)];
     phase3State.activeSession = null;
     phase3FocusOpen = false;
     phase3RemoveFocusPortal();
     phase3SaveLocal();
     renderTraining();
+    } finally {
+      phase3FinishSaving = false;
+      if (phase3State.activeSession === session) renderTraining();
+    }
   }
 
   function phase3ExerciseIdentity(value) {
@@ -2623,23 +2683,19 @@
     return Object.values(records);
   }
 
+  function phase3WeightLabel(value) {
+    const weight = window.FMZ_WORKOUT_MODEL.displayWeight(value, phase3Imperial());
+    return weight === "" ? "-" : weight + (phase3Imperial() ? " lb" : " kg");
+  }
+
   function phase3PreviousPerformance(exercise) {
     const first = phase3PreviousPerformanceSets(exercise)[0];
     if (!first) return "";
-    const reps = first.actual_reps ?? first.actualReps ?? "-";
-    const weight = first.actual_weight ?? first.actualWeight ?? "-";
-    return `${weight} kg x ${reps}`;
+    return phase3FormatSetPerformance(first);
   }
 
   function phase3PreviousPerformanceSets(exercise) {
-    const latestEntry = phase3State.history
-      .slice()
-      .sort((a, b) => String(b.completedAt || "").localeCompare(String(a.completedAt || "")))
-      .find((entry) => (entry.sets || []).some((setLog) => phase3SameExercise(exercise, setLog)));
-    return (latestEntry?.sets || [])
-      .filter((setLog) => phase3SameExercise(exercise, setLog))
-      .slice()
-      .sort((a, b) => Number(a.set_index ?? a.setIndex ?? 0) - Number(b.set_index ?? b.setIndex ?? 0));
+    return window.FMZ_WORKOUT_MODEL.previous(phase3State.history, exercise, phase3State.activeSession?.startedAt);
   }
 
   function phase3OverloadSignal(exercise, session) {
@@ -2648,7 +2704,12 @@
       .map(([, value]) => value);
     if (!completedSets.length) return phase3Text("overloadNeutral");
     const allDone = completedSets.length >= Number(exercise.targetSets || 1);
-    const hasRoom = completedSets.some((setLog) => Number(setLog.rir) >= 2 || Number(setLog.rpe) <= 8);
+    const hasRoom = completedSets.some((setLog) => {
+      const rir = window.FMZ_WORKOUT_MODEL.number(setLog.rir);
+      const rpe = window.FMZ_WORKOUT_MODEL.number(setLog.rpe);
+      return (rir !== null && Number.isInteger(rir) && rir >= 2 && rir <= 10) ||
+        (rpe !== null && Number.isFinite(rpe) && rpe >= 1 && rpe <= 8);
+    });
     if (allDone && hasRoom) return phase3Text("overloadPotential");
     return phase3Text("overloadRepeat");
   }
@@ -2665,7 +2726,7 @@
     const session = phase3State.activeSession;
     if (!session) return;
     const focus = phase3EnsureSessionFocus(session);
-    const durationSeconds = Math.max(0, Number(seconds || 0));
+    const durationSeconds = phase3TrainingPreferences.timer_enabled ? Math.max(0, Number(seconds || 0)) : 0;
     if (!durationSeconds) {
       phase3ApplyFocusStep(session, nextStep, Boolean(nextStep?.completedExercise));
       phase3SaveLocal();
@@ -2799,14 +2860,8 @@
   }
 
   function phase3RenderExerciseMedia(exercise, mode = "thumb") {
-    const meta = phase3ExerciseMeta(exercise?.slug || exercise?.canonicalSlug || phase3BuilderDraft.exerciseSlug);
-    const label = meta.animationStatus === "legacy" ? phase3Text("animationPreview") : phase3Text("youriAvatarPending");
-    return `
-      <div class="phase3-media phase3-media-${escapeHTML(mode)}" aria-label="${escapeHTML(phase3Text("animationPreview"))}">
-        <span class="phase3-media-avatar">${escapeHTML(phase3ExerciseMediaLabel(exercise))}</span>
-        <span class="phase3-media-caption">${escapeHTML(label)}</span>
-      </div>
-    `;
+    const item = phase3ExerciseById(exercise?.exerciseId || exercise?.id) || phase3Exercise(exercise?.slug);
+    return window.FMZ_WORKOUT_UI.media(item, mode === "large");
   }
 
   function phase3SelectedExerciseMeta() {
@@ -3200,7 +3255,7 @@
             <div class="phase3-plan-head">
               <div>
                 <strong>${escapeHTML(exercise.name)}</strong>
-                <p class="muted">${escapeHTML(String(exercise.targetSets))} x ${escapeHTML(exercise.targetReps)}${exercise.targetWeight !== "" ? ` - ${escapeHTML(String(exercise.targetWeight))} kg` : ""}</p>
+                <p class="muted">${escapeHTML(String(exercise.targetSets))} x ${escapeHTML(exercise.targetReps)}${window.FMZ_WORKOUT_MODEL.number(exercise.targetWeight) !== null ? ` - ${escapeHTML(phase3WeightLabel(exercise.targetWeight))}` : ""}</p>
               </div>
               <div class="phase3-builder-actions">
                 <button class="secondary-btn" data-phase3-edit-builder-exercise="${index}" type="button" ${disabled ? "disabled" : ""}>${escapeHTML(phase3Text("editExercise"))}</button>
@@ -3229,52 +3284,7 @@
   }
 
   function phase3RenderPlanForm() {
-    const editing = Boolean(phase3EditingPlanId && phase3EditingDayId);
-    const disabled = !editing && !phase3CanCreateActiveWorkoutDay();
-    const selectedMeta = phase3SelectedExerciseMeta();
-    return `
-      <div>
-        <div class="panel-head">
-          <div>
-            <p class="eyebrow">${escapeHTML(phase3Text(editing ? "editWorkout" : "createPlan"))}</p>
-            <h2>${escapeHTML(editing ? phase3BuilderDraft.title : phase3Text("freeLimitTitle"))}</h2>
-            <p class="muted">${escapeHTML(phase3Text("freeLimitText"))}</p>
-          </div>
-        </div>
-        ${disabled ? `<p class="empty-mini">${escapeHTML(phase3Text("limitReached"))}</p>` : ""}
-        ${phase3RenderPendingPlanRetry()}
-        <form id="phase3PlanForm" class="phase3-form-grid">
-          <label class="field"><span>${escapeHTML(phase3Text("planTitle"))}</span><input name="title" required placeholder="Full body A" value="${escapeHTML(phase3BuilderDraft.title)}" ${disabled ? "disabled" : ""} /></label>
-          <label class="field"><span>${escapeHTML(phase3Text("day"))}</span><select name="dayLabel" ${disabled ? "disabled" : ""}>${DAYS.map((day) => `<option value="${escapeHTML(day)}" ${phase3BuilderDraft.dayLabel === day ? "selected" : ""}>${escapeHTML(phase3Text(day))}</option>`).join("")}</select></label>
-          <div class="field">
-            <span>${escapeHTML(phase3Text("selectedExercise"))}</span>
-            <input name="exerciseSlug" type="hidden" value="${escapeHTML(phase3BuilderDraft.exerciseSlug)}" />
-            <div class="phase3-plan-card">
-              <strong>${escapeHTML(selectedMeta.name)}</strong>
-              <p class="muted">${escapeHTML(selectedMeta.primary)} · ${escapeHTML(selectedMeta.equipment)}</p>
-              <button class="secondary-btn" data-phase3-open-picker type="button" ${disabled ? "disabled" : ""}>${escapeHTML(phase3Text("openExercisePicker"))}</button>
-            </div>
-          </div>
-          <label class="field"><span>${escapeHTML(phase3Text("sets"))}</span><input name="sets" type="number" min="1" max="20" value="${escapeHTML(phase3BuilderDraft.sets)}" ${disabled ? "disabled" : ""} /></label>
-          <label class="field"><span>${escapeHTML(phase3Text("reps"))}</span><input name="reps" value="${escapeHTML(phase3BuilderDraft.reps)}" ${disabled ? "disabled" : ""} /></label>
-          <label class="field"><span>${escapeHTML(phase3Text("targetWeight"))}</span><input name="targetWeight" type="number" min="0" step="0.5" value="${escapeHTML(phase3BuilderDraft.targetWeight)}" ${disabled ? "disabled" : ""} /></label>
-          <label class="field"><span>${escapeHTML(phase3Text("rir"))}</span><input name="targetRir" type="number" min="0" max="10" value="${escapeHTML(phase3BuilderDraft.targetRir)}" ${disabled ? "disabled" : ""} /></label>
-          <label class="field"><span>${escapeHTML(phase3Text("rpe"))}</span><input name="targetRpe" type="number" min="1" max="10" step="0.5" value="${escapeHTML(phase3BuilderDraft.targetRpe)}" ${disabled ? "disabled" : ""} /></label>
-          <label class="field"><span>${escapeHTML(phase3Text("rest"))}</span><input name="restSeconds" type="number" min="0" max="3600" value="${escapeHTML(phase3BuilderDraft.restSeconds)}" ${disabled ? "disabled" : ""} /></label>
-          <label class="field wide"><span>${escapeHTML(phase3Text("notes"))}</span><textarea name="notes" rows="2" ${disabled ? "disabled" : ""}>${escapeHTML(phase3BuilderDraft.notes)}</textarea></label>
-          <div class="settings-save-row wide">
-            <button class="secondary-btn" data-phase3-add-builder-exercise type="button" ${disabled ? "disabled" : ""}>${escapeHTML(phase3Text(phase3BuilderEditIndex !== null ? "updateExercise" : "addExercise"))}</button>
-            ${phase3BuilderEditIndex !== null ? `<button class="secondary-btn" data-phase3-cancel-builder-edit type="button">${escapeHTML(phase3Text("cancelEdit"))}</button>` : ""}
-          </div>
-          ${phase3RenderBuilderExercises(disabled)}
-          <div class="settings-save-row wide">
-            <button class="primary-btn" type="submit" ${disabled ? "disabled" : ""}>${escapeHTML(phase3Text(editing ? "saveWorkoutChanges" : "addPlan"))}</button>
-            ${editing ? `<button class="secondary-btn" data-phase3-cancel-plan-edit type="button">${escapeHTML(phase3Text("cancelWorkoutEdit"))}</button>` : ""}
-            <span class="save-feedback" data-save-feedback="phase3-plan"></span>
-          </div>
-        </form>
-      </div>
-    `;
+    return '<button type="button" class="primary-btn" data-phase3-maker-open>' + escapeHTML(phase3Text("createPlan")) + '</button>';
   }
 
   function phase3RenderPlans() {
@@ -3349,7 +3359,7 @@
             </div>
             <div class="phase3-exercise-list">
               ${day.exercises.map((exercise) => `
-                <span>${escapeHTML(exercise.name)} - ${escapeHTML(String(exercise.targetSets))} x ${escapeHTML(exercise.targetReps)}${exercise.targetWeight !== "" ? ` - ${escapeHTML(String(exercise.targetWeight))} kg` : ""}</span>
+                <span>${escapeHTML(exercise.name)} - ${escapeHTML(String(exercise.targetSets))} x ${escapeHTML(exercise.targetReps)}${window.FMZ_WORKOUT_MODEL.number(exercise.targetWeight) !== null ? ` - ${escapeHTML(phase3WeightLabel(exercise.targetWeight))}` : ""}</span>
               `).join("")}
             </div>
           </div>
@@ -3402,29 +3412,29 @@
     const reps = setLog.actual_reps ?? setLog.actualReps ?? "";
     const hasWeight = weight !== "" && weight !== null && weight !== undefined;
     const hasReps = reps !== "" && reps !== null && reps !== undefined;
-    if (hasWeight && hasReps) return `${weight} kg x ${reps}`;
-    if (hasWeight) return `${weight} kg`;
+    const shown = window.FMZ_WORKOUT_MODEL.displayWeight(weight, phase3Imperial());
+    const unit = phase3Imperial() ? "lb" : "kg";
+    if (hasWeight && hasReps) return shown + " " + unit + " x " + reps;
+    if (hasWeight) return shown + " " + unit;
     if (hasReps) return `${reps} ${phase3Text("reps")}`;
     return "-";
   }
 
   function phase3RenderSetRow(exercise, setIndex, session, disabled = false) {
-    const key = phase3SetKey(exercise, setIndex);
-    const saved = session.setLogs?.[key] || {};
-    return `
-      <div class="phase3-focus-set" data-phase3-set-row="${escapeHTML(key)}">
-        <div class="phase3-focus-inputs">
-          <div class="phase3-focus-numeric-grid">
-            <label>${escapeHTML(phase3Text("weight"))}<input data-phase3-set-field="weight" data-phase3-weight="${escapeHTML(key)}" type="number" min="0" step="0.5" inputmode="decimal" enterkeyhint="next" autocomplete="off" value="${escapeHTML(saved.actualWeight ?? "")}" placeholder="${escapeHTML(String(exercise.targetWeight ?? ""))}" ${disabled ? "disabled" : ""} /></label>
-            <label>${escapeHTML(phase3Text("reps"))}<input data-phase3-set-field="reps" data-phase3-reps="${escapeHTML(key)}" type="number" min="1" required inputmode="numeric" enterkeyhint="next" autocomplete="off" value="${escapeHTML(saved.actualReps ?? "")}" placeholder="${escapeHTML(exercise.targetReps || "")}" ${disabled ? "disabled" : ""} /></label>
-            <label>${escapeHTML(phase3Text("rir"))}<input data-phase3-set-field="rir" data-phase3-rir="${escapeHTML(key)}" type="number" min="0" max="10" inputmode="numeric" enterkeyhint="next" autocomplete="off" value="${escapeHTML(saved.rir ?? "")}" ${disabled ? "disabled" : ""} /></label>
-            <label>${escapeHTML(phase3Text("rpe"))}<input data-phase3-set-field="rpe" data-phase3-rpe="${escapeHTML(key)}" type="number" min="1" max="10" step="0.5" inputmode="decimal" enterkeyhint="done" autocomplete="off" value="${escapeHTML(saved.rpe ?? "")}" ${disabled ? "disabled" : ""} /></label>
-          </div>
-          <label class="phase3-focus-notes">${escapeHTML(phase3Text("notes"))}<input data-phase3-notes="${escapeHTML(key)}" autocomplete="off" value="${escapeHTML(saved.notes ?? "")}" ${disabled ? "disabled" : ""} /></label>
-        </div>
-        <button class="primary-btn phase3-gold-save" data-phase3-complete-set="${escapeHTML(key)}" type="button" ${disabled ? "disabled" : ""}>${escapeHTML(saved.completedAt ? phase3Text("setDone") : phase3Text("completeSet"))}</button>
-      </div>
-    `;
+    const M=window.FMZ_WORKOUT_MODEL,key=phase3SetKey(exercise,setIndex);
+    const log=session.setLogs?.[key],saved=session.setDrafts?.[key]||log||{},target=M.targets(exercise)[setIndex-1];
+    const previous=phase3PreviousPerformanceSets(exercise).find(s=>(s.setIndex??s.set_index)===setIndex);
+    const mode=phase3TrainingPreferences.effort_mode,unit=phase3Imperial()?"lb":"kg",done=M.registered(log);
+    const changed=done&&session.setDrafts?.[key]&&["actualReps","actualWeight","rir","rpe"].some(k=>saved[k]!==log[k]);
+    const busy=disabled||phase3SetSaving||phase3FinishSaving;
+    return '<div class="tw-live-set" data-phase3-set-row="'+escapeHTML(key)+'" data-registered="'+done+'">'
+      +'<strong class="tw-set-no">'+setIndex+'</strong>'
+      +'<span class="tw-previous"><small>'+escapeHTML(phase3Text("previousTime"))+'</small>'+escapeHTML(previous?phase3FormatSetPerformance(previous):"-")+'</span>'
+      +'<label>'+escapeHTML(phase3Text("weight"))+' ('+unit+')<input data-phase3-set-field="weight" data-phase3-weight="'+escapeHTML(key)+'" type="number" min="0" max="'+(phase3Imperial()?22046:10000)+'" step="any" inputmode="decimal" value="'+escapeHTML(M.displayWeight(saved.actualWeight,phase3Imperial()))+'" placeholder="'+escapeHTML(M.displayWeight(target.weight,phase3Imperial()))+'" '+(busy?'disabled':'')+'></label>'
+      +'<label>'+escapeHTML(phase3Text("reps"))+'<input data-phase3-set-field="reps" data-phase3-reps="'+escapeHTML(key)+'" type="number" min="1" max="999" step="1" inputmode="numeric" value="'+escapeHTML(saved.actualReps??"")+'" placeholder="'+escapeHTML(target.reps)+'" '+(busy?'disabled':'')+'></label>'
+      +(mode!=="none"?'<label class="tw-effort">'+mode.toUpperCase()+'<input data-phase3-set-field="'+mode+'" data-phase3-'+mode+'="'+escapeHTML(key)+'" type="number" min="'+(mode==="rpe"?1:0)+'" max="10" step="'+(mode==="rir"?1:.5)+'" inputmode="decimal" value="'+escapeHTML(saved[mode]??"")+'" placeholder="'+escapeHTML(target[mode]??"")+'" '+(busy?'disabled':'')+'></label>':"")
+      +'<button class="tw-tool tw-set-save" type="button" data-phase3-complete-set="'+escapeHTML(key)+'" title="'+escapeHTML(phase3Text(done&&!changed?"setDone":"completeSet"))+'" aria-label="'+escapeHTML(phase3Text(done&&!changed?"setDone":"completeSet"))+'" '+(busy?'disabled':'')+'>'+window.FMZ_WORKOUT_UI.icon(done&&!changed?"check":"plus")+'</button>'
+      +(log&&!done?'<small class="tw-pending">'+escapeHTML(phase3Text("pendingSync"))+'</small>':changed?'<small class="tw-pending">'+escapeHTML(phase3TrainingText("unsaved"))+'</small>':"")+'</div>';
   }
 
   const PHASE3_SET_INPUT_SEQUENCE = ["weight", "reps", "rir", "rpe"];
@@ -3435,8 +3445,8 @@
     const currentIndex = PHASE3_SET_INPUT_SEQUENCE.indexOf(event.target.dataset.phase3SetField || "");
     if (!row || currentIndex < 0) return false;
     event.preventDefault();
-    const nextField = PHASE3_SET_INPUT_SEQUENCE[currentIndex + 1];
-    if (nextField) row.querySelector(`[data-phase3-set-field="${nextField}"]`)?.focus();
+    const nextField = PHASE3_SET_INPUT_SEQUENCE.slice(currentIndex + 1).map(field=>row.querySelector('[data-phase3-set-field="'+field+'"]')).find(Boolean);
+    if (nextField) nextField.focus();
     else event.target.blur();
     return true;
   }
@@ -3457,104 +3467,42 @@
           <button class="secondary-btn" data-phase3-skip-rest type="button">${escapeHTML(phase3Text("skipRest"))}</button>
           <button class="secondary-btn" data-phase3-add-rest type="button">${escapeHTML(phase3Text("addFifteen"))}</button>
           <button class="secondary-btn" data-phase3-restart-rest type="button">${escapeHTML(phase3Text("restartRest"))}</button>
+          <button class="secondary-btn" data-phase3-rest-pause type="button">${escapeHTML(phase3Text(rest.paused ? "resume" : "pause"))}</button>
         </div>
       </section>
     `;
   }
 
   function phase3RenderWorkoutFocus() {
-    const session = phase3State.activeSession;
-    if (!session || !phase3FocusOpen) return "";
-    const focus = phase3EnsureSessionFocus(session);
-    const exercise = phase3CurrentFocusExercise(session, focus);
-    const isPaused = session.status === "paused";
-    const totalExercises = session.plannedExercises.length;
-    const meta = exercise ? phase3ExerciseMeta(exercise.slug) : null;
-    const instructions = meta?.instructions || exercise?.instructions || "";
-    const instructionLocale = meta?.instructionLocale || phase3Exercise(exercise?.slug)?.instructionLocales?.[phase3Language()] || "";
-    const totalSets = Math.max(1, Number(exercise?.targetSets || 1));
-    const instructionExerciseKey = exercise ? phase3ExerciseKey(exercise) : "";
-    if (focus.instructionExerciseKey !== instructionExerciseKey) {
-      focus.instructionExerciseKey = instructionExerciseKey;
-      focus.instructionExpanded = false;
-    }
-    const instructionExpanded = focus.instructionExpanded === true;
-    const instructionPanelId = `phase3-instruction-${focus.currentExerciseIndex}`;
-    return `
-      <div class="phase3-focus-backdrop">
-        <section class="phase3-focus-sheet" role="dialog" aria-modal="true" aria-labelledby="phase3-focus-title">
-          <header class="phase3-focus-header">
-            <div>
-              <p class="eyebrow">${escapeHTML(phase3Text("activeWorkout"))}</p>
-              <h2 id="phase3-focus-title">${escapeHTML(session.planTitle)}</h2>
-            </div>
-            <div class="phase3-focus-header-actions">
-              <button class="secondary-btn" data-phase3-session-status="${isPaused ? "active" : "paused"}" type="button">${escapeHTML(isPaused ? phase3Text("resume") : phase3Text("pause"))}</button>
-              <button class="secondary-btn" data-phase3-close-focus type="button">${escapeHTML(phase3Text("closeFocus"))}</button>
-            </div>
-          </header>
-          <div class="phase3-focus-context">
-            <div><span>${escapeHTML(phase3Text("workoutDuration"))}</span><strong data-phase3-workout-duration>${escapeHTML(phase3FormatDuration(phase3WorkoutElapsedSeconds(session)))}</strong></div>
-            <div><span>${escapeHTML(exercise ? phase3Format("exerciseProgress", { current: focus.currentExerciseIndex + 1, total: totalExercises }) : phase3Text("completed"))}</span><strong>${escapeHTML(exercise ? phase3Format("setProgress", { current: focus.currentSetIndex, total: totalSets }) : `${totalExercises}/${totalExercises}`)}</strong></div>
-          </div>
-          <div class="phase3-focus-progress"><span style="width:${escapeHTML(String(exercise ? ((focus.currentExerciseIndex + (focus.currentSetIndex / totalSets)) / Math.max(1, totalExercises)) * 100 : 100))}%"></span></div>
-          ${isPaused ? `
-            <section class="phase3-paused-state">
-              <span class="eyebrow">${escapeHTML(phase3Text("trainingPaused"))}</span>
-              <button class="primary-btn" data-phase3-session-status="active" type="button">${escapeHTML(phase3Text("resume"))}</button>
-            </section>
-          ` : focus.allExercisesCompleted || !exercise ? `
-            <section class="phase3-complete-state">
-              <h3>${escapeHTML(phase3Text("exerciseCompleted"))}</h3>
-              <p>${escapeHTML(phase3Text("allExercisesCompleted"))}</p>
-              <button class="primary-btn" data-phase3-complete-workout type="button">${escapeHTML(phase3Text("completeWorkout"))}</button>
-            </section>
-          ` : `
-            <div class="phase3-focus-exercise">
-              <div class="phase3-focus-main">
-                <div>
-                  <h3>${escapeHTML(exercise.name)}</h3>
-                  <p class="muted">${escapeHTML(exercise.primaryMuscle || meta.primary)} · ${escapeHTML(exercise.equipment || meta.equipment)}</p>
-                </div>
-                ${phase3RenderExerciseMedia(exercise, "large")}
-                ${instructions ? `
-                  <div class="phase3-instruction">
-                    <button class="phase3-instruction-toggle" data-phase3-toggle-instructions="${escapeHTML(instructionExerciseKey)}" type="button" aria-expanded="${instructionExpanded}" aria-controls="${escapeHTML(instructionPanelId)}" aria-label="${escapeHTML(phase3Text(instructionExpanded ? "hideInstructions" : "showInstructions"))}">
-                      <span>${escapeHTML(phase3Text(instructionExpanded ? "hideInstructions" : "showInstructions"))}</span>
-                      <span aria-hidden="true">${instructionExpanded ? "&#9652;" : "&#9662;"}</span>
-                    </button>
-                    <div class="phase3-instruction-body" id="${escapeHTML(instructionPanelId)}" ${instructionExpanded ? "" : "hidden"}>
-                      <p>${escapeHTML(instructions)}</p>
-                      ${phase3Language() === "nl" && instructionLocale === "en" ? `<small>${escapeHTML(phase3Text("englishInstructionFallback"))}</small>` : ""}
-                    </div>
-                  </div>
-                ` : ""}
-              </div>
-              <aside class="phase3-focus-previous">
-                <h3>${escapeHTML(phase3Text("previousTime"))}</h3>
-                ${phase3RenderPreviousSets(exercise)}
-                <p class="muted">${escapeHTML(phase3OverloadSignal(exercise, session))}</p>
-              </aside>
-            </div>
-            <p class="phase3-focus-feedback" data-phase3-focus-feedback role="status" ${focus.feedback ? "" : "hidden"}>${escapeHTML(focus.feedback || "")}</p>
-            ${focus.rest ? phase3RenderRestState(session) : `
-              <section>
-                <p class="eyebrow">${escapeHTML(phase3Text("currentSet"))}</p>
-                ${phase3RenderSetRow(exercise, focus.currentSetIndex, session)}
-                <div class="phase3-focus-actions">
-                  <button class="secondary-btn" data-phase3-skip-exercise type="button">${escapeHTML(phase3Text("skipExercise"))}</button>
-                  <button class="secondary-btn" data-phase3-complete-workout type="button">${escapeHTML(phase3Text("completeWorkout"))}</button>
-                </div>
-              </section>
-            `}
-          `}
-          <label class="phase3-vibration-setting">
-            <input data-phase3-vibration-setting type="checkbox" ${phase3RestVibrationEnabled ? "checked" : ""} />
-            <span>${escapeHTML(phase3Text("vibrationSetting"))}</span>
-          </label>
-        </section>
-      </div>
-    `;
+    const session=phase3State.activeSession;
+    if(!session||!phase3FocusOpen)return "";
+    const focus=phase3EnsureSessionFocus(session),M=window.FMZ_WORKOUT_MODEL;
+    const index=Math.min(session.plannedExercises.length-1,focus.currentExerciseIndex);
+    const exercise=session.plannedExercises[index];if(!exercise)return "";
+    const meta=phase3ExerciseMeta(exercise.slug),paused=session.status==="paused",rows=M.targets(exercise);
+    const completionPending=session.completionPending===true;
+    const all=M.sequence(session.plannedExercises),done=all.filter(s=>M.registered(session.setLogs[M.key(session.plannedExercises[s.exerciseIndex],s.setIndex)])).length;
+    const icon=window.FMZ_WORKOUT_UI.icon,t=phase3TrainingText,disabled=phase3SetSaving||phase3FinishSaving;
+    return '<div class="phase3-focus-backdrop"><section class="phase3-focus-sheet tw-focus" role="dialog" aria-modal="true" aria-labelledby="phase3-focus-title">'
+      +'<header class="tw-header"><button class="tw-tool" data-phase3-close-focus type="button" title="'+escapeHTML(phase3Text("closeFocus"))+'" aria-label="'+escapeHTML(phase3Text("closeFocus"))+'">'+icon("arrow-left")+'</button>'
+      +'<h2 id="phase3-focus-title">'+escapeHTML(session.planTitle)+'</h2><button class="secondary-btn" data-phase3-session-status="'+(paused?"active":"paused")+'" '+(disabled?'disabled':'')+'>'+escapeHTML(phase3Text(paused?"resume":"pause"))+'</button></header>'
+      +'<main class="tw-focus-main"><div class="tw-progress"><span>'+escapeHTML(phase3Format("exerciseProgress",{current:index+1,total:session.plannedExercises.length}))+'</span><strong data-phase3-workout-duration>'+phase3FormatDuration(phase3WorkoutElapsedSeconds(session))+'</strong><small>'+done+'/'+all.length+' '+escapeHTML(phase3Text("sets"))+'</small></div>'
+      +'<progress max="'+all.length+'" value="'+done+'" aria-label="'+escapeHTML(t("progress"))+'"></progress>'
+      +'<details class="tw-overview"><summary>'+escapeHTML(t("overview"))+'</summary><ol>'+session.plannedExercises.map((e,i)=>'<li><button type="button" data-phase3-navigate="'+i+'"'+(disabled?' disabled':'')+'>'+escapeHTML(e.name)+'</button></li>').join("")+'</ol></details>'
+      +'<div class="tw-active-exercise"><h3>'+escapeHTML(exercise.name)+'</h3><p>'+escapeHTML((exercise.primaryMuscle||meta.primary)+" / "+(exercise.equipment||meta.equipment))+'</p>'+phase3RenderExerciseMedia(exercise,"large")
+      +(exercise.supersetId?'<p class="tw-superset-label">Superset / '+escapeHTML(t("round"))+' '+focus.currentSetIndex+'</p>':"")+'</div>'
+      +'<details class="tw-instructions"><summary>'+escapeHTML(phase3Text("showInstructions"))+'</summary><p>'+escapeHTML(meta.instructions||exercise.instructions||t("noInstructions"))+'</p>'+(exercise.notes?'<p>'+escapeHTML(exercise.notes)+'</p>':"")+'</details>'
+      +'<div class="tw-timer-settings"><label><input data-phase3-timer-enabled type="checkbox" '+(phase3TrainingPreferences.timer_enabled?'checked':'')+' '+(phase3PreferencesPending?'disabled':'')+'>'+escapeHTML(phase3Text("timer"))+'</label>'
+      +'<label>'+escapeHTML(exercise.supersetId?t("groupRest"):phase3Text("rest"))+' (s)<input data-phase3-session-rest="'+index+'" type="number" min="0" max="3600" step="1" value="'+Number(exercise.supersetId?exercise.supersetRestSeconds??90:exercise.restSeconds??90)+'"></label></div>'
+      +'<p class="tw-feedback" data-phase3-focus-feedback role="status">'+escapeHTML(focus.feedback||phase3PreferencesError||"")+'</p>'
+      +(paused?'<p role="status">'+escapeHTML(phase3Text("trainingPaused"))+'</p>':"")
+      +(focus.rest?phase3RenderRestState(session):"")
+      +'<div class="tw-live-sets">'+rows.map((r,n)=>phase3RenderSetRow(exercise,n+1,session,paused||completionPending)).join("")+'</div>'
+      +'<p class="tw-overload">'+escapeHTML(phase3OverloadSignal(exercise,session))+'</p>'
+      +'<label class="phase3-vibration-setting"><input data-phase3-vibration-setting type="checkbox" '+(phase3RestVibrationEnabled?'checked':'')+'>'+escapeHTML(phase3Text("vibrationSetting"))+'</label>'
+      +'<button class="secondary-btn" data-phase3-complete-workout type="button" '+(disabled?'disabled':'')+'>'+escapeHTML(phase3Text("completeWorkout"))+'</button></main>'
+      +'<footer class="tw-navigation"><button type="button" data-phase3-navigate="'+(index-1)+'" '+(index===0||disabled?'disabled':'')+'>'+icon("arrow-left")+'<span>'+escapeHTML(t("previous"))+'</span></button>'
+      +'<button type="button" data-phase3-navigate="'+(index+1)+'" '+(index===session.plannedExercises.length-1||disabled?'disabled':'')+'><span>'+escapeHTML(phase3Text("next"))+'</span>'+icon("chevron-right")+'</button></footer></section></div>';
   }
 
   function phase3GroupedPersonalRecords() {
@@ -3641,9 +3589,9 @@
         ${records.length ? records.map((group) => `
           <article class="phase3-pr-row">
             <strong>${escapeHTML(group.name)}</strong>
-            <div><span>${escapeHTML(phase3Text("maxWeight"))}</span><strong>${escapeHTML(String(group.records.max_weight?.value ?? "-"))}${group.records.max_weight ? " kg" : ""}</strong></div>
+            <div><span>${escapeHTML(phase3Text("maxWeight"))}</span><strong>${escapeHTML(phase3WeightLabel(group.records.max_weight?.value))}</strong></div>
             <div><span>${escapeHTML(phase3Text("maxReps"))}</span><strong>${escapeHTML(String(group.records.max_reps?.value ?? "-"))}</strong></div>
-            <div><span>${escapeHTML(phase3Text("estimatedOneRm"))}</span><strong>${escapeHTML(String(group.records.estimated_1rm?.value ?? "-"))}${group.records.estimated_1rm ? " kg" : ""}</strong></div>
+            <div><span>${escapeHTML(phase3Text("estimatedOneRm"))}</span><strong>${escapeHTML(phase3WeightLabel(group.records.estimated_1rm?.value))}</strong></div>
           </article>
         `).join("") : `<div class="empty-mini">${escapeHTML(phase3Text("overloadNeutral"))}</div>`}
       </div>
@@ -3752,6 +3700,7 @@
   const phase3OriginalShowView = showView;
   showView = function showViewPhase3(view) {
     if (view !== "training") {
+      phase3Maker?.close();
       phase3FocusOpen = false;
       phase3HistoryDetailId = "";
       phase3StopTimer();
@@ -3771,6 +3720,7 @@
   const phase3OriginalRenderAll = renderAll;
   renderAll = function renderAllPhase3() {
     if (!isLoggedIn()) {
+      phase3Maker?.reset();
       phase3StopTimer();
       phase3CloseExercisePicker();
       phase3FocusOpen = false;
@@ -3785,6 +3735,25 @@
       phase3PlanFeedback = null;
     }
     return phase3OriginalRenderAll();
+  };
+
+  phase3Maker = window.FMZ_WORKOUT_UI.create({
+    language: phase3Language, text: phase3Text, userKey: phase3CurrentUserKey,
+    uuid: phase3DbId, catalog: ()=>PHASE3_EXERCISES, meta: phase3ExerciseMeta,
+    loadCatalog: phase3LoadCanonicalCatalog, details: phase3LoadExerciseDetails,
+    days: ()=>DAYS, canCreate: phase3CanCreateActiveWorkoutDay, preferences: ()=>phase3TrainingPreferences,
+    imperial: phase3Imperial, plans: ()=>phase3State.plans, save: phase3SaveWorkoutAtomically,
+    reload: ()=>phase3HydrateTraining(onlineProfile),
+    feedback: message=>{phase3SetPlanFeedback("",true,message);renderTraining();},
+    saved: ()=>{phase3OpenTrainingSection="plans";phase3SetPlanFeedback("saved");renderTraining();}
+  });
+  window.FMZ_TRAINING = {
+    preferences: ()=>({...phase3TrainingPreferences}),
+    setPreferences: phase3SetTrainingPreferences,
+    loadPreferences: phase3LoadTrainingPreferences,
+    preferencesHtml: ()=>'<fieldset class="fmz-theme-options"><legend>'+escapeHTML(phase3TrainingText("effort"))+'</legend>'
+      + ["rir","rpe","none"].map(mode=>'<label><input type="radio" name="training_effort_mode" value="'+mode+'" '+(phase3TrainingPreferences.effort_mode===mode?'checked':'')+'><span>'+escapeHTML(mode==="none"?phase3TrainingText("none"):mode.toUpperCase())+'</span></label>').join("")
+      + '</fieldset><p>'+escapeHTML(phase3TrainingText("effortHelp"))+'</p><p role="status">'+escapeHTML(phase3PreferencesError)+'</p>'
   };
 
   document.addEventListener("submit", async (event) => {
@@ -3817,6 +3786,13 @@
   });
 
   document.addEventListener("input", (event) => {
+    const field=event.target?.closest?.("[data-phase3-set-field]");
+    const session=phase3State.activeSession;
+    if(field&&session){
+      const key=field.closest("[data-phase3-set-row]")?.dataset.phase3SetRow;
+      if(key){session.setDrafts||={};session.setDrafts[key]=phase3ReadSetInputs(key);phase3SaveLocal();}
+      return;
+    }
     if (event.target?.dataset.phase3PickerSearch === undefined) return;
     phase3LibraryFilters.search = String(event.target.value || "");
     phase3PickerVisibleCount = PHASE3_PICKER_PAGE_SIZE;
@@ -3824,6 +3800,18 @@
   });
 
   document.addEventListener("change", (event) => {
+    if (event.target?.hasAttribute("data-phase3-timer-enabled")) {
+      phase3SetTrainingPreferences({timer_enabled:event.target.checked});return;
+    }
+    if (event.target?.hasAttribute("data-phase3-session-rest")) {
+      const session=phase3State.activeSession,e=session?.plannedExercises[Number(event.target.dataset.phase3SessionRest)];
+      const n=Number(event.target.value);
+      if(e&&event.target.value!==""&&Number.isInteger(n)&&n>=0&&n<=3600){
+        if(e.supersetId)session.plannedExercises.filter(x=>x.supersetId===e.supersetId).forEach(x=>x.supersetRestSeconds=n);
+        else e.restSeconds=n;
+        phase3SaveLocal();phase3SyncActiveSession();
+      }return;
+    }
     if (event.target?.dataset.phase3VibrationSetting !== undefined) {
       phase3RestVibrationEnabled = Boolean(event.target.checked);
       phase3SaveRestVibrationPreference();
@@ -3839,6 +3827,13 @@
     }
     const button = event.target.closest("button");
     if (!button) return;
+    if (button.hasAttribute("data-phase3-maker-open")) {phase3Maker.open();return;}
+    if (button.hasAttribute("data-phase3-navigate")) {phase3Navigate(Number(button.dataset.phase3Navigate));return;}
+    if (button.hasAttribute("data-phase3-rest-pause")) {
+      const rest=phase3EnsureSessionFocus(phase3State.activeSession).rest;
+      if(rest?.paused)phase3ResumeRestTimer();else phase3PauseRestTimer();
+      phase3SaveLocal();phase3SyncFocusPortal();return;
+    }
 
     if (button.dataset.phase3ToggleSection) {
       phase3CaptureBuilderDraft(document.getElementById("phase3PlanForm"));
@@ -3856,7 +3851,8 @@
     }
 
     if (button.dataset.phase3EditPlan) {
-      if (phase3BeginPlanEdit(button.dataset.phase3EditPlan)) renderTraining();
+      const plan=phase3State.plans.find(p=>p.id===button.dataset.phase3EditPlan);
+      if(plan)phase3Maker.open(plan);
       return;
     }
 
@@ -4108,6 +4104,7 @@
 
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState !== "visible") phase3CancelVibration();
+    else phase3UpdateTimerText();
   });
 
   window.addEventListener("online", () => {

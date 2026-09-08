@@ -95,6 +95,7 @@
       "Youri AI ist mit einem aktiven KI- oder Personal-Coaching-Tarif verfuegbar. Deinen Tarif findest du in den Einstellungen."]
   };
   Object.assign(copy, {
+    training:["Training","Training","Training"],
     appearance:["Weergave","Appearance","Darstellung"], system:["Automatisch","System / Automatic","Automatisch / System"],
     light:["Licht","Light","Hell"], dark:["Donker","Dark","Dunkel"],
     home:copy.settings, back:["Terug","Back","Zurueck"], consent:["Toestemmingen","Consents","Einwilligungen"],
@@ -103,8 +104,8 @@
     deviceZone:["Apparaattijdzone","Device timezone","Geraetezeitzone"],
     zoneUpdated:["Tijdzone bijgewerkt naar","Timezone updated to","Zeitzone aktualisiert auf"]
   });
-  const sections = ["home","account","privacy","language","appearance","ai","subscription","terms","privacyDoc","logout","schedule","consent","avatar","chatData","analysisData"];
-  const homeRows = [["account","user"],["privacy","shield"],["ai","message-circle"],["subscription","credit-card"],["language","languages"],["appearance","settings"],["terms","file-text"],["privacyDoc","file-text"],["logout","log-out"]];
+  const sections = ["home","account","privacy","language","appearance","training","ai","subscription","terms","privacyDoc","logout","schedule","consent","avatar","chatData","analysisData"];
+  const homeRows = [["account","user"],["privacy","shield"],["training","settings"],["ai","message-circle"],["subscription","credit-card"],["language","languages"],["appearance","settings"],["terms","file-text"],["privacyDoc","file-text"],["logout","log-out"]];
   const aiRows = [["consent","shield"],["schedule","calendar"],["avatar","user"],["chatData","message-circle"],["analysisData","history"]];
   const flag = language => '<img class="fmz-flag" src="assets/vendor/flag-'+({nl:"nl",en:"gb",de:"de"})[language]+'.svg" alt="" width="24" height="18">';
   const deviceTimezone = () => Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
@@ -351,7 +352,8 @@
     if(!settingsDialog)return;
     let body='<p>'+esc(t("loading"))+'</p>';
     if(data){
-      if(section==="home")body=navigationRows(homeRows.filter(([key])=>key!=="ai"||member()));
+      if(section==="home")body=navigationRows(homeRows.filter(([key])=>!["ai","training"].includes(key)||member()));
+      if(section==="training"&&member())body=window.FMZ_TRAINING?.preferencesHtml()||"";
       if(section==="account")body=accountSection();
       if(section==="appearance")body='<fieldset class="fmz-theme-options"><legend>'+esc(t("appearance"))+'</legend>'+["system","light","dark"].map(value=>
         '<label><input type="radio" name="theme_mode" value="'+value+'"'+((data.display.theme_mode||"system")===value?' checked':"")+'><span>'+esc(t(value))+'</span></label>').join("")+'</fieldset>';
@@ -620,6 +622,16 @@
     const target=event.target;
     if(target.closest("#fmz-settings"))dirty=true;
     if(target.matches('#fmz-settings [name="language"]'))setLanguage(target.value);
+    if(target.matches('#fmz-settings [name="training_effort_mode"]')){
+      event.stopImmediatePropagation();
+      if(busy)return;
+      const value=target.value;
+      mutate(async()=>{
+        const ok=await window.FMZ_TRAINING.setPreferences({effort_mode:value});
+        if(!ok)throw Error("training_preferences_failed");
+        dirty=false;
+      }).then(()=>renderSettings());
+    }
     if(target.matches('#fmz-settings [name="theme_mode"]')){
       event.stopImmediatePropagation();
       if(busy)return;

@@ -57,7 +57,11 @@
   }
   const phase2PatchSource = await phase2PatchResponse.text();
 
-  const phase3PatchUrl = new URL("assets/phase3-training-engine.js?v=20260906-owner-hotfix2", document.baseURI);
+  const workoutModelResponse = await fetch(new URL("assets/training-workout-model.js?v=20260908-training-workout1", document.baseURI), {cache:"no-cache"});
+  const workoutUiResponse = await fetch(new URL("assets/training-workout-ui.js?v=20260908-training-workout1", document.baseURI), {cache:"no-cache"});
+  if (!workoutModelResponse.ok || !workoutUiResponse.ok) throw new Error("Staging workout editor unavailable");
+  const workoutSource = (await workoutModelResponse.text()) + "\n" + (await workoutUiResponse.text());
+  const phase3PatchUrl = new URL("assets/phase3-training-engine.js?v=20260908-training-workout1", document.baseURI);
   const phase3PatchResponse = await fetch(phase3PatchUrl, { cache: "no-cache" });
   if (!phase3PatchResponse.ok) {
     throw new Error(`Phase 3 Training Engine laden mislukt: ${phase3PatchResponse.status}`);
@@ -99,7 +103,7 @@
   }
   const phase6cPrivateChatPatchSource = await phase6cPrivateChatPatchResponse.text();
 
-  const ownerSettingsResponse = await fetch(new URL("assets/phase6d-owner-settings.js?v=20260907-theme1", document.baseURI), { cache: "no-cache" });
+  const ownerSettingsResponse = await fetch(new URL("assets/phase6d-owner-settings.js?v=20260908-training-workout1", document.baseURI), { cache: "no-cache" });
   if (!ownerSettingsResponse.ok) throw new Error("Staging settings unavailable");
   const ownerSettingsSource = await ownerSettingsResponse.text();
 
@@ -111,7 +115,7 @@
   if (!source.includes(phase1InitNeedle)) {
     throw new Error("Phase 1 foundation kon niet voor app-init worden ingevoegd.");
   }
-  source = source.replace(phase1InitNeedle, `\n${legacyAuthSource}\n${phase1PatchSource}\n${phase2PatchSource}\n${phase3PatchSource}\n${phase4NutritionPatchSource}\n${phase4NutritionSlice3PatchSource}\n${memberUxPatchSource}\n${phase5ProgressPatchSource}\n${phase6cPrivateChatPatchSource}\n${ownerSettingsSource}\n${inboxSource}\nwindow.FMZ_PUBLIC_AUTH.bindLifecycle();\ninit();`);
+  source = source.replace(phase1InitNeedle, `\n${legacyAuthSource}\n${phase1PatchSource}\n${phase2PatchSource}\n${workoutSource}\n${phase3PatchSource}\n${phase4NutritionPatchSource}\n${phase4NutritionSlice3PatchSource}\n${memberUxPatchSource}\n${phase5ProgressPatchSource}\n${phase6cPrivateChatPatchSource}\n${ownerSettingsSource}\n${inboxSource}\nwindow.FMZ_PUBLIC_AUTH.bindLifecycle();\ninit();`);
 
   (0, eval)(`${source}\n//# sourceURL=app.bundle.js`);
 

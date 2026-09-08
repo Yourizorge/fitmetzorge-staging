@@ -5,8 +5,20 @@ function query(sql){
  const r=JSON.parse(cp.execFileSync(python,[path.join(root,"supabase/tests/phase6d0-staging-query.py")],{input:sql,encoding:"utf8",windowsHide:true,maxBuffer:10000000}));
  assert(r.ok,r.error);return r.rows;
 }
-const mode=process.argv[2];assert(["before","after","sql"].includes(mode));
-if(mode==="sql"){
+const mode=process.argv[2];assert(["before","after","sql","schema"].includes(mode));
+if(mode==="schema"){
+ const name="20260908100106_training_workout_editor.sql",source=fs.readFileSync(path.join(root,"supabase/migrations",name),"utf8").replace(/\r\n/g,"\n");
+ const functions=query("select proname,prosrc,prosecdef,proconfig from pg_proc where pronamespace='public'::regnamespace and proname in ('fmz_training_valid_set_targets','fmz_training_save_workout','fmz_training_get_preferences','fmz_training_set_preferences','fmz_training_complete_workout') order by proname;");
+ assert.equal(functions.length,5);
+ for(const match of source.matchAll(/create function public\.(\w+)[\s\S]*?as \$\$([\s\S]*?)\$\$;/g)){
+  const live=functions.find(f=>f.proname===match[1]);assert(live,match[1]);assert.equal(live.prosrc,match[2],match[1]+" source");
+  assert(live.proconfig.includes("search_path=pg_catalog, pg_temp"));
+ }
+ const history=query("select version,name from supabase_migrations.schema_migrations where version='20260908100106';");
+ assert.equal(history.length,1);assert.equal(history[0].name,"training_workout_editor");
+ const result={target:"mokxyyullfhkfalopbzd",migration:name,history,functions: functions.map(f=>({name:f.proname,source_identical:true,security_definer:f.prosecdef,search_path:f.proconfig})),source_sha256:require("node:crypto").createHash("sha256").update(source).digest("hex")};
+ fs.writeFileSync(path.join(root,"supabase/.temp/training-schema.json"),JSON.stringify(result,null,2));console.log(JSON.stringify(result));
+}else if(mode==="sql"){
  const sql=fs.readFileSync(path.join(__dirname,"sql.test.sql"),"utf8");
  assert(sql.trim().endsWith("rollback;")&&sql.startsWith("-- Controlled synthetic fixtures only;"));
  const result=query(sql);
