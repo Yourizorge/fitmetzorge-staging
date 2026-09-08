@@ -1,0 +1,122 @@
+{
+  "version": "phase6e1.content.v1",
+  "status": "CONSERVATIVE_DESCRIPTIVE_PROPOSAL_NOT_EXPERT_APPROVED",
+  "time_basis": "synthetic_utc_only_no_live_local_calendar_adapter",
+  "range_convention": "start_inclusive_end_exclusive",
+  "kinds": {
+    "daily": {
+      "window_ms": 86400000,
+      "method": "day_totals_v1",
+      "metrics": [
+        "completed_workouts",
+        "training_minutes",
+        "steps",
+        "sleep_hours"
+      ]
+    },
+    "post_workout": {
+      "window_ms": null,
+      "method": "workout_totals_v1",
+      "metrics": [
+        "duration_minutes",
+        "completed_sets",
+        "completed_reps",
+        "distance_km"
+      ]
+    },
+    "weekly": {
+      "window_ms": 604800000,
+      "method": "week_totals_v1",
+      "metrics": [
+        "completed_workouts",
+        "training_minutes",
+        "steps"
+      ]
+    }
+  },
+  "metrics": {
+    "completed_workouts": {
+      "unit": "count",
+      "integer": true,
+      "label": {
+        "nl": "Geregistreerde workouts",
+        "en": "Recorded workouts",
+        "de": "Erfasste Workouts"
+      }
+    },
+    "training_minutes": {
+      "unit": "min",
+      "integer": false,
+      "label": {
+        "nl": "Geregistreerde trainingstijd",
+        "en": "Recorded training time",
+        "de": "Erfasste Trainingszeit"
+      }
+    },
+    "steps": {
+      "unit": "count",
+      "integer": true,
+      "label": {
+        "nl": "Geregistreerde stappen",
+        "en": "Recorded steps",
+        "de": "Erfasste Schritte"
+      }
+    },
+    "sleep_hours": {
+      "unit": "h",
+      "integer": false,
+      "label": {
+        "nl": "Zelf geregistreerde slaapduur",
+        "en": "Self-recorded sleep duration",
+        "de": "Selbst erfasste Schlafdauer"
+      }
+    },
+    "duration_minutes": {
+      "unit": "min",
+      "integer": false,
+      "label": {
+        "nl": "Geregistreerde workoutduur",
+        "en": "Recorded workout duration",
+        "de": "Erfasste Workoutdauer"
+      }
+    },
+    "completed_sets": {
+      "unit": "count",
+      "integer": true,
+      "label": {
+        "nl": "Geregistreerde sets",
+        "en": "Recorded sets",
+        "de": "Erfasste Saetze"
+      }
+    },
+    "completed_reps": {
+      "unit": "count",
+      "integer": true,
+      "label": {
+        "nl": "Geregistreerde herhalingen",
+        "en": "Recorded repetitions",
+        "de": "Erfasste Wiederholungen"
+      }
+    },
+    "distance_km": {
+      "unit": "km",
+      "integer": false,
+      "label": {
+        "nl": "Geregistreerde afstand",
+        "en": "Recorded distance",
+        "de": "Erfasste Strecke"
+      }
+    }
+  },
+  "comparison": "Same code, unit, method, subject; complete coverage; equal nonoverlapping window duration. Absolute delta only, no percentage, causation or normative judgement.",
+  "forbidden_recommendations": [
+    "increase/decrease load or calories",
+    "exercise selection or return-to-training",
+    "treatment or diagnosis",
+    "fitness/readiness/safety score",
+    "recovery prediction or assurance"
+  ],
+  "facts_resumption": "Same template before/after self-report, once its specific data/authority prerequisites exist. A successful exact retry or clear nonclinical clarification stops only that nonclinical issue.",
+  "normal_personalized_recommendations": "No implementation until scoped content and recovery criteria are decided; no individual approval service.",
+  "automatic_actions": false
+}

@@ -1,0 +1,2366 @@
+{
+  "version": "phase6e1.evidence.v1",
+  "status": "TECHNICAL_PASS_READY_FOR_OWNER_REVIEW_NOT_MEDICAL_VALIDATION",
+  "checked_at": "2026-09-08T09:16:51.243Z",
+  "baseline": "abfea682aac53d5e32f4962d6917aa958bd09cb4",
+  "preregistration_commit": "086a05feb5a2e10f864f6c2bed9040509006ef32",
+  "node": "v24.19.0",
+  "sources": [
+    {
+      "file": "_offline/phase6e1/README.md",
+      "bytes": 1846,
+      "sha256": "40212f192098c72ec505ae29cf1893427770efd81053a1ed5139d165be0cdd69",
+      "git_blob": "1d372c70ce9daa424c422bb17966607d4a00cdf3"
+    },
+    {
+      "file": "_offline/phase6e1/analysis.cjs",
+      "bytes": 8360,
+      "sha256": "e1e690c1236976eec60ae24011687c6ce48a16a33db33cac147ba9a2098fd744",
+      "git_blob": "9b14736c39d7d2137b4cb02a41563afd2921d535"
+    },
+    {
+      "file": "_offline/phase6e1/common.cjs",
+      "bytes": 1616,
+      "sha256": "058767bd7ec4aecf5c6b282192a52e821e6b83613ce9ce4534eddee6ac0d949c",
+      "git_blob": "8151b08565c80a4ab211f9f0966a0cfdd44e116f"
+    },
+    {
+      "file": "_offline/phase6e1/content-contract.json",
+      "bytes": 3428,
+      "sha256": "dff0063f94c03ee7681e4a0de2b4f255ab226cf3838e002616994c01d68955a6",
+      "git_blob": "8340ceafdead1d845d7a7d43009a9d493e7b4ad2"
+    },
+    {
+      "file": "_offline/phase6e1/context.cjs",
+      "bytes": 12124,
+      "sha256": "38b1a304caa7f64eb585501517556c140158378fcb61c6f20087455bb203be86",
+      "git_blob": "2a9f21fd846cd58b1ec501409f799da4247af369"
+    },
+    {
+      "file": "_offline/phase6e1/contract.json",
+      "bytes": 2340,
+      "sha256": "f8c6da41ba5ad7e286686286a4bdbac71ac775b3cc6d39d9e47ec39675cc4b4b",
+      "git_blob": "ac4df6802cb765cda9507595d3038404dba3e270"
+    },
+    {
+      "file": "_offline/phase6e1/flow.cjs",
+      "bytes": 10801,
+      "sha256": "98cf6fa4895dc15cff104f05cf1c71ac44c2aaf61c5dd4e2e17c985182f206ce",
+      "git_blob": "8f6614155c60c870100c24db2bbeaac882c1b5ca"
+    },
+    {
+      "file": "_offline/phase6e1/package.json",
+      "bytes": 317,
+      "sha256": "26581b993e8a47a37f638c708a09ec5f2902575fa720c5132b824904a36b7307",
+      "git_blob": "425ddc575a9c08873677368a27a9ee9e1b2201d1"
+    },
+    {
+      "file": "_offline/phase6e1/preregistered-cases.json",
+      "bytes": 19581,
+      "sha256": "5f6a3c030fe5e287954abb0764e9af50befe551a8797b22c6ebb1f3c96b1ff20",
+      "git_blob": "68d82d1758784e528ffc97fcaf6b240d115ff7c3"
+    },
+    {
+      "file": "_offline/phase6e1/retention.cjs",
+      "bytes": 3437,
+      "sha256": "1dd47f3b1f249ce439af452d95b3e2f0a76e36cc76a1daadaa69086dc1491331",
+      "git_blob": "20a3d66f5f18ce9b93871fdb7d68b6d358cc7eba"
+    },
+    {
+      "file": "_offline/phase6e1/test/analysis.test.cjs",
+      "bytes": 8121,
+      "sha256": "721cbcb72812b6cffa6adc1e81a557436111f50cbba005af3be1e5e518d57fd8",
+      "git_blob": "32f902150ebebbbad996613e039895b2a2d8251b"
+    },
+    {
+      "file": "_offline/phase6e1/test/context.test.cjs",
+      "bytes": 3339,
+      "sha256": "34b07459a4e69a9a08efb384278a68a56c311f5019669f1dc88b4357782f375a",
+      "git_blob": "6e4009be556d75aff3888c61f816027f18b0cafa"
+    },
+    {
+      "file": "_offline/phase6e1/test/examples.cjs",
+      "bytes": 2191,
+      "sha256": "861c011f0352e9240c8b80db58b95d054dd9da545e05646d763e86258a9ab727",
+      "git_blob": "e8ddc2e1215161cbe326b18ae6af6158eeac6840"
+    },
+    {
+      "file": "_offline/phase6e1/test/flow.test.cjs",
+      "bytes": 11685,
+      "sha256": "1e5f9b3c1684c0078c183ca6b6e6694b30d15a03cb04a33352f9458e526196ef",
+      "git_blob": "29ad44705e07e9cde4282f690bcf61bdc36c1a90"
+    },
+    {
+      "file": "_offline/phase6e1/test/helpers.cjs",
+      "bytes": 2766,
+      "sha256": "c0e697eb3c12096eb60df49642205584208752cf146220c61df81d67a4106b23",
+      "git_blob": "e0091249ff4e7a8f6dfed808dc5e6c0be2ea6b4d"
+    },
+    {
+      "file": "_offline/phase6e1/test/isolation.test.cjs",
+      "bytes": 6064,
+      "sha256": "881d825aa3373e4c11de8620fe93c0122312de7c1c23dd6358a47a9da0a16c82",
+      "git_blob": "9213511f3fec009ab2d54bfd47aa89e9b22ae6ca"
+    },
+    {
+      "file": "_offline/phase6e1/test/retention.test.cjs",
+      "bytes": 3239,
+      "sha256": "b6ce81b293aede9be5572a16d3b3cd8d3a313506a144ad21986990c8c2226b6c",
+      "git_blob": "74f63541bf1a34d034b8a007fd3a3df8135e5d2e"
+    },
+    {
+      "file": "_offline/phase6e1/test/review-boundaries.test.cjs",
+      "bytes": 2540,
+      "sha256": "62a061bde03080fba69a02af1014a0096e75909b7f796bb7eb052daa2cd6c345",
+      "git_blob": "1bb5ba5a43b6b3b2ec9f509efe05c1f3273d5d74"
+    }
+  ],
+  "text_results": [
+    {
+      "id": "retained/gap-heavy-chest",
+      "locale": "nl",
+      "text": "Mijn borst voelt loodzwaar",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/gap-breathing-de",
+      "locale": "de",
+      "text": "Ich kriege kaum noch Luft",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/gap-mixed-breathing",
+      "locale": "nl",
+      "text": "Ik heb geen pijn op de borst. Nu heb ik moeite met ademhalen",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "negated",
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/gap-arm-weakness",
+      "locale": "nl",
+      "text": "Ik voel me prima terwijl mijn linkerarm plots kracht verliest",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-paraphrase-nl-1",
+      "locale": "nl",
+      "text": "Mijn borst voelt zwaar",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-paraphrase-nl-2",
+      "locale": "nl",
+      "text": "Loodzwaar voelt mijn borst",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-paraphrase-nl-3",
+      "locale": "nl",
+      "text": "Ademhalen kost mij moeite",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-paraphrase-nl-4",
+      "locale": "nl",
+      "text": "Ik krijg nauwelijks lucht",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-paraphrase-nl-5",
+      "locale": "nl",
+      "text": "Mijn rechterarm verliest ineens kracht",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-paraphrase-nl-6",
+      "locale": "nl",
+      "text": "Plots voelt mijn linkerarm slap",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-paraphrase-en-1",
+      "locale": "en",
+      "text": "My chest feels very heavy",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-paraphrase-en-2",
+      "locale": "en",
+      "text": "Heavy is how my chest feels",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-paraphrase-en-3",
+      "locale": "en",
+      "text": "Breathing is difficult for me",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-paraphrase-en-4",
+      "locale": "en",
+      "text": "I can barely get any air",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-paraphrase-en-5",
+      "locale": "en",
+      "text": "My left arm is suddenly weak",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-paraphrase-en-6",
+      "locale": "en",
+      "text": "Suddenly my right arm is losing strength",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-paraphrase-de-1",
+      "locale": "de",
+      "text": "Meine Brust fuehlt sich schwer an",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-paraphrase-de-2",
+      "locale": "de",
+      "text": "Schwer fuehlt sich meine Brust an",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-paraphrase-de-3",
+      "locale": "de",
+      "text": "Das Atmen faellt mir schwer",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-paraphrase-de-4",
+      "locale": "de",
+      "text": "Ich bekomme nur wenig Luft",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-paraphrase-de-5",
+      "locale": "de",
+      "text": "Mein linker Arm verliert ploetzlich Kraft",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-paraphrase-de-6",
+      "locale": "de",
+      "text": "Ploetzlich ist mein rechter Arm schwach",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-negation-nl-1",
+      "locale": "nl",
+      "text": "Mijn borst voelt niet loodzwaar",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "negated"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-negation-nl-2",
+      "locale": "nl",
+      "text": "Ik heb geen moeite met ademhalen",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "negated"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-negation-nl-3",
+      "locale": "nl",
+      "text": "Mijn linkerarm verliest geen kracht",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "negated"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-negation-en-1",
+      "locale": "en",
+      "text": "My chest does not feel heavy",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "negated"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-negation-en-2",
+      "locale": "en",
+      "text": "I have no difficulty breathing",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "negated"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-negation-en-3",
+      "locale": "en",
+      "text": "My arm is not losing strength",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "negated"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-negation-de-1",
+      "locale": "de",
+      "text": "Meine Brust fuehlt sich nicht schwer an",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "negated"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-negation-de-2",
+      "locale": "de",
+      "text": "Ich habe keine Schwierigkeiten beim Atmen",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "negated"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-negation-de-3",
+      "locale": "de",
+      "text": "Mein linker Arm verliert keine Kraft",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "negated"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-historical-nl-1",
+      "locale": "nl",
+      "text": "Gisteren voelde mijn borst loodzwaar",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "past"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-historical-nl-2",
+      "locale": "nl",
+      "text": "Gisteren had ik moeite met ademhalen en voelde mijn borst loodzwaar",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "past"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-historical-en-1",
+      "locale": "en",
+      "text": "Yesterday my chest felt heavy",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "past"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-historical-en-2",
+      "locale": "en",
+      "text": "Yesterday breathing was difficult and my left arm felt weak",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "past"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-historical-de-1",
+      "locale": "de",
+      "text": "Gestern fuehlte sich meine Brust schwer an",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "past"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-historical-de-2",
+      "locale": "de",
+      "text": "Gestern fiel mir das Atmen schwer und mein linker Arm war schwach",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "past"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-educational-nl-1",
+      "locale": "nl",
+      "text": "Wat betekent een loodzwaar gevoel op de borst?",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "educational"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-educational-nl-2",
+      "locale": "nl",
+      "text": "Leg uit wat moeite met ademhalen betekent",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "educational"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-educational-en-1",
+      "locale": "en",
+      "text": "Explain why breathing is difficult",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "educational"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-educational-en-2",
+      "locale": "en",
+      "text": "What does a heavy feeling in the chest mean?",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "educational"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-educational-de-1",
+      "locale": "de",
+      "text": "Was bedeutet ein schweres Gefuehl in der Brust?",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "educational"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-educational-de-2",
+      "locale": "de",
+      "text": "Erklaere Schwierigkeiten beim Atmen",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "educational"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-quoted-nl-1",
+      "locale": "nl",
+      "text": "Citaat: \"Mijn linkerarm verliest plots kracht\"",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "quoted"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-quoted-en-1",
+      "locale": "en",
+      "text": "Quote: \"My chest feels heavy\"",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "quoted"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-quoted-de-1",
+      "locale": "de",
+      "text": "Zitat: \"Ich kriege kaum noch Luft\"",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "quoted"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-hypothetical-nl-1",
+      "locale": "nl",
+      "text": "Stel dat mijn borst loodzwaar voelt",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "hypothetical"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-hypothetical-en-1",
+      "locale": "en",
+      "text": "Imagine my left arm suddenly feels weak",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "hypothetical"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-hypothetical-de-1",
+      "locale": "de",
+      "text": "Angenommen meine Brust fuehlt sich schwer an",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "hypothetical"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-training-nl-1",
+      "locale": "nl",
+      "text": "Ik train mijn borst en armen met zware gewichten",
+      "availability": "available",
+      "warning": "no_signal",
+      "level": "R0",
+      "category": "ordinary",
+      "contexts": [],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-training-nl-2",
+      "locale": "nl",
+      "text": "De halter voelt loodzwaar bij borsttraining",
+      "availability": "available",
+      "warning": "no_signal",
+      "level": "R0",
+      "category": "ordinary",
+      "contexts": [],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-training-nl-3",
+      "locale": "nl",
+      "text": "Mijn armspieren zijn moe na tien curls",
+      "availability": "available",
+      "warning": "no_signal",
+      "level": "R0",
+      "category": "ordinary",
+      "contexts": [],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-training-nl-4",
+      "locale": "nl",
+      "text": "Ik oefen een rustige ademhaling",
+      "availability": "available",
+      "warning": "no_signal",
+      "level": "R0",
+      "category": "ordinary",
+      "contexts": [],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-training-nl-5",
+      "locale": "nl",
+      "text": "Bij de warming-up let ik op mijn ademhaling",
+      "availability": "available",
+      "warning": "no_signal",
+      "level": "R0",
+      "category": "ordinary",
+      "contexts": [],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-training-en-1",
+      "locale": "en",
+      "text": "Today I train chest and arms with heavy weights",
+      "availability": "available",
+      "warning": "no_signal",
+      "level": "R0",
+      "category": "ordinary",
+      "contexts": [],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-training-en-2",
+      "locale": "en",
+      "text": "The dumbbell feels heavy during curls",
+      "availability": "available",
+      "warning": "no_signal",
+      "level": "R0",
+      "category": "ordinary",
+      "contexts": [],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-training-en-3",
+      "locale": "en",
+      "text": "My arm muscles are tired after the set",
+      "availability": "available",
+      "warning": "no_signal",
+      "level": "R0",
+      "category": "ordinary",
+      "contexts": [],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-training-en-4",
+      "locale": "en",
+      "text": "I practise slow breathing between sets",
+      "availability": "available",
+      "warning": "no_signal",
+      "level": "R0",
+      "category": "ordinary",
+      "contexts": [],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-training-en-5",
+      "locale": "en",
+      "text": "I want to improve my arm strength",
+      "availability": "available",
+      "warning": "no_signal",
+      "level": "R0",
+      "category": "ordinary",
+      "contexts": [],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-training-de-1",
+      "locale": "de",
+      "text": "Heute trainiere ich Brust und Arme mit schweren Gewichten",
+      "availability": "available",
+      "warning": "no_signal",
+      "level": "R0",
+      "category": "ordinary",
+      "contexts": [],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-training-de-2",
+      "locale": "de",
+      "text": "Die Hantel fuehlt sich beim Brusttraining schwer an",
+      "availability": "available",
+      "warning": "no_signal",
+      "level": "R0",
+      "category": "ordinary",
+      "contexts": [],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-training-de-3",
+      "locale": "de",
+      "text": "Meine Armmuskeln sind nach dem Satz muede",
+      "availability": "available",
+      "warning": "no_signal",
+      "level": "R0",
+      "category": "ordinary",
+      "contexts": [],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-training-de-4",
+      "locale": "de",
+      "text": "Ich uebe eine ruhige Atmung",
+      "availability": "available",
+      "warning": "no_signal",
+      "level": "R0",
+      "category": "ordinary",
+      "contexts": [],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-training-de-5",
+      "locale": "de",
+      "text": "Ich moechte meine Armkraft verbessern",
+      "availability": "available",
+      "warning": "no_signal",
+      "level": "R0",
+      "category": "ordinary",
+      "contexts": [],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-compound-nl-1",
+      "locale": "nl",
+      "text": "Geen koorts, mijn borst voelt loodzwaar",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-compound-nl-2",
+      "locale": "nl",
+      "text": "Mijn borst voelt loodzwaar maar verder voel ik me prima",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-compound-nl-3",
+      "locale": "nl",
+      "text": "Ik heb geen borstpijn, maar wel vreemde klachten",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "negated",
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-compound-nl-4",
+      "locale": "nl",
+      "text": "Wat is borstpijn? Nu kost ademhalen mij moeite",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "educational",
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-compound-en-1",
+      "locale": "en",
+      "text": "I have no chest pain; breathing is difficult",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "negated",
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-compound-en-2",
+      "locale": "en",
+      "text": "I feel fine while my left arm is suddenly weak",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-compound-en-3",
+      "locale": "en",
+      "text": "I have no chest pain but unusual symptoms",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "negated",
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-compound-en-4",
+      "locale": "en",
+      "text": "Explain chest pain. Now my chest feels heavy",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "educational",
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-compound-de-1",
+      "locale": "de",
+      "text": "Ich habe keine Brustschmerzen, aber bekomme kaum Luft",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "negated",
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-compound-de-2",
+      "locale": "de",
+      "text": "Mir geht es gut, waehrend mein rechter Arm Kraft verliert",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-compound-de-3",
+      "locale": "de",
+      "text": "Ich habe keine Brustschmerzen aber seltsame Beschwerden",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "negated",
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-compound-de-4",
+      "locale": "de",
+      "text": "Was ist Brustschmerz? Jetzt faellt mir das Atmen schwer",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "educational",
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-retain-level-nl",
+      "locale": "nl",
+      "text": "Ik heb borstpijn en ademhalen kost mij moeite",
+      "availability": "available",
+      "warning": "professional_review",
+      "level": "R3",
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-retain-level-en",
+      "locale": "en",
+      "text": "I have chest pain and breathing is difficult",
+      "availability": "available",
+      "warning": "professional_review",
+      "level": "R3",
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "retained/followup-retain-level-de",
+      "locale": "de",
+      "text": "Ich habe Brustschmerzen und bekomme kaum Luft",
+      "availability": "available",
+      "warning": "professional_review",
+      "level": "R3",
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "quoted-current",
+      "locale": "nl",
+      "text": "Citaat: \"Ik heb borstpijn\". Nu heb ik moeite met ademhalen",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "quoted",
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "past-current",
+      "locale": "en",
+      "text": "Yesterday I had chest pain, but now my left arm is weak",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "past",
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "hyp-current",
+      "locale": "de",
+      "text": "Angenommen ich habe Brustschmerzen. Jetzt kriege ich kaum noch Luft",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "hypothetical",
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "only-past-nl",
+      "locale": "nl",
+      "text": "Vorige maand had ik borstpijn",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "past"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "since-now",
+      "locale": "nl",
+      "text": "Sinds gisteren heb ik borstpijn",
+      "availability": "available",
+      "warning": "professional_review",
+      "level": "R3",
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "known-negation-en",
+      "locale": "en",
+      "text": "I do not have chest pain",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "negated"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "double-negation",
+      "locale": "nl",
+      "text": "Ik heb niet geen borstpijn",
+      "availability": "available",
+      "warning": "professional_review",
+      "level": "R3",
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": [
+        "negation_conflict"
+      ]
+    },
+    {
+      "id": "negated-other-active",
+      "locale": "de",
+      "text": "Ich habe keine Brustschmerzen, aber ich bin schwindelig",
+      "availability": "available",
+      "warning": "stop_clarify",
+      "level": "R2",
+      "category": "health_report",
+      "contexts": [
+        "negated",
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "intrinsic-negation",
+      "locale": "en",
+      "text": "I cannot breathe",
+      "availability": "available",
+      "warning": "urgent_help",
+      "level": "R4",
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "current-question",
+      "locale": "nl",
+      "text": "Ik heb borstpijn, wat moet ik doen?",
+      "availability": "available",
+      "warning": "professional_review",
+      "level": "R3",
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "unspecified-word",
+      "locale": "nl",
+      "text": "borstpijn?",
+      "availability": "available",
+      "warning": "unclear",
+      "level": null,
+      "category": "communication",
+      "contexts": [
+        "unspecified"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "other-person",
+      "locale": "en",
+      "text": "My partner has chest pain",
+      "availability": "available",
+      "warning": "unclear",
+      "level": null,
+      "category": "communication",
+      "contexts": [
+        "other"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "emoji-only",
+      "locale": "nl",
+      "text": "😕",
+      "availability": "available",
+      "warning": "unclear",
+      "level": null,
+      "category": "communication",
+      "contexts": [],
+      "conflicts": []
+    },
+    {
+      "id": "unknown-word",
+      "locale": "de",
+      "text": "Flurbel",
+      "availability": "available",
+      "warning": "unclear",
+      "level": null,
+      "category": "communication",
+      "contexts": [],
+      "conflicts": []
+    },
+    {
+      "id": "empty",
+      "locale": "en",
+      "text": "",
+      "availability": "available",
+      "warning": "unclear",
+      "level": null,
+      "category": "communication",
+      "contexts": [],
+      "conflicts": []
+    },
+    {
+      "id": "technical-neutral",
+      "locale": "nl",
+      "text": "Ik train borst en armen",
+      "availability": "unavailable",
+      "warning": "technical",
+      "level": null,
+      "category": "technical",
+      "contexts": [],
+      "conflicts": []
+    },
+    {
+      "id": "technical-health",
+      "locale": "en",
+      "text": "I have chest pain",
+      "availability": "unavailable",
+      "warning": "technical",
+      "level": null,
+      "category": "technical",
+      "contexts": [],
+      "conflicts": []
+    },
+    {
+      "id": "unsupported",
+      "locale": "fr",
+      "text": "Je ne comprends pas",
+      "availability": "available",
+      "warning": "unclear",
+      "level": null,
+      "category": "communication",
+      "contexts": [],
+      "conflicts": []
+    },
+    {
+      "id": "quote-unclosed",
+      "locale": "nl",
+      "text": "Citaat: \"Ik heb borstpijn",
+      "availability": "available",
+      "warning": "unclear",
+      "level": null,
+      "category": "communication",
+      "contexts": [
+        "quoted"
+      ],
+      "conflicts": [
+        "unclosed_quote"
+      ]
+    },
+    {
+      "id": "quote-adoption",
+      "locale": "nl",
+      "text": "\"Mijn borst voelt loodzwaar\". Dat heb ik nu ook",
+      "availability": "available",
+      "warning": "unclear",
+      "level": null,
+      "category": "communication",
+      "contexts": [
+        "quoted"
+      ],
+      "conflicts": [
+        "quoted_adoption_unresolved"
+      ]
+    },
+    {
+      "id": "recovery-nl",
+      "locale": "nl",
+      "text": "Mijn klachten zijn voorbij",
+      "availability": "available",
+      "warning": "no_signal",
+      "level": "R0",
+      "category": "ordinary",
+      "contexts": [],
+      "conflicts": []
+    },
+    {
+      "id": "recovery-en",
+      "locale": "en",
+      "text": "My symptoms are gone",
+      "availability": "available",
+      "warning": "no_signal",
+      "level": "R0",
+      "category": "ordinary",
+      "contexts": [],
+      "conflicts": []
+    },
+    {
+      "id": "recovery-de",
+      "locale": "de",
+      "text": "Meine Beschwerden sind vorbei",
+      "availability": "available",
+      "warning": "no_signal",
+      "level": "R0",
+      "category": "ordinary",
+      "contexts": [],
+      "conflicts": []
+    },
+    {
+      "id": "recovery-conflict-nl",
+      "locale": "nl",
+      "text": "Mijn klachten zijn voorbij maar ik heb borstpijn",
+      "availability": "available",
+      "warning": "professional_review",
+      "level": "R3",
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": [
+        "recovery_conflict"
+      ]
+    },
+    {
+      "id": "recovery-conflict-en",
+      "locale": "en",
+      "text": "My symptoms are gone but breathing is difficult",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": [
+        "recovery_conflict"
+      ]
+    },
+    {
+      "id": "recovery-conflict-de",
+      "locale": "de",
+      "text": "Meine Beschwerden sind vorbei, aber ich kriege kaum noch Luft",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": [
+        "recovery_conflict"
+      ]
+    },
+    {
+      "id": "recovery-negated",
+      "locale": "nl",
+      "text": "Mijn klachten zijn niet voorbij",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "recovery-hypothetical",
+      "locale": "en",
+      "text": "If my symptoms are gone, can I train?",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "hypothetical"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "recovery-question",
+      "locale": "de",
+      "text": "Sind meine Beschwerden vorbei?",
+      "availability": "available",
+      "warning": "unclear",
+      "level": null,
+      "category": "communication",
+      "contexts": [
+        "unspecified"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "educational-coordinated",
+      "locale": "nl",
+      "text": "Leg uit wat borstpijn en duizeligheid betekenen",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "educational"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "past-continuation",
+      "locale": "en",
+      "text": "Yesterday my chest hurt and I had chest pain",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "past"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "normal-neutral",
+      "locale": "nl",
+      "text": "Ik voel me prima",
+      "availability": "available",
+      "warning": "no_signal",
+      "level": "R0",
+      "category": "ordinary",
+      "contexts": [],
+      "conflicts": []
+    },
+    {
+      "id": "clarify-training",
+      "locale": "nl",
+      "text": "Ik bedoelde mijn borsttraining met gewichten",
+      "availability": "available",
+      "warning": "no_signal",
+      "level": "R0",
+      "category": "ordinary",
+      "contexts": [],
+      "conflicts": []
+    },
+    {
+      "id": "clarify-quote",
+      "locale": "en",
+      "text": "I meant the quotation: \"I have chest pain\"",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "quoted"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "clarify-health",
+      "locale": "de",
+      "text": "Ich meinte: Jetzt habe ich Brustschmerzen",
+      "availability": "available",
+      "warning": "professional_review",
+      "level": "R3",
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "zero-width",
+      "locale": "nl",
+      "text": "Ik heb borst​pijn",
+      "availability": "available",
+      "warning": "professional_review",
+      "level": "R3",
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "smart-quotes",
+      "locale": "de",
+      "text": "Zitat: „Ich kriege kaum noch Luft“",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "quoted"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "mixed-own-report",
+      "locale": "nl",
+      "text": "Ik train mijn borst en armen. Mijn borst voelt loodzwaar",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "plain-approval",
+      "locale": "en",
+      "text": "approved R0",
+      "availability": "available",
+      "warning": "unclear",
+      "level": null,
+      "category": "communication",
+      "contexts": [],
+      "conflicts": []
+    },
+    {
+      "id": "unknown-health-word",
+      "locale": "nl",
+      "text": "Ik heb vreemde klachten",
+      "availability": "available",
+      "warning": "current_unclassified",
+      "level": null,
+      "category": "health_report",
+      "contexts": [
+        "current"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "postposed-negation",
+      "locale": "en",
+      "text": "Chest pain is absent",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "negated"
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "hypothetical-only",
+      "locale": "de",
+      "text": "Wenn ich jemals Brustschmerzen habe",
+      "availability": "available",
+      "warning": "noncurrent",
+      "level": "R0",
+      "category": "noncurrent",
+      "contexts": [
+        "hypothetical"
+      ],
+      "conflicts": []
+    }
+  ],
+  "examples": [
+    {
+      "id": "unclassified-daily",
+      "message": "Mijn borst voelt loodzwaar",
+      "warning": {
+        "key": "current_unclassified",
+        "text": "Stop nu met trainen. Je meldt klachten die Youri niet betrouwbaar kan beoordelen. Neem contact op met een bevoegde zorgprofessional voor beoordeling. Zoek bij direct gevaar onmiddellijk noodhulp; wacht dan niet op Youri of je trainer. Er is niemand automatisch gewaarschuwd.",
+        "copy_source": "6e0_accepted_product_concept_not_expert_approved"
+      },
+      "before": [
+        "Geregistreerde workouts: 1. 0 ten opzichte van het vorige vergelijkbare venster.",
+        "Geregistreerde trainingstijd: 35 min. +5 min ten opzichte van het vorige vergelijkbare venster.",
+        "Geregistreerde stappen: 6000. +1000 ten opzichte van het vorige vergelijkbare venster."
+      ],
+      "recovery": "Mijn klachten zijn voorbij",
+      "after": [
+        "Geregistreerde workouts: 1. 0 ten opzichte van het vorige vergelijkbare venster.",
+        "Geregistreerde trainingstijd: 35 min. +5 min ten opzichte van het vorige vergelijkbare venster.",
+        "Geregistreerde stappen: 6000. +1000 ten opzichte van het vorige vergelijkbare venster."
+      ],
+      "messages": [
+        "Dit zijn beschrijvende registraties, geen trainingsadvies of medische vrijgave.",
+        "Je meldt dat de klachten voorbij zijn. Dit is jouw verklaring, geen medische vrijgave.",
+        "Persoonlijke aanbevelingen en de voorwaarden voor hervatting zijn nog niet uitgewerkt. Er bestaat geen beoordelingsdienst."
+      ],
+      "open": [
+        "personalized_content_scope",
+        "unclassified_recovery"
+      ],
+      "outcome": "self_report_recorded_not_clearance"
+    },
+    {
+      "id": "serious-workout",
+      "message": "Ik heb borstpijn",
+      "warning": {
+        "key": "professional_review",
+        "text": "Stop de activiteit waarover je klachten meldt en vraag een bevoegde zorgprofessional om beoordeling. Youri stelt geen diagnose.",
+        "copy_source": "6e0_provisional_copy"
+      },
+      "before": [
+        "Geregistreerde workoutduur: 35 min. +5 min ten opzichte van het vorige vergelijkbare venster.",
+        "Geregistreerde sets: 12. +2 ten opzichte van het vorige vergelijkbare venster.",
+        "Geregistreerde herhalingen: 96. +16 ten opzichte van het vorige vergelijkbare venster."
+      ],
+      "recovery": "Mijn klachten zijn voorbij",
+      "after": [
+        "Geregistreerde workoutduur: 35 min. +5 min ten opzichte van het vorige vergelijkbare venster.",
+        "Geregistreerde sets: 12. +2 ten opzichte van het vorige vergelijkbare venster.",
+        "Geregistreerde herhalingen: 96. +16 ten opzichte van het vorige vergelijkbare venster."
+      ],
+      "messages": [
+        "Dit zijn beschrijvende registraties, geen trainingsadvies of medische vrijgave.",
+        "Je meldt dat de klachten voorbij zijn. Dit is jouw verklaring, geen medische vrijgave.",
+        "Persoonlijke aanbevelingen en de voorwaarden voor hervatting zijn nog niet uitgewerkt. Er bestaat geen beoordelingsdienst."
+      ],
+      "open": [
+        "personalized_content_scope",
+        "serious_recovery"
+      ],
+      "outcome": "self_report_recorded_not_clearance"
+    },
+    {
+      "id": "repeated-week",
+      "message": "Ich kriege kaum noch Luft",
+      "warning": {
+        "key": "current_unclassified",
+        "text": "Beende jetzt das Training. Du meldest Beschwerden, die Youri nicht zuverlaessig beurteilen kann. Wende dich zur Beurteilung an qualifiziertes medizinisches Fachpersonal. Suche bei unmittelbarer Gefahr sofort Notfallhilfe; warte dann nicht auf Youri oder deinen Trainer. Niemand wurde automatisch benachrichtigt.",
+        "copy_source": "6e0_accepted_product_concept_not_expert_approved"
+      },
+      "before": [
+        "Geregistreerde workouts: 3. 0 ten opzichte van het vorige vergelijkbare venster.",
+        "Geregistreerde trainingstijd: 105 min. +15 min ten opzichte van het vorige vergelijkbare venster."
+      ],
+      "recovery": "Mijn klachten zijn voorbij",
+      "after": [
+        "Geregistreerde workouts: 3. 0 ten opzichte van het vorige vergelijkbare venster.",
+        "Geregistreerde trainingstijd: 105 min. +15 min ten opzichte van het vorige vergelijkbare venster."
+      ],
+      "messages": [
+        "Dit zijn beschrijvende registraties, geen trainingsadvies of medische vrijgave.",
+        "Je meldt dat de klachten voorbij zijn. Dit is jouw verklaring, geen medische vrijgave.",
+        "Persoonlijke aanbevelingen en de voorwaarden voor hervatting zijn nog niet uitgewerkt. Er bestaat geen beoordelingsdienst."
+      ],
+      "open": [
+        "personalized_content_scope",
+        "unclassified_recovery"
+      ],
+      "outcome": "self_report_recorded_not_clearance"
+    },
+    {
+      "id": "technical-retry",
+      "message": "Ik train borst en armen",
+      "warning": {
+        "key": "technical",
+        "text": "De beoordeling is niet beschikbaar. Je kunt het later opnieuw proberen. Er is geen nieuwe beoordeling gedaan.",
+        "copy_source": "6e0_accepted_product_concept_not_expert_approved"
+      },
+      "before": [
+        "Geregistreerde workouts: 1. 0 ten opzichte van het vorige vergelijkbare venster.",
+        "Geregistreerde trainingstijd: 35 min. +5 min ten opzichte van het vorige vergelijkbare venster.",
+        "Geregistreerde stappen: 6000. +1000 ten opzichte van het vorige vergelijkbare venster."
+      ],
+      "recovery": "retry original text / available",
+      "after": [
+        "Geregistreerde workouts: 1. 0 ten opzichte van het vorige vergelijkbare venster.",
+        "Geregistreerde trainingstijd: 35 min. +5 min ten opzichte van het vorige vergelijkbare venster.",
+        "Geregistreerde stappen: 6000. +1000 ten opzichte van het vorige vergelijkbare venster."
+      ],
+      "messages": [
+        "Dit zijn beschrijvende registraties, geen trainingsadvies of medische vrijgave.",
+        "Persoonlijke aanbevelingen en de voorwaarden voor hervatting zijn nog niet uitgewerkt. Er bestaat geen beoordelingsdienst."
+      ],
+      "open": [
+        "personalized_content_scope"
+      ],
+      "outcome": "technical_issue_settled"
+    },
+    {
+      "id": "language-clarification",
+      "message": "flurbel",
+      "warning": {
+        "key": "unclear",
+        "text": "Ik begrijp nog niet wat je bedoelt. Kun je je bericht in andere woorden uitleggen?",
+        "copy_source": "6e0_accepted_product_concept_not_expert_approved"
+      },
+      "before": [
+        "Geregistreerde workouts: 1. 0 ten opzichte van het vorige vergelijkbare venster.",
+        "Geregistreerde trainingstijd: 35 min. +5 min ten opzichte van het vorige vergelijkbare venster.",
+        "Geregistreerde stappen: 6000. +1000 ten opzichte van het vorige vergelijkbare venster."
+      ],
+      "recovery": "Ik bedoelde mijn borsttraining met gewichten",
+      "after": [
+        "Geregistreerde workouts: 1. 0 ten opzichte van het vorige vergelijkbare venster.",
+        "Geregistreerde trainingstijd: 35 min. +5 min ten opzichte van het vorige vergelijkbare venster.",
+        "Geregistreerde stappen: 6000. +1000 ten opzichte van het vorige vergelijkbare venster."
+      ],
+      "messages": [
+        "Dit zijn beschrijvende registraties, geen trainingsadvies of medische vrijgave.",
+        "Persoonlijke aanbevelingen en de voorwaarden voor hervatting zijn nog niet uitgewerkt. Er bestaat geen beoordelingsdienst."
+      ],
+      "open": [
+        "personalized_content_scope"
+      ],
+      "outcome": "communication_issue_settled"
+    }
+  ],
+  "test_execution": {
+    "new_suite": {
+      "total": 246,
+      "pass": 246,
+      "fail": 0,
+      "skipped": 0,
+      "breakdown": {
+        "context": 124,
+        "flow": 34,
+        "analysis": 52,
+        "retention": 18,
+        "isolation": 8,
+        "review_boundaries": 10
+      }
+    },
+    "text_to_feedback": {
+      "total": 121,
+      "available": 119,
+      "technical_unavailable": 2,
+      "expected_labels_forwarded": false
+    },
+    "retained_6e0": {
+      "total": 90,
+      "pass": 90,
+      "recognition_followup": 83,
+      "limitations_regressions": 7
+    },
+    "initial_context": {
+      "total": 124,
+      "pass": 118,
+      "fail": 6
+    },
+    "review_before_fix": {
+      "total": 7,
+      "pass": 1,
+      "fail": 6
+    },
+    "tentative_recovery_before_fix": {
+      "total": 10,
+      "pass": 7,
+      "fail": 3,
+      "additional_cases": 3,
+      "previous_seven_cases_reused": true
+    },
+    "applications_or_live_db_suites": false
+  },
+  "limitation_observations": {
+    "recognition_success_count": 0,
+    "observations": [
+      {
+        "locale": "nl",
+        "text": "Mijn borst brandt van binnen",
+        "actual_warning": "unclear",
+        "actual_level": null,
+        "actual_category": "communication",
+        "uncertainty": [
+          "missing_subject_or_context",
+          "unmapped_body_context"
+        ],
+        "scope": "LIMITATION_OBSERVATION_NOT_RECOGNITION_SUCCESS",
+        "limitation": "No established current-complaint stop feedback for this wording; clarification only."
+      },
+      {
+        "locale": "en",
+        "text": "My left arm has gone numb",
+        "actual_warning": "unclear",
+        "actual_level": null,
+        "actual_category": "communication",
+        "uncertainty": [
+          "missing_subject_or_context",
+          "unmapped_body_context"
+        ],
+        "scope": "LIMITATION_OBSERVATION_NOT_RECOGNITION_SUCCESS",
+        "limitation": "No established current-complaint stop feedback for this wording; clarification only."
+      },
+      {
+        "locale": "de",
+        "text": "Mir schnürt es die Kehle zu",
+        "actual_warning": "unclear",
+        "actual_level": null,
+        "actual_category": "communication",
+        "uncertainty": [
+          "unresolved_meaning"
+        ],
+        "scope": "LIMITATION_OBSERVATION_NOT_RECOGNITION_SUCCESS",
+        "limitation": "No established current-complaint stop feedback for this wording; clarification only."
+      }
+    ]
+  },
+  "prepublication": {
+    "checked_at": "2026-09-08T09:16:29.475Z",
+    "head": "086a05feb5a2e10f864f6c2bed9040509006ef32",
+    "baseline": "abfea682aac53d5e32f4962d6917aa958bd09cb4",
+    "frozen": "bc6308fbf0f914b04c7faa711219d9ae46e9cbe3",
+    "asset_count": 56,
+    "pass": true,
+    "files": [
+      {
+        "file": "Fit_Met_Zorge_Coach_App_standalone.html",
+        "bytes": 192602,
+        "sha256": "1592d6ecebb2527c34dd3a9fa9b1381db18c8dc4af9e64ad7b1ae7c65d357bc4"
+      },
+      {
+        "file": "app.bundle.js",
+        "bytes": 274987,
+        "sha256": "0aedc9e0c5ef05b96b4b0313090a5f6a5481c8d5a585eaac4f4b61ea9fd459d6"
+      },
+      {
+        "file": "app.js",
+        "bytes": 7300,
+        "sha256": "c4f2e966598b65f82dde4c8d546debe4a440fedd935b2897f85b30008560ddb0"
+      },
+      {
+        "file": "assets/fit-met-zorge-logo-cropped.png",
+        "bytes": 15620,
+        "sha256": "c82010c6b05025acc33c69c3eee185775f7e935f53dfdce99b73f4318ce59008"
+      },
+      {
+        "file": "assets/fit-met-zorge-logo.png",
+        "bytes": 17316,
+        "sha256": "4b156a6d55569683703b30e4c349d692cdcffc5b0785114fecb7341c81734897"
+      },
+      {
+        "file": "assets/logo.svg",
+        "bytes": 521,
+        "sha256": "17ab07e30519df3052e539e9839a9b4009598ce9f5d93ba4d1e455fcf9e956b8"
+      },
+      {
+        "file": "assets/member-ux-consistency.js",
+        "bytes": 54499,
+        "sha256": "549beca9ebfe6b1b3f63d254280c5e61b8641809903a2f81dd7c415807314dea"
+      },
+      {
+        "file": "assets/phase1-foundation.js",
+        "bytes": 120779,
+        "sha256": "f275ad98e4680f4e4436858911fc5800e39a4094ab144ec78d0a92adb75addf6"
+      },
+      {
+        "file": "assets/phase2-home-recovery.js",
+        "bytes": 43727,
+        "sha256": "5e642249fc7a1af297e5035f3c5d219cd3ff9f9dbdc19d20c24be59089ba2707"
+      },
+      {
+        "file": "assets/phase3-training-engine.js",
+        "bytes": 215817,
+        "sha256": "e87b01034544dd72c91a91fb40dd0d1b78364d62603dfbf1ed2babed7df944db"
+      },
+      {
+        "file": "assets/phase4-nutrition-slice2.js",
+        "bytes": 69176,
+        "sha256": "42c00580ac2574787b7deea19b3e70009562c8b628863a09409536f265ee28c2"
+      },
+      {
+        "file": "assets/phase4-nutrition-slice3.js",
+        "bytes": 149097,
+        "sha256": "e07bdd2949f7d87bca19edd8160c23ccae7cddf4279494dc12551b61ea275396"
+      },
+      {
+        "file": "assets/phase5-progress.js",
+        "bytes": 61444,
+        "sha256": "b47b9ac07d1b21a9aad014d824e398690546e385eed7c249a98e95564d704b7b"
+      },
+      {
+        "file": "assets/phase6c-private-ai-chat.js",
+        "bytes": 57754,
+        "sha256": "f841e8c68f79d481157c7c4bfd0194b406ce1f980a26539667910c32baccae97"
+      },
+      {
+        "file": "assets/phase6d-analysis-inbox.js",
+        "bytes": 26016,
+        "sha256": "428c81aab07c815aab74828790c028b0839cdbd83a607b0c9eddbbcc8fc28fbe"
+      },
+      {
+        "file": "assets/phase6d-hotfix2.css",
+        "bytes": 16706,
+        "sha256": "2c7444c64b34183c7a13241c42286f6109e6db782a4026f45b396318b72c25f9"
+      },
+      {
+        "file": "assets/phase6d-owner-settings.css",
+        "bytes": 10468,
+        "sha256": "e03ac8dd7752620bb72d4d5bcea4e3c586c7fddce9d2ad2c95fa0a6db1332f58"
+      },
+      {
+        "file": "assets/phase6d-owner-settings.js",
+        "bytes": 52905,
+        "sha256": "edecdce2425970ca38f6e62b741e88ebed9a49ab6e3c0061821d8be021b26f10"
+      },
+      {
+        "file": "assets/phase6d0-legacy-auth.js",
+        "bytes": 4560,
+        "sha256": "fdaca0d3637ca2dcd36fad7a3698ff6c4edae709c582ef3c6709530e2012d4e3"
+      },
+      {
+        "file": "assets/theme-authority.js",
+        "bytes": 3126,
+        "sha256": "7927a84cc5a686e186fadd8de92f8afc0f05d6f256121dcfa92da8d2b6605188"
+      },
+      {
+        "file": "assets/vendor/flag-de.svg",
+        "bytes": 221,
+        "sha256": "efd480af5a154a7651f29da23ee0d09dbc892410fb4041898ddf8face336c575"
+      },
+      {
+        "file": "assets/vendor/flag-gb.svg",
+        "bytes": 504,
+        "sha256": "c8be1e7208798a4ae692ee1e937065d498bb29e741943f6172b29118b8ed8066"
+      },
+      {
+        "file": "assets/vendor/flag-icons-LICENSE.txt",
+        "bytes": 1087,
+        "sha256": "8f1195d55a2fd315a07d812328470ca9ba2abb78c8d317ff19619d5125e00cea"
+      },
+      {
+        "file": "assets/vendor/flag-nl.svg",
+        "bytes": 225,
+        "sha256": "8f691f17fe70894537af8e92f2ca47761d353639b0defc15cbe561eb503ab010"
+      },
+      {
+        "file": "assets/vendor/lucide-LICENSE.txt",
+        "bytes": 880,
+        "sha256": "1e7290b35280a048667bbf0ebabac1c7fd52a75300e8b2946ac165715997f2bc"
+      },
+      {
+        "file": "assets/vendor/lucide-archive.svg",
+        "bytes": 419,
+        "sha256": "1a6e1c540c9a1a9b489893cc14ab9f597496c69aab5ba222fdd5b456de9e2fac"
+      },
+      {
+        "file": "assets/vendor/lucide-arrow-left.svg",
+        "bytes": 344,
+        "sha256": "e31ed0af85ffbed2b54f78f37af197c3b84b24e776cba1d27613d6a9ad555a16"
+      },
+      {
+        "file": "assets/vendor/lucide-arrow-up.svg",
+        "bytes": 341,
+        "sha256": "df0ff279d41bba93ae6797ef519ba442b895cd5d546fb36f22b7a656c3b05fd1"
+      },
+      {
+        "file": "assets/vendor/lucide-bell.svg",
+        "bytes": 469,
+        "sha256": "129a018bd5025fc992a510e9c95e7868300d888b69c38c69a3466d310919ea13"
+      },
+      {
+        "file": "assets/vendor/lucide-calendar.svg",
+        "bytes": 410,
+        "sha256": "2e2a7df92c2cca71dd6de34bb3f7187e276e8e8e003abe2e80b2ffd13347af60"
+      },
+      {
+        "file": "assets/vendor/lucide-check.svg",
+        "bytes": 316,
+        "sha256": "538432eec072ceeccf5a7aacf347a2ad2bff9937d203dbd0b4f4245d7accd93c"
+      },
+      {
+        "file": "assets/vendor/lucide-chevron-right.svg",
+        "bytes": 322,
+        "sha256": "fea488a3b60fd7738bbbf8ca98826ef5c0381347c5fd1048d45ee70a75a51cfe"
+      },
+      {
+        "file": "assets/vendor/lucide-credit-card.svg",
+        "bytes": 386,
+        "sha256": "4d0394710733a8ca0db566208b0281708ebde7b167b6903491fde0be060bded1"
+      },
+      {
+        "file": "assets/vendor/lucide-download.svg",
+        "bytes": 428,
+        "sha256": "f68a21e11115edc0aef51ac6f8f4618e14d2b92055f1cb9f5d670efc696bea85"
+      },
+      {
+        "file": "assets/vendor/lucide-file-text.svg",
+        "bytes": 473,
+        "sha256": "512f414d72aabc5218b94a9da571df70d8e0b014cfb32ec366b559ec868952d6"
+      },
+      {
+        "file": "assets/vendor/lucide-globe.svg",
+        "bytes": 408,
+        "sha256": "c3543ac3883a0841aa5d37ff974708fbc37d9c6afe64e14b03d56ed798b0b788"
+      },
+      {
+        "file": "assets/vendor/lucide-history.svg",
+        "bytes": 403,
+        "sha256": "682b5fc882578a3bdaac72c72fc27709cb806b61c2d1d51194327b31dde7f239"
+      },
+      {
+        "file": "assets/vendor/lucide-languages.svg",
+        "bytes": 443,
+        "sha256": "a33a7bd34876dde0c5a470914dac09fca77f97da75e93e1b1687de2294874c65"
+      },
+      {
+        "file": "assets/vendor/lucide-loader-circle.svg",
+        "bytes": 336,
+        "sha256": "44ad0f822a89b28a3feecf7276686c818a92a4a9c77cc51404c58929e30f0f3a"
+      },
+      {
+        "file": "assets/vendor/lucide-log-out.svg",
+        "bytes": 425,
+        "sha256": "3f28d1eedd9a71ec6933578fc1b7cd21c56618e8b9b8339e55bfc133b4eb6bee"
+      },
+      {
+        "file": "assets/vendor/lucide-message-circle.svg",
+        "bytes": 340,
+        "sha256": "f62830d9fbbbf697e53555398d31a342ddec8dd008d707f21cd90bb19befcc87"
+      },
+      {
+        "file": "assets/vendor/lucide-plus.svg",
+        "bytes": 332,
+        "sha256": "b29207ee8f5cc0e829c0bab2e5b223fc88687599c6bd40b94ba35f52327615d6"
+      },
+      {
+        "file": "assets/vendor/lucide-rotate-cw.svg",
+        "bytes": 380,
+        "sha256": "2c2c5d1f147e829f431182eee79d8d74e81aedcf8177f9e1878a4180ec990a9c"
+      },
+      {
+        "file": "assets/vendor/lucide-settings.svg",
+        "bytes": 904,
+        "sha256": "ceea1a72d04b112291222ba9ad0779a12d47d816079fe4174900c724f360b55c"
+      },
+      {
+        "file": "assets/vendor/lucide-shield.svg",
+        "bytes": 464,
+        "sha256": "276e603595736fcb698b0309b04c44ebb88afb28e4753c5670f92c11a01ed043"
+      },
+      {
+        "file": "assets/vendor/lucide-trash-2.svg",
+        "bytes": 499,
+        "sha256": "9268a35cfb4f9d852c3d13f2c91476dd067c21c20e2bcdb0093fd93fd0bf34b7"
+      },
+      {
+        "file": "assets/vendor/lucide-user.svg",
+        "bytes": 375,
+        "sha256": "bb1e0531065db51238a34b348cf8fb8267cd31932dc3f680c9f204a58d1520ea"
+      },
+      {
+        "file": "assets/vendor/lucide-x.svg",
+        "bytes": 333,
+        "sha256": "0f38855d9d5775c10960ae53e46b745f77914b43f78c43bf8abc39f4d5e06de1"
+      },
+      {
+        "file": "assets/vendor/zxing-browser-0.2.1.LICENSE.txt",
+        "bytes": 1069,
+        "sha256": "4c26c3077daa7ce4d56ad91f279fafc395bf33c3a0f1ba9ab8cf511bad148ea5"
+      },
+      {
+        "file": "assets/vendor/zxing-browser-0.2.1.min.js",
+        "bytes": 441121,
+        "sha256": "066bc34edfcdd4a33f0964aeec967752a0dea1ccaf36e58e319ac9fcb5070f6a"
+      },
+      {
+        "file": "assets/youri-ai-avatar-3d-v3-256.webp",
+        "bytes": 53188,
+        "sha256": "257f31e6fe4faa7fecf5fb9874eed06d4018dc8c60958aa714e7d4b79a7517dc"
+      },
+      {
+        "file": "assets/youri-ai-avatar-3d-v3-master.png",
+        "bytes": 1864738,
+        "sha256": "53edc8c376f097417abde7b74f4c9d85cebad4e2a676ae65620a4cbd65da2e57"
+      },
+      {
+        "file": "config.js",
+        "bytes": 196,
+        "sha256": "07cc826304b5a9343ef26a21aabae6d00a21fe4c55a1d9feefef6067bcecd6fa"
+      },
+      {
+        "file": "fit-met-zorge-logo.png",
+        "bytes": 257147,
+        "sha256": "940c6c9e66d73a642d67f453fc12e46e78f233e60432ea0ad426324af1493ecf"
+      },
+      {
+        "file": "index.html",
+        "bytes": 52340,
+        "sha256": "5dcbd22107f955fd67be9a57df7c27d9fd4ad8b6f30dd3149495badbb41ddc51"
+      },
+      {
+        "file": "styles.css",
+        "bytes": 105343,
+        "sha256": "29d376ad4efbaee61dfc65adaced629753cdc5d126c58f5c60ee472324e2a20e"
+      }
+    ],
+    "offline_paths": [
+      {
+        "file": "_offline/phase6e0/README.md",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e0/context-hints.json",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e0/contract.json",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e0/copy.json",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e0/corpus.cjs",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e0/engine.cjs",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e0/fixture-seeds.json",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e0/known-limitations.json",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e0/package.json",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e0/recognition-followup-cases.json",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e0/retention.cjs",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e0/rules.json",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e0/state.cjs",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e0/test/engine.test.cjs",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e0/test/helpers.cjs",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e0/test/isolation.test.cjs",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e0/test/limitations.test.cjs",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e0/test/recognition-followup.test.cjs",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e0/test/retention.test.cjs",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e0/test/state.test.cjs",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e0/test/warning-recovery-proposal.test.cjs",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e0/warning-recovery-proposal.cjs",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e0/warning-recovery-proposal.json",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e1/README.md",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e1/analysis.cjs",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e1/common.cjs",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e1/content-contract.json",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e1/context.cjs",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e1/contract.json",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e1/flow.cjs",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e1/package.json",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e1/preregistered-cases.json",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e1/retention.cjs",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e1/test/analysis.test.cjs",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e1/test/context.test.cjs",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e1/test/examples.cjs",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e1/test/flow.test.cjs",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e1/test/helpers.cjs",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e1/test/isolation.test.cjs",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e1/test/retention.test.cjs",
+        "http": 404
+      },
+      {
+        "file": "_offline/phase6e1/test/review-boundaries.test.cjs",
+        "http": 404
+      }
+    ]
+  },
+  "frozen_6e0": {
+    "tree": "27ed4679b59fc5909712d4fa927138e5f9f03689",
+    "files": 23,
+    "byte_unchanged": true
+  },
+  "frozen_application": "bc6308fbf0f914b04c7faa711219d9ae46e9cbe3",
+  "owner_acceptance": false,
+  "medical_validation": false,
+  "live_integration": false,
+  "production_touched": false,
+  "source_manifest_refreshed_after_tentative_recovery_fix": true
+}

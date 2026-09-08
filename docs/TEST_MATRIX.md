@@ -1,6 +1,29 @@
 # FitMetZorge Test Matrix
 
-## Package 6E-0 Owner Freeze - Current
+## Package 6E-1 Offline Contracts - Current
+
+PACKAGE 6E-1 OFFLINE CONTRACTS - TECHNICAL PASS / READY FOR OWNER REVIEW.
+Explicit offline OWNER GO received 2026-09-08; implementation only in _offline/phase6e1.
+Phase 6E as a whole remains INCOMPLETE. No live integration, owneracceptance or next package.
+All 23 frozen 6E-0 files remain byte-identical; 6E-0 owner acceptance/freeze stays intact.
+Frozen application remains bc6308fbf0f914b04c7faa711219d9ae46e9cbe3.
+D1-D12 unchanged; no human application, queue or approval service.
+Text -> scoped context -> feedback no longer takes manual expected context as input.
+Revision/attempt-bound retry and clarification settle only their own nonclinical issue.
+Real synthetic daily/post-workout/weekly descriptive outputs keep access, facts,
+recommendations and actions separate. Self-report is not medical clearance; actions OFF.
+Normal recommendation content, serious/repeated/unclassified recovery and unresolved
+retention remain OPEN. The later controlled coaching ambition is preserved.
+New suite 246/246 technical PASS (including 121 preregistered text/availability cases);
+90/90 relevant frozen 6E-0 regressions PASS. Three limitation probes are NOT recognition successes.
+No application, database, member or provider suite. No medical validation or full recovery flow.
+See [technical report](PHASE6E1_TECHNICAL_REPORT.md), [contracts](PHASE6E1_CONTRACTS.md),
+[compact owner overview and open questions](PHASE6E1_OWNER_OVERVIEW.md),
+[updated scope](PHASE6E1_PROPOSAL.md) and [evidence](PHASE6E1_EVIDENCE.json).
+Only next step: owner productreview; no automatic continuation or expert contact.
+Earlier freeze/execution summaries below retain their historical start/status context.
+
+## Package 6E-0 Owner Freeze - Retained Receipt History
 
 Status: COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE PREPARATION ONLY.
 Explicit owner acceptance recorded 2026-09-08; Phase 6E as a whole remains INCOMPLETE.

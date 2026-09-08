@@ -1,0 +1,71 @@
+{
+  "version": "phase6e1.offline.v0.1.0",
+  "status": "PROPOSAL_ONLY_OWNER_AND_EXPERT_REVIEW_OPEN",
+  "synthetic_only": true,
+  "frozen_application": "bc6308fbf0f914b04c7faa711219d9ae46e9cbe3",
+  "frozen_6e0_tree": "27ed4679b59fc5909712d4fa927138e5f9f03689",
+  "axes": [
+    "access",
+    "descriptive_facts_and_observations",
+    "personalized_recommendations",
+    "automatic_execution"
+  ],
+  "context": {
+    "version": "phase6e1.context.v1",
+    "source": "bounded_text_rules_not_fixture_annotations",
+    "offsets": "UTF16_start_inclusive_end_exclusive_original_message",
+    "max_text": 4096,
+    "locales": [
+      "nl",
+      "en",
+      "de"
+    ],
+    "medical_levels": "Existing phase6e0 rule ranks only; no newly assigned clinical ranks",
+    "unknown": "No match is not medical clearance or proof of comprehension"
+  },
+  "flow": {
+    "version": "phase6e1.flow.v1",
+    "binding": [
+      "subject_id",
+      "message_id",
+      "source_revision",
+      "issue_revision",
+      "attempt"
+    ],
+    "authority": "In-memory synthetic branded state only; not a trusted server adapter",
+    "health_resolution": "Self-report only; clinical resumption criteria remain open",
+    "human_approval_service": false
+  },
+  "content": {
+    "version": "phase6e1.content.v1",
+    "descriptive_observations": "Allowlisted numeric facts and same-method complete equal-window deltas only; proposed for owner review",
+    "recommendations": "Not generated for any state; missing content policy is not a member health block",
+    "actions": false,
+    "live_6d_gate": "Unchanged; no permission to bypass existing safety_hard_stop"
+  },
+  "retention": {
+    "version": "phase6e1.retention.v1",
+    "provisional_days": {
+      "episode_counter": 30,
+      "closed_details": 90,
+      "minimal_audit": 180
+    },
+    "unresolved_max_days": null,
+    "persistence_enabled": false,
+    "expiry_is_clearance": false,
+    "permanent_health_block": false
+  },
+  "open_criteria": [
+    "context_copy_validation",
+    "personalized_content_scope",
+    "serious_recovery",
+    "recurrence_meaning_and_recovery",
+    "unclassified_recovery",
+    "unresolved_retention_maximum_and_responsibility",
+    "missing_detail_consequences"
+  ],
+  "runtime_activation": false,
+  "external_calls": false,
+  "trainer_sharing": false,
+  "medical_clearance": false
+}
