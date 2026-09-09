@@ -1,6 +1,27 @@
 # FitMetZorge Test Matrix
 
-## Training Timer And Effort - Current
+## Package 6E-1 Owner Acceptance - Current
+
+COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE CONTRACTS ONLY.
+Explicit O1-O5 acceptance on 2026-09-09; see [freeze receipt](PHASE6E1_FREEZE_RECEIPT.md),
+[contracts](PHASE6E1_CONTRACTS.md) and Decision 0039. No medical validation or live GO.
+O5: necessary date/status/message reference only, at most 30 days from FIRST
+registration, earlier when unnecessary; no extension via retry/reprocessing/status.
+Optional reformulation/retry AND continuing chat; no mandatory loop or review service.
+Daily/workout/weekly facts accepted offline; recommendation content/resumption
+remains a separate future scope. All existing D1-D12 decisions stay in force.
+300/300 full 6E-1 tests plus 90/90 focused frozen 6E-0 regressions PASS, no skips.
+All 23 frozen 6E-0 files retained; runtime baseline f3ab33c (round timer/RIR-RPE)
+unchanged. No application suite repeated: no runtime change; byte/Pages gates used.
+Medical, privacy, legal and NL/EN/DE expert review plus live lifecycle integration
+remain open. Phase 6E incomplete. [Only next proposal](PHASE6E1_PROPOSAL.md):
+6E-2 offline recommendation-content/resumption contracts, NOT STARTED.
+Physical phone/OS keyboard retest remains separate and open.
+
+## Training Timer And Effort - Historical Delivery
+
+The acceptance status below describes the earlier Training delivery only; the
+6E-1 owner acceptance above supersedes its then-pending AI review status.
 
 Owner accepts the previously delivered basics, compact set rows and other Training
 operation. This delivery adds the requested large round rest timer and direct

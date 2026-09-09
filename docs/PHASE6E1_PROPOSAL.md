@@ -1,56 +1,64 @@
-# Package 6E-1 Afbakening En Oplevering
+# Package 6E-1 Afronding En Enig Vervolgvoorstel
 
-Status: PACKAGE 6E-1 OFFLINE CONTRACTS - TECHNICAL PASS / READY FOR OWNER REVIEW.
-Owner GO: expliciete bijlage 8f451dad-e9b8-48c4-a876-a1a51302ef7e, 2026-09-08.
-Dit is de uitvoering van het bestaande vijfdelige voorstel, geen nieuwe algemene audit.
-De eerdere NOT STARTED-status is door die opdracht vervangen, niet door automatische toestemming.
-6E-0 blijft COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE PREPARATION ONLY.
-Phase 6E als geheel blijft ONVOLTOOID. Geen owneracceptatie of freeze van 6E-1.
+## 6E-1 Afgerond
 
-## Concrete Uitkomsten En Nog Open Grenzen
+COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE CONTRACTS ONLY.
+Expliciet ownerakkoord O1-O5 op 2026-09-09, uitgevoerd in de bestaande offline
+architectuur. Geen nieuwe algemene audit. D1-D12 worden niet heropend.
+6E-0 blijft accepted/frozen; Phase 6E als geheel blijft ONVOLTOOID.
+Geen live AI, medische vrijgave, automatische actie of menselijke beoordelingsdienst.
+De eerdere drie herkenningsgaten zijn hersteld in cf6c212, geen actuele missers.
 
-| Onderdeel | Offline opgeleverd | Nog benodigde productbeslissing / deskundige beoordeling | Voor live aantoonbaar geregeld |
-| --- | --- | --- | --- |
-| A Context -> waarschuwing | Versieerbare tekstinvoer zonder fixturecontext; exact-fragmenttrace, ontkenning/quotes/timing, conflicten, bestaande copy; 121 vooraf vastgelegde tekstgevallen | Bereik van regels en copy medisch/native/juridisch beoordelen; drie extra niet-ingedeelde formuleringen geven nog alleen verduidelijking | Vertrouwde echte berichtbron, aantoonbare context-/foutafhandeling en passende representatieve validatie |
-| B Taal/techniek | Persoon/message/source_revision/issue_revision/attempt-binding, idempotentie, stale-resultafwijzing, uitsluitend eigen kwestie afhandelen | Begrensde verduidelijkingsgrammatica en betwisting/ontbrekende context productmatig beoordelen; geen menselijke dienst | Betrouwbare serverbinding/retrybron, autorisatie, concurrency en retentie; synthetic availability is geen gebruikersautoriteit |
-| C Inhoud/hervatting | Concreet dag-, workout- en weekcontract voor eigen cijfers en beschrijvende vergelijkingen; vier gescheiden assen; zelfrapportage via bevestiging/chat | Persoonlijke observaties als voorstel accepteren of bijstellen; persoonlijke aanbevelingen per soort/toestand en hervatting blijven inhoudelijk open | Geverifieerde aggregatebron, lokale tijdvensters/DST, coverage/units/consent, 6D-gatecompatibiliteit en beoordeelde inhoudsregels |
-| D Ernst/herhaling/oningedeeld | Toestands-/revisiematrix, nieuwe klacht na herstel, subset-targets en conflicten; exacte open criteria naast bruikbare feiten | Medische criteria voor actuele informatie, ernstige/terugkerende/oningedeelde klachten en daadwerkelijke hervatting ontbreken; geen termijn/drempel/beoordelaar ingevuld | Relevante medische/native/juridische beoordeling en begrensde gebruikersflow voor de werkelijk te activeren criteria |
-| E Retentie/ontbrekende details | Doel/noodzaak/30-90-180-klokprojecties; missing_context_not_clearance; unresolved opslag UIT | Maximum/verantwoordelijkheid en gevolgen van ontbrekende details blijven open binnen D5 | Goedgekeurd beleid, minimalisatie, autorisatie en verwijderings-/statussemantiek, zonder oneindige restblokkade of vrijgave door wissen |
+[Contracten](PHASE6E1_CONTRACTS.md), [ownerakkoord](PHASE6E1_OWNER_OVERVIEW.md)
+en [freeze receipt](PHASE6E1_FREEZE_RECEIPT.md) zijn de actuele bron.
+Het oorspronkelijke technische rapport/testbewijs blijft historisch behouden.
 
-Contracten: [PHASE6E1_CONTRACTS.md](PHASE6E1_CONTRACTS.md).
-Compacte productreview met volledige voorbeelden en EEN gebundelde vragenlijst:
-[PHASE6E1_OWNER_OVERVIEW.md](PHASE6E1_OWNER_OVERVIEW.md).
-Bewijs en beperkingen: [PHASE6E1_TECHNICAL_REPORT.md](PHASE6E1_TECHNICAL_REPORT.md).
+## Voorstel: 6E-2 Offline Persoonlijke Aanbevelingen En Hervattingsgrenzen
 
-## Behouden Productgrens
+Status: PROPOSED / NOT STARTED. Geen automatische vervolgimplementatie.
+Aanbevolen volgende opdracht: maak EEN uitvoerbaar synthetisch inhoudscontract met
+exacte voorbeeldoutput per dag-, workout- en weekanalyse, en beslis per afzonderlijk
+aanbevelingstype welke inhoud wel/niet kan worden aangeboden. Geen live adapter.
 
-D1-D12 zijn onveranderd. Geen algemene gezondheidsgerelateerde abonnementsblokkade.
-Toegang, feiten/observaties, aanbevelingen en automatische uitvoering zijn afzonderlijk.
-Chat/historie blijven onder bestaande rechten; hulp blijft binnen toegankelijke AI-chat.
-Zelf gemeld herstel is geen medische vrijgave. Nieuwe signalen worden opnieuw beoordeeld.
-Geen automatische trainerdeling, noodmelding, provider of externe classifier.
-Er bestaat GEEN aparte menselijke aanvraag-, wachtrij- of goedkeuringsdienst.
-De historische aanvraagvelden van 6E-0 zijn niet als producteis overgenomen.
-Er is ook geen automatische vrijgave als vervanging toegevoegd.
+Gebruik bestaande context-/message-/revision-binding, de vier gescheiden assen,
+de allowlisted aggregatevensters en O5-retentie uit 6E-1 read-only.
+Maak aanvullingen uitsluitend in een aparte offline vervolgruimte; wijzig frozen
+6E-0/6E-1 en huidige runtime niet. Geen provider, memberdata of automatische uitvoering.
 
-Aanbevelingen zijn globaal nog niet uitgewerkt, niet door een oude individuele
-onzekerheidsstatus voor altijd geblokkeerd. De ernstige herstelroute is nadrukkelijk
-onaf: complete_health_resumption_flow=false. Begrensde bruikbare inhoud is wel bewezen.
-De latere gecontroleerde coachingambitie uit MASTER_BUILD_PLAN.md blijft behouden.
+| Onderdeel | Concreet toekomstig resultaat | Nog benodigde beoordeling |
+| --- | --- | --- |
+| Daganalyse | Matrix voor voorgestelde persoonlijke dagelijkse suggesties, met exacte conceptzinnen, benodigde eigen registraties, onzekerheid en verboden conclusies; onderscheid van al geaccepteerde dagfeiten | Welke suggesties productmatig gewenst zijn; medische/juridische grenzen bij bewegen, voeding, slaap en klachten, zonder zelf gekozen normen |
+| Workoutanalyse | Per voorgesteld advies over een volgende workout een expliciete inhoudsgrens en bronvoorwaarde; geen uitvoering van belasting-, oefening- of schemawijzigingen | Gewenste adviescategorieen; deskundige beoordeling van belastbaarheid/techniek/terugkeer waar relevant |
+| Weekanalyse | Voorstel voor persoonlijke reflectie/planning op basis van vergelijkbare weken, met bronbeperkingen en exacte output | Toegestane planningsadviezen en deskundige grenzen; geen diagnose, causaliteit of overbelastingsscore uit totalen |
+| Hervatting per type | Uitvoerbare matrix: geen actuele melding, actuele melding, misverstand/uitval, zelfrapportage, nieuw signaal, ernstige/terugkerende/oningedeelde klacht en ontbrekende context | Per type benodigde actuele informatie en deskundige criteria; ontbrekend medisch criterium expliciet onbeoordeeld, niet vervangen door tijd of zelfrapportage |
+| Ontbrekende bron en O5-verloop | Testcases zonder verzonnen gegevens of vrijgave, zonder oude status als eeuwige algemene accountblokkade; chat/historie/feiten blijven afzonderlijk beoordeeld | Gevolgen voor elke gekozen aanbeveling en minimale aanvullende context; bestaande retentiekeuzes blijven staan |
 
-## Voor Elke Latere Live Integratie
+### Offline Acceptatiebewijs Voor Dat Volgende Pakket
 
-- Afzonderlijk expliciet GO met exacte scope, stagingdoel, adapter/datagrens en terugweg.
-- Afgeronde relevante product-, medische, privacy-, juridische en moedertaalbeoordeling
-  van de daadwerkelijk gekozen inhoud, criteria, copy, verwerking en bereikbaarheid.
-- Betrouwbare context-/retry-/aggregatebronnen en serverauth/entitlements/consent.
-- Bewezen aansluiting op frozen Package 6D; de huidige safety_hard_stop wordt niet
-  door dit offline voorstel omzeild of gewijzigd.
-- Noodzakelijk, goedgekeurd retentie- en ontbrekend-datagedrag; unresolved opslag niet
-  alvast activeren, geen vrijgave door tijd/verwijdering/nieuw gesprek/zelfrapportage.
-- Gerichte regressie-/isolatie-/securitycriteria voor de begrensde latere slice.
-- Productie verboden. Reviewercontact, kosten of echte member/providerverwerking
-  zijn niet geautoriseerd door dit pakket.
+- Vooraf vastgelegde synthetische voorbeelden met exacte toegestane EN geweigerde
+  output per aanbevelingstype. Geen willekeurige medische labels om tests te laten slagen.
+- Expliciete inhouds-/bron-/toestandsmatrix en antwoord na zelfrapportage of een
+  nieuwe klacht. Geen algemene vrijgaveknop, menselijke aanvraagdienst of vraaglus.
+- Dezelfde aanbeveling kan alleen terugkeren als haar eigen goedgekeurde voorwaarden
+  bestaan. Nog ontbrekende deskundige criteria blijven open inhoudsgrenzen, niet
+  een gepresenteerde complete herstelroute of automatische medische vrijgave.
+- Gerichte context-, consent-, missing-data-, retentie-, aanbevelings- en isolatietests;
+  frozen bronnen en runtime behouden. Technische tests gescheiden van medische claims.
+- Een compact ownerreviewoverzicht met exacte NL/EN/DE-conceptzinnen en verschillen
+  ten opzichte van de al geaccepteerde feiten. Nieuwe teksten niet deskundig goedgekeurd.
 
-Enige huidige volgende stap: ownerreview van het opgeleverde 6E-1-concept.
-Geen automatische owneracceptatie, volledige Phase 6E-freeze, live integratie of volgend pakket.
+### Exacte Voorwaarden En Niet-Geautoriseerde Vervolgstappen
+
+Start alleen na een expliciete opdracht voor deze afgebakende OFFLINE 6E-2-scope.
+De gekozen adviescategorieen en teksten vragen eigen productreview, geen nieuw O1-O5-
+of D1-D12-akkoord. Medische hervattingscriteria mogen niet door Codex worden ingevuld.
+
+Voor eventuele latere LIVE inzet blijven afzonderlijk vereist: beoordeelde inhoud
+en concrete relevante medische herstel-/hulpcriteria; privacy/juridische/taalreview;
+vertrouwde bericht/retry/aggregate/klokbronnen en serverauth/consent/entitlements;
+bewezen doelgebonden retentie, echte verwijdering, restart/concurrency en ontbrekende
+bronafhandeling; compatibiliteit met bestaande 6D safety_hard_stop; gerichte security/
+regressie- en terugwegcriteria; expliciete live staging GO voor een exacte scope.
+Geen bestaande data naar providers, kosten, reviewercontact of productie toegestaan.
+
+De timertelefoontest blijft apart; AI-acceptatie is geen fysieke telefoontest.

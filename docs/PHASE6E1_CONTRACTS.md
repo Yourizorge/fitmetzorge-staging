@@ -1,13 +1,16 @@
 # Package 6E-1 Offline Contracten
 
-Status: TECHNICAL PASS / READY FOR OWNER REVIEW. Alleen offline conceptuitwerking.
-Owner GO: bijlage 8f451dad-e9b8-48c4-a876-a1a51302ef7e op 2026-09-08.
-Geen owneracceptatie, medische vrijgave, complete herstelimplementatie of live integratie.
+Status: COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE CONTRACTS ONLY.
+Owner accepteert O1-O5 expliciet op 2026-09-09; zie Decision 0039 en de
+[freeze receipt](PHASE6E1_FREEZE_RECEIPT.md). Geen medische/deskundige goedkeuring,
+complete herstelimplementatie of live integratie/opslag.
 D1-D12 blijven behouden. 6E-0 blijft owner-accepted/frozen; Phase 6E blijft onvoltooid.
 
 ## Versies En Vertrouwensgrens
 
-phase6e1.offline.v0.1.0; context/flow/content/retention elk v1.
+phase6e1.offline.v0.2.0; context/flow/content v1, retention v2.
+Actuele runtimebaseline f3ab33c6553c2d5dd3fc06518c150bd474fb6159,
+inclusief ronde timer en inline RIR/RPE. Alle 60 runtime-assets blijven behouden.
 Nieuwe bron uitsluitend _offline/phase6e1; private Node-module zonder dependencies.
 De 23 frozen _offline/phase6e0-bestanden worden niet gewijzigd.
 Alleen vier frozen JSON-bronnen worden read-only hergebruikt: rules, context-hints,
@@ -73,13 +76,16 @@ De simulatorfeedback zelf bewijst GEEN daadwerkelijke bereikbaarheid in de app.
 Geslaagde retry stopt aantoonbaar de betreffende technische fout, zonder er een
 permanente reststatus van te maken. Historische events blijven in deze geheugenrun
 traceerbaar. Eventpayloads zijn GEEN voorstel voor langdurige auditopslag.
+O2: view.nonclinical_options biedt reformulate of retry EN continue_chat.
+clarification_required=false; een mislukte poging verplicht niet tot een vraaglus.
+Vrij verder chatten laat de eigen onopgeloste kwestie en andere klachten intact.
 Een gezondheidskwestie achteraf betwisten vraagt nog inhoudsregels; deze simulator
 registreert twijfel als misschien/think/glaube ook niet als ondubbelzinnig herstel en
 doet geen medische herinterpretatie of menselijke beoordelingsprocedure.
 
 ## C. Inhoud Per Analyse
 
-Alleen allowlisted synthetische aggregaten: eigen subject, source-ID, source-kind,
+O3 owner-accepted offline. Alleen allowlisted synthetische aggregaten: eigen subject, source-ID, source-kind,
 methodeversie, eenheid, exact begin/eindvenster en volledige/deels ontbrekende dekking.
 Bronherkomst is hier een controleerbaar synthetisch contract, geen live verificatie
 van die bron. Geen vrije adviesvelden, doelen, diagnose, belastbaarheid of causaal
@@ -110,6 +116,7 @@ Integer-/tijdvenstercontroles zijn technische datavormgrenzen, geen medische nor
 Ontworpen feitenweergave is GEEN versoepeling van de bestaande 6D safety_hard_stop-gate.
 Bij ontbrekende analyseconsent worden geen waarden/waarschuwingdetails via analyze
 teruggegeven; chat-/historietoegang blijven afzonderlijk beoordeeld.
+O4: aanbevelingsinhoud en hervatting worden per aanbevelingstype apart uitgewerkt.
 Het nog niet implementeren van aanbevelingen is een globale ontbrekende inhoudspolicy,
 geen levenslange blokkade op basis van een oude individuele onzekerheidsstatus.
 Dit lost de ernstige/onduidelijke medische herstelvoorwaarden niet stilzwijgend op.
@@ -126,7 +133,7 @@ Dit lost de ernstige/onduidelijke medische herstelvoorwaarden niet stilzwijgend 
 | Meerdere open klachten | Herstel voor een subset | Alleen gebonden subset zelf-gerapporteerd; overige meldingen actueel | Overige waarschuwing blijft zichtbaar | Geen globale vrijgave |
 | Taal/techniek open | Juiste verduidelijking of retry | Alleen eigen niet-medische kwestie settled | Geen permanente technische blokkade; feiten onveranderd | Geen impliciete aanbevelingsbevoegdheid |
 | Elke gezondheidsstatus | Nieuw gesprek, R0, approved, tijd, verwijderen | Geen ondersteunde vrijgaveovergang | Toegang/feiten niet gewijzigd | Retentie/ontbrekende details apart, geen clearance |
-| Details ontbreken | Retentieprojectie | missing_context_not_clearance; geen medische toestand gereconstrueerd | Begrensde inhoud binnen bronnen/rechten | Welke actuele informatie en eind-/opslagvoorwaarden nodig zijn |
+| Details ontbreken | Retentieprojectie | context_missing zolang de minimale O5-registratie nodig is en niet verlopen; geen reconstructie | Begrensde inhoud binnen bronnen/rechten | Zo nodig actuele context vragen, niet een verdwenen medische toestand verzinnen |
 
 Concrete open criteria: inhoud per analyse en toestand; relevante actuele informatie
 bij R3/R4; betekenis van herhaling; voorwaarden na een niet-ingedeelde klacht; grenzen
@@ -142,20 +149,48 @@ begrensde inhoud worden wel opgeleverd, niet stilgelegd door ontbrekend medisch 
 | episode_counter | Rollende beschrijvende telling, niet medische risicoscore | 30 dagen vanaf vastlegging | Exacte grens projecteert verloop; geen medisch herstel door verstrijken |
 | closed_details | Alleen noodzakelijke uitleg van afgesloten/betwiste kwestie | Maximaal 90 dagen vanaf afsluiting, korter mogelijk | Verloopt in projectie; ongesloten details krijgen geen stille 90-dagenregel |
 | minimal_audit | Minimale inhoudsloze beslismetadata | Maximaal 180 dagen vanaf vastlegging | Geen chattekst/medische details in deze klasse; daarna verloopprojectie |
-| unresolved_signal | Doel, noodzaak, verantwoordelijke en maximum ontbreken nog | NIET BESLIST, geen retain forever/default maximum | policy_open_no_persistence; opslag blijft uit |
+| unresolved_signal / O5 | Recente meldingen volgen en onnodig herhaald uitvragen voorkomen; beheer FitMetZorge | Owner-accepted OFFLINE: maximaal 30 dagen vanaf eerste registratie, eerder weg wanneer niet nodig | Alleen datum, status, berichtverwijzing; iedere status dezelfde eindgrens; live opslag UIT |
 | Ontbrekende details | Eerlijk weergeven wat niet meer aantoonbaar is | Geen nieuwe reststatus-levensduur gekozen | Geen vrijgave, geen nagebootste reconstructie, geen levenslange toegangssperre |
 
-Onnodige gegevens worden niet voorgesteld om te bewaren. De synthetische klok wordt
-expliciet aangeleverd, grenzen 30/90/180 zijn verkortbaar maar niet verhoogbaar.
-De planner wijzigt GEEN input, bestand of flowstate en voert geen echte cleanup uit.
-Een record dat ontbreekt/verloopt blijft onzeker in die projectie; het model schrijft
-geen eeuwig bewaard sentinelrecord. Onbesliste opslag is niet alvast actief.
-De tabel is geen definitief AVG-/medisch bewaarbeleid of live verwijderimplementatie.
+O5 wordt uitsluitend vertegenwoordigd door projectSafety(...).records. Elk record
+heeft first_registered_at_ms, status en message_ref (message_id/source_revision).
+Geen tekstkopie, medische score, extra detail- of auditkopie. Verloop bij
+nowMs >= first_registered_at_ms + 30 * 86400000; dit zijn verstreken uren,
+geen opnieuw beginnende kalendermaand. Datum/identiteit komen uit de eerste
+synthetische bronmelding. Retry behoudt die oorsprong, ook wanneer pas later een
+gezondheidsmelding wordt herkend. Bekijken, opnieuw verwerken, settled, awaiting,
+self_reported en context_missing verlengen niets. Een werkelijk nieuw bericht
+met een nieuwe klacht krijgt wel een eigen eerste registratie.
+
+In een simulatiereeks moet steeds de vorige uitgegeven projectie worden doorgegeven.
+Een revisiewatermerk voorkomt dat eerder als onnodig verwijderde bronnen terugkomen;
+er blijft geen verlopen bericht-ID, tekst of per-melding-tombstone in records over.
+De eerste null-projectie is alleen initialisatie van een synthetisch experiment,
+geen reset/new-chat/herlaadroute. Ontbrekende bronnen worden met expliciete
+synthetische opties gemodelleerd: geen reconstructie of nieuwe bewaartermijn.
+De bron is zo nodig opnieuw te vragen als actuele context, zonder medische vrijgave
+door ontbreken, verwijdering of tijdsverloop en zonder algemene toegangssperre.
+
+plan() blijft een vergelijkende D5-diagnose, GEEN opslagpayload. Zijn diagnostische
+items kunnen ook afgewezen/verlopen invoer beschrijven. Raw flow-events en oude
+test-snapshots blijven alleen historisch geheugenbewijs, niet een bewaareis.
+O5-records kunnen niet door een statuswisseling naar closed_details/minimal_audit
+doorstromen: hun 30-dagengrens blijft staan. Zelfstandige andere D5-doeleinden en
+bestaande chat-/analyseretentie worden niet veranderd. Onnodige data vervalt eerder.
+De planner/projectie wijzigt geen input, bestand, echte chat of database.
+
+Dit is geen juridisch/medisch gevalideerd bewaarbeleid of live verwijderimplementatie.
+De klok, noodzakelijkheid en bronbinding zijn synthetisch. Vertrouwde eerste
+registratie, duurzame hervatting, concurrency, bronverwijdering, fout-/klokafhandeling
+en doelgebonden daadwerkelijke deletion moeten voor live nog aantoonbaar kloppen.
+Opslag is UIT; geen menselijke medische beoordelingsdienst of heimelijke reststatus.
 
 ## Grenzen En Vervolg
 
-[Owneroverzicht](PHASE6E1_OWNER_OVERVIEW.md) bundelt alle open productvragen eenmaal.
+[Owneroverzicht](PHASE6E1_OWNER_OVERVIEW.md) legt de geaccepteerde O1-O5 vast.
 [Technisch rapport](PHASE6E1_TECHNICAL_REPORT.md) scheidt technische tests,
 tekst-naar-feedbackbewijs, beperkingobservaties en medische onbewezen aannames.
 Geen expert benaderd, geen provider/DB/membertest, kosten, cleanup of productie.
-Geen owneracceptatie of volgende pakketstart afgeleid uit TECHNICAL PASS.
+Owneracceptatie berust uitsluitend op expliciet O1-O5-akkoord, niet op technische tests.
+Medische, privacy-, juridische en NL/EN/DE-taalreviews blijven voor live open.
+Het [enige vervolgvoorstel](PHASE6E1_PROPOSAL.md) is niet gestart.

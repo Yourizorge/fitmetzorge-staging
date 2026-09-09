@@ -562,3 +562,35 @@ budget boundary remains EUR3 included, EUR2.40 warning, Luna-only grace up to EU
 cap, no automatic billing and no Terra grace. Real-member external provider activation
 still requires the separate ZDR/DPA/DPIA/EU-route/privacy/medical/transfer/lifecycle
 evidence and explicit owner activation GO. Production remains forbidden.
+
+## Decision 0039: Package 6E-1 O1-O5 acceptance and offline freeze
+
+Date: 2026-09-09. Explicit owner decision:
+COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE CONTRACTS ONLY.
+Acceptance does not follow from test success or Training acceptance.
+
+- O1: retain warning/message/context linkage and already accepted concept copy.
+- O2: offer reformulation/retry AND continuing chat, without a mandatory question
+  loop. Settling one issue does not erase other health reports.
+- O3: accept concrete bounded daily/workout/weekly facts and comparable deltas.
+  Personalized recommendations are a separate, not-yet-implemented scope.
+- O4: develop resumption conditions per recommendation type in that future scope.
+  Self-report is not medical clearance; chat/history remain within existing rights.
+  Expert serious/recurrent/unclassified recovery criteria remain open.
+- O5: follow recent reports and avoid unnecessary repeated context questions.
+  Only necessary first-registration date, status and message reference, no full
+  chat copy. FitMetZorge owns retention/deletion. Maximum 30 days from FIRST
+  registration, earlier when unnecessary. Viewing/reprocessing/retry/status
+  changes never extend it. Expiry removes the extra record, grants no medical
+  clearance and does not reconstruct missing context. No human medical review
+  service. Existing chat/analysis retention and other provisional D5 choices remain.
+
+O5 is an OFFLINE product proposal, not legal/medical validation or live storage GO.
+The simulator returns minimal active records; its historical test states and D5
+what-if diagnostics are not approved persistence payloads. No conversion into
+90/180-day classes via a changed status. Privacy, legal, medical and native-language
+reviews and trusted live lifecycle/authorization integration remain future gates.
+D1-D12 and frozen 6E-0 remain unchanged. Phase 6E is incomplete. Current round-timer/
+RIR-RPE runtime remains byte-identical; the physical phone retest is independent.
+See PHASE6E1_FREEZE_RECEIPT.md and PHASE6E1_PROPOSAL.md for evidence and the single
+unstarted next offline recommendation-content/resumption package.

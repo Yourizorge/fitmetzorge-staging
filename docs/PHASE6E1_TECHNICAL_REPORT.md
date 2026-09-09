@@ -1,5 +1,22 @@
 # Package 6E-1 Technisch Rapport
 
+## Actuele Afronding - 2026-09-09
+
+COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE CONTRACTS ONLY.
+O1-O5 zijn expliciet geaccepteerd. De bewaarsimulatie en optionele taal-/retrykeuzes
+zijn daarop gericht aangepast, zonder nieuwe classifier of medisch niveau.
+Zie [freeze receipt](PHASE6E1_FREEZE_RECEIPT.md), de actuele contracten en Decision 0039.
+Nieuwe verificatie: 300/300 volledige 6E-1-tests plus 90/90 gerichte frozen
+6E-0-regressies, nul skips. Historische tests en observaties hieronder zijn
+ongewijzigd bewijs van toen, geen actuele missers of nieuwe medische betrouwbaarheid.
+6E-0 blijft frozen; Phase 6E onvoltooid; geen live AI of volgende implementatie.
+
+## Historisch Oorspronkelijk Rapport
+
+De oude status/open O1-O5-vragen en runtimebaseline hieronder zijn vervangen door
+het actuele akkoord en de f3ab33c timer/RIR/RPE-baseline in de freeze receipt.
+Oorspronkelijke testuitslagen, beperkingobservaties en broncommits blijven bewaard.
+
 Follow-up 2026-09-08: de drie hieronder historisch gemelde herkenningsmissers zijn
 gericht gecorrigeerd in cf6c212, met 36 vooraf gecommitteerde tests. Zie het
 [actuele follow-uprapport](TRAINING_WORKOUT_FOLLOWUP_REPORT.md). Oude resultaten

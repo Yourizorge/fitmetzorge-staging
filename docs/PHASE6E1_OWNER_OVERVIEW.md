@@ -1,6 +1,47 @@
 # Package 6E-1 Owneroverzicht
 
-## Actuele Productreview - 2026-09-09
+## Owneracceptatie O1-O5 - Actueel
+
+COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE CONTRACTS ONLY.
+Expliciet ownerakkoord op 2026-09-09, geen afgeleide acceptatie uit tests.
+6E-0 blijft accepted/frozen. Phase 6E is NIET afgerond. Geen live vrijgave.
+De fysieke telefoontest van de ronde timer blijft een afzonderlijke open test.
+
+| Besluit | Geaccepteerd en offline uitgewerkt | Grens |
+| --- | --- | --- |
+| O1 Context | Waarschuwing aan bericht, context en revisie gekoppeld; bestaande conceptteksten behouden | Geen medische of taalvalidatie; beperkte regels zijn geen volledig taalbegrip |
+| O2 Misverstanden | Opnieuw formuleren of retry EN verder chatten; geen verplichte vraaglus | Afhandeling van de eigen kwestie wist geen andere gezondheidsmelding |
+| O3 Analyse-inhoud | Concrete dag/workout/weekfeiten en vergelijkbare absolute verschillen | Geen persoonlijke aanbevelingen, diagnose of automatische actie |
+| O4 Hervatting | Zelfrapportage is geen medische vrijgave; chat/historie/feiten binnen bestaande rechten | Voorwaarden per aanbevelingstype zijn de afzonderlijke vervolgscope; deskundige ernstige/terugkerende/oningedeelde criteria blijven open |
+| O5 Onopgelost | Recente meldingen volgen, herhaald uitvragen beperken; FitMetZorge beheert minimale datum/status/berichtverwijzing | Maximaal 30 dagen vanaf eerste registratie, eerder bij vervallen noodzaak; geen verlenging door bekijken/verwerken/retry/status; geen live opslag |
+
+Na O5-verloop verdwijnt de extra registratie, niet automatisch de oorspronkelijke
+chat of analyse. Hun bestaande retentie blijft gelden. Er volgt geen medische
+vrijgave; ontbrekende context wordt niet gereconstrueerd. Een nieuwe klacht is
+een nieuwe melding, niet een verlenging van de oude. Geen kopie van volledige chat,
+geen menselijke beoordelingsdienst, geen automatische trainerdeling.
+
+De waarschuwingen en voorbeelden hieronder zijn ongewijzigde conceptcopy. Wat nu
+extra uitvoerbaar is: optionele vervolgkeuzes bij misverstanden en een afzonderlijke
+minimale bewaarsimulatie met vaste eerste ankers, vroeger verval en ontbrekende bron.
+Er is geen nieuwe medische classificatie of algemene account-/abonnementsblokkade.
+
+O1-O5 en D1-D12 worden NIET opnieuw ter beslissing voorgelegd.
+Voor latere live inzet blijven medische inhoud/hervattingscriteria, privacy/noodzaak/
+retentie, juridische beoordeling en NL/EN/DE-taaltoepassing open, plus vertrouwde
+bron/auth/consent/deletion-integratie en een afzonderlijke expliciete live GO.
+Geen van deze ontbrekende beoordelingen is ingevuld met een fictieve dienst.
+
+Bewijs en grenzen: [freeze receipt](PHASE6E1_FREEZE_RECEIPT.md).
+Enig voorstel: [6E-2 offline persoonlijke aanbevelingscontracten](PHASE6E1_PROPOSAL.md),
+NIET gestart. Eerst een expliciete afgebakende vervolgopdracht.
+
+## Historische Productreview Voor O1-O5-Akkoord
+
+Alle reviewvragen en niet-geaccepteerd-statussen hieronder zijn historische
+leveringsinformatie, vervangen door het akkoord hierboven. De oorspronkelijke
+voorbeelden, testuitslagen en beperkingen blijven behouden; de drie oude
+herkenningsmissers zijn al hersteld door cf6c212 en zijn geen actuele missers.
 
 Dit overzicht gebruikt de vijf opnieuw uitgevoerde voorbeelden uit
 `_offline/phase6e1/test/examples.cjs`. Geen nieuwe AI-logica, algemene audit of
