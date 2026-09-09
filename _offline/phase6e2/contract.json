@@ -1,0 +1,79 @@
+{
+  "version": "phase6e2.offline.v0.1.0",
+  "status": "TECHNICAL PASS / READY FOR OWNER REVIEW",
+  "synthetic_only": true,
+  "baseline": "e356a4cb951fc3d614035fa0bf547e669b4d045a",
+  "frozen_6e0_tree": "27ed4679b59fc5909712d4fa927138e5f9f03689",
+  "frozen_6e1_tree": "03cef72c409b7125488a3f5fa854fcf1247546c0",
+  "types": {
+    "daily_record_check": {
+      "kind": "daily",
+      "required": [
+        "training_minutes",
+        "steps"
+      ],
+      "comparison": false,
+      "context": "record_only_even_with_uncertainty",
+      "content_class": "record_quality"
+    },
+    "workout_reflection": {
+      "kind": "post_workout",
+      "required": [
+        "completed_sets",
+        "completed_reps",
+        "duration_minutes"
+      ],
+      "comparison": false,
+      "context": "no_current_complaint_and_sufficient_nonclinical_context",
+      "content_class": "nonphysical_reflection"
+    },
+    "weekly_review": {
+      "kind": "weekly",
+      "required": [
+        "training_minutes",
+        "completed_workouts"
+      ],
+      "comparison": true,
+      "context": "no_current_complaint_and_sufficient_nonclinical_context",
+      "content_class": "nonphysical_reflection"
+    },
+    "training_load": {
+      "blocked": true,
+      "missing": [
+        "reviewed_training_content",
+        "validated_goal_and_trainer_limits",
+        "expert_resumption_criteria"
+      ]
+    },
+    "nutrition_change": {
+      "blocked": true,
+      "missing": [
+        "nutrition_input_contract",
+        "reviewed_nutrition_content",
+        "expert_resumption_criteria"
+      ]
+    },
+    "recovery_return": {
+      "blocked": true,
+      "missing": [
+        "reviewed_recovery_content",
+        "expert_resumption_criteria"
+      ]
+    },
+    "goal_adjustment": {
+      "blocked": true,
+      "missing": [
+        "validated_goal_and_trainer_limits",
+        "reviewed_goal_change_content"
+      ]
+    }
+  },
+  "no_new_authority_fields": true,
+  "goals_and_trainer_limits_available": false,
+  "automatic_actions": false,
+  "medical_clearance": false,
+  "live_integration": false,
+  "owner_accepted": false,
+  "expert_review": "OPEN",
+  "phase6e_complete": false
+}

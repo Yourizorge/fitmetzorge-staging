@@ -1,0 +1,50 @@
+{
+  "nl": {
+    "scope": "Dit voorstel gaat alleen over registreren of terugkijken, niet over geschikte training, voeding of medisch herstel.",
+    "access": "Deze analyse is niet beschikbaar binnen je huidige rechten of toestemming.",
+    "invalid": "Ik kan deze aanvraag niet betrouwbaar koppelen aan de juiste context en registraties. Je kunt opnieuw proberen of verder chatten.",
+    "context_missing": "De bijbehorende context is niet beschikbaar. Je kunt je huidige vraag opnieuw formuleren of verder chatten. Ontbreken of verstrijken van gegevens is geen medische vrijgave.",
+    "clarification": "Ik heb de bedoeling nog niet betrouwbaar kunnen vaststellen. Je kunt opnieuw formuleren, bij een technische fout opnieuw proberen, of verder chatten.",
+    "current": "Bij deze actuele melding geef ik geen workout- of weekreflectie. Je beschikbare registraties blijven zichtbaar; hervatting van lichamelijk advies is hiermee niet beoordeeld.",
+    "data": "Voor dit voorstel ontbreken bruikbare of voldoende vergelijkbare registraties. Controleer alleen gegevens die je zelf kunt bevestigen, of ga verder met de beschikbare feiten.",
+    "boundary": "Ik geef geen voorstel dat belasting, voeding, doelen of terugkeer naar training verandert. De benodigde inhoudsregels, brongegevens of deskundige hervattingscriteria zijn nog niet uitgewerkt.",
+    "daily": "Je registreerde {minutes} minuten training en {steps} stappen. {sleep} Zo maak je deze dagregistratie completer, zonder iets te verzinnen.",
+    "sleep_missing": "Je slaapduur ontbreekt. Vul die alleen aan als je de duur weet; laat het veld anders leeg.",
+    "sleep_present": "Je geregistreerde slaapduur is {sleep} uur. Controleer of deze invoer klopt en corrigeer alleen een fout die je zelf kunt bevestigen.",
+    "sleep_unusable": "Je slaapregistratie is niet volledig bruikbaar. Controleer de bron en vul niets op basis van een schatting in.",
+    "post_workout": "Je registreerde {sets} sets, {reps} herhalingen en {minutes} minuten. Kies zelf een set uit deze workout en noteer wat je bij de uitvoering wilt onthouden. Verander belasting of oefeningen niet op basis van deze totalen.",
+    "weekly": "Je registreerde {workouts} workouts en {minutes} trainingsminuten. Het verschil met het vorige vergelijkbare venster is {delta_minutes} minuten en {delta_workouts} workouts. Kies een moment om de weekindeling terug te bekijken en noteer een punt voor je eigen planning. Deze verschillen bepalen niet hoeveel je moet trainen."
+  },
+  "en": {
+    "scope": "This proposal is only about recording or reviewing, not suitable training, nutrition or medical recovery.",
+    "access": "This analysis is not available under your current access rights or consent.",
+    "invalid": "I cannot reliably bind this request to the right context and records. You can try again or continue chatting.",
+    "context_missing": "The related context is unavailable. You can rephrase your current question or continue chatting. Missing or expired data is not medical clearance.",
+    "clarification": "I have not reliably established what you mean. You can rephrase, retry a technical failure, or continue chatting.",
+    "current": "With this current report, I am not offering a workout or weekly reflection. Your available records remain visible; resuming physical advice has not been assessed.",
+    "data": "Usable or sufficiently comparable records are missing for this proposal. Check only data you can confirm yourself, or continue with the available facts.",
+    "boundary": "I am not proposing changes to loads, nutrition, goals or a return to training. The necessary content rules, source data or expert resumption criteria are not yet defined.",
+    "daily": "You recorded {minutes} minutes of training and {steps} steps. {sleep} This makes this day's record more complete without inventing data.",
+    "sleep_missing": "Your sleep duration is missing. Add it only if you know the duration; otherwise leave the field blank.",
+    "sleep_present": "Your recorded sleep duration is {sleep} hours. Check whether this entry is accurate and correct only an error you can confirm yourself.",
+    "sleep_unusable": "Your sleep record is not fully usable. Check the source and do not fill it in with an estimate.",
+    "post_workout": "You recorded {sets} sets, {reps} repetitions and {minutes} minutes. Choose a set from this workout yourself and note what you want to remember about performing it. Do not change loads or exercises on the basis of these totals.",
+    "weekly": "You recorded {workouts} workouts and {minutes} training minutes. The difference from the previous comparable window is {delta_minutes} minutes and {delta_workouts} workouts. Choose a time to review how the week was organized and note one point for your own planning. These differences do not determine how much you should train."
+  },
+  "de": {
+    "scope": "Dieser Vorschlag betrifft nur das Erfassen oder den Rueckblick, nicht geeignetes Training, Ernaehrung oder medizinische Erholung.",
+    "access": "Diese Analyse ist mit deinen aktuellen Zugriffsrechten oder Einwilligungen nicht verfuegbar.",
+    "invalid": "Ich kann diese Anfrage nicht zuverlaessig dem richtigen Kontext und den richtigen Aufzeichnungen zuordnen. Du kannst es erneut versuchen oder weiterchatten.",
+    "context_missing": "Der zugehoerige Kontext ist nicht verfuegbar. Du kannst deine aktuelle Frage neu formulieren oder weiterchatten. Fehlende oder abgelaufene Daten sind keine medizinische Freigabe.",
+    "clarification": "Ich konnte deine Absicht noch nicht zuverlaessig feststellen. Du kannst neu formulieren, einen technischen Fehler erneut versuchen oder weiterchatten.",
+    "current": "Bei dieser aktuellen Meldung biete ich keinen Workout- oder Wochenrueckblick an. Deine verfuegbaren Aufzeichnungen bleiben sichtbar; die Wiederaufnahme koerperlicher Empfehlungen wurde nicht beurteilt.",
+    "data": "Fuer diesen Vorschlag fehlen verwendbare oder ausreichend vergleichbare Aufzeichnungen. Pruefe nur Daten, die du selbst bestaetigen kannst, oder nutze die verfuegbaren Fakten weiter.",
+    "boundary": "Ich schlage keine Aenderungen an Belastung, Ernaehrung, Zielen oder der Rueckkehr zum Training vor. Die notwendigen Inhaltsregeln, Quelldaten oder fachlichen Wiederaufnahmekriterien sind noch nicht festgelegt.",
+    "daily": "Du hast {minutes} Trainingsminuten und {steps} Schritte erfasst. {sleep} So wird dieser Tagesbericht vollstaendiger, ohne Daten zu erfinden.",
+    "sleep_missing": "Deine Schlafdauer fehlt. Ergaenze sie nur, wenn du die Dauer kennst; lass das Feld sonst leer.",
+    "sleep_present": "Deine erfasste Schlafdauer betraegt {sleep} Stunden. Pruefe, ob dieser Eintrag stimmt, und korrigiere nur einen Fehler, den du selbst bestaetigen kannst.",
+    "sleep_unusable": "Deine Schlafaufzeichnung ist nicht vollstaendig verwendbar. Pruefe die Quelle und trage keine Schaetzung ein.",
+    "post_workout": "Du hast {sets} Saetze, {reps} Wiederholungen und {minutes} Minuten erfasst. Waehle selbst einen Satz aus diesem Workout und notiere, was du dir zur Ausfuehrung merken moechtest. Aendere Belastung oder Uebungen nicht allein aufgrund dieser Summen.",
+    "weekly": "Du hast {workouts} Workouts und {minutes} Trainingsminuten erfasst. Der Unterschied zum vorherigen vergleichbaren Zeitraum betraegt {delta_minutes} Minuten und {delta_workouts} Workouts. Waehle einen Zeitpunkt, um die Wocheneinteilung durchzugehen, und notiere einen Punkt fuer deine eigene Planung. Diese Unterschiede bestimmen nicht, wie viel du trainieren solltest."
+  }
+}
