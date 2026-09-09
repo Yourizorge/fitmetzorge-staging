@@ -36,8 +36,9 @@ async function manualTimer(page,width,{check,geometry,screenshot}){
  await page.fill("[data-phase3-session-rest]","75");
  await page.locator("[data-phase3-start-manual-rest]").dblclick({force:true});
  await page.waitForSelector("[data-phase3-rest-countdown]");
- const deadline=(await state()).focus.rest.endsAt;
  check(width+" manual double start one countdown without sets",(await state()).focus.rest.durationSeconds===75&&(await state()).focus.rest.manual===true&&Object.keys((await state()).setLogs).length===0&&await page.locator("[data-phase3-rest-countdown]").count()===1);
+ await require("./timer-review-browser.cjs").large(page,width,{check,geometry,screenshot});
+ const deadline=(await state()).focus.rest.endsAt;
  await page.click("[data-phase3-close-focus]");await page.evaluate(()=>__trainingTest.open());
  check(width+" close/reopen retains live manual timer",(await state()).focus.rest.endsAt===deadline);
  await page.click("[data-phase3-rest-pause]");
@@ -50,7 +51,7 @@ async function manualTimer(page,width,{check,geometry,screenshot}){
  await geometry(page,width+" timer panel",".tw-focus");await screenshot(page,width+"-timer");
  await page.click("[data-phase3-skip-rest]");
  check(width+" manual skip does not advance/complete",(await state()).focus.currentExerciseIndex===0&&(await state()).focus.currentSetIndex===1&&!(await state()).focus.allExercisesCompleted&&!(await state()).focus.rest);
- await page.click("[data-phase3-start-manual-rest]");await page.click("[data-phase3-timer-off]");
+ await page.click("[data-phase3-start-manual-rest]");await page.click("[data-phase3-rest-view]");await page.click("[data-phase3-timer-off]");
  check(width+" off stops and removes panel",(await page.locator(".tw-rest-panel").count())===0&&!(await state()).focus.timerEnabled&&!(await state()).focus.rest);
  check(width+" timer controls retain set draft",await page.locator("[data-phase3-reps]").nth(1).inputValue()==="9");
  await page.reload();await page.waitForFunction(()=>window.__hotfix);await page.evaluate(()=>__hotfix.enter());await page.evaluate(()=>__trainingTest.hydrate());await page.evaluate(()=>__hotfix.view("training"));await page.evaluate(()=>__trainingTest.open());
@@ -80,7 +81,7 @@ async function executionMatrix(page,width,height,backend,{check,geometry,screens
   await page.evaluate(()=>{const s=__trainingTest.state();const h=s.history.find(h=>h.sets?.length);if(h){h.sets[0].actualWeight=1234.56;h.sets[0].actualReps=999;h.sets[0].actual_weight=1234.56;h.sets[0].actual_reps=999;}__trainingTest.render();});
   check(width+" "+language+" "+theme+" full previous fixture",await page.locator(".tw-previous").first().textContent().then(t=>t.includes("999")&&t.includes(language==="en"?"2721.74":"1234.56")));
   for(const mode of ["rir","rpe","none"]){
-   await page.evaluate(mode=>FMZ_TRAINING.setPreferences({effort_mode:mode}),mode);
+   await page.locator('label:has([data-phase3-effort-mode="'+mode+'"])').click();await page.waitForFunction(mode=>FMZ_TRAINING.preferences().effort_mode===mode,mode);
    await page.locator("[data-phase3-weight]").first().fill(language==="en"?"22046.22":"9999.99");
    await page.locator("[data-phase3-reps]").first().fill("999");
    if(mode!=="none")await page.locator("[data-phase3-"+mode+"]").first().fill(mode==="rir"?"0":"9.5");
@@ -110,7 +111,7 @@ async function executionMatrix(page,width,height,backend,{check,geometry,screens
  check(width+" optional clears retained",await page.locator("[data-phase3-weight]").first().inputValue()===""&&await page.locator("[data-phase3-rir]").first().inputValue()==="");
  await page.click("[data-phase3-timer-open]");await page.click("[data-phase3-start-manual-rest]");
  await page.locator(".tw-focus main").evaluate(n=>n.scrollTop=0);await screenshot(page,width+"-timer");
- await page.click("[data-phase3-timer-off]");
+ await page.click("[data-phase3-rest-view]");await page.click("[data-phase3-timer-off]");
  assert((await context.pages()).length>=1);
 }
 module.exports={basics,manualTimer,rowGeometry,executionMatrix};

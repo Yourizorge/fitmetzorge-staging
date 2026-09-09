@@ -2,7 +2,7 @@
   if (window.FMZ_PHASE3_TRAINING_ENGINE_LOADED) return;
   window.FMZ_PHASE3_TRAINING_ENGINE_LOADED = true;
 
-  const PHASE3_VERSION = "20260908-training-mobile1";
+  const PHASE3_VERSION = "20260909-training-timer1";
   const PHASE3_LANGUAGES = ["nl", "en", "de"];
   const PHASE3_FREE_ACTIVE_DAY_LIMIT = 4;
   const PHASE3_REAL_CATALOG_EXPECTED_COUNT = 898;
@@ -1784,6 +1784,12 @@
       progress: ["Voltooide sets", "Completed sets", "Abgeschlossene Saetze"],
       round: ["Ronde", "Round", "Runde"], groupRest: ["Supersetrust", "Superset rest", "Supersatzpause"],
       timerStart: ["Start", "Start", "Start"], timerOff: ["Uitschakelen", "Turn off", "Ausschalten"],
+      timerMinimize: ["Verkleinen", "Minimize", "Verkleinern"], timerExpand: ["Timer vergroten", "Expand timer", "Timer vergroessern"],
+      timerStop: ["Stoppen", "Stop", "Stoppen"],
+      rirHelp: ["RIR: hoeveel herhalingen had je nog kunnen doen? Optioneel.",
+        "RIR: how many more reps could you have done? Optional.", "RIR: wie viele Wiederholungen waeren noch moeglich? Optional."],
+      rpeHelp: ["RPE: hoe zwaar voelde deze set, van 1 tot 10? Optioneel.",
+        "RPE: how hard did this set feel, from 1 to 10? Optional.", "RPE: wie schwer fuehlte sich der Satz an, von 1 bis 10? Optional."],
       previousSet: ["Vorige", "Previous", "Zuvor"], repsShort: ["Reps", "Reps", "Wdh."],
       noInstructions: ["Nog geen instructies beschikbaar.", "No instructions available yet.", "Noch keine Anleitung verfuegbar."],
       training: ["Training", "Training", "Training"], effort: ["Inspanning registreren", "Log effort", "Anstrengung erfassen"],
@@ -2760,6 +2766,7 @@
     phase3LastVibrationSecond = null;
     focus.rest = {
       manual,
+      expanded: manual,
       durationSeconds,
       endsAt: phase3TimerEndsAt,
       remainingMs: durationSeconds * 1000,
@@ -2776,6 +2783,14 @@
   function phase3EnsureTimerRunning() {
     if (phase3TimerId || !phase3FocusOpen || !phase3State.activeSession) return;
     phase3TimerId = window.setInterval(() => phase3UpdateTimerText(), 1000);
+  }
+
+  function phase3SetRestExpanded(expanded) {
+    const rest = phase3EnsureSessionFocus(phase3State.activeSession).rest;
+    if (!rest) return;
+    rest.expanded = expanded === true;
+    phase3SaveLocal();phase3SyncFocusPortal();
+    document.querySelector(rest.expanded ? "[data-phase3-rest-pause]" : "[data-phase3-timer-open]")?.focus({preventScroll:true});
   }
 
   function phase3StopTimer(done = false) {
@@ -2834,6 +2849,7 @@
   function phase3AddRestSeconds(seconds = 15) {
     const rest = phase3EnsureSessionFocus(phase3State.activeSession).rest;
     if (!rest) return;
+    rest.durationSeconds = Math.max(0, Number(rest.durationSeconds || 0)) + seconds;
     if (rest.paused) rest.remainingMs = Math.max(0, Number(rest.remainingMs || 0)) + seconds * 1000;
     else rest.endsAt = Math.max(Date.now(), Number(rest.endsAt || Date.now())) + seconds * 1000;
     phase3TimerEndsAt = Number(rest.endsAt || 0);
@@ -2866,8 +2882,13 @@
     const remaining = Math.max(0, Math.ceil(remainingMs / 1000));
     const minutes = Math.floor(remaining / 60);
     const seconds = String(remaining % 60).padStart(2, "0");
-    const target = document.querySelector("[data-phase3-rest-countdown]");
-    if (target) target.textContent = `${String(minutes).padStart(2, "0")}:${seconds}`;
+    document.querySelectorAll("[data-phase3-rest-countdown]").forEach(target => {
+      target.textContent = `${String(minutes).padStart(2, "0")}:${seconds}`;
+    });
+    document.querySelectorAll("[data-phase3-rest-ring]").forEach(target => {
+      const fraction = Math.max(0, Math.min(1, remainingMs / Math.max(1, Number(rest.durationSeconds || 0) * 1000)));
+      target.style.setProperty("--rest-progress", String(fraction));
+    });
     if (!rest.paused && remaining > 0 && remaining <= 3 && phase3LastVibrationSecond !== remaining) {
       phase3LastVibrationSecond = remaining;
       if (phase3RestVibrationEnabled && phase3FocusOpen && session.status === "active" && document.visibilityState === "visible") {
@@ -2879,8 +2900,10 @@
       }
     }
     if (!rest.paused && remaining <= 0) {
+      const expanded = rest.expanded;
       phase3FinishRestTimer();
       renderTraining();
+      if (expanded) document.querySelector("[data-phase3-timer-open]")?.focus({preventScroll:true});
     }
   }
 
@@ -3017,11 +3040,19 @@
       phase3RemoveFocusPortal();
       return;
     }
-    phase3FocusPortal().innerHTML = phase3RenderWorkoutFocus();
+    const portal = phase3FocusPortal(), activeId = portal.contains(document.activeElement) ? document.activeElement.id : "";
+    const wasLarge = !!portal.querySelector(".tw-timer-focus");
+    const scroll = portal.querySelector("main")?.scrollTop || 0;
+    portal.innerHTML = phase3RenderWorkoutFocus();
+    if (activeId) {
+      portal.querySelector("main").scrollTop = scroll;
+      document.getElementById(activeId)?.focus({preventScroll:true});
+    }
     phase3FitSetInputs(phase3FocusPortal());
     document.body.classList.add("phase3-focus-open");
     phase3EnsureTimerRunning();
     phase3UpdateTimerText();
+    if (!wasLarge && portal.querySelector(".tw-timer-focus")) portal.querySelector("[data-phase3-rest-pause]")?.focus({preventScroll:true});
   }
 
   function phase3OpenFocus() {
@@ -3519,15 +3550,38 @@
       +'<button class="secondary-btn" data-phase3-start-manual-rest type="button" '+(rest||busy||session.status!=="active"?'disabled':'')+'>'+escapeHTML(phase3TrainingText("timerStart"))+'</button>'
       +'<button class="tw-tool" data-phase3-timer-off type="button" title="'+escapeHTML(phase3TrainingText("timerOff"))+'" aria-label="'+escapeHTML(phase3TrainingText("timerOff"))+'" '+(busy?'disabled':'')+'>'+window.FMZ_WORKOUT_UI.icon("x")+'</button></div>'
       +(rest?'<div class="tw-rest-running"><strong class="phase3-rest-countdown" data-phase3-rest-countdown>'+escapeHTML(phase3FormatDuration(Math.ceil(remainingMs/1000)).slice(3))+'</strong>'
-      +'<button class="secondary-btn" data-phase3-rest-pause type="button" '+(busy||session.status!=="active"?'disabled':'')+'>'+escapeHTML(phase3Text(rest.paused?"resume":"pause"))+'</button>'
+      +'<button class="secondary-btn" id="phase3-rest-pause" data-phase3-rest-pause type="button" '+(busy||session.status!=="active"?'disabled':'')+'>'+escapeHTML(phase3Text(rest.paused?"resume":"pause"))+'</button>'
       +'<button class="secondary-btn" data-phase3-add-rest type="button" '+(busy?'disabled':'')+'>'+escapeHTML(phase3Text("addFifteen"))+'</button>'
       +'<button class="secondary-btn" data-phase3-skip-rest type="button" '+(busy?'disabled':'')+'>'+escapeHTML(phase3Text("skipRest"))+'</button></div>':"")+'</section>';
+  }
+
+  function phase3RenderLargeRest(session) {
+    const rest=phase3EnsureSessionFocus(session).rest,t=phase3TrainingText,icon=window.FMZ_WORKOUT_UI.icon;
+    const busy=phase3SetSaving||phase3FinishSaving||session.completionPending;
+    return '<div class="phase3-focus-backdrop"><section class="phase3-focus-sheet tw-focus tw-timer-focus" role="dialog" aria-modal="true" aria-labelledby="phase3-timer-title">'
+      +'<header class="tw-header"><button class="tw-tool" data-phase3-rest-view="compact" type="button" title="'+escapeHTML(t("timerMinimize"))+'" aria-label="'+escapeHTML(t("timerMinimize"))+'">'+icon("arrow-left")+'</button>'
+      +'<h2 id="phase3-timer-title">'+escapeHTML(phase3Text("timer"))+'</h2></header>'
+      +'<main class="tw-timer-main"><div class="tw-timer-dial" data-phase3-rest-ring style="--rest-progress:1">'
+      +'<div class="tw-timer-face"><strong data-phase3-rest-countdown role="timer" aria-label="'+escapeHTML(phase3Text("timer"))+'">00:00</strong>'
+      +'<span>'+escapeHTML(rest.paused?phase3Text("pause"):session.planTitle)+'</span></div></div></main>'
+      +'<footer class="tw-timer-actions"><button class="secondary-btn" id="phase3-rest-pause" data-phase3-rest-pause type="button" '+(busy||session.status!=="active"?'disabled':'')+'>'+escapeHTML(phase3Text(rest.paused?"resume":"pause"))+'</button>'
+      +'<button class="secondary-btn" data-phase3-add-rest type="button" '+(busy?'disabled':'')+'>'+escapeHTML(phase3Text("addFifteen"))+'</button>'
+      +'<button class="secondary-btn" data-phase3-stop-rest type="button" '+(busy?'disabled':'')+'>'+escapeHTML(t("timerStop"))+'</button></footer></section></div>';
+  }
+
+  function phase3RenderEffortChoice(session) {
+    const mode=phase3TrainingPreferences.effort_mode,t=phase3TrainingText;
+    const busy=phase3PreferencesPending||phase3SetSaving||phase3FinishSaving||session.completionPending;
+    return '<fieldset class="tw-effort-choice" aria-describedby="phase3-effort-help" '+(busy?'disabled':'')+'><legend>'+escapeHTML(t("effort"))+'</legend><div class="tw-effort-segments">'
+      +["rir","rpe","none"].map(value=>'<label><input id="phase3-effort-'+value+'" type="radio" name="phase3-effort" data-phase3-effort-mode="'+value+'" '+(mode===value?'checked':'')+'><span>'+escapeHTML(value==="none"?t("none"):value.toUpperCase())+'</span></label>').join("")
+      +'</div></fieldset><p class="tw-effort-help" id="phase3-effort-help">'+escapeHTML(t(mode==="rir"?"rirHelp":mode==="rpe"?"rpeHelp":"effortHelp"))+'</p>';
   }
 
   function phase3RenderWorkoutFocus() {
     const session=phase3State.activeSession;
     if(!session||!phase3FocusOpen)return "";
     const focus=phase3EnsureSessionFocus(session),M=window.FMZ_WORKOUT_MODEL;
+    if(focus.timerEnabled&&focus.rest?.expanded)return phase3RenderLargeRest(session);
     const index=Math.min(session.plannedExercises.length-1,focus.currentExerciseIndex);
     const exercise=session.plannedExercises[index];if(!exercise)return "";
     const meta=phase3ExerciseMeta(exercise.slug),paused=session.status==="paused",rows=M.targets(exercise);
@@ -3544,9 +3598,10 @@
       +(exercise.supersetId?'<p class="tw-superset-label">Superset / '+escapeHTML(t("round"))+' '+focus.currentSetIndex+'</p>':"")+'</div>'
       +'<details class="tw-instructions"><summary>'+escapeHTML(phase3Text("showInstructions"))+'</summary><p>'+escapeHTML(meta.instructions||exercise.instructions||t("noInstructions"))+'</p>'+(exercise.notes?'<p>'+escapeHTML(exercise.notes)+'</p>':"")+'</details>'
       +'<button class="tw-timer-open secondary-btn" data-phase3-timer-open type="button" aria-expanded="'+focus.timerEnabled+'" aria-controls="phase3-rest-panel" '+(disabled||completionPending?'disabled':'')+'>'+icon("clock")+escapeHTML(phase3Text("timer"))+'</button>'
-      +'<p class="tw-feedback" data-phase3-focus-feedback role="status">'+escapeHTML(focus.feedback||phase3PreferencesError||"")+'</p>'
+      +'<p class="tw-feedback" data-phase3-focus-feedback role="status">'+escapeHTML(phase3PreferencesError||focus.feedback||"")+'</p>'
       +(paused?'<p role="status">'+escapeHTML(phase3Text("trainingPaused"))+'</p>':"")
       +phase3RenderRestState(session)
+      +phase3RenderEffortChoice(session)
       +'<div class="tw-live-sets">'+phase3RenderSetHeaders()+rows.map((r,n)=>phase3RenderSetRow(exercise,n+1,session,paused||completionPending)).join("")+'</div>'
       +'<p class="tw-overload">'+escapeHTML(phase3OverloadSignal(exercise,session))+'</p>'
       +(focus.timerEnabled?'<label class="phase3-vibration-setting"><input data-phase3-vibration-setting type="checkbox" '+(phase3RestVibrationEnabled?'checked':'')+'>'+escapeHTML(phase3Text("vibrationSetting"))+'</label>':"")
@@ -3851,6 +3906,14 @@
   });
 
   document.addEventListener("change", (event) => {
+    if (event.target?.hasAttribute("data-phase3-effort-mode")) {
+      const mode=event.target.dataset.phase3EffortMode;
+      if (!["rir","rpe","none"].includes(mode)) return;
+      const saving=phase3SetTrainingPreferences({effort_mode:mode});
+      event.target.closest("fieldset").disabled=true;
+      saving.then(()=>document.getElementById("phase3-effort-"+phase3TrainingPreferences.effort_mode)?.focus({preventScroll:true}));
+      return;
+    }
     if (event.target?.hasAttribute("data-phase3-session-rest")) {
       const session=phase3State.activeSession,e=session?.plannedExercises[Number(event.target.dataset.phase3SessionRest)];
       const n=Number(event.target.value);
@@ -3876,7 +3939,19 @@
     const button = event.target.closest("button");
     if (!button) return;
     if (button.hasAttribute("data-phase3-maker-open")) {phase3Maker.open();return;}
-    if (button.hasAttribute("data-phase3-timer-open")) {phase3SetTimerEnabled(true);return;}
+    if (button.hasAttribute("data-phase3-timer-open")) {
+      if(phase3EnsureSessionFocus(phase3State.activeSession).rest)phase3SetRestExpanded(true);
+      else phase3SetTimerEnabled(true);
+      return;
+    }
+    if (button.hasAttribute("data-phase3-rest-view")) {phase3SetRestExpanded(false);return;}
+    if (button.hasAttribute("data-phase3-stop-rest")) {
+      const session=phase3State.activeSession;
+      if(!session||phase3SetSaving||phase3FinishSaving||session.completionPending)return;
+      session.focus.rest=null;phase3StopTimer(true);phase3SaveLocal();phase3SyncActiveSession();phase3SyncFocusPortal();
+      document.querySelector("[data-phase3-timer-open]")?.focus({preventScroll:true});
+      return;
+    }
     if (button.hasAttribute("data-phase3-timer-off")) {phase3SetTimerEnabled(false);return;}
     if (button.hasAttribute("data-phase3-start-manual-rest")) {phase3StartManualRest();return;}
     if (button.hasAttribute("data-phase3-navigate")) {phase3Navigate(Number(button.dataset.phase3Navigate));return;}
@@ -4133,6 +4208,15 @@
   });
 
   document.addEventListener("keydown", (event) => {
+    const largeTimer = document.querySelector(".tw-timer-focus");
+    if (largeTimer && event.key === "Tab") {
+      const controls = [...largeTimer.querySelectorAll("button:not(:disabled)")];
+      const first = controls[0], last = controls[controls.length-1];
+      if (event.shiftKey && document.activeElement === first) {event.preventDefault();last?.focus();}
+      else if (!event.shiftKey && document.activeElement === last) {event.preventDefault();first?.focus();}
+      return;
+    }
+    if (largeTimer && event.key === "Escape") {event.preventDefault();phase3SetRestExpanded(false);return;}
     if (phase3HandleSetInputKeydown(event)) return;
     if (event.key !== "Escape") return;
     if (phase3PickerOpen) {

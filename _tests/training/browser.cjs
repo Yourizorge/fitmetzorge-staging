@@ -26,7 +26,7 @@ function server(){
  return {s,db,pref,failSave:false,failSession:true,failSet:false,failCompletion:false,completionEvents:0,
  rpc(name,args){
   if(name==="fmz_training_get_preferences")return {...pref};
-  if(name==="fmz_training_set_preferences"){assert.equal(args.p_expected_revision,pref.revision);Object.assign(pref,{effort_mode:args.p_effort_mode,timer_enabled:args.p_timer_enabled,revision:pref.revision+1});return {...pref};}
+  if(name==="fmz_training_set_preferences"){if(this.failPreferences){this.failPreferences=false;throw Error("simulated_preferences_failure");}assert.equal(args.p_expected_revision,pref.revision);Object.assign(pref,{effort_mode:args.p_effort_mode,timer_enabled:args.p_timer_enabled,revision:pref.revision+1});return {...pref};}
   if(name==="fmz_training_save_workout"){
    if(this.failSave){this.failSave=false;throw Error("simulated_offline");}
    const existing=db.training_plans.find(p=>p.id===args.p_plan_id),updated_at=new Date(Date.UTC(2026,8,8,10,0,++revision)).toISOString();
@@ -79,7 +79,7 @@ async function geometry(page,label,selector){
  layouts.push({label,...g});check(label+" viewport",g.html<=g.viewport);check(label+" bounded controls "+JSON.stringify(g.bad.slice(0,3)),g.bad.length===0);
 }
 async function screenshot(page,label){
- const output=path.join(root,"supabase/.temp/training-mobile-"+label+".png");await page.screenshot({path:output,fullPage:false});screens.push(output);
+ const output=path.join(root,"supabase/.temp/training-timer-review-"+label+".png");await page.screenshot({path:output,fullPage:false});screens.push(output);
 }
 (async()=>{
  const browser=await chromium.launch({headless:true,executablePath:"C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe"});
@@ -170,6 +170,9 @@ async function screenshot(page,label){
   check(width+" failed initial session visibly unsaved",backend.db.workout_sessions.length===0&&await page.locator("[data-phase3-focus-feedback]").textContent().then(t=>t.includes("niet opgeslagen")));
   check(width+" only RIR shown",await page.locator("[data-phase3-rpe]").count()===0&&await page.locator("[data-phase3-rir]").count()===3);
   await mobile.manualTimer(page,width,{check,geometry,screenshot});
+  await require("./timer-review-browser.cjs").effort(page,width,backend,{check,geometry,screenshot});
+  await require("./timer-review-browser.cjs").themeAndExpiry(page,width,backend,{check,geometry,screenshot});
+  await page.fill("[data-phase3-session-rest]","120");await page.locator("[data-phase3-session-rest]").blur();
   await page.locator("[data-phase3-reps]").nth(1).fill("9");
   await page.locator("[data-phase3-reps]").first().fill("10");
   await page.locator("[data-phase3-rir]").first().fill("0");
@@ -264,7 +267,7 @@ async function screenshot(page,label){
   await context.close();
  }
  const result={overall_pass:true,checks,layouts,screens,source:process.env.FMZ_TRAINING_LIVE?"published":"working_tree",synthetic_only:true,live_member_mutations:0};
- fs.writeFileSync(path.join(root,"supabase/.temp/training-mobile-browser-"+(process.env.FMZ_TRAINING_LIVE?"live":"local")+".json"),JSON.stringify(result,null,2));
+ fs.writeFileSync(path.join(root,"supabase/.temp/training-timer-review-browser-"+(process.env.FMZ_TRAINING_LIVE?"live":"local")+".json"),JSON.stringify(result,null,2));
  console.log(JSON.stringify(result,null,2));
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);console.log(JSON.stringify({overall_pass:false,checks,layouts,screens,errors},null,2));process.exitCode=1;});
