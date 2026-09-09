@@ -36,12 +36,13 @@ function binding(s, i) {
   return { subject_id: s.subject_id, message_id: i.message_id, source_revision: i.source_revision,
     issue_revision: i.issue_revision, attempt: i.attempt };
 }
-function addMessage(s, messageId, text, locale, availability, atMs) {
+function addMessage(s, messageId, text, locale, availability, atMs, retentionOrigin = null) {
   const assessment = assess({ synthetic_only: true, text, locale, availability });
   s.messages.push({ id: messageId, source_revision: s.revision, at_ms: atMs, text, locale, assessment });
   if (["health_report", "communication", "technical"].includes(assessment.category)) {
     const codes = [...new Set(assessment.trace.filter(t => t.context === "current").map(t => t.signal))];
     s.issues.push({ message_id: messageId, source_revision: s.revision, issue_revision: 0, attempt: 0,
+      retention_origin: retentionOrigin || { message_id: messageId, source_revision: s.revision, first_registered_at_ms: atMs },
       kind: assessment.category, status: "open", mode: null, created_at_ms: atMs, closed_at_ms: null,
       level: assessment.level, codes, feedback: assessment.feedback, self_reported: false,
       repeated_signal: assessment.category === "health_report" && s.issues.some(i =>
@@ -100,7 +101,7 @@ function apply(state, event) {
       i.status = "settled"; i.closed_at_ms = event.at_ms;
       status = event.type === "retry" ? "technical_issue_settled" : "communication_issue_settled";
       if (event.type === "retry" && ["health_report", "communication"].includes(a.category)) {
-        addMessage(s, event.event_id, original.text, original.locale, "available", event.at_ms);
+        addMessage(s, event.event_id, original.text, original.locale, "available", event.at_ms, i.retention_origin);
         status = "technical_issue_settled_new_" + a.category;
       }
     }
@@ -150,6 +151,9 @@ function view(state) {
     health_reports: health.length, current_reports: current.length,
     self_reported_reports: health.filter(i => i.self_reported).length,
     unresolved_nonclinical: nonclinical.map(i => binding(state, i)),
+    nonclinical_options: nonclinical.map(i => ({ binding: binding(state, i),
+      choices: [i.kind === "technical" ? "retry" : "reformulate", "continue_chat"] })),
+    clarification_required: false,
     settled_nonclinical: state.issues.filter(i => i.status === "settled").map(i => binding(state, i)),
     warnings: current.map(i => ({ message_id: i.message_id, ...i.feedback })),
     history: health.map(i => ({ message_id: i.message_id, source_revision: i.source_revision,
@@ -157,7 +161,7 @@ function view(state) {
     content_mode: "bounded_descriptive_proposal", recommendations: [], actions: [],
     open_criteria: open, complete_health_resumption_flow: false, medical_clearance: false,
     permanent_health_access_block: false, human_approval_service: false,
-    proposed_next_step: nonclinical.length ? "bound_clarification_or_retry" :
+    proposed_next_step: nonclinical.length ? "optional_clarification_or_retry_or_continue_chat" :
       current.length ? "help_and_explicit_self_report_when_applicable" : "bounded_content_with_open_recommendation_policy" });
 }
 module.exports = { create, apply, view, isState };

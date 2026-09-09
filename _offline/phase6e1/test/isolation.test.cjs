@@ -2,7 +2,8 @@
 const test = require("node:test"), assert = require("node:assert/strict"), fs = require("node:fs"),
   path = require("node:path"), vm = require("node:vm"), crypto = require("node:crypto"), cp = require("node:child_process");
 const root = path.resolve(__dirname, "../../.."), directory = path.resolve(__dirname, "..");
-const base = "abfea682aac53d5e32f4962d6917aa958bd09cb4", frozen = "bc6308fbf0f914b04c7faa711219d9ae46e9cbe3";
+// This owner's offline-only acceptance must preserve the current timer/RIR/RPE runtime.
+const base = "f3ab33c6553c2d5dd3fc06518c150bd474fb6159", frozen = base;
 const git = (...a) => cp.execFileSync("git", a, { cwd: root, encoding: "utf8", windowsHide: true }).trim();
 const core = ["common.cjs", "context.cjs", "flow.cjs", "analysis.cjs", "retention.cjs"];
 test("I01 exact staging target and changes restricted to docs and new 6E-1", () => {
@@ -32,7 +33,8 @@ test("I01 frozen app/Edge/migrations/workflows and D1-D12 unchanged", () => {
 });
 test("I01 no frozen runtime source imports or embeds either offline package", () => {
   const files = git("ls-tree", "-r", "--name-only", frozen).split("\n").filter(f =>
-    !f.startsWith("docs/") && /\.(?:html|js|cjs|ts|tsx|json|ya?ml)$/.test(f));
+    !["docs/", "_offline/", "_tests/"].some(prefix => f.startsWith(prefix)) &&
+    /\.(?:html|js|cjs|ts|tsx|json|ya?ml)$/.test(f));
   assert.ok(files.length > 50);
   for (const f of files) assert.doesNotMatch(fs.readFileSync(path.join(root, f), "utf8"), /_offline|phase6e[01]\./, f);
 });

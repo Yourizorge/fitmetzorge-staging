@@ -12,11 +12,12 @@ for (const [cls, days, closed] of [["episode_counter", 30, null], ["closed_detai
     assert.equal(r.medical_clearance, false); assert.equal(r.cleanup_performed, false);
   });
 }
-for (const days of [0, 31, 181, 36500]) test("E02 unresolved has no inferred lifetime at day " + days, () => {
+for (const days of [0, 31, 181, 36500]) test("E02 owner O5 replaces historically open cap at day " + days, () => {
   const r = plan([record("unresolved_signal")], days * DAY);
-  assert.equal(r.items[0].disposition, "policy_open_no_persistence");
-  assert.equal(r.items[0].expires_at_ms, null);
-  assert.equal(r.unresolved_max_days, null); assert.equal(r.storage_enabled, false);
+  assert.equal(r.items[0].disposition, days < 30 ? "within_provisional_cap" : "expire_in_projection");
+  assert.equal(r.items[0].expires_at_ms, 30 * DAY);
+  assert.equal(r.items[0].projected_details_present, false);
+  assert.equal(r.unresolved_max_days, 30); assert.equal(r.storage_enabled, false);
   assert.equal(r.permanent_health_access_block, false);
 });
 test("E03 expired/missing details preserve no false clearance and no lifetime content block", () => {
@@ -39,7 +40,8 @@ test("E04 optional shorter cap allowed; increases invalid", () => {
 });
 test("E01 unclosed detail is unresolved, not a 90-day or indefinite-retain default", () => {
   const r = plan([record("closed_details")], 1000 * DAY);
-  assert.equal(r.items[0].disposition, "policy_open_no_persistence");
+  assert.equal(r.items[0].disposition, "expire_in_projection");
+  assert.equal(r.items[0].expires_at_ms, 30 * DAY);
 });
 test("E04 malformed, duplicate, future or live records rejected", () => {
   for (const records of [[record("unknown")], [record("episode_counter"), record("episode_counter")],

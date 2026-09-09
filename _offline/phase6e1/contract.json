@@ -1,8 +1,13 @@
 {
-  "version": "phase6e1.offline.v0.1.0",
-  "status": "PROPOSAL_ONLY_OWNER_AND_EXPERT_REVIEW_OPEN",
+  "version": "phase6e1.offline.v0.2.0",
+  "status": "COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE CONTRACTS ONLY",
+  "owner_acceptance": {
+    "date": "2026-09-09",
+    "decisions": ["O1", "O2", "O3", "O4", "O5"],
+    "scope": "offline contracts only; not medical validation, complete resumption or live storage"
+  },
   "synthetic_only": true,
-  "frozen_application": "bc6308fbf0f914b04c7faa711219d9ae46e9cbe3",
+  "frozen_application": "f3ab33c6553c2d5dd3fc06518c150bd474fb6159",
   "frozen_6e0_tree": "27ed4679b59fc5909712d4fa927138e5f9f03689",
   "axes": [
     "access",
@@ -34,23 +39,31 @@
     ],
     "authority": "In-memory synthetic branded state only; not a trusted server adapter",
     "health_resolution": "Self-report only; clinical resumption criteria remain open",
+    "nonclinical_options": "reformulate or retry AND continue_chat; clarification is optional, other reports remain",
     "human_approval_service": false
   },
   "content": {
     "version": "phase6e1.content.v1",
-    "descriptive_observations": "Allowlisted numeric facts and same-method complete equal-window deltas only; proposed for owner review",
+    "descriptive_observations": "Owner-accepted offline: allowlisted numeric facts and same-method complete equal-window deltas only",
     "recommendations": "Not generated for any state; missing content policy is not a member health block",
     "actions": false,
     "live_6d_gate": "Unchanged; no permission to bypass existing safety_hard_stop"
   },
   "retention": {
-    "version": "phase6e1.retention.v1",
+    "version": "phase6e1.retention.v2",
     "provisional_days": {
       "episode_counter": 30,
       "closed_details": 90,
       "minimal_audit": 180
     },
-    "unresolved_max_days": null,
+    "unresolved_max_days": 30,
+    "unresolved_purpose": "Follow recent reports and avoid unnecessarily requesting the same context",
+    "unresolved_responsibility": "FitMetZorge",
+    "unresolved_fields": ["first_registered_at_ms", "status", "message_ref"],
+    "unresolved_clock": "first registration + 30 * 86400000 ms; expires at equality; earlier when unnecessary",
+    "unresolved_refresh": "No extension by viewing, reprocessing, retry, settlement or self-report",
+    "unresolved_projection": "projectSafety.records only; thread previous projection within one synthetic sequence; no expired per-message tombstones",
+    "other_d5_purposes": "Unchanged; no conversion of O5 records to 90/180-day classes through status changes",
     "persistence_enabled": false,
     "expiry_is_clearance": false,
     "permanent_health_block": false
@@ -61,8 +74,8 @@
     "serious_recovery",
     "recurrence_meaning_and_recovery",
     "unclassified_recovery",
-    "unresolved_retention_maximum_and_responsibility",
-    "missing_detail_consequences"
+    "legal_privacy_medical_validation_of_retention",
+    "trusted_source_clock_lineage_deletion_and_missing_context_integration"
   ],
   "runtime_activation": false,
   "external_calls": false,
