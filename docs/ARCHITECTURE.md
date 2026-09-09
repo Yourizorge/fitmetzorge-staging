@@ -1,6 +1,22 @@
 # FitMetZorge Architecture
 
-## Training Upgrade + Offline Follow-Up - Current
+## Training Mobile Follow-Up - Current
+
+Owner-authorized refinement of basics, compact set rows and per-workout opt-in rest.
+Baseline 633e9f9; cache 20260908-training-mobile1. Only six scoped Training assets,
+including the Lucide clock; model, settings, offline AI, SQL and Edge unchanged.
+35 existing catalog IDs; no duplicates, migration or live member mutation.
+Runtime 58515aa deployed: 940/940 local + 940/940 published browser checks,
+29/29 unit/preservation/theme and 6/6 completion regressions PASS.
+60/60 published asset bytes match Git; 54 unchanged from phone baseline,
+52 unchanged from bc6308f; 56 offline/test paths return HTTP404 on Pages.
+See [technical report](TRAINING_MOBILE_FOLLOWUP.md),
+[publication receipt](TRAINING_MOBILE_PUBLICATION.md) and
+[test/identity evidence](TRAINING_MOBILE_EVIDENCE.json).
+Owner phone retest remains open. 6E-1 stays offline; no new acceptance/freeze/package.
+Historical delivery evidence below retains its original scope and results.
+
+## Training Upgrade + Offline Follow-Up - Historical Delivery
 
 Explicit OWNER GO 2026-09-08 for Training runtime and narrow offline 6E-1 fixes.
 Training runtime commit: ed1f485af87d68ad7ec6cbee55ba9fda074af9ce;
