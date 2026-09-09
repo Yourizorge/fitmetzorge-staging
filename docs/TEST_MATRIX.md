@@ -1,6 +1,27 @@
 # FitMetZorge Test Matrix
 
-## Package 6E-1 Owner Acceptance - Current
+## Package 6E-2 Offline Recommendations - Current
+
+TECHNICAL PASS / READY FOR OWNER REVIEW. Explicit offline GO on 2026-09-09.
+Not owner-accepted/frozen/live. New code only in _offline/phase6e2; 6E-0/6E-1
+remain accepted/frozen and all 45 source files retain their bytes. D1-D12/O1-O5 unchanged.
+Three executable NONPHYSICAL proposals: daily record check, workout reflection,
+weekly review. Training-load, nutrition, recovery-return and goal changes remain
+explicit unreviewed boundaries, not invented coaching or a human approval service.
+122 preregistered cases; 166 new package checks + 292 frozen 6E-1 functional
+regressions + 90 frozen 6E-0 regressions PASS (548 total, no skips).
+Nine exact NL/EN/DE normal replies and 16 context scenarios are executable.
+See [owner review](PHASE6E2_OWNER_OVERVIEW.md), [contract](PHASE6E2_CONTRACTS.md)
+and [technical evidence](PHASE6E2_TECHNICAL_REPORT.md).
+Current round-timer/RIR-RPE runtime e356a4c remains unchanged; no app suite rerun
+without a code change. Pages/runtime/private-source checks are recorded separately.
+Expert medical/privacy/legal/language review remains open. Phase 6E incomplete.
+No next package started. Physical timer phone retest remains separate and open.
+
+## Package 6E-1 Owner Acceptance - Preserved History
+
+The earlier next-package NOT STARTED status below is superseded only by the explicit
+6E-2 offline GO above. Its owner acceptance and frozen source evidence remain intact.
 
 COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE CONTRACTS ONLY.
 Explicit O1-O5 acceptance on 2026-09-09; see [freeze receipt](PHASE6E1_FREEZE_RECEIPT.md),

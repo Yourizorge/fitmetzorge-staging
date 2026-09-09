@@ -1,0 +1,2277 @@
+{
+  "status": "TECHNICAL PASS / READY FOR OWNER REVIEW",
+  "owner_accepted": false,
+  "frozen": false,
+  "live_integration": false,
+  "repository": "Yourizorge/fitmetzorge-staging",
+  "branch": "main",
+  "preflight": {
+    "local_head": "e356a4cb951fc3d614035fa0bf547e669b4d045a",
+    "remote_head": "e356a4cb951fc3d614035fa0bf547e669b4d045a",
+    "worktree_clean": true
+  },
+  "preregistration_commit": "d233cec374451dec9de7a991952b82997a79bfbe",
+  "source_commit": "d12484a10c62f427bc630630167b5e9027e78d1f",
+  "source_tree": "93ad63e84861c166f53ba5530d7496222461b4f8",
+  "source_files": [
+    {
+      "file": "_offline/phase6e2/README.md",
+      "git_blob": "296d426c2d33d63dd71bb2f18c2ae3380dde7b71",
+      "git_bytes": 3067,
+      "git_sha256": "ea8ba6ea4409e9e00cbda4fac45745b033be1cae667680c1c0c42ed551a1bbd2",
+      "working_bytes": 3067,
+      "working_sha256": "ea8ba6ea4409e9e00cbda4fac45745b033be1cae667680c1c0c42ed551a1bbd2"
+    },
+    {
+      "file": "_offline/phase6e2/contract.json",
+      "git_blob": "41bb0b09be75e233e508f3b35c16817a4d9c4c26",
+      "git_bytes": 2164,
+      "git_sha256": "5ed855343866e10494b3141c125b158b5f0beed94974c50e4eb453ddceff4a8a",
+      "working_bytes": 2164,
+      "working_sha256": "5ed855343866e10494b3141c125b158b5f0beed94974c50e4eb453ddceff4a8a"
+    },
+    {
+      "file": "_offline/phase6e2/copy.json",
+      "git_blob": "2026834d0d7449daf69c92454330fb0cb34ad17b",
+      "git_bytes": 7586,
+      "git_sha256": "7d9c968ff6d94af8fddc1483dcbaf84e73f4361eb843fa718627a1f4313983b2",
+      "working_bytes": 7586,
+      "working_sha256": "7d9c968ff6d94af8fddc1483dcbaf84e73f4361eb843fa718627a1f4313983b2"
+    },
+    {
+      "file": "_offline/phase6e2/engine.cjs",
+      "git_blob": "28b7d13f944af719ef5fd793829535705472e081",
+      "git_bytes": 11678,
+      "git_sha256": "90febbc90acf021fe3feda8e19986f839e3307d8638f510d06b42c70164a33fa",
+      "working_bytes": 11678,
+      "working_sha256": "90febbc90acf021fe3feda8e19986f839e3307d8638f510d06b42c70164a33fa"
+    },
+    {
+      "file": "_offline/phase6e2/package.json",
+      "git_blob": "c46d0ff1cfc282472fbfd7706ef50094f644fdb5",
+      "git_bytes": 321,
+      "git_sha256": "d25d4e6411fba81fde0e245e84310e9d5789abbd292324687f28665c90a47e1a",
+      "working_bytes": 321,
+      "working_sha256": "d25d4e6411fba81fde0e245e84310e9d5789abbd292324687f28665c90a47e1a"
+    },
+    {
+      "file": "_offline/phase6e2/preregistered-cases.json",
+      "git_blob": "8ae6ebdd806e17d5a28170988a60ac491fd1b411",
+      "git_bytes": 25241,
+      "git_sha256": "65aabc7f5e6cba19a4e578266596a411ec82f98bee72c71c0eb9d2026a8a8710",
+      "working_bytes": 25241,
+      "working_sha256": "65aabc7f5e6cba19a4e578266596a411ec82f98bee72c71c0eb9d2026a8a8710"
+    },
+    {
+      "file": "_offline/phase6e2/test/contract.test.cjs",
+      "git_blob": "5248b60eee29a7e0170c29b94b16160d20f6047c",
+      "git_bytes": 11877,
+      "git_sha256": "c571269115fc71d9fed9521eab984eb1b09bef1cbf26a19cdf215b4bd38f5b6a",
+      "working_bytes": 11877,
+      "working_sha256": "c571269115fc71d9fed9521eab984eb1b09bef1cbf26a19cdf215b4bd38f5b6a"
+    },
+    {
+      "file": "_offline/phase6e2/test/examples.cjs",
+      "git_blob": "16f9b6a4d5a0027cf75ecdb24f4f98e9b52ca06a",
+      "git_bytes": 1146,
+      "git_sha256": "8b56b771accf2647d0652a3d1340e352abc1c00d11e38b5025f8cada693d5ec1",
+      "working_bytes": 1146,
+      "working_sha256": "8b56b771accf2647d0652a3d1340e352abc1c00d11e38b5025f8cada693d5ec1"
+    },
+    {
+      "file": "_offline/phase6e2/test/fixtures.cjs",
+      "git_blob": "f16a85d698008434433d5fd274c0824c6b59bb3b",
+      "git_bytes": 6076,
+      "git_sha256": "15c8b9fc881d76009ea4cad09971e2718d9c3c5e9232c56700d1795da993403c",
+      "working_bytes": 6076,
+      "working_sha256": "15c8b9fc881d76009ea4cad09971e2718d9c3c5e9232c56700d1795da993403c"
+    },
+    {
+      "file": "_offline/phase6e2/test/isolation.test.cjs",
+      "git_blob": "9818d88f416c2ea0fa9d7c8cbb968595815aeeb6",
+      "git_bytes": 5770,
+      "git_sha256": "339acc6b9b5fe722b6e175cb1680d70a37245bd5ee840028df17ec65b1d9a446",
+      "working_bytes": 5770,
+      "working_sha256": "339acc6b9b5fe722b6e175cb1680d70a37245bd5ee840028df17ec65b1d9a446"
+    },
+    {
+      "file": "_offline/phase6e2/test/publication-check.cjs",
+      "git_blob": "c7046fcde809f33cac03e7c37cdc5c85b184084f",
+      "git_bytes": 3363,
+      "git_sha256": "6ab0f57ee63356cc95d42d793ca667c8dfbb663584f50d3a854943cbbfde3baa",
+      "working_bytes": 3363,
+      "working_sha256": "6ab0f57ee63356cc95d42d793ca667c8dfbb663584f50d3a854943cbbfde3baa"
+    },
+    {
+      "file": "_offline/phase6e2/test/verify.cjs",
+      "git_blob": "3a643a0cf05a9b8a5e19ad8044d5f28a2a82583f",
+      "git_bytes": 1912,
+      "git_sha256": "adc638c06b388aea82586c6c7f1a5df252aa8d1ab6011ab0bd9b35f96d57a79a",
+      "working_bytes": 1912,
+      "working_sha256": "adc638c06b388aea82586c6c7f1a5df252aa8d1ab6011ab0bd9b35f96d57a79a"
+    }
+  ],
+  "frozen_sources": [
+    {
+      "package": "phase6e0",
+      "tree": "27ed4679b59fc5909712d4fa927138e5f9f03689",
+      "files": 23,
+      "git_and_working_bytes_unchanged": true
+    },
+    {
+      "package": "phase6e1",
+      "tree": "03cef72c409b7125488a3f5fa854fcf1247546c0",
+      "files": 22,
+      "git_and_working_bytes_unchanged": true
+    }
+  ],
+  "preserved_decision_and_receipt_documents": [
+    "PHASE6E0_OWNER_DECISIONS.md",
+    "PACKAGE6D_CORRECTED_FREEZE_AND_6E_OWNER_DECISIONS.md",
+    "PHASE6E0_FREEZE_RECEIPT.md",
+    "PHASE6E0_FREEZE_EVIDENCE.json",
+    "PHASE6E1_FREEZE_RECEIPT.md",
+    "PHASE6E1_FREEZE_EVIDENCE.json",
+    "PHASE6E1_OWNER_OVERVIEW.md",
+    "PHASE6E1_CONTRACTS.md",
+    "PHASE6E1_EVIDENCE.json"
+  ],
+  "tests": {
+    "checked_at": "2026-09-09T20:50:03.305Z",
+    "command": [
+      "node",
+      "--test",
+      "--test-reporter=tap",
+      "_offline/phase6e2/test/contract.test.cjs",
+      "_offline/phase6e2/test/isolation.test.cjs",
+      "_offline/phase6e1/test/acceptance.test.cjs",
+      "_offline/phase6e1/test/analysis.test.cjs",
+      "_offline/phase6e1/test/context.test.cjs",
+      "_offline/phase6e1/test/flow.test.cjs",
+      "_offline/phase6e1/test/retention.test.cjs",
+      "_offline/phase6e1/test/review-boundaries.test.cjs",
+      "_offline/phase6e1/test/training-followup.test.cjs",
+      "_offline/phase6e0/test/recognition-followup.test.cjs",
+      "_offline/phase6e0/test/limitations.test.cjs"
+    ],
+    "counts": {
+      "tests": 548,
+      "pass": 548,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "groups": {
+      "phase6e2": 166,
+      "frozen6e1_functional": 292,
+      "frozen6e0_selected": 90
+    },
+    "preregistered_cases": 122,
+    "additional_contract_checks": 37,
+    "new_isolation_checks": 7,
+    "initial_full_run": {
+      "pass": 546,
+      "fail": 0
+    },
+    "missing_source_review_probe_before_fix": {
+      "pass": 1,
+      "fail": 1
+    },
+    "final_missing_source_probe": "PASS; fixed in 6E2 adapter only",
+    "frozen_scope_checks": "6E1's eight original scope/isolation tests are preserved, not replayed against the authorized new package. New 6E2 isolation checks protect both frozen packages and all current runtime.",
+    "tap_sha256": "5e78fc583587fec0285bb45e680e1bd8c18297f1ea8cc5e8fc731ac4612781f0",
+    "local_full_tap": "supabase/.temp/phase6e2-test-evidence.json",
+    "medical_validation": false
+  },
+  "normal_examples": [
+    {
+      "id": "daily-nl",
+      "kind": "daily",
+      "locale": "nl",
+      "status": "recommendation",
+      "messages": [
+        "Je registreerde 35 minuten training en 6000 stappen. Je slaapduur ontbreekt. Vul die alleen aan als je de duur weet; laat het veld anders leeg. Zo maak je deze dagregistratie completer, zonder iets te verzinnen.",
+        "Dit voorstel gaat alleen over registreren of terugkijken, niet over geschikte training, voeding of medisch herstel."
+      ],
+      "recommendations": [
+        {
+          "type": "daily_record_check",
+          "content_class": "record_quality",
+          "text": "Je registreerde 35 minuten training en 6000 stappen. Je slaapduur ontbreekt. Vul die alleen aan als je de duur weet; laat het veld anders leeg. Zo maak je deze dagregistratie completer, zonder iets te verzinnen.",
+          "basis": [
+            {
+              "metric": "training_minutes",
+              "value": 35,
+              "unit": "min",
+              "source": {
+                "id": "syn-current",
+                "subject_id": "syn-owner",
+                "kind": "synthetic_aggregate",
+                "start_ms": 3369600000,
+                "end_ms": 3456000000,
+                "coverage": "complete",
+                "method": "day_totals_v1"
+              }
+            },
+            {
+              "metric": "steps",
+              "value": 6000,
+              "unit": "count",
+              "source": {
+                "id": "syn-current",
+                "subject_id": "syn-owner",
+                "kind": "synthetic_aggregate",
+                "start_ms": 3369600000,
+                "end_ms": 3456000000,
+                "coverage": "complete",
+                "method": "day_totals_v1"
+              }
+            }
+          ],
+          "bound_to": {
+            "subject_id": "syn-owner",
+            "revision": 1,
+            "message_id": "syn-message-1",
+            "source_revision": 1
+          },
+          "goal_source": null,
+          "trainer_limits_source": null,
+          "physical_prescription": false
+        }
+      ],
+      "unavailable_metrics": [
+        {
+          "code": "sleep_hours",
+          "reason": "missing_value",
+          "text": "Geen bruikbare registratie voor zelf geregistreerde slaapduur."
+        }
+      ],
+      "medical_clearance": false,
+      "actions": []
+    },
+    {
+      "id": "post_workout-nl",
+      "kind": "post_workout",
+      "locale": "nl",
+      "status": "recommendation",
+      "messages": [
+        "Je registreerde 12 sets, 96 herhalingen en 35 minuten. Kies zelf een set uit deze workout en noteer wat je bij de uitvoering wilt onthouden. Verander belasting of oefeningen niet op basis van deze totalen.",
+        "Dit voorstel gaat alleen over registreren of terugkijken, niet over geschikte training, voeding of medisch herstel."
+      ],
+      "recommendations": [
+        {
+          "type": "workout_reflection",
+          "content_class": "nonphysical_reflection",
+          "text": "Je registreerde 12 sets, 96 herhalingen en 35 minuten. Kies zelf een set uit deze workout en noteer wat je bij de uitvoering wilt onthouden. Verander belasting of oefeningen niet op basis van deze totalen.",
+          "basis": [
+            {
+              "metric": "completed_sets",
+              "value": 12,
+              "unit": "count",
+              "source": {
+                "id": "syn-current",
+                "subject_id": "syn-owner",
+                "kind": "synthetic_aggregate",
+                "start_ms": 3452400000,
+                "end_ms": 3456000000,
+                "coverage": "complete",
+                "method": "workout_totals_v1"
+              }
+            },
+            {
+              "metric": "completed_reps",
+              "value": 96,
+              "unit": "count",
+              "source": {
+                "id": "syn-current",
+                "subject_id": "syn-owner",
+                "kind": "synthetic_aggregate",
+                "start_ms": 3452400000,
+                "end_ms": 3456000000,
+                "coverage": "complete",
+                "method": "workout_totals_v1"
+              }
+            },
+            {
+              "metric": "duration_minutes",
+              "value": 35,
+              "unit": "min",
+              "source": {
+                "id": "syn-current",
+                "subject_id": "syn-owner",
+                "kind": "synthetic_aggregate",
+                "start_ms": 3452400000,
+                "end_ms": 3456000000,
+                "coverage": "complete",
+                "method": "workout_totals_v1"
+              }
+            }
+          ],
+          "bound_to": {
+            "subject_id": "syn-owner",
+            "revision": 1,
+            "message_id": "syn-message-1",
+            "source_revision": 1
+          },
+          "goal_source": null,
+          "trainer_limits_source": null,
+          "physical_prescription": false
+        }
+      ],
+      "unavailable_metrics": [
+        {
+          "code": "distance_km",
+          "reason": "missing_value",
+          "text": "Geen bruikbare registratie voor geregistreerde afstand."
+        }
+      ],
+      "medical_clearance": false,
+      "actions": []
+    },
+    {
+      "id": "weekly-nl",
+      "kind": "weekly",
+      "locale": "nl",
+      "status": "recommendation",
+      "messages": [
+        "Je registreerde 3 workouts en 105 trainingsminuten. Het verschil met het vorige vergelijkbare venster is +15 minuten en 0 workouts. Kies een moment om de weekindeling terug te bekijken en noteer een punt voor je eigen planning. Deze verschillen bepalen niet hoeveel je moet trainen.",
+        "Dit voorstel gaat alleen over registreren of terugkijken, niet over geschikte training, voeding of medisch herstel."
+      ],
+      "recommendations": [
+        {
+          "type": "weekly_review",
+          "content_class": "nonphysical_reflection",
+          "text": "Je registreerde 3 workouts en 105 trainingsminuten. Het verschil met het vorige vergelijkbare venster is +15 minuten en 0 workouts. Kies een moment om de weekindeling terug te bekijken en noteer een punt voor je eigen planning. Deze verschillen bepalen niet hoeveel je moet trainen.",
+          "basis": [
+            {
+              "metric": "training_minutes",
+              "value": 105,
+              "unit": "min",
+              "source": {
+                "id": "syn-current",
+                "subject_id": "syn-owner",
+                "kind": "synthetic_aggregate",
+                "start_ms": 2851200000,
+                "end_ms": 3456000000,
+                "coverage": "complete",
+                "method": "week_totals_v1"
+              },
+              "comparison": {
+                "delta": 15,
+                "unit": "min",
+                "source": {
+                  "id": "syn-previous",
+                  "subject_id": "syn-owner",
+                  "kind": "synthetic_aggregate",
+                  "start_ms": 2246400000,
+                  "end_ms": 2851200000,
+                  "coverage": "complete",
+                  "method": "week_totals_v1"
+                }
+              }
+            },
+            {
+              "metric": "completed_workouts",
+              "value": 3,
+              "unit": "count",
+              "source": {
+                "id": "syn-current",
+                "subject_id": "syn-owner",
+                "kind": "synthetic_aggregate",
+                "start_ms": 2851200000,
+                "end_ms": 3456000000,
+                "coverage": "complete",
+                "method": "week_totals_v1"
+              },
+              "comparison": {
+                "delta": 0,
+                "unit": "count",
+                "source": {
+                  "id": "syn-previous",
+                  "subject_id": "syn-owner",
+                  "kind": "synthetic_aggregate",
+                  "start_ms": 2246400000,
+                  "end_ms": 2851200000,
+                  "coverage": "complete",
+                  "method": "week_totals_v1"
+                }
+              }
+            }
+          ],
+          "bound_to": {
+            "subject_id": "syn-owner",
+            "revision": 1,
+            "message_id": "syn-message-1",
+            "source_revision": 1
+          },
+          "goal_source": null,
+          "trainer_limits_source": null,
+          "physical_prescription": false
+        }
+      ],
+      "unavailable_metrics": [
+        {
+          "code": "steps",
+          "reason": "missing_value",
+          "text": "Geen bruikbare registratie voor geregistreerde stappen."
+        }
+      ],
+      "medical_clearance": false,
+      "actions": []
+    },
+    {
+      "id": "daily-en",
+      "kind": "daily",
+      "locale": "en",
+      "status": "recommendation",
+      "messages": [
+        "You recorded 35 minutes of training and 6000 steps. Your sleep duration is missing. Add it only if you know the duration; otherwise leave the field blank. This makes this day's record more complete without inventing data.",
+        "This proposal is only about recording or reviewing, not suitable training, nutrition or medical recovery."
+      ],
+      "recommendations": [
+        {
+          "type": "daily_record_check",
+          "content_class": "record_quality",
+          "text": "You recorded 35 minutes of training and 6000 steps. Your sleep duration is missing. Add it only if you know the duration; otherwise leave the field blank. This makes this day's record more complete without inventing data.",
+          "basis": [
+            {
+              "metric": "training_minutes",
+              "value": 35,
+              "unit": "min",
+              "source": {
+                "id": "syn-current",
+                "subject_id": "syn-owner",
+                "kind": "synthetic_aggregate",
+                "start_ms": 3369600000,
+                "end_ms": 3456000000,
+                "coverage": "complete",
+                "method": "day_totals_v1"
+              }
+            },
+            {
+              "metric": "steps",
+              "value": 6000,
+              "unit": "count",
+              "source": {
+                "id": "syn-current",
+                "subject_id": "syn-owner",
+                "kind": "synthetic_aggregate",
+                "start_ms": 3369600000,
+                "end_ms": 3456000000,
+                "coverage": "complete",
+                "method": "day_totals_v1"
+              }
+            }
+          ],
+          "bound_to": {
+            "subject_id": "syn-owner",
+            "revision": 1,
+            "message_id": "syn-message-1",
+            "source_revision": 1
+          },
+          "goal_source": null,
+          "trainer_limits_source": null,
+          "physical_prescription": false
+        }
+      ],
+      "unavailable_metrics": [
+        {
+          "code": "sleep_hours",
+          "reason": "missing_value",
+          "text": "No usable recording for self-recorded sleep duration."
+        }
+      ],
+      "medical_clearance": false,
+      "actions": []
+    },
+    {
+      "id": "post_workout-en",
+      "kind": "post_workout",
+      "locale": "en",
+      "status": "recommendation",
+      "messages": [
+        "You recorded 12 sets, 96 repetitions and 35 minutes. Choose a set from this workout yourself and note what you want to remember about performing it. Do not change loads or exercises on the basis of these totals.",
+        "This proposal is only about recording or reviewing, not suitable training, nutrition or medical recovery."
+      ],
+      "recommendations": [
+        {
+          "type": "workout_reflection",
+          "content_class": "nonphysical_reflection",
+          "text": "You recorded 12 sets, 96 repetitions and 35 minutes. Choose a set from this workout yourself and note what you want to remember about performing it. Do not change loads or exercises on the basis of these totals.",
+          "basis": [
+            {
+              "metric": "completed_sets",
+              "value": 12,
+              "unit": "count",
+              "source": {
+                "id": "syn-current",
+                "subject_id": "syn-owner",
+                "kind": "synthetic_aggregate",
+                "start_ms": 3452400000,
+                "end_ms": 3456000000,
+                "coverage": "complete",
+                "method": "workout_totals_v1"
+              }
+            },
+            {
+              "metric": "completed_reps",
+              "value": 96,
+              "unit": "count",
+              "source": {
+                "id": "syn-current",
+                "subject_id": "syn-owner",
+                "kind": "synthetic_aggregate",
+                "start_ms": 3452400000,
+                "end_ms": 3456000000,
+                "coverage": "complete",
+                "method": "workout_totals_v1"
+              }
+            },
+            {
+              "metric": "duration_minutes",
+              "value": 35,
+              "unit": "min",
+              "source": {
+                "id": "syn-current",
+                "subject_id": "syn-owner",
+                "kind": "synthetic_aggregate",
+                "start_ms": 3452400000,
+                "end_ms": 3456000000,
+                "coverage": "complete",
+                "method": "workout_totals_v1"
+              }
+            }
+          ],
+          "bound_to": {
+            "subject_id": "syn-owner",
+            "revision": 1,
+            "message_id": "syn-message-1",
+            "source_revision": 1
+          },
+          "goal_source": null,
+          "trainer_limits_source": null,
+          "physical_prescription": false
+        }
+      ],
+      "unavailable_metrics": [
+        {
+          "code": "distance_km",
+          "reason": "missing_value",
+          "text": "No usable recording for recorded distance."
+        }
+      ],
+      "medical_clearance": false,
+      "actions": []
+    },
+    {
+      "id": "weekly-en",
+      "kind": "weekly",
+      "locale": "en",
+      "status": "recommendation",
+      "messages": [
+        "You recorded 3 workouts and 105 training minutes. The difference from the previous comparable window is +15 minutes and 0 workouts. Choose a time to review how the week was organized and note one point for your own planning. These differences do not determine how much you should train.",
+        "This proposal is only about recording or reviewing, not suitable training, nutrition or medical recovery."
+      ],
+      "recommendations": [
+        {
+          "type": "weekly_review",
+          "content_class": "nonphysical_reflection",
+          "text": "You recorded 3 workouts and 105 training minutes. The difference from the previous comparable window is +15 minutes and 0 workouts. Choose a time to review how the week was organized and note one point for your own planning. These differences do not determine how much you should train.",
+          "basis": [
+            {
+              "metric": "training_minutes",
+              "value": 105,
+              "unit": "min",
+              "source": {
+                "id": "syn-current",
+                "subject_id": "syn-owner",
+                "kind": "synthetic_aggregate",
+                "start_ms": 2851200000,
+                "end_ms": 3456000000,
+                "coverage": "complete",
+                "method": "week_totals_v1"
+              },
+              "comparison": {
+                "delta": 15,
+                "unit": "min",
+                "source": {
+                  "id": "syn-previous",
+                  "subject_id": "syn-owner",
+                  "kind": "synthetic_aggregate",
+                  "start_ms": 2246400000,
+                  "end_ms": 2851200000,
+                  "coverage": "complete",
+                  "method": "week_totals_v1"
+                }
+              }
+            },
+            {
+              "metric": "completed_workouts",
+              "value": 3,
+              "unit": "count",
+              "source": {
+                "id": "syn-current",
+                "subject_id": "syn-owner",
+                "kind": "synthetic_aggregate",
+                "start_ms": 2851200000,
+                "end_ms": 3456000000,
+                "coverage": "complete",
+                "method": "week_totals_v1"
+              },
+              "comparison": {
+                "delta": 0,
+                "unit": "count",
+                "source": {
+                  "id": "syn-previous",
+                  "subject_id": "syn-owner",
+                  "kind": "synthetic_aggregate",
+                  "start_ms": 2246400000,
+                  "end_ms": 2851200000,
+                  "coverage": "complete",
+                  "method": "week_totals_v1"
+                }
+              }
+            }
+          ],
+          "bound_to": {
+            "subject_id": "syn-owner",
+            "revision": 1,
+            "message_id": "syn-message-1",
+            "source_revision": 1
+          },
+          "goal_source": null,
+          "trainer_limits_source": null,
+          "physical_prescription": false
+        }
+      ],
+      "unavailable_metrics": [
+        {
+          "code": "steps",
+          "reason": "missing_value",
+          "text": "No usable recording for recorded steps."
+        }
+      ],
+      "medical_clearance": false,
+      "actions": []
+    },
+    {
+      "id": "daily-de",
+      "kind": "daily",
+      "locale": "de",
+      "status": "recommendation",
+      "messages": [
+        "Du hast 35 Trainingsminuten und 6000 Schritte erfasst. Deine Schlafdauer fehlt. Ergaenze sie nur, wenn du die Dauer kennst; lass das Feld sonst leer. So wird dieser Tagesbericht vollstaendiger, ohne Daten zu erfinden.",
+        "Dieser Vorschlag betrifft nur das Erfassen oder den Rueckblick, nicht geeignetes Training, Ernaehrung oder medizinische Erholung."
+      ],
+      "recommendations": [
+        {
+          "type": "daily_record_check",
+          "content_class": "record_quality",
+          "text": "Du hast 35 Trainingsminuten und 6000 Schritte erfasst. Deine Schlafdauer fehlt. Ergaenze sie nur, wenn du die Dauer kennst; lass das Feld sonst leer. So wird dieser Tagesbericht vollstaendiger, ohne Daten zu erfinden.",
+          "basis": [
+            {
+              "metric": "training_minutes",
+              "value": 35,
+              "unit": "min",
+              "source": {
+                "id": "syn-current",
+                "subject_id": "syn-owner",
+                "kind": "synthetic_aggregate",
+                "start_ms": 3369600000,
+                "end_ms": 3456000000,
+                "coverage": "complete",
+                "method": "day_totals_v1"
+              }
+            },
+            {
+              "metric": "steps",
+              "value": 6000,
+              "unit": "count",
+              "source": {
+                "id": "syn-current",
+                "subject_id": "syn-owner",
+                "kind": "synthetic_aggregate",
+                "start_ms": 3369600000,
+                "end_ms": 3456000000,
+                "coverage": "complete",
+                "method": "day_totals_v1"
+              }
+            }
+          ],
+          "bound_to": {
+            "subject_id": "syn-owner",
+            "revision": 1,
+            "message_id": "syn-message-1",
+            "source_revision": 1
+          },
+          "goal_source": null,
+          "trainer_limits_source": null,
+          "physical_prescription": false
+        }
+      ],
+      "unavailable_metrics": [
+        {
+          "code": "sleep_hours",
+          "reason": "missing_value",
+          "text": "Keine verwendbare Erfassung fuer selbst erfasste schlafdauer."
+        }
+      ],
+      "medical_clearance": false,
+      "actions": []
+    },
+    {
+      "id": "post_workout-de",
+      "kind": "post_workout",
+      "locale": "de",
+      "status": "recommendation",
+      "messages": [
+        "Du hast 12 Saetze, 96 Wiederholungen und 35 Minuten erfasst. Waehle selbst einen Satz aus diesem Workout und notiere, was du dir zur Ausfuehrung merken moechtest. Aendere Belastung oder Uebungen nicht allein aufgrund dieser Summen.",
+        "Dieser Vorschlag betrifft nur das Erfassen oder den Rueckblick, nicht geeignetes Training, Ernaehrung oder medizinische Erholung."
+      ],
+      "recommendations": [
+        {
+          "type": "workout_reflection",
+          "content_class": "nonphysical_reflection",
+          "text": "Du hast 12 Saetze, 96 Wiederholungen und 35 Minuten erfasst. Waehle selbst einen Satz aus diesem Workout und notiere, was du dir zur Ausfuehrung merken moechtest. Aendere Belastung oder Uebungen nicht allein aufgrund dieser Summen.",
+          "basis": [
+            {
+              "metric": "completed_sets",
+              "value": 12,
+              "unit": "count",
+              "source": {
+                "id": "syn-current",
+                "subject_id": "syn-owner",
+                "kind": "synthetic_aggregate",
+                "start_ms": 3452400000,
+                "end_ms": 3456000000,
+                "coverage": "complete",
+                "method": "workout_totals_v1"
+              }
+            },
+            {
+              "metric": "completed_reps",
+              "value": 96,
+              "unit": "count",
+              "source": {
+                "id": "syn-current",
+                "subject_id": "syn-owner",
+                "kind": "synthetic_aggregate",
+                "start_ms": 3452400000,
+                "end_ms": 3456000000,
+                "coverage": "complete",
+                "method": "workout_totals_v1"
+              }
+            },
+            {
+              "metric": "duration_minutes",
+              "value": 35,
+              "unit": "min",
+              "source": {
+                "id": "syn-current",
+                "subject_id": "syn-owner",
+                "kind": "synthetic_aggregate",
+                "start_ms": 3452400000,
+                "end_ms": 3456000000,
+                "coverage": "complete",
+                "method": "workout_totals_v1"
+              }
+            }
+          ],
+          "bound_to": {
+            "subject_id": "syn-owner",
+            "revision": 1,
+            "message_id": "syn-message-1",
+            "source_revision": 1
+          },
+          "goal_source": null,
+          "trainer_limits_source": null,
+          "physical_prescription": false
+        }
+      ],
+      "unavailable_metrics": [
+        {
+          "code": "distance_km",
+          "reason": "missing_value",
+          "text": "Keine verwendbare Erfassung fuer erfasste strecke."
+        }
+      ],
+      "medical_clearance": false,
+      "actions": []
+    },
+    {
+      "id": "weekly-de",
+      "kind": "weekly",
+      "locale": "de",
+      "status": "recommendation",
+      "messages": [
+        "Du hast 3 Workouts und 105 Trainingsminuten erfasst. Der Unterschied zum vorherigen vergleichbaren Zeitraum betraegt +15 Minuten und 0 Workouts. Waehle einen Zeitpunkt, um die Wocheneinteilung durchzugehen, und notiere einen Punkt fuer deine eigene Planung. Diese Unterschiede bestimmen nicht, wie viel du trainieren solltest.",
+        "Dieser Vorschlag betrifft nur das Erfassen oder den Rueckblick, nicht geeignetes Training, Ernaehrung oder medizinische Erholung."
+      ],
+      "recommendations": [
+        {
+          "type": "weekly_review",
+          "content_class": "nonphysical_reflection",
+          "text": "Du hast 3 Workouts und 105 Trainingsminuten erfasst. Der Unterschied zum vorherigen vergleichbaren Zeitraum betraegt +15 Minuten und 0 Workouts. Waehle einen Zeitpunkt, um die Wocheneinteilung durchzugehen, und notiere einen Punkt fuer deine eigene Planung. Diese Unterschiede bestimmen nicht, wie viel du trainieren solltest.",
+          "basis": [
+            {
+              "metric": "training_minutes",
+              "value": 105,
+              "unit": "min",
+              "source": {
+                "id": "syn-current",
+                "subject_id": "syn-owner",
+                "kind": "synthetic_aggregate",
+                "start_ms": 2851200000,
+                "end_ms": 3456000000,
+                "coverage": "complete",
+                "method": "week_totals_v1"
+              },
+              "comparison": {
+                "delta": 15,
+                "unit": "min",
+                "source": {
+                  "id": "syn-previous",
+                  "subject_id": "syn-owner",
+                  "kind": "synthetic_aggregate",
+                  "start_ms": 2246400000,
+                  "end_ms": 2851200000,
+                  "coverage": "complete",
+                  "method": "week_totals_v1"
+                }
+              }
+            },
+            {
+              "metric": "completed_workouts",
+              "value": 3,
+              "unit": "count",
+              "source": {
+                "id": "syn-current",
+                "subject_id": "syn-owner",
+                "kind": "synthetic_aggregate",
+                "start_ms": 2851200000,
+                "end_ms": 3456000000,
+                "coverage": "complete",
+                "method": "week_totals_v1"
+              },
+              "comparison": {
+                "delta": 0,
+                "unit": "count",
+                "source": {
+                  "id": "syn-previous",
+                  "subject_id": "syn-owner",
+                  "kind": "synthetic_aggregate",
+                  "start_ms": 2246400000,
+                  "end_ms": 2851200000,
+                  "coverage": "complete",
+                  "method": "week_totals_v1"
+                }
+              }
+            }
+          ],
+          "bound_to": {
+            "subject_id": "syn-owner",
+            "revision": 1,
+            "message_id": "syn-message-1",
+            "source_revision": 1
+          },
+          "goal_source": null,
+          "trainer_limits_source": null,
+          "physical_prescription": false
+        }
+      ],
+      "unavailable_metrics": [
+        {
+          "code": "steps",
+          "reason": "missing_value",
+          "text": "Keine verwendbare Erfassung fuer erfasste schritte."
+        }
+      ],
+      "medical_clearance": false,
+      "actions": []
+    }
+  ],
+  "context_matrix": [
+    {
+      "scenario": "ordinary",
+      "results": [
+        {
+          "kind": "daily",
+          "status": "recommendation",
+          "reason": "bounded_nonphysical_proposal",
+          "context_mode": "ordinary_or_settled",
+          "warnings": [],
+          "expert_criteria": [],
+          "recommendations": [
+            "daily_record_check"
+          ],
+          "medical_clearance": false
+        },
+        {
+          "kind": "post_workout",
+          "status": "recommendation",
+          "reason": "bounded_nonphysical_proposal",
+          "context_mode": "ordinary_or_settled",
+          "warnings": [],
+          "expert_criteria": [],
+          "recommendations": [
+            "workout_reflection"
+          ],
+          "medical_clearance": false
+        },
+        {
+          "kind": "weekly",
+          "status": "recommendation",
+          "reason": "bounded_nonphysical_proposal",
+          "context_mode": "ordinary_or_settled",
+          "warnings": [],
+          "expert_criteria": [],
+          "recommendations": [
+            "weekly_review"
+          ],
+          "medical_clearance": false
+        }
+      ]
+    },
+    {
+      "scenario": "current",
+      "results": [
+        {
+          "kind": "daily",
+          "status": "recommendation",
+          "reason": "bounded_nonphysical_proposal",
+          "context_mode": "current_health",
+          "warnings": [
+            "professional_review"
+          ],
+          "expert_criteria": [
+            "serious_recovery"
+          ],
+          "recommendations": [
+            "daily_record_check"
+          ],
+          "medical_clearance": false
+        },
+        {
+          "kind": "post_workout",
+          "status": "facts_only",
+          "reason": "current_health_report",
+          "context_mode": "current_health",
+          "warnings": [
+            "professional_review"
+          ],
+          "expert_criteria": [
+            "serious_recovery"
+          ],
+          "recommendations": [],
+          "medical_clearance": false
+        },
+        {
+          "kind": "weekly",
+          "status": "facts_only",
+          "reason": "current_health_report",
+          "context_mode": "current_health",
+          "warnings": [
+            "professional_review"
+          ],
+          "expert_criteria": [
+            "serious_recovery"
+          ],
+          "recommendations": [],
+          "medical_clearance": false
+        }
+      ]
+    },
+    {
+      "scenario": "unclassified",
+      "results": [
+        {
+          "kind": "daily",
+          "status": "recommendation",
+          "reason": "bounded_nonphysical_proposal",
+          "context_mode": "current_health",
+          "warnings": [
+            "current_unclassified"
+          ],
+          "expert_criteria": [
+            "unclassified_recovery"
+          ],
+          "recommendations": [
+            "daily_record_check"
+          ],
+          "medical_clearance": false
+        },
+        {
+          "kind": "post_workout",
+          "status": "facts_only",
+          "reason": "current_health_report",
+          "context_mode": "current_health",
+          "warnings": [
+            "current_unclassified"
+          ],
+          "expert_criteria": [
+            "unclassified_recovery"
+          ],
+          "recommendations": [],
+          "medical_clearance": false
+        },
+        {
+          "kind": "weekly",
+          "status": "facts_only",
+          "reason": "current_health_report",
+          "context_mode": "current_health",
+          "warnings": [
+            "current_unclassified"
+          ],
+          "expert_criteria": [
+            "unclassified_recovery"
+          ],
+          "recommendations": [],
+          "medical_clearance": false
+        }
+      ]
+    },
+    {
+      "scenario": "unclear",
+      "results": [
+        {
+          "kind": "daily",
+          "status": "recommendation",
+          "reason": "bounded_nonphysical_proposal",
+          "context_mode": "clarification",
+          "warnings": [],
+          "expert_criteria": [],
+          "recommendations": [
+            "daily_record_check"
+          ],
+          "medical_clearance": false
+        },
+        {
+          "kind": "post_workout",
+          "status": "clarification",
+          "reason": "clarification",
+          "context_mode": "clarification",
+          "warnings": [],
+          "expert_criteria": [],
+          "recommendations": [],
+          "medical_clearance": false
+        },
+        {
+          "kind": "weekly",
+          "status": "clarification",
+          "reason": "clarification",
+          "context_mode": "clarification",
+          "warnings": [],
+          "expert_criteria": [],
+          "recommendations": [],
+          "medical_clearance": false
+        }
+      ]
+    },
+    {
+      "scenario": "technical",
+      "results": [
+        {
+          "kind": "daily",
+          "status": "recommendation",
+          "reason": "bounded_nonphysical_proposal",
+          "context_mode": "clarification",
+          "warnings": [],
+          "expert_criteria": [],
+          "recommendations": [
+            "daily_record_check"
+          ],
+          "medical_clearance": false
+        },
+        {
+          "kind": "post_workout",
+          "status": "clarification",
+          "reason": "clarification",
+          "context_mode": "clarification",
+          "warnings": [],
+          "expert_criteria": [],
+          "recommendations": [],
+          "medical_clearance": false
+        },
+        {
+          "kind": "weekly",
+          "status": "clarification",
+          "reason": "clarification",
+          "context_mode": "clarification",
+          "warnings": [],
+          "expert_criteria": [],
+          "recommendations": [],
+          "medical_clearance": false
+        }
+      ]
+    },
+    {
+      "scenario": "clarified",
+      "results": [
+        {
+          "kind": "daily",
+          "status": "recommendation",
+          "reason": "bounded_nonphysical_proposal",
+          "context_mode": "ordinary_or_settled",
+          "warnings": [],
+          "expert_criteria": [],
+          "recommendations": [
+            "daily_record_check"
+          ],
+          "medical_clearance": false
+        },
+        {
+          "kind": "post_workout",
+          "status": "recommendation",
+          "reason": "bounded_nonphysical_proposal",
+          "context_mode": "ordinary_or_settled",
+          "warnings": [],
+          "expert_criteria": [],
+          "recommendations": [
+            "workout_reflection"
+          ],
+          "medical_clearance": false
+        },
+        {
+          "kind": "weekly",
+          "status": "recommendation",
+          "reason": "bounded_nonphysical_proposal",
+          "context_mode": "ordinary_or_settled",
+          "warnings": [],
+          "expert_criteria": [],
+          "recommendations": [
+            "weekly_review"
+          ],
+          "medical_clearance": false
+        }
+      ]
+    },
+    {
+      "scenario": "technical_retry",
+      "results": [
+        {
+          "kind": "daily",
+          "status": "recommendation",
+          "reason": "bounded_nonphysical_proposal",
+          "context_mode": "ordinary_or_settled",
+          "warnings": [],
+          "expert_criteria": [],
+          "recommendations": [
+            "daily_record_check"
+          ],
+          "medical_clearance": false
+        },
+        {
+          "kind": "post_workout",
+          "status": "recommendation",
+          "reason": "bounded_nonphysical_proposal",
+          "context_mode": "ordinary_or_settled",
+          "warnings": [],
+          "expert_criteria": [],
+          "recommendations": [
+            "workout_reflection"
+          ],
+          "medical_clearance": false
+        },
+        {
+          "kind": "weekly",
+          "status": "recommendation",
+          "reason": "bounded_nonphysical_proposal",
+          "context_mode": "ordinary_or_settled",
+          "warnings": [],
+          "expert_criteria": [],
+          "recommendations": [
+            "weekly_review"
+          ],
+          "medical_clearance": false
+        }
+      ]
+    },
+    {
+      "scenario": "self_reported",
+      "results": [
+        {
+          "kind": "daily",
+          "status": "recommendation",
+          "reason": "bounded_nonphysical_proposal",
+          "context_mode": "self_reported",
+          "warnings": [],
+          "expert_criteria": [
+            "unclassified_recovery"
+          ],
+          "recommendations": [
+            "daily_record_check"
+          ],
+          "medical_clearance": false
+        },
+        {
+          "kind": "post_workout",
+          "status": "recommendation",
+          "reason": "bounded_nonphysical_proposal",
+          "context_mode": "self_reported",
+          "warnings": [],
+          "expert_criteria": [
+            "unclassified_recovery"
+          ],
+          "recommendations": [
+            "workout_reflection"
+          ],
+          "medical_clearance": false
+        },
+        {
+          "kind": "weekly",
+          "status": "recommendation",
+          "reason": "bounded_nonphysical_proposal",
+          "context_mode": "self_reported",
+          "warnings": [],
+          "expert_criteria": [
+            "unclassified_recovery"
+          ],
+          "recommendations": [
+            "weekly_review"
+          ],
+          "medical_clearance": false
+        }
+      ]
+    },
+    {
+      "scenario": "serious_recovered",
+      "results": [
+        {
+          "kind": "daily",
+          "status": "recommendation",
+          "reason": "bounded_nonphysical_proposal",
+          "context_mode": "self_reported",
+          "warnings": [],
+          "expert_criteria": [
+            "serious_recovery"
+          ],
+          "recommendations": [
+            "daily_record_check"
+          ],
+          "medical_clearance": false
+        },
+        {
+          "kind": "post_workout",
+          "status": "recommendation",
+          "reason": "bounded_nonphysical_proposal",
+          "context_mode": "self_reported",
+          "warnings": [],
+          "expert_criteria": [
+            "serious_recovery"
+          ],
+          "recommendations": [
+            "workout_reflection"
+          ],
+          "medical_clearance": false
+        },
+        {
+          "kind": "weekly",
+          "status": "recommendation",
+          "reason": "bounded_nonphysical_proposal",
+          "context_mode": "self_reported",
+          "warnings": [],
+          "expert_criteria": [
+            "serious_recovery"
+          ],
+          "recommendations": [
+            "weekly_review"
+          ],
+          "medical_clearance": false
+        }
+      ]
+    },
+    {
+      "scenario": "new_after_recovery",
+      "results": [
+        {
+          "kind": "daily",
+          "status": "recommendation",
+          "reason": "bounded_nonphysical_proposal",
+          "context_mode": "current_health",
+          "warnings": [
+            "current_unclassified"
+          ],
+          "expert_criteria": [
+            "unclassified_recovery",
+            "serious_recovery"
+          ],
+          "recommendations": [
+            "daily_record_check"
+          ],
+          "medical_clearance": false
+        },
+        {
+          "kind": "post_workout",
+          "status": "facts_only",
+          "reason": "current_health_report",
+          "context_mode": "current_health",
+          "warnings": [
+            "current_unclassified"
+          ],
+          "expert_criteria": [
+            "unclassified_recovery",
+            "serious_recovery"
+          ],
+          "recommendations": [],
+          "medical_clearance": false
+        },
+        {
+          "kind": "weekly",
+          "status": "facts_only",
+          "reason": "current_health_report",
+          "context_mode": "current_health",
+          "warnings": [
+            "current_unclassified"
+          ],
+          "expert_criteria": [
+            "unclassified_recovery",
+            "serious_recovery"
+          ],
+          "recommendations": [],
+          "medical_clearance": false
+        }
+      ]
+    },
+    {
+      "scenario": "recurring",
+      "results": [
+        {
+          "kind": "daily",
+          "status": "recommendation",
+          "reason": "bounded_nonphysical_proposal",
+          "context_mode": "current_health",
+          "warnings": [
+            "professional_review"
+          ],
+          "expert_criteria": [
+            "serious_recovery",
+            "recurrence_meaning_and_recovery"
+          ],
+          "recommendations": [
+            "daily_record_check"
+          ],
+          "medical_clearance": false
+        },
+        {
+          "kind": "post_workout",
+          "status": "facts_only",
+          "reason": "current_health_report",
+          "context_mode": "current_health",
+          "warnings": [
+            "professional_review"
+          ],
+          "expert_criteria": [
+            "serious_recovery",
+            "recurrence_meaning_and_recovery"
+          ],
+          "recommendations": [],
+          "medical_clearance": false
+        },
+        {
+          "kind": "weekly",
+          "status": "facts_only",
+          "reason": "current_health_report",
+          "context_mode": "current_health",
+          "warnings": [
+            "professional_review"
+          ],
+          "expert_criteria": [
+            "serious_recovery",
+            "recurrence_meaning_and_recovery"
+          ],
+          "recommendations": [],
+          "medical_clearance": false
+        }
+      ]
+    },
+    {
+      "scenario": "expired",
+      "results": [
+        {
+          "kind": "daily",
+          "status": "recommendation",
+          "reason": "bounded_nonphysical_proposal",
+          "context_mode": "context_missing",
+          "warnings": [],
+          "expert_criteria": [],
+          "recommendations": [
+            "daily_record_check"
+          ],
+          "medical_clearance": false
+        },
+        {
+          "kind": "post_workout",
+          "status": "clarification",
+          "reason": "context_missing",
+          "context_mode": "context_missing",
+          "warnings": [],
+          "expert_criteria": [],
+          "recommendations": [],
+          "medical_clearance": false
+        },
+        {
+          "kind": "weekly",
+          "status": "clarification",
+          "reason": "context_missing",
+          "context_mode": "context_missing",
+          "warnings": [],
+          "expert_criteria": [],
+          "recommendations": [],
+          "medical_clearance": false
+        }
+      ]
+    },
+    {
+      "scenario": "expired_fresh",
+      "results": [
+        {
+          "kind": "daily",
+          "status": "recommendation",
+          "reason": "bounded_nonphysical_proposal",
+          "context_mode": "fresh_limited_context",
+          "warnings": [],
+          "expert_criteria": [],
+          "recommendations": [
+            "daily_record_check"
+          ],
+          "medical_clearance": false
+        },
+        {
+          "kind": "post_workout",
+          "status": "recommendation",
+          "reason": "bounded_nonphysical_proposal",
+          "context_mode": "fresh_limited_context",
+          "warnings": [],
+          "expert_criteria": [],
+          "recommendations": [
+            "workout_reflection"
+          ],
+          "medical_clearance": false
+        },
+        {
+          "kind": "weekly",
+          "status": "recommendation",
+          "reason": "bounded_nonphysical_proposal",
+          "context_mode": "fresh_limited_context",
+          "warnings": [],
+          "expert_criteria": [],
+          "recommendations": [
+            "weekly_review"
+          ],
+          "medical_clearance": false
+        }
+      ]
+    },
+    {
+      "scenario": "missing",
+      "results": [
+        {
+          "kind": "daily",
+          "status": "recommendation",
+          "reason": "bounded_nonphysical_proposal",
+          "context_mode": "context_missing",
+          "warnings": [],
+          "expert_criteria": [],
+          "recommendations": [
+            "daily_record_check"
+          ],
+          "medical_clearance": false
+        },
+        {
+          "kind": "post_workout",
+          "status": "clarification",
+          "reason": "context_missing",
+          "context_mode": "context_missing",
+          "warnings": [],
+          "expert_criteria": [],
+          "recommendations": [],
+          "medical_clearance": false
+        },
+        {
+          "kind": "weekly",
+          "status": "clarification",
+          "reason": "context_missing",
+          "context_mode": "context_missing",
+          "warnings": [],
+          "expert_criteria": [],
+          "recommendations": [],
+          "medical_clearance": false
+        }
+      ]
+    },
+    {
+      "scenario": "missing_fresh",
+      "results": [
+        {
+          "kind": "daily",
+          "status": "recommendation",
+          "reason": "bounded_nonphysical_proposal",
+          "context_mode": "fresh_limited_context",
+          "warnings": [],
+          "expert_criteria": [],
+          "recommendations": [
+            "daily_record_check"
+          ],
+          "medical_clearance": false
+        },
+        {
+          "kind": "post_workout",
+          "status": "recommendation",
+          "reason": "bounded_nonphysical_proposal",
+          "context_mode": "fresh_limited_context",
+          "warnings": [],
+          "expert_criteria": [],
+          "recommendations": [
+            "workout_reflection"
+          ],
+          "medical_clearance": false
+        },
+        {
+          "kind": "weekly",
+          "status": "recommendation",
+          "reason": "bounded_nonphysical_proposal",
+          "context_mode": "fresh_limited_context",
+          "warnings": [],
+          "expert_criteria": [],
+          "recommendations": [
+            "weekly_review"
+          ],
+          "medical_clearance": false
+        }
+      ]
+    },
+    {
+      "scenario": "continue_chat",
+      "results": [
+        {
+          "kind": "daily",
+          "status": "recommendation",
+          "reason": "bounded_nonphysical_proposal",
+          "context_mode": "fresh_limited_context",
+          "warnings": [],
+          "expert_criteria": [],
+          "recommendations": [
+            "daily_record_check"
+          ],
+          "medical_clearance": false
+        },
+        {
+          "kind": "post_workout",
+          "status": "recommendation",
+          "reason": "bounded_nonphysical_proposal",
+          "context_mode": "fresh_limited_context",
+          "warnings": [],
+          "expert_criteria": [],
+          "recommendations": [
+            "workout_reflection"
+          ],
+          "medical_clearance": false
+        },
+        {
+          "kind": "weekly",
+          "status": "recommendation",
+          "reason": "bounded_nonphysical_proposal",
+          "context_mode": "fresh_limited_context",
+          "warnings": [],
+          "expert_criteria": [],
+          "recommendations": [
+            "weekly_review"
+          ],
+          "medical_clearance": false
+        }
+      ]
+    }
+  ],
+  "publication": {
+    "target": "https://yourizorge.github.io/fitmetzorge-staging/",
+    "source_pages_run": 34404406615,
+    "source_pages_status": "SUCCESS",
+    "source_pages_commit": "d12484a10c62f427bc630630167b5e9027e78d1f",
+    "before_checked_at": "2026-09-09T20:51:52.399Z",
+    "after_source_checked_at": "2026-09-09T21:04:07.043Z",
+    "runtime_baseline": "e356a4cb951fc3d614035fa0bf547e669b4d045a",
+    "runtime_byte_identical": true,
+    "working_runtime_unchanged": true,
+    "assets": [
+      {
+        "file": "Fit_Met_Zorge_Coach_App_standalone.html",
+        "bytes": 192602,
+        "sha256": "1592d6ecebb2527c34dd3a9fa9b1381db18c8dc4af9e64ad7b1ae7c65d357bc4",
+        "working_sha256": "416dba0b8cc85733ef52d13ea69fe21c13671571b2099dcd84fec9d706dd2f72"
+      },
+      {
+        "file": "app.bundle.js",
+        "bytes": 274987,
+        "sha256": "0aedc9e0c5ef05b96b4b0313090a5f6a5481c8d5a585eaac4f4b61ea9fd459d6",
+        "working_sha256": "1176bc196d750257c5afa847495d14387997575ea5f28e06293bdf06b2f277e8"
+      },
+      {
+        "file": "app.js",
+        "bytes": 7849,
+        "sha256": "b3b783a1a38e128216887cc95a5a56f612da28c1dc6c40633615465552a0941b",
+        "working_sha256": "b3b783a1a38e128216887cc95a5a56f612da28c1dc6c40633615465552a0941b"
+      },
+      {
+        "file": "assets/fit-met-zorge-logo-cropped.png",
+        "bytes": 15620,
+        "sha256": "c82010c6b05025acc33c69c3eee185775f7e935f53dfdce99b73f4318ce59008",
+        "working_sha256": "c82010c6b05025acc33c69c3eee185775f7e935f53dfdce99b73f4318ce59008"
+      },
+      {
+        "file": "assets/fit-met-zorge-logo.png",
+        "bytes": 17316,
+        "sha256": "4b156a6d55569683703b30e4c349d692cdcffc5b0785114fecb7341c81734897",
+        "working_sha256": "4b156a6d55569683703b30e4c349d692cdcffc5b0785114fecb7341c81734897"
+      },
+      {
+        "file": "assets/logo.svg",
+        "bytes": 521,
+        "sha256": "17ab07e30519df3052e539e9839a9b4009598ce9f5d93ba4d1e455fcf9e956b8",
+        "working_sha256": "c140c90905fa110c4d390584a0065ecf076a7ebf98d4dba50d011c376e33cca6"
+      },
+      {
+        "file": "assets/member-ux-consistency.js",
+        "bytes": 54499,
+        "sha256": "549beca9ebfe6b1b3f63d254280c5e61b8641809903a2f81dd7c415807314dea",
+        "working_sha256": "630a0cfa117673f58e8870129387a4899d2123600a95bc7e1be225ffa5dfc4de"
+      },
+      {
+        "file": "assets/phase1-foundation.js",
+        "bytes": 120779,
+        "sha256": "f275ad98e4680f4e4436858911fc5800e39a4094ab144ec78d0a92adb75addf6",
+        "working_sha256": "8cd8634380fafb2fdb2caa65f07acb6d29ace3a1b165863627bcb508bd99f0e1"
+      },
+      {
+        "file": "assets/phase2-home-recovery.js",
+        "bytes": 43727,
+        "sha256": "5e642249fc7a1af297e5035f3c5d219cd3ff9f9dbdc19d20c24be59089ba2707",
+        "working_sha256": "d02290b83e0c6f220c40ae6c0b796c5ad2a34070fc44e7d424488d7d1dd17aea"
+      },
+      {
+        "file": "assets/phase3-training-engine.js",
+        "bytes": 228452,
+        "sha256": "3abfd5d55242f1cb682cd5dd41eaab224c8444e8a5c20987df3042a8abbc7cd8",
+        "working_sha256": "d6c8fda638ebffade4aaed2e6dda0a40bc009f747dc1b51662f9d46e80adc6ff"
+      },
+      {
+        "file": "assets/phase4-nutrition-slice2.js",
+        "bytes": 69176,
+        "sha256": "42c00580ac2574787b7deea19b3e70009562c8b628863a09409536f265ee28c2",
+        "working_sha256": "42c00580ac2574787b7deea19b3e70009562c8b628863a09409536f265ee28c2"
+      },
+      {
+        "file": "assets/phase4-nutrition-slice3.js",
+        "bytes": 149097,
+        "sha256": "e07bdd2949f7d87bca19edd8160c23ccae7cddf4279494dc12551b61ea275396",
+        "working_sha256": "e07bdd2949f7d87bca19edd8160c23ccae7cddf4279494dc12551b61ea275396"
+      },
+      {
+        "file": "assets/phase5-progress.js",
+        "bytes": 61444,
+        "sha256": "b47b9ac07d1b21a9aad014d824e398690546e385eed7c249a98e95564d704b7b",
+        "working_sha256": "b47b9ac07d1b21a9aad014d824e398690546e385eed7c249a98e95564d704b7b"
+      },
+      {
+        "file": "assets/phase6c-private-ai-chat.js",
+        "bytes": 57754,
+        "sha256": "f841e8c68f79d481157c7c4bfd0194b406ce1f980a26539667910c32baccae97",
+        "working_sha256": "f841e8c68f79d481157c7c4bfd0194b406ce1f980a26539667910c32baccae97"
+      },
+      {
+        "file": "assets/phase6d-analysis-inbox.js",
+        "bytes": 26016,
+        "sha256": "428c81aab07c815aab74828790c028b0839cdbd83a607b0c9eddbbcc8fc28fbe",
+        "working_sha256": "428c81aab07c815aab74828790c028b0839cdbd83a607b0c9eddbbcc8fc28fbe"
+      },
+      {
+        "file": "assets/phase6d-hotfix2.css",
+        "bytes": 16706,
+        "sha256": "2c7444c64b34183c7a13241c42286f6109e6db782a4026f45b396318b72c25f9",
+        "working_sha256": "2c7444c64b34183c7a13241c42286f6109e6db782a4026f45b396318b72c25f9"
+      },
+      {
+        "file": "assets/phase6d-owner-settings.css",
+        "bytes": 10468,
+        "sha256": "e03ac8dd7752620bb72d4d5bcea4e3c586c7fddce9d2ad2c95fa0a6db1332f58",
+        "working_sha256": "e03ac8dd7752620bb72d4d5bcea4e3c586c7fddce9d2ad2c95fa0a6db1332f58"
+      },
+      {
+        "file": "assets/phase6d-owner-settings.js",
+        "bytes": 53492,
+        "sha256": "6f104de6a08ea6e33de7a05236ac778877e8b0a67132b4e7a50eebc6773adbdd",
+        "working_sha256": "6f104de6a08ea6e33de7a05236ac778877e8b0a67132b4e7a50eebc6773adbdd"
+      },
+      {
+        "file": "assets/phase6d0-legacy-auth.js",
+        "bytes": 4560,
+        "sha256": "fdaca0d3637ca2dcd36fad7a3698ff6c4edae709c582ef3c6709530e2012d4e3",
+        "working_sha256": "fdaca0d3637ca2dcd36fad7a3698ff6c4edae709c582ef3c6709530e2012d4e3"
+      },
+      {
+        "file": "assets/theme-authority.js",
+        "bytes": 3126,
+        "sha256": "7927a84cc5a686e186fadd8de92f8afc0f05d6f256121dcfa92da8d2b6605188",
+        "working_sha256": "7927a84cc5a686e186fadd8de92f8afc0f05d6f256121dcfa92da8d2b6605188"
+      },
+      {
+        "file": "assets/training-workout-model.js",
+        "bytes": 4418,
+        "sha256": "eeb10ee80ffc829f9a0ca5fc2566c3a4edac6d8890ea4fc2f202124909fdfa11",
+        "working_sha256": "eeb10ee80ffc829f9a0ca5fc2566c3a4edac6d8890ea4fc2f202124909fdfa11"
+      },
+      {
+        "file": "assets/training-workout-ui.js",
+        "bytes": 30984,
+        "sha256": "9b847dc890ddd636bb6944e6482234c525c5a7be5b3513d9c825e42a4231080f",
+        "working_sha256": "9b847dc890ddd636bb6944e6482234c525c5a7be5b3513d9c825e42a4231080f"
+      },
+      {
+        "file": "assets/training-workout.css",
+        "bytes": 12028,
+        "sha256": "0fdd8e2c134a1783c674b43711ca35b40528501ee1ad98adbd75e786caa9b3f3",
+        "working_sha256": "0fdd8e2c134a1783c674b43711ca35b40528501ee1ad98adbd75e786caa9b3f3"
+      },
+      {
+        "file": "assets/vendor/flag-de.svg",
+        "bytes": 221,
+        "sha256": "efd480af5a154a7651f29da23ee0d09dbc892410fb4041898ddf8face336c575",
+        "working_sha256": "efd480af5a154a7651f29da23ee0d09dbc892410fb4041898ddf8face336c575"
+      },
+      {
+        "file": "assets/vendor/flag-gb.svg",
+        "bytes": 504,
+        "sha256": "c8be1e7208798a4ae692ee1e937065d498bb29e741943f6172b29118b8ed8066",
+        "working_sha256": "c8be1e7208798a4ae692ee1e937065d498bb29e741943f6172b29118b8ed8066"
+      },
+      {
+        "file": "assets/vendor/flag-icons-LICENSE.txt",
+        "bytes": 1087,
+        "sha256": "8f1195d55a2fd315a07d812328470ca9ba2abb78c8d317ff19619d5125e00cea",
+        "working_sha256": "8f1195d55a2fd315a07d812328470ca9ba2abb78c8d317ff19619d5125e00cea"
+      },
+      {
+        "file": "assets/vendor/flag-nl.svg",
+        "bytes": 225,
+        "sha256": "8f691f17fe70894537af8e92f2ca47761d353639b0defc15cbe561eb503ab010",
+        "working_sha256": "8f691f17fe70894537af8e92f2ca47761d353639b0defc15cbe561eb503ab010"
+      },
+      {
+        "file": "assets/vendor/lucide-LICENSE.txt",
+        "bytes": 880,
+        "sha256": "1e7290b35280a048667bbf0ebabac1c7fd52a75300e8b2946ac165715997f2bc",
+        "working_sha256": "1e7290b35280a048667bbf0ebabac1c7fd52a75300e8b2946ac165715997f2bc"
+      },
+      {
+        "file": "assets/vendor/lucide-archive.svg",
+        "bytes": 419,
+        "sha256": "1a6e1c540c9a1a9b489893cc14ab9f597496c69aab5ba222fdd5b456de9e2fac",
+        "working_sha256": "1a6e1c540c9a1a9b489893cc14ab9f597496c69aab5ba222fdd5b456de9e2fac"
+      },
+      {
+        "file": "assets/vendor/lucide-arrow-left.svg",
+        "bytes": 344,
+        "sha256": "e31ed0af85ffbed2b54f78f37af197c3b84b24e776cba1d27613d6a9ad555a16",
+        "working_sha256": "e31ed0af85ffbed2b54f78f37af197c3b84b24e776cba1d27613d6a9ad555a16"
+      },
+      {
+        "file": "assets/vendor/lucide-arrow-up.svg",
+        "bytes": 341,
+        "sha256": "df0ff279d41bba93ae6797ef519ba442b895cd5d546fb36f22b7a656c3b05fd1",
+        "working_sha256": "df0ff279d41bba93ae6797ef519ba442b895cd5d546fb36f22b7a656c3b05fd1"
+      },
+      {
+        "file": "assets/vendor/lucide-bell.svg",
+        "bytes": 469,
+        "sha256": "129a018bd5025fc992a510e9c95e7868300d888b69c38c69a3466d310919ea13",
+        "working_sha256": "129a018bd5025fc992a510e9c95e7868300d888b69c38c69a3466d310919ea13"
+      },
+      {
+        "file": "assets/vendor/lucide-calendar.svg",
+        "bytes": 410,
+        "sha256": "2e2a7df92c2cca71dd6de34bb3f7187e276e8e8e003abe2e80b2ffd13347af60",
+        "working_sha256": "2e2a7df92c2cca71dd6de34bb3f7187e276e8e8e003abe2e80b2ffd13347af60"
+      },
+      {
+        "file": "assets/vendor/lucide-check.svg",
+        "bytes": 316,
+        "sha256": "538432eec072ceeccf5a7aacf347a2ad2bff9937d203dbd0b4f4245d7accd93c",
+        "working_sha256": "538432eec072ceeccf5a7aacf347a2ad2bff9937d203dbd0b4f4245d7accd93c"
+      },
+      {
+        "file": "assets/vendor/lucide-chevron-right.svg",
+        "bytes": 322,
+        "sha256": "fea488a3b60fd7738bbbf8ca98826ef5c0381347c5fd1048d45ee70a75a51cfe",
+        "working_sha256": "fea488a3b60fd7738bbbf8ca98826ef5c0381347c5fd1048d45ee70a75a51cfe"
+      },
+      {
+        "file": "assets/vendor/lucide-clock.svg",
+        "bytes": 348,
+        "sha256": "75336afa51ee6da9fec7e9bf5138c20d4e8a85d1133df896fea071c622c12c7c",
+        "working_sha256": "75336afa51ee6da9fec7e9bf5138c20d4e8a85d1133df896fea071c622c12c7c"
+      },
+      {
+        "file": "assets/vendor/lucide-credit-card.svg",
+        "bytes": 386,
+        "sha256": "4d0394710733a8ca0db566208b0281708ebde7b167b6903491fde0be060bded1",
+        "working_sha256": "4d0394710733a8ca0db566208b0281708ebde7b167b6903491fde0be060bded1"
+      },
+      {
+        "file": "assets/vendor/lucide-download.svg",
+        "bytes": 428,
+        "sha256": "f68a21e11115edc0aef51ac6f8f4618e14d2b92055f1cb9f5d670efc696bea85",
+        "working_sha256": "f68a21e11115edc0aef51ac6f8f4618e14d2b92055f1cb9f5d670efc696bea85"
+      },
+      {
+        "file": "assets/vendor/lucide-file-text.svg",
+        "bytes": 473,
+        "sha256": "512f414d72aabc5218b94a9da571df70d8e0b014cfb32ec366b559ec868952d6",
+        "working_sha256": "512f414d72aabc5218b94a9da571df70d8e0b014cfb32ec366b559ec868952d6"
+      },
+      {
+        "file": "assets/vendor/lucide-globe.svg",
+        "bytes": 408,
+        "sha256": "c3543ac3883a0841aa5d37ff974708fbc37d9c6afe64e14b03d56ed798b0b788",
+        "working_sha256": "c3543ac3883a0841aa5d37ff974708fbc37d9c6afe64e14b03d56ed798b0b788"
+      },
+      {
+        "file": "assets/vendor/lucide-history.svg",
+        "bytes": 403,
+        "sha256": "682b5fc882578a3bdaac72c72fc27709cb806b61c2d1d51194327b31dde7f239",
+        "working_sha256": "682b5fc882578a3bdaac72c72fc27709cb806b61c2d1d51194327b31dde7f239"
+      },
+      {
+        "file": "assets/vendor/lucide-languages.svg",
+        "bytes": 443,
+        "sha256": "a33a7bd34876dde0c5a470914dac09fca77f97da75e93e1b1687de2294874c65",
+        "working_sha256": "a33a7bd34876dde0c5a470914dac09fca77f97da75e93e1b1687de2294874c65"
+      },
+      {
+        "file": "assets/vendor/lucide-loader-circle.svg",
+        "bytes": 336,
+        "sha256": "44ad0f822a89b28a3feecf7276686c818a92a4a9c77cc51404c58929e30f0f3a",
+        "working_sha256": "44ad0f822a89b28a3feecf7276686c818a92a4a9c77cc51404c58929e30f0f3a"
+      },
+      {
+        "file": "assets/vendor/lucide-log-out.svg",
+        "bytes": 425,
+        "sha256": "3f28d1eedd9a71ec6933578fc1b7cd21c56618e8b9b8339e55bfc133b4eb6bee",
+        "working_sha256": "3f28d1eedd9a71ec6933578fc1b7cd21c56618e8b9b8339e55bfc133b4eb6bee"
+      },
+      {
+        "file": "assets/vendor/lucide-message-circle.svg",
+        "bytes": 340,
+        "sha256": "f62830d9fbbbf697e53555398d31a342ddec8dd008d707f21cd90bb19befcc87",
+        "working_sha256": "f62830d9fbbbf697e53555398d31a342ddec8dd008d707f21cd90bb19befcc87"
+      },
+      {
+        "file": "assets/vendor/lucide-plus.svg",
+        "bytes": 332,
+        "sha256": "b29207ee8f5cc0e829c0bab2e5b223fc88687599c6bd40b94ba35f52327615d6",
+        "working_sha256": "b29207ee8f5cc0e829c0bab2e5b223fc88687599c6bd40b94ba35f52327615d6"
+      },
+      {
+        "file": "assets/vendor/lucide-rotate-cw.svg",
+        "bytes": 380,
+        "sha256": "2c2c5d1f147e829f431182eee79d8d74e81aedcf8177f9e1878a4180ec990a9c",
+        "working_sha256": "2c2c5d1f147e829f431182eee79d8d74e81aedcf8177f9e1878a4180ec990a9c"
+      },
+      {
+        "file": "assets/vendor/lucide-settings.svg",
+        "bytes": 904,
+        "sha256": "ceea1a72d04b112291222ba9ad0779a12d47d816079fe4174900c724f360b55c",
+        "working_sha256": "ceea1a72d04b112291222ba9ad0779a12d47d816079fe4174900c724f360b55c"
+      },
+      {
+        "file": "assets/vendor/lucide-shield.svg",
+        "bytes": 464,
+        "sha256": "276e603595736fcb698b0309b04c44ebb88afb28e4753c5670f92c11a01ed043",
+        "working_sha256": "276e603595736fcb698b0309b04c44ebb88afb28e4753c5670f92c11a01ed043"
+      },
+      {
+        "file": "assets/vendor/lucide-trash-2.svg",
+        "bytes": 499,
+        "sha256": "9268a35cfb4f9d852c3d13f2c91476dd067c21c20e2bcdb0093fd93fd0bf34b7",
+        "working_sha256": "9268a35cfb4f9d852c3d13f2c91476dd067c21c20e2bcdb0093fd93fd0bf34b7"
+      },
+      {
+        "file": "assets/vendor/lucide-user.svg",
+        "bytes": 375,
+        "sha256": "bb1e0531065db51238a34b348cf8fb8267cd31932dc3f680c9f204a58d1520ea",
+        "working_sha256": "bb1e0531065db51238a34b348cf8fb8267cd31932dc3f680c9f204a58d1520ea"
+      },
+      {
+        "file": "assets/vendor/lucide-x.svg",
+        "bytes": 333,
+        "sha256": "0f38855d9d5775c10960ae53e46b745f77914b43f78c43bf8abc39f4d5e06de1",
+        "working_sha256": "0f38855d9d5775c10960ae53e46b745f77914b43f78c43bf8abc39f4d5e06de1"
+      },
+      {
+        "file": "assets/vendor/zxing-browser-0.2.1.LICENSE.txt",
+        "bytes": 1069,
+        "sha256": "4c26c3077daa7ce4d56ad91f279fafc395bf33c3a0f1ba9ab8cf511bad148ea5",
+        "working_sha256": "4c26c3077daa7ce4d56ad91f279fafc395bf33c3a0f1ba9ab8cf511bad148ea5"
+      },
+      {
+        "file": "assets/vendor/zxing-browser-0.2.1.min.js",
+        "bytes": 441121,
+        "sha256": "066bc34edfcdd4a33f0964aeec967752a0dea1ccaf36e58e319ac9fcb5070f6a",
+        "working_sha256": "066bc34edfcdd4a33f0964aeec967752a0dea1ccaf36e58e319ac9fcb5070f6a"
+      },
+      {
+        "file": "assets/youri-ai-avatar-3d-v3-256.webp",
+        "bytes": 53188,
+        "sha256": "257f31e6fe4faa7fecf5fb9874eed06d4018dc8c60958aa714e7d4b79a7517dc",
+        "working_sha256": "257f31e6fe4faa7fecf5fb9874eed06d4018dc8c60958aa714e7d4b79a7517dc"
+      },
+      {
+        "file": "assets/youri-ai-avatar-3d-v3-master.png",
+        "bytes": 1864738,
+        "sha256": "53edc8c376f097417abde7b74f4c9d85cebad4e2a676ae65620a4cbd65da2e57",
+        "working_sha256": "53edc8c376f097417abde7b74f4c9d85cebad4e2a676ae65620a4cbd65da2e57"
+      },
+      {
+        "file": "config.js",
+        "bytes": 196,
+        "sha256": "07cc826304b5a9343ef26a21aabae6d00a21fe4c55a1d9feefef6067bcecd6fa",
+        "working_sha256": "2de78bb99305d1f5a8ae36ce224d0012ba951cdc5b46160e98d985315046d3f2"
+      },
+      {
+        "file": "fit-met-zorge-logo.png",
+        "bytes": 257147,
+        "sha256": "940c6c9e66d73a642d67f453fc12e46e78f233e60432ea0ad426324af1493ecf",
+        "working_sha256": "940c6c9e66d73a642d67f453fc12e46e78f233e60432ea0ad426324af1493ecf"
+      },
+      {
+        "file": "index.html",
+        "bytes": 52439,
+        "sha256": "ed528fc8a7261d03693fcabd3cefd5c12f6dfb27c0d97432deb0e3e098e19a34",
+        "working_sha256": "ed528fc8a7261d03693fcabd3cefd5c12f6dfb27c0d97432deb0e3e098e19a34"
+      },
+      {
+        "file": "styles.css",
+        "bytes": 105343,
+        "sha256": "29d376ad4efbaee61dfc65adaced629753cdc5d126c58f5c60ee472324e2a20e",
+        "working_sha256": "55ac1cc6007d54a9aca7f9425cb25aff8706268d0f02bf01b4ee7666bb2f8b4b"
+      }
+    ],
+    "private_source_probes": [
+      {
+        "file": "_offline/phase6e0/README.md",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/context-hints.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/contract.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/copy.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/corpus.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/engine.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/fixture-seeds.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/known-limitations.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/package.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/recognition-followup-cases.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/retention.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/rules.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/state.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/test/engine.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/test/helpers.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/test/isolation.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/test/limitations.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/test/recognition-followup.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/test/retention.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/test/state.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/test/warning-recovery-proposal.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/warning-recovery-proposal.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/warning-recovery-proposal.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/README.md",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/analysis.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/common.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/content-contract.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/context.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/contract.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/flow.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/package.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/preregistered-cases.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/retention.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/test/acceptance.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/test/analysis.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/test/context.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/test/examples.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/test/flow.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/test/helpers.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/test/isolation.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/test/publication-check.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/test/retention.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/test/review-boundaries.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/test/training-followup.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/training-followup-cases.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e2/README.md",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e2/contract.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e2/copy.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e2/engine.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e2/package.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e2/preregistered-cases.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e2/test/contract.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e2/test/examples.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e2/test/fixtures.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e2/test/isolation.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e2/test/publication-check.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e2/test/verify.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/browser.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/catalog-snapshot.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/completion-regression.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/evidence.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/mobile-browser-checks.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/mobile-evidence.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/mobile.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/model.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/preservation.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/publication.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/sql-local.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/sql.test.sql",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/staging-check.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/timer-review-browser.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/timer-review-evidence.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/timer-review-publication.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/timer-review.test.cjs",
+        "status": 404
+      }
+    ],
+    "offline_isolated": true,
+    "docs_only_final_publication": "final HEAD/Pages/byte checks reported after push in chat, no self-referential commit claim"
+  },
+  "boundaries": {
+    "nonphysical_proposals_only": true,
+    "goals_or_trainer_limits_invented": false,
+    "expert_medical_privacy_legal_language_review": "OPEN",
+    "automatic_actions": false,
+    "external_ai_calls": 0,
+    "live_member_processing": false,
+    "db_or_edge_operations": false,
+    "production_touched": false,
+    "phase6e_complete": false,
+    "owner_decisions_pending": [
+      "N1",
+      "N2",
+      "N3"
+    ],
+    "next_package_started": false,
+    "physical_timer_phone_test": "separate and pending"
+  }
+}

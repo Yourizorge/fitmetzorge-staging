@@ -594,3 +594,22 @@ D1-D12 and frozen 6E-0 remain unchanged. Phase 6E is incomplete. Current round-t
 RIR-RPE runtime remains byte-identical; the physical phone retest is independent.
 See PHASE6E1_FREEZE_RECEIPT.md and PHASE6E1_PROPOSAL.md for evidence and the single
 unstarted next offline recommendation-content/resumption package.
+
+## Decision 0040: Package 6E-2 offline implementation GO, not acceptance
+
+Date: 2026-09-09. Explicit owner GO for PHASE6E1_PROPOSAL.md's bounded offline
+recommendation-content/resumption package. Baseline e356a4c; main staging only.
+Status after technical verification: TECHNICAL PASS / READY FOR OWNER REVIEW.
+No owner acceptance/freeze/live authorization follows from this implementation GO.
+
+Three executable nonphysical proposals use only existing synthetic aggregate
+contracts: daily record checking, workout reflection and weekly review. Workload,
+nutrition, recovery-return and goal changes remain explicit unreviewed boundaries;
+no missing goals, trainer limits or medical norms are invented.
+New N1-N3 product proposals (content/copy, nonphysical reflection after self-report,
+and fresh context after misunderstanding/missing sources) are in PHASE6E2_OWNER_OVERVIEW.md.
+These are NOT accepted owner decisions. D1-D12 and accepted O1-O5 stay unchanged.
+All 45 frozen 6E-0/6E-1 sources and current round-timer/RIR-RPE runtime are preserved.
+No provider, live member data, DB/Edge, sharing, automated action, cost or production.
+Expert medical/privacy/legal/language reviews remain open; Phase 6E is incomplete.
+Physical phone retest remains separate. No next package starts automatically.
