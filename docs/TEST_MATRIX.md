@@ -1,6 +1,30 @@
 # FitMetZorge Test Matrix
 
-## Training Mobile Follow-Up - Current
+## Training Timer And Effort - Current
+
+Owner accepts the previously delivered basics, compact set rows and other Training
+operation. This delivery adds the requested large round rest timer and direct
+RIR/RPE/None selector above sets. No AI acceptance is inferred from Training GO.
+Baseline dd3b4e8; runtime commit 802c3b141ec9293820c69fe229c618b73965abb7;
+cache 20260909-training-timer1. Exactly four runtime paths change; the basic
+exercise UI, model, Settings source, offline AI, SQL, Edge and entitlements do not.
+Local matrix: 1084/1084 PASS, 110 layout probes, 95 unique screenshots.
+Published-assets matrix: 1084/1084 PASS with the same geometry/screenshot coverage.
+Focused unit/preservation/theme: 33/33 PASS; completion regression: 6/6 PASS.
+Pages runtime build 34379169653 succeeded. 60/60 assets match committed raw bytes;
+56 assets unchanged from the immediate baseline; 60 private source paths HTTP404.
+See [technical report / phone retest](TRAINING_TIMER_REVIEW.md),
+[publication receipt](TRAINING_TIMER_REVIEW_PUBLICATION.md) and
+[evidence](TRAINING_TIMER_REVIEW_EVIDENCE.json) for final published verification.
+Physical phone/OS keyboard tests remain owner retest, not claimed by emulation.
+Existing 36 recognition follow-up cases and five executable AI examples rerun.
+No AI source change; the three old misses stay fixed. Current concrete proposals:
+[6E-1 owner review](PHASE6E1_OWNER_OVERVIEW.md). D1-D12 unchanged.
+6E-0 remains accepted/frozen OFFLINE ONLY; 6E-1 is technically ready, not
+owner-accepted/frozen/live. Phase 6E incomplete. No automatic next package.
+Historical reports below retain their original evidence and scope.
+
+## Training Mobile Follow-Up - Historical Delivery
 
 Owner-authorized refinement of basics, compact set rows and per-workout opt-in rest.
 Baseline 633e9f9; cache 20260908-training-mobile1. Only six scoped Training assets,

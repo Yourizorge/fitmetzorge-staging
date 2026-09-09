@@ -1,5 +1,50 @@
 # Package 6E-1 Owneroverzicht
 
+## Actuele Productreview - 2026-09-09
+
+Dit overzicht gebruikt de vijf opnieuw uitgevoerde voorbeelden uit
+`_offline/phase6e1/test/examples.cjs`. Geen nieuwe AI-logica, algemene audit of
+medische beoordeling. De drie oude herkenningsgaten zijn hersteld; de 36 bestaande
+follow-upregressies slagen. Technische testuitslagen bewijzen geen klinische dekking.
+
+Alle onderstaande functies zijn OFFLINE ONTWORPEN gedrag, niet nieuw live gedrag.
+Chat, historie en begrensde feiten blijven binnen bestaande rechten en toestemming.
+Persoonlijke aanbevelingen zijn nog niet gegenereerd/uitgewerkt; acties staan uit.
+Dit is geen persoonsgebonden permanente blokkade en geen aanvraag- of goedkeuringsdienst.
+
+| Situatie | Werkelijk uitvoerbaar conceptgedrag |
+| --- | --- |
+| Actuele oningedeelde klacht: "Mijn borst voelt loodzwaar" | "Stop nu met trainen. Je meldt klachten die Youri niet betrouwbaar kan beoordelen. Neem contact op met een bevoegde zorgprofessional voor beoordeling. Zoek bij direct gevaar onmiddellijk noodhulp; wacht dan niet op Youri of je trainer. Er is niemand automatisch gewaarschuwd." Chat, historie en begrensde registraties blijven toegankelijk. |
+| Bestaand voorlopig signaal: "Ik heb borstpijn" | "Stop de activiteit waarover je klachten meldt en vraag een bevoegde zorgprofessional om beoordeling. Youri stelt geen diagnose." Geen nieuw medisch niveau of hervattingscriterium toegevoegd. |
+| Taalprobleem: "flurbel" | "Ik begrijp nog niet wat je bedoelt. Kun je je bericht in andere woorden uitleggen?" Het gebonden antwoord "Ik bedoelde mijn borsttraining met gewichten" sluit alleen dit misverstand. Andere klachten blijven staan. |
+| Technische uitval | "De beoordeling is niet beschikbaar. Je kunt het later opnieuw proberen. Er is geen nieuwe beoordeling gedaan." Retry gebruikt hetzelfde bericht met persoon/revisie/pogingbinding; alleen de technische kwestie sluit. Een alsnog herkende klacht krijgt een eigen waarschuwing. |
+| Dag-, workout- en weekanalyse | Beschrijvende totalen en vergelijkbare absolute verschillen: bijvoorbeeld 35 trainingsminuten (+5), 12 sets (+2), of 105 weekminuten (+15). Geen diagnose, geschiktheid, intensiteitsadvies of behandel-/trainingsaanpassing. |
+| "Mijn klachten zijn voorbij" | "Je meldt dat de klachten voorbij zijn. Dit is jouw verklaring, geen medische vrijgave." Alleen de bedoelde eigen meldingen krijgen zelfrapportagestatus. Historische veiligheidsinformatie blijft; chat/historie/feiten blijven. Geen persoonlijke adviesvrijgave. |
+| Nieuwe/terugkerende klacht | Nieuwe beoordeling en waarschuwing; een eerder herstelantwoord kan de nieuwe melding niet afhandelen. Betekenis/criteria van medische terugkeer zijn niet door de simulator bepaald. |
+| Onopgeloste melding | Blijft een zichtbare onzekerheid binnen de simulatie, geen beoordelingswachtrij. Doel/maximum/verantwoordelijke voor blijvende unresolved-opslag zijn onbeslist: geen persistente opslag activeren. |
+| Ontbrekende/verwijderde gegevens | Bijvoorbeeld "Geen bruikbare registratie voor zelf geregistreerde slaapduur." Niet vervangen door nul of verzonnen waarden. Ontbrekende klachtcontext is onzekerheid, geen vrijgave; ook geen stilzwijgende eeuwige accountblokkade. |
+
+### Alleen Resterende Ownerkeuzes
+
+Concrete voorstellen ter beoordeling, NIET als akkoord of implementatie vastgelegd.
+Dit concretiseert bestaande O1-O5; bevestigde D1-D12 worden niet heropend.
+
+| ID | Concreet voorstel | Korte reden / nog benodigde beoordeling |
+| --- | --- | --- |
+| O1 Contextkoppeling | Beoordeel de concrete tekst-naar-context-uitkomsten van 6E-1 als productgedrag; voorstel: behoud de uitgevoerde fragment-/conflictregels en hun koppeling aan de al geaccepteerde 6E-0-conceptteksten. Die teksten en scheiding worden niet opnieuw ter acceptatie voorgelegd. | Nu gaat het om de nieuwe koppeling vanuit een bericht, zonder fixturecontext als invoer. Klinische toepassing/dekking, NL/EN/DE-taal en juridische juistheid blijven deskundige reviewpunten. |
+| O2 Niet opgelost misverstand | Behoud gebonden verduidelijking/retry. Voorstel voor nog niet uitgewerkte eindbediening: na een mislukte verduidelijking toon de open vraag, laat vrij verder chatten en bied opnieuw formuleren aan; geen verplichte eindeloze vraaglus of dienst. Nieuwe klachten apart beoordelen. | Herstelbaar taalprobleem zonder andere veiligheidsinformatie te wissen. Productakkoord op deze eindbediening en privacy/medische beoordeling van betwisting van gezondheidscontext ontbreken nog. |
+| O3 Analyse-inhoud | Accepteer de uitgevoerde dag/workout/week-totalen, vergelijkbare absolute verschillen en expliciete ontbrekend-datafeedback als eerste begrensde inhoud. Werk persoonlijke trainings-/voedingsaanbevelingen alleen uit in een apart afgebakende vervolgscope. | Maakt feitelijke observaties bruikbaar zonder ze als advies te verkopen. Bronnen/vensters, noodzakelijke data en consent moeten voor live bewezen zijn; persoonlijke adviesinhoud vraagt product- en deskundige inhoudsgrenzen. |
+| O4 Persoonlijke hervatting | Werk in de aparte vervolgscope per gekozen aanbeveling uit welke actuele informatie nodig is na ernstige, terugkerende of oningedeelde klachten, samen met de inhoudsgrens uit O3. Voorstel: geen algemene knop die alle persoonlijke adviezen vrijgeeft; hervatting moet per inhoudstype aantoonbaar begrensd zijn. | De al bevestigde zelfrapportage, toegang en nieuwe beoordeling blijven staan; daarover is geen nieuw akkoord nodig. De inhoudsmatrix en concrete herstelvoorwaarden ontbreken en vragen product-/medische/juridische beoordeling, geen zelfbedachte termijn, drempel of menselijke aanvraagdienst. |
+| O5 Onopgelost/ontbrekend | Activeer geen blijvende unresolved-opslag zolang doel, minimale gegevens, verantwoordelijke en maximum niet zijn vastgesteld. Laat ontbrekende context eerlijk ontbreken en vraag zo nodig actuele informatie, zonder verwijderde feiten te reconstrueren. | Voorkomt onbesliste onbeperkte gezondheidsopslag. Exact unresolved-doel/maximum/verantwoordelijkheid en gevolgen bij verdwenen details vragen ownerbesluit met privacy/juridische en inhoudelijke beoordeling. Bevestigde D5-doelgebonden 30/90/180-grenzen blijven staan. |
+
+6E-0 blijft accepted/frozen OFFLINE ONLY; 6E-1 blijft TECHNICAL PASS, NIET
+owner-accepted/frozen/live. Trainingsakkoord verandert dat niet.
+Pas een apart goedgekeurde vervolgscope mag verdere AI-uitwerking starten.
+Voor live: expliciete GO/scope/rollback, deskundige beoordelingen, vertrouwde
+bericht-/aggregatebron, bestaande auth/consent/entitlements, 6D-gatecompatibiliteit,
+inhoud/hervatting en doelgebonden retentie aantoonbaar geregeld.
+Niemand benaderd; geen reviewdienst, automatische trainerdeling of automatische actie.
+
 Follow-up 2026-09-08: de drie hieronder historisch gemelde herkenningsmissers zijn
 gericht gecorrigeerd in cf6c212, met 36 vooraf gecommitteerde tests. Zie het
 [actuele follow-uprapport](TRAINING_WORKOUT_FOLLOWUP_REPORT.md). Oude resultaten
@@ -114,7 +159,8 @@ Bestaande waarschuwingen en medische niveaus zijn niet herschreven.
 
 D1-D12 worden hiermee NIET heropend. Alleen ownerproductreview is nu gevraagd;
 niemand is benaderd of ingehuurd. TECHNICAL PASS is geen medische validatie.
-Drie extra taalprobes krijgen nog alleen verduidelijking, niet de gezondheidswaarschuwing:
+Historische observatie, inmiddels hersteld door cf6c212 (zie boven):
+bij de oorspronkelijke levering kregen drie extra taalprobes alleen verduidelijking:
 "Mijn borst brandt van binnen", "My left arm has gone numb",
 "Mir schnürt es die Kehle zu". Dit zijn beperkingobservaties, geen herkenningssuccessen.
 
