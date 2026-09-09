@@ -1,5 +1,6 @@
 const fs=require("node:fs"),path=require("node:path"),assert=require("node:assert/strict");
 const {chromium}=require("playwright");
+const mobile=require("./mobile-browser-checks.cjs");
 const {root,base,profile,probe,mockSetup,serverFixture}=require("../../assets/phase6d-owner-browser-check.cjs");
 const catalog=JSON.parse(fs.readFileSync(path.join(root,"supabase/.temp/training-catalog.json"),"utf8"));
 const checks=[],screens=[],errors=[],writes=[],layouts=[];
@@ -78,12 +79,12 @@ async function geometry(page,label,selector){
  layouts.push({label,...g});check(label+" viewport",g.html<=g.viewport);check(label+" bounded controls "+JSON.stringify(g.bad.slice(0,3)),g.bad.length===0);
 }
 async function screenshot(page,label){
- const output=path.join(root,"supabase/.temp/training-"+label+".png");await page.screenshot({path:output,fullPage:false});screens.push(output);
+ const output=path.join(root,"supabase/.temp/training-mobile-"+label+".png");await page.screenshot({path:output,fullPage:false});screens.push(output);
 }
 (async()=>{
  const browser=await chromium.launch({headless:true,executablePath:"C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe"});
  try{
- for(const [width,height] of(process.env.FMZ_TRAINING_DESKTOP?[[1440,900]]:process.env.FMZ_TRAINING_SMOKE?[[390,844]]:[[320,700],[390,844],[820,1180],[1440,900]])){
+ for(const [width,height] of(process.env.FMZ_TRAINING_DESKTOP?[[1440,900]]:process.env.FMZ_TRAINING_SMOKE?[[390,844]]:[[320,700],[360,780],[390,844],[1440,900]])){
   const backend=server(),context=await browser.newContext({viewport:{width,height},hasTouch:width<1000});
   await context.addInitScript("const base="+JSON.stringify(base)+";("+mockSetup.toString()+")("+JSON.stringify(profile)+");("+trainingSetup.toString()+")("+JSON.stringify(profile)+");");
   await context.route("**/*",async route=>{
@@ -114,7 +115,8 @@ async function screenshot(page,label){
   await page.evaluate(()=>__trainingTest.hydrate());await page.evaluate(()=>__hotfix.view("training"));
   await page.click('[data-phase3-toggle-section="builder"]');await page.click("[data-phase3-maker-open]");
   await page.waitForSelector("[data-tw-select]");
-  check(width+" canonical catalog",await page.evaluate(()=>document.querySelectorAll("[data-tw-select]").length)===72);
+  check(width+" canonical catalog, basics before 72 remainder",await page.evaluate(()=>document.querySelectorAll("[data-tw-select]").length)===107);
+  await mobile.basics(page,width,{check,geometry,screenshot});
   const first=catalog[0],second=catalog[1];
   await page.locator('[data-tw-select="'+first.id+'"]').check();await page.locator('[data-tw-select="'+second.id+'"]').check();
   await page.fill('[data-tw-filter="search"]',first.name_en);check(width+" selection retained through search",await page.locator("[data-tw-count]").textContent()==="2 geselecteerd");
@@ -167,13 +169,16 @@ async function screenshot(page,label){
   await page.click("[data-phase3-start-workout]");await page.waitForSelector(".tw-live-set");
   check(width+" failed initial session visibly unsaved",backend.db.workout_sessions.length===0&&await page.locator("[data-phase3-focus-feedback]").textContent().then(t=>t.includes("niet opgeslagen")));
   check(width+" only RIR shown",await page.locator("[data-phase3-rpe]").count()===0&&await page.locator("[data-phase3-rir]").count()===3);
+  await mobile.manualTimer(page,width,{check,geometry,screenshot});
   await page.locator("[data-phase3-reps]").nth(1).fill("9");
   await page.locator("[data-phase3-reps]").first().fill("10");
+  await page.locator("[data-phase3-rir]").first().fill("0");
   backend.failSet=true;await page.locator("[data-phase3-complete-set]").first().click();await page.waitForFunction(()=>!__trainingTest.state().activeSession.focus.rest);
   check(width+" failed set has no timer",!await page.evaluate(()=>__trainingTest.state().activeSession.focus.rest));
   await page.locator("[data-phase3-complete-set]").first().click();
   await page.waitForFunction(()=>__trainingTest.state().activeSession.focus.currentExerciseIndex===1);
   check(width+" superset first exercise no rest",!await page.evaluate(()=>__trainingTest.state().activeSession.focus.rest));
+  check(width+" actual RIR zero stored exactly",backend.db.workout_set_logs[0].rir===0);
   await page.locator("[data-phase3-reps]").first().fill("10");await page.locator("[data-phase3-complete-set]").first().click();
   await page.waitForSelector("[data-phase3-rest-countdown]");
   check(width+" group rest 120",await page.evaluate(()=>__trainingTest.state().activeSession.focus.rest.durationSeconds)===120);
@@ -199,12 +204,12 @@ async function screenshot(page,label){
   await page.waitForFunction(()=>__trainingTest.state().activeSession.focus.currentExerciseIndex===1);
   await page.locator("[data-phase3-reps]").nth(1).fill("9");await page.locator("[data-phase3-complete-set]").nth(1).click();
   await page.waitForSelector("[data-phase3-rest-countdown]");
-  await page.locator("[data-phase3-timer-enabled]").uncheck();await page.waitForFunction(()=>FMZ_TRAINING.preferences().timer_enabled===false);
+  await page.click("[data-phase3-timer-off]");await page.waitForFunction(()=>__trainingTest.state().activeSession.focus.timerEnabled===false);
   check(width+" disabling clears active timer",!await page.evaluate(()=>__trainingTest.state().activeSession.focus.rest));
   await page.evaluate(()=>__trainingTest.navigate(0));
   for(const mode of ["rpe","none","rir"]){await page.evaluate(mode=>FMZ_TRAINING.setPreferences({effort_mode:mode}),mode);check(width+" effort mode "+mode,await page.locator("[data-phase3-rir]").count()===(mode==="rir"?3:0)&&await page.locator("[data-phase3-rpe]").count()===(mode==="rpe"?3:0));}
   await page.reload();await page.waitForFunction(()=>window.__hotfix);await page.evaluate(()=>__hotfix.enter());await page.evaluate(()=>__trainingTest.hydrate());await page.evaluate(()=>__hotfix.view("training"));await page.evaluate(()=>__trainingTest.open());
-  check(width+" timer preference persists",!await page.locator("[data-phase3-timer-enabled]").isChecked());
+  check(width+" per-workout timer off persists",await page.locator(".tw-rest-panel").count()===0&&!await page.evaluate(()=>__trainingTest.state().activeSession.focus.timerEnabled));
   check(width+" draft set input refresh",await page.locator("[data-phase3-reps]").nth(1).inputValue()==="9");
   backend.failCompletion=true;await page.click("[data-phase3-complete-workout]");await page.waitForFunction(()=>__trainingTest.state().activeSession?.focus.feedback);
   await page.reload();await page.waitForFunction(()=>window.__hotfix);await page.evaluate(()=>__hotfix.enter());await page.evaluate(()=>__trainingTest.hydrate());await page.evaluate(()=>__hotfix.view("training"));await page.evaluate(()=>__trainingTest.open());
@@ -237,15 +242,21 @@ async function screenshot(page,label){
    check(width+" "+language+" catalog metadata",await page.locator(".tw-exercise header small").first().textContent().then(t=>t.length>5));
    await geometry(page,width+" "+language+" "+theme+" maker","#fmz-workout-maker");
    await page.locator("#fmz-workout-maker main").evaluate(n=>n.scrollTop=0);await screenshot(page,width+"-"+language+"-"+theme);
+   await page.click('[data-tw-action="library"]');
+   await mobile.basics(page,width+"-"+language+"-"+theme,{check,geometry,screenshot},language);
+   await page.click('[data-tw-action="back"]');
    await page.click('[data-tw-action="cancel"]');
   }
   backend.s.settings.language="nl";backend.s.settings.unit_system="imperial";await page.evaluate(()=>FMZ_OWNER_SETTINGS.hydrate(true));
   await page.click("[data-phase3-start-workout]");await page.waitForSelector(".tw-live-set");
   check(width+" previous exact set shown",await page.locator(".tw-live-set").first().textContent().then(t=>t.includes("11")));
+  check(width+" next workout starts with timer off",await page.locator(".tw-rest-panel").count()===0&&!await page.evaluate(()=>__trainingTest.state().activeSession.focus.timerEnabled));
+  await mobile.executionMatrix(page,width,height,backend,{check,geometry,screenshot});
   await page.locator("[data-phase3-weight]").first().fill("44.09");await page.locator("[data-phase3-reps]").first().fill("8");
   await page.locator("[data-phase3-complete-set]").first().click();
   await page.waitForFunction(()=>Object.values(__trainingTest.state().activeSession.setLogs).some(s=>s.syncedAt));
   check(width+" imperial input stored kg",Math.abs(backend.db.workout_set_logs.at(-1).actual_weight-20)<.005);
+  check(width+" successful set without opt-in does not open/start timer",await page.locator(".tw-rest-panel").count()===0&&!await page.evaluate(()=>__trainingTest.state().activeSession.focus.rest));
   await page.click("[data-phase3-close-focus]");
   await page.evaluate(()=>__hotfix.view("progress"));await page.evaluate(()=>__hotfix.view("client-home"));
   check(width+" post-workout dashboard retained",await page.locator("#client-home #clientSummary").isVisible()&&await page.locator("#clientSummary").textContent().then(t=>t.length>50));
@@ -253,7 +264,7 @@ async function screenshot(page,label){
   await context.close();
  }
  const result={overall_pass:true,checks,layouts,screens,source:process.env.FMZ_TRAINING_LIVE?"published":"working_tree",synthetic_only:true,live_member_mutations:0};
- fs.writeFileSync(path.join(root,"supabase/.temp/training-browser-"+(process.env.FMZ_TRAINING_LIVE?"live":"local")+".json"),JSON.stringify(result,null,2));
+ fs.writeFileSync(path.join(root,"supabase/.temp/training-mobile-browser-"+(process.env.FMZ_TRAINING_LIVE?"live":"local")+".json"),JSON.stringify(result,null,2));
  console.log(JSON.stringify(result,null,2));
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);console.log(JSON.stringify({overall_pass:false,checks,layouts,screens,errors},null,2));process.exitCode=1;});

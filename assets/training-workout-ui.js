@@ -1,9 +1,60 @@
 (function trainingWorkoutUI() {
   "use strict";
   const M=window.FMZ_WORKOUT_MODEL;
+  // Curated view of existing catalog identities; never create or infer a variant.
+  const basicGroups=[
+    {names:["Borst","Chest","Brust"],exercises:[
+      {"id":"bfcda5e1-5a31-551b-ab00-a34e1d51d9be","slug":"barbell-bench-press","names":["Bankdrukken (halterstang)","Barbell bench press","Bankdruecken (Langhantel)"]},
+      {"id":"48b83d53-5b2e-5d65-94cc-c0c874e021a2","slug":"dumbbell-bench-press","names":["Dumbbell bench press","Dumbbell bench press","Bankdruecken (Kurzhanteln)"]},
+      {"id":"7fc87a35-b24f-53c9-bf76-f299bb89f948","slug":"incline-dumbbell-press","names":["Incline dumbbell press","Incline dumbbell press","Schraegbankdruecken (Kurzhanteln)"]},
+      {"id":"83336082-92c1-5ffc-9577-d66242ec8163","slug":"machine-bench-press","names":["Chest press (toestel)","Machine chest press","Brustpresse (Maschine)"]},
+      {"id":"065131ba-6d12-53f9-a737-6b501bda164f","slug":"butterfly","names":["Pec deck","Pec deck","Butterfly (Maschine)"]},
+      {"id":"fa6ff1f2-c453-58da-9510-a26d5fd6d5b5","slug":"cable-chest-fly","names":["Cable fly (hoge kabels)","Cable fly (high pulleys)","Kabel-Flys (hoher Zug)"]}
+    ]},
+    {names:["Rug","Back","Ruecken"],exercises:[
+      {"id":"fbd17d30-8eec-500a-a123-d2873f5981cd","slug":"wide-grip-lat-pulldown","names":["Lat pulldown (brede greep)","Lat pulldown (wide grip)","Latzug (breiter Griff)"]},
+      {"id":"7e11783e-3582-5023-b965-afaf877e4e1b","slug":"seated-cable-rows","names":["Seated cable row (smalle greep)","Seated cable row (close grip)","Kabelrudern sitzend (enger Griff)"]},
+      {"id":"06baffb3-553f-5f3c-8a00-717203bb347f","slug":"bent-over-barbell-row","names":["Barbell row","Barbell row","Langhantelrudern"]},
+      {"id":"f4b3d183-68b9-5d6e-91a7-751fb49fc444","slug":"one-arm-dumbbell-row","names":["Eenarmige dumbbell row","Single-arm dumbbell row","Einarmiges Kurzhantelrudern"]},
+      {"id":"ee7e42f1-3ade-5ccc-92e2-a29fb9d51f4f","slug":"pull-up","names":["Pull-up","Pull-up","Klimmzug"]}
+    ]},
+    {names:["Schouders","Shoulders","Schultern"],exercises:[
+      {"id":"8deb73f1-ca3e-5f31-b089-077b66316a84","slug":"dumbbell-shoulder-press","names":["Dumbbell shoulder press (zittend)","Dumbbell shoulder press (seated)","Schulterdruecken sitzend (Kurzhanteln)"]},
+      {"id":"e2229c50-85ca-5eb6-a22d-c21eaf7c56b0","slug":"standing-military-press","names":["Overhead press (halterstang, staand)","Barbell overhead press (standing)","Schulterdruecken stehend (Langhantel)"]},
+      {"id":"1feff4cc-8c69-5c92-8d83-2200bad83b70","slug":"leverage-shoulder-press","names":["Shoulder press (toestel, schijven)","Machine shoulder press (plate loaded)","Schulterpresse (scheibenbeladen)"]},
+      {"id":"9e9fc710-be0c-5fe0-998c-c69f4f6be489","slug":"lateral-raise","names":["Lateral raise (dumbbells)","Dumbbell lateral raise","Seitheben (Kurzhanteln)"]},
+      {"id":"e7669f95-1624-5f4a-a5ab-08fc82e15208","slug":"reverse-machine-flyes","names":["Reverse pec deck","Reverse pec deck","Reverse Butterfly (Maschine)"]},
+      {"id":"ee29b63d-e33f-5c62-9677-dafc1b5b9200","slug":"face-pull","names":["Face pull","Face pull","Face Pull"]}
+    ]},
+    {names:["Benen / billen","Legs / glutes","Beine / Gesaess"],exercises:[
+      {"id":"62ac4931-aa57-5795-a722-3888f965e3df","slug":"barbell-squat","names":["Squat (halterstang)","Barbell back squat","Kniebeuge (Langhantel)"]},
+      {"id":"55b90c36-5e1b-5582-a1f4-e3adbe4c71d8","slug":"leg-press","names":["Leg press","Leg press","Beinpresse"]},
+      {"id":"6b01e0b0-4d0c-5c4e-a001-afa2d1096b98","slug":"leg-extensions","names":["Leg extension","Leg extension","Beinstrecker"]},
+      {"id":"c2a48629-90de-5237-9ef9-438b9d61281f","slug":"seated-leg-curl","names":["Leg curl (zittend)","Seated leg curl","Beinbeuger sitzend"]},
+      {"id":"d1112790-f11f-514b-9319-ce7589d0b109","slug":"lying-leg-curls","names":["Leg curl (liggend)","Lying leg curl","Beinbeuger liegend"]},
+      {"id":"a521421d-dc22-533c-a570-b8131e068a7f","slug":"deadlift","names":["Deadlift (halterstang)","Barbell deadlift","Kreuzheben (Langhantel)"]},
+      {"id":"32613884-3784-591e-af61-027451680252","slug":"romanian-deadlift","names":["Romanian deadlift (halterstang)","Barbell Romanian deadlift","Rumaenisches Kreuzheben (Langhantel)"]},
+      {"id":"846cb8a7-4939-5509-943c-1efeee5e2d0a","slug":"hip-thrust","names":["Hip thrust (halterstang)","Barbell hip thrust","Hip Thrust (Langhantel)"]},
+      {"id":"5824adeb-3e94-50fd-b1ba-61496cfda317","slug":"split-squat-with-dumbbells","names":["Bulgarian split squat (dumbbells)","Dumbbell Bulgarian split squat","Bulgarische Kniebeuge (Kurzhanteln)"]},
+      {"id":"c4bb9acb-7973-5245-95a1-e6016c3dd8d3","slug":"thigh-abductor","names":["Hip abduction (toestel)","Machine hip abduction","Hueftabduktion (Maschine)"]},
+      {"id":"fdefc70c-dbd2-5f84-a3b8-7eae3c5b2643","slug":"standing-calf-raises","names":["Calf raise (staand, toestel)","Standing machine calf raise","Wadenheben stehend (Maschine)"]}
+    ]},
+    {names:["Armen","Arms","Arme"],exercises:[
+      {"id":"8c8fba33-55d1-5a58-a4a9-33ff13cd2252","slug":"dumbbell-bicep-curl","names":["Dumbbell curl","Dumbbell curl","Bizepscurl (Kurzhanteln)"]},
+      {"id":"9fedd062-4d81-546a-8eac-e0db59b0ff76","slug":"barbell-curl","names":["Barbell curl","Barbell curl","Bizepscurl (Langhantel)"]},
+      {"id":"640a857e-3b6b-521e-be8d-da729825ac37","slug":"hammer-curls","names":["Hammer curl","Hammer curl","Hammercurl"]},
+      {"id":"2cefd973-2a11-5a85-b372-c31b7d1d4e7c","slug":"triceps-pushdown","names":["Triceps pushdown (stang)","Triceps pushdown (bar)","Trizepsdruecken (Stange)"]},
+      {"id":"704e0ce4-c007-573f-94f2-b6dee76f376b","slug":"triceps-pushdown-rope-attachment","names":["Triceps pushdown (touw)","Triceps pushdown (rope)","Trizepsdruecken (Seil)"]}
+    ]},
+    {names:["Buik","Abs","Bauch"],exercises:[
+      {"id":"f2380b42-08ca-5c9b-a074-5cf394b8a91b","slug":"crunches","names":["Crunch","Crunch","Crunch"]},
+      {"id":"300b0022-6c14-5b99-91fb-9f5bb49ce3e5","slug":"cable-crunch","names":["Cable crunch","Cable crunch","Kabel-Crunch"]}
+    ]}
+  ];
   const copy={
     create:["Workout maken","Create workout","Workout erstellen"], edit:["Workout bewerken","Edit workout","Workout bearbeiten"],
     library:["Oefeningen","Exercises","Uebungen"], search:["Zoek oefening","Search exercises","Uebung suchen"],
+    basics:["Basisoefeningen","Basic exercises","Grunduebungen"], other:["Overige oefeningen","Other exercises","Weitere Uebungen"],
     muscle:["Alle spiergroepen","All muscle groups","Alle Muskelgruppen"], equipment:["Alle materialen","All equipment","Alle Geraete"],
     back:["Terug","Back","Zurueck"], cancel:["Annuleren","Cancel","Abbrechen"], save:["Workout opslaan","Save workout","Workout speichern"],
     saving:["Opslaan...","Saving...","Speichern..."], name:["Naam workout","Workout name","Workoutname"],
@@ -39,12 +90,15 @@
     return '<span class="tw-media tw-media-fallback '+(large?'tw-media-large':'')+'" aria-label="FitMetZorge">'
       +'<img src="fit-met-zorge-logo.png" alt="" width="40" height="40"></span>';
   }
-  window.FMZ_WORKOUT_UI={media,icon,create(api){
+  window.FMZ_WORKOUT_UI={media,icon,basicGroups,create(api){
     let dialog=null, draft=null, screen="editor", selected=new Set(), filters={search:"",muscle:"",equipment:""},limit=72;
     let detail=null,replaceIndex=null,busy=false,error="",owner="",opener=null,scroll={editor:0,library:0},dragIndex=null,saveReceipt=null,renderedScreen="",renderedDetail=false;
     const t=k=>copy[k]?.[["nl","en","de"].indexOf(api.language())]||copy[k]?.[0]||api.text(k);
     const key=()=> "fmz-phase3-workout-draft:"+api.userKey();
     const catalog=()=>api.catalog().filter(e=>e.catalogBacked);
+    const basic=c=>basicGroups.flatMap(g=>g.exercises).find(e=>e.id===c.id&&e.slug===c.slug);
+    const localized=names=>names[Math.max(0,["nl","en","de"].indexOf(api.language()))];
+    const displayMeta=c=>({...api.meta(c.slug),name:basic(c)?localized(basic(c).names):api.meta(c.slug).name});
     const button=(name,action,index="",symbol="",disabled=false)=>'<button type="button" data-tw-action="'+action+'" data-tw-index="'+index+'" class="'+(symbol?'tw-tool':'secondary-btn')+'" title="'+esc(t(name))+'" aria-label="'+esc(t(name))+'"'+(disabled?' disabled':'')+'>'+(symbol?icon(symbol,action==="down"?"tw-down":""):esc(t(name)))+'</button>';
     const option=(value,label,current)=>'<option value="'+esc(value)+'"'+(value===current?' selected':'')+'>'+esc(label)+'</option>';
     function remember() {
@@ -67,7 +121,7 @@
       e.targetReps=first.reps;e.targetWeight=first.weight??"";e.targetRir=first.rir??"";e.targetRpe=first.rpe??"";
     }
     function fromCatalog(c,previous=null) {
-      const meta=api.meta(c.slug),id=api.uuid();
+      const meta=displayMeta(c),id=api.uuid();
       const e={...(previous?M.clone(previous):{}),id,key:id,exerciseId:c.id,catalogBacked:true,slug:c.slug,canonicalSlug:c.slug,
         name:meta.name,primaryMuscle:meta.primary,equipment:meta.equipment,status:"active",
         setTargets:previous?M.targets(previous):Array.from({length:3},()=>({reps:"8-10",weight:null,rir:null,rpe:null})),
@@ -93,6 +147,7 @@
       }
       exercises().forEach(syncTargets);
       screen=exercises().length?"editor":"library";selected=new Set();replaceIndex=null;detail=null;
+      if(screen==="library"){filters={search:"",muscle:"",equipment:""};limit=72;scroll.library=0;}
       if(!dialog){dialog=document.createElement("dialog");dialog.className="tw-dialog";dialog.id="fmz-workout-maker";document.body.append(dialog);bind();}
       render();dialog.showModal();document.body.classList.add("tw-open");remember();
       if(screen==="library"||!catalog().length)loadCatalog();
@@ -102,7 +157,7 @@
       const search=filters.search.trim().toLocaleLowerCase();
       return catalog().filter(c=>{
         const meta=api.meta(c.slug);
-        return (!search||[...Object.values(c.names||{}),c.slug,...Object.values(c.primary||{}),...Object.values(c.equipment||{})].join(" ").toLocaleLowerCase().includes(search))&&
+        return (!search||[...Object.values(c.names||{}),...(basic(c)?.names||[]),c.slug,...Object.values(c.primary||{}),...Object.values(c.equipment||{})].join(" ").toLocaleLowerCase().includes(search))&&
           (!filters.muscle||meta.primary===filters.muscle)&&(!filters.equipment||meta.equipment===filters.equipment);
       });
     }
@@ -115,22 +170,29 @@
     function renderLibrary() {
       if(!dialog||screen!=="library"||detail)return;
       const target=dialog.querySelector("[data-tw-results]");if(!target)return;
-      const rows=list();
-      target.innerHTML=rows.slice(0,limit).map(c=>{
-        const meta=api.meta(c.slug),checked=selected.has(c.id);
+      const rows=list(),unfiltered=!Object.values(filters).some(v=>v.trim());
+      const rowHtml=c=>{
+        const meta=displayMeta(c),checked=selected.has(c.id);
         return '<div class="tw-library-row"><label>'+media(c)+'<span><strong>'+esc(meta.name)+'</strong><small>'+esc(meta.primary+" / "+meta.equipment)+'</small></span>'
           +'<input type="checkbox" data-tw-select="'+esc(c.id)+'"'+(checked?' checked':'')+' aria-label="'+esc(meta.name)+'"></label>'
           +button("info","info",c.id,"file-text")+'</div>';
-      }).join("")||'<p>'+esc(catalog().length?t("empty"):t("loadError"))+'</p>';
+      };
+      const basics=unfiltered?basicGroups.map(g=>({names:g.names,exercises:g.exercises.map(e=>rows.find(c=>c.id===e.id&&c.slug===e.slug)).filter(Boolean)})):[];
+      const basicIds=new Set(basics.flatMap(g=>g.exercises.map(c=>c.id)));
+      const remaining=rows.filter(c=>!basicIds.has(c.id));
+      target.innerHTML=(basicIds.size?'<section class="tw-basics" aria-labelledby="tw-basics-title"><h3 id="tw-basics-title">'+esc(t("basics"))+'</h3>'
+        +basics.filter(g=>g.exercises.length).map(g=>'<h4>'+esc(localized(g.names))+'</h4>'+g.exercises.map(rowHtml).join("")).join("")+'</section><h3 class="tw-library-title">'+esc(t("other"))+'</h3>':"")
+        +remaining.slice(0,limit).map(rowHtml).join("");
+      if(!rows.length)target.innerHTML='<p>'+esc(catalog().length?t("empty"):t("loadError"))+'</p>';
       if(!catalog().length)target.innerHTML+=button("retry","retry");
-      if(rows.length>limit)target.innerHTML+=button("more","more");
+      if(remaining.length>limit)target.innerHTML+=button("more","more");
       const count=dialog.querySelector("[data-tw-count]");if(count)count.textContent=selected.size+" "+t("selected");
       const add=dialog.querySelector('[data-tw-action="selected"]');if(add)add.disabled=!selected.size;
     }
     const input=(label,value,attrs)=>'<label><span>'+esc(label)+'</span><input value="'+esc(value)+'" '+attrs+'></label>';
     function editorExercise(e,i) {
       const mode=api.preferences().effort_mode||"rir",rows=M.targets(e),imperial=api.imperial(),unit=imperial?"lb":"kg";
-      const meta=api.meta(e.slug),name=meta.name||e.name,detail=[meta.primary||e.primaryMuscle,meta.equipment||e.equipment].filter(Boolean).join(" / ");
+      const c=catalog().find(c=>c.id===e.exerciseId),meta=c?displayMeta(c):api.meta(e.slug),name=meta.name||e.name,detail=[meta.primary||e.primaryMuscle,meta.equipment||e.equipment].filter(Boolean).join(" / ");
       const group=M.groups(exercises()).find(g=>g.indices.includes(i)),first=group.indices[0]===i;
       const groupTitle=e.supersetId&&first?'<div class="tw-group-title"><strong>Superset '+String.fromCharCode(65+M.groups(exercises()).filter(g=>g.id).findIndex(g=>g.id===e.supersetId))+'</strong>'+button("unlink","unlink",i,"x")+'</div>':"";
       return groupTitle+'<article class="tw-exercise" data-tw-exercise="'+i+'">'
@@ -154,7 +216,7 @@
       const old=dialog.querySelector("main");if(old&&!renderedDetail&&renderedScreen)scroll[renderedScreen]=old.scrollTop;
       let title=t(screen==="library"?"library":draft.updatedAt?"edit":"create"),body="",footer="";
       if(detail) {
-        const meta=api.meta(detail.slug);title=meta.name;
+        const meta=displayMeta(detail);title=meta.name;
         body=media(detail,true)+'<h3>'+esc(meta.name)+'</h3><p>'+esc(meta.primary+" / "+meta.equipment)+'</p><p>'+esc(meta.instructions||t("noDetails"))+'</p>';
       } else if(screen==="library") {
         body=filtersHtml()+'<div data-tw-results></div>';
@@ -237,7 +299,7 @@
         if(action==="cancel"){if(screen==="library"||detail){detail=null;screen="editor";selected.clear();render();return;}if(confirm(t("discard"))){draft=null;saveReceipt=null;localStorage.removeItem(key());close();}return;}
         if(action==="save"){await save();return;}
         if(action==="reload"){if(confirm(t("reloadConfirm"))){await api.reload();const plan=api.plans().find(p=>p.id===draft.id);if(plan){draft=null;open(plan);}}return;}
-        if(action==="library"||action==="replace"){scroll.editor=dialog.querySelector("main").scrollTop;screen="library";selected.clear();replaceIndex=action==="replace"?i:null;render();await loadCatalog();return;}
+        if(action==="library"||action==="replace"){scroll.editor=dialog.querySelector("main").scrollTop;screen="library";filters={search:"",muscle:"",equipment:""};limit=72;scroll.library=0;selected.clear();replaceIndex=action==="replace"?i:null;render();await loadCatalog();return;}
         if(action==="retry"){await loadCatalog();return;}
         if(action==="more"){limit+=72;renderLibrary();return;}
         if(action==="info"){scroll.library=dialog.querySelector("main").scrollTop;const c=catalog().find(c=>c.id===b.dataset.twIndex);if(c){detail=c;render();await api.details([c]);if(dialog&&detail?.id===c.id)render();}return;}

@@ -6,7 +6,7 @@ const migration="supabase/migrations/20260908100106_training_workout_editor.sql"
 test("current owner-authorized diff only; no historical freeze assertion weakened",()=>{
  assert.equal(git("remote","get-url","origin"),"https://github.com/Yourizorge/fitmetzorge-staging.git");
  assert.equal(git("branch","--show-current"),"main");
- const allowed=f=>runtime.includes(f)||f===migration||f.startsWith("docs/")||f.startsWith("_tests/training/")||
+ const allowed=f=>runtime.includes(f)||f==="assets/vendor/lucide-clock.svg"||f===migration||f.startsWith("docs/")||f.startsWith("_tests/training/")||
  ["_offline/phase6e1/context.cjs","_offline/phase6e1/training-followup-cases.json","_offline/phase6e1/test/training-followup.test.cjs"].includes(f);
  const changes=[...git("diff","--name-only",base).split("\n"),...git("ls-files","--others","--exclude-standard").split("\n")].filter(Boolean);
  assert(changes.every(allowed),changes.filter(f=>!allowed(f)).join("\n"));

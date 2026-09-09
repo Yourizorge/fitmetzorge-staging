@@ -57,11 +57,11 @@
   }
   const phase2PatchSource = await phase2PatchResponse.text();
 
-  const workoutModelResponse = await fetch(new URL("assets/training-workout-model.js?v=20260908-training-workout2", document.baseURI), {cache:"no-cache"});
-  const workoutUiResponse = await fetch(new URL("assets/training-workout-ui.js?v=20260908-training-workout2", document.baseURI), {cache:"no-cache"});
+  const workoutModelResponse = await fetch(new URL("assets/training-workout-model.js?v=20260908-training-mobile1", document.baseURI), {cache:"no-cache"});
+  const workoutUiResponse = await fetch(new URL("assets/training-workout-ui.js?v=20260908-training-mobile1", document.baseURI), {cache:"no-cache"});
   if (!workoutModelResponse.ok || !workoutUiResponse.ok) throw new Error("Staging workout editor unavailable");
   const workoutSource = (await workoutModelResponse.text()) + "\n" + (await workoutUiResponse.text());
-  const phase3PatchUrl = new URL("assets/phase3-training-engine.js?v=20260908-training-workout2", document.baseURI);
+  const phase3PatchUrl = new URL("assets/phase3-training-engine.js?v=20260908-training-mobile1", document.baseURI);
   const phase3PatchResponse = await fetch(phase3PatchUrl, { cache: "no-cache" });
   if (!phase3PatchResponse.ok) {
     throw new Error(`Phase 3 Training Engine laden mislukt: ${phase3PatchResponse.status}`);
@@ -103,7 +103,7 @@
   }
   const phase6cPrivateChatPatchSource = await phase6cPrivateChatPatchResponse.text();
 
-  const ownerSettingsResponse = await fetch(new URL("assets/phase6d-owner-settings.js?v=20260908-training-workout2", document.baseURI), { cache: "no-cache" });
+  const ownerSettingsResponse = await fetch(new URL("assets/phase6d-owner-settings.js?v=20260908-training-mobile1", document.baseURI), { cache: "no-cache" });
   if (!ownerSettingsResponse.ok) throw new Error("Staging settings unavailable");
   const ownerSettingsSource = await ownerSettingsResponse.text();
 
