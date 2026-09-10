@@ -1,6 +1,30 @@
 # FitMetZorge Master Build Plan
 
-## Training Corrections - Current (2026-09-10)
+## Owneracceptatie En 6E-3 - Current (2026-09-10)
+
+6E-2: COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE CONTRACTS ONLY.
+N1-N3 expliciet geaccepteerd; [freeze receipt](PHASE6E2_FREEZE_RECEIPT.md).
+Alle 57 frozen 6E-0/6E-1/6E-2-bronnen en D1-D12/O1-O5 ongewijzigd.
+Owner bevestigt de timer en onafhankelijke/gelijktijdige RIR/RPE op de telefoon.
+Alleen de nieuwe veldUITLIJNING blijft PENDING OWNER RETEST.
+RIR deelt de KG-kolom; RPE deelt de REPS-kolom, ook wanneer slechts een veld aanstaat.
+Runtime: 89dde6a4e535b38631e6223134f4943252136cfc; uitsluitend Training-CSS en cache.
+Timer-, keuze-, opslag- en snapshotlogica behouden; 57 overige runtime-assets identiek.
+[Uitlijningsrapport](TRAINING_ALIGNMENT_REPORT.md) bevat lokale/published geometrie,
+screenshots en de expliciete emulatorbeperking. Geen database-/Edge-handeling.
+
+6E-3: TECHNICAL PASS / READY FOR OWNER REVIEW; bron bcfed5d245b1c4d82f5a9caa2d207e7cbf3e4cdd.
+76 vooraf vastgelegde gevallen; 111 contracttests, 8 nieuwe isolatiechecks en
+gerichte frozen/Training-regressies: 676/676 PASS, 0 fail/skip.
+Een beperkingobservatie is inbegrepen maar GEEN herkenningssucces; geen classifieruitbreiding.
+Historisch doel, exacte oefeningen en geplande/geregistreerde sets, uitsluitend synthetisch.
+[Contract](PHASE6E3_CONTRACTS.md), [ownerreview G1-G3](PHASE6E3_OWNER_OVERVIEW.md),
+[technisch bewijs](PHASE6E3_TECHNICAL_REPORT.md). Geen ownerfreeze/live AI voor 6E-3.
+Deskundige medische/privacy/juridische/taalbeoordelingen blijven open.
+Phase 6E ONVOLTOOID. Geen automatische vervolgstart.
+De onderstaande eerdere status-/runtimeclaims blijven uitsluitend historische levering.
+
+## Training Corrections - Historical (2026-09-10)
 
 TECHNICAL PASS / PENDING OWNER RETEST. Source 4edc8054202b15c7bd1e884982a94a7346991ed1.
 This explicitly supersedes the earlier timer and RIR/RPE display specification.
@@ -21,7 +45,7 @@ Publication/byte/private-source checks and physical-device limits:
 PROPOSED / NOT STARTED. Existing domain data is not automatically approved AI input.
 Earlier runtime-preservation statements below describe their historical package baseline.
 
-## Package 6E-2 Offline Recommendations - Current
+## Package 6E-2 Offline Recommendations - Historical Delivery
 
 TECHNICAL PASS / READY FOR OWNER REVIEW. Explicit offline GO on 2026-09-09.
 Not owner-accepted/frozen/live. New code only in _offline/phase6e2; 6E-0/6E-1

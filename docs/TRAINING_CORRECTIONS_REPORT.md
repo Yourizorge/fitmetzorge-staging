@@ -1,5 +1,11 @@
 # Training Corrections And Next Offline AI Review
 
+Owner phone acceptance received: large timer and independent/simultaneous RIR/RPE
+approved. Only the later column-alignment correction remains pending owner retest:
+[current alignment report](TRAINING_ALIGNMENT_REPORT.md).
+6E-2 N1-N3 are now accepted/frozen offline; see PHASE6E2_FREEZE_RECEIPT.md.
+The original delivery results and then-pending statuses below are preserved history.
+
 Status: TECHNICAL PASS / PENDING OWNER RETEST. Staging only.
 This replaces the earlier large-timer and mutually exclusive effort-display specification.
 The basic exercise catalog and other accepted Training behavior remain in place.

@@ -1,0 +1,107 @@
+{
+  "status": "COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE CONTRACTS ONLY",
+  "owner_accepted": true,
+  "acceptance_date": "2026-09-10",
+  "baseline": "9406ab5a0869564a6a5498ec2d7a679589a38bc0",
+  "source_commit": "d12484a10c62f427bc630630167b5e9027e78d1f",
+  "offline_tree": "93ad63e84861c166f53ba5530d7496222461b4f8",
+  "offline_sources": [
+    {
+      "file": "_offline/phase6e2/README.md",
+      "git_blob": "296d426c2d33d63dd71bb2f18c2ae3380dde7b71",
+      "sha256": "ea8ba6ea4409e9e00cbda4fac45745b033be1cae667680c1c0c42ed551a1bbd2",
+      "working_sha256": "ea8ba6ea4409e9e00cbda4fac45745b033be1cae667680c1c0c42ed551a1bbd2"
+    },
+    {
+      "file": "_offline/phase6e2/contract.json",
+      "git_blob": "41bb0b09be75e233e508f3b35c16817a4d9c4c26",
+      "sha256": "5ed855343866e10494b3141c125b158b5f0beed94974c50e4eb453ddceff4a8a",
+      "working_sha256": "5ed855343866e10494b3141c125b158b5f0beed94974c50e4eb453ddceff4a8a"
+    },
+    {
+      "file": "_offline/phase6e2/copy.json",
+      "git_blob": "2026834d0d7449daf69c92454330fb0cb34ad17b",
+      "sha256": "7d9c968ff6d94af8fddc1483dcbaf84e73f4361eb843fa718627a1f4313983b2",
+      "working_sha256": "7d9c968ff6d94af8fddc1483dcbaf84e73f4361eb843fa718627a1f4313983b2"
+    },
+    {
+      "file": "_offline/phase6e2/engine.cjs",
+      "git_blob": "28b7d13f944af719ef5fd793829535705472e081",
+      "sha256": "90febbc90acf021fe3feda8e19986f839e3307d8638f510d06b42c70164a33fa",
+      "working_sha256": "90febbc90acf021fe3feda8e19986f839e3307d8638f510d06b42c70164a33fa"
+    },
+    {
+      "file": "_offline/phase6e2/package.json",
+      "git_blob": "c46d0ff1cfc282472fbfd7706ef50094f644fdb5",
+      "sha256": "d25d4e6411fba81fde0e245e84310e9d5789abbd292324687f28665c90a47e1a",
+      "working_sha256": "d25d4e6411fba81fde0e245e84310e9d5789abbd292324687f28665c90a47e1a"
+    },
+    {
+      "file": "_offline/phase6e2/preregistered-cases.json",
+      "git_blob": "8ae6ebdd806e17d5a28170988a60ac491fd1b411",
+      "sha256": "65aabc7f5e6cba19a4e578266596a411ec82f98bee72c71c0eb9d2026a8a8710",
+      "working_sha256": "65aabc7f5e6cba19a4e578266596a411ec82f98bee72c71c0eb9d2026a8a8710"
+    },
+    {
+      "file": "_offline/phase6e2/test/contract.test.cjs",
+      "git_blob": "5248b60eee29a7e0170c29b94b16160d20f6047c",
+      "sha256": "c571269115fc71d9fed9521eab984eb1b09bef1cbf26a19cdf215b4bd38f5b6a",
+      "working_sha256": "c571269115fc71d9fed9521eab984eb1b09bef1cbf26a19cdf215b4bd38f5b6a"
+    },
+    {
+      "file": "_offline/phase6e2/test/examples.cjs",
+      "git_blob": "16f9b6a4d5a0027cf75ecdb24f4f98e9b52ca06a",
+      "sha256": "8b56b771accf2647d0652a3d1340e352abc1c00d11e38b5025f8cada693d5ec1",
+      "working_sha256": "8b56b771accf2647d0652a3d1340e352abc1c00d11e38b5025f8cada693d5ec1"
+    },
+    {
+      "file": "_offline/phase6e2/test/fixtures.cjs",
+      "git_blob": "f16a85d698008434433d5fd274c0824c6b59bb3b",
+      "sha256": "15c8b9fc881d76009ea4cad09971e2718d9c3c5e9232c56700d1795da993403c",
+      "working_sha256": "15c8b9fc881d76009ea4cad09971e2718d9c3c5e9232c56700d1795da993403c"
+    },
+    {
+      "file": "_offline/phase6e2/test/isolation.test.cjs",
+      "git_blob": "9818d88f416c2ea0fa9d7c8cbb968595815aeeb6",
+      "sha256": "339acc6b9b5fe722b6e175cb1680d70a37245bd5ee840028df17ec65b1d9a446",
+      "working_sha256": "339acc6b9b5fe722b6e175cb1680d70a37245bd5ee840028df17ec65b1d9a446"
+    },
+    {
+      "file": "_offline/phase6e2/test/publication-check.cjs",
+      "git_blob": "c7046fcde809f33cac03e7c37cdc5c85b184084f",
+      "sha256": "6ab0f57ee63356cc95d42d793ca667c8dfbb663584f50d3a854943cbbfde3baa",
+      "working_sha256": "6ab0f57ee63356cc95d42d793ca667c8dfbb663584f50d3a854943cbbfde3baa"
+    },
+    {
+      "file": "_offline/phase6e2/test/verify.cjs",
+      "git_blob": "3a643a0cf05a9b8a5e19ad8044d5f28a2a82583f",
+      "sha256": "adc638c06b388aea82586c6c7f1a5df252aa8d1ab6011ab0bd9b35f96d57a79a",
+      "working_sha256": "adc638c06b388aea82586c6c7f1a5df252aa8d1ab6011ab0bd9b35f96d57a79a"
+    }
+  ],
+  "decisions": [
+    "N1",
+    "N2",
+    "N3"
+  ],
+  "functional_retest": {
+    "passed": 159,
+    "failed": 0,
+    "skipped": 0
+  },
+  "historical_evidence_preserved": "PHASE6E2_EVIDENCE.json",
+  "other_frozen_sources_unchanged": 45,
+  "medical_validation": false,
+  "live_authorization": false,
+  "phase6e_complete": false,
+  "runtime_exception": {
+    "commit": "89dde6a4e535b38631e6223134f4943252136cfc",
+    "paths": [
+      "app.js",
+      "index.html",
+      "assets/training-workout.css"
+    ],
+    "purpose": "alignment and cache only"
+  },
+  "production_touched": false
+}

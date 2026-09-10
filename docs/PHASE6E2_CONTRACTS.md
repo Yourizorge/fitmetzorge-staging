@@ -1,7 +1,8 @@
 # Package 6E-2 Offline Aanbevelingscontract
 
-TECHNICAL PASS / READY FOR OWNER REVIEW. Expliciet offline GO op 2026-09-09.
-Geen owneracceptatie, freeze, live integratie of deskundige validatie.
+COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE CONTRACTS ONLY.
+N1-N3 expliciet geaccepteerd op 2026-09-10; zie PHASE6E2_FREEZE_RECEIPT.md.
+Geen live integratie of deskundige validatie.
 6E-0/6E-1 blijven accepted/frozen; D1-D12 en O1-O5 blijven behouden.
 Bronbaseline e356a4cb951fc3d614035fa0bf547e669b4d045a; code uitsluitend _offline/phase6e2.
 
@@ -40,7 +41,7 @@ Automatische uitvoering blijft altijd UIT; geen writes, sharing, provider of sch
 Een geweigerd voorstel wijzigt geen toegang of abonnement. De bestaande live
 6D safety_hard_stop is NIET versoepeld of omzeild door dit offline ontwerp.
 
-## Hervatting Per Type: Nieuw Productvoorstel
+## Hervatting Per Type: Geaccepteerd Offline Ontwerp
 
 Alle cellen veronderstellen eigen rechten en de hierboven vereiste gegevens.
 
@@ -57,11 +58,12 @@ Alle cellen veronderstellen eigen rechten en de hierboven vereiste gegevens.
 | O5 verlopen/vroeger vervallen of bron ontbreekt | Datacontrole mogelijk zonder reconstructie | Eerst actuele context vragen als geen nieuwe bruikbare context bestaat; chat blijft vrij | Geen vrijgave door tijd/verwijderen |
 | Nieuwe duidelijke gewone context na zo'n gat | Datacontrole | Alleen niet-fysieke reflectie mogelijk; geen historische diagnose gereconstrueerd | Inhoudsgrens blijft |
 
-Dit introduceert GEEN medische herstelcriteria. Het is een voorstel voor het opnieuw
+Dit introduceert GEEN medische herstelcriteria. Het is het geaccepteerde offline ontwerp voor het opnieuw
 aanbieden van lezen/registreren/reflecteren, niet hervatten van lichamelijk advies.
 Een bekend actueel signaal houdt voorrang op latere geruststellende gewone tekst.
 Een oud verlopen probleem wordt geen eeuwige algemene accountblokkade. Het voorgestelde
-gedrag en exacte conceptcopy vragen nog ownerreview; complete_health_resumption_flow=false.
+gedrag en exacte conceptcopy zijn als offline product geaccepteerd, niet deskundig
+goedgekeurd; complete_health_resumption_flow=false.
 
 ## Uitvoerbaar Koppelvlak En Vertrouwen
 
@@ -110,4 +112,6 @@ alleen nieuwe keuzes en het verschil met feiten. [Technisch rapport](PHASE6E2_TE
 bevat preregistratie, tests, commits, frozen bewijs en publicatiecontroles.
 Medische inhoud/toepassing/hervatting, privacy/noodzaak/retentie, juridische claims
 en moedertaalbeoordeling blijven OPEN voor eventuele live inzet. Geen expert benaderd.
-Geen owneracceptatie, freeze of volgend pakket automatisch. Fysieke timertelefoontest apart.
+6E-2 owner-accepted/frozen uitsluitend offline. Afzonderlijke GO ontvangen voor 6E-3;
+geen live AI of verdere automatische pakketstart. Timer/RIR/RPE door de owner getest
+en geaccepteerd; alleen de nieuwe kolomuitlijning blijft pending owner retest.

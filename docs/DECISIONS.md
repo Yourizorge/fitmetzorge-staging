@@ -628,3 +628,23 @@ D1-D12/O1-O5 and frozen 6E-0/6E-1 retained. Phase 6E remains incomplete.
 PHASE6E3_PROPOSAL.md is the single concrete next offline proposal, NOT STARTED:
 goal/plan-bound workout reflection with actual source identities and explicit
 missing trainer/nutrition/recovery boundaries. No new medical norms or review service.
+
+## Decision 0042: Owner accepts 6E-2; alignment correction and offline 6E-3 GO
+
+On 2026-09-10 the owner explicitly accepts N1-N3: limited record/reflection content,
+only nonphysical reflection after bound self-report without another current report,
+and fresh clear context without erasing reports or reconstructing missing history.
+6E-2 is COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE CONTRACTS ONLY.
+Original twelve sources/tree 93ad63e84861c166f53ba5530d7496222461b4f8 retained;
+PHASE6E2_FREEZE_RECEIPT.md records scope, tests and remaining expert/live gates.
+D1-D12/O1-O5 and 6E-0/6E-1 remain unchanged; no medical or live AI approval.
+
+Owner phone test accepts the large timer and independent/simultaneous RIR/RPE.
+Only exact RIR-under-KG / RPE-under-REPS column alignment remains pending retest.
+Authorized live change: Training CSS plus its cache references; no behavior/data changes.
+
+Separate GO: implement historical goal/plan/set reflection only in _offline/phase6e3,
+using synthetic sources and frozen safety read-only. 6E-3 delivered TECHNICAL PASS /
+READY FOR OWNER REVIEW, not accepted/frozen. G1-G3 cover the new binding/data/copy choices.
+No higher load/volume, nutrition change, training return, automatic actions, review
+service, DB/Edge/live data/provider/cost/production changes or automatic next package.

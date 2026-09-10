@@ -1,13 +1,14 @@
 # Package 6E-2 Owneroverzicht
 
-Actuele afbakening na de Training-correcties: N1-N3 hieronder blijven uitsluitend
-ter ownerbeoordeling. Training-akkoord is geen AI-acceptatie of live-vrijgave.
-Het enige nieuwe vervolgvoorstel is [6E-3 doel-/schemagebonden workoutreflectie](PHASE6E3_PROPOSAL.md),
-PROPOSED / NOT STARTED. De onderstaande exacte 6E-2-conceptantwoorden zijn ongewijzigd.
+Owner heeft N1-N3 expliciet geaccepteerd op 2026-09-10.
+6E-2 is COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE CONTRACTS ONLY.
+[Freeze receipt](PHASE6E2_FREEZE_RECEIPT.md). De exacte conceptantwoorden blijven ongewijzigd.
+Afzonderlijke GO ontvangen voor [6E-3 doel-/schemagebonden workoutreflectie](PHASE6E3_OWNER_OVERVIEW.md),
+dat uitsluitend offline voor ownerreview wordt opgeleverd. Geen live-vrijgave.
 
-TECHNICAL PASS / READY FOR OWNER REVIEW. Alleen een uitvoerbaar offline productvoorstel.
+Geaccepteerd uitvoerbaar offline productontwerp, geen complete herstelimplementatie.
 6E-0/6E-1 blijven accepted/frozen; D1-D12 en O1-O5 worden niet heropend.
-Geen live integratie, deskundige goedkeuring, owneracceptatie of nieuwe freeze.
+Geen live integratie of deskundige goedkeuring. De freeze betreft uitsluitend 6E-2 offline.
 
 ## Wat De Voorstellen Toevoegen
 
@@ -44,7 +45,7 @@ EN: "This proposal is only about recording or reviewing, not suitable training, 
 DE: "Dieser Vorschlag betrifft nur das Erfassen oder den Rueckblick, nicht geeignetes Training, Ernaehrung oder medizinische Erholung."
 
 Bij actuele klachten staat de reeds geaccepteerde waarschuwing als eerste. De teksten
-hier zijn conceptcopy en NIET deskundig of door de owner geaccepteerd. De Duitse
+hier zijn door de owner als offline productconcept geaccepteerd, NIET deskundig goedgekeurd. De Duitse
 bron gebruikt voorlopig ASCII-transliteratie, zoals de frozen offline contracten.
 
 ## Beschikbaar Voor En Na Herstel
@@ -65,16 +66,17 @@ Alle toegang blijft onder bestaande rechten/toestemming; automatische acties bli
 Bij zelfrapportage blijft de bestaande exacte NL-tekst:
 "Je meldt dat de klachten voorbij zijn. Dit is jouw verklaring, geen medische vrijgave."
 
-## Alleen Nieuwe Ownerkeuzes
+## Geaccepteerde Ownerkeuzes N1-N3
 
-| Keuze | Concreet voorstel ter beoordeling | Reden / open deskundige beoordeling |
+| Keuze | Geaccepteerde offline productkeuze | Reden / open deskundige beoordeling |
 | --- | --- | --- |
-| N1 Inhoud en coachstijl | Accepteer of wijzig deze drie optionele registratie-/reflectietypen en hun concrete NL/EN/DE-zinnen als eerste persoonlijke aanbevelingen. Behoud de bron-/vergelijkingsvoorwaarden en expliciete grens voor fysieke/voedings-/hersteladviezen. | Voegt een uitvoerbare persoonlijke vervolgstap toe zonder ontbrekende doelen of trainergrenzen te verzinnen. Inhoud/claims en taal blijven deskundige reviewpunten. |
+| N1 Inhoud en coachstijl | De drie optionele registratie-/reflectietypen en hun concrete NL/EN/DE-zinnen zijn geaccepteerd als beperkte persoonlijke aanbevelingen. Bron-/vergelijkingsvoorwaarden en expliciete grens voor fysieke/voedings-/hersteladviezen blijven behouden. | Voegt een uitvoerbare persoonlijke vervolgstap toe zonder ontbrekende doelen of trainergrenzen te verzinnen. Inhoud/claims en taal blijven deskundige reviewpunten. |
 | N2 Reflectie na zelfrapportage | Registratiecontrole mag naast de waarschuwing blijven; workout/weekreflectie pas zonder resterende actuele melding. Een gebonden herstelverklaring laat alleen niet-fysieke reflectie terugkomen, nooit trainingshervatting of fysieke voorschriften. | Dit is het nieuwe onderscheid per inhoudstype, geen heropening van D4/O4. Medische/juridische beoordeling van afleiding, formulering en interpretatie blijft nodig. |
 | N3 Nieuwe context na een misverstand of ontbrekende/verlopen bron | Laat een nieuwe duidelijke gewone context alleen beperkte reflectie dragen. Bewaar andere actuele meldingen en lopende O5-termijnen; reconstrueer verdwenen inhoud niet en maak geen permanente algemene blokkade. | Maakt het productvervolg concreet zonder vraaglus of medische vrijgave. Privacy, juridische en medische context-/verwijderingsgevolgen plus taalinterpretatie blijven open. |
 
 Geen menselijke aanvraagdienst, automatische trainerdeling, externe AI-call of actie.
-Dit pakket vraagt alleen ownerproductreview; niemand is benaderd. Live inzet vraagt
+Ownerproductacceptatie is verkregen; niemand is benaderd voor deskundige review. Live inzet vraagt
 daarna aparte bron/auth/consent/retentie/security-integratie en expliciete live GO.
-Phase 6E blijft onvoltooid. De fysieke timertelefoontest blijft afzonderlijk open.
+Phase 6E blijft onvoltooid. Timer/RIR/RPE zijn door de owner op de telefoon geaccepteerd;
+alleen de nieuwe veldkolomuitlijning blijft pending owner retest.
 Volledig contract: [PHASE6E2_CONTRACTS.md](PHASE6E2_CONTRACTS.md).

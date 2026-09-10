@@ -1,5 +1,10 @@
 # Package 6E-2 Technisch Rapport
 
+Historisch implementatierapport; oorspronkelijke testuitslagen en grenzen blijven intact.
+Actueel: owner heeft N1-N3 geaccepteerd. 6E-2 is COMPLETE / OWNER-ACCEPTED / FROZEN,
+uitsluitend offline. Zie [freeze receipt](PHASE6E2_FREEZE_RECEIPT.md).
+De toenmalige NOT ACCEPTED/NOT STARTED-statussen hieronder zijn historische context.
+
 TECHNICAL PASS / READY FOR OWNER REVIEW.
 Expliciet offline OWNER GO op 2026-09-09; geen owneracceptatie, freeze of live vrijgave.
 6E-0/6E-1 blijven accepted/frozen. D1-D12 en O1-O5 blijven behouden.
