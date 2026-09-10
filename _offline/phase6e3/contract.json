@@ -1,0 +1,62 @@
+{
+  "version": "6e3-offline-v1",
+  "synthetic_only": true,
+  "node_only": true,
+  "private": true,
+  "owner_accepted": false,
+  "frozen": false,
+  "type": "historical_goal_plan_reflection",
+  "content_class": "nonphysical_goal_plan_reflection",
+  "goals": {
+    "fat_loss": {
+      "nl": "vet verliezen",
+      "en": "losing fat",
+      "de": "Fett verlieren"
+    },
+    "muscle_gain": {
+      "nl": "spiermassa opbouwen",
+      "en": "building muscle",
+      "de": "Muskelmasse aufbauen"
+    },
+    "strength": {
+      "nl": "sterker worden",
+      "en": "getting stronger",
+      "de": "staerker werden"
+    },
+    "conditioning": {
+      "nl": "conditie opbouwen",
+      "en": "building fitness",
+      "de": "Kondition aufbauen"
+    },
+    "running": {
+      "nl": "hardlopen",
+      "en": "running",
+      "de": "Laufen"
+    },
+    "healthier_living": {
+      "nl": "gezonder leven",
+      "en": "living more healthily",
+      "de": "gesuender leben"
+    },
+    "weight_maintenance": {
+      "nl": "gewicht behouden",
+      "en": "maintaining weight",
+      "de": "Gewicht halten"
+    }
+  },
+  "historical_link": "member_selected_for_workout",
+  "comparable_load_units": [
+    "kg"
+  ],
+  "partial_policy": "facts_only",
+  "automatic_actions": false,
+  "medical_clearance": false,
+  "trainer_limits_source": null,
+  "expert_reviews_open": [
+    "medical",
+    "privacy",
+    "legal",
+    "nl_en_de"
+  ],
+  "source_trust": "synthetic_declared_versions_only_not_live_attestation"
+}

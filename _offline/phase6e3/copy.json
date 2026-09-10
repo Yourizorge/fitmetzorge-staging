@@ -1,0 +1,83 @@
+{
+  "nl": {
+    "goal": "Bij de start was je gekoppelde doel: {goal}.",
+    "row": "{exercise}, set {index}: gepland {planned}; geregistreerd {recorded}.",
+    "reps": "herhalingen",
+    "with": "met",
+    "missing": "niet ingevuld",
+    "unknown_load": "gewicht/eenheid niet bruikbaar",
+    "within": "De geregistreerde herhalingen liggen binnen het vastgelegde bereik.",
+    "below": "De geregistreerde herhalingen liggen onder het vastgelegde bereik.",
+    "above": "De geregistreerde herhalingen liggen boven het vastgelegde bereik.",
+    "effort": "Zelfrapportage: RIR {rir}; RPE {rpe}.",
+    "target_effort": "Vastgelegde velden in het schema: RIR {rir}; RPE {rpe}.",
+    "reflect": "Kies een geregistreerde set en noteer wat je bij je toenmalige doel wilt onthouden. Dit wijzigt je schema niet.",
+    "goal_missing": "Het toenmalige, aan deze workout gekoppelde doel is niet aantoonbaar beschikbaar. Ik vul geen huidig of verondersteld doel in.",
+    "data": "Niet alle geplande en geregistreerde sets zijn betrouwbaar vergelijkbaar. Ik toon alleen de beschikbare feiten, geen volledig reflectievoorstel.",
+    "invalid": "Deze bronkoppeling is niet bruikbaar. Er wordt geen persoonlijk voorstel gemaakt.",
+    "access": "Nieuwe analyse is binnen de huidige rechten of toestemming niet beschikbaar.",
+    "partial": "De registratie is gedeeltelijk of er ontbreken geplande sets; ontbrekende invoer telt niet als nul.",
+    "issues": {
+      "snapshot": "De gevraagde historische sessiesnapshot ontbreekt of heeft een andere versie.",
+      "recording": "De gevraagde versie van de setregistratie ontbreekt.",
+      "catalog": "De oefening of de bijbehorende catalogusversie is niet bekend.",
+      "missing_set": "Voor deze geplande set ontbreekt een registratie.",
+      "reps": "Het geplande herhalingsbereik of het geregistreerde aantal ontbreekt.",
+      "load": "Gewicht of een eenduidige kg-eenheid ontbreekt; ik reken niets om."
+    }
+  },
+  "en": {
+    "goal": "At the start, your linked goal was: {goal}.",
+    "row": "{exercise}, set {index}: planned {planned}; recorded {recorded}.",
+    "reps": "repetitions",
+    "with": "with",
+    "missing": "not entered",
+    "unknown_load": "weight/unit not usable",
+    "within": "The recorded repetitions are within the recorded range.",
+    "below": "The recorded repetitions are below the recorded range.",
+    "above": "The recorded repetitions are above the recorded range.",
+    "effort": "Self-report: RIR {rir}; RPE {rpe}.",
+    "target_effort": "Recorded plan fields: RIR {rir}; RPE {rpe}.",
+    "reflect": "Choose a recorded set and note what you want to remember in relation to your goal at the time. This does not change your plan.",
+    "goal_missing": "The goal linked to this workout at the time is not demonstrably available. I will not substitute a current or assumed goal.",
+    "data": "Not all planned and recorded sets can be reliably compared. I show only the available facts, not a complete reflection proposal.",
+    "invalid": "This source binding is not usable. No personal proposal is made.",
+    "access": "New analysis is not available under the current access rights or consent.",
+    "partial": "The recording is partial or planned sets are missing; missing entries do not count as zero.",
+    "issues": {
+      "snapshot": "The requested historical session snapshot is missing or has a different revision.",
+      "recording": "The requested revision of the set recording is missing.",
+      "catalog": "The exercise or its catalog revision is unknown.",
+      "missing_set": "There is no recording for this planned set.",
+      "reps": "The planned repetition range or recorded count is missing.",
+      "load": "Weight or an unambiguous kg unit is missing; no conversion is made."
+    }
+  },
+  "de": {
+    "goal": "Zu Beginn war dein verknuepftes Ziel: {goal}.",
+    "row": "{exercise}, Satz {index}: geplant {planned}; erfasst {recorded}.",
+    "reps": "Wiederholungen",
+    "with": "mit",
+    "missing": "nicht eingetragen",
+    "unknown_load": "Gewicht/Einheit nicht verwendbar",
+    "within": "Die erfassten Wiederholungen liegen innerhalb des festgehaltenen Bereichs.",
+    "below": "Die erfassten Wiederholungen liegen unterhalb des festgehaltenen Bereichs.",
+    "above": "Die erfassten Wiederholungen liegen oberhalb des festgehaltenen Bereichs.",
+    "effort": "Selbstauskunft: RIR {rir}; RPE {rpe}.",
+    "target_effort": "Festgehaltene Planfelder: RIR {rir}; RPE {rpe}.",
+    "reflect": "Waehle einen erfassten Satz und notiere, was du im Hinblick auf dein damaliges Ziel festhalten moechtest. Dein Plan wird dadurch nicht geaendert.",
+    "goal_missing": "Das damals mit diesem Workout verknuepfte Ziel ist nicht nachweisbar verfuegbar. Ein aktuelles oder vermutetes Ziel wird nicht eingesetzt.",
+    "data": "Nicht alle geplanten und erfassten Saetze sind zuverlaessig vergleichbar. Ich zeige nur verfuegbare Fakten, keinen vollstaendigen Reflexionsvorschlag.",
+    "invalid": "Diese Quellenverknuepfung ist nicht verwendbar. Es wird kein persoenlicher Vorschlag erstellt.",
+    "access": "Eine neue Analyse ist mit den aktuellen Zugriffsrechten oder Einwilligungen nicht verfuegbar.",
+    "partial": "Die Erfassung ist unvollstaendig oder geplante Saetze fehlen; fehlende Eintraege zaehlen nicht als null.",
+    "issues": {
+      "snapshot": "Der angeforderte historische Sitzungssnapshot fehlt oder hat eine andere Version.",
+      "recording": "Die angeforderte Version der Satzerfassung fehlt.",
+      "catalog": "Die Uebung oder ihre Katalogversion ist unbekannt.",
+      "missing_set": "Fuer diesen geplanten Satz fehlt eine Erfassung.",
+      "reps": "Der geplante Wiederholungsbereich oder die erfasste Anzahl fehlt.",
+      "load": "Gewicht oder eine eindeutige kg-Einheit fehlt; es wird nichts umgerechnet."
+    }
+  }
+}
