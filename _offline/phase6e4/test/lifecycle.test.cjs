@@ -79,9 +79,23 @@ test("old frozen facts and nonphysical reflection remain independently usable af
 });
 test("later current plan/goal changes do not mutate historical 6E3 reflection or snapshot",()=>{
   const old=require("../../phase6e3/test/fixtures.cjs"),f=old.setup(),original=JSON.stringify(old.engine.reflect(f.request,f.context,f.authority)),historical=JSON.stringify(f.request.sources);
-  const current=setup();current.request.sources.goal.code="muscle_gain";
-  const result=engine.suggest(current.request,current.context,current.authority);assert.equal(result.status,"candidate_only");
+  const current=setup(),s=current.request.sources,now=f.clock,ctx=engine.prepare(f.state,now);
+  s.subject_id=f.state.subject_id;s.readset.subject_id=f.state.subject_id;s.readset.read_at_ms=now;
+  for(const name of ["goal","plan","relationship","authority","limits","selection"])s[name].subject_id=f.state.subject_id;
+  const goal={id:f.request.sources.goal.id,revision:f.request.sources.goal.revision+1};
+  const plan={id:f.request.sources.snapshot.plan_ref.id,revision:f.request.sources.snapshot.plan_ref.revision+1};
+  Object.assign(s.goal,goal,{code:"muscle_gain",captured_at_ms:now-3});
+  Object.assign(s.plan,plan,{captured_at_ms:now-1});
+  s.plan.goal_link.goal_ref=clone(goal);s.plan.goal_link.at_ms=now-2;
+  s.readset.current_refs.goal=clone(goal);s.readset.current_refs.plan=clone(plan);
+  for(const name of ["authority","limits","selection"]){s[name].goal_ref=clone(goal);s[name].plan_ref=clone(plan);}
+  s.readset.revision++;current.request.expected_readset.revision=s.readset.revision;current.request.binding=clone(ctx.binding);
+  s.plan.options[0].exercises[0].sets[0].load.value=56;s.plan.options[0].exercises[0].sets[0].reps={min:10,max:10};
+  const result=engine.suggest(current.request,ctx,f.authority);assert.equal(result.status,"candidate_only",result.reason);
   assert.equal(result.candidate.goal_code,"muscle_gain");
+  assert.deepEqual(result.candidate.source_refs.goal,goal);assert.deepEqual(result.candidate.source_refs.plan,plan);
+  assert.equal(result.candidate.rows[0].target.load.value,56);assert.equal(result.candidate.rows[0].target.reps.min,10);
+  assert.equal(result.binding.subject_id,f.request.sources.subject_id);
   assert.equal(JSON.stringify(old.engine.reflect(f.request,f.context,f.authority)),original);assert.equal(JSON.stringify(f.request.sources),historical);
 });
 test("clock rollback, unrelated lineage and old attempt binding are rejected",()=>{
