@@ -1,7 +1,9 @@
 # Package 6E-3 Historisch Doel- En Setcontract
 
-TECHNICAL PASS / READY FOR OWNER REVIEW. Offline uitvoerings-GO ontvangen op 2026-09-10.
-Geen owneracceptatie/freeze van 6E-3, geen live AI-vrijgave of vervolgstart.
+COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE CONTRACTS ONLY.
+G1-G3 expliciet geaccepteerd op 2026-09-10, inclusief onderstaande beperkingen.
+[Freeze receipt](PHASE6E3_FREEZE_RECEIPT.md) bindt dit akkoord aan de ongewijzigde bron.
+Geen deskundige goedkeuring, live AI-vrijgave of vervolgstart; Phase 6E onvoltooid.
 6E-0/6E-1/6E-2 blijven frozen; D1-D12, O1-O5 en N1-N3 behouden.
 
 ## Minimaal Broncontract

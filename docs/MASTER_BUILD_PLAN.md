@@ -1,6 +1,31 @@
 # FitMetZorge Master Build Plan
 
-## Owneracceptatie En 6E-3 - Current (2026-09-10)
+## 6E-3 En Training Owner-Accepted - Current (2026-09-10)
+
+6E-3: COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE CONTRACTS ONLY.
+G1-G3 expliciet geaccepteerd, inclusief kg-only en de bekende taalbeperking.
+Bron bcfed5d245b1c4d82f5a9caa2d207e7cbf3e4cdd; tree
+75a1f5a03f74564e39a9ac46008bb24cb753baf1. Alle twaalf bronbestanden behouden.
+[Freeze receipt](PHASE6E3_FREEZE_RECEIPT.md), [hashbewijs](PHASE6E3_FREEZE_EVIDENCE.json),
+[geaccepteerd owneroverzicht](PHASE6E3_OWNER_OVERVIEW.md).
+Bestaande 676/676 technische tests blijven bewijs van de oorspronkelijke levering;
+de inbegrepen beperkingobservatie is GEEN herkenningssucces of medische validatie.
+
+Training: OWNER-ACCEPTED. De owner bevestigt de geslaagde fysieke telefoontest:
+grote ronde timer, onafhankelijke/gelijktijdige RIR/RPE, RIR onder KG en RPE onder REPS.
+[Uitlijningsrapport](TRAINING_ALIGNMENT_REPORT.md). Geen nieuwe runtime- of databasewijziging.
+Alle 60 runtime-assets gelijk aan acceptatiebaseline 6a584641eecb7b6987a21e9985ea1d9a5dc12cbf;
+runtimebron blijft 89dde6a4e535b38631e6223134f4943252136cfc.
+Alle 69 offline bronbestanden van 6E-0 t/m 6E-3 en D1-D12/O1-O5/N1-N3 behouden.
+
+Phase 6E als geheel ONVOLTOOID. Geen live AI-vrijgave of deskundige goedkeuring.
+Medische, privacy-, juridische en NL/EN/DE-beoordelingen blijven open.
+[Enig vervolgvoorstel 6E-4](PHASE6E4_PROPOSAL.md): offline trainerbegrensde
+workoutkandidaten met betrouwbare bronbinding; lb en taalbeperking expliciet gepland.
+PROPOSED / NOT STARTED. Geen nieuw pakket automatisch gestart.
+De onderstaande leveringsstatussen zijn historische context, niet de actuele acceptatiestatus.
+
+## Owneracceptatie En 6E-3 - Historical Delivery (2026-09-10)
 
 6E-2: COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE CONTRACTS ONLY.
 N1-N3 expliciet geaccepteerd; [freeze receipt](PHASE6E2_FREEZE_RECEIPT.md).

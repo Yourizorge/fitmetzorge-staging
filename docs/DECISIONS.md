@@ -648,3 +648,30 @@ using synthetic sources and frozen safety read-only. 6E-3 delivered TECHNICAL PA
 READY FOR OWNER REVIEW, not accepted/frozen. G1-G3 cover the new binding/data/copy choices.
 No higher load/volume, nutrition change, training return, automatic actions, review
 service, DB/Edge/live data/provider/cost/production changes or automatic next package.
+
+## Decision 0043: Owner accepts and freezes 6E-3; Training phone corrections accepted
+
+Date: 2026-09-10. Explicit owner acceptance of G1-G3, including their documented
+limitations: only demonstrable historical workout-goal linkage, reliably linked
+sets with kg-only support, concrete goal/set reflection without plan modification
+or physical prescription. The known language limitation remains open and is not
+recognition success. 6E-3 is COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE CONTRACTS ONLY.
+Source bcfed5d245b1c4d82f5a9caa2d207e7cbf3e4cdd,
+tree 75a1f5a03f74564e39a9ac46008bb24cb753baf1; all twelve source files unchanged.
+Exact hashes, original tests and expert gates: PHASE6E3_FREEZE_RECEIPT.md.
+D1-D12, O1-O5, N1-N3 and 6E-0/6E-1/6E-2 remain accepted/frozen without reopening.
+This is not medical/language/privacy/legal validation or live AI authorization.
+Phase 6E as a whole remains INCOMPLETE.
+
+The owner's physical phone test accepts the large round timer, independent AND
+simultaneous RIR/RPE, RIR aligned under KG and RPE aligned under REPS.
+Training corrections including alignment are COMPLETE / OWNER-ACCEPTED.
+Runtime remains 89dde6a4e535b38631e6223134f4943252136cfc; all 60 assets unchanged
+from acceptance baseline 6a584641eecb7b6987a21e9985ea1d9a5dc12cbf.
+This acceptance grants no runtime or database change and implies no extra device coverage.
+
+Only next proposal: PHASE6E4_PROPOSAL.md, offline trainer-bounded workout candidates
+with reliable sources, explicit authority/limits, lb/unit work and the narrowly
+scoped known-language follow-up. PROPOSED / NOT STARTED; its new choices are not
+accepted by this decision. No broad audit, automatic implementation, live AI,
+human medical approval service, database/Edge/member/provider/cost/production work.

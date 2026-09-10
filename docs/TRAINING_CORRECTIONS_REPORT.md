@@ -1,9 +1,11 @@
 # Training Corrections And Next Offline AI Review
 
-Owner phone acceptance received: large timer and independent/simultaneous RIR/RPE
-approved. Only the later column-alignment correction remains pending owner retest:
+Owner phone acceptance received on 2026-09-10: large round timer,
+independent/simultaneous RIR/RPE AND RIR-under-KG / RPE-under-REPS alignment
+are OWNER-ACCEPTED. No runtime/database change accompanies this acceptance:
 [current alignment report](TRAINING_ALIGNMENT_REPORT.md).
 6E-2 N1-N3 are now accepted/frozen offline; see PHASE6E2_FREEZE_RECEIPT.md.
+6E-3 G1-G3 are also accepted/frozen OFFLINE ONLY; see PHASE6E3_FREEZE_RECEIPT.md.
 The original delivery results and then-pending statuses below are preserved history.
 
 Status: TECHNICAL PASS / PENDING OWNER RETEST. Staging only.

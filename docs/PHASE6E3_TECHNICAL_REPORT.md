@@ -1,7 +1,12 @@
 # Package 6E-3 Technisch Rapport
 
-TECHNICAL PASS / READY FOR OWNER REVIEW. Geen owneracceptatie/freeze van 6E-3.
-Scope uitsluitend de expliciete offline GO; geen live integratie of vervolgstart.
+Actueel: COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE CONTRACTS ONLY.
+De owner accepteert G1-G3 op 2026-09-10, inclusief kg-only en de taalbeperking.
+[Freeze receipt](PHASE6E3_FREEZE_RECEIPT.md) legt de exacte bron en latere acceptatie vast.
+De oorspronkelijke technische uitslagen hieronder en PHASE6E3_EVIDENCE.json blijven
+ongewijzigd historisch bewijs van TECHNICAL PASS / READY FOR OWNER REVIEW.
+Toenmalige open productkeuzes zijn nu geaccepteerd; deskundige reviewpunten niet.
+Geen live integratie of vervolgstart; Phase 6E als geheel blijft onvoltooid.
 
 ## Preflight En Bronnen
 
@@ -94,7 +99,8 @@ website of bestandsopruiming. Eerdere datavingerprints worden niet als nieuwe me
 
 ## Open Grenzen
 
-G1-G3 in het owneroverzicht zijn de enige nieuwe productkeuzes voor deze uitwerking.
+G1-G3 waren de enige nieuwe productkeuzes bij deze levering en zijn nu geaccepteerd.
+Dat verandert de hier beschreven bron-, eenheids-, taal- en deskundige beperkingen niet.
 Bestaande gezondheidsherkenningscorrecties blijven opgelost; algemene taal-/medische
 dekking is niet bewezen. De gewone trainingsregistratie-zin blijft een bekende
 communicatiebeperking met verder-chatten, niet een verzonnen gezondheidsalarm.

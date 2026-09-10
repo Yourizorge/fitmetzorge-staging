@@ -1,8 +1,12 @@
 # Training Alignment And Owner Acceptance
 
-Status: TECHNICAL PASS / PENDING OWNER RETEST FOR ALIGNMENT ONLY.
-Owner has physically accepted the large timer and independent/simultaneous RIR/RPE.
-This task changes column placement only; it does not reopen those accepted functions.
+Status: COMPLETE / OWNER-ACCEPTED.
+On 2026-09-10 the owner confirms a successful physical phone test of the large
+round timer, independent/simultaneous RIR/RPE, RIR under KG and RPE under REPS.
+Alignment is accepted too; no further owner retest is outstanding for this correction.
+This acceptance update changes documentation only, not runtime, storage or database.
+The implementation and emulator evidence below remain the original release record.
+Latest freeze/publication checks: [acceptance receipt](PHASE6E3_FREEZE_RECEIPT.md).
 
 ## Exact Scope And Cause
 
@@ -51,8 +55,9 @@ These are real app controls with test-only inspection hooks and SYNTHETIC backen
 and auth. This task did not perform a new real-account login/member test.
 The previously accepted behavior is additionally protected by unchanged engine/model/UI bytes.
 Browser sizes are emulated, not physical iOS/Android, Safari, OS keyboard/browser
-chrome or OS suspension tests. Owner phone acceptance applies to the prior timer/
-choice behavior; this new alignment still needs owner retest.
+chrome or OS suspension tests. The subsequent owner phone test now accepts timer,
+choice behavior AND alignment. This is owner-reported physical acceptance, not a
+new agent-run device matrix or proof of every OS/browser combination.
 
 Screenshots (local ignored evidence):
 supabase/.temp/training-alignment-live-390-11-light.png
@@ -71,11 +76,14 @@ completed SUCCESS. Published assets: 60/60 match raw committed bytes.
 The pre-push check matched all 60 old baseline bytes and the 93 source paths then
 present; the subsequently added README is included in the final 94-path probe.
 No offline code imported or embedded; workflow/site settings unchanged.
-The following docs-only push must preserve these exact runtime/offline source blobs;
-its definitive HEAD/Pages result is checked after publication and reported in chat.
+The original documentation push ended at 6a584641eecb7b6987a21e9985ea1d9a5dc12cbf.
+[Pages run 34482455221](https://github.com/Yourizorge/fitmetzorge-staging/actions/runs/34482455221)
+completed SUCCESS. That is the unchanged-runtime baseline for this acceptance update.
+Its docs-only publication must retain ALL 60 runtime assets and ALL 69 offline files.
+The definitive acceptance commit/Pages result is checked after publication and reported in chat.
 
 All frozen 6E-0/6E-1/6E-2 sources preserved. The new AI implementation is only
-_offline/phase6e3; [ownerreview](PHASE6E3_OWNER_OVERVIEW.md), not live integration.
+_offline/phase6e3; [accepted offline design](PHASE6E3_OWNER_OVERVIEW.md), not live integration.
 6E-2 accepted/frozen offline per [receipt](PHASE6E2_FREEZE_RECEIPT.md).
 D1-D12/O1-O5/N1-N3 retained; Phase 6E remains incomplete.
 
@@ -83,7 +91,10 @@ No database, migration, Edge, real member processing, entitlement/provider chang
 AI call/cost, production/appfmz/other website or cleanup operation.
 Earlier migration counts/member fingerprints remain historical; no new DB measurement claimed.
 
-## Owner Retest
+## Historical Retest Checklist - Now Accepted
+
+The owner has completed and accepted the correction; the original checklist is
+retained for provenance, not as a new required acceptance round.
 
 1. Refresh staging and open a workout with both choices enabled.
 2. Verify RIR directly under KG, RPE directly under REPS, both left AND right edges.

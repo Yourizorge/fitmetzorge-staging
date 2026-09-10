@@ -1,8 +1,10 @@
 # Package 6E-3 Owneroverzicht
 
-TECHNICAL PASS / READY FOR OWNER REVIEW. Alleen offline, uitsluitend synthetische gegevens.
+COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE CONTRACTS ONLY.
+Expliciete owneracceptatie G1-G3 op 2026-09-10, uitsluitend synthetisch/offline.
+Exacte bron en bewaard testbewijs: [freeze receipt](PHASE6E3_FREEZE_RECEIPT.md).
 6E-2 is afzonderlijk OWNER-ACCEPTED / FROZEN; N1-N3, D1-D12 en O1-O5 blijven behouden.
-Geen acceptatie/freeze van 6E-3, live AI of automatische vervolgstart.
+Geen deskundige tekst-/medische goedkeuring, live AI of automatische vervolgstart.
 
 ## Wat Nu Echt Werkt
 
@@ -60,7 +62,16 @@ nieuwe feiten. Geen gezondheidsgerelateerde algemene abonnementssperre.
 RIR/RPE worden nooit omgewisseld of omgerekend. null is niet RIR 0.
 Automatische acties, trainerdeling, live data en externe providers blijven UIT.
 
-## Alleen Nieuwe Productkeuzes
+## Geaccepteerde Productkeuzes G1-G3
+
+Alle drie zijn expliciet OWNER-ACCEPTED als begrensd offline productontwerp.
+De oorspronkelijke voorstellen hieronder zijn daarmee geaccepteerd, geen open stemvragen.
+G1: alleen aantoonbare historische workout-doelkoppeling.
+G2: betrouwbaar gekoppelde setgegevens, in deze versie uitsluitend kg.
+G3: de concrete doel-/setreflectie zonder schemawijziging of fysiek trainingsvoorschrift.
+De bekende taalbeperking blijft open: "Ik bekijk mijn trainingsregistratie" levert
+communicatie-onzekerheid op, geen gezondheidsalarm en GEEN herkenningssucces.
+lb-ondersteuning en deze beperking staan zichtbaar in [het enige vervolgvoorstel](PHASE6E4_PROPOSAL.md).
 
 | Keuze | Concreet voorstel | Waarom / resterende review |
 | --- | --- | --- |
@@ -73,6 +84,7 @@ Persoonlijke trainings-, voedings- en herstelcoaching blijft de ambitie. Voor ho
 gewicht, extra volume, voedingswijzigingen of trainingshervatting ontbreken nog
 afzonderlijke product-/deskundige inhoudsgrenzen en betrouwbare trainer-/broncontracten.
 Deze criteria zijn niet ingevuld en niemand is benaderd.
+Phase 6E blijft onvoltooid. 6E-4 is uitsluitend PROPOSED / NOT STARTED.
 Geen volgend pakket of live verwerking wordt automatisch gestart.
 
 [Contract](PHASE6E3_CONTRACTS.md) en [bewijs](PHASE6E3_TECHNICAL_REPORT.md).

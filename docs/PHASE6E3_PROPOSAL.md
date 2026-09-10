@@ -1,9 +1,11 @@
 # Volgende Offline AI-Stap: 6E-3 Doel- En Schemagebonden Workoutreflectie
 
-Actueel: uitvoerings-GO ontvangen en offline contract opgeleverd, TECHNICAL PASS /
-READY FOR OWNER REVIEW. 6E-2/N1-N3 inmiddels expliciet OWNER-ACCEPTED / FROZEN.
+Actueel: COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE CONTRACTS ONLY.
+G1-G3 inclusief beperkingen expliciet geaccepteerd; [freeze receipt](PHASE6E3_FREEZE_RECEIPT.md).
+6E-2/N1-N3 blijven OWNER-ACCEPTED / FROZEN.
 Zie [actueel contract](PHASE6E3_CONTRACTS.md), [G1-G3 en exacte voorbeelden](PHASE6E3_OWNER_OVERVIEW.md)
-en [technisch rapport](PHASE6E3_TECHNICAL_REPORT.md). Geen 6E-3-freeze of live GO.
+en [technisch rapport](PHASE6E3_TECHNICAL_REPORT.md). Geen live GO; Phase 6E onvoltooid.
+Het enige actuele vervolg is [6E-4](PHASE6E4_PROPOSAL.md), PROPOSED / NOT STARTED.
 
 ## Oorspronkelijk Voorstel - Historisch
 
