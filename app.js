@@ -57,11 +57,26 @@
   }
   const phase2PatchSource = await phase2PatchResponse.text();
 
-  const workoutModelResponse = await fetch(new URL("assets/training-workout-model.js?v=20260908-training-mobile1", document.baseURI), {cache:"no-cache"});
-  const workoutUiResponse = await fetch(new URL("assets/training-workout-ui.js?v=20260908-training-mobile1", document.baseURI), {cache:"no-cache"});
+  // Keep Training CSS in step with the loader, even when an older HTML page was cached.
+  const trainingCssUrl = new URL("assets/training-workout.css?v=20260909-training-correction2", document.baseURI);
+  let trainingCss = [...document.querySelectorAll('link[rel="stylesheet"]')].find(link => new URL(link.href).pathname === trainingCssUrl.pathname);
+  if (!trainingCss || trainingCss.href !== trainingCssUrl.href || !trainingCss.sheet) {
+    trainingCss ||= document.createElement("link");
+    const ready = new Promise((resolve, reject) => {
+      trainingCss.onload = resolve;
+      trainingCss.onerror = () => reject(new Error("Training stylesheet unavailable"));
+    });
+    trainingCss.rel = "stylesheet";
+    trainingCss.href = trainingCssUrl.href;
+    if (!trainingCss.isConnected) document.head.append(trainingCss);
+    await ready;
+  }
+
+  const workoutModelResponse = await fetch(new URL("assets/training-workout-model.js?v=20260909-training-correction2", document.baseURI), {cache:"no-cache"});
+  const workoutUiResponse = await fetch(new URL("assets/training-workout-ui.js?v=20260909-training-correction2", document.baseURI), {cache:"no-cache"});
   if (!workoutModelResponse.ok || !workoutUiResponse.ok) throw new Error("Staging workout editor unavailable");
   const workoutSource = (await workoutModelResponse.text()) + "\n" + (await workoutUiResponse.text());
-  const phase3PatchUrl = new URL("assets/phase3-training-engine.js?v=20260909-training-timer1", document.baseURI);
+  const phase3PatchUrl = new URL("assets/phase3-training-engine.js?v=20260909-training-correction2", document.baseURI);
   const phase3PatchResponse = await fetch(phase3PatchUrl, { cache: "no-cache" });
   if (!phase3PatchResponse.ok) {
     throw new Error(`Phase 3 Training Engine laden mislukt: ${phase3PatchResponse.status}`);

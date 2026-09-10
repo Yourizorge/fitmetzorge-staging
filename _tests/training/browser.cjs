@@ -81,7 +81,8 @@ async function geometry(page,label,selector){
 async function screenshot(page,label){
  const output=path.join(root,"supabase/.temp/training-timer-review-"+label+".png");await page.screenshot({path:output,fullPage:false});screens.push(output);
 }
-(async()=>{
+module.exports={trainingSetup,server,geometry};
+if(require.main===module)(async()=>{
  const browser=await chromium.launch({headless:true,executablePath:"C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe"});
  try{
  for(const [width,height] of(process.env.FMZ_TRAINING_DESKTOP?[[1440,900]]:process.env.FMZ_TRAINING_SMOKE?[[390,844]]:[[320,700],[360,780],[390,844],[1440,900]])){

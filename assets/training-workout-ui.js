@@ -112,7 +112,7 @@
     }
     function fresh() {
       const day=api.days()[0],now=new Date().toISOString();
-      return {id:api.uuid(),title:"",status:"active",source:"phase3_client",createdAt:now,updatedAt:null,localOnly:false,
+      return {id:api.uuid(),title:"",status:"active",source:"phase3_client",createdAt:now,updatedAt:null,localOnly:false,effortTracking:{rir:false,rpe:false},
         days:[{id:api.uuid(),label:day,order:0,status:"active",exercises:[]}]};
     }
     const exercises=()=>draft.days[0].exercises;
@@ -146,6 +146,7 @@
         draft ||= fresh();
       }
       exercises().forEach(syncTargets);
+      draft.effortTracking=M.effortTracking(draft.effortTracking,exercises());
       screen=exercises().length?"editor":"library";selected=new Set();replaceIndex=null;detail=null;
       if(screen==="library"){filters={search:"",muscle:"",equipment:""};limit=72;scroll.library=0;}
       if(!dialog){dialog=document.createElement("dialog");dialog.className="tw-dialog";dialog.id="fmz-workout-maker";document.body.append(dialog);bind();}
@@ -191,7 +192,7 @@
     }
     const input=(label,value,attrs)=>'<label><span>'+esc(label)+'</span><input value="'+esc(value)+'" '+attrs+'></label>';
     function editorExercise(e,i) {
-      const mode=api.preferences().effort_mode||"rir",rows=M.targets(e),imperial=api.imperial(),unit=imperial?"lb":"kg";
+      const modes=["rir","rpe"].filter(k=>draft.effortTracking[k]),rows=M.targets(e),imperial=api.imperial(),unit=imperial?"lb":"kg";
       const c=catalog().find(c=>c.id===e.exerciseId),meta=c?displayMeta(c):api.meta(e.slug),name=meta.name||e.name,detail=[meta.primary||e.primaryMuscle,meta.equipment||e.equipment].filter(Boolean).join(" / ");
       const group=M.groups(exercises()).find(g=>g.indices.includes(i)),first=group.indices[0]===i;
       const groupTitle=e.supersetId&&first?'<div class="tw-group-title"><strong>Superset '+String.fromCharCode(65+M.groups(exercises()).filter(g=>g.id).findIndex(g=>g.id===e.supersetId))+'</strong>'+button("unlink","unlink",i,"x")+'</div>':"";
@@ -204,8 +205,8 @@
         +'<div class="tw-targets">'+rows.map((row,n)=>'<div class="tw-target-row"><strong class="tw-set-no">'+(n+1)+'</strong>'
           +input(t("reps"),row.reps,'data-tw-target="'+i+':'+n+':reps" required maxlength="32" inputmode="text"')
           +input(t("weight")+" ("+unit+")",M.displayWeight(row.weight,imperial),'data-tw-target="'+i+':'+n+':weight" type="number" min="0" max="'+(imperial?22046:10000)+'" step="any" inputmode="decimal"')
-          +(mode!=="none"?input(mode.toUpperCase()+" ("+t("optional")+")",row[mode]??"",'data-tw-target="'+i+':'+n+':'+mode+'" type="number" min="'+(mode==="rpe"?1:0)+'" max="10" step="'+(mode==="rir"?1:.5)+'" inputmode="decimal"'):"")
-          +button("remove","remove-set",i+":"+n,"x",rows.length===1)+'</div>').join("")+'</div>'
+          +button("remove","remove-set",i+":"+n,"x",rows.length===1)
+          +(modes.length?'<div class="tw-target-effort">'+modes.map(mode=>input(mode.toUpperCase()+" ("+t("optional")+")",row[mode]??"",'data-tw-target="'+i+':'+n+':'+mode+'" type="number" min="'+(mode==="rpe"?1:0)+'" max="10" step="'+(mode==="rir"?1:.5)+'" inputmode="decimal"')).join("")+'</div>':"")+'</div>').join("")+'</div>'
         +'<div class="tw-exercise-footer">'+button("addSet","add-set",i,"plus",rows.length>=20)
         +input(t("rest"),e.restSeconds,'data-tw-rest="'+i+'" type="number" min="0" max="3600" step="1" inputmode="numeric"')
         +(e.supersetId&&first?input(t("groupRest"),e.supersetRestSeconds,'data-tw-group-rest="'+i+'" type="number" min="0" max="3600" step="1" inputmode="numeric"'):"")+'</div>'
@@ -224,6 +225,7 @@
       } else {
         body=input(t("name"),draft.title,'data-tw-title required maxlength="120"')
           +'<label><span>'+esc(t("day"))+'</span><select data-tw-day>'+api.days().map(d=>option(d,api.text(d),draft.days[0].label)).join("")+'</select></label>'
+          +'<fieldset class="tw-tracking"><legend>'+esc(api.trainingText("effort"))+'</legend>'+["rir","rpe"].map(k=>'<label><input type="checkbox" data-tw-tracking="'+k+'" '+(draft.effortTracking[k]?'checked':'')+'><span>'+esc(api.trainingText(k+"Track"))+'</span></label><p>'+esc(api.trainingText(k+"Help"))+'</p>').join("")+'</fieldset>'
           +exercises().map(editorExercise).join("")+'<div class="tw-add">'+button("addExercise","library","", "plus")+'</div>';
         footer='<span>'+exercises().length+' '+esc(t("library").toLowerCase())+'</span><button type="button" class="primary-btn" data-tw-action="save"'+(busy?' disabled':'')+'>'+esc(t(busy?"saving":"save"))+'</button>';
       }
@@ -280,6 +282,7 @@
       });
       dialog.addEventListener("change",event=>{
         const el=event.target;
+        if(el.hasAttribute("data-tw-tracking")&&!busy){draft.effortTracking[el.dataset.twTracking]=el.checked;remember();render();dialog.querySelector('[data-tw-tracking="'+el.dataset.twTracking+'"]')?.focus({preventScroll:true});return;}
         if(el.dataset.twFilter&&el.dataset.twFilter!=="search"){filters[el.dataset.twFilter]=el.value;limit=72;renderLibrary();}
         if(el.hasAttribute("data-tw-day")){draft.days[0].label=el.value;draft.days[0].order=api.days().indexOf(el.value);remember();}
         if(el.dataset.twSelect){if(replaceIndex!==null)selected.clear();el.checked?selected.add(el.dataset.twSelect):selected.delete(el.dataset.twSelect);renderLibrary();}

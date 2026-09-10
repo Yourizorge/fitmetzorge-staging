@@ -2,7 +2,7 @@
   if (window.FMZ_PHASE3_TRAINING_ENGINE_LOADED) return;
   window.FMZ_PHASE3_TRAINING_ENGINE_LOADED = true;
 
-  const PHASE3_VERSION = "20260909-training-timer1";
+  const PHASE3_VERSION = "20260909-training-correction2";
   const PHASE3_LANGUAGES = ["nl", "en", "de"];
   const PHASE3_FREE_ACTIVE_DAY_LIMIT = 4;
   const PHASE3_REAL_CATALOG_EXPECTED_COUNT = 898;
@@ -1501,6 +1501,7 @@
       source: row.source,
       createdAt: row.created_at,
       updatedAt: row.updated_at,
+      effortTracking: window.FMZ_WORKOUT_MODEL.effortTracking(row.metadata?.effort_tracking,days.flatMap(d=>d.exercises)),
       days,
       localOnly: false
     };
@@ -1512,7 +1513,7 @@
     try {
       const { data: plans, error: planError } = await supabaseClient
         .from("training_plans")
-        .select("id,title,status,source,created_at,updated_at")
+        .select("id,title,status,source,created_at,updated_at,metadata")
         .eq("user_id", profile.id)
         .order("created_at", { ascending: false });
       if (planError) throw planError;
@@ -1661,6 +1662,7 @@
       resumedAt: session.resumed_at || "",
       completedAt: session.completed_at || "",
       plannedExercises: Array.isArray(session.metadata?.plannedExercises) ? session.metadata.plannedExercises : [],
+      effortTracking: window.FMZ_WORKOUT_MODEL.effortTracking(session.metadata?.effortTracking,session.metadata?.plannedExercises||[],setLogs),
       setLogs: setMap,
       focus: phase3EnsureSessionFocus({ focus: session.metadata?.focus })
     };
@@ -1786,6 +1788,9 @@
       timerStart: ["Start", "Start", "Start"], timerOff: ["Uitschakelen", "Turn off", "Ausschalten"],
       timerMinimize: ["Verkleinen", "Minimize", "Verkleinern"], timerExpand: ["Timer vergroten", "Expand timer", "Timer vergroessern"],
       timerStop: ["Stoppen", "Stop", "Stoppen"],
+      rirTrack: ["RIR bijhouden", "Track RIR", "RIR erfassen"],
+      rpeTrack: ["RPE bijhouden", "Track RPE", "RPE erfassen"],
+      perWorkout: ["Per schema", "Per workout plan", "Je Trainingsplan"],
       rirHelp: ["RIR: hoeveel herhalingen had je nog kunnen doen? Optioneel.",
         "RIR: how many more reps could you have done? Optional.", "RIR: wie viele Wiederholungen waeren noch moeglich? Optional."],
       rpeHelp: ["RPE: hoe zwaar voelde deze set, van 1 tot 10? Optioneel.",
@@ -1872,10 +1877,11 @@
     if (!day?.exercises?.length) return { ok:false, error:Error("training_empty") };
     try {
       if (phase3UsesSupabase()) {
-        const result = await supabaseClient.rpc("fmz_training_save_workout", {
+        const result = await supabaseClient.rpc("fmz_training_save_workout_v2", {
           p_plan_id: plan.id, p_day_id: day.id, p_title: plan.title, p_day_label: day.label,
           p_day_order: day.order, p_exercises: day.exercises.map((e,i)=>phase3ExerciseInsertRow(day.id,e,i)),
-          p_expected_updated_at: plan.localOnly ? null : plan.updatedAt || null, p_save_id:saveId
+          p_expected_updated_at: plan.localOnly ? null : plan.updatedAt || null, p_save_id:saveId,
+          p_effort_tracking: window.FMZ_WORKOUT_MODEL.effortTracking(plan.effortTracking,day.exercises)
         });
         if (result.error) throw result.error;
         if (user !== phase3CurrentUserKey()) return {ok:false,error:Error("user_changed")};
@@ -2270,6 +2276,7 @@
       resumedAt: "",
       completedAt: "",
       plannedExercises,
+      effortTracking: window.FMZ_WORKOUT_MODEL.effortTracking(plan.effortTracking,plannedExercises),
       setLogs: {},
       focus: phase3DefaultFocusState()
     };
@@ -2344,6 +2351,7 @@
             phase: 3,
             version: PHASE3_VERSION,
             plannedExercises: session.plannedExercises,
+            effortTracking: phase3SessionEffort(session),
             focus: phase3EnsureSessionFocus(session)
           }
         }, { onConflict: "id" });
@@ -2606,7 +2614,7 @@
       completedAt: session.completedAt,
       source: session.source,
       localOnly: true,
-      metadata: { focus },
+      metadata: { focus,effortTracking:phase3SessionEffort(session),plannedExercises:window.FMZ_WORKOUT_MODEL.clone(session.plannedExercises) },
       durationSeconds: phase3WorkoutElapsedSeconds(session),
       sets: Object.values(session.setLogs || {})
     };
@@ -2766,7 +2774,7 @@
     phase3LastVibrationSecond = null;
     focus.rest = {
       manual,
-      expanded: manual,
+      expanded: true,
       durationSeconds,
       endsAt: phase3TimerEndsAt,
       remainingMs: durationSeconds * 1000,
@@ -3484,28 +3492,33 @@
     return "-";
   }
 
+  function phase3SessionEffort(session) {
+    session.effortTracking=window.FMZ_WORKOUT_MODEL.effortTracking(session.effortTracking,session.plannedExercises||[],Object.values(session.setLogs||{}));
+    return session.effortTracking;
+  }
+
   function phase3RenderSetHeaders() {
-    const mode=phase3TrainingPreferences.effort_mode;
-    return '<div class="tw-set-headings" data-effort="'+mode+'" aria-hidden="true"><span>Set</span><span>'+escapeHTML(phase3TrainingText("previousSet"))+'</span>'
+    return '<div class="tw-set-headings" aria-hidden="true"><span>Set</span><span>'+escapeHTML(phase3TrainingText("previousSet"))+'</span>'
       +'<span>'+(phase3Imperial()?"lb":"kg")+'</span><span>'+escapeHTML(phase3TrainingText("repsShort"))+'</span>'
-      +(mode!=="none"?'<span>'+mode.toUpperCase()+'</span>':"")+'<span>'+window.FMZ_WORKOUT_UI.icon("check")+'</span></div>';
+      +'<span>'+window.FMZ_WORKOUT_UI.icon("check")+'</span></div>';
   }
 
   function phase3RenderSetRow(exercise, setIndex, session, disabled = false) {
     const M=window.FMZ_WORKOUT_MODEL,key=phase3SetKey(exercise,setIndex);
     const log=session.setLogs?.[key],saved=session.setDrafts?.[key]||log||{},target=M.targets(exercise)[setIndex-1];
     const previous=phase3PreviousPerformanceSets(exercise).find(s=>(s.setIndex??s.set_index)===setIndex);
-    const mode=phase3TrainingPreferences.effort_mode,unit=phase3Imperial()?"lb":"kg",done=M.registered(log);
+    const modes=["rir","rpe"].filter(k=>phase3SessionEffort(session)[k]),unit=phase3Imperial()?"lb":"kg",done=M.registered(log);
     const changed=done&&session.setDrafts?.[key]&&["actualReps","actualWeight","rir","rpe"].some(k=>saved[k]!==log[k]);
     const busy=disabled||phase3SetSaving||phase3FinishSaving;
     const label=text=>' aria-label="'+escapeHTML("Set "+setIndex+" / "+text)+'"';
-    return '<div class="tw-live-set" data-effort="'+mode+'" data-phase3-set-row="'+escapeHTML(key)+'" data-registered="'+done+'">'
+    return '<div class="tw-live-set" data-phase3-set-row="'+escapeHTML(key)+'" data-registered="'+done+'">'
       +'<strong class="tw-set-no">'+setIndex+'</strong>'
       +'<span class="tw-previous"'+label(phase3Text("previousTime"))+'>'+escapeHTML(previous?phase3FormatSetPerformance(previous):"-")+'</span>'
       +'<label><input'+label(phase3Text("weight")+" ("+unit+")")+' data-phase3-set-field="weight" data-phase3-weight="'+escapeHTML(key)+'" type="number" min="0" max="'+(phase3Imperial()?22046:10000)+'" step="any" inputmode="decimal" value="'+escapeHTML(M.displayWeight(saved.actualWeight,phase3Imperial()))+'" placeholder="'+escapeHTML(M.displayWeight(target.weight,phase3Imperial()))+'" '+(busy?'disabled':'')+'></label>'
       +'<label><input'+label(phase3Text("reps"))+' data-phase3-set-field="reps" data-phase3-reps="'+escapeHTML(key)+'" type="number" min="1" max="999" step="1" inputmode="numeric" value="'+escapeHTML(saved.actualReps??"")+'" placeholder="'+escapeHTML(target.reps)+'" '+(busy?'disabled':'')+'></label>'
-      +(mode!=="none"?'<label class="tw-effort"><input'+label(mode.toUpperCase())+' data-phase3-set-field="'+mode+'" data-phase3-'+mode+'="'+escapeHTML(key)+'" type="number" min="'+(mode==="rpe"?1:0)+'" max="10" step="'+(mode==="rir"?1:.5)+'" inputmode="decimal" value="'+escapeHTML(saved[mode]??"")+'" placeholder="'+escapeHTML(target[mode]??"")+'" '+(busy?'disabled':'')+'></label>':"")
+
       +'<button class="tw-tool tw-set-save" type="button" data-phase3-complete-set="'+escapeHTML(key)+'" title="'+escapeHTML(phase3Text(done&&!changed?"setDone":"completeSet"))+'" aria-label="'+escapeHTML(phase3Text(done&&!changed?"setDone":"completeSet"))+'" '+(busy?'disabled':'')+'>'+window.FMZ_WORKOUT_UI.icon(done&&!changed?"check":"plus")+'</button>'
+      +(modes.length?'<div class="tw-set-effort">'+modes.map(mode=>'<label class="tw-effort"><span>'+mode.toUpperCase()+'</span><input'+label(mode.toUpperCase())+' title="'+escapeHTML(phase3TrainingText(mode+"Help"))+'" data-phase3-set-field="'+mode+'" data-phase3-'+mode+'="'+escapeHTML(key)+'" type="number" min="'+(mode==="rpe"?1:0)+'" max="10" step="'+(mode==="rir"?1:.5)+'" inputmode="decimal" value="'+escapeHTML(saved[mode]??"")+'" placeholder="'+escapeHTML(target[mode]??"")+'" '+(busy?'disabled':'')+'></label>').join("")+'</div>':"")
       +(log&&!done?'<small class="tw-pending">'+escapeHTML(phase3Text("pendingSync"))+'</small>':changed?'<small class="tw-pending">'+escapeHTML(phase3TrainingText("unsaved"))+'</small>':"")+'</div>';
   }
 
@@ -3569,13 +3582,6 @@
       +'<button class="secondary-btn" data-phase3-stop-rest type="button" '+(busy?'disabled':'')+'>'+escapeHTML(t("timerStop"))+'</button></footer></section></div>';
   }
 
-  function phase3RenderEffortChoice(session) {
-    const mode=phase3TrainingPreferences.effort_mode,t=phase3TrainingText;
-    const busy=phase3PreferencesPending||phase3SetSaving||phase3FinishSaving||session.completionPending;
-    return '<fieldset class="tw-effort-choice" aria-describedby="phase3-effort-help" '+(busy?'disabled':'')+'><legend>'+escapeHTML(t("effort"))+'</legend><div class="tw-effort-segments">'
-      +["rir","rpe","none"].map(value=>'<label><input id="phase3-effort-'+value+'" type="radio" name="phase3-effort" data-phase3-effort-mode="'+value+'" '+(mode===value?'checked':'')+'><span>'+escapeHTML(value==="none"?t("none"):value.toUpperCase())+'</span></label>').join("")
-      +'</div></fieldset><p class="tw-effort-help" id="phase3-effort-help">'+escapeHTML(t(mode==="rir"?"rirHelp":mode==="rpe"?"rpeHelp":"effortHelp"))+'</p>';
-  }
 
   function phase3RenderWorkoutFocus() {
     const session=phase3State.activeSession;
@@ -3601,7 +3607,7 @@
       +'<p class="tw-feedback" data-phase3-focus-feedback role="status">'+escapeHTML(phase3PreferencesError||focus.feedback||"")+'</p>'
       +(paused?'<p role="status">'+escapeHTML(phase3Text("trainingPaused"))+'</p>':"")
       +phase3RenderRestState(session)
-      +phase3RenderEffortChoice(session)
+
       +'<div class="tw-live-sets">'+phase3RenderSetHeaders()+rows.map((r,n)=>phase3RenderSetRow(exercise,n+1,session,paused||completionPending)).join("")+'</div>'
       +'<p class="tw-overload">'+escapeHTML(phase3OverloadSignal(exercise,session))+'</p>'
       +(focus.timerEnabled?'<label class="phase3-vibration-setting"><input data-phase3-vibration-setting type="checkbox" '+(phase3RestVibrationEnabled?'checked':'')+'>'+escapeHTML(phase3Text("vibrationSetting"))+'</label>':"")
@@ -3843,7 +3849,7 @@
   };
 
   phase3Maker = window.FMZ_WORKOUT_UI.create({
-    language: phase3Language, text: phase3Text, userKey: phase3CurrentUserKey,
+    language: phase3Language, text: phase3Text, trainingText: phase3TrainingText, userKey: phase3CurrentUserKey,
     uuid: phase3DbId, catalog: ()=>PHASE3_EXERCISES, meta: phase3ExerciseMeta,
     loadCatalog: phase3LoadCanonicalCatalog, details: phase3LoadExerciseDetails,
     days: ()=>DAYS, canCreate: phase3CanCreateActiveWorkoutDay, preferences: ()=>phase3TrainingPreferences,
@@ -3856,9 +3862,7 @@
     preferences: ()=>({...phase3TrainingPreferences}),
     setPreferences: phase3SetTrainingPreferences,
     loadPreferences: phase3LoadTrainingPreferences,
-    preferencesHtml: ()=>'<fieldset class="fmz-theme-options"><legend>'+escapeHTML(phase3TrainingText("effort"))+'</legend>'
-      + ["rir","rpe","none"].map(mode=>'<label><input type="radio" name="training_effort_mode" value="'+mode+'" '+(phase3TrainingPreferences.effort_mode===mode?'checked':'')+'><span>'+escapeHTML(mode==="none"?phase3TrainingText("none"):mode.toUpperCase())+'</span></label>').join("")
-      + '</fieldset><p>'+escapeHTML(phase3TrainingText("effortHelp"))+'</p><p role="status">'+escapeHTML(phase3PreferencesError)+'</p>'
+    preferencesHtml: ()=>'<p>RIR / RPE: <strong>'+escapeHTML(phase3TrainingText("perWorkout"))+'</strong></p>'
   };
 
   document.addEventListener("submit", async (event) => {
@@ -3906,14 +3910,6 @@
   });
 
   document.addEventListener("change", (event) => {
-    if (event.target?.hasAttribute("data-phase3-effort-mode")) {
-      const mode=event.target.dataset.phase3EffortMode;
-      if (!["rir","rpe","none"].includes(mode)) return;
-      const saving=phase3SetTrainingPreferences({effort_mode:mode});
-      event.target.closest("fieldset").disabled=true;
-      saving.then(()=>document.getElementById("phase3-effort-"+phase3TrainingPreferences.effort_mode)?.focus({preventScroll:true}));
-      return;
-    }
     if (event.target?.hasAttribute("data-phase3-session-rest")) {
       const session=phase3State.activeSession,e=session?.plannedExercises[Number(event.target.dataset.phase3SessionRest)];
       const n=Number(event.target.value);

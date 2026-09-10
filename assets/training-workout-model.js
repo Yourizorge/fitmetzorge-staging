@@ -2,6 +2,12 @@
   "use strict";
   const number = value => value === null || value === undefined || String(value).trim() === "" ? null : Number(value);
   const clone = value => JSON.parse(JSON.stringify(value));
+  function effortTracking(value, exercises = [], logs = []) {
+    if (value && typeof value.rir === "boolean" && typeof value.rpe === "boolean") return {rir:value.rir,rpe:value.rpe};
+    // Legacy records have no choice: preserve access to actually stored targets/scores.
+    const rows = [...exercises.flatMap(targets), ...logs];
+    return {rir:rows.some(r=>number(r.rir)!==null),rpe:rows.some(r=>number(r.rpe)!==null)};
+  }
   function targets(exercise) {
     if (Array.isArray(exercise.setTargets) && exercise.setTargets.length) return clone(exercise.setTargets);
     return Array.from({length: Math.min(20, Math.max(1, Number(exercise.targetSets) || 3))}, () => ({
@@ -66,7 +72,7 @@
   }
   const displayWeight=(kg,imperial)=>number(kg)===null ? "" : Math.round(number(kg)*(imperial?2.2046226218:1)*100)/100;
   const storedWeight=(value,imperial)=>number(value)===null ? null : Math.round(number(value)/(imperial?2.2046226218:1)*1000000)/1000000;
-  const api={number,clone,targets,validTargets,groups,sequence,key,registered,next,previous,displayWeight,storedWeight};
+  const api={number,clone,effortTracking,targets,validTargets,groups,sequence,key,registered,next,previous,displayWeight,storedWeight};
   if(typeof module!=="undefined"&&module.exports)module.exports=api;
   else root.FMZ_WORKOUT_MODEL=Object.freeze(api);
 })(typeof window!=="undefined"?window:globalThis);
