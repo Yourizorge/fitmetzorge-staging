@@ -1694,4 +1694,3 @@ Chat, Verlauf, verfuegbare Fakten und bisherige nichtkoerperliche Reflexion beha
 Unterschiede ansehen, annehmen oder ablehnen. Der bestehende Plan bleibt aktiv. Diese Simulation erfordert Mitglied UND befugten Trainer sowie eine getrennte ausdrueckliche Anwendung.
 
 Simulation status: pending; approvals: none; applications: 0.
-
