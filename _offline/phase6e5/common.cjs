@@ -1,0 +1,15 @@
+"use strict";
+if (typeof window !== "undefined" || typeof process === "undefined" || !process.versions?.node) throw Error("offline_node_only");
+const common=require("../phase6e1/common.cjs"),crypto=require("node:crypto");
+const clone=x=>JSON.parse(JSON.stringify(x)),same=(a,b)=>common.canonical(a)===common.canonical(b);
+const ref=x=>({id:x.id,revision:x.revision});
+const hash=x=>crypto.createHash("sha256").update(common.canonical(x)).digest("hex");
+const number=x=>typeof x==="number"&&Number.isFinite(x)&&x>=0&&x<=1000000000;
+const list=(a,n,f)=>Array.isArray(a)&&a.length<=n&&a.every(f);
+const unique=a=>new Set(a).size===a.length;
+const reference=x=>common.exact(x,["id","revision"])&&common.id(x.id)&&common.integer(x.revision);
+const nullable=(x,test)=>x===null||test(x);
+const rir=x=>common.integer(x)&&x<=10,rpe=x=>number(x)&&x>=1&&x<=10&&Number.isInteger(x*2);
+const load=x=>common.exact(x,["value","unit"])&&nullable(x.value,number)&&(x.unit===null||typeof x.unit==="string"&&/^[a-z_]{1,16}$/.test(x.unit));
+const reps=x=>common.exact(x,["min","max"])&&common.integer(x.min)&&common.integer(x.max)&&x.min<=x.max&&x.max<=1000000000;
+module.exports={...common,clone,same,ref,hash,number,list,unique,reference,nullable,rir,rpe,load,reps};

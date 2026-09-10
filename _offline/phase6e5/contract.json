@@ -1,0 +1,34 @@
+{
+  "version": "6e5-offline-v1",
+  "synthetic_only": true,
+  "private": true,
+  "owner_accepted": false,
+  "frozen": false,
+  "physical_advice_authorized": false,
+  "automatic_actions_allowed": false,
+  "source_trust": "synthetic_declared_only_not_live_authority",
+  "rule_purpose": "synthetic_test_rules_only",
+  "required_approvals": [
+    "member",
+    "trainer"
+  ],
+  "apply": "separate_explicit_trainer_event_in_memory_only",
+  "units": [
+    "kg",
+    "lb"
+  ],
+  "missing_memberless_policy": "separate_FitMetZorge_policy_not_invented",
+  "expert_reviews_open": [
+    "training_rules_and_progression",
+    "medical_safety_and_resumption",
+    "privacy_legal_consent_and_retention",
+    "NL_EN_DE"
+  ],
+  "no_medical_clearance_from": [
+    "absence_of_recognized_signal",
+    "approval",
+    "self_report",
+    "deletion",
+    "O5_expiry"
+  ]
+}
