@@ -1,16 +1,33 @@
 # FitMetZorge Build Status
 
-## Package 6E-5 - In Progress
+## Package 6E-5 - Technical Delivery
 
-Expliciete GO: offline progressievoorstellen en schema-goedkeuringssimulatie.
-6E-4 is COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE CONTRACTS ONLY:
-V1/V2 en bestaande geteste scope, [receipt](PHASE6E4_FREEZE_RECEIPT.md).
-De bredere progressiewens is niet door 6E-4 gerealiseerd.
-Nieuwe 6E-5-code uitsluitend in _offline/phase6e5, synthetisch en deterministisch.
-Geen live schemawijziging, medische vrijgave of 6E-5-owneracceptatie.
-Alle 89 frozen 6E-0..6E-4-bronnen en alle 60 runtime-assets blijven beschermd.
+TECHNICAL PASS / READY FOR OWNER REVIEW - OFFLINE ONLY.
+Werkende concrete progressievoorstellen: reps verhogen, expliciete gewichtsstap
+en bestaand plandoel behouden, uit synthetische actuele coachingsregels en
+betrouwbaar gekoppelde historische sets. Geen standaardnormen of garanties.
+Bron 1e63a287503a4b1687c7630fc71f13d9c6e787e0; 17 bestanden in _offline/phase6e5.
+Version-bound lid/trainergoedkeuring, afwijzen, herbeoordeling en idempotente
+toepassing uitsluitend in memory; geen echt schema gewijzigd.
+[Contract](PHASE6E5_CONTRACTS.md), [owneroverzicht](PHASE6E5_OWNER_OVERVIEW.md),
+[30 echte taalvoorbeelden](PHASE6E5_EXAMPLES.md), [rapport](PHASE6E5_TECHNICAL_REPORT.md),
+[bewijs](PHASE6E5_EVIDENCE.json).
+
+1030/1030 PASS: 149 nieuwe + 881 frozen regressies, 0 fail/skip.
+Bekende taalbeperking en historische observaties apart, GEEN herkenningssucces
+of medische/trainingsregel-/live-autoriteitsvalidatie. Eerste reviewfouten bewaard.
+Alle 89 frozen 6E-0..6E-4-bronnen en 60 runtime-assets byte-identiek, inclusief
+owner-accepted timer en onafhankelijke/uitgelijnde RIR/RPE.
+D1-D12/O1-O5/N1-N3/G1-G3/T1-T4 behouden. Geen classifieruitbreiding.
+
+6E-4/V1/V2: COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE CONTRACTS ONLY.
+[6E-4-receipt](PHASE6E4_FREEZE_RECEIPT.md) legt uitsluitend de bestaande geteste
+scope vast; de bredere progressiewens wordt niet achteraf als 6E-4-resultaat gepresenteerd.
+6E-5-resultaten zijn NIET owner-accepted/frozen; Phase 6E blijft ONVOLTOOID.
+Echte coachings-/hervattingscriteria, FMZ-beleid zonder trainer, privacy/juridische
+en taalreview en betrouwbare live source/auth/retentie/concurrency blijven open.
+Geen medische vrijgave, live AI, database/Edge/provider of volgende pakketstart.
 De oude voorlopige providerroadmap is niet de huidige 6E-5-scope.
-D1-D12/O1-O5/N1-N3/G1-G3/T1-T4 behouden; Phase 6E blijft ONVOLTOOID.
 
 ## Package 6E-4 - Historical Delivery (2026-09-10)
 
