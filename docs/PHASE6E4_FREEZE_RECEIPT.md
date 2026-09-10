@@ -63,4 +63,3 @@ Runtimebron 89dde6a4e535b38631e6223134f4943252136cfc; 60 assets beschermd.
 De nieuwe expliciete GO is 6E-5 offline progressievoorstellen en goedkeuringssimulatie,
 niet de oude onuitgevoerde providerroadmap en geen live opslag/schemawijziging.
 6E-5-resultaten worden NIET automatisch geaccepteerd of frozen.
-
