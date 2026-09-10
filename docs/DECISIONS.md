@@ -613,3 +613,18 @@ All 45 frozen 6E-0/6E-1 sources and current round-timer/RIR-RPE runtime are pres
 No provider, live member data, DB/Edge, sharing, automated action, cost or production.
 Expert medical/privacy/legal/language reviews remain open; Phase 6E is incomplete.
 Physical phone retest remains separate. No next package starts automatically.
+
+## Decision 0041: Training correction GO; AI review remains separate
+
+Owner supersedes the earlier timer/effort-display specification: viewport-centered
+large rest timer, independent RIR/RPE plan checkboxes (both off on NEW plans),
+optional fields BELOW each set and immutable active/completed session choices.
+The general effort preference must not override these choices or erase scores.
+Scope includes safe additive staging SQL, focused tests, docs, push and Pages.
+Runtime source: 4edc8054202b15c7bd1e884982a94a7346991ed1; migration 20260909215122.
+Training status remains PENDING OWNER RETEST, not physical phone acceptance.
+6E-2 N1-N3 remain PENDING; no acceptance/freeze/live release follows from Training GO.
+D1-D12/O1-O5 and frozen 6E-0/6E-1 retained. Phase 6E remains incomplete.
+PHASE6E3_PROPOSAL.md is the single concrete next offline proposal, NOT STARTED:
+goal/plan-bound workout reflection with actual source identities and explicit
+missing trainer/nutrition/recovery boundaries. No new medical norms or review service.

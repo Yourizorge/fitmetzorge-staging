@@ -1,5 +1,10 @@
 # Package 6E-2 Owneroverzicht
 
+Actuele afbakening na de Training-correcties: N1-N3 hieronder blijven uitsluitend
+ter ownerbeoordeling. Training-akkoord is geen AI-acceptatie of live-vrijgave.
+Het enige nieuwe vervolgvoorstel is [6E-3 doel-/schemagebonden workoutreflectie](PHASE6E3_PROPOSAL.md),
+PROPOSED / NOT STARTED. De onderstaande exacte 6E-2-conceptantwoorden zijn ongewijzigd.
+
 TECHNICAL PASS / READY FOR OWNER REVIEW. Alleen een uitvoerbaar offline productvoorstel.
 6E-0/6E-1 blijven accepted/frozen; D1-D12 en O1-O5 worden niet heropend.
 Geen live integratie, deskundige goedkeuring, owneracceptatie of nieuwe freeze.

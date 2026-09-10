@@ -1,5 +1,9 @@
 # Training Timer And Effort Follow-Up
 
+Historical delivery: its timer/RIR-RPE specification is superseded by
+[Training corrections](TRAINING_CORRECTIONS_REPORT.md). Original evidence below is retained,
+not counted as proof of the new phone geometry or independent plan-level choices.
+
 ## Scope
 
 Owner GO: round rest timer, visible RIR/RPE/None and the existing offline 6E-1

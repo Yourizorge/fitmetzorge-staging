@@ -4,6 +4,15 @@ Date: 2026-09-04. Target: staging `mokxyyullfhkfalopbzd` only.
 Result: RESOLVED / VERIFIED. Later Package 6D work appended forward-only migrations
 without reopening the historical repair.
 
+## Training Corrections - Verified 2026-09-10
+
+Current Training addendum (2026-09-10): 20260909215122_training_plan_effort_tracking.sql
+adds one invoker wrapper only. No table/backfill or old migration/function edit.
+Git/live 33/33 aligned; dry-run empty. 43 rollback checks before/after and 34
+original Training SQL regressions PASS. 67 table fingerprints/100332 rows identical.
+Exact evidence and remaining local-rebuild limits: TRAINING_CORRECTIONS_REPORT.md.
+The theme evidence below remains historical and unchanged.
+
 ## Theme Restoration - Verified 2026-09-07
 
 Only forward-only 20260907095307_phase6d_theme_preference.sql was appended:

@@ -1,5 +1,26 @@
 # FitMetZorge Master Build Plan
 
+## Training Corrections - Current (2026-09-10)
+
+TECHNICAL PASS / PENDING OWNER RETEST. Source 4edc8054202b15c7bd1e884982a94a7346991ed1.
+This explicitly supersedes the earlier timer and RIR/RPE display specification.
+300px viewport-centered rest timer at 390px; independent plan-level RIR/RPE choices,
+both off on NEW plans, fields BELOW each set, immutable session/history choices.
+Six authorized Training runtime paths only; 54 other assets and all offline AI unchanged.
+720 local and 720 published-asset browser checks, 570 focused regressions,
+6 historical completion checks;
+43 new rollback SQL checks before/after apply and 34 original SQL checks PASS.
+Migration 20260909215122 adds one invoker wrapper, no table change or backfill.
+33/33 history aligned, dry-run empty; 67 table fingerprints/100332 rows unchanged.
+Publication/byte/private-source checks and physical-device limits:
+[Training report](TRAINING_CORRECTIONS_REPORT.md), [evidence](TRAINING_CORRECTIONS_EVIDENCE.json).
+
+6E-2 remains TECHNICAL PASS, NOT accepted/frozen/live. Only N1-N3 remain for ownerreview.
+6E-0/6E-1 and D1-D12/O1-O5 preserved. Phase 6E incomplete.
+[One next offline proposal](PHASE6E3_PROPOSAL.md): goal/plan-bound workout reflection,
+PROPOSED / NOT STARTED. Existing domain data is not automatically approved AI input.
+Earlier runtime-preservation statements below describe their historical package baseline.
+
 ## Package 6E-2 Offline Recommendations - Current
 
 TECHNICAL PASS / READY FOR OWNER REVIEW. Explicit offline GO on 2026-09-09.
