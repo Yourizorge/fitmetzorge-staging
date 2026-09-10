@@ -1,0 +1,854 @@
+{
+  "baseline": "314730b6e25b908673e164696b11d25dae38c600",
+  "version": "6e5-prereg-v1",
+  "synthetic_only": true,
+  "registered_before_executable_implementation": true,
+  "fixture_contract": {
+    "unit": "kg or lb without conversion",
+    "subject": "syn-member",
+    "trainer": "syn-trainer",
+    "goal": "strength",
+    "current_plan_revision": 3,
+    "historical_plan_revision": 2,
+    "historical_goal_revision": 1,
+    "completed_sessions": 2,
+    "sets_per_exercise": 2,
+    "window_days": 14,
+    "minimum_sessions": 2,
+    "recency_is_test_rule_not_medical_norm": true,
+    "exercises": [
+      {
+        "id": "syn-squat",
+        "current": {
+          "sets": 2,
+          "reps": 8,
+          "weight": 55
+        },
+        "recent": [
+          8,
+          8
+        ],
+        "rule": {
+          "reps_step": 1,
+          "reps_ceiling": 10,
+          "reset_reps": 8,
+          "weights": [
+            55,
+            57.5,
+            60
+          ]
+        },
+        "expected": {
+          "kind": "increase_reps",
+          "sets": 2,
+          "reps": 9,
+          "weight": 55
+        }
+      },
+      {
+        "id": "syn-row",
+        "current": {
+          "sets": 2,
+          "reps": 10,
+          "weight": 30
+        },
+        "recent": [
+          10,
+          10
+        ],
+        "rule": {
+          "reps_step": 1,
+          "reps_ceiling": 10,
+          "reset_reps": 8,
+          "weights": [
+            30,
+            32.5,
+            35
+          ]
+        },
+        "expected": {
+          "kind": "increase_weight",
+          "sets": 2,
+          "reps": 8,
+          "weight": 32.5
+        }
+      },
+      {
+        "id": "syn-press",
+        "current": {
+          "sets": 2,
+          "reps": 8,
+          "weight": 20
+        },
+        "recent": [
+          7,
+          7
+        ],
+        "rule": {
+          "reps_step": 1,
+          "reps_ceiling": 10,
+          "reset_reps": 8,
+          "weights": [
+            20,
+            22.5,
+            25
+          ]
+        },
+        "expected": {
+          "kind": "maintain",
+          "sets": 2,
+          "reps": 8,
+          "weight": 20
+        }
+      }
+    ],
+    "approval": "member AND version-bound trainer; separate explicit offline apply; no medical clearance",
+    "effort": "optional separately unless explicit test rule requires; null not zero; no implicit RIR/RPE conversion",
+    "history": "exact owner/session/snapshot/exercise/set tuple; declared complete input window; no retrospective replacement"
+  },
+  "cases": [
+    {
+      "id": "normal",
+      "expected": {
+        "status": "proposal",
+        "check": "all_three"
+      }
+    },
+    {
+      "id": "lb",
+      "expected": {
+        "status": "proposal",
+        "check": "original_lb"
+      }
+    },
+    {
+      "id": "fractional_step",
+      "expected": {
+        "status": "proposal",
+        "check": "exact_step"
+      }
+    },
+    {
+      "id": "rir_zero",
+      "expected": {
+        "status": "proposal",
+        "check": "zero_preserved"
+      }
+    },
+    {
+      "id": "optional_effort_missing",
+      "expected": {
+        "status": "proposal",
+        "check": "null_preserved"
+      }
+    },
+    {
+      "id": "required_rir_missing",
+      "expected": {
+        "status": "partial",
+        "check": "missing_effort"
+      }
+    },
+    {
+      "id": "required_rpe_missing",
+      "expected": {
+        "status": "partial",
+        "check": "missing_effort"
+      }
+    },
+    {
+      "id": "effort_rule_not_met",
+      "expected": {
+        "status": "proposal",
+        "check": "maintain"
+      }
+    },
+    {
+      "id": "effort_conflict",
+      "expected": {
+        "status": "partial",
+        "check": "conflicting_effort"
+      }
+    },
+    {
+      "id": "too_few_sessions",
+      "expected": {
+        "status": "partial",
+        "check": "insufficient_sessions"
+      }
+    },
+    {
+      "id": "missing_set",
+      "expected": {
+        "status": "unavailable",
+        "check": "incomplete_history"
+      }
+    },
+    {
+      "id": "incomplete_session",
+      "expected": {
+        "status": "unavailable",
+        "check": "incomplete_history"
+      }
+    },
+    {
+      "id": "incomplete_coverage",
+      "expected": {
+        "status": "unavailable",
+        "check": "incomplete_history"
+      }
+    },
+    {
+      "id": "history_missing",
+      "expected": {
+        "status": "unavailable",
+        "check": "missing_history"
+      }
+    },
+    {
+      "id": "history_old",
+      "expected": {
+        "status": "unavailable",
+        "check": "history_window"
+      }
+    },
+    {
+      "id": "history_future",
+      "expected": {
+        "status": "invalid_input",
+        "check": "history_time"
+      }
+    },
+    {
+      "id": "session_wrong_member",
+      "expected": {
+        "status": "invalid_input",
+        "check": "history_identity"
+      }
+    },
+    {
+      "id": "set_wrong_member",
+      "expected": {
+        "status": "invalid_input",
+        "check": "history_identity"
+      }
+    },
+    {
+      "id": "set_wrong_session",
+      "expected": {
+        "status": "invalid_input",
+        "check": "history_binding"
+      }
+    },
+    {
+      "id": "set_wrong_snapshot",
+      "expected": {
+        "status": "invalid_input",
+        "check": "history_binding"
+      }
+    },
+    {
+      "id": "set_wrong_exercise",
+      "expected": {
+        "status": "invalid_input",
+        "check": "history_binding"
+      }
+    },
+    {
+      "id": "duplicate_session",
+      "expected": {
+        "status": "invalid_input",
+        "check": "history_shape"
+      }
+    },
+    {
+      "id": "duplicate_set",
+      "expected": {
+        "status": "invalid_input",
+        "check": "history_binding"
+      }
+    },
+    {
+      "id": "unknown_catalog",
+      "expected": {
+        "status": "unavailable",
+        "check": "catalog_unavailable"
+      }
+    },
+    {
+      "id": "snapshot_after_start",
+      "expected": {
+        "status": "invalid_input",
+        "check": "history_time"
+      }
+    },
+    {
+      "id": "historical_plan_unmapped",
+      "expected": {
+        "status": "partial",
+        "check": "history_not_comparable"
+      }
+    },
+    {
+      "id": "historical_goal_unmapped",
+      "expected": {
+        "status": "partial",
+        "check": "history_not_comparable"
+      }
+    },
+    {
+      "id": "different_equipment",
+      "expected": {
+        "status": "partial",
+        "check": "history_not_comparable"
+      }
+    },
+    {
+      "id": "different_variant",
+      "expected": {
+        "status": "partial",
+        "check": "history_not_comparable"
+      }
+    },
+    {
+      "id": "historical_weight_changed",
+      "expected": {
+        "status": "partial",
+        "check": "history_not_comparable"
+      }
+    },
+    {
+      "id": "current_rep_range",
+      "expected": {
+        "status": "partial",
+        "check": "point_target_required"
+      }
+    },
+    {
+      "id": "rule_missing",
+      "expected": {
+        "status": "partial",
+        "check": "missing_rule"
+      }
+    },
+    {
+      "id": "rules_missing",
+      "expected": {
+        "status": "unavailable",
+        "check": "missing_policy"
+      }
+    },
+    {
+      "id": "policy_not_test",
+      "expected": {
+        "status": "invalid_input",
+        "check": "policy_shape"
+      }
+    },
+    {
+      "id": "policy_wrong_member",
+      "expected": {
+        "status": "invalid_input",
+        "check": "policy_identity"
+      }
+    },
+    {
+      "id": "policy_wrong_trainer",
+      "expected": {
+        "status": "invalid_input",
+        "check": "policy_identity"
+      }
+    },
+    {
+      "id": "policy_revoked",
+      "expected": {
+        "status": "unavailable",
+        "check": "policy_not_current"
+      }
+    },
+    {
+      "id": "policy_expired",
+      "expected": {
+        "status": "unavailable",
+        "check": "policy_not_current"
+      }
+    },
+    {
+      "id": "policy_wrong_plan",
+      "expected": {
+        "status": "unavailable",
+        "check": "policy_binding"
+      }
+    },
+    {
+      "id": "policy_wrong_goal",
+      "expected": {
+        "status": "unavailable",
+        "check": "policy_binding"
+      }
+    },
+    {
+      "id": "policy_wrong_limits",
+      "expected": {
+        "status": "unavailable",
+        "check": "policy_binding"
+      }
+    },
+    {
+      "id": "rules_duplicate",
+      "expected": {
+        "status": "invalid_input",
+        "check": "policy_shape"
+      }
+    },
+    {
+      "id": "no_trainer",
+      "expected": {
+        "status": "unavailable",
+        "check": "fmz_policy_missing"
+      }
+    },
+    {
+      "id": "trainer_revoked",
+      "expected": {
+        "status": "unavailable",
+        "check": "source_revoked"
+      }
+    },
+    {
+      "id": "wrong_trainer_relationship",
+      "expected": {
+        "status": "invalid_input",
+        "check": "trainer_identity_mismatch"
+      }
+    },
+    {
+      "id": "stale_request",
+      "expected": {
+        "status": "unavailable",
+        "check": "stale_readset"
+      }
+    },
+    {
+      "id": "stale_history_read",
+      "expected": {
+        "status": "unavailable",
+        "check": "stale_progression_readset"
+      }
+    },
+    {
+      "id": "stale_policy_ref",
+      "expected": {
+        "status": "unavailable",
+        "check": "stale_progression_readset"
+      }
+    },
+    {
+      "id": "evaluation_before",
+      "expected": {
+        "status": "unavailable",
+        "check": "evaluation_window"
+      }
+    },
+    {
+      "id": "evaluation_end",
+      "expected": {
+        "status": "unavailable",
+        "check": "evaluation_window"
+      }
+    },
+    {
+      "id": "evaluation_start",
+      "expected": {
+        "status": "proposal",
+        "check": "inclusive_start"
+      }
+    },
+    {
+      "id": "bad_next_week",
+      "expected": {
+        "status": "invalid_input",
+        "check": "policy_window"
+      }
+    },
+    {
+      "id": "no_weight_step",
+      "expected": {
+        "status": "partial",
+        "check": "weight_step_unavailable"
+      }
+    },
+    {
+      "id": "step_not_listed",
+      "expected": {
+        "status": "partial",
+        "check": "weight_step_unavailable"
+      }
+    },
+    {
+      "id": "mixed_unit",
+      "expected": {
+        "status": "unavailable",
+        "check": "mixed_units"
+      }
+    },
+    {
+      "id": "history_mixed_unit",
+      "expected": {
+        "status": "partial",
+        "check": "history_not_comparable"
+      }
+    },
+    {
+      "id": "unknown_unit",
+      "expected": {
+        "status": "unavailable",
+        "check": "unknown_unit"
+      }
+    },
+    {
+      "id": "reps_limit",
+      "expected": {
+        "status": "partial",
+        "check": "proposal_outside_limits"
+      }
+    },
+    {
+      "id": "weight_limit",
+      "expected": {
+        "status": "partial",
+        "check": "proposal_outside_limits"
+      }
+    },
+    {
+      "id": "max_weight_exact",
+      "expected": {
+        "status": "proposal",
+        "check": "boundary_inclusive"
+      }
+    },
+    {
+      "id": "max_reps_exact",
+      "expected": {
+        "status": "proposal",
+        "check": "boundary_inclusive"
+      }
+    },
+    {
+      "id": "unsupported_set_count",
+      "expected": {
+        "status": "partial",
+        "check": "set_count_mismatch"
+      }
+    },
+    {
+      "id": "rir_invalid",
+      "expected": {
+        "status": "invalid_input",
+        "check": "history_shape"
+      }
+    },
+    {
+      "id": "rpe_zero",
+      "expected": {
+        "status": "invalid_input",
+        "check": "history_shape"
+      }
+    },
+    {
+      "id": "missing_reps",
+      "expected": {
+        "status": "unavailable",
+        "check": "incomplete_history"
+      }
+    },
+    {
+      "id": "nan_load",
+      "expected": {
+        "status": "invalid_input",
+        "check": "history_shape"
+      }
+    },
+    {
+      "id": "negative_load",
+      "expected": {
+        "status": "invalid_input",
+        "check": "history_shape"
+      }
+    },
+    {
+      "id": "current",
+      "expected": {
+        "status": "unavailable",
+        "check": "safety"
+      }
+    },
+    {
+      "id": "unclassified",
+      "expected": {
+        "status": "unavailable",
+        "check": "safety"
+      }
+    },
+    {
+      "id": "self_reported",
+      "expected": {
+        "status": "unavailable",
+        "check": "safety"
+      }
+    },
+    {
+      "id": "serious_recovered",
+      "expected": {
+        "status": "unavailable",
+        "check": "safety"
+      }
+    },
+    {
+      "id": "recurring",
+      "expected": {
+        "status": "unavailable",
+        "check": "safety"
+      }
+    },
+    {
+      "id": "new_after_recovery",
+      "expected": {
+        "status": "unavailable",
+        "check": "safety"
+      }
+    },
+    {
+      "id": "expired",
+      "expected": {
+        "status": "unavailable",
+        "check": "safety"
+      }
+    },
+    {
+      "id": "expired_fresh",
+      "expected": {
+        "status": "unavailable",
+        "check": "safety"
+      }
+    },
+    {
+      "id": "missing",
+      "expected": {
+        "status": "unavailable",
+        "check": "safety"
+      }
+    },
+    {
+      "id": "missing_fresh",
+      "expected": {
+        "status": "unavailable",
+        "check": "safety"
+      }
+    },
+    {
+      "id": "unnecessary_fresh",
+      "expected": {
+        "status": "unavailable",
+        "check": "safety"
+      }
+    },
+    {
+      "id": "unclear",
+      "expected": {
+        "status": "clarification",
+        "check": "safety"
+      }
+    },
+    {
+      "id": "technical",
+      "expected": {
+        "status": "clarification",
+        "check": "safety"
+      }
+    },
+    {
+      "id": "clarified",
+      "expected": {
+        "status": "proposal",
+        "check": "optional_clarification"
+      }
+    },
+    {
+      "id": "technical_retry",
+      "expected": {
+        "status": "proposal",
+        "check": "optional_retry"
+      }
+    },
+    {
+      "id": "mixed_complaint",
+      "expected": {
+        "status": "unavailable",
+        "check": "safety"
+      }
+    },
+    {
+      "id": "known_language_miss",
+      "expected": {
+        "status": "clarification",
+        "check": "observation_not_recognition_success"
+      }
+    },
+    {
+      "id": "no_analysis_consent",
+      "expected": {
+        "status": "access_unavailable",
+        "check": "access"
+      }
+    },
+    {
+      "id": "no_chat_consent",
+      "expected": {
+        "status": "unavailable",
+        "check": "access"
+      }
+    },
+    {
+      "id": "readonly_history",
+      "expected": {
+        "status": "proposal",
+        "check": "historical_sources_unchanged"
+      }
+    },
+    {
+      "id": "declared_conflict",
+      "expected": {
+        "status": "partial",
+        "check": "conflicting_effort"
+      }
+    }
+  ],
+  "approval_cases": [
+    {
+      "id": "view_does_not_change_plan"
+    },
+    {
+      "id": "member_accept_waits_for_trainer"
+    },
+    {
+      "id": "trainer_accept_waits_for_member"
+    },
+    {
+      "id": "both_approve_no_auto_apply"
+    },
+    {
+      "id": "explicit_trainer_apply_once"
+    },
+    {
+      "id": "member_cannot_apply"
+    },
+    {
+      "id": "reject_keeps_original"
+    },
+    {
+      "id": "trainer_reject_keeps_original"
+    },
+    {
+      "id": "rejected_cannot_accept"
+    },
+    {
+      "id": "wrong_member_actor"
+    },
+    {
+      "id": "wrong_trainer_actor"
+    },
+    {
+      "id": "wrong_relationship_revision"
+    },
+    {
+      "id": "wrong_proposal_id"
+    },
+    {
+      "id": "wrong_proposal_revision"
+    },
+    {
+      "id": "wrong_plan_revision"
+    },
+    {
+      "id": "changed_plan_needs_recheck"
+    },
+    {
+      "id": "changed_goal_needs_recheck"
+    },
+    {
+      "id": "changed_policy_needs_recheck"
+    },
+    {
+      "id": "changed_history_needs_recheck"
+    },
+    {
+      "id": "new_safety_before_accept"
+    },
+    {
+      "id": "self_report_before_apply"
+    },
+    {
+      "id": "expired_context_before_apply"
+    },
+    {
+      "id": "revoked_authority_before_apply"
+    },
+    {
+      "id": "consent_withdrawn_before_apply"
+    },
+    {
+      "id": "duplicate_accept_same_event"
+    },
+    {
+      "id": "duplicate_accept_new_event"
+    },
+    {
+      "id": "duplicate_apply_same_event"
+    },
+    {
+      "id": "duplicate_apply_new_event"
+    },
+    {
+      "id": "same_event_different_payload"
+    },
+    {
+      "id": "stale_review_object"
+    },
+    {
+      "id": "cloned_proposal_denied"
+    },
+    {
+      "id": "reassessment_requires_new_approvals"
+    },
+    {
+      "id": "no_history_mutation"
+    },
+    {
+      "id": "no_chat_sharing_or_safety_copy"
+    }
+  ],
+  "languages": [
+    "nl",
+    "en",
+    "de"
+  ],
+  "required_examples": [
+    "increase_reps",
+    "increase_weight",
+    "maintain",
+    "insufficient",
+    "conflicting",
+    "safety",
+    "accept",
+    "reject",
+    "version_conflict_and_reassessment"
+  ],
+  "limits": [
+    "no authentic live authority proven",
+    "test rules not expert-approved",
+    "no physical live authorization",
+    "known language observation separate",
+    "no trainer means missing separate FMZ coaching policy"
+  ]
+}
