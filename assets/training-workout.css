@@ -93,9 +93,11 @@ body .phase3-focus-sheet.tw-timer-focus { position:fixed;inset:0;display:block;w
 .tw-tracking legend { font-size:14px;font-weight:600;margin-bottom:8px; }
 .tw-dialog .tw-tracking label { display:flex;align-items:center;gap:10px;min-height:44px;cursor:pointer; }
 .tw-tracking p { color:var(--muted);font-size:12px;margin:0 0 8px; }
-.tw-set-effort,.tw-target-effort { grid-column:2/-1;display:flex;gap:12px;align-items:end; }
-.tw-set-effort { padding:2px 0 4px; }
-.tw-focus .tw-set-effort label { display:grid;grid-template-columns:auto 64px;gap:6px;align-items:center; }
+.tw-target-effort { grid-column:2/-1;display:flex;gap:12px;align-items:end; }
+.tw-set-effort { grid-column:1/-1;display:grid;grid-template-columns:var(--tw-set-columns);gap:4px;align-items:end;padding:2px 0 4px; }
+.tw-focus .tw-set-effort label { display:grid;grid-template-columns:minmax(0,1fr);gap:3px;align-items:start; }
+.tw-set-effort label:has([data-phase3-rir]) { grid-column:3; }
+.tw-set-effort label:has([data-phase3-rpe]) { grid-column:4; }
 .tw-set-effort span { color:var(--muted);font-size:12px; }
 .tw-target-effort>label { max-width:140px;flex:1; }
 .tw-effort-help { font-size:12px;line-height:1.4;color:var(--muted);margin:4px 0 8px;overflow-wrap:anywhere; }
@@ -105,7 +107,7 @@ body .phase3-focus-sheet.tw-timer-focus { position:fixed;inset:0;display:block;w
  .tw-timer-face span { font-size:12px;max-height:34px; }
 }
 .tw-live-sets { display:grid;gap:0;margin:10px 0; }
-.tw-live-set,.tw-set-headings { display:grid;grid-template-columns:18px minmax(40px,1fr) minmax(64px,1.2fr) minmax(52px,.9fr) 44px;gap:4px;align-items:center; }
+.tw-live-set,.tw-set-headings { --tw-set-columns:18px minmax(40px,1fr) minmax(64px,1.2fr) minmax(52px,.9fr) 44px;display:grid;grid-template-columns:var(--tw-set-columns);gap:4px;align-items:center; }
 .tw-live-set { border-bottom:1px solid var(--line);padding:6px 0; }
 .tw-set-headings { color:var(--muted);font-size:11px;font-weight:600;text-align:center;min-height:26px; }
 .tw-set-headings .tw-icon { width:16px;height:16px;margin:auto; }

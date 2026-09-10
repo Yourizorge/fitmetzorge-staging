@@ -58,7 +58,7 @@
   const phase2PatchSource = await phase2PatchResponse.text();
 
   // Keep Training CSS in step with the loader, even when an older HTML page was cached.
-  const trainingCssUrl = new URL("assets/training-workout.css?v=20260909-training-correction2", document.baseURI);
+  const trainingCssUrl = new URL("assets/training-workout.css?v=20260910-effort-align1", document.baseURI);
   let trainingCss = [...document.querySelectorAll('link[rel="stylesheet"]')].find(link => new URL(link.href).pathname === trainingCssUrl.pathname);
   if (!trainingCss || trainingCss.href !== trainingCssUrl.href || !trainingCss.sheet) {
     trainingCss ||= document.createElement("link");
