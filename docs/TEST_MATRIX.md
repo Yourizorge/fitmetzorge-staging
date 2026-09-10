@@ -1,6 +1,32 @@
 # FitMetZorge Test Matrix
 
-## 6E-3 En Training Owner-Accepted - Current (2026-09-10)
+## Package 6E-4 - Current (2026-09-10)
+
+6E-4 TECHNICAL PASS / READY FOR OWNER REVIEW.
+Expliciete offline GO: T1-T4 geaccepteerd als ontwikkelrichting, niet als
+owneracceptatie/freeze van deze resultaten. Geen live AI of volgend pakket gestart.
+Bron 17148577e300fa12b0cbfa058e45738057d122c5; 20 bestanden in _offline/phase6e4.
+Werkende actuele doel-/schema-/trainerbronvalidators, expliciete volgende optie,
+kg/kg en lb/lb zonder conversie, afzonderlijke RIR/RPE en gebonden context.
+[Contract](PHASE6E4_CONTRACTS.md), [zes exacte ownerantwoorden](PHASE6E4_OWNER_OVERVIEW.md),
+[technisch rapport](PHASE6E4_TECHNICAL_REPORT.md), [bewijs](PHASE6E4_EVIDENCE.json).
+
+887/887 technische tests PASS, 0 fail/skip: 235 nieuwe en 652 frozen regressies.
+129 preregistreerde bron/contextgevallen, 41 taalcategorieen; 12 normale formuleringen
+hersteld in de NIEUWE adapter, 12 gemengde klachtgevallen met ongewijzigde niveaus.
+Extra umlaut- en resttekstcontroles apart; EEN actuele beperkingobservatie registreert
+blijvende onzekerheid, GEEN herkenningssucces. Eerste falende runs/errata behouden.
+Geen klinische sensitiviteit, volledige taaldekking of live bronautoriteit bewezen.
+
+6E-0..6E-3 blijven OWNER-ACCEPTED / FROZEN binnen hun bestaande offline scope.
+D1-D12/O1-O5/N1-N3/G1-G3 behouden. Alle 69 frozen bronnen en 60 runtime-assets
+byte-ongewijzigd; geen Training-uitzondering nodig. Timer/RIR/RPE blijven owner-accepted.
+O5 ongewijzigd; geen automatische acties, fysieke adviesvrijgave of trainerdeling.
+Medische, privacy-, juridische en taalreview plus echte live bron-/lifecyclegates blijven open.
+Phase 6E ONVOLTOOID. Het volgende besluit is ownerreview van deze resultaten, geen vervolg-GO.
+Onderstaande statusblokken blijven historische levering/acceptatie; geen heropening.
+
+## 6E-3 En Training Owner-Accepted - Accepted Baseline (2026-09-10)
 
 6E-3: COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE CONTRACTS ONLY.
 G1-G3 expliciet geaccepteerd, inclusief kg-only en de bekende taalbeperking.

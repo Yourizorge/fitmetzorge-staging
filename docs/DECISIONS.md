@@ -675,3 +675,35 @@ with reliable sources, explicit authority/limits, lb/unit work and the narrowly
 scoped known-language follow-up. PROPOSED / NOT STARTED; its new choices are not
 accepted by this decision. No broad audit, automatic implementation, live AI,
 human medical approval service, database/Edge/member/provider/cost/production work.
+
+## Decision 0044: 6E-4 offline GO and accepted T1-T4 development direction
+
+Date: 2026-09-10. The owner authorizes executable offline 6E-4 implementation.
+T1: propose reviewing an existing explicitly designated next trainer option only;
+all goals/exercises/sets/reps/weights come from sources. T2: explicit current,
+version-bound relationship/authority/goal/limits; no trainer-link shortcut,
+missing/revoked/conflicting authority gives no candidate. T3: kg/kg and lb/lb
+without conversion/rounding, unknown/mixed units explicitly unavailable.
+T4: narrow new offline record-review context adapter; normal variants and mixed
+complaints tested. No broad classifier rewrite or frozen source change.
+
+Development GO is NOT owner acceptance/freeze of these new implementation results.
+Delivered status: 6E-4 TECHNICAL PASS / READY FOR OWNER REVIEW.
+Implementation fce537217148f98df9b8d232a2c137b82b7100f9; final source/test snapshot
+17148577e300fa12b0cbfa058e45738057d122c5, new _offline/phase6e4 only.
+PHASE6E4_OWNER_OVERVIEW.md contains complete executable NL/EN/DE concepts and
+only concrete result/copy review points, not reopened T1-T4 decisions.
+887 technical checks pass, including 652 frozen functional regressions; first
+failed runs, diagnostic errata and the remaining ordinary-language limitation are
+retained. No technical test is medical/language validation or live trainer attestation.
+
+All 69 frozen 6E-0..6E-3 files, D1-D12/O1-O5/N1-N3/G1-G3 and all 60 runtime assets
+retain their bytes. Accepted Training timer/independent RIR-RPE/alignment unchanged.
+O5 remains at most 30 days from first registration, with no retry/status extension.
+Current complaints, self-report and unavailable/expired context do not release
+the new next-workout candidate. No invented physical resumption criteria, global
+health-related access block or human review service. Existing chat/history/facts/
+nonphysical reflection retain their separate frozen permissions and conditions.
+Medical, privacy, legal, language and live lifecycle/source gates remain open.
+Phase 6E incomplete. No live AI, DB/migration/Edge, real members, providers/costs,
+production/APPFMZ/accounting/other website work. No automatic next package.

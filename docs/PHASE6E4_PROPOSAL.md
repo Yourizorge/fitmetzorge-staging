@@ -1,5 +1,15 @@
 # Package 6E-4 Voorstel: Trainerbegrensde Workoutkandidaten
 
+Actueel: expliciete offline GO en T1-T4-ontwikkelrichting ontvangen.
+6E-4 TECHNICAL PASS / READY FOR OWNER REVIEW; geen resultaatsacceptatie/freeze/live GO.
+[Werkend contract](PHASE6E4_CONTRACTS.md), [exacte ownerantwoorden](PHASE6E4_OWNER_OVERVIEW.md)
+en [technisch bewijs](PHASE6E4_TECHNICAL_REPORT.md). Geen volgend pakket gestart.
+
+## Oorspronkelijk Voorstel - Historisch
+
+Onderstaande toenmalige NOT STARTED- en ownerkeuzeformuleringen blijven het
+oorspronkelijke voorstel. Zij heropenen het ontvangen T1-T4-akkoord niet.
+
 PROPOSED / NOT STARTED. Dit is het ENIGE aanbevolen volgende offline AI-pakket.
 Geen uitvoerings-GO, owneracceptatie, freeze of live-vrijgave voor 6E-4.
 6E-3/G1-G3 en 6E-0/6E-1/6E-2 blijven frozen; D1-D12/O1-O5/N1-N3 niet heropenen.
