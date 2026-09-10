@@ -27,3 +27,15 @@ NA de expliciete doelkoppeling (clock-800 versus link clock-900). De eerste
 fixture had plan-capture clock-1000, dus ten onrechte eerder dan zijn eigen link.
 Alle 129 verwachte uitkomsten en 41 taalgevallen blijven gelijk. Beide
 preregistratieversies blijven zichtbaar in Git; geen test achteraf groen gemaakt.
+
+Erratum na de eerste implementatierun: de generator had expected.adapted=false
+ook bij alle normale taalgevallen ingevuld. Dat diagnostische veld strijdt bij
+12 NL/DE-gevallen met de bedoelde T4-correctie (communication -> ordinary).
+preregistration-errata.json corrigeert UITSLUITEND die 12 adapterbooleans; alle
+41 vooraf vastgelegde categorieen en teksten blijven onveranderd. De vier EN-
+reviewzinnen werden al door de frozen regels herkend en blijven adapted=false.
+De oorspronkelijke JSON blijft intact en de eerste 193 tests (180 pass/13 fail)
+staan in PHASE6E4_INITIAL_TESTS.json. Een extra prioriteitscheck vond daarnaast
+een echte adapterfout: current_health mocht niet door self_reported worden overschreven.
+Het voorstel was ook toen geblokkeerd en de waarschuwing bleef aanwezig; de
+prioriteitsreden is nu hersteld. Geen medische classificatie gewijzigd.

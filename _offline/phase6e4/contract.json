@@ -1,0 +1,30 @@
+{
+  "version": "6e4-offline-v1",
+  "synthetic_only": true,
+  "node_only": true,
+  "owner_accepted": false,
+  "frozen": false,
+  "output_mode": "candidate_only",
+  "units": [
+    "kg",
+    "lb"
+  ],
+  "cross_unit_conversion": false,
+  "rounding": false,
+  "automatic_actions_allowed": false,
+  "physical_advice_authorized": false,
+  "source_authority": "synthetic_declared_only_not_live_attestation",
+  "retention_owner": "frozen_6e1_O5_read_only",
+  "frozen_sources_read_only": [
+    "6E-0",
+    "6E-1",
+    "6E-2",
+    "6E-3"
+  ],
+  "expert_reviews_open": [
+    "medical_content_and_resumption",
+    "privacy",
+    "legal",
+    "NL_EN_DE"
+  ]
+}
