@@ -1,0 +1,190 @@
+{
+  "baseline": "9406ab5a0869564a6a5498ec2d7a679589a38bc0",
+  "synthetic_only": true,
+  "medical_validation": false,
+  "fixture": {
+    "synthetic_only": true,
+    "subject_id": "syn-owner",
+    "session": {
+      "id": "syn-session",
+      "subject_id": "syn-owner",
+      "started_at_ms": 3452399000,
+      "ended_at_ms": 3455999000,
+      "snapshot_ref": {
+        "id": "syn-snapshot",
+        "revision": 1
+      },
+      "recording_ref": {
+        "id": "syn-recording",
+        "revision": 2
+      }
+    },
+    "snapshot": {
+      "id": "syn-snapshot",
+      "revision": 1,
+      "subject_id": "syn-owner",
+      "session_id": "syn-session",
+      "kind": "historical_session_snapshot",
+      "captured_at_ms": 3452399000,
+      "plan_ref": {
+        "id": "syn-plan",
+        "revision": 3
+      },
+      "goal_link": {
+        "id": "syn-goal",
+        "revision": 1,
+        "basis": "member_selected_for_workout",
+        "at_ms": 3452399000
+      },
+      "exercises": [
+        {
+          "exercise_id": "syn-squat",
+          "catalog_revision": 1,
+          "sets": [
+            {
+              "index": 1,
+              "reps": {
+                "min": 8,
+                "max": 10
+              },
+              "load": {
+                "value": 55,
+                "unit": "kg"
+              },
+              "rir": null,
+              "rpe": null
+            }
+          ]
+        }
+      ]
+    },
+    "goal": {
+      "id": "syn-goal",
+      "revision": 1,
+      "subject_id": "syn-owner",
+      "code": "strength",
+      "status_at_capture": "active",
+      "captured_at_ms": 3452398000,
+      "valid_from_ms": 3365999000,
+      "valid_until_ms": null
+    },
+    "catalog": [
+      {
+        "id": "syn-squat",
+        "revision": 1,
+        "labels": {
+          "nl": "Squat",
+          "en": "Squat",
+          "de": "Kniebeuge"
+        }
+      }
+    ],
+    "recording": {
+      "id": "syn-recording",
+      "revision": 2,
+      "subject_id": "syn-owner",
+      "session_id": "syn-session",
+      "snapshot_ref": {
+        "id": "syn-snapshot",
+        "revision": 1
+      },
+      "recorded_at_ms": 3455999000,
+      "coverage": "complete",
+      "sets": [
+        {
+          "id": "syn-log",
+          "subject_id": "syn-owner",
+          "session_id": "syn-session",
+          "exercise_id": "syn-squat",
+          "index": 1,
+          "reps": 9,
+          "load": {
+            "value": 55,
+            "unit": "kg"
+          },
+          "rir": 0,
+          "rpe": 8.5,
+          "occurred_at_ms": 3455998000
+        }
+      ]
+    }
+  },
+  "cases": [
+    {"id":"normal-nl","scenario":"ordinary","locale":"nl","changes":[],"expected_status":"recommendation","expected_reason":"historical_goal_plan_reflection","exact_excerpt":["Bij de start was je gekoppelde doel: sterker worden.","Squat, set 1: gepland 8-10 herhalingen met 55 kg; geregistreerd 9 herhalingen met 55 kg. De geregistreerde herhalingen liggen binnen het vastgelegde bereik. Zelfrapportage: RIR 0; RPE 8,5.","Kies een geregistreerde set en noteer wat je bij je toenmalige doel wilt onthouden. Dit wijzigt je schema niet."]},
+    {"id":"normal-en","scenario":"ordinary","locale":"en","changes":[],"expected_status":"recommendation","expected_reason":"historical_goal_plan_reflection","exact_excerpt":["At the start, your linked goal was: getting stronger.","Squat, set 1: planned 8-10 repetitions with 55 kg; recorded 9 repetitions with 55 kg. The recorded repetitions are within the recorded range. Self-report: RIR 0; RPE 8.5.","Choose a recorded set and note what you want to remember in relation to your goal at the time. This does not change your plan."]},
+    {"id":"normal-de","scenario":"ordinary","locale":"de","changes":[],"expected_status":"recommendation","expected_reason":"historical_goal_plan_reflection","exact_excerpt":["Zu Beginn war dein verknuepftes Ziel: staerker werden.","Kniebeuge, Satz 1: geplant 8-10 Wiederholungen mit 55 kg; erfasst 9 Wiederholungen mit 55 kg. Die erfassten Wiederholungen liegen innerhalb des festgehaltenen Bereichs. Selbstauskunft: RIR 0; RPE 8,5.","Waehle einen erfassten Satz und notiere, was du im Hinblick auf dein damaliges Ziel festhalten moechtest. Dein Plan wird dadurch nicht geaendert."]},
+    {"id":"goal-absent","scenario":"ordinary","changes":[{"path":["goal"],"value":null}],"expected_status":"facts_only","expected_reason":"historical_goal_unavailable"},
+    {"id":"goal-link-absent","scenario":"ordinary","changes":[{"path":["snapshot","goal_link"],"value":null}],"expected_status":"facts_only","expected_reason":"historical_goal_unavailable"},
+    {"id":"goal-later-revision","scenario":"ordinary","changes":[{"path":["goal","revision"],"value":2}],"expected_status":"facts_only","expected_reason":"historical_goal_unavailable"},
+    {"id":"goal-inactive-at-start","scenario":"ordinary","changes":[{"path":["goal","status_at_capture"],"value":"inactive"}],"expected_status":"facts_only","expected_reason":"historical_goal_unavailable"},
+    {"id":"goal-not-yet-active","scenario":"ordinary","changes":[{"path":["goal","valid_from_ms"],"value":3452399001}],"expected_status":"facts_only","expected_reason":"historical_goal_unavailable"},
+    {"id":"goal-ended-at-start","scenario":"ordinary","changes":[{"path":["goal","valid_until_ms"],"value":3452399000}],"expected_status":"facts_only","expected_reason":"historical_goal_unavailable"},
+    {"id":"goal-captured-later","scenario":"ordinary","changes":[{"path":["goal","captured_at_ms"],"value":3452399001}],"expected_status":"facts_only","expected_reason":"historical_goal_unavailable"},
+    {"id":"goal-unknown-code","scenario":"ordinary","changes":[{"path":["goal","code"],"value":"new_goal"}],"expected_status":"facts_only","expected_reason":"historical_goal_unavailable"},
+    {"id":"snapshot-absent","scenario":"ordinary","changes":[{"path":["snapshot"],"value":null}],"expected_status":"facts_only","expected_reason":"source_or_comparison_unavailable"},
+    {"id":"recording-absent","scenario":"ordinary","changes":[{"path":["recording"],"value":null}],"expected_status":"facts_only","expected_reason":"source_or_comparison_unavailable"},
+    {"id":"old-snapshot-revision","scenario":"ordinary","changes":[{"path":["snapshot","revision"],"value":0}],"expected_status":"facts_only","expected_reason":"source_or_comparison_unavailable"},
+    {"id":"old-recording-revision","scenario":"ordinary","changes":[{"path":["recording","revision"],"value":1}],"expected_status":"facts_only","expected_reason":"source_or_comparison_unavailable"},
+    {"id":"catalog-absent","scenario":"ordinary","changes":[{"path":["catalog"],"value":[]}],"expected_status":"facts_only","expected_reason":"source_or_comparison_unavailable"},
+    {"id":"catalog-revision-changed","scenario":"ordinary","changes":[{"path":["catalog","0","revision"],"value":2}],"expected_status":"facts_only","expected_reason":"source_or_comparison_unavailable"},
+    {"id":"partial-records","scenario":"ordinary","changes":[{"path":["recording","coverage"],"value":"partial"}],"expected_status":"facts_only","expected_reason":"source_or_comparison_unavailable"},
+    {"id":"recorded-reps-missing","scenario":"ordinary","changes":[{"path":["recording","sets","0","reps"],"value":null}],"expected_status":"facts_only","expected_reason":"source_or_comparison_unavailable"},
+    {"id":"planned-reps-missing","scenario":"ordinary","changes":[{"path":["snapshot","exercises","0","sets","0","reps"],"value":null}],"expected_status":"facts_only","expected_reason":"source_or_comparison_unavailable"},
+    {"id":"planned-weight-missing","scenario":"ordinary","changes":[{"path":["snapshot","exercises","0","sets","0","load","value"],"value":null}],"expected_status":"facts_only","expected_reason":"source_or_comparison_unavailable"},
+    {"id":"actual-weight-missing","scenario":"ordinary","changes":[{"path":["recording","sets","0","load","value"],"value":null}],"expected_status":"facts_only","expected_reason":"source_or_comparison_unavailable"},
+    {"id":"unit-unknown","scenario":"ordinary","changes":[{"path":["recording","sets","0","load","unit"],"value":null}],"expected_status":"facts_only","expected_reason":"source_or_comparison_unavailable"},
+    {"id":"unit-lb-not-converted","scenario":"ordinary","changes":[{"path":["recording","sets","0","load","unit"],"value":"lb"}],"expected_status":"facts_only","expected_reason":"source_or_comparison_unavailable"},
+    {"id":"unit-ambiguous","scenario":"ordinary","changes":[{"path":["snapshot","exercises","0","sets","0","load","unit"],"value":"plates"}],"expected_status":"facts_only","expected_reason":"source_or_comparison_unavailable"},
+    {"id":"recording-empty","scenario":"ordinary","changes":[{"path":["recording","sets"],"value":[]}],"expected_status":"facts_only","expected_reason":"source_or_comparison_unavailable"},
+    {"id":"foreign-bundle","scenario":"ordinary","changes":[{"path":["subject_id"],"value":"syn-other"}],"expected_status":"invalid_input","expected_reason":"invalid_sources"},
+    {"id":"foreign-session","scenario":"ordinary","changes":[{"path":["session","subject_id"],"value":"syn-other"}],"expected_status":"invalid_input","expected_reason":"invalid_sources"},
+    {"id":"foreign-goal","scenario":"ordinary","changes":[{"path":["goal","subject_id"],"value":"syn-other"}],"expected_status":"invalid_input","expected_reason":"invalid_sources"},
+    {"id":"foreign-snapshot","scenario":"ordinary","changes":[{"path":["snapshot","subject_id"],"value":"syn-other"}],"expected_status":"invalid_input","expected_reason":"invalid_sources"},
+    {"id":"foreign-log-owner","scenario":"ordinary","changes":[{"path":["recording","sets","0","subject_id"],"value":"syn-other"}],"expected_status":"invalid_input","expected_reason":"invalid_sources"},
+    {"id":"foreign-recording","scenario":"ordinary","changes":[{"path":["recording","subject_id"],"value":"syn-other"}],"expected_status":"invalid_input","expected_reason":"invalid_sources"},
+    {"id":"wrong-session-snapshot","scenario":"ordinary","changes":[{"path":["snapshot","session_id"],"value":"syn-other"}],"expected_status":"invalid_input","expected_reason":"invalid_sources"},
+    {"id":"wrong-session-log","scenario":"ordinary","changes":[{"path":["recording","sets","0","session_id"],"value":"syn-other"}],"expected_status":"invalid_input","expected_reason":"invalid_sources"},
+    {"id":"wrong-set-index","scenario":"ordinary","changes":[{"path":["recording","sets","0","index"],"value":2}],"expected_status":"invalid_input","expected_reason":"invalid_sources"},
+    {"id":"wrong-exercise","scenario":"ordinary","changes":[{"path":["recording","sets","0","exercise_id"],"value":"syn-other"}],"expected_status":"invalid_input","expected_reason":"invalid_sources"},
+    {"id":"wrong-snapshot-recording","scenario":"ordinary","changes":[{"path":["recording","snapshot_ref","id"],"value":"syn-other"}],"expected_status":"invalid_input","expected_reason":"invalid_sources"},
+    {"id":"late-plan-substitute","scenario":"ordinary","changes":[{"path":["snapshot","captured_at_ms"],"value":3452399001}],"expected_status":"invalid_input","expected_reason":"invalid_sources"},
+    {"id":"goal-link-retroactive","scenario":"ordinary","changes":[{"path":["snapshot","goal_link","at_ms"],"value":3452399001}],"expected_status":"invalid_input","expected_reason":"invalid_sources"},
+    {"id":"free-goal-inference","scenario":"ordinary","changes":[{"path":["snapshot","goal_link","basis"],"value":"inferred"}],"expected_status":"invalid_input","expected_reason":"invalid_sources"},
+    {"id":"reversed-reps-range","scenario":"ordinary","changes":[{"path":["snapshot","exercises","0","sets","0","reps"],"value":{"min":10,"max":8}}],"expected_status":"invalid_input","expected_reason":"invalid_sources"},
+    {"id":"unparsed-reps-range","scenario":"ordinary","changes":[{"path":["snapshot","exercises","0","sets","0","reps"],"value":"8-10"}],"expected_status":"invalid_input","expected_reason":"invalid_sources"},
+    {"id":"negative-weight","scenario":"ordinary","changes":[{"path":["recording","sets","0","load","value"],"value":-1}],"expected_status":"invalid_input","expected_reason":"invalid_sources"},
+    {"id":"rpe-zero-not-rir","scenario":"ordinary","changes":[{"path":["recording","sets","0","rpe"],"value":0}],"expected_status":"invalid_input","expected_reason":"invalid_sources"},
+    {"id":"rir-fraction","scenario":"ordinary","changes":[{"path":["recording","sets","0","rir"],"value":0.5}],"expected_status":"invalid_input","expected_reason":"invalid_sources"},
+    {"id":"future-recording","scenario":"ordinary","changes":[{"path":["recording","recorded_at_ms"],"value":3456000001}],"expected_status":"invalid_input","expected_reason":"invalid_sources"},
+    {"id":"zero-weight-is-recorded","scenario":"ordinary","changes":[{"path":["recording","sets","0","load","value"],"value":0}],"expected_status":"recommendation","expected_reason":"historical_goal_plan_reflection"},
+    {"id":"zero-reps-is-recorded","scenario":"ordinary","changes":[{"path":["recording","sets","0","reps"],"value":0}],"expected_status":"recommendation","expected_reason":"historical_goal_plan_reflection"},
+    {"id":"lower-reps","scenario":"ordinary","changes":[{"path":["recording","sets","0","reps"],"value":7}],"expected_status":"recommendation","expected_reason":"historical_goal_plan_reflection"},
+    {"id":"higher-reps","scenario":"ordinary","changes":[{"path":["recording","sets","0","reps"],"value":11}],"expected_status":"recommendation","expected_reason":"historical_goal_plan_reflection"},
+    {"id":"null-rir-not-zero","scenario":"ordinary","changes":[{"path":["recording","sets","0","rir"],"value":null}],"expected_status":"recommendation","expected_reason":"historical_goal_plan_reflection"},
+    {"id":"null-rpe","scenario":"ordinary","changes":[{"path":["recording","sets","0","rpe"],"value":null}],"expected_status":"recommendation","expected_reason":"historical_goal_plan_reflection"},
+    {"id":"weight-difference-not-progression","scenario":"ordinary","changes":[{"path":["recording","sets","0","load","value"],"value":57.5}],"expected_status":"recommendation","expected_reason":"historical_goal_plan_reflection"},
+    {"id":"safety-current","scenario":"current","changes":[],"expected_status":"facts_only","expected_reason":"current_health_report"},
+    {"id":"safety-unclassified","scenario":"unclassified","changes":[],"expected_status":"facts_only","expected_reason":"current_health_report"},
+    {"id":"safety-recurring","scenario":"recurring","changes":[],"expected_status":"facts_only","expected_reason":"current_health_report"},
+    {"id":"safety-new_after_recovery","scenario":"new_after_recovery","changes":[],"expected_status":"facts_only","expected_reason":"current_health_report"},
+    {"id":"safety-technical_retry_health","scenario":"technical_retry_health","changes":[],"expected_status":"facts_only","expected_reason":"current_health_report"},
+    {"id":"safety-clarification_other_health","scenario":"clarification_other_health","changes":[],"expected_status":"facts_only","expected_reason":"current_health_report"},
+    {"id":"safety-unclear","scenario":"unclear","changes":[],"expected_status":"clarification","expected_reason":"context_unavailable"},
+    {"id":"safety-technical","scenario":"technical","changes":[],"expected_status":"clarification","expected_reason":"context_unavailable"},
+    {"id":"safety-expired","scenario":"expired","changes":[],"expected_status":"clarification","expected_reason":"context_unavailable"},
+    {"id":"safety-missing","scenario":"missing","changes":[],"expected_status":"clarification","expected_reason":"context_unavailable"},
+    {"id":"safety-unnecessary","scenario":"unnecessary","changes":[],"expected_status":"clarification","expected_reason":"context_unavailable"},
+    {"id":"safety-no_message","scenario":"no_message","changes":[],"expected_status":"clarification","expected_reason":"context_unavailable"},
+    {"id":"safety-self_reported","scenario":"self_reported","changes":[],"expected_status":"recommendation","expected_reason":"historical_goal_plan_reflection"},
+    {"id":"safety-serious_recovered","scenario":"serious_recovered","changes":[],"expected_status":"recommendation","expected_reason":"historical_goal_plan_reflection"},
+    {"id":"safety-technical_retry","scenario":"technical_retry","changes":[],"expected_status":"recommendation","expected_reason":"historical_goal_plan_reflection"},
+    {"id":"safety-clarified","scenario":"clarified","changes":[],"expected_status":"recommendation","expected_reason":"historical_goal_plan_reflection"},
+    {"id":"safety-continue_chat","scenario":"continue_chat","changes":[],"expected_status":"recommendation","expected_reason":"historical_goal_plan_reflection"},
+    {"id":"safety-expired_fresh","scenario":"expired_fresh","changes":[],"expected_status":"recommendation","expected_reason":"historical_goal_plan_reflection"},
+    {"id":"safety-missing_fresh","scenario":"missing_fresh","changes":[],"expected_status":"recommendation","expected_reason":"historical_goal_plan_reflection"},
+    {"id":"safety-unnecessary_fresh","scenario":"unnecessary_fresh","changes":[],"expected_status":"recommendation","expected_reason":"historical_goal_plan_reflection"},
+    {"id":"safety-historical","scenario":"historical","changes":[],"expected_status":"recommendation","expected_reason":"historical_goal_plan_reflection"},
+    {"id":"safety-negated","scenario":"negated","changes":[],"expected_status":"recommendation","expected_reason":"historical_goal_plan_reflection"},
+    {"id":"safety-quoted","scenario":"quoted","changes":[],"expected_status":"recommendation","expected_reason":"historical_goal_plan_reflection"}
+  ]
+}
