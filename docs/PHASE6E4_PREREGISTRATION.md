@@ -21,3 +21,9 @@ Bekende missers apart registreren en niet als herkenningssucces tellen.
 De oorspronkelijke 6E-3-beperking blijft historisch waar; de nieuwe adapter moet
 het verbeterde gedrag aantoonbaar testen zonder frozen bronnen te wijzigen.
 Geen live data, provider, runtime- of databasewijziging. Geen deskundige validatie.
+
+Voor implementatie gecorrigeerde fixturetijd: de plansnapshot wordt vastgelegd
+NA de expliciete doelkoppeling (clock-800 versus link clock-900). De eerste
+fixture had plan-capture clock-1000, dus ten onrechte eerder dan zijn eigen link.
+Alle 129 verwachte uitkomsten en 41 taalgevallen blijven gelijk. Beide
+preregistratieversies blijven zichtbaar in Git; geen test achteraf groen gemaakt.
