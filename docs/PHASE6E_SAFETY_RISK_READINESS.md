@@ -548,6 +548,10 @@ Selectieve bronpredicaten bewijzen lockaanwezigheid, niet alle race-interleaving
 
 ## 17. Voorgestelde Implementatiepackages
 
+Historische, niet-uitgevoerde nummering. Actuele geaccepteerde offline pakketten
+6E-0..6E-4 en de expliciete 6E-5-progressie-GO staan in BUILD_STATUS.md/DECISIONS.md.
+De oude provider-/actieslice hieronder is GEEN actieve 6E-5-scope of live GO.
+
 | Slice | Inhoud na aparte GO | Exitgate |
 | --- | --- | --- |
 | 6E-0 | Offline contract, expliciete compatibiliteitsmapping, synthetische golden set, klinische copy-/beleidreview | Beslissingen D1-D5, D8/D10; geen runtime-import of live data |

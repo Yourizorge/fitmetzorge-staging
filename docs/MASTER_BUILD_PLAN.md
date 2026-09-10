@@ -1,6 +1,18 @@
 # FitMetZorge Master Build Plan
 
-## Package 6E-4 - Current (2026-09-10)
+## Package 6E-5 - In Progress
+
+Expliciete GO: offline progressievoorstellen en schema-goedkeuringssimulatie.
+6E-4 is COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE CONTRACTS ONLY:
+V1/V2 en bestaande geteste scope, [receipt](PHASE6E4_FREEZE_RECEIPT.md).
+De bredere progressiewens is niet door 6E-4 gerealiseerd.
+Nieuwe 6E-5-code uitsluitend in _offline/phase6e5, synthetisch en deterministisch.
+Geen live schemawijziging, medische vrijgave of 6E-5-owneracceptatie.
+Alle 89 frozen 6E-0..6E-4-bronnen en alle 60 runtime-assets blijven beschermd.
+De oude voorlopige providerroadmap is niet de huidige 6E-5-scope.
+D1-D12/O1-O5/N1-N3/G1-G3/T1-T4 behouden; Phase 6E blijft ONVOLTOOID.
+
+## Package 6E-4 - Historical Delivery (2026-09-10)
 
 6E-4 TECHNICAL PASS / READY FOR OWNER REVIEW.
 Expliciete offline GO: T1-T4 geaccepteerd als ontwikkelrichting, niet als

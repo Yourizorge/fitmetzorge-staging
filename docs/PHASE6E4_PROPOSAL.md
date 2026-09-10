@@ -1,5 +1,11 @@
 # Package 6E-4 Voorstel: Trainerbegrensde Workoutkandidaten
 
+Actueel: COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE CONTRACTS ONLY.
+V1/V2 en uitsluitend de bestaande geteste scope zijn geaccepteerd; zie
+[freeze receipt](PHASE6E4_FREEZE_RECEIPT.md). De onderstaande oorspronkelijke
+leverstatus en open ownerreviewformuleringen zijn historie, geen heropening.
+Persoonlijke progressieberekening valt uitsluitend onder de nieuwe 6E-5-opdracht.
+
 Actueel: expliciete offline GO en T1-T4-ontwikkelrichting ontvangen.
 6E-4 TECHNICAL PASS / READY FOR OWNER REVIEW; geen resultaatsacceptatie/freeze/live GO.
 [Werkend contract](PHASE6E4_CONTRACTS.md), [exacte ownerantwoorden](PHASE6E4_OWNER_OVERVIEW.md)

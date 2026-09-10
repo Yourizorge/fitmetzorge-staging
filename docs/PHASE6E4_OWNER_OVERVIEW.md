@@ -1,5 +1,11 @@
 # Package 6E-4 Owneroverzicht
 
+Actueel: COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE CONTRACTS ONLY.
+V1/V2 en uitsluitend de bestaande geteste scope zijn geaccepteerd; zie
+[freeze receipt](PHASE6E4_FREEZE_RECEIPT.md). De onderstaande oorspronkelijke
+leverstatus en open ownerreviewformuleringen zijn historie, geen heropening.
+Persoonlijke progressieberekening valt uitsluitend onder de nieuwe 6E-5-opdracht.
+
 6E-4 TECHNICAL PASS / READY FOR OWNER REVIEW.
 T1-T4 zijn GO/ontwikkelrichting, niet de acceptatie van deze nieuwe resultaten.
 Geen owner-freeze, live AI of volgend pakket gestart. 6E-0..6E-3 blijven frozen.

@@ -707,3 +707,24 @@ nonphysical reflection retain their separate frozen permissions and conditions.
 Medical, privacy, legal, language and live lifecycle/source gates remain open.
 Phase 6E incomplete. No live AI, DB/migration/Edge, real members, providers/costs,
 production/APPFMZ/accounting/other website work. No automatic next package.
+
+## Decision 0045: Owner accepts 6E-4; separate offline progression 6E-5 GO
+
+The owner explicitly accepts V1/V2 and the existing tested 6E-4 scope including
+documented limitations: COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE CONTRACTS ONLY.
+Exact 20-source tree c652ee1e1fab21534fbbdd1c8a8e8e0cb5ed6665 and source commit
+17148577e300fa12b0cbfa058e45738057d122c5 remain unchanged. PHASE6E4_FREEZE_RECEIPT.md
+records original evidence and open medical/privacy/legal/language/live gates.
+This acceptance does not deliver concrete progression or approve physical advice.
+
+Separate explicit GO: 6E-5 offline progression proposals and plan-approval simulation.
+No implemented 6E-5 package exists at baseline 314730b. The historical readiness
+table used 6E-5 for unstarted provider/action integration; that tentative label is
+NOT this package or an integration GO. Current 6E-5 means only synthetic source-bound
+next-week reps/load/maintain proposals under explicit identifiable TEST coaching
+rules, exact version-bound member/trainer review, rejection and idempotent simulation.
+Trainer-required approval cannot be replaced by a member click. Real plans stay unchanged.
+Missing trainer/memberless FMZ coaching policy, expert criteria or reliable sources
+are explicit boundaries, not invented policy. Earlier decisions and O5 unchanged.
+All runtime/6E-0..6E-4 bytes preserved. No live AI, database/Edge/member/provider/cost/
+production/APPFMZ/accounting activity. 6E-5 requires later ownerreview, not auto-freeze.
