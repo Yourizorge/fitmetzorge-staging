@@ -1,0 +1,416 @@
+{
+  "version": "6e4-language-prereg-v1",
+  "expectation_note": "Full-message ordinary recognition only; health categories inherited, no new medical labels. Some ordinary phrases may already be recognized by frozen rules.",
+  "cases": [
+    {
+      "id": "normal-nl-0",
+      "locale": "nl",
+      "text": "Ik bekijk mijn trainingsregistratie",
+      "availability": "available",
+      "expected": {
+        "category": "ordinary",
+        "adapted": false
+      }
+    },
+    {
+      "id": "normal-nl-1",
+      "locale": "nl",
+      "text": "Ik bekijk mijn trainingsregistratie.",
+      "availability": "available",
+      "expected": {
+        "category": "ordinary",
+        "adapted": false
+      }
+    },
+    {
+      "id": "normal-nl-2",
+      "locale": "nl",
+      "text": "Ik bekijk nu mijn trainingsregistratie",
+      "availability": "available",
+      "expected": {
+        "category": "ordinary",
+        "adapted": false
+      }
+    },
+    {
+      "id": "normal-nl-3",
+      "locale": "nl",
+      "text": "Nu bekijk ik mijn trainingsregistratie",
+      "availability": "available",
+      "expected": {
+        "category": "ordinary",
+        "adapted": false
+      }
+    },
+    {
+      "id": "normal-nl-4",
+      "locale": "nl",
+      "text": "Ik wil mijn trainingsregistratie bekijken",
+      "availability": "available",
+      "expected": {
+        "category": "ordinary",
+        "adapted": false
+      }
+    },
+    {
+      "id": "normal-nl-5",
+      "locale": "nl",
+      "text": "Kan ik mijn trainingsregistratie bekijken?",
+      "availability": "available",
+      "expected": {
+        "category": "ordinary",
+        "adapted": false
+      }
+    },
+    {
+      "id": "normal-nl-6",
+      "locale": "nl",
+      "text": "Ik kijk mijn trainingsregistratie na",
+      "availability": "available",
+      "expected": {
+        "category": "ordinary",
+        "adapted": false
+      }
+    },
+    {
+      "id": "normal-nl-7",
+      "locale": "nl",
+      "text": "Ik bekijk mijn trainingsregistratie van gisteren",
+      "availability": "available",
+      "expected": {
+        "category": "ordinary",
+        "adapted": false
+      }
+    },
+    {
+      "id": "normal-en-0",
+      "locale": "en",
+      "text": "I am reviewing my workout log",
+      "availability": "available",
+      "expected": {
+        "category": "ordinary",
+        "adapted": false
+      }
+    },
+    {
+      "id": "normal-en-1",
+      "locale": "en",
+      "text": "I review my training records",
+      "availability": "available",
+      "expected": {
+        "category": "ordinary",
+        "adapted": false
+      }
+    },
+    {
+      "id": "normal-en-2",
+      "locale": "en",
+      "text": "I want to review my training records",
+      "availability": "available",
+      "expected": {
+        "category": "ordinary",
+        "adapted": false
+      }
+    },
+    {
+      "id": "normal-en-3",
+      "locale": "en",
+      "text": "Can I review my training records?",
+      "availability": "available",
+      "expected": {
+        "category": "ordinary",
+        "adapted": false
+      }
+    },
+    {
+      "id": "normal-de-0",
+      "locale": "de",
+      "text": "Ich sehe mir mein Trainingsprotokoll an",
+      "availability": "available",
+      "expected": {
+        "category": "ordinary",
+        "adapted": false
+      }
+    },
+    {
+      "id": "normal-de-1",
+      "locale": "de",
+      "text": "Ich moechte mein Trainingsprotokoll ansehen",
+      "availability": "available",
+      "expected": {
+        "category": "ordinary",
+        "adapted": false
+      }
+    },
+    {
+      "id": "normal-de-2",
+      "locale": "de",
+      "text": "Kann ich mein Trainingsprotokoll ansehen?",
+      "availability": "available",
+      "expected": {
+        "category": "ordinary",
+        "adapted": false
+      }
+    },
+    {
+      "id": "normal-de-3",
+      "locale": "de",
+      "text": "Ich pruefe meine Trainingsaufzeichnungen",
+      "availability": "available",
+      "expected": {
+        "category": "ordinary",
+        "adapted": false
+      }
+    },
+    {
+      "id": "mixed-nl-0",
+      "locale": "nl",
+      "text": "Ik bekijk mijn trainingsregistratie en ik heb pijn op de borst",
+      "availability": "available",
+      "expected": {
+        "category": "health_report",
+        "adapted": false
+      }
+    },
+    {
+      "id": "mixed-nl-1",
+      "locale": "nl",
+      "text": "Ik heb borstpijn. Ik bekijk mijn trainingsregistratie",
+      "availability": "available",
+      "expected": {
+        "category": "health_report",
+        "adapted": false
+      }
+    },
+    {
+      "id": "mixed-nl-2",
+      "locale": "nl",
+      "text": "Ik bekijk mijn trainingsregistratie; mijn borst voelt loodzwaar",
+      "availability": "available",
+      "expected": {
+        "category": "health_report",
+        "adapted": false
+      }
+    },
+    {
+      "id": "mixed-nl-3",
+      "locale": "nl",
+      "text": "Ik bekijk mijn trainingsregistratie en nu heb ik moeite met ademhalen",
+      "availability": "available",
+      "expected": {
+        "category": "health_report",
+        "adapted": false
+      }
+    },
+    {
+      "id": "mixed-nl-4",
+      "locale": "nl",
+      "text": "Ik bekijk mijn trainingsregistratie. Ik heb geen borstpijn. Nu heb ik moeite met ademhalen",
+      "availability": "available",
+      "expected": {
+        "category": "health_report",
+        "adapted": false
+      }
+    },
+    {
+      "id": "mixed-nl-5",
+      "locale": "nl",
+      "text": "Ik bekijk mijn trainingsregistratie terwijl mijn linkerarm plots kracht verliest",
+      "availability": "available",
+      "expected": {
+        "category": "health_report",
+        "adapted": false
+      }
+    },
+    {
+      "id": "mixed-en-0",
+      "locale": "en",
+      "text": "I am reviewing my workout log and I have chest pain",
+      "availability": "available",
+      "expected": {
+        "category": "health_report",
+        "adapted": false
+      }
+    },
+    {
+      "id": "mixed-en-1",
+      "locale": "en",
+      "text": "I have chest pain. I review my training records",
+      "availability": "available",
+      "expected": {
+        "category": "health_report",
+        "adapted": false
+      }
+    },
+    {
+      "id": "mixed-en-2",
+      "locale": "en",
+      "text": "I review my training records but my left arm is numb",
+      "availability": "available",
+      "expected": {
+        "category": "health_report",
+        "adapted": false
+      }
+    },
+    {
+      "id": "mixed-de-0",
+      "locale": "de",
+      "text": "Ich sehe mir mein Trainingsprotokoll an und ich habe Brustschmerzen",
+      "availability": "available",
+      "expected": {
+        "category": "health_report",
+        "adapted": false
+      }
+    },
+    {
+      "id": "mixed-de-1",
+      "locale": "de",
+      "text": "Ich kriege kaum noch Luft. Ich sehe mir mein Trainingsprotokoll an",
+      "availability": "available",
+      "expected": {
+        "category": "health_report",
+        "adapted": false
+      }
+    },
+    {
+      "id": "mixed-de-2",
+      "locale": "de",
+      "text": "Ich pruefe meine Trainingsaufzeichnungen und mir schnurt es die Kehle zu",
+      "availability": "available",
+      "expected": {
+        "category": "health_report",
+        "adapted": false
+      }
+    },
+    {
+      "id": "unknown-tail",
+      "locale": "nl",
+      "text": "Ik bekijk mijn trainingsregistratie flurbel",
+      "availability": "available",
+      "expected": {
+        "category": "communication",
+        "adapted": false
+      }
+    },
+    {
+      "id": "unknown",
+      "locale": "nl",
+      "text": "flurbel",
+      "availability": "available",
+      "expected": {
+        "category": "communication",
+        "adapted": false
+      }
+    },
+    {
+      "id": "prefix-only",
+      "locale": "nl",
+      "text": "trainingsregistratie",
+      "availability": "available",
+      "expected": {
+        "category": "communication",
+        "adapted": false
+      }
+    },
+    {
+      "id": "quoted-adoption",
+      "locale": "nl",
+      "text": "\"Ik heb borstpijn\" dat heb ik nu ook; ik bekijk mijn trainingsregistratie",
+      "availability": "available",
+      "expected": {
+        "category": "communication",
+        "adapted": false
+      }
+    },
+    {
+      "id": "body-unknown",
+      "locale": "nl",
+      "text": "Ik bekijk mijn trainingsregistratie en mijn arm doet gek",
+      "availability": "available",
+      "expected": {
+        "category": "communication",
+        "adapted": false
+      }
+    },
+    {
+      "id": "unclosed-quote",
+      "locale": "nl",
+      "text": "\"Ik bekijk mijn trainingsregistratie",
+      "availability": "available",
+      "expected": {
+        "category": "communication",
+        "adapted": false
+      }
+    },
+    {
+      "id": "foreign",
+      "locale": "fr",
+      "text": "Je regarde mon journal",
+      "availability": "available",
+      "expected": {
+        "category": "communication",
+        "adapted": false
+      }
+    },
+    {
+      "id": "emoji",
+      "locale": "nl",
+      "text": "Ik bekijk mijn trainingsregistratie 😀",
+      "availability": "available",
+      "expected": {
+        "category": "communication",
+        "adapted": false
+      }
+    },
+    {
+      "id": "negated",
+      "locale": "nl",
+      "text": "Ik bekijk mijn trainingsregistratie en ik heb geen pijn op de borst",
+      "availability": "available",
+      "expected": {
+        "category": "noncurrent",
+        "adapted": false
+      }
+    },
+    {
+      "id": "historic",
+      "locale": "nl",
+      "text": "Ik bekijk mijn trainingsregistratie. Gisteren had ik borstpijn",
+      "availability": "available",
+      "expected": {
+        "category": "noncurrent",
+        "adapted": false
+      }
+    },
+    {
+      "id": "education",
+      "locale": "nl",
+      "text": "Ik bekijk mijn trainingsregistratie. Wat is pijn op de borst?",
+      "availability": "available",
+      "expected": {
+        "category": "noncurrent",
+        "adapted": false
+      }
+    },
+    {
+      "id": "quote",
+      "locale": "en",
+      "text": "I review my training records. \"I have chest pain\" is a quote.",
+      "availability": "available",
+      "expected": {
+        "category": "noncurrent",
+        "adapted": false
+      }
+    },
+    {
+      "id": "technical",
+      "locale": "nl",
+      "text": "Ik bekijk mijn trainingsregistratie",
+      "availability": "unavailable",
+      "expected": {
+        "category": "technical",
+        "adapted": false
+      }
+    }
+  ]
+}
