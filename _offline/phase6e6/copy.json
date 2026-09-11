@@ -1,0 +1,98 @@
+{
+  "nl": {
+    "scope": "Offline concept met synthetische trainerregels. Geen trainingsopdracht of medische vrijgave.",
+    "none": "Geen wijzigingsvoorstel: {reason}. Betrouwbaar gekoppelde registraties blijven als feiten beschikbaar.",
+    "separate": "Lidbevestiging, trainergoedkeuring en toepassing zijn drie aparte stappen. Er is geen echt schema gewijzigd.",
+    "rule": "Trainerregel {rule} ({kind}): {sets} sets, {min}-{max} herhalingen, reps-stap {reps}, gewichtsstap {weight} {unit}.",
+    "kinds": {
+      "exercise": "oefening",
+      "type": "oefeningstype"
+    },
+    "fact": "Registratie {session}, oefening {exercise}, set {set}: {reps} herhalingen, {load} {unit}, RIR {rir}, RPE {rpe}. Historisch schema {plan}; dit is geen nieuwe opdracht.",
+    "missing": "niet ingevuld",
+    "pending": "Wacht op afzonderlijke lidbevestiging en trainergoedkeuring; daarna is nog expliciete toepassing nodig.",
+    "maintain": "Het bestaande doel blijft behouden. Er is geen wijziging om toe te passen.",
+    "states": {
+      "pending": "De bevestigingen zijn nog niet compleet. Het schema blijft ongewijzigd.",
+      "approved": "Lid en trainer hebben dezelfde versie goedgekeurd. Het schema is nog niet gewijzigd.",
+      "applied": "De wijziging is eenmaal volledig toegepast in de offline simulatie. Het vorige schema en de bronversies zijn bewaard.",
+      "rejected": "Het voorstel is afgewezen. Het schema blijft ongewijzigd.",
+      "needs_recheck": "Bronnen, context of schema zijn gewijzigd. Er is niets toegepast. Een nieuw voorstel vereist opnieuw beide bevestigingen.",
+      "invalid": "Deze stap is niet uitgevoerd; de actor, bevestigingen of versies voldoen niet."
+    },
+    "issues": {
+      "trainer_missing": "een geldige gekoppelde trainer ontbreekt; trainergoedkeuring is niet beschikbaar",
+      "rulebook_missing": "expliciete trainerprogressieregels ontbreken",
+      "missing_rule": "geen geschikte regel voor deze oefening of het vastgelegde type",
+      "ambiguous_rules": "meerdere regels passen; er is geen stilzwijgende voorrang",
+      "weight_step_conflict": "de beschikbare gewichten passen niet exact bij de vastgelegde gewichtsstap",
+      "rep_step_conflict": "de volledige reps-stap overschrijdt het vastgelegde maximum",
+      "current_target_conflict": "het huidige doel en de regelgrenzen of eenheden spreken elkaar tegen",
+      "invalid": "de bron-, regel-, versie- of contextgegevens zijn onvolledig of niet geldig"
+    }
+  },
+  "en": {
+    "scope": "Offline concept using synthetic trainer rules. Not a training instruction or medical clearance.",
+    "none": "No change proposal: {reason}. Reliably linked records remain available as facts.",
+    "separate": "Member confirmation, trainer approval and application are three separate steps. No real plan has changed.",
+    "rule": "Trainer rule {rule} ({kind}): {sets} sets, {min}-{max} reps, rep step {reps}, weight step {weight} {unit}.",
+    "kinds": {
+      "exercise": "exercise",
+      "type": "exercise type"
+    },
+    "fact": "Record {session}, exercise {exercise}, set {set}: {reps} reps, {load} {unit}, RIR {rir}, RPE {rpe}. Historical plan {plan}; this is not a new instruction.",
+    "missing": "not recorded",
+    "pending": "Awaiting separate member confirmation and trainer approval; explicit application is still required afterwards.",
+    "maintain": "The existing target is retained. There is no change to apply.",
+    "states": {
+      "pending": "The confirmations are not complete. The plan remains unchanged.",
+      "approved": "Member and trainer approved the same version. The plan has not changed yet.",
+      "applied": "The change was applied completely once in the offline simulation. The previous plan and source versions were retained.",
+      "rejected": "The proposal was rejected. The plan remains unchanged.",
+      "needs_recheck": "Sources, context or the plan have changed. Nothing was applied. A new proposal needs both confirmations again.",
+      "invalid": "This step was not executed; actor, confirmations or versions do not satisfy the contract."
+    },
+    "issues": {
+      "trainer_missing": "a valid linked trainer is missing; trainer approval is unavailable",
+      "rulebook_missing": "explicit trainer progression rules are missing",
+      "missing_rule": "no suitable rule for this exercise or its recorded type",
+      "ambiguous_rules": "multiple rules match; there is no implicit priority",
+      "weight_step_conflict": "available weights do not exactly match the recorded weight step",
+      "rep_step_conflict": "the full rep step exceeds the recorded maximum",
+      "current_target_conflict": "the current target conflicts with rule bounds or units",
+      "invalid": "source, rule, version or context data are incomplete or invalid"
+    }
+  },
+  "de": {
+    "scope": "Offline-Konzept mit synthetischen Trainerregeln. Keine Trainingsanweisung oder medizinische Freigabe.",
+    "none": "Kein Aenderungsvorschlag: {reason}. Zuverlaessig verknuepfte Aufzeichnungen bleiben als Fakten verfuegbar.",
+    "separate": "Mitgliedsbestaetigung, Trainerfreigabe und Anwendung sind drei getrennte Schritte. Kein echtes Programm wurde geaendert.",
+    "rule": "Trainerregel {rule} ({kind}): {sets} Saetze, {min}-{max} Wiederholungen, Wiederholungsschritt {reps}, Gewichtsschritt {weight} {unit}.",
+    "kinds": {
+      "exercise": "Uebung",
+      "type": "Uebungstyp"
+    },
+    "fact": "Aufzeichnung {session}, Uebung {exercise}, Satz {set}: {reps} Wiederholungen, {load} {unit}, RIR {rir}, RPE {rpe}. Historisches Programm {plan}; dies ist keine neue Anweisung.",
+    "missing": "nicht erfasst",
+    "pending": "Separate Mitgliedsbestaetigung und Trainerfreigabe fehlen noch; danach ist eine ausdrueckliche Anwendung erforderlich.",
+    "maintain": "Das bestehende Ziel bleibt erhalten. Es gibt keine anzuwendende Aenderung.",
+    "states": {
+      "pending": "Die Bestaetigungen sind noch nicht vollstaendig. Das Programm bleibt unveraendert.",
+      "approved": "Mitglied und Trainer haben dieselbe Version bestaetigt. Das Programm wurde noch nicht geaendert.",
+      "applied": "Die Aenderung wurde einmal vollstaendig in der Offline-Simulation angewendet. Vorheriges Programm und Quellversionen bleiben erhalten.",
+      "rejected": "Der Vorschlag wurde abgelehnt. Das Programm bleibt unveraendert.",
+      "needs_recheck": "Quellen, Kontext oder Programm haben sich geaendert. Nichts wurde angewendet. Ein neuer Vorschlag braucht beide Bestaetigungen erneut.",
+      "invalid": "Dieser Schritt wurde nicht ausgefuehrt; Akteur, Bestaetigungen oder Versionen erfuellen den Vertrag nicht."
+    },
+    "issues": {
+      "trainer_missing": "ein gueltig verknuepfter Trainer fehlt; Trainerfreigabe ist nicht verfuegbar",
+      "rulebook_missing": "explizite Trainer-Progressionsregeln fehlen",
+      "missing_rule": "keine passende Regel fuer diese Uebung oder den erfassten Typ",
+      "ambiguous_rules": "mehrere Regeln passen; es gibt keinen stillschweigenden Vorrang",
+      "weight_step_conflict": "verfuegbare Gewichte passen nicht exakt zum festgelegten Gewichtsschritt",
+      "rep_step_conflict": "der volle Wiederholungsschritt ueberschreitet das festgelegte Maximum",
+      "current_target_conflict": "aktuelles Ziel und Regelgrenzen oder Einheiten widersprechen sich",
+      "invalid": "Quell-, Regel-, Versions- oder Kontextdaten sind unvollstaendig oder ungueltig"
+    }
+  }
+}
