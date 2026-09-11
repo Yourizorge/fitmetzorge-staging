@@ -1,5 +1,12 @@
 # Package 6E-6 Contracten
 
+## Owneracceptatie W1/W2 (2026-09-11)
+
+COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE ONLY.
+[Freeze receipt](PHASE6E6_FREEZE_RECEIPT.md). Onderstaande leveringsstatus is historisch.
+Geen live/medische vrijgave. Het W2-weergavedetail bij blokkade en andere resterende
+integratiepunten staan expliciet in de [Remaining Work Audit](PHASE6E_REMAINING_WORK_AUDIT.md).
+
 OFFLINE ONLY / resultaten voor ownerreview. Geen owneracceptatie of live GO.
 6E-5/P1-P3: COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE ONLY.
 D1-D12/O1-O5 en alle eerdere geaccepteerde keuzes blijven ongewijzigd.

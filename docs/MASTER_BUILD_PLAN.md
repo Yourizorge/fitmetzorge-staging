@@ -1,6 +1,25 @@
 # FitMetZorge Master Build Plan
 
-## Package 6E-6 - Technical Delivery (2026-09-11)
+## Package 6E-6 Accepted; Remaining Work Audit (2026-09-11)
+
+COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE ONLY.
+W1/W2 expliciet geaccepteerd, Decision 0047. D1-D12/O1-O5 en alle eerdere besluiten behouden.
+[Freeze receipt](PHASE6E6_FREEZE_RECEIPT.md), [exact bronmanifest](PHASE6E6_FREEZE_EVIDENCE.json).
+Bron 6479711ffb4fa97ad4934e8245c9ae334f5b1337; 122 frozen bronnen en 60 runtime-assets beschermd.
+Bestaand testbewijs 1142/1142 PASS behouden; deze docs-only ronde 5/5 isolatiechecks PASS.
+Geen nieuwe classifier-, applicatie-, database- of medische validatie geclaimd.
+
+[Volledige Remaining Work Audit](PHASE6E_REMAINING_WORK_AUDIT.md) is read-only afgerond.
+W2 blokkeert correct, maar het numerieke stapdetail ontbreekt nog bij sommige
+geblokkeerde antwoorden. Nieuwe adapter nodig; frozen bron blijft ongewijzigd.
+Vorige planinhoud bewaren is geen uitgevoerde restorefunctie. Echte rollen/RLS,
+duurzame atomaire toepassing, meldingen en doelgebonden retentie blijven vervolgwerk.
+[Enig 6E-7-voorstel](PHASE6E7_PROPOSAL.md): synthetische standalone workflowdemo,
+geen echte app/Edge/database-integratie. K1-K4 vragen afzonderlijke owner-GO.
+6E-7 PROPOSED / NOT STARTED. Phase 6E ONVOLTOOID; geen live- of deskundige goedkeuring.
+Onderstaande leveringsstatussen zijn historisch, niet de actuele acceptatiestatus.
+
+## Package 6E-6 - Historical Technical Delivery (2026-09-11)
 
 TECHNICAL PASS / READY FOR OWNER REVIEW - OFFLINE ONLY.
 Bron 6479711ffb4fa97ad4934e8245c9ae334f5b1337, 16 nieuwe bestanden in _offline/phase6e6.

@@ -762,3 +762,23 @@ DB/migration/Edge/member/provider/cost/production/APPFMZ/other website operation
 New results are NOT owner-accepted/frozen. PHASE6E6_OWNER_OVERVIEW.md presents
 W1/W2 (ambiguous rule selection and exact-step conflict behavior) for review.
 Previous decisions remain accepted. No live plan, medical approval or next package.
+
+## Decision 0047: Owner accepts 6E-6/W1-W2; remaining-work audit only
+
+Date: 2026-09-11. COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE ONLY.
+W1: block simultaneous matching exercise/type rules without explicit trainer priority;
+Youri must not choose a rule itself. W2: no rounding, invented smaller load or
+self-selected extra reps when the full weight step does not fit. Show known facts,
+the configured step and the reason no proposal is available.
+Source 6479711ffb4fa97ad4934e8245c9ae334f5b1337, 16-source tree
+89aee1f074ae8a5bb83088d5709278da2b301bc8 frozen without executable edits.
+The existing blocked-step output does not always surface the numeric step; this
+remaining presentation requirement is explicit in the freeze receipt and audit R01,
+not concealed as a new implementation or a reason to rewrite frozen source.
+All prior decisions and 122 frozen sources remain intact; no medical/live approval.
+
+Authorized now: docs-only freeze plus full read-only Phase 6E Remaining Work Audit
+and ONE concrete 6E-7 proposal. 6E-7 is PROPOSED / NOT STARTED, not an implementation GO.
+No runtime, database, migrations, Edge, real member data, providers/cost or production.
+Medical/privacy/legal/language/provider gates remain open; their scope must not be
+misrepresented as a ban on safe offline or synthetic nonmedical workflow work.
