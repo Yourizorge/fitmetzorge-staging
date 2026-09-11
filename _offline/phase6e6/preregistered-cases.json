@@ -1,0 +1,299 @@
+{
+  "version": "6e6-preregistered-v1",
+  "synthetic_only": true,
+  "medical_validation": false,
+  "direction": "Explicit trainer rules only; no implicit defaults/conversion/rounding. Previous schemas and review stages remain separate.",
+  "progression": [
+    {
+      "id": "normal",
+      "expected_status": "proposal"
+    },
+    {
+      "id": "type_rule",
+      "expected_status": "proposal"
+    },
+    {
+      "id": "lb",
+      "expected_status": "proposal"
+    },
+    {
+      "id": "rir_zero",
+      "expected_status": "proposal"
+    },
+    {
+      "id": "optional_effort_missing",
+      "expected_status": "proposal"
+    },
+    {
+      "id": "rulebook_missing",
+      "expected_status": "facts_only"
+    },
+    {
+      "id": "missing_rule",
+      "expected_status": "facts_only"
+    },
+    {
+      "id": "no_trainer",
+      "expected_status": "facts_only"
+    },
+    {
+      "id": "type_missing",
+      "expected_status": "facts_only"
+    },
+    {
+      "id": "ambiguous_rules",
+      "expected_status": "facts_only"
+    },
+    {
+      "id": "type_wrong_revision",
+      "expected_status": "facts_only"
+    },
+    {
+      "id": "rule_revoked",
+      "expected_status": "facts_only"
+    },
+    {
+      "id": "book_wrong_member",
+      "expected_status": "facts_only"
+    },
+    {
+      "id": "book_wrong_trainer",
+      "expected_status": "facts_only"
+    },
+    {
+      "id": "book_stale",
+      "expected_status": "facts_only"
+    },
+    {
+      "id": "book_expired",
+      "expected_status": "facts_only"
+    },
+    {
+      "id": "book_future",
+      "expected_status": "facts_only"
+    },
+    {
+      "id": "book_wrong_policy",
+      "expected_status": "facts_only"
+    },
+    {
+      "id": "rule_wrong_exercise",
+      "expected_status": "facts_only"
+    },
+    {
+      "id": "sets_conflict",
+      "expected_status": "facts_only"
+    },
+    {
+      "id": "min_reps_missing",
+      "expected_status": "facts_only"
+    },
+    {
+      "id": "min_reps_conflict",
+      "expected_status": "facts_only"
+    },
+    {
+      "id": "max_reps_conflict",
+      "expected_status": "facts_only"
+    },
+    {
+      "id": "step_missing",
+      "expected_status": "facts_only"
+    },
+    {
+      "id": "step_zero",
+      "expected_status": "facts_only"
+    },
+    {
+      "id": "step_off_grid",
+      "expected_status": "facts_only"
+    },
+    {
+      "id": "mixed_unit",
+      "expected_status": "facts_only"
+    },
+    {
+      "id": "unit_unknown",
+      "expected_status": "facts_only"
+    },
+    {
+      "id": "weight_step_exact",
+      "expected_status": "proposal"
+    },
+    {
+      "id": "reps_step_overflow",
+      "expected_status": "facts_only"
+    },
+    {
+      "id": "effort_hold",
+      "expected_status": "proposal"
+    },
+    {
+      "id": "required_rir_missing",
+      "expected_status": "partial"
+    },
+    {
+      "id": "required_rpe_missing",
+      "expected_status": "partial"
+    },
+    {
+      "id": "effort_conflict",
+      "expected_status": "partial"
+    },
+    {
+      "id": "too_few_sessions",
+      "expected_status": "partial"
+    },
+    {
+      "id": "missing_set",
+      "expected_status": "unavailable"
+    },
+    {
+      "id": "set_wrong_member",
+      "expected_status": "invalid_input"
+    },
+    {
+      "id": "history_mixed_unit",
+      "expected_status": "partial"
+    },
+    {
+      "id": "historical_plan_unmapped",
+      "expected_status": "partial"
+    },
+    {
+      "id": "policy_revoked",
+      "expected_status": "unavailable"
+    },
+    {
+      "id": "stale_request",
+      "expected_status": "unavailable"
+    },
+    {
+      "id": "current",
+      "expected_status": "unavailable"
+    },
+    {
+      "id": "unclassified",
+      "expected_status": "unavailable"
+    },
+    {
+      "id": "self_reported",
+      "expected_status": "unavailable"
+    },
+    {
+      "id": "serious_recovered",
+      "expected_status": "unavailable"
+    },
+    {
+      "id": "recurring",
+      "expected_status": "unavailable"
+    },
+    {
+      "id": "new_after_recovery",
+      "expected_status": "unavailable"
+    },
+    {
+      "id": "expired",
+      "expected_status": "unavailable"
+    },
+    {
+      "id": "expired_fresh",
+      "expected_status": "unavailable"
+    },
+    {
+      "id": "missing",
+      "expected_status": "unavailable"
+    },
+    {
+      "id": "missing_fresh",
+      "expected_status": "unavailable"
+    },
+    {
+      "id": "unclear",
+      "expected_status": "clarification"
+    },
+    {
+      "id": "technical",
+      "expected_status": "clarification"
+    },
+    {
+      "id": "clarified",
+      "expected_status": "proposal"
+    },
+    {
+      "id": "no_analysis_consent",
+      "expected_status": "access_unavailable"
+    },
+    {
+      "id": "all_maintain",
+      "expected_status": "proposal"
+    },
+    {
+      "id": "partial_facts",
+      "expected_status": "facts_only"
+    }
+  ],
+  "review": [
+    "three_distinct_statuses",
+    "trainer_first",
+    "member_cannot_apply",
+    "approval_required",
+    "trainer_required",
+    "reject_member",
+    "reject_trainer",
+    "duplicate_event",
+    "duplicate_apply",
+    "event_payload_conflict",
+    "wrong_actor",
+    "wrong_relation",
+    "wrong_proposal",
+    "wrong_review_revision",
+    "wrong_plan_revision",
+    "clone_proposal",
+    "clone_review",
+    "stale_review",
+    "source_change",
+    "rulebook_revision_change",
+    "safety_after_approvals",
+    "self_report_after_approvals",
+    "O5_after_approvals",
+    "consent_revoked",
+    "no_partial_apply",
+    "parallel_proposals",
+    "previous_plan_retained",
+    "source_versions_retained",
+    "hash_chained_audit",
+    "failure_before_commit",
+    "retry_after_failure",
+    "input_unchanged",
+    "idempotency_across_proposals"
+  ],
+  "facts": [
+    "missing_trainer_reliable_facts",
+    "missing_rule_reliable_facts",
+    "wrong_owner_never_shown",
+    "bad_set_binding_omitted",
+    "missing_values_not_invented",
+    "zero_retained",
+    "no_access_no_facts"
+  ],
+  "examples": {
+    "locales": [
+      "nl",
+      "en",
+      "de"
+    ],
+    "scenarios": [
+      "normal",
+      "type_rule",
+      "all_maintain",
+      "no_trainer",
+      "rulebook_missing",
+      "effort_conflict",
+      "current",
+      "approval_timeline",
+      "rejection",
+      "version_conflict"
+    ]
+  }
+}
