@@ -1,6 +1,19 @@
 # FitMetZorge Test Matrix
 
-## Package 6E-5 Accepted; 6E-6 Offline GO (2026-09-11)
+## Package 6E-6 - Technical Delivery (2026-09-11)
+
+TECHNICAL PASS / READY FOR OWNER REVIEW - OFFLINE ONLY.
+Bron 6479711ffb4fa97ad4934e8245c9ae334f5b1337, 16 nieuwe bestanden in _offline/phase6e6.
+Expliciete trainerregels per oefening/type, reps/gewicht/behoud, betrouwbare feitenfallback,
+aparte lid/trainer/apply-statussen en atomaire in-memory audit-/versiesimulatie.
+1142/1142 technische tests PASS: 117 nieuw + 1025 frozen functioneel, 30 taalvoorbeelden.
+Bekende taalobservaties GEEN herkenningssucces; geen medische/live-autoriteitsvalidatie.
+[Contract](PHASE6E6_CONTRACTS.md), [owneroverzicht W1/W2](PHASE6E6_OWNER_OVERVIEW.md),
+[rapport](PHASE6E6_TECHNICAL_REPORT.md), [bewijs](PHASE6E6_EVIDENCE.json).
+Frozen106 en runtime60 ongewijzigd; geen Training-uitzondering of live AI.
+6E-6 NIET owner-accepted/frozen. Phase 6E ONVOLTOOID. Geen volgend pakket gestart.
+
+## Package 6E-5 Accepted; 6E-6 Authorized Scope (2026-09-11)
 
 6E-5: COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE ONLY.
 P1-P3 expliciet geaccepteerd. [Exact receipt](PHASE6E5_FREEZE_RECEIPT.md).

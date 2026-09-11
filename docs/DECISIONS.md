@@ -755,3 +755,10 @@ No trainer means no applicable change. D1-D12/O1-O5 and prior accepted choices s
 6E-6 results require ownerreview; no auto-freeze. Phase 6E remains incomplete.
 Only new offline files/docs/tests. Runtime60 and frozen106 preserved; no live AI,
 DB/migration/Edge/member/provider/cost/production/APPFMZ/other website operations.
+
+6E-6 technical delivery: source 6479711ffb4fa97ad4934e8245c9ae334f5b1337,
+16-source tree 89aee1f074ae8a5bb83088d5709278da2b301bc8. 1142/1142 technical tests,
+117 new and 1025 frozen regressions; 30 deterministic NL/EN/DE scenarios.
+New results are NOT owner-accepted/frozen. PHASE6E6_OWNER_OVERVIEW.md presents
+W1/W2 (ambiguous rule selection and exact-step conflict behavior) for review.
+Previous decisions remain accepted. No live plan, medical approval or next package.
