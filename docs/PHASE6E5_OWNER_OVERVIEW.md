@@ -1,5 +1,12 @@
 # Package 6E-5 Owneroverzicht
 
+## Owneracceptatie 2026-09-11
+
+COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE ONLY.
+Alle drie onderstaande reviewpunten P1-P3 zijn expliciet geaccepteerd.
+[Freeze receipt](PHASE6E5_FREEZE_RECEIPT.md). Geen live of medische vrijgave.
+Onderstaande leveringsstatus is historisch, niet de actuele acceptatiestatus.
+
 TECHNICAL PASS / READY FOR OWNER REVIEW - OFFLINE ONLY.
 6E-4/V1/V2 is nu accepted/frozen. 6E-5 is NIET accepted/frozen of live vrijgegeven.
 Hier staan concrete progressievoorstellen, niet opnieuw alleen "bekijk je schema".

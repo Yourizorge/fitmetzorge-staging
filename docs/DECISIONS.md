@@ -736,3 +736,22 @@ Only new result choices P1-P3 remain in PHASE6E5_OWNER_OVERVIEW.md; they are NOT
 owner-accepted by this GO. Technical tests do not validate genuine coaching rules
 or medical resumption. Physical_advice_authorized and automatic_actions remain false.
 Runtime60/frozen89 preserved. No live integration, 6E-5-freeze or next package.
+
+## Decision 0046: Owner accepts 6E-5/P1-P3; offline 6E-6 GO
+
+Date: 2026-09-11. COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE ONLY.
+P1 accepts per-exercise current target, actual performance, next-week proposal,
+reason and approval status. P2 requires separate member and linked-trainer approval,
+then separate explicit atomic application; no trainer approval means no plan change.
+P3 permits reliable facts but no partial application or invented missing data.
+The 17 existing 6E-5 files/tree 3989c3fb110aea93a548dcd2c71d40ac354a9ae7 stay frozen.
+Original tests/limitations retained; see PHASE6E5_FREEZE_RECEIPT.md.
+
+New GO: executable offline 6E-6 trainer-bounded reps/load/maintain rules per exercise
+or explicitly sourced exercise type; separate RIR/RPE, null/zero, all-or-nothing
+review/application, prior plan/source/audit preservation. No arbitrary default rule,
+implicit conversion, invented trainer bounds or medical resumption criteria.
+No trainer means no applicable change. D1-D12/O1-O5 and prior accepted choices stay.
+6E-6 results require ownerreview; no auto-freeze. Phase 6E remains incomplete.
+Only new offline files/docs/tests. Runtime60 and frozen106 preserved; no live AI,
+DB/migration/Edge/member/provider/cost/production/APPFMZ/other website operations.

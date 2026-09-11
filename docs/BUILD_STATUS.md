@@ -1,6 +1,16 @@
 # FitMetZorge Build Status
 
-## Package 6E-5 - Technical Delivery
+## Package 6E-5 Accepted; 6E-6 Offline GO (2026-09-11)
+
+6E-5: COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE ONLY.
+P1-P3 expliciet geaccepteerd. [Exact receipt](PHASE6E5_FREEZE_RECEIPT.md).
+106 frozen AI-bronnen en alle 60 runtime-assets beschermd, inclusief Training.
+6E-6: nieuwe offline GO voor expliciete trainerprogressieregels per oefening/type
+en controleerbare goedkeurings-/toepassingssimulatie met vorige planversie en audit.
+Geen live integratie. Phase 6E ONVOLTOOID; geen automatische 6E-6-acceptatie/freeze.
+Hieronder blijft de oorspronkelijke technische levering als historisch bewijs staan.
+
+## Package 6E-5 - Historical Technical Delivery
 
 TECHNICAL PASS / READY FOR OWNER REVIEW - OFFLINE ONLY.
 Werkende concrete progressievoorstellen: reps verhogen, expliciete gewichtsstap
