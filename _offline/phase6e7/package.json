@@ -1,0 +1,9 @@
+{
+  "name": "fmz-phase6e7-offline",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "test": "node --test test/*.test.cjs",
+    "build": "node build.cjs"
+  }
+}

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="nl" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; font-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>FitMetZorge | Synthetische workflowdemo</title>
+<link rel="stylesheet" href="demo.css">
+<script defer src="copy.js"></script><script defer src="model.js"></script><script defer src="data.js"></script><script defer src="app.js"></script>
+</head>
+<body>
+<header class="topbar"><img src="brand.png" alt="FitMetZorge" width="148" height="48"><strong>FitMetZorge</strong><span class="package">6E-7</span></header>
+<div class="demo-band"><strong id="demo-label"></strong><span id="reset-note"></span></div>
+<main>
+<div class="heading"><div><h1 id="title"></h1><p id="fiction"></p></div><div class="preferences">
+<label><span id="language-label"></span><select id="language"><option value="nl">Nederlands</option><option value="en">English</option><option value="de">Deutsch</option></select></label>
+<label><span id="theme-label"></span><select id="theme"></select></label><button id="reset" type="button"></button></div></div>
+<div class="controls"><label class="scenario-control"><span id="scenario-label"></span><select id="scenario"></select></label>
+<fieldset><legend id="persona-label"></legend><label><input type="radio" name="persona" value="member" checked><span id="member-label"></span></label><label><input type="radio" name="persona" value="trainer"><span id="trainer-label"></span></label></fieldset></div>
+<ol id="timeline" class="timeline"></ol>
+<section class="review"><div class="section-heading"><h2 id="review-heading"></h2><span id="status" class="status"></span></div>
+<p id="goal"></p><p id="warning" class="warning" role="status"></p><div id="w2"></div><div id="comparison"></div>
+<div id="actions" class="actions"></div><p id="feedback" role="status" aria-live="polite"></p>
+<div class="approval-summary" id="approvals"></div></section>
+<section><h2 id="history-heading"></h2><div id="history"></div></section>
+<section><details><summary id="sources-heading"></summary><div id="sources"></div></details></section>
+<section class="lower-grid"><div><h2 id="inbox-heading"></h2><div id="inbox"></div></div><div><h2 id="simulate-heading"></h2><div class="simulate"><select id="source-event"></select><button type="button" id="inject"></button></div><p id="retention"></p></div></section>
+<section><h2 id="audit-heading"></h2><div id="audit"></div></section>
+<section><h2 id="chat-heading"></h2><p id="chat-note"></p></section>
+<footer><p id="boundary"></p></footer>
+</main>
+</body></html>
