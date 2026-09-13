@@ -1,5 +1,24 @@
 # FitMetZorge Build Status
 
+## Package 6E-7 Technical Delivery (2026-09-13)
+
+TECHNICAL PASS / READY FOR OWNER REVIEW - SYNTHETIC DEMO ONLY.
+K1-K4 als scope geaccepteerd. Resultaten NIET owner-accepted/frozen.
+Bron c38d9d89797cd1f794463b645579f65fe4851930; preregistratie 5e59074.
+Zelfstandige demo: reps/gewicht/behoud, lid -> trainer -> aparte apply,
+nieuwe restorevoorstellen/versies, neutrale meldingen en volledige mockaudit.
+1323/1323 offline tests PASS: 186 nieuw + 1137 frozen; alle 30 oude taalvoorbeelden
+exact behouden en 15 nieuwe workflowconcepten. Browser 343/343, 24 taal/thema/
+viewportcombinaties; telefoon uitsluitend geemuleerd. Geen medische validatie.
+Alle 122 frozen bronnen en 60 bestaande runtime-assets byte-identiek.
+[Contract](PHASE6E7_CONTRACTS.md), [ownerreview](PHASE6E7_OWNER_OVERVIEW.md),
+[rapport](PHASE6E7_TECHNICAL_REPORT.md), [bewijs](PHASE6E7_EVIDENCE.json).
+[Demo](https://yourizorge.github.io/fitmetzorge-staging/training-review-demo/).
+[6E-8-voorstel](PHASE6E8_PROPOSAL.md): afgeschermde synthetische mockintegratie
+in de echte stagingapp; PROPOSED / NOT STARTED. Phase 6E ONVOLTOOID.
+Geen runtime/DB/Edge/Auth/RLS/memberwijziging of externe AI/kosten.
+Onderstaande eerdere leverings-/auditstatussen zijn historisch.
+
 ## Package 6E-6 Accepted; Remaining Work Audit (2026-09-11)
 
 COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE ONLY.

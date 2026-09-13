@@ -1,5 +1,13 @@
 # Package 6E-7 Proposal
 
+## Uitgevoerd Na Owner-GO (2026-09-13)
+
+K1-K4 geaccepteerd; het onderstaande voorstel is historisch.
+De standalone synthetische demo is technisch opgeleverd, niet owner-accepted/frozen.
+Zie [actueel rapport](PHASE6E7_TECHNICAL_REPORT.md) en [ownerreview](PHASE6E7_OWNER_OVERVIEW.md).
+Publieke nieuwe mockcontroller gedeeld met private tests; geen frozen code gepubliceerd.
+6E-8 blijft PROPOSED / NOT STARTED.
+
 PROPOSED / NOT STARTED. Geen implementatie-GO.
 Opgesteld 2026-09-11 na owneracceptatie W1/W2; Decision 0047.
 Enig aanbevolen volgend pakket: **Synthetische workflowdemo voor voorstel,

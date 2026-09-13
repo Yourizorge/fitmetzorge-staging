@@ -782,3 +782,22 @@ and ONE concrete 6E-7 proposal. 6E-7 is PROPOSED / NOT STARTED, not an implement
 No runtime, database, migrations, Edge, real member data, providers/cost or production.
 Medical/privacy/legal/language/provider gates remain open; their scope must not be
 misrepresented as a ban on safe offline or synthetic nonmedical workflow work.
+
+## Decision 0048: Owner authorizes standalone synthetic 6E-7 / accepts K1-K4
+
+Date: 2026-09-13. Explicit GO for the offline implementation and separate staging
+demo; not for real app, database, Edge, Auth/RLS, live AI or member processing.
+K1: standalone synthetic demo outside the actual app.
+K2: restore creates a new proposal and monotone version, requiring new independent
+member consent and trainer approval followed by separate explicit application.
+K3: minimal simulated in-app notifications only; no medical/private chat details.
+K4: memory only, visible full reset on refresh; no browser/app persistence.
+Member acceptance precedes trainer review; no partially applied blocked proposal.
+W2 must show the configured numeric weight step and why it cannot fit.
+All earlier accepted decisions and frozen sources remain intact.
+
+Technical implementation c38d9d89797cd1f794463b645579f65fe4851930:
+TECHNICAL PASS / READY FOR OWNER REVIEW. No result acceptance or owner-freeze.
+1323 offline tests and 343 local browser checks pass; synthetic clocks/personas
+are not live authority, durable database atomicity or medical validation.
+The next 6E-8 mock-in-app proposal is PROPOSED / NOT STARTED. Phase 6E incomplete.

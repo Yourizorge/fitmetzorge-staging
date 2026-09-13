@@ -1,0 +1,4679 @@
+[
+  {
+    "locale": "nl",
+    "scenario": "normal",
+    "messages": [
+      "Synthetische offline demo",
+      "Fictief bestaand doel: kracht",
+      "Squat: Schema bij voorstel 2 x 8 @ 55 kg; Volgende week 2 x 9 @ 55 kg. De geregistreerde sets halen het doel. De trainerregel staat één rep erbij toe, onder het vastgelegde maximum.",
+      "Roeien: Schema bij voorstel 2 x 10 @ 30 kg; Volgende week 2 x 8 @ 32,5 kg. De sets halen het repmaximum. De trainerregel noemt de volledige gewichtsstap en het bijbehorende repdoel.",
+      "Schouderdrukken: Schema bij voorstel 2 x 8 @ 20 kg; Volgende week 2 x 8 @ 20 kg. De vastgelegde regel geeft geen verhoging; behoud het bestaande doel als voorstel."
+    ],
+    "notifications": [
+      {
+        "recipient": "member",
+        "message": "Youri heeft een voorstel voor je volgende training."
+      }
+    ],
+    "audit": [
+      {
+        "id": "event-1",
+        "command_id": "initial",
+        "at": "2026-09-13T10:00:01.000Z",
+        "actor": "system",
+        "action": "create",
+        "reason": "created",
+        "proposal_id": "syn-review-1",
+        "proposal_kind": "progression",
+        "proposal_basis": "0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "member_pending",
+        "member": "pending",
+        "trainer": "pending",
+        "application": "not_applied",
+        "before_version": 3,
+        "after_version": 3
+      }
+    ],
+    "active_version": 3,
+    "previous_versions": [],
+    "automatic_actions_allowed": false,
+    "physical_advice_authorized": false,
+    "source_kind": "synthetic_only"
+  },
+  {
+    "locale": "nl",
+    "scenario": "step_off_grid",
+    "messages": [
+      "Synthetische offline demo",
+      "Fictief bestaand doel: kracht",
+      "De beschikbare gewichten passen niet exact bij de volledige ingestelde stap. Geen afronding of alternatief voorstel.",
+      "syn-squat: Ingestelde gewichtsstap 2,5 kg; Vastgelegde gewichten 55, 57,5, 60 kg.",
+      "syn-row: Ingestelde gewichtsstap 2,5 kg; Vastgelegde gewichten 30, 32, 35 kg.",
+      "syn-press: Ingestelde gewichtsstap 2,5 kg; Vastgelegde gewichten 20, 22,5, 25 kg."
+    ],
+    "notifications": [
+      {
+        "recipient": "member",
+        "message": "Het voorstel is geblokkeerd. De beschikbare gewichten passen niet exact bij de volledige ingestelde stap. Geen afronding of alternatief voorstel."
+      }
+    ],
+    "audit": [
+      {
+        "id": "event-1",
+        "command_id": "initial",
+        "at": "2026-09-13T10:00:01.000Z",
+        "actor": "system",
+        "action": "create",
+        "reason": "weight_step_conflict",
+        "proposal_id": "syn-review-1",
+        "proposal_kind": "progression",
+        "proposal_basis": "a2785f405cbc4ed6d6dbef64990ad892716c9ea6b3aaba5bae56e941da0895ba",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "blocked",
+        "member": "pending",
+        "trainer": "pending",
+        "application": "not_applied",
+        "before_version": 3,
+        "after_version": 3
+      }
+    ],
+    "active_version": 3,
+    "previous_versions": [],
+    "automatic_actions_allowed": false,
+    "physical_advice_authorized": false,
+    "source_kind": "synthetic_only"
+  },
+  {
+    "locale": "nl",
+    "scenario": "restore",
+    "messages": [
+      "Synthetische offline demo",
+      "Fictief bestaand doel: kracht",
+      "Squat: Schema bij voorstel 2 x 8 @ 55 kg; Volgende week 2 x 9 @ 55 kg. De geregistreerde sets halen het doel. De trainerregel staat één rep erbij toe, onder het vastgelegde maximum.",
+      "Roeien: Schema bij voorstel 2 x 10 @ 30 kg; Volgende week 2 x 8 @ 32,5 kg. De sets halen het repmaximum. De trainerregel noemt de volledige gewichtsstap en het bijbehorende repdoel.",
+      "Schouderdrukken: Schema bij voorstel 2 x 8 @ 20 kg; Volgende week 2 x 8 @ 20 kg. De vastgelegde regel geeft geen verhoging; behoud het bestaande doel als voorstel."
+    ],
+    "notifications": [
+      {
+        "recipient": "member",
+        "message": "Youri heeft een voorstel voor je volgende training."
+      },
+      {
+        "recipient": "trainer",
+        "message": "Er wacht een trainingsvoorstel op jouw beoordeling."
+      },
+      {
+        "recipient": "member",
+        "message": "Het voorstel is goedgekeurd en wacht op toepassing."
+      },
+      {
+        "recipient": "trainer",
+        "message": "Het voorstel is goedgekeurd en wacht op toepassing."
+      },
+      {
+        "recipient": "member",
+        "message": "Je trainingsschema heeft een nieuwe versie."
+      },
+      {
+        "recipient": "trainer",
+        "message": "Je trainingsschema heeft een nieuwe versie."
+      },
+      {
+        "recipient": "member",
+        "message": "Er is een voorstel gemaakt om een eerdere schemaversie te herstellen."
+      },
+      {
+        "recipient": "trainer",
+        "message": "Er wacht een trainingsvoorstel op jouw beoordeling."
+      },
+      {
+        "recipient": "member",
+        "message": "Het voorstel is goedgekeurd en wacht op toepassing."
+      },
+      {
+        "recipient": "trainer",
+        "message": "Het voorstel is goedgekeurd en wacht op toepassing."
+      },
+      {
+        "recipient": "member",
+        "message": "Je trainingsschema heeft een nieuwe versie."
+      },
+      {
+        "recipient": "trainer",
+        "message": "Je trainingsschema heeft een nieuwe versie."
+      }
+    ],
+    "audit": [
+      {
+        "id": "event-1",
+        "command_id": "initial",
+        "at": "2026-09-13T10:00:01.000Z",
+        "actor": "system",
+        "action": "create",
+        "reason": "created",
+        "proposal_id": "syn-review-1",
+        "proposal_kind": "progression",
+        "proposal_basis": "0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "member_pending",
+        "member": "pending",
+        "trainer": "pending",
+        "application": "not_applied",
+        "before_version": 3,
+        "after_version": 3
+      },
+      {
+        "id": "event-2",
+        "command_id": "cmd-example-0",
+        "at": "2026-09-13T10:00:02.000Z",
+        "actor": "member",
+        "action": "member_accept",
+        "reason": "member_accept",
+        "proposal_id": "syn-review-1",
+        "proposal_kind": "progression",
+        "proposal_basis": "0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "trainer_pending",
+        "member": "accepted",
+        "trainer": "pending",
+        "application": "not_applied",
+        "before_version": 3,
+        "after_version": 3
+      },
+      {
+        "id": "event-3",
+        "command_id": "cmd-example-1",
+        "at": "2026-09-13T10:00:03.000Z",
+        "actor": "trainer",
+        "action": "trainer_approve",
+        "reason": "trainer_approve",
+        "proposal_id": "syn-review-1",
+        "proposal_kind": "progression",
+        "proposal_basis": "0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "approved",
+        "member": "accepted",
+        "trainer": "approved",
+        "application": "not_applied",
+        "before_version": 3,
+        "after_version": 3
+      },
+      {
+        "id": "event-4",
+        "command_id": "cmd-example-2",
+        "at": "2026-09-13T10:00:04.000Z",
+        "actor": "trainer",
+        "action": "apply",
+        "reason": "applied",
+        "proposal_id": "syn-review-1",
+        "proposal_kind": "progression",
+        "proposal_basis": "0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 4
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "applied",
+        "member": "accepted",
+        "trainer": "approved",
+        "application": "applied",
+        "before_version": 3,
+        "after_version": 4
+      },
+      {
+        "id": "event-5",
+        "command_id": "cmd-example-3",
+        "at": "2026-09-13T10:00:05.000Z",
+        "actor": "member",
+        "action": "restore",
+        "reason": "restore_created",
+        "proposal_id": "syn-review-2",
+        "proposal_kind": "restore",
+        "proposal_basis": "{\"original_basis\":\"0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359\",\"target_version\":3,\"current\":{\"goal\":{\"id\":\"syn-goal\",\"revision\":2},\"plan\":{\"id\":\"syn-plan\",\"revision\":4},\"relationship\":{\"id\":\"syn-relationship\",\"revision\":1},\"authority\":{\"id\":\"syn-authority\",\"revision\":1},\"limits\":{\"id\":\"syn-limits\",\"revision\":4},\"selection\":{\"id\":\"syn-selection\",\"revision\":1},\"policy\":{\"id\":\"syn-test-policy\",\"revision\":1},\"history\":{\"id\":\"syn-history\",\"revision\":1},\"rulebook\":{\"id\":\"syn-trainer-rulebook\",\"revision\":1}}}",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 4
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 4
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "member_pending",
+        "member": "pending",
+        "trainer": "pending",
+        "application": "not_applied",
+        "before_version": 4,
+        "after_version": 4
+      },
+      {
+        "id": "event-6",
+        "command_id": "cmd-example-4",
+        "at": "2026-09-13T10:00:06.000Z",
+        "actor": "member",
+        "action": "member_accept",
+        "reason": "member_accept",
+        "proposal_id": "syn-review-2",
+        "proposal_kind": "restore",
+        "proposal_basis": "{\"original_basis\":\"0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359\",\"target_version\":3,\"current\":{\"goal\":{\"id\":\"syn-goal\",\"revision\":2},\"plan\":{\"id\":\"syn-plan\",\"revision\":4},\"relationship\":{\"id\":\"syn-relationship\",\"revision\":1},\"authority\":{\"id\":\"syn-authority\",\"revision\":1},\"limits\":{\"id\":\"syn-limits\",\"revision\":4},\"selection\":{\"id\":\"syn-selection\",\"revision\":1},\"policy\":{\"id\":\"syn-test-policy\",\"revision\":1},\"history\":{\"id\":\"syn-history\",\"revision\":1},\"rulebook\":{\"id\":\"syn-trainer-rulebook\",\"revision\":1}}}",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 4
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 4
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "trainer_pending",
+        "member": "accepted",
+        "trainer": "pending",
+        "application": "not_applied",
+        "before_version": 4,
+        "after_version": 4
+      },
+      {
+        "id": "event-7",
+        "command_id": "cmd-example-5",
+        "at": "2026-09-13T10:00:07.000Z",
+        "actor": "trainer",
+        "action": "trainer_approve",
+        "reason": "trainer_approve",
+        "proposal_id": "syn-review-2",
+        "proposal_kind": "restore",
+        "proposal_basis": "{\"original_basis\":\"0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359\",\"target_version\":3,\"current\":{\"goal\":{\"id\":\"syn-goal\",\"revision\":2},\"plan\":{\"id\":\"syn-plan\",\"revision\":4},\"relationship\":{\"id\":\"syn-relationship\",\"revision\":1},\"authority\":{\"id\":\"syn-authority\",\"revision\":1},\"limits\":{\"id\":\"syn-limits\",\"revision\":4},\"selection\":{\"id\":\"syn-selection\",\"revision\":1},\"policy\":{\"id\":\"syn-test-policy\",\"revision\":1},\"history\":{\"id\":\"syn-history\",\"revision\":1},\"rulebook\":{\"id\":\"syn-trainer-rulebook\",\"revision\":1}}}",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 4
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 4
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "approved",
+        "member": "accepted",
+        "trainer": "approved",
+        "application": "not_applied",
+        "before_version": 4,
+        "after_version": 4
+      },
+      {
+        "id": "event-8",
+        "command_id": "cmd-example-6",
+        "at": "2026-09-13T10:00:08.000Z",
+        "actor": "trainer",
+        "action": "apply",
+        "reason": "restored",
+        "proposal_id": "syn-review-2",
+        "proposal_kind": "restore",
+        "proposal_basis": "{\"original_basis\":\"0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359\",\"target_version\":3,\"current\":{\"goal\":{\"id\":\"syn-goal\",\"revision\":2},\"plan\":{\"id\":\"syn-plan\",\"revision\":4},\"relationship\":{\"id\":\"syn-relationship\",\"revision\":1},\"authority\":{\"id\":\"syn-authority\",\"revision\":1},\"limits\":{\"id\":\"syn-limits\",\"revision\":4},\"selection\":{\"id\":\"syn-selection\",\"revision\":1},\"policy\":{\"id\":\"syn-test-policy\",\"revision\":1},\"history\":{\"id\":\"syn-history\",\"revision\":1},\"rulebook\":{\"id\":\"syn-trainer-rulebook\",\"revision\":1}}}",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 4
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 5
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "applied",
+        "member": "accepted",
+        "trainer": "approved",
+        "application": "applied",
+        "before_version": 4,
+        "after_version": 5
+      }
+    ],
+    "active_version": 5,
+    "previous_versions": [
+      3,
+      4
+    ],
+    "automatic_actions_allowed": false,
+    "physical_advice_authorized": false,
+    "source_kind": "synthetic_only"
+  },
+  {
+    "locale": "nl",
+    "scenario": "member_reject",
+    "messages": [
+      "Synthetische offline demo",
+      "Fictief bestaand doel: kracht",
+      "Squat: Schema bij voorstel 2 x 8 @ 55 kg; Volgende week 2 x 9 @ 55 kg. De geregistreerde sets halen het doel. De trainerregel staat één rep erbij toe, onder het vastgelegde maximum.",
+      "Roeien: Schema bij voorstel 2 x 10 @ 30 kg; Volgende week 2 x 8 @ 32,5 kg. De sets halen het repmaximum. De trainerregel noemt de volledige gewichtsstap en het bijbehorende repdoel.",
+      "Schouderdrukken: Schema bij voorstel 2 x 8 @ 20 kg; Volgende week 2 x 8 @ 20 kg. De vastgelegde regel geeft geen verhoging; behoud het bestaande doel als voorstel."
+    ],
+    "notifications": [
+      {
+        "recipient": "member",
+        "message": "Youri heeft een voorstel voor je volgende training."
+      },
+      {
+        "recipient": "member",
+        "message": "Het voorstel is afgewezen. Het lid heeft niet ingestemd."
+      },
+      {
+        "recipient": "trainer",
+        "message": "Het voorstel is afgewezen. Het lid heeft niet ingestemd."
+      }
+    ],
+    "audit": [
+      {
+        "id": "event-1",
+        "command_id": "initial",
+        "at": "2026-09-13T10:00:01.000Z",
+        "actor": "system",
+        "action": "create",
+        "reason": "created",
+        "proposal_id": "syn-review-1",
+        "proposal_kind": "progression",
+        "proposal_basis": "0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "member_pending",
+        "member": "pending",
+        "trainer": "pending",
+        "application": "not_applied",
+        "before_version": 3,
+        "after_version": 3
+      },
+      {
+        "id": "event-2",
+        "command_id": "cmd-example-0",
+        "at": "2026-09-13T10:00:02.000Z",
+        "actor": "member",
+        "action": "member_reject",
+        "reason": "member_declined",
+        "proposal_id": "syn-review-1",
+        "proposal_kind": "progression",
+        "proposal_basis": "0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "rejected",
+        "member": "rejected",
+        "trainer": "pending",
+        "application": "not_applied",
+        "before_version": 3,
+        "after_version": 3
+      }
+    ],
+    "active_version": 3,
+    "previous_versions": [],
+    "automatic_actions_allowed": false,
+    "physical_advice_authorized": false,
+    "source_kind": "synthetic_only"
+  },
+  {
+    "locale": "nl",
+    "scenario": "trainer_block",
+    "messages": [
+      "Synthetische offline demo",
+      "Fictief bestaand doel: kracht",
+      "Squat: Schema bij voorstel 2 x 8 @ 55 kg; Volgende week 2 x 9 @ 55 kg. De geregistreerde sets halen het doel. De trainerregel staat één rep erbij toe, onder het vastgelegde maximum.",
+      "Roeien: Schema bij voorstel 2 x 10 @ 30 kg; Volgende week 2 x 8 @ 32,5 kg. De sets halen het repmaximum. De trainerregel noemt de volledige gewichtsstap en het bijbehorende repdoel.",
+      "Schouderdrukken: Schema bij voorstel 2 x 8 @ 20 kg; Volgende week 2 x 8 @ 20 kg. De vastgelegde regel geeft geen verhoging; behoud het bestaande doel als voorstel."
+    ],
+    "notifications": [
+      {
+        "recipient": "member",
+        "message": "Youri heeft een voorstel voor je volgende training."
+      },
+      {
+        "recipient": "trainer",
+        "message": "Er wacht een trainingsvoorstel op jouw beoordeling."
+      },
+      {
+        "recipient": "member",
+        "message": "Het voorstel is geblokkeerd. De trainer heeft het voorstel geblokkeerd."
+      },
+      {
+        "recipient": "trainer",
+        "message": "Het voorstel is geblokkeerd. De trainer heeft het voorstel geblokkeerd."
+      }
+    ],
+    "audit": [
+      {
+        "id": "event-1",
+        "command_id": "initial",
+        "at": "2026-09-13T10:00:01.000Z",
+        "actor": "system",
+        "action": "create",
+        "reason": "created",
+        "proposal_id": "syn-review-1",
+        "proposal_kind": "progression",
+        "proposal_basis": "0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "member_pending",
+        "member": "pending",
+        "trainer": "pending",
+        "application": "not_applied",
+        "before_version": 3,
+        "after_version": 3
+      },
+      {
+        "id": "event-2",
+        "command_id": "cmd-example-0",
+        "at": "2026-09-13T10:00:02.000Z",
+        "actor": "member",
+        "action": "member_accept",
+        "reason": "member_accept",
+        "proposal_id": "syn-review-1",
+        "proposal_kind": "progression",
+        "proposal_basis": "0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "trainer_pending",
+        "member": "accepted",
+        "trainer": "pending",
+        "application": "not_applied",
+        "before_version": 3,
+        "after_version": 3
+      },
+      {
+        "id": "event-3",
+        "command_id": "cmd-example-1",
+        "at": "2026-09-13T10:00:03.000Z",
+        "actor": "trainer",
+        "action": "trainer_block",
+        "reason": "trainer_blocked",
+        "proposal_id": "syn-review-1",
+        "proposal_kind": "progression",
+        "proposal_basis": "0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "blocked",
+        "member": "accepted",
+        "trainer": "blocked",
+        "application": "not_applied",
+        "before_version": 3,
+        "after_version": 3
+      }
+    ],
+    "active_version": 3,
+    "previous_versions": [],
+    "automatic_actions_allowed": false,
+    "physical_advice_authorized": false,
+    "source_kind": "synthetic_only"
+  },
+  {
+    "locale": "en",
+    "scenario": "normal",
+    "messages": [
+      "Synthetic offline demo",
+      "Fictional existing goal: strength",
+      "Squat: Plan when proposed 2 x 8 @ 55 kg; Next week 2 x 9 @ 55 kg. The recorded sets meet the target. The trainer rule allows one more rep, below its maximum.",
+      "Row: Plan when proposed 2 x 10 @ 30 kg; Next week 2 x 8 @ 32.5 kg. The sets meet the rep ceiling. The trainer rule defines the full weight step and corresponding rep target.",
+      "Shoulder press: Plan when proposed 2 x 8 @ 20 kg; Next week 2 x 8 @ 20 kg. The recorded rule does not permit an increase; the proposal retains the target."
+    ],
+    "notifications": [
+      {
+        "recipient": "member",
+        "message": "Youri has a proposal for your next workout."
+      }
+    ],
+    "audit": [
+      {
+        "id": "event-1",
+        "command_id": "initial",
+        "at": "2026-09-13T10:00:01.000Z",
+        "actor": "system",
+        "action": "create",
+        "reason": "created",
+        "proposal_id": "syn-review-1",
+        "proposal_kind": "progression",
+        "proposal_basis": "0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "member_pending",
+        "member": "pending",
+        "trainer": "pending",
+        "application": "not_applied",
+        "before_version": 3,
+        "after_version": 3
+      }
+    ],
+    "active_version": 3,
+    "previous_versions": [],
+    "automatic_actions_allowed": false,
+    "physical_advice_authorized": false,
+    "source_kind": "synthetic_only"
+  },
+  {
+    "locale": "en",
+    "scenario": "step_off_grid",
+    "messages": [
+      "Synthetic offline demo",
+      "Fictional existing goal: strength",
+      "Available weights do not fit the full configured step exactly. No rounding or alternative proposal.",
+      "syn-squat: Configured weight step 2.5 kg; Recorded weights 55, 57.5, 60 kg.",
+      "syn-row: Configured weight step 2.5 kg; Recorded weights 30, 32, 35 kg.",
+      "syn-press: Configured weight step 2.5 kg; Recorded weights 20, 22.5, 25 kg."
+    ],
+    "notifications": [
+      {
+        "recipient": "member",
+        "message": "The proposal was blocked. Available weights do not fit the full configured step exactly. No rounding or alternative proposal."
+      }
+    ],
+    "audit": [
+      {
+        "id": "event-1",
+        "command_id": "initial",
+        "at": "2026-09-13T10:00:01.000Z",
+        "actor": "system",
+        "action": "create",
+        "reason": "weight_step_conflict",
+        "proposal_id": "syn-review-1",
+        "proposal_kind": "progression",
+        "proposal_basis": "a2785f405cbc4ed6d6dbef64990ad892716c9ea6b3aaba5bae56e941da0895ba",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "blocked",
+        "member": "pending",
+        "trainer": "pending",
+        "application": "not_applied",
+        "before_version": 3,
+        "after_version": 3
+      }
+    ],
+    "active_version": 3,
+    "previous_versions": [],
+    "automatic_actions_allowed": false,
+    "physical_advice_authorized": false,
+    "source_kind": "synthetic_only"
+  },
+  {
+    "locale": "en",
+    "scenario": "restore",
+    "messages": [
+      "Synthetic offline demo",
+      "Fictional existing goal: strength",
+      "Squat: Plan when proposed 2 x 8 @ 55 kg; Next week 2 x 9 @ 55 kg. The recorded sets meet the target. The trainer rule allows one more rep, below its maximum.",
+      "Row: Plan when proposed 2 x 10 @ 30 kg; Next week 2 x 8 @ 32.5 kg. The sets meet the rep ceiling. The trainer rule defines the full weight step and corresponding rep target.",
+      "Shoulder press: Plan when proposed 2 x 8 @ 20 kg; Next week 2 x 8 @ 20 kg. The recorded rule does not permit an increase; the proposal retains the target."
+    ],
+    "notifications": [
+      {
+        "recipient": "member",
+        "message": "Youri has a proposal for your next workout."
+      },
+      {
+        "recipient": "trainer",
+        "message": "A training proposal is waiting for your review."
+      },
+      {
+        "recipient": "member",
+        "message": "The proposal is approved and awaiting application."
+      },
+      {
+        "recipient": "trainer",
+        "message": "The proposal is approved and awaiting application."
+      },
+      {
+        "recipient": "member",
+        "message": "Your training plan has a new version."
+      },
+      {
+        "recipient": "trainer",
+        "message": "Your training plan has a new version."
+      },
+      {
+        "recipient": "member",
+        "message": "A proposal was created to restore an earlier plan version."
+      },
+      {
+        "recipient": "trainer",
+        "message": "A training proposal is waiting for your review."
+      },
+      {
+        "recipient": "member",
+        "message": "The proposal is approved and awaiting application."
+      },
+      {
+        "recipient": "trainer",
+        "message": "The proposal is approved and awaiting application."
+      },
+      {
+        "recipient": "member",
+        "message": "Your training plan has a new version."
+      },
+      {
+        "recipient": "trainer",
+        "message": "Your training plan has a new version."
+      }
+    ],
+    "audit": [
+      {
+        "id": "event-1",
+        "command_id": "initial",
+        "at": "2026-09-13T10:00:01.000Z",
+        "actor": "system",
+        "action": "create",
+        "reason": "created",
+        "proposal_id": "syn-review-1",
+        "proposal_kind": "progression",
+        "proposal_basis": "0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "member_pending",
+        "member": "pending",
+        "trainer": "pending",
+        "application": "not_applied",
+        "before_version": 3,
+        "after_version": 3
+      },
+      {
+        "id": "event-2",
+        "command_id": "cmd-example-0",
+        "at": "2026-09-13T10:00:02.000Z",
+        "actor": "member",
+        "action": "member_accept",
+        "reason": "member_accept",
+        "proposal_id": "syn-review-1",
+        "proposal_kind": "progression",
+        "proposal_basis": "0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "trainer_pending",
+        "member": "accepted",
+        "trainer": "pending",
+        "application": "not_applied",
+        "before_version": 3,
+        "after_version": 3
+      },
+      {
+        "id": "event-3",
+        "command_id": "cmd-example-1",
+        "at": "2026-09-13T10:00:03.000Z",
+        "actor": "trainer",
+        "action": "trainer_approve",
+        "reason": "trainer_approve",
+        "proposal_id": "syn-review-1",
+        "proposal_kind": "progression",
+        "proposal_basis": "0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "approved",
+        "member": "accepted",
+        "trainer": "approved",
+        "application": "not_applied",
+        "before_version": 3,
+        "after_version": 3
+      },
+      {
+        "id": "event-4",
+        "command_id": "cmd-example-2",
+        "at": "2026-09-13T10:00:04.000Z",
+        "actor": "trainer",
+        "action": "apply",
+        "reason": "applied",
+        "proposal_id": "syn-review-1",
+        "proposal_kind": "progression",
+        "proposal_basis": "0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 4
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "applied",
+        "member": "accepted",
+        "trainer": "approved",
+        "application": "applied",
+        "before_version": 3,
+        "after_version": 4
+      },
+      {
+        "id": "event-5",
+        "command_id": "cmd-example-3",
+        "at": "2026-09-13T10:00:05.000Z",
+        "actor": "member",
+        "action": "restore",
+        "reason": "restore_created",
+        "proposal_id": "syn-review-2",
+        "proposal_kind": "restore",
+        "proposal_basis": "{\"original_basis\":\"0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359\",\"target_version\":3,\"current\":{\"goal\":{\"id\":\"syn-goal\",\"revision\":2},\"plan\":{\"id\":\"syn-plan\",\"revision\":4},\"relationship\":{\"id\":\"syn-relationship\",\"revision\":1},\"authority\":{\"id\":\"syn-authority\",\"revision\":1},\"limits\":{\"id\":\"syn-limits\",\"revision\":4},\"selection\":{\"id\":\"syn-selection\",\"revision\":1},\"policy\":{\"id\":\"syn-test-policy\",\"revision\":1},\"history\":{\"id\":\"syn-history\",\"revision\":1},\"rulebook\":{\"id\":\"syn-trainer-rulebook\",\"revision\":1}}}",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 4
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 4
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "member_pending",
+        "member": "pending",
+        "trainer": "pending",
+        "application": "not_applied",
+        "before_version": 4,
+        "after_version": 4
+      },
+      {
+        "id": "event-6",
+        "command_id": "cmd-example-4",
+        "at": "2026-09-13T10:00:06.000Z",
+        "actor": "member",
+        "action": "member_accept",
+        "reason": "member_accept",
+        "proposal_id": "syn-review-2",
+        "proposal_kind": "restore",
+        "proposal_basis": "{\"original_basis\":\"0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359\",\"target_version\":3,\"current\":{\"goal\":{\"id\":\"syn-goal\",\"revision\":2},\"plan\":{\"id\":\"syn-plan\",\"revision\":4},\"relationship\":{\"id\":\"syn-relationship\",\"revision\":1},\"authority\":{\"id\":\"syn-authority\",\"revision\":1},\"limits\":{\"id\":\"syn-limits\",\"revision\":4},\"selection\":{\"id\":\"syn-selection\",\"revision\":1},\"policy\":{\"id\":\"syn-test-policy\",\"revision\":1},\"history\":{\"id\":\"syn-history\",\"revision\":1},\"rulebook\":{\"id\":\"syn-trainer-rulebook\",\"revision\":1}}}",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 4
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 4
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "trainer_pending",
+        "member": "accepted",
+        "trainer": "pending",
+        "application": "not_applied",
+        "before_version": 4,
+        "after_version": 4
+      },
+      {
+        "id": "event-7",
+        "command_id": "cmd-example-5",
+        "at": "2026-09-13T10:00:07.000Z",
+        "actor": "trainer",
+        "action": "trainer_approve",
+        "reason": "trainer_approve",
+        "proposal_id": "syn-review-2",
+        "proposal_kind": "restore",
+        "proposal_basis": "{\"original_basis\":\"0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359\",\"target_version\":3,\"current\":{\"goal\":{\"id\":\"syn-goal\",\"revision\":2},\"plan\":{\"id\":\"syn-plan\",\"revision\":4},\"relationship\":{\"id\":\"syn-relationship\",\"revision\":1},\"authority\":{\"id\":\"syn-authority\",\"revision\":1},\"limits\":{\"id\":\"syn-limits\",\"revision\":4},\"selection\":{\"id\":\"syn-selection\",\"revision\":1},\"policy\":{\"id\":\"syn-test-policy\",\"revision\":1},\"history\":{\"id\":\"syn-history\",\"revision\":1},\"rulebook\":{\"id\":\"syn-trainer-rulebook\",\"revision\":1}}}",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 4
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 4
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "approved",
+        "member": "accepted",
+        "trainer": "approved",
+        "application": "not_applied",
+        "before_version": 4,
+        "after_version": 4
+      },
+      {
+        "id": "event-8",
+        "command_id": "cmd-example-6",
+        "at": "2026-09-13T10:00:08.000Z",
+        "actor": "trainer",
+        "action": "apply",
+        "reason": "restored",
+        "proposal_id": "syn-review-2",
+        "proposal_kind": "restore",
+        "proposal_basis": "{\"original_basis\":\"0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359\",\"target_version\":3,\"current\":{\"goal\":{\"id\":\"syn-goal\",\"revision\":2},\"plan\":{\"id\":\"syn-plan\",\"revision\":4},\"relationship\":{\"id\":\"syn-relationship\",\"revision\":1},\"authority\":{\"id\":\"syn-authority\",\"revision\":1},\"limits\":{\"id\":\"syn-limits\",\"revision\":4},\"selection\":{\"id\":\"syn-selection\",\"revision\":1},\"policy\":{\"id\":\"syn-test-policy\",\"revision\":1},\"history\":{\"id\":\"syn-history\",\"revision\":1},\"rulebook\":{\"id\":\"syn-trainer-rulebook\",\"revision\":1}}}",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 4
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 5
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "applied",
+        "member": "accepted",
+        "trainer": "approved",
+        "application": "applied",
+        "before_version": 4,
+        "after_version": 5
+      }
+    ],
+    "active_version": 5,
+    "previous_versions": [
+      3,
+      4
+    ],
+    "automatic_actions_allowed": false,
+    "physical_advice_authorized": false,
+    "source_kind": "synthetic_only"
+  },
+  {
+    "locale": "en",
+    "scenario": "member_reject",
+    "messages": [
+      "Synthetic offline demo",
+      "Fictional existing goal: strength",
+      "Squat: Plan when proposed 2 x 8 @ 55 kg; Next week 2 x 9 @ 55 kg. The recorded sets meet the target. The trainer rule allows one more rep, below its maximum.",
+      "Row: Plan when proposed 2 x 10 @ 30 kg; Next week 2 x 8 @ 32.5 kg. The sets meet the rep ceiling. The trainer rule defines the full weight step and corresponding rep target.",
+      "Shoulder press: Plan when proposed 2 x 8 @ 20 kg; Next week 2 x 8 @ 20 kg. The recorded rule does not permit an increase; the proposal retains the target."
+    ],
+    "notifications": [
+      {
+        "recipient": "member",
+        "message": "Youri has a proposal for your next workout."
+      },
+      {
+        "recipient": "member",
+        "message": "The proposal was rejected. The member did not agree."
+      },
+      {
+        "recipient": "trainer",
+        "message": "The proposal was rejected. The member did not agree."
+      }
+    ],
+    "audit": [
+      {
+        "id": "event-1",
+        "command_id": "initial",
+        "at": "2026-09-13T10:00:01.000Z",
+        "actor": "system",
+        "action": "create",
+        "reason": "created",
+        "proposal_id": "syn-review-1",
+        "proposal_kind": "progression",
+        "proposal_basis": "0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "member_pending",
+        "member": "pending",
+        "trainer": "pending",
+        "application": "not_applied",
+        "before_version": 3,
+        "after_version": 3
+      },
+      {
+        "id": "event-2",
+        "command_id": "cmd-example-0",
+        "at": "2026-09-13T10:00:02.000Z",
+        "actor": "member",
+        "action": "member_reject",
+        "reason": "member_declined",
+        "proposal_id": "syn-review-1",
+        "proposal_kind": "progression",
+        "proposal_basis": "0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "rejected",
+        "member": "rejected",
+        "trainer": "pending",
+        "application": "not_applied",
+        "before_version": 3,
+        "after_version": 3
+      }
+    ],
+    "active_version": 3,
+    "previous_versions": [],
+    "automatic_actions_allowed": false,
+    "physical_advice_authorized": false,
+    "source_kind": "synthetic_only"
+  },
+  {
+    "locale": "en",
+    "scenario": "trainer_block",
+    "messages": [
+      "Synthetic offline demo",
+      "Fictional existing goal: strength",
+      "Squat: Plan when proposed 2 x 8 @ 55 kg; Next week 2 x 9 @ 55 kg. The recorded sets meet the target. The trainer rule allows one more rep, below its maximum.",
+      "Row: Plan when proposed 2 x 10 @ 30 kg; Next week 2 x 8 @ 32.5 kg. The sets meet the rep ceiling. The trainer rule defines the full weight step and corresponding rep target.",
+      "Shoulder press: Plan when proposed 2 x 8 @ 20 kg; Next week 2 x 8 @ 20 kg. The recorded rule does not permit an increase; the proposal retains the target."
+    ],
+    "notifications": [
+      {
+        "recipient": "member",
+        "message": "Youri has a proposal for your next workout."
+      },
+      {
+        "recipient": "trainer",
+        "message": "A training proposal is waiting for your review."
+      },
+      {
+        "recipient": "member",
+        "message": "The proposal was blocked. The trainer blocked the proposal."
+      },
+      {
+        "recipient": "trainer",
+        "message": "The proposal was blocked. The trainer blocked the proposal."
+      }
+    ],
+    "audit": [
+      {
+        "id": "event-1",
+        "command_id": "initial",
+        "at": "2026-09-13T10:00:01.000Z",
+        "actor": "system",
+        "action": "create",
+        "reason": "created",
+        "proposal_id": "syn-review-1",
+        "proposal_kind": "progression",
+        "proposal_basis": "0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "member_pending",
+        "member": "pending",
+        "trainer": "pending",
+        "application": "not_applied",
+        "before_version": 3,
+        "after_version": 3
+      },
+      {
+        "id": "event-2",
+        "command_id": "cmd-example-0",
+        "at": "2026-09-13T10:00:02.000Z",
+        "actor": "member",
+        "action": "member_accept",
+        "reason": "member_accept",
+        "proposal_id": "syn-review-1",
+        "proposal_kind": "progression",
+        "proposal_basis": "0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "trainer_pending",
+        "member": "accepted",
+        "trainer": "pending",
+        "application": "not_applied",
+        "before_version": 3,
+        "after_version": 3
+      },
+      {
+        "id": "event-3",
+        "command_id": "cmd-example-1",
+        "at": "2026-09-13T10:00:03.000Z",
+        "actor": "trainer",
+        "action": "trainer_block",
+        "reason": "trainer_blocked",
+        "proposal_id": "syn-review-1",
+        "proposal_kind": "progression",
+        "proposal_basis": "0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "blocked",
+        "member": "accepted",
+        "trainer": "blocked",
+        "application": "not_applied",
+        "before_version": 3,
+        "after_version": 3
+      }
+    ],
+    "active_version": 3,
+    "previous_versions": [],
+    "automatic_actions_allowed": false,
+    "physical_advice_authorized": false,
+    "source_kind": "synthetic_only"
+  },
+  {
+    "locale": "de",
+    "scenario": "normal",
+    "messages": [
+      "Synthetische Offline-Demo",
+      "Fiktives bestehendes Ziel: Kraft",
+      "Kniebeuge: Plan beim Vorschlag 2 x 8 @ 55 kg; Nächste Woche 2 x 9 @ 55 kg. Die aufgezeichneten Sätze erreichen das Ziel. Die Trainerregel erlaubt eine weitere Wiederholung unter dem Maximum.",
+      "Rudern: Plan beim Vorschlag 2 x 10 @ 30 kg; Nächste Woche 2 x 8 @ 32,5 kg. Die Sätze erreichen das Wiederholungsmaximum. Die Trainerregel nennt die vollständige Gewichtsstufe und das zugehörige Wiederholungsziel.",
+      "Schulterdruecken: Plan beim Vorschlag 2 x 8 @ 20 kg; Nächste Woche 2 x 8 @ 20 kg. Die dokumentierte Regel erlaubt keine Erhöhung; der Vorschlag behält das Ziel bei."
+    ],
+    "notifications": [
+      {
+        "recipient": "member",
+        "message": "Youri hat einen Vorschlag für dein nächstes Training."
+      }
+    ],
+    "audit": [
+      {
+        "id": "event-1",
+        "command_id": "initial",
+        "at": "2026-09-13T10:00:01.000Z",
+        "actor": "system",
+        "action": "create",
+        "reason": "created",
+        "proposal_id": "syn-review-1",
+        "proposal_kind": "progression",
+        "proposal_basis": "0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "member_pending",
+        "member": "pending",
+        "trainer": "pending",
+        "application": "not_applied",
+        "before_version": 3,
+        "after_version": 3
+      }
+    ],
+    "active_version": 3,
+    "previous_versions": [],
+    "automatic_actions_allowed": false,
+    "physical_advice_authorized": false,
+    "source_kind": "synthetic_only"
+  },
+  {
+    "locale": "de",
+    "scenario": "step_off_grid",
+    "messages": [
+      "Synthetische Offline-Demo",
+      "Fiktives bestehendes Ziel: Kraft",
+      "Die verfügbaren Gewichte passen nicht genau zur vollständig festgelegten Stufe. Keine Rundung und kein Alternativvorschlag.",
+      "syn-squat: Festgelegte Gewichtsstufe 2,5 kg; Festgelegte Gewichte 55, 57,5, 60 kg.",
+      "syn-row: Festgelegte Gewichtsstufe 2,5 kg; Festgelegte Gewichte 30, 32, 35 kg.",
+      "syn-press: Festgelegte Gewichtsstufe 2,5 kg; Festgelegte Gewichte 20, 22,5, 25 kg."
+    ],
+    "notifications": [
+      {
+        "recipient": "member",
+        "message": "Der Vorschlag wurde blockiert. Die verfügbaren Gewichte passen nicht genau zur vollständig festgelegten Stufe. Keine Rundung und kein Alternativvorschlag."
+      }
+    ],
+    "audit": [
+      {
+        "id": "event-1",
+        "command_id": "initial",
+        "at": "2026-09-13T10:00:01.000Z",
+        "actor": "system",
+        "action": "create",
+        "reason": "weight_step_conflict",
+        "proposal_id": "syn-review-1",
+        "proposal_kind": "progression",
+        "proposal_basis": "a2785f405cbc4ed6d6dbef64990ad892716c9ea6b3aaba5bae56e941da0895ba",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "blocked",
+        "member": "pending",
+        "trainer": "pending",
+        "application": "not_applied",
+        "before_version": 3,
+        "after_version": 3
+      }
+    ],
+    "active_version": 3,
+    "previous_versions": [],
+    "automatic_actions_allowed": false,
+    "physical_advice_authorized": false,
+    "source_kind": "synthetic_only"
+  },
+  {
+    "locale": "de",
+    "scenario": "restore",
+    "messages": [
+      "Synthetische Offline-Demo",
+      "Fiktives bestehendes Ziel: Kraft",
+      "Kniebeuge: Plan beim Vorschlag 2 x 8 @ 55 kg; Nächste Woche 2 x 9 @ 55 kg. Die aufgezeichneten Sätze erreichen das Ziel. Die Trainerregel erlaubt eine weitere Wiederholung unter dem Maximum.",
+      "Rudern: Plan beim Vorschlag 2 x 10 @ 30 kg; Nächste Woche 2 x 8 @ 32,5 kg. Die Sätze erreichen das Wiederholungsmaximum. Die Trainerregel nennt die vollständige Gewichtsstufe und das zugehörige Wiederholungsziel.",
+      "Schulterdruecken: Plan beim Vorschlag 2 x 8 @ 20 kg; Nächste Woche 2 x 8 @ 20 kg. Die dokumentierte Regel erlaubt keine Erhöhung; der Vorschlag behält das Ziel bei."
+    ],
+    "notifications": [
+      {
+        "recipient": "member",
+        "message": "Youri hat einen Vorschlag für dein nächstes Training."
+      },
+      {
+        "recipient": "trainer",
+        "message": "Ein Trainingsvorschlag wartet auf deine Prüfung."
+      },
+      {
+        "recipient": "member",
+        "message": "Der Vorschlag ist genehmigt und wartet auf die Anwendung."
+      },
+      {
+        "recipient": "trainer",
+        "message": "Der Vorschlag ist genehmigt und wartet auf die Anwendung."
+      },
+      {
+        "recipient": "member",
+        "message": "Dein Trainingsplan hat eine neue Version."
+      },
+      {
+        "recipient": "trainer",
+        "message": "Dein Trainingsplan hat eine neue Version."
+      },
+      {
+        "recipient": "member",
+        "message": "Ein Vorschlag zur Wiederherstellung einer früheren Planversion wurde erstellt."
+      },
+      {
+        "recipient": "trainer",
+        "message": "Ein Trainingsvorschlag wartet auf deine Prüfung."
+      },
+      {
+        "recipient": "member",
+        "message": "Der Vorschlag ist genehmigt und wartet auf die Anwendung."
+      },
+      {
+        "recipient": "trainer",
+        "message": "Der Vorschlag ist genehmigt und wartet auf die Anwendung."
+      },
+      {
+        "recipient": "member",
+        "message": "Dein Trainingsplan hat eine neue Version."
+      },
+      {
+        "recipient": "trainer",
+        "message": "Dein Trainingsplan hat eine neue Version."
+      }
+    ],
+    "audit": [
+      {
+        "id": "event-1",
+        "command_id": "initial",
+        "at": "2026-09-13T10:00:01.000Z",
+        "actor": "system",
+        "action": "create",
+        "reason": "created",
+        "proposal_id": "syn-review-1",
+        "proposal_kind": "progression",
+        "proposal_basis": "0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "member_pending",
+        "member": "pending",
+        "trainer": "pending",
+        "application": "not_applied",
+        "before_version": 3,
+        "after_version": 3
+      },
+      {
+        "id": "event-2",
+        "command_id": "cmd-example-0",
+        "at": "2026-09-13T10:00:02.000Z",
+        "actor": "member",
+        "action": "member_accept",
+        "reason": "member_accept",
+        "proposal_id": "syn-review-1",
+        "proposal_kind": "progression",
+        "proposal_basis": "0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "trainer_pending",
+        "member": "accepted",
+        "trainer": "pending",
+        "application": "not_applied",
+        "before_version": 3,
+        "after_version": 3
+      },
+      {
+        "id": "event-3",
+        "command_id": "cmd-example-1",
+        "at": "2026-09-13T10:00:03.000Z",
+        "actor": "trainer",
+        "action": "trainer_approve",
+        "reason": "trainer_approve",
+        "proposal_id": "syn-review-1",
+        "proposal_kind": "progression",
+        "proposal_basis": "0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "approved",
+        "member": "accepted",
+        "trainer": "approved",
+        "application": "not_applied",
+        "before_version": 3,
+        "after_version": 3
+      },
+      {
+        "id": "event-4",
+        "command_id": "cmd-example-2",
+        "at": "2026-09-13T10:00:04.000Z",
+        "actor": "trainer",
+        "action": "apply",
+        "reason": "applied",
+        "proposal_id": "syn-review-1",
+        "proposal_kind": "progression",
+        "proposal_basis": "0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 4
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "applied",
+        "member": "accepted",
+        "trainer": "approved",
+        "application": "applied",
+        "before_version": 3,
+        "after_version": 4
+      },
+      {
+        "id": "event-5",
+        "command_id": "cmd-example-3",
+        "at": "2026-09-13T10:00:05.000Z",
+        "actor": "member",
+        "action": "restore",
+        "reason": "restore_created",
+        "proposal_id": "syn-review-2",
+        "proposal_kind": "restore",
+        "proposal_basis": "{\"original_basis\":\"0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359\",\"target_version\":3,\"current\":{\"goal\":{\"id\":\"syn-goal\",\"revision\":2},\"plan\":{\"id\":\"syn-plan\",\"revision\":4},\"relationship\":{\"id\":\"syn-relationship\",\"revision\":1},\"authority\":{\"id\":\"syn-authority\",\"revision\":1},\"limits\":{\"id\":\"syn-limits\",\"revision\":4},\"selection\":{\"id\":\"syn-selection\",\"revision\":1},\"policy\":{\"id\":\"syn-test-policy\",\"revision\":1},\"history\":{\"id\":\"syn-history\",\"revision\":1},\"rulebook\":{\"id\":\"syn-trainer-rulebook\",\"revision\":1}}}",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 4
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 4
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "member_pending",
+        "member": "pending",
+        "trainer": "pending",
+        "application": "not_applied",
+        "before_version": 4,
+        "after_version": 4
+      },
+      {
+        "id": "event-6",
+        "command_id": "cmd-example-4",
+        "at": "2026-09-13T10:00:06.000Z",
+        "actor": "member",
+        "action": "member_accept",
+        "reason": "member_accept",
+        "proposal_id": "syn-review-2",
+        "proposal_kind": "restore",
+        "proposal_basis": "{\"original_basis\":\"0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359\",\"target_version\":3,\"current\":{\"goal\":{\"id\":\"syn-goal\",\"revision\":2},\"plan\":{\"id\":\"syn-plan\",\"revision\":4},\"relationship\":{\"id\":\"syn-relationship\",\"revision\":1},\"authority\":{\"id\":\"syn-authority\",\"revision\":1},\"limits\":{\"id\":\"syn-limits\",\"revision\":4},\"selection\":{\"id\":\"syn-selection\",\"revision\":1},\"policy\":{\"id\":\"syn-test-policy\",\"revision\":1},\"history\":{\"id\":\"syn-history\",\"revision\":1},\"rulebook\":{\"id\":\"syn-trainer-rulebook\",\"revision\":1}}}",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 4
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 4
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "trainer_pending",
+        "member": "accepted",
+        "trainer": "pending",
+        "application": "not_applied",
+        "before_version": 4,
+        "after_version": 4
+      },
+      {
+        "id": "event-7",
+        "command_id": "cmd-example-5",
+        "at": "2026-09-13T10:00:07.000Z",
+        "actor": "trainer",
+        "action": "trainer_approve",
+        "reason": "trainer_approve",
+        "proposal_id": "syn-review-2",
+        "proposal_kind": "restore",
+        "proposal_basis": "{\"original_basis\":\"0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359\",\"target_version\":3,\"current\":{\"goal\":{\"id\":\"syn-goal\",\"revision\":2},\"plan\":{\"id\":\"syn-plan\",\"revision\":4},\"relationship\":{\"id\":\"syn-relationship\",\"revision\":1},\"authority\":{\"id\":\"syn-authority\",\"revision\":1},\"limits\":{\"id\":\"syn-limits\",\"revision\":4},\"selection\":{\"id\":\"syn-selection\",\"revision\":1},\"policy\":{\"id\":\"syn-test-policy\",\"revision\":1},\"history\":{\"id\":\"syn-history\",\"revision\":1},\"rulebook\":{\"id\":\"syn-trainer-rulebook\",\"revision\":1}}}",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 4
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 4
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "approved",
+        "member": "accepted",
+        "trainer": "approved",
+        "application": "not_applied",
+        "before_version": 4,
+        "after_version": 4
+      },
+      {
+        "id": "event-8",
+        "command_id": "cmd-example-6",
+        "at": "2026-09-13T10:00:08.000Z",
+        "actor": "trainer",
+        "action": "apply",
+        "reason": "restored",
+        "proposal_id": "syn-review-2",
+        "proposal_kind": "restore",
+        "proposal_basis": "{\"original_basis\":\"0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359\",\"target_version\":3,\"current\":{\"goal\":{\"id\":\"syn-goal\",\"revision\":2},\"plan\":{\"id\":\"syn-plan\",\"revision\":4},\"relationship\":{\"id\":\"syn-relationship\",\"revision\":1},\"authority\":{\"id\":\"syn-authority\",\"revision\":1},\"limits\":{\"id\":\"syn-limits\",\"revision\":4},\"selection\":{\"id\":\"syn-selection\",\"revision\":1},\"policy\":{\"id\":\"syn-test-policy\",\"revision\":1},\"history\":{\"id\":\"syn-history\",\"revision\":1},\"rulebook\":{\"id\":\"syn-trainer-rulebook\",\"revision\":1}}}",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 4
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 5
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "applied",
+        "member": "accepted",
+        "trainer": "approved",
+        "application": "applied",
+        "before_version": 4,
+        "after_version": 5
+      }
+    ],
+    "active_version": 5,
+    "previous_versions": [
+      3,
+      4
+    ],
+    "automatic_actions_allowed": false,
+    "physical_advice_authorized": false,
+    "source_kind": "synthetic_only"
+  },
+  {
+    "locale": "de",
+    "scenario": "member_reject",
+    "messages": [
+      "Synthetische Offline-Demo",
+      "Fiktives bestehendes Ziel: Kraft",
+      "Kniebeuge: Plan beim Vorschlag 2 x 8 @ 55 kg; Nächste Woche 2 x 9 @ 55 kg. Die aufgezeichneten Sätze erreichen das Ziel. Die Trainerregel erlaubt eine weitere Wiederholung unter dem Maximum.",
+      "Rudern: Plan beim Vorschlag 2 x 10 @ 30 kg; Nächste Woche 2 x 8 @ 32,5 kg. Die Sätze erreichen das Wiederholungsmaximum. Die Trainerregel nennt die vollständige Gewichtsstufe und das zugehörige Wiederholungsziel.",
+      "Schulterdruecken: Plan beim Vorschlag 2 x 8 @ 20 kg; Nächste Woche 2 x 8 @ 20 kg. Die dokumentierte Regel erlaubt keine Erhöhung; der Vorschlag behält das Ziel bei."
+    ],
+    "notifications": [
+      {
+        "recipient": "member",
+        "message": "Youri hat einen Vorschlag für dein nächstes Training."
+      },
+      {
+        "recipient": "member",
+        "message": "Der Vorschlag wurde abgelehnt. Das Mitglied hat nicht zugestimmt."
+      },
+      {
+        "recipient": "trainer",
+        "message": "Der Vorschlag wurde abgelehnt. Das Mitglied hat nicht zugestimmt."
+      }
+    ],
+    "audit": [
+      {
+        "id": "event-1",
+        "command_id": "initial",
+        "at": "2026-09-13T10:00:01.000Z",
+        "actor": "system",
+        "action": "create",
+        "reason": "created",
+        "proposal_id": "syn-review-1",
+        "proposal_kind": "progression",
+        "proposal_basis": "0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "member_pending",
+        "member": "pending",
+        "trainer": "pending",
+        "application": "not_applied",
+        "before_version": 3,
+        "after_version": 3
+      },
+      {
+        "id": "event-2",
+        "command_id": "cmd-example-0",
+        "at": "2026-09-13T10:00:02.000Z",
+        "actor": "member",
+        "action": "member_reject",
+        "reason": "member_declined",
+        "proposal_id": "syn-review-1",
+        "proposal_kind": "progression",
+        "proposal_basis": "0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "rejected",
+        "member": "rejected",
+        "trainer": "pending",
+        "application": "not_applied",
+        "before_version": 3,
+        "after_version": 3
+      }
+    ],
+    "active_version": 3,
+    "previous_versions": [],
+    "automatic_actions_allowed": false,
+    "physical_advice_authorized": false,
+    "source_kind": "synthetic_only"
+  },
+  {
+    "locale": "de",
+    "scenario": "trainer_block",
+    "messages": [
+      "Synthetische Offline-Demo",
+      "Fiktives bestehendes Ziel: Kraft",
+      "Kniebeuge: Plan beim Vorschlag 2 x 8 @ 55 kg; Nächste Woche 2 x 9 @ 55 kg. Die aufgezeichneten Sätze erreichen das Ziel. Die Trainerregel erlaubt eine weitere Wiederholung unter dem Maximum.",
+      "Rudern: Plan beim Vorschlag 2 x 10 @ 30 kg; Nächste Woche 2 x 8 @ 32,5 kg. Die Sätze erreichen das Wiederholungsmaximum. Die Trainerregel nennt die vollständige Gewichtsstufe und das zugehörige Wiederholungsziel.",
+      "Schulterdruecken: Plan beim Vorschlag 2 x 8 @ 20 kg; Nächste Woche 2 x 8 @ 20 kg. Die dokumentierte Regel erlaubt keine Erhöhung; der Vorschlag behält das Ziel bei."
+    ],
+    "notifications": [
+      {
+        "recipient": "member",
+        "message": "Youri hat einen Vorschlag für dein nächstes Training."
+      },
+      {
+        "recipient": "trainer",
+        "message": "Ein Trainingsvorschlag wartet auf deine Prüfung."
+      },
+      {
+        "recipient": "member",
+        "message": "Der Vorschlag wurde blockiert. Der Trainer hat den Vorschlag blockiert."
+      },
+      {
+        "recipient": "trainer",
+        "message": "Der Vorschlag wurde blockiert. Der Trainer hat den Vorschlag blockiert."
+      }
+    ],
+    "audit": [
+      {
+        "id": "event-1",
+        "command_id": "initial",
+        "at": "2026-09-13T10:00:01.000Z",
+        "actor": "system",
+        "action": "create",
+        "reason": "created",
+        "proposal_id": "syn-review-1",
+        "proposal_kind": "progression",
+        "proposal_basis": "0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "member_pending",
+        "member": "pending",
+        "trainer": "pending",
+        "application": "not_applied",
+        "before_version": 3,
+        "after_version": 3
+      },
+      {
+        "id": "event-2",
+        "command_id": "cmd-example-0",
+        "at": "2026-09-13T10:00:02.000Z",
+        "actor": "member",
+        "action": "member_accept",
+        "reason": "member_accept",
+        "proposal_id": "syn-review-1",
+        "proposal_kind": "progression",
+        "proposal_basis": "0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "trainer_pending",
+        "member": "accepted",
+        "trainer": "pending",
+        "application": "not_applied",
+        "before_version": 3,
+        "after_version": 3
+      },
+      {
+        "id": "event-3",
+        "command_id": "cmd-example-1",
+        "at": "2026-09-13T10:00:03.000Z",
+        "actor": "trainer",
+        "action": "trainer_block",
+        "reason": "trainer_blocked",
+        "proposal_id": "syn-review-1",
+        "proposal_kind": "progression",
+        "proposal_basis": "0a85ab54b202581b55d090fd63fb73035c9395f36d06689c907120d5252e9359",
+        "source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "current_source_versions": {
+          "goal": {
+            "id": "syn-goal",
+            "revision": 2
+          },
+          "plan": {
+            "id": "syn-plan",
+            "revision": 3
+          },
+          "relationship": {
+            "id": "syn-relationship",
+            "revision": 1
+          },
+          "authority": {
+            "id": "syn-authority",
+            "revision": 1
+          },
+          "limits": {
+            "id": "syn-limits",
+            "revision": 4
+          },
+          "selection": {
+            "id": "syn-selection",
+            "revision": 1
+          },
+          "policy": {
+            "id": "syn-test-policy",
+            "revision": 1
+          },
+          "history": {
+            "id": "syn-history",
+            "revision": 1
+          },
+          "rulebook": {
+            "id": "syn-trainer-rulebook",
+            "revision": 1
+          }
+        },
+        "status": "blocked",
+        "member": "accepted",
+        "trainer": "blocked",
+        "application": "not_applied",
+        "before_version": 3,
+        "after_version": 3
+      }
+    ],
+    "active_version": 3,
+    "previous_versions": [],
+    "automatic_actions_allowed": false,
+    "physical_advice_authorized": false,
+    "source_kind": "synthetic_only"
+  }
+]
