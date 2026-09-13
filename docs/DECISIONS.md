@@ -801,3 +801,22 @@ TECHNICAL PASS / READY FOR OWNER REVIEW. No result acceptance or owner-freeze.
 1323 offline tests and 343 local browser checks pass; synthetic clocks/personas
 are not live authority, durable database atomicity or medical validation.
 The next 6E-8 mock-in-app proposal is PROPOSED / NOT STARTED. Phase 6E incomplete.
+
+## Decision 0049: 6E-7 accepted; revised dual-route 6E-8 authorized
+
+2026-09-13. Physical ownercheck passed. 6E-7 COMPLETE / OWNER-ACCEPTED / FROZEN - SYNTHETIC DEMO ONLY.
+The human-coach contract keeps member acceptance, linked trainer approval and
+separate apply, including restore. Historical frozen receipts/code are unchanged.
+New owner-approved addition: a separately eligible independent AI member without
+a required human trainer may receive full training/nutrition/recovery plans without
+trainer approval. Every actual version requires member review/confirmation and
+separate activation; permissible member edits remain available. Safety always leads.
+No trainer in a HUMAN-REQUIRED route still blocks application: losing a trainer
+must never silently select the independent route. Future eligibility is server-owned,
+not a client role switch. In 6E-8 the selector chooses separate fictional fixtures.
+GO now: isolated synthetic testpanel in staging with both routes, intake, editable
+complete example plans, proactive fixtures, fictional photo concept, version history,
+tests, docs, commits and publication. No real data/photo processing, providers,
+database/migration/Edge/Auth/RLS changes, production or AI costs. Only index.html
+bootstrap is a planned existing-runtime exception; preserve other assets/frozen code.
+6E-8 result acceptance and the later backend/authorization package remain separate.

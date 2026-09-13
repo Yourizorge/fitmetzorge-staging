@@ -1,0 +1,82 @@
+{
+  "baseline": "5b65755f349379378b84b67a9f6ad3da0bab10db",
+  "synthetic_only": true,
+  "authorized_existing_runtime_changes": [
+    "index.html"
+  ],
+  "preserved_files": 141,
+  "cases": {
+    "routes": [
+      "human_member_trainer_apply",
+      "human_missing_trainer_no_fallback",
+      "human_restore_two_new_approvals",
+      "AI_no_trainer_step_or_command",
+      "cross_route_command_refusal"
+    ],
+    "intake": [
+      "all_19_fields_have_source_use",
+      "unknown_inputs_fail_closed",
+      "goals_experience_days_time_equipment",
+      "favorite_excluded_exercises",
+      "movement_constraints",
+      "independent_rir_rpe",
+      "diet_allergy_intolerance_exclusions",
+      "meal_count_kitchen_budget_schedule",
+      "sleep_recovery_units",
+      "empty_compatible_catalog_blocks"
+    ],
+    "plans": [
+      "complete_training_nutrition_recovery",
+      "calories_macros_from_fixture_portions",
+      "member_replace_add_remove_move",
+      "replacement_muscle_equipment_goal_effect",
+      "food_replacement_filters",
+      "edit_after_confirm_invalidates",
+      "reject_reopen",
+      "atomic_apply_and_restore",
+      "monotone_history",
+      "double_commands_idempotent",
+      "changed_sources_and_safety_block"
+    ],
+    "proactive": [
+      "3_less_sleep",
+      "3_lower_recovery",
+      "3_high_rpe",
+      "3_lower_rir",
+      "2_missed_workouts",
+      "missing_food_logs",
+      "3_stalled_sessions",
+      "3_improved_sessions",
+      "single_bad_night_no_large_change",
+      "all_events_show_period_sources_reason_unchanged_confirmation"
+    ],
+    "photo": [
+      "two_fictional_illustrations_no_upload",
+      "lighting_pose_distance_angle_limitations",
+      "requires_measurements_and_history",
+      "one_image_never_autochanges",
+      "no_precise_bodyfat_mass_diagnosis",
+      "temporary_swap_reason_duration"
+    ],
+    "browser": [
+      "app_root_query_panel",
+      "normal_app_script_order_preserved",
+      "no_legacy_app_boot_in_demo",
+      "iframe_no_same_origin_parent_storage",
+      "no_API_external_egress",
+      "no_storage_or_auth",
+      "NL_EN_DE_light_dark_320_390_768_1280",
+      "A_B_full_flow",
+      "refresh_reset",
+      "photos_no_upload",
+      "published_hashes_private404"
+    ],
+    "frozen": [
+      "all_141_hashes",
+      "59_legacy_assets_unchanged",
+      "index_diff_allowlist_only",
+      "30_old_examples",
+      "O5_safety_expiry_not_clearance"
+    ]
+  }
+}
