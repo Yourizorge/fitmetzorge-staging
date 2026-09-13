@@ -1,0 +1,81 @@
+{
+  "baseline": "ef42876164f82330de016cb38c5213034cd2f072",
+  "synthetic_only": true,
+  "groups": {
+    "positive": [
+      "mixed_reps_weight_hold",
+      "all_maintain_no_mutation",
+      "member_then_trainer_then_explicit_apply",
+      "restore_requires_new_both_approvals",
+      "restore_monotone_version_3_4_5",
+      "repeat_restore_any_saved_version"
+    ],
+    "negative": [
+      "trainer_before_member",
+      "apply_before_both",
+      "member_cannot_apply",
+      "wrong_subject",
+      "wrong_trainer",
+      "unknown_action",
+      "unknown_fields",
+      "stale_review",
+      "wrong_proposal",
+      "same_id_different_payload",
+      "member_reject_terminal",
+      "trainer_reject_terminal",
+      "trainer_block_terminal",
+      "missing_trainer",
+      "revoked_relation",
+      "revoked_consent",
+      "incomplete_sets",
+      "source_version_conflict",
+      "expired_source",
+      "new_complaint",
+      "self_report_not_clearance",
+      "expired_safety_no_clearance",
+      "missing_context",
+      "restore_after_source_change",
+      "restore_after_consent_withdrawal",
+      "restore_missing_version",
+      "restore_unchanged_content"
+    ],
+    "atomic": [
+      "same_command_retry_no_duplicate_audit_notification",
+      "different_command_double_apply_no_change",
+      "before_commit_fault_unchanged",
+      "blocked_no_partial_set_change",
+      "frozen_original_plan_and_sets",
+      "history_and_source_versions_not_rewritten",
+      "notification_retry_no_plan_change",
+      "source_mutation_invalidates_both_approvals"
+    ],
+    "content": [
+      "W1_no_rule_priority_inference",
+      "W2_exact_step_unit_grid",
+      "W2_no_numeric_alternative",
+      "RIR_zero_vs_null",
+      "RPE_separate",
+      "kg_lb_no_conversion",
+      "incomplete_only_reliable_facts",
+      "30_frozen_examples_byte_equal",
+      "NL_EN_DE_exact_notifications",
+      "neutral_reason_no_health_or_chat_in_inbox"
+    ],
+    "browser": [
+      "full_flow_all_locales",
+      "mobile_320_390",
+      "tablet_768",
+      "desktop_1280",
+      "light_dark",
+      "reset_and_reload_no_storage",
+      "no_network_except_static_demo",
+      "no_app_import",
+      "keyboard_focus_buttons",
+      "diff_highlights_correct_sets",
+      "audit_timestamps_source_versions",
+      "same_tab_language_retains_state",
+      "147_plus_new_private_paths404",
+      "60_runtime_122_frozen_bytes"
+    ]
+  }
+}
