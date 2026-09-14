@@ -1,5 +1,16 @@
 # Package 6E-8 Proposal
 
+## Superseding Owner GO: Dual Route (2026-09-13)
+
+The owner accepted 6E-7 physically and authorized revised 6E-8, Decision 0049.
+The historical proposal below is retained for traceability; its NOT STARTED wording
+and single-route scope are superseded. See PHASE6E8_OWNER_OVERVIEW.md and
+PHASE6E8_TECHNICAL_REPORT.md for the implemented dual-route synthetic panel.
+Only index.html changes in the existing runtime; 59 other legacy assets and 141
+frozen sources remain protected. Independent AI membership is a separate fictional
+eligibility route, never a missing-trainer fallback. No live auth/data/provider GO.
+The next proposal is PHASE6E9_PROPOSAL.md, PROPOSED / NOT STARTED.
+
 PROPOSED / NOT STARTED. Dit document geeft GEEN implementatie-GO.
 Enig aanbevolen vervolg: **Afgeschermde synthetische mockintegratie in de echte
 stagingapp**, na ownerreview van 6E-7.

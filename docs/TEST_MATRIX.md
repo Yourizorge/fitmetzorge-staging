@@ -1,5 +1,23 @@
 # FitMetZorge Test Matrix
 
+## Current: 6E-7 Accepted; 6E-8 Dual-Route Delivery
+
+6E-7 COMPLETE / OWNER-ACCEPTED / FROZEN - SYNTHETIC DEMO ONLY.
+Physical ownercheck: member acceptance, trainer approval, separate application,
+v3 -> v4 -> v5 and refresh reset PASS. [Freeze receipt](PHASE6E7_FREEZE_RECEIPT.md).
+6E-8 implementation authorized by Decision 0049; verification/publication in progress.
+The human-coach route keeps the frozen workflow. The separate independent AI-member
+route has intake, editable training/nutrition/recovery proposals, member confirmation
+and separate activation, WITHOUT a trainer approval step. No trainer-loss fallback.
+Both are synthetic fixtures in a sandboxed testpanel reached through explicit
+index.html?fmzDemo=6e8. No real auth, storage, members, providers or medical validation.
+The ONLY existing-runtime exception is index.html bootstrap; the other 59 legacy
+assets and 141 frozen source files stay byte-identical. Private test paths stay 404.
+[Contract/report](PHASE6E8_TECHNICAL_REPORT.md), [ownerreview](PHASE6E8_OWNER_OVERVIEW.md),
+[executable examples](PHASE6E8_EXAMPLES.json), [next backend proposal](PHASE6E9_PROPOSAL.md).
+6E-8 is not owner-accepted/frozen; 6E-9 NOT STARTED. Phase 6E remains INCOMPLETE.
+All earlier delivery statuses below are historical, superseded by this current entry.
+
 ## Package 6E-7 Technical Delivery (2026-09-13)
 
 TECHNICAL PASS / READY FOR OWNER REVIEW - SYNTHETIC DEMO ONLY.

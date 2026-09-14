@@ -1,0 +1,266 @@
+{
+  "status": "LOCAL TECHNICAL PASS / PUBLICATION PENDING",
+  "synthetic_only": true,
+  "source_commit": "eee1c8cce04894d771cdc1a4ad0fcc2f7d5c68d4",
+  "baseline": "5b65755f349379378b84b67a9f6ad3da0bab10db",
+  "preregistration_commit": "b58a6b3d0ff2f50e63d3ecf15a7e4be2e4d22289",
+  "sources": [
+    {
+      "file": "_offline/phase6e8/README.md",
+      "git_blob": "6c2c3e1696bdba32114a84f4912cac29a6131eb2",
+      "sha256": "0badbbe800f263af45ce264b307ec44c2f5378f7b700d230c12324d1feb94d74",
+      "working_sha256": "0badbbe800f263af45ce264b307ec44c2f5378f7b700d230c12324d1feb94d74"
+    },
+    {
+      "file": "_offline/phase6e8/examples.cjs",
+      "git_blob": "31e61d15e392167b71d403ccb57da427e53768c6",
+      "sha256": "657b67275824affa1ecef31f483acf50f5c962875b336181a392152c11b84a90",
+      "working_sha256": "657b67275824affa1ecef31f483acf50f5c962875b336181a392152c11b84a90"
+    },
+    {
+      "file": "_offline/phase6e8/preregistered-cases.json",
+      "git_blob": "57eed9ea3e2ae396c8709ac94203764a54e2a95b",
+      "sha256": "982ed11c57d33691908b1b923a9a4b94efba989e063656c0e122a9f89eee8510",
+      "working_sha256": "982ed11c57d33691908b1b923a9a4b94efba989e063656c0e122a9f89eee8510"
+    },
+    {
+      "file": "_offline/phase6e8/test/browser.cjs",
+      "git_blob": "5680bc5a23f8de4a9dba98eb517ab3e8a4e77320",
+      "sha256": "feaf6591f8b8f9f4b270a00ad29f593a6798a56991caf88e52cdd81768aa004a",
+      "working_sha256": "feaf6591f8b8f9f4b270a00ad29f593a6798a56991caf88e52cdd81768aa004a"
+    },
+    {
+      "file": "_offline/phase6e8/test/contract.test.cjs",
+      "git_blob": "315b1c267aa97926462e06c0edcf28dc278a43d4",
+      "sha256": "0393672b1bc2d369a44409bd22624c2715a02a69b6feaf4b1a071c77fa4b8862",
+      "working_sha256": "0393672b1bc2d369a44409bd22624c2715a02a69b6feaf4b1a071c77fa4b8862"
+    },
+    {
+      "file": "_offline/phase6e8/test/evidence.cjs",
+      "git_blob": "9ccc0d451732cf8356bbb6f1ba845dee75fdf129",
+      "sha256": "ff0b0f8fdfe15ebcbaa7902de8506d053ef7f5dcf87432078c97cc0469838a97",
+      "working_sha256": "ff0b0f8fdfe15ebcbaa7902de8506d053ef7f5dcf87432078c97cc0469838a97"
+    },
+    {
+      "file": "_offline/phase6e8/test/isolation.test.cjs",
+      "git_blob": "fe8b0e0b6e057a60c8abbbee8fec53794c25ebf2",
+      "sha256": "ef084fe3a4f989be425ad661b3457364c8887719fc54842d06c6c4f01e898a37",
+      "working_sha256": "ef084fe3a4f989be425ad661b3457364c8887719fc54842d06c6c4f01e898a37"
+    },
+    {
+      "file": "_offline/phase6e8/test/publication.cjs",
+      "git_blob": "4e7aceb80e1c0f1f36df1f89d38d8ac7ca1c872f",
+      "sha256": "48db3437101438430f5b69df796cd98f7cbba61cffd9e0b20a2582dd074d713a",
+      "working_sha256": "48db3437101438430f5b69df796cd98f7cbba61cffd9e0b20a2582dd074d713a"
+    },
+    {
+      "file": "_offline/phase6e8/test/verify.cjs",
+      "git_blob": "0ef8938355c7e90215c9427cb98fc4c0f63db777",
+      "sha256": "518c5c75cb40a71ab7b06ff0b3f40690fb736317056afee888b838a5508c60a2",
+      "working_sha256": "518c5c75cb40a71ab7b06ff0b3f40690fb736317056afee888b838a5508c60a2"
+    },
+    {
+      "file": "coach-review-demo/app.js",
+      "git_blob": "495831caa7165d1d9c284e95d22faf31e707a050",
+      "sha256": "0e65d22eea9eacfb5afca8445e164c5b69f74e3f1b2926b50cc2a98292f3a562",
+      "working_sha256": "0e65d22eea9eacfb5afca8445e164c5b69f74e3f1b2926b50cc2a98292f3a562"
+    },
+    {
+      "file": "coach-review-demo/catalog.js",
+      "git_blob": "7303acdb137f98d29a7bb975e7ad98a22cc06cf9",
+      "sha256": "e5c30f57e88edcb3b4e8205dbfd8b90ca0397e2bb9117fc4db348bbc1fe83479",
+      "working_sha256": "e5c30f57e88edcb3b4e8205dbfd8b90ca0397e2bb9117fc4db348bbc1fe83479"
+    },
+    {
+      "file": "coach-review-demo/copy.js",
+      "git_blob": "4ef4116be1c6d843f85a83c5750cadfa1c5e49cf",
+      "sha256": "87a446e23349d1c998eea28f3b4731d8b73e72be791da6955d4d8dcac8084b4b",
+      "working_sha256": "87a446e23349d1c998eea28f3b4731d8b73e72be791da6955d4d8dcac8084b4b"
+    },
+    {
+      "file": "coach-review-demo/demo.css",
+      "git_blob": "f88e2820b2625a5b2465aee34d39ca6b260898e5",
+      "sha256": "e82fe9c793c7758cf60d5aca1197d33471cda5f5ce8b7d8208825d7c6992eaa4",
+      "working_sha256": "e82fe9c793c7758cf60d5aca1197d33471cda5f5ce8b7d8208825d7c6992eaa4"
+    },
+    {
+      "file": "coach-review-demo/entry.js",
+      "git_blob": "8a74c94bb7e1589172f13d7b3dd91289bdabeb43",
+      "sha256": "9a8be5f686cbcae7b57728e068ef60336a6e489b2452852f466db0622b5cf52e",
+      "working_sha256": "9a8be5f686cbcae7b57728e068ef60336a6e489b2452852f466db0622b5cf52e"
+    },
+    {
+      "file": "coach-review-demo/index.html",
+      "git_blob": "b6cd024b1e34299b30485d27f8d314d29fc20db2",
+      "sha256": "702f7bed0b865c521773ffe5c621f1ee323c0e561a93f6f532f18a800690c785",
+      "working_sha256": "702f7bed0b865c521773ffe5c621f1ee323c0e561a93f6f532f18a800690c785"
+    },
+    {
+      "file": "coach-review-demo/model.js",
+      "git_blob": "b9021c6c1f979510bdefdc267515672a75a43855",
+      "sha256": "c500eec10f4071f33d723f84dc3f0fcf07c23c1d08bfa17b23c32c546f6ae39e",
+      "working_sha256": "c500eec10f4071f33d723f84dc3f0fcf07c23c1d08bfa17b23c32c546f6ae39e"
+    },
+    {
+      "file": "coach-review-demo/panel.css",
+      "git_blob": "7e1f5697ca29deb9aa36526636a49acdfcc044de",
+      "sha256": "bfe4a041f0a5a1f03d24db8224d3fbeb9351880f4750ee7a1a8d2ef08cde37f0",
+      "working_sha256": "bfe4a041f0a5a1f03d24db8224d3fbeb9351880f4750ee7a1a8d2ef08cde37f0"
+    },
+    {
+      "file": "coach-review-demo/photo-concept.svg",
+      "git_blob": "e50eaa37c3fef4bfbd71f0c6d5d01eaa5eaad012",
+      "sha256": "18a0dc0b6ea6c40dd7d2d58f8e674c98dada7c80ac2e14d4169ad172d14e01b8",
+      "working_sha256": "18a0dc0b6ea6c40dd7d2d58f8e674c98dada7c80ac2e14d4169ad172d14e01b8"
+    },
+    {
+      "file": "index.html",
+      "git_blob": "455703e514f67a93cbbe6f7427f496a8a77e4dae",
+      "sha256": "51f733ee50b37f11e8c933d22bedfe7f7a2b26a7f08054c0dd88e6537afc2ead",
+      "working_sha256": "51f733ee50b37f11e8c933d22bedfe7f7a2b26a7f08054c0dd88e6537afc2ead"
+    }
+  ],
+  "frozen": {
+    "manifest": "docs/PHASE6E7_FREEZE_EVIDENCE.json",
+    "files": 141,
+    "unchanged": true
+  },
+  "runtime": {
+    "legacy_assets": 60,
+    "unchanged_assets": 59,
+    "authorized_exception": "index.html",
+    "scope": "opt-in bootstrap only",
+    "all_other_runtime_unchanged": true
+  },
+  "tests": {
+    "counts": {
+      "tests": 1673,
+      "pass": 1673,
+      "fail": 0,
+      "skipped": 0
+    },
+    "groups": {
+      "phase6e8": {
+        "tests": 352,
+        "pass": 352,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e7": {
+        "tests": 184,
+        "pass": 184,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e6": {
+        "tests": 112,
+        "pass": 112,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e5": {
+        "tests": 144,
+        "pass": 144,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e4": {
+        "tests": 229,
+        "pass": 229,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e3": {
+        "tests": 111,
+        "pass": 111,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e2": {
+        "tests": 159,
+        "pass": 159,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e1": {
+        "tests": 292,
+        "pass": 292,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e0": {
+        "tests": 90,
+        "pass": 90,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    "raw_artifact": "supabase/.temp/phase6e8-tests.json",
+    "raw_sha256": "c08eb4ecd1f0b4b9f65dfc5849967c3c4af885d8b7f40d888526c6b72d63e3ac"
+  },
+  "browser": {
+    "local": {
+      "artifact": "supabase/.temp/phase6e8-browser/local.json",
+      "sha256": "c8c3dce7735ba7bf984de711e36968c226096af2519eaad5359788d63c7114c0",
+      "checks": 909,
+      "passed": 909,
+      "layouts": 120,
+      "errors": [],
+      "screenshots": [
+        {
+          "artifact": "supabase/.temp/phase6e8-browser/local-B-390-nl-light.png",
+          "sha256": "7aaec0e04b43906c2f8e71aa28eab5809b74659fa8fa5b785c87b3df632cc4ea"
+        },
+        {
+          "artifact": "supabase/.temp/phase6e8-browser/local-A-390-nl-light.png",
+          "sha256": "7a1a8d4596001e3769920d9d1cfff74065ab0b46d584f9f2014c54b32579e553"
+        },
+        {
+          "artifact": "supabase/.temp/phase6e8-browser/local-B-390-nl-dark.png",
+          "sha256": "a786da2481ad78402ad49cc7b20a246c533d900bddb577f8df73ea1dcc705589"
+        },
+        {
+          "artifact": "supabase/.temp/phase6e8-browser/local-A-390-nl-dark.png",
+          "sha256": "ec63bbf8639e7a2f7a13e3153201a05031bef1decdc86ab9c163dabc0acebd56"
+        },
+        {
+          "artifact": "supabase/.temp/phase6e8-browser/local-B-1280-nl-light.png",
+          "sha256": "087feca1e2a3d17dbcdeb4942d2be5873a722d8f06fe22a4b46fcdd18b34fa37"
+        },
+        {
+          "artifact": "supabase/.temp/phase6e8-browser/local-A-1280-nl-light.png",
+          "sha256": "cca8f282bd1bee96d967503d8d0897c4e9282698dd29b7f20fa2ae0047248402"
+        },
+        {
+          "artifact": "supabase/.temp/phase6e8-browser/local-B-1280-nl-dark.png",
+          "sha256": "bf7eb24eeec9ae22cb7aef67ca244503d057714413ef17856dd64f3978da0cd7"
+        },
+        {
+          "artifact": "supabase/.temp/phase6e8-browser/local-A-1280-nl-dark.png",
+          "sha256": "ab31eafb4ab11ef4c2bf8d53bf77042f0e306df3986d751298dcee291b61f575"
+        }
+      ]
+    },
+    "published": null
+  },
+  "publication": null,
+  "examples": {
+    "file": "docs/PHASE6E8_EXAMPLES.json",
+    "count": 33,
+    "sha256": "39d7cf02bd1e787e1381c5b313285fa6108fc69807188b6eac8730b29950f9e1"
+  },
+  "no_database_edge_auth_rls_change": true,
+  "real_member_processing": false,
+  "production_touched": false,
+  "external_ai_calls": 0,
+  "external_ai_cost_eur": 0,
+  "owner_accepted": false,
+  "medical_validation": false,
+  "next_package_started": false,
+  "limitations": [
+    "Frozen observation tests are not language recognition success",
+    "Manual synthetic context selection is not message classification",
+    "Fixture plans and numbers are not validated coaching norms",
+    "In-memory events are not live auth, concurrency or O5 storage"
+  ]
+}
