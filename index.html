@@ -5,8 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Fit Met Zorge Coach App</title>
     <meta name="theme-color" content="#070b12" />
-    <script src="coach-review-demo/entry.js?v=6e8-1"></script>
-    <script>window.FMZ_6E8_BOOT.loadLive(["assets/theme-authority.js?v=20260907-theme1"]);</script>
+    <script>
+      if (new URLSearchParams(location.search).has("fmzDemo")) {
+        document.documentElement.dataset.fmzDemo = "6e8";
+        document.write('<template id="fmz6e8-inert">');
+        const demoScript = document.createElement("script");
+        demoScript.src = "coach-review-demo/entry.js?v=6e8-3";
+        document.head.appendChild(demoScript);
+      }
+    </script>
+    <script src="assets/theme-authority.js?v=20260907-theme1"></script>
     <link rel="stylesheet" href="styles.css?v=20260907-theme1" />
   <link rel="stylesheet" href="assets/phase6d-owner-settings.css?v=20260907-theme1" />
   <link rel="stylesheet" href="assets/phase6d-hotfix2.css?v=20260907-dashboard-placement1" />
@@ -1097,6 +1105,9 @@
       </main>
     </div>
 
-    <script>window.FMZ_6E8_BOOT.loadLive(["https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2","config.js","assets/vendor/zxing-browser-0.2.1.min.js?v=20260827-phase4fd-owner-barcode1","app.js?v=20260910-effort-align1"]);</script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="assets/vendor/zxing-browser-0.2.1.min.js?v=20260827-phase4fd-owner-barcode1"></script>
+    <script src="app.js?v=20260910-effort-align1"></script>
   </body>
 </html>

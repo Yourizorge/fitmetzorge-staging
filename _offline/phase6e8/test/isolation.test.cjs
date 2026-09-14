@@ -7,8 +7,17 @@ for(const f of receipt.runtime_assets.filter(x=>x.file!=="index.html"))test("pro
 test("only approved bootstrap differs in index",()=>{
  const old=cp.execFileSync("git",["show",receipt.baseline+":index.html"],{cwd:root,encoding:"utf8"}).replace(/\r\n/g,"\n");
  const now=fs.readFileSync(path.join(root,"index.html"),"utf8").replace(/\r\n/g,"\n");
- const expected=old.replace('<script src="assets/theme-authority.js?v=20260907-theme1"></script>','<script src="coach-review-demo/entry.js?v=6e8-1"></script>\n    <script>window.FMZ_6E8_BOOT.loadLive(["assets/theme-authority.js?v=20260907-theme1"]);</script>')
- .replace('<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>\n    <script src="config.js"></script>\n    <script src="assets/vendor/zxing-browser-0.2.1.min.js?v=20260827-phase4fd-owner-barcode1"></script>\n    <script src="app.js?v=20260910-effort-align1"></script>','<script>window.FMZ_6E8_BOOT.loadLive(["https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2","config.js","assets/vendor/zxing-browser-0.2.1.min.js?v=20260827-phase4fd-owner-barcode1","app.js?v=20260910-effort-align1"]);</script>');
+ const insertion=`    <script>
+      if (new URLSearchParams(location.search).has("fmzDemo")) {
+        document.documentElement.dataset.fmzDemo = "6e8";
+        document.write('<template id="fmz6e8-inert">');
+        const demoScript = document.createElement("script");
+        demoScript.src = "coach-review-demo/entry.js?v=6e8-3";
+        document.head.appendChild(demoScript);
+      }
+    </script>
+`;
+ const expected=old.replace('    <script src="assets/theme-authority.js?v=20260907-theme1"></script>',insertion+'    <script src="assets/theme-authority.js?v=20260907-theme1"></script>');
  assert.equal(now,expected);
 });
 test("public code has no private imports, stores, external calls or uploads",()=>{

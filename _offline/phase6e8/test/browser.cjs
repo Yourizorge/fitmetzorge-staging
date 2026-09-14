@@ -2,7 +2,7 @@
 const fs=require("node:fs"),path=require("node:path"),http=require("node:http"),assert=require("node:assert/strict"),cp=require("node:child_process");
 const {chromium}=require("C:/Users/Fitme/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright");
 const root=path.resolve(__dirname,"../../.."),output=path.join(root,"supabase/.temp/phase6e8-browser"),remote=process.argv.includes("--published"),smoke=process.argv.includes("--smoke");
-const results={published:remote,checks:[],layouts:[],screenshots:[],requests:[],errors:[],storage:[]},check=(name,value)=>{results.checks.push({name,pass:!!value});assert(value,name);};
+const results={published:remote,checks:[],layouts:[],screenshots:[],requests:[],static_preloads:[],errors:[],storage:[]},check=(name,value)=>{results.checks.push({name,pass:!!value});assert(value,name);};
 const tracked=cp.execFileSync("git",["ls-files"],{cwd:root,encoding:"utf8"}).split(/\r?\n/);
 const publicFiles=new Set([...tracked.filter(f=>/^assets\/|^training-review-demo\//.test(f)||(!f.includes("/")&&/\.(html|css|js|png|svg|ico)$/.test(f))),...fs.readdirSync(path.join(root,"coach-review-demo")).map(f=>"coach-review-demo/"+f)]);
 const type=f=>f.endsWith(".html")?"text/html":f.endsWith(".css")?"text/css":f.endsWith(".png")?"image/png":f.endsWith(".svg")?"image/svg+xml":"application/javascript";
@@ -26,6 +26,12 @@ const type=f=>f.endsWith(".html")?"text/html":f.endsWith(".css")?"text/css":f.en
    await context.route("**/*",r=>{
     const req=r.request(),url=req.url(),file=url.startsWith(base)?new URL(url).pathname.slice(new URL(base).pathname.length):"";
     results.requests.push({url,method:req.method()});
+    if(req.method()==="GET"&&(
+     (url.startsWith(base)&&/^(assets\/theme-authority\.js|config\.js|app\.js|assets\/vendor\/zxing-browser-0\.2\.1\.min\.js)$/.test(file))||
+     url==="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2")){
+     results.static_preloads.push(url);
+     return r.fulfill({contentType:"application/javascript",body:"window.__legacyExecuted = true;"});
+    }
     if(req.method()!=="GET"||!url.startsWith(base)||!publicFiles.has(file)||/^(app|config)\.js$|theme-authority\.js|supabase/.test(file)){
      results.errors.push("Unexpected request: "+url);return r.abort();
     }return r.continue();
@@ -36,6 +42,7 @@ const type=f=>f.endsWith(".html")?"text/html":f.endsWith(".css")?"text/css":f.en
    check(label+" sandbox exactly allow-scripts",await iframe.getAttribute("sandbox")==="allow-scripts");
    const f=await (await iframe.elementHandle()).contentFrame();
    await f.locator('[data-action="build"]').waitFor();
+   check(label+" inert legacy scripts never execute",await page.evaluate(()=>window.__legacyExecuted!==true));
    check(label+" actual index has no login or app shell",await page.locator("#loginScreen,.app-shell").count()===0);
    check(label+" language",await f.locator("html").getAttribute("lang")===lang);
    check(label+" theme",await f.locator("html").getAttribute("data-theme")===theme);
@@ -123,7 +130,8 @@ const type=f=>f.endsWith(".html")?"text/html":f.endsWith(".css")?"text/css":f.en
   const executed=await page.evaluate(()=>window.__bootstrapOrder||[]);results.bootstrapOrder=executed;
   check("normal script sequence preserved",executed.length===5&&executed[0].includes("theme-authority")&&executed[1].includes("supabase-js")&&executed[2].endsWith("/config.js")&&executed[3].includes("zxing-browser")&&executed[4].includes("/app.js?"));
   check("normal app DOM preserved",await page.locator("#loginScreen").count()===1&&await page.locator("iframe").count()===0);
-  for(const q of ["fmzDemo=invalid","fmzDemo=6e8&lang=xx","fmzDemo=6e8&theme=unknown","fmzDemo=6e8&subject=syn-member","fmzDemo=6e8&lang=nl&lang=en"]){const n=order.length;await page.goto(base+"index.html?"+q);check("invalid query fails closed "+q,order.length===n&&await page.locator("iframe").count()===0&&await page.locator("#loginScreen").count()===0);}
+  check("normal app has no demo script dependency",await page.locator('script[src*="coach-review-demo/entry.js"]').count()===0);
+  for(const q of ["fmzDemo=invalid","fmzDemo=6e8&lang=xx","fmzDemo=6e8&theme=unknown","fmzDemo=6e8&subject=syn-member","fmzDemo=6e8&lang=nl&lang=en"]){await page.goto(base+"index.html?"+q);check("invalid query fails closed "+q,await page.evaluate(()=>(window.__bootstrapOrder||[]).length===0)&&await page.locator("iframe").count()===0&&await page.locator("#loginScreen").count()===0);}
   await normal.close();check("no browser errors or unauthorized requests",results.errors.length===0);
  }finally{
   if(browser)await browser.close();if(server)await new Promise(r=>server.close(r));
