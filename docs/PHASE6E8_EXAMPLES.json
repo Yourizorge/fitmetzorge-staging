@@ -1,0 +1,1213 @@
+{
+  "synthetic_only": true,
+  "medical_validation": false,
+  "external_ai_calls": 0,
+  "examples": [
+    {
+      "id": "normal-nl",
+      "locale": "nl",
+      "status": "member_pending",
+      "answer": "Youri heeft een fictief planvoorstel voor je.\nConceptbronnen, niet deskundig goedgekeurd. Getallen, porties en coachregels zijn fictieve testwaarden, geen persoonlijk voorschrift.\nTraining: Maandag, Woensdag, Vrijdag. Dumbbell roeien: 2 sets x 8 herhalingen. Rust: 90 s. RIR 2 / RPE 7. Geen startgewicht berekend. In deze demo ontbreekt een betrouwbare belastingregistratie; daarom geen kg/lb-voorschrift.\nVoeding: 1680 kcal; Eiwit 64 g; Koolhydraten 293 g; Vet 29 g. Haver 100 g + Fruit 200 g + Noten 20 g; Rijst 220 g + Bonen 180 g + Groenten 150 g; Rijst 220 g + Linzen 180 g + Groenten 150 g\nHerstel: Slaapdoel (concepturen) 8 h; Rustdagen: Dinsdag, Donderdag, Zaterdag, Zondag. Herstelcheck-ins: Na een training.\nPlan bevestigen → Planversie activeren.",
+      "plan": {
+        "training": {
+          "days": [
+            "mon",
+            "wed",
+            "fri"
+          ],
+          "minutes": 30,
+          "goal": "strength",
+          "secondary": [
+            "mobility"
+          ],
+          "sessions": [
+            {
+              "day": "mon",
+              "exercises": [
+                {
+                  "id": "row",
+                  "sets": 2,
+                  "reps": 8,
+                  "load": null,
+                  "unit": "kg",
+                  "rest": 90,
+                  "rir": 2,
+                  "rpe": 7,
+                  "rule": "syn-reps@1"
+                },
+                {
+                  "id": "squat",
+                  "sets": 2,
+                  "reps": 8,
+                  "load": null,
+                  "unit": "kg",
+                  "rest": 90,
+                  "rir": 2,
+                  "rpe": 7,
+                  "rule": "syn-reps@1"
+                },
+                {
+                  "id": "press",
+                  "sets": 2,
+                  "reps": 8,
+                  "load": null,
+                  "unit": "kg",
+                  "rest": 90,
+                  "rir": 2,
+                  "rpe": 7,
+                  "rule": "syn-reps@1"
+                }
+              ]
+            },
+            {
+              "day": "wed",
+              "exercises": [
+                {
+                  "id": "row",
+                  "sets": 2,
+                  "reps": 8,
+                  "load": null,
+                  "unit": "kg",
+                  "rest": 90,
+                  "rir": 2,
+                  "rpe": 7,
+                  "rule": "syn-reps@1"
+                },
+                {
+                  "id": "squat",
+                  "sets": 2,
+                  "reps": 8,
+                  "load": null,
+                  "unit": "kg",
+                  "rest": 90,
+                  "rir": 2,
+                  "rpe": 7,
+                  "rule": "syn-reps@1"
+                },
+                {
+                  "id": "press",
+                  "sets": 2,
+                  "reps": 8,
+                  "load": null,
+                  "unit": "kg",
+                  "rest": 90,
+                  "rir": 2,
+                  "rpe": 7,
+                  "rule": "syn-reps@1"
+                }
+              ]
+            },
+            {
+              "day": "fri",
+              "exercises": [
+                {
+                  "id": "row",
+                  "sets": 2,
+                  "reps": 8,
+                  "load": null,
+                  "unit": "kg",
+                  "rest": 90,
+                  "rir": 2,
+                  "rpe": 7,
+                  "rule": "syn-reps@1"
+                },
+                {
+                  "id": "squat",
+                  "sets": 2,
+                  "reps": 8,
+                  "load": null,
+                  "unit": "kg",
+                  "rest": 90,
+                  "rir": 2,
+                  "rpe": 7,
+                  "rule": "syn-reps@1"
+                },
+                {
+                  "id": "press",
+                  "sets": 2,
+                  "reps": 8,
+                  "load": null,
+                  "unit": "kg",
+                  "rest": 90,
+                  "rir": 2,
+                  "rpe": 7,
+                  "rule": "syn-reps@1"
+                }
+              ]
+            }
+          ],
+          "start": "start_principle",
+          "progression": "syn-reps@1"
+        },
+        "nutrition": {
+          "meals": [
+            {
+              "id": "oatbowl",
+              "at": 7,
+              "items": [
+                {
+                  "food": "oats",
+                  "g": 100
+                },
+                {
+                  "food": "fruit",
+                  "g": 200
+                },
+                {
+                  "food": "nuts",
+                  "g": 20
+                }
+              ]
+            },
+            {
+              "id": "ricebeans",
+              "at": 12,
+              "items": [
+                {
+                  "food": "rice",
+                  "g": 220
+                },
+                {
+                  "food": "beans",
+                  "g": 180
+                },
+                {
+                  "food": "vegetables",
+                  "g": 150
+                }
+              ]
+            },
+            {
+              "id": "ricelentils",
+              "at": 17,
+              "items": [
+                {
+                  "food": "rice",
+                  "g": 220
+                },
+                {
+                  "food": "lentils",
+                  "g": 180
+                },
+                {
+                  "food": "vegetables",
+                  "g": 150
+                }
+              ]
+            }
+          ],
+          "totals": {
+            "kcal": 1680,
+            "protein": 64,
+            "carbs": 293,
+            "fat": 29,
+            "cost": 3.76
+          },
+          "source": "syn-portions@1",
+          "budgetCap": 8
+        },
+        "recovery": {
+          "sleepGoal": 8,
+          "baselineSleep": 7,
+          "restDays": [
+            "tue",
+            "thu",
+            "sat",
+            "sun"
+          ],
+          "checkins": "after_workout",
+          "lightWeek": {
+            "week": 4,
+            "optional": true,
+            "active": false
+          },
+          "secondary": [
+            "mobility"
+          ],
+          "schedule": [
+            "mon",
+            "wed",
+            "fri"
+          ],
+          "source": "syn-sleep@1"
+        }
+      }
+    },
+    {
+      "id": "blocked-nl",
+      "locale": "nl",
+      "allowed": false,
+      "reason": "safety_current",
+      "answer": "Stop nu met trainen. Je meldt klachten die Youri niet betrouwbaar kan beoordelen. Neem contact op met een bevoegde zorgprofessional voor beoordeling. Zoek bij direct gevaar onmiddellijk noodhulp; wacht dan niet op Youri of je trainer. Er is niemand automatisch gewaarschuwd.\nBij klachten, zelf gemeld herstel of ontbrekende context wordt geen fysiek plan geactiveerd. Chat, historie en feiten worden afzonderlijk beoordeeld; deze demo verwerkt geen echte chat. O5 blijft maximaal 30 dagen, zonder vrijgave door verloop.",
+      "active": null
+    },
+    {
+      "id": "signal-sleep-nl",
+      "locale": "nl",
+      "answer": "Drie korte nachten: voorstel voor een vaste afbouwtijd. Training en voeding blijven gelijk.",
+      "source": {
+        "values": [
+          6,
+          6,
+          5.5
+        ],
+        "window": "3 days",
+        "kind": "sleep",
+        "unchanged": [
+          "training",
+          "nutrition"
+        ]
+      }
+    },
+    {
+      "id": "signal-recovery-nl",
+      "locale": "nl",
+      "answer": "Drie lage herstelregistraties: stel dagelijkse check-ins voor; geen belastbaarheidsclaim.",
+      "source": {
+        "values": [
+          "low",
+          "low",
+          "low"
+        ],
+        "window": "3 days",
+        "kind": "checkin",
+        "unchanged": [
+          "training",
+          "nutrition"
+        ]
+      }
+    },
+    {
+      "id": "signal-rpe-nl",
+      "locale": "nl",
+      "answer": "RPE 7, 8, 9 is zelfrapportage. Toon de reeks; geen automatische verhoging.",
+      "source": {
+        "values": [
+          7,
+          8,
+          9
+        ],
+        "window": "3 workouts",
+        "kind": "facts",
+        "unchanged": [
+          "training",
+          "nutrition",
+          "recovery"
+        ]
+      }
+    },
+    {
+      "id": "signal-rir-nl",
+      "locale": "nl",
+      "answer": "RIR 3, 2, 1 blijft afzonderlijk van RPE. Behoud het plan; bespreek de context.",
+      "source": {
+        "values": [
+          3,
+          2,
+          1
+        ],
+        "window": "3 workouts",
+        "kind": "facts",
+        "unchanged": [
+          "training",
+          "nutrition",
+          "recovery"
+        ]
+      }
+    },
+    {
+      "id": "signal-missed-nl",
+      "locale": "nl",
+      "answer": "Twee gemiste sessies: voorstel voor een ander tijdstip binnen het opgegeven dagritme, geen extra sets.",
+      "source": {
+        "values": [
+          false,
+          false,
+          true
+        ],
+        "window": "1 week",
+        "kind": "schedule",
+        "unchanged": [
+          "nutrition",
+          "recovery"
+        ]
+      }
+    },
+    {
+      "id": "signal-food-nl",
+      "locale": "nl",
+      "answer": "De registratie is onvolledig. Vraag optioneel om aanvulling; verzin geen calorieverschil.",
+      "source": {
+        "values": [
+          1,
+          0,
+          1
+        ],
+        "window": "3 days",
+        "kind": "facts",
+        "unchanged": [
+          "training",
+          "nutrition",
+          "recovery"
+        ]
+      }
+    },
+    {
+      "id": "signal-plateau-nl",
+      "locale": "nl",
+      "answer": "Drie gelijke registraties: een beschikbare gelijkwaardige oefening tijdelijk bekijken, twee weken, zonder extra volume.",
+      "source": {
+        "values": [
+          8,
+          8,
+          8
+        ],
+        "window": "3 workouts",
+        "kind": "swap",
+        "unchanged": [
+          "nutrition",
+          "recovery"
+        ]
+      }
+    },
+    {
+      "id": "signal-improvement-nl",
+      "locale": "nl",
+      "answer": "Drie verbeterde registraties: de fictieve bronregel staat een rep erbij toe, onder het maximum. Bevestiging blijft nodig.",
+      "source": {
+        "values": [
+          8,
+          9,
+          10
+        ],
+        "window": "3 workouts",
+        "kind": "reps",
+        "unchanged": [
+          "nutrition",
+          "recovery"
+        ]
+      }
+    },
+    {
+      "id": "signal-outlier-nl",
+      "locale": "nl",
+      "answer": "Een afwijkende nacht is onvoldoende voor een planwijziging.",
+      "source": {
+        "values": [
+          5.5
+        ],
+        "window": "1 night",
+        "kind": "facts",
+        "unchanged": [
+          "training",
+          "nutrition",
+          "recovery"
+        ]
+      }
+    },
+    {
+      "id": "normal-en",
+      "locale": "en",
+      "status": "member_pending",
+      "answer": "Youri has a fictional plan proposal for you.\nConcept sources, not expert approved. Numbers, portions and coaching rules are fictional test values, not a personal prescription.\nTraining: Monday, Wednesday, Friday. Dumbbell row: 2 sets x 8 repetitions. Rest: 90 s. RIR 2 / RPE 7. No starting load calculated. This demo lacks a reliable load record; therefore no kg/lb prescription.\nNutrition: 1680 kcal; Protein 64 g; Carbohydrates 293 g; Fat 29 g. Oats 100 g + Fruit 200 g + Nuts 20 g; Rice 220 g + Beans 180 g + Vegetables 150 g; Rice 220 g + Lentils 180 g + Vegetables 150 g\nRecovery: Sleep goal (concept hours) 8 h; Rest days: Tuesday, Thursday, Saturday, Sunday. Recovery check-ins: After a workout.\nConfirm plan → Activate plan version.",
+      "plan": {
+        "training": {
+          "days": [
+            "mon",
+            "wed",
+            "fri"
+          ],
+          "minutes": 30,
+          "goal": "strength",
+          "secondary": [
+            "mobility"
+          ],
+          "sessions": [
+            {
+              "day": "mon",
+              "exercises": [
+                {
+                  "id": "row",
+                  "sets": 2,
+                  "reps": 8,
+                  "load": null,
+                  "unit": "kg",
+                  "rest": 90,
+                  "rir": 2,
+                  "rpe": 7,
+                  "rule": "syn-reps@1"
+                },
+                {
+                  "id": "squat",
+                  "sets": 2,
+                  "reps": 8,
+                  "load": null,
+                  "unit": "kg",
+                  "rest": 90,
+                  "rir": 2,
+                  "rpe": 7,
+                  "rule": "syn-reps@1"
+                },
+                {
+                  "id": "press",
+                  "sets": 2,
+                  "reps": 8,
+                  "load": null,
+                  "unit": "kg",
+                  "rest": 90,
+                  "rir": 2,
+                  "rpe": 7,
+                  "rule": "syn-reps@1"
+                }
+              ]
+            },
+            {
+              "day": "wed",
+              "exercises": [
+                {
+                  "id": "row",
+                  "sets": 2,
+                  "reps": 8,
+                  "load": null,
+                  "unit": "kg",
+                  "rest": 90,
+                  "rir": 2,
+                  "rpe": 7,
+                  "rule": "syn-reps@1"
+                },
+                {
+                  "id": "squat",
+                  "sets": 2,
+                  "reps": 8,
+                  "load": null,
+                  "unit": "kg",
+                  "rest": 90,
+                  "rir": 2,
+                  "rpe": 7,
+                  "rule": "syn-reps@1"
+                },
+                {
+                  "id": "press",
+                  "sets": 2,
+                  "reps": 8,
+                  "load": null,
+                  "unit": "kg",
+                  "rest": 90,
+                  "rir": 2,
+                  "rpe": 7,
+                  "rule": "syn-reps@1"
+                }
+              ]
+            },
+            {
+              "day": "fri",
+              "exercises": [
+                {
+                  "id": "row",
+                  "sets": 2,
+                  "reps": 8,
+                  "load": null,
+                  "unit": "kg",
+                  "rest": 90,
+                  "rir": 2,
+                  "rpe": 7,
+                  "rule": "syn-reps@1"
+                },
+                {
+                  "id": "squat",
+                  "sets": 2,
+                  "reps": 8,
+                  "load": null,
+                  "unit": "kg",
+                  "rest": 90,
+                  "rir": 2,
+                  "rpe": 7,
+                  "rule": "syn-reps@1"
+                },
+                {
+                  "id": "press",
+                  "sets": 2,
+                  "reps": 8,
+                  "load": null,
+                  "unit": "kg",
+                  "rest": 90,
+                  "rir": 2,
+                  "rpe": 7,
+                  "rule": "syn-reps@1"
+                }
+              ]
+            }
+          ],
+          "start": "start_principle",
+          "progression": "syn-reps@1"
+        },
+        "nutrition": {
+          "meals": [
+            {
+              "id": "oatbowl",
+              "at": 7,
+              "items": [
+                {
+                  "food": "oats",
+                  "g": 100
+                },
+                {
+                  "food": "fruit",
+                  "g": 200
+                },
+                {
+                  "food": "nuts",
+                  "g": 20
+                }
+              ]
+            },
+            {
+              "id": "ricebeans",
+              "at": 12,
+              "items": [
+                {
+                  "food": "rice",
+                  "g": 220
+                },
+                {
+                  "food": "beans",
+                  "g": 180
+                },
+                {
+                  "food": "vegetables",
+                  "g": 150
+                }
+              ]
+            },
+            {
+              "id": "ricelentils",
+              "at": 17,
+              "items": [
+                {
+                  "food": "rice",
+                  "g": 220
+                },
+                {
+                  "food": "lentils",
+                  "g": 180
+                },
+                {
+                  "food": "vegetables",
+                  "g": 150
+                }
+              ]
+            }
+          ],
+          "totals": {
+            "kcal": 1680,
+            "protein": 64,
+            "carbs": 293,
+            "fat": 29,
+            "cost": 3.76
+          },
+          "source": "syn-portions@1",
+          "budgetCap": 8
+        },
+        "recovery": {
+          "sleepGoal": 8,
+          "baselineSleep": 7,
+          "restDays": [
+            "tue",
+            "thu",
+            "sat",
+            "sun"
+          ],
+          "checkins": "after_workout",
+          "lightWeek": {
+            "week": 4,
+            "optional": true,
+            "active": false
+          },
+          "secondary": [
+            "mobility"
+          ],
+          "schedule": [
+            "mon",
+            "wed",
+            "fri"
+          ],
+          "source": "syn-sleep@1"
+        }
+      }
+    },
+    {
+      "id": "blocked-en",
+      "locale": "en",
+      "allowed": false,
+      "reason": "safety_current",
+      "answer": "Stop exercising now. You report symptoms that Youri cannot reliably assess. Contact a qualified healthcare professional for assessment. In immediate danger, seek emergency help immediately; do not wait for Youri or your trainer. Nobody has been notified automatically.\nNo physical plan activates with symptoms, self-reported recovery or missing context. Chat, history and facts are assessed separately; this demo processes no real chat. O5 stays at most 30 days, without clearance by expiry.",
+      "active": null
+    },
+    {
+      "id": "signal-sleep-en",
+      "locale": "en",
+      "answer": "Three short nights: propose a fixed wind-down time. Training and nutrition stay unchanged.",
+      "source": {
+        "values": [
+          6,
+          6,
+          5.5
+        ],
+        "window": "3 days",
+        "kind": "sleep",
+        "unchanged": [
+          "training",
+          "nutrition"
+        ]
+      }
+    },
+    {
+      "id": "signal-recovery-en",
+      "locale": "en",
+      "answer": "Three low recovery records: propose daily check-ins; no capacity claim.",
+      "source": {
+        "values": [
+          "low",
+          "low",
+          "low"
+        ],
+        "window": "3 days",
+        "kind": "checkin",
+        "unchanged": [
+          "training",
+          "nutrition"
+        ]
+      }
+    },
+    {
+      "id": "signal-rpe-en",
+      "locale": "en",
+      "answer": "RPE 7, 8, 9 is self-report. Show the sequence; no automatic increase.",
+      "source": {
+        "values": [
+          7,
+          8,
+          9
+        ],
+        "window": "3 workouts",
+        "kind": "facts",
+        "unchanged": [
+          "training",
+          "nutrition",
+          "recovery"
+        ]
+      }
+    },
+    {
+      "id": "signal-rir-en",
+      "locale": "en",
+      "answer": "RIR 3, 2, 1 stays separate from RPE. Keep the plan; discuss context.",
+      "source": {
+        "values": [
+          3,
+          2,
+          1
+        ],
+        "window": "3 workouts",
+        "kind": "facts",
+        "unchanged": [
+          "training",
+          "nutrition",
+          "recovery"
+        ]
+      }
+    },
+    {
+      "id": "signal-missed-en",
+      "locale": "en",
+      "answer": "Two missed sessions: propose a different time within the stated routine, no extra sets.",
+      "source": {
+        "values": [
+          false,
+          false,
+          true
+        ],
+        "window": "1 week",
+        "kind": "schedule",
+        "unchanged": [
+          "nutrition",
+          "recovery"
+        ]
+      }
+    },
+    {
+      "id": "signal-food-en",
+      "locale": "en",
+      "answer": "Logs are incomplete. Optionally ask for completion; do not invent a calorie gap.",
+      "source": {
+        "values": [
+          1,
+          0,
+          1
+        ],
+        "window": "3 days",
+        "kind": "facts",
+        "unchanged": [
+          "training",
+          "nutrition",
+          "recovery"
+        ]
+      }
+    },
+    {
+      "id": "signal-plateau-en",
+      "locale": "en",
+      "answer": "Three equal records: review an available equivalent exercise for two weeks, without extra volume.",
+      "source": {
+        "values": [
+          8,
+          8,
+          8
+        ],
+        "window": "3 workouts",
+        "kind": "swap",
+        "unchanged": [
+          "nutrition",
+          "recovery"
+        ]
+      }
+    },
+    {
+      "id": "signal-improvement-en",
+      "locale": "en",
+      "answer": "Three improved records: the fictional source rule permits one extra rep below the maximum. Confirmation is still required.",
+      "source": {
+        "values": [
+          8,
+          9,
+          10
+        ],
+        "window": "3 workouts",
+        "kind": "reps",
+        "unchanged": [
+          "nutrition",
+          "recovery"
+        ]
+      }
+    },
+    {
+      "id": "signal-outlier-en",
+      "locale": "en",
+      "answer": "One unusual night is insufficient for a plan change.",
+      "source": {
+        "values": [
+          5.5
+        ],
+        "window": "1 night",
+        "kind": "facts",
+        "unchanged": [
+          "training",
+          "nutrition",
+          "recovery"
+        ]
+      }
+    },
+    {
+      "id": "normal-de",
+      "locale": "de",
+      "status": "member_pending",
+      "answer": "Youri hat einen fiktiven Planvorschlag fuer dich.\nKonzeptquellen, nicht fachlich freigegeben. Zahlen, Portionen und Coachingregeln sind fiktive Testwerte, keine persoenliche Verordnung.\nTraining: Montag, Mittwoch, Freitag. Kurzhantelrudern: 2 Saetze x 8 Wiederholungen. Pause: 90 s. RIR 2 / RPE 7. Kein Startgewicht berechnet. Eine verlaessliche Belastungsaufzeichnung fehlt; daher keine kg/lb-Vorgabe.\nErnaehrung: 1680 kcal; Protein 64 g; Kohlenhydrate 293 g; Fett 29 g. Hafer 100 g + Obst 200 g + Nuesse 20 g; Reis 220 g + Bohnen 180 g + Gemuese 150 g; Reis 220 g + Linsen 180 g + Gemuese 150 g\nErholung: Schlafziel (Konzeptstunden) 8 h; Ruhetage: Dienstag, Donnerstag, Samstag, Sonntag. Erholungs-Check-ins: Nach einem Training.\nPlan bestaetigen → Planversion aktivieren.",
+      "plan": {
+        "training": {
+          "days": [
+            "mon",
+            "wed",
+            "fri"
+          ],
+          "minutes": 30,
+          "goal": "strength",
+          "secondary": [
+            "mobility"
+          ],
+          "sessions": [
+            {
+              "day": "mon",
+              "exercises": [
+                {
+                  "id": "row",
+                  "sets": 2,
+                  "reps": 8,
+                  "load": null,
+                  "unit": "kg",
+                  "rest": 90,
+                  "rir": 2,
+                  "rpe": 7,
+                  "rule": "syn-reps@1"
+                },
+                {
+                  "id": "squat",
+                  "sets": 2,
+                  "reps": 8,
+                  "load": null,
+                  "unit": "kg",
+                  "rest": 90,
+                  "rir": 2,
+                  "rpe": 7,
+                  "rule": "syn-reps@1"
+                },
+                {
+                  "id": "press",
+                  "sets": 2,
+                  "reps": 8,
+                  "load": null,
+                  "unit": "kg",
+                  "rest": 90,
+                  "rir": 2,
+                  "rpe": 7,
+                  "rule": "syn-reps@1"
+                }
+              ]
+            },
+            {
+              "day": "wed",
+              "exercises": [
+                {
+                  "id": "row",
+                  "sets": 2,
+                  "reps": 8,
+                  "load": null,
+                  "unit": "kg",
+                  "rest": 90,
+                  "rir": 2,
+                  "rpe": 7,
+                  "rule": "syn-reps@1"
+                },
+                {
+                  "id": "squat",
+                  "sets": 2,
+                  "reps": 8,
+                  "load": null,
+                  "unit": "kg",
+                  "rest": 90,
+                  "rir": 2,
+                  "rpe": 7,
+                  "rule": "syn-reps@1"
+                },
+                {
+                  "id": "press",
+                  "sets": 2,
+                  "reps": 8,
+                  "load": null,
+                  "unit": "kg",
+                  "rest": 90,
+                  "rir": 2,
+                  "rpe": 7,
+                  "rule": "syn-reps@1"
+                }
+              ]
+            },
+            {
+              "day": "fri",
+              "exercises": [
+                {
+                  "id": "row",
+                  "sets": 2,
+                  "reps": 8,
+                  "load": null,
+                  "unit": "kg",
+                  "rest": 90,
+                  "rir": 2,
+                  "rpe": 7,
+                  "rule": "syn-reps@1"
+                },
+                {
+                  "id": "squat",
+                  "sets": 2,
+                  "reps": 8,
+                  "load": null,
+                  "unit": "kg",
+                  "rest": 90,
+                  "rir": 2,
+                  "rpe": 7,
+                  "rule": "syn-reps@1"
+                },
+                {
+                  "id": "press",
+                  "sets": 2,
+                  "reps": 8,
+                  "load": null,
+                  "unit": "kg",
+                  "rest": 90,
+                  "rir": 2,
+                  "rpe": 7,
+                  "rule": "syn-reps@1"
+                }
+              ]
+            }
+          ],
+          "start": "start_principle",
+          "progression": "syn-reps@1"
+        },
+        "nutrition": {
+          "meals": [
+            {
+              "id": "oatbowl",
+              "at": 7,
+              "items": [
+                {
+                  "food": "oats",
+                  "g": 100
+                },
+                {
+                  "food": "fruit",
+                  "g": 200
+                },
+                {
+                  "food": "nuts",
+                  "g": 20
+                }
+              ]
+            },
+            {
+              "id": "ricebeans",
+              "at": 12,
+              "items": [
+                {
+                  "food": "rice",
+                  "g": 220
+                },
+                {
+                  "food": "beans",
+                  "g": 180
+                },
+                {
+                  "food": "vegetables",
+                  "g": 150
+                }
+              ]
+            },
+            {
+              "id": "ricelentils",
+              "at": 17,
+              "items": [
+                {
+                  "food": "rice",
+                  "g": 220
+                },
+                {
+                  "food": "lentils",
+                  "g": 180
+                },
+                {
+                  "food": "vegetables",
+                  "g": 150
+                }
+              ]
+            }
+          ],
+          "totals": {
+            "kcal": 1680,
+            "protein": 64,
+            "carbs": 293,
+            "fat": 29,
+            "cost": 3.76
+          },
+          "source": "syn-portions@1",
+          "budgetCap": 8
+        },
+        "recovery": {
+          "sleepGoal": 8,
+          "baselineSleep": 7,
+          "restDays": [
+            "tue",
+            "thu",
+            "sat",
+            "sun"
+          ],
+          "checkins": "after_workout",
+          "lightWeek": {
+            "week": 4,
+            "optional": true,
+            "active": false
+          },
+          "secondary": [
+            "mobility"
+          ],
+          "schedule": [
+            "mon",
+            "wed",
+            "fri"
+          ],
+          "source": "syn-sleep@1"
+        }
+      }
+    },
+    {
+      "id": "blocked-de",
+      "locale": "de",
+      "allowed": false,
+      "reason": "safety_current",
+      "answer": "Beende jetzt das Training. Du meldest Beschwerden, die Youri nicht zuverlaessig beurteilen kann. Wende dich zur Beurteilung an qualifiziertes medizinisches Fachpersonal. Suche bei unmittelbarer Gefahr sofort Notfallhilfe; warte dann nicht auf Youri oder deinen Trainer. Niemand wurde automatisch benachrichtigt.\nBei Beschwerden, selbstberichteter Erholung oder fehlendem Kontext wird kein koerperlicher Plan aktiviert. Chat, Verlauf und Fakten werden getrennt beurteilt; kein echter Chat wird verarbeitet. O5 bleibt maximal 30 Tage, ohne Freigabe durch Ablauf.",
+      "active": null
+    },
+    {
+      "id": "signal-sleep-de",
+      "locale": "de",
+      "answer": "Drei kurze Naechte: feste Abendroutine vorschlagen. Training und Ernaehrung bleiben gleich.",
+      "source": {
+        "values": [
+          6,
+          6,
+          5.5
+        ],
+        "window": "3 days",
+        "kind": "sleep",
+        "unchanged": [
+          "training",
+          "nutrition"
+        ]
+      }
+    },
+    {
+      "id": "signal-recovery-de",
+      "locale": "de",
+      "answer": "Drei niedrige Erholungswerte: taegliche Check-ins vorschlagen; keine Belastbarkeitsaussage.",
+      "source": {
+        "values": [
+          "low",
+          "low",
+          "low"
+        ],
+        "window": "3 days",
+        "kind": "checkin",
+        "unchanged": [
+          "training",
+          "nutrition"
+        ]
+      }
+    },
+    {
+      "id": "signal-rpe-de",
+      "locale": "de",
+      "answer": "RPE 7, 8, 9 ist Selbstauskunft. Reihe zeigen; keine automatische Erhoehung.",
+      "source": {
+        "values": [
+          7,
+          8,
+          9
+        ],
+        "window": "3 workouts",
+        "kind": "facts",
+        "unchanged": [
+          "training",
+          "nutrition",
+          "recovery"
+        ]
+      }
+    },
+    {
+      "id": "signal-rir-de",
+      "locale": "de",
+      "answer": "RIR 3, 2, 1 bleibt getrennt von RPE. Plan beibehalten; Kontext besprechen.",
+      "source": {
+        "values": [
+          3,
+          2,
+          1
+        ],
+        "window": "3 workouts",
+        "kind": "facts",
+        "unchanged": [
+          "training",
+          "nutrition",
+          "recovery"
+        ]
+      }
+    },
+    {
+      "id": "signal-missed-de",
+      "locale": "de",
+      "answer": "Zwei verpasste Einheiten: andere Uhrzeit im angegebenen Rhythmus vorschlagen, keine Zusatzsaetze.",
+      "source": {
+        "values": [
+          false,
+          false,
+          true
+        ],
+        "window": "1 week",
+        "kind": "schedule",
+        "unchanged": [
+          "nutrition",
+          "recovery"
+        ]
+      }
+    },
+    {
+      "id": "signal-food-de",
+      "locale": "de",
+      "answer": "Protokolle sind unvollstaendig. Optional um Ergaenzung bitten; kein Kaloriendefizit erfinden.",
+      "source": {
+        "values": [
+          1,
+          0,
+          1
+        ],
+        "window": "3 days",
+        "kind": "facts",
+        "unchanged": [
+          "training",
+          "nutrition",
+          "recovery"
+        ]
+      }
+    },
+    {
+      "id": "signal-plateau-de",
+      "locale": "de",
+      "answer": "Drei gleiche Aufzeichnungen: verfuegbare gleichwertige Uebung zwei Wochen pruefen, ohne Zusatzvolumen.",
+      "source": {
+        "values": [
+          8,
+          8,
+          8
+        ],
+        "window": "3 workouts",
+        "kind": "swap",
+        "unchanged": [
+          "nutrition",
+          "recovery"
+        ]
+      }
+    },
+    {
+      "id": "signal-improvement-de",
+      "locale": "de",
+      "answer": "Drei verbesserte Aufzeichnungen: fiktive Quellregel erlaubt eine weitere Wiederholung unter dem Maximum. Bestaetigung bleibt erforderlich.",
+      "source": {
+        "values": [
+          8,
+          9,
+          10
+        ],
+        "window": "3 workouts",
+        "kind": "reps",
+        "unchanged": [
+          "nutrition",
+          "recovery"
+        ]
+      }
+    },
+    {
+      "id": "signal-outlier-de",
+      "locale": "de",
+      "answer": "Eine ungewoehnliche Nacht reicht nicht fuer eine Planaenderung.",
+      "source": {
+        "values": [
+          5.5
+        ],
+        "window": "1 night",
+        "kind": "facts",
+        "unchanged": [
+          "training",
+          "nutrition",
+          "recovery"
+        ]
+      }
+    }
+  ]
+}
