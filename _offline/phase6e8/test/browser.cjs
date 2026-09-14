@@ -55,6 +55,14 @@ const type=f=>f.endsWith(".html")?"text/html":f.endsWith(".css")?"text/css":f.en
     });results.layouts.push({label,stage,...dims});check(label+" "+stage+" no horizontal overflow",dims.scroll<=dims.width+1&&dims.body<=dims.width+1&&dims.overflow.length===0);check(label+" "+stage+" touch targets",dims.small===0);
    }
    await layout("intake");
+   if(width===390&&lang==="nl"&&theme==="light"){
+    await f.locator('input[name="avoided"][value="overhead"]').check();
+    await f.locator("#theme").selectOption("dark");
+    check("intake exclusions survive theme change",await f.locator('input[name="avoided"][value="overhead"]').isChecked());
+    await f.locator("#lang").selectOption("en");
+    check("intake exclusions survive language change",await f.locator('input[name="avoided"][value="overhead"]').isChecked());
+    await f.locator("#lang").selectOption("nl");await f.locator("#theme").selectOption("light");
+   }
    await f.locator('[data-action="build"]').click();check(label+" B proposal",await f.locator("#status").textContent()===(await f.evaluate(()=>FMZ8Copy[document.documentElement.lang].member_pending)));
    check(label+" B no approval action",await f.locator('#route-content [data-value*="trainer_"]').count()===0);
    check(label+" B no trainer approval step",!(await f.locator("#route-content .timeline").innerText()).match(/trainer|Trainer/));

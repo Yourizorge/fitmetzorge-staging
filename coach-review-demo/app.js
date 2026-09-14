@@ -1,7 +1,7 @@
 (function(){"use strict";
 const M=FMZ8Model,C=FMZ8Catalog,clone=x=>JSON.parse(JSON.stringify(x)),root=document.getElementById("root");
 const params=new URLSearchParams(location.search);
-let lang=["nl","en","de"].includes(params.get("lang"))?params.get("lang"):"nl",theme=params.get("theme")==="dark"?"dark":"light",route="B",tab="training",form=true,scenario="normal",a=FMZDemoModel.create(FMZDemoData.seeds.normal),b=M.create(),seq=0,feedback="";
+let lang=["nl","en","de"].includes(params.get("lang"))?params.get("lang"):"nl",theme=params.get("theme")==="dark"?"dark":"light",route="B",tab="training",form=true,pendingIntake=null,scenario="normal",a=FMZDemoModel.create(FMZDemoData.seeds.normal),b=M.create(),seq=0,feedback="";
 const esc=x=>String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const ix=()=>["nl","en","de"].indexOf(lang),t=k=>FMZ8Copy[lang][k]||FMZDemoCopy[lang][k]||k,ta=k=>FMZDemoCopy[lang][k]||t(k),label=x=>x.label[ix()];
 const option=(v,text,current)=>'<option value="'+esc(v)+'"'+(same(v,current)?" selected":"")+'>'+esc(text)+'</option>';
@@ -20,7 +20,7 @@ function checks(k,i){
  }).join("")+'</div></fieldset>';
 }
 function intake(){
- const i=b.view().intake;
+ const i=pendingIntake||b.view().intake;
  return '<section><h2>'+t("intake")+'</h2><form id="intake" novalidate><div class="intake-grid">'+
  ["goal","secondary","experience","days","minutes","equipment","favorites","avoided","movement","rir","rpe","diet","allergies","excludedFoods","meals","kitchen","budget","rhythm","sleep","recovery","unit"].map(k=>M.enums[k]?field(k,i):M.arrays[k]?checks(k,i):'<label class="checks"><span><input type="checkbox" name="'+k+'"'+(i[k]?" checked":"")+'>'+t(k)+'</span></label>').join("")+
  '</div><div class="actions">'+btn(t("build"),"build",{},"primary")+'</div></form></section>';
@@ -117,8 +117,15 @@ function render(){
  root.innerHTML='<header><img class="brand" src="../training-review-demo/brand.png" alt="FitMetZorge"><strong>'+t("title")+'</strong><div class="preferences"><label>'+t("language")+'<select id="lang">'+["nl","en","de"].map(x=>option(x,x.toUpperCase(),lang)).join("")+'</select></label><label>'+t("theme")+'<select id="theme">'+["light","dark"].map(x=>option(x,t(x),theme)).join("")+'</select></label>'+icon("rotate-cw",t("reset"),"reset")+'</div></header><div class="banner">'+t("demo")+'</div><main><nav aria-label="Route">'+["A","B"].map(x=>'<button type="button" data-route="'+x+'" aria-pressed="'+(route===x)+'">'+t("route"+x)+'</button>').join("")+'</nav><p class="small">'+t("fixture")+'</p><p id="feedback" role="status" aria-live="polite">'+esc(feedback)+'</p><div id="route-content">'+(route==="A"?human():independent())+'</div></main>';
 }
 function result(r){feedback=r.ok?t("success"):t("blocked")+" "+t(r.reason==="budget"?"budget_error":r.reason.startsWith("safety_")?r.reason.slice(7):r.reason);}
+function readIntake(){
+ const f=root.querySelector("#intake"),i=clone(C.defaults);
+ for(const k of Object.keys(M.enums)){const v=f.elements.namedItem(k).value;i[k]=typeof C.defaults[k]==="number"?Number(v):v;}
+ for(const k of Object.keys(M.arrays))i[k]=[...f.querySelectorAll('input[name="'+k+'"]:checked')].map(x=>x.value);
+ i.rir=f.elements.namedItem("rir").checked;i.rpe=f.elements.namedItem("rpe").checked;return i;
+}
 root.addEventListener("submit",e=>e.preventDefault());
 root.addEventListener("change",e=>{
+ if(e.target.closest("#intake"))pendingIntake=readIntake();
  if(e.target.id==="lang"){lang=e.target.value;render();}
  if(e.target.id==="theme"){theme=e.target.value;render();}
  if(e.target.id==="scenario"){scenario=e.target.value;a=FMZDemoModel.create(FMZDemoData.seeds[scenario]);feedback="";render();}
@@ -128,17 +135,14 @@ root.addEventListener("click",e=>{
  if(button.dataset.route){route=button.dataset.route;feedback="";render();return;}
  if(button.dataset.tab){tab=button.dataset.tab;render();return;}
  const action=button.dataset.action,d=JSON.parse(button.dataset.value||"{}");
- if(action==="reset"){a=FMZDemoModel.create(FMZDemoData.seeds.normal);b=M.create();scenario="normal";form=true;feedback="";render();return;}
+ if(action==="reset"){a=FMZDemoModel.create(FMZDemoData.seeds.normal);b=M.create();scenario="normal";form=true;pendingIntake=null;feedback="";render();return;}
  if(action==="a"){result(a.command(a.event(d.action,d.role,"cmd-ui-"+(++seq),d.version??null)));render();return;}
  if(action==="a-inject"){a.inject(root.querySelector("#a-inject").value);render();return;}
  if(action==="intake-form"){form=true;render();return;}
  if(action==="build"){
-  const f=root.querySelector("#intake"),i=clone(C.defaults);
-  for(const k of Object.keys(M.enums)){const v=f.elements.namedItem(k).value;i[k]=typeof C.defaults[k]==="number"?Number(v):v;}
-  for(const k of Object.keys(M.arrays))i[k]=[...f.querySelectorAll('input[name="'+k+'"]:checked')].map(x=>x.value);
-  i.rir=f.elements.namedItem("rir").checked;i.rpe=f.elements.namedItem("rpe").checked;
+  const i=readIntake();
   const intakeResult=b.command(b.event("intake",i));result(intakeResult);
-  if(intakeResult.ok){const r=b.command(b.event("build"));result(r);if(r.ok)form=false;}render();return;
+  if(intakeResult.ok){const r=b.command(b.event("build"));result(r);if(r.ok){form=false;pendingIntake=null;}}render();return;
  }
  let next=action;
  if(action==="replace"){next="edit";d.kind="replace";d.id=root.querySelector('[data-replace="'+d.session+':'+d.index+'"]').value;}
