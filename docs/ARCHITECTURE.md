@@ -5,7 +5,11 @@
 6E-7 COMPLETE / OWNER-ACCEPTED / FROZEN - SYNTHETIC DEMO ONLY.
 Physical ownercheck: member acceptance, trainer approval, separate application,
 v3 -> v4 -> v5 and refresh reset PASS. [Freeze receipt](PHASE6E7_FREEZE_RECEIPT.md).
-6E-8 implementation authorized by Decision 0049; verification/publication in progress.
+6E-8 TECHNICAL PASS / READY FOR OWNER REVIEW - SYNTHETIC STAGING DEMO.
+Final source 936dd3a954557cdb3f590fcd0775a2b8ce595809; Decision 0049.
+1673 offline tests PASS; 936 local and 936 published browser checks PASS.
+24 viewport/language/theme combinations; 76 published assets match Git exactly,
+and all 168 private offline/test paths return HTTP404. No physical 6E-8 test claimed.
 The human-coach route keeps the frozen workflow. The separate independent AI-member
 route has intake, editable training/nutrition/recovery proposals, member confirmation
 and separate activation, WITHOUT a trainer approval step. No trainer-loss fallback.

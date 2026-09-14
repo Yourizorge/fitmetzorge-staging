@@ -1,6 +1,6 @@
 # Package 6E-8 Technical Report
 
-LOCAL TECHNICAL PASS / PUBLICATION PENDING.
+6E-8 TECHNICAL PASS / READY FOR OWNER REVIEW - SYNTHETIC STAGING DEMO.
 Result acceptance/freeze and Package 6E-9 are NOT started.
 
 ## Baseline And Scope
@@ -9,6 +9,8 @@ Repository Yourizorge/fitmetzorge-staging, branch main.
 Initial local and remote HEAD: 5b65755f349379378b84b67a9f6ad3da0bab10db; clean worktree.
 Owner acceptance and preregistration: b58a6b3d0ff2f50e63d3ecf15a7e4be2e4d22289.
 Implementation commit: eee1c8cce04894d771cdc1a4ad0fcc2f7d5c68d4.
+Final implementation/verification source: 936dd3a954557cdb3f590fcd0775a2b8ce595809.
+Bootstrap compatibility: a4687afec152670edb13629acabb4c0adfa42e35.
 Exact file hashes are in PHASE6E8_EVIDENCE.json.
 6E-7 source c38d9d89797cd1f794463b645579f65fe4851930 is now owner-accepted/frozen;
 all 141 frozen files remain byte-identical. Historical results/receipts preserved.
@@ -20,9 +22,10 @@ No file cleanup, OneDrive deletion, reset or unrelated project operation.
 ## Implemented Contract
 
 - index.html is the ONLY existing-runtime exception: an early opt-in loader.
-  Without fmzDemo it preserves the original five-script execution order and DOM.
-  With the valid explicit demo URL it never starts theme/app/config/Auth/provider
-  scripts; it removes legacy login/app DOM and opens one sandbox=allow-scripts iframe.
+  Without fmzDemo all original static script tags and DOM remain intact, with no
+  demo script dependency. Only demo mode inserts an inert template before loading
+  its asynchronous mount; original theme/app/config scripts cannot execute.
+  It removes inert legacy DOM and opens one sandbox=allow-scripts iframe.
   Only allowlisted language/theme parameters cross the boundary. Unknown/duplicate
   parameters fail closed. No postMessage, storage or application-state bridge.
 - coach-review-demo contains a nine-file public synthetic UI/model/catalog.
@@ -62,11 +65,15 @@ No file cleanup, OneDrive deletion, reset or unrelated project operation.
 1673/1673 offline tests PASS: 352 new contract/hash/isolation tests + 1321 frozen
 functional regressions. No skips. Existing 30 6E-6 and 15 6E-7 executable concept
 examples remain exact; 33 new NL/EN/DE outputs reproduce from the new code.
+Old package-specific isolation runners have obsolete pre-6E-8 allowlists; they were
+not edited or treated as current scope gates. The new 141-source/59-runtime/exact-index
+and full-change-allowlist checks replace those gates; selected tests have no skips.
 Frozen observation tests remain limitation records, NOT successful recognition.
 O5 first-registration/expiry behavior is exercised by frozen tests, not reimplemented
 as a new persistent safety store. No safety/member storage exists in this demo.
 
-Local Edge browser: 909/909 checks, 120 layout inspections across 24 combinations:
+Local Edge browser: 936/936 checks PASS after the final corrections.
+The full matrix contains 120 layout inspections across 24 combinations:
 320/390/768/1280 px x NL/EN/DE x light/dark. Both approval/version/restore flows,
 actual edits, refusal states, W2 numbers, image rendering, refresh/close reset,
 no parent access, no storage attempts and no unexpected requests/errors.
@@ -91,11 +98,43 @@ its injected serviceWorker blocker also threw in an opaque sandbox. Corrected th
 harness, then proved actual execution order and zero app access without suppressing
 application errors. One long-interrupted rerun timed out and is not counted as PASS.
 Review added signal-evidence replay prevention before final verification.
+Unsubmitted intake choices now remain intact across language/theme changes and
+route navigation; the browser test explicitly preserves exercise exclusions.
+
+Final compatibility review replaced document-written normal scripts with their
+original static tags. Chrome can intervene against cross-site document-written
+scripts on slow connections ([official explanation](https://developer.chrome.com/blog/removing-document-write)).
+Only demo mode now creates an inert template, without injecting executable script
+tags through document.write. The normal app does not load the demo entry at all.
+Browsers may speculatively fetch existing PUBLIC libraries from the original HTML
+(including the existing static CDN URL); these are not Auth/member/provider API
+calls. Browser tests fulfill such preloads with execution markers and prove they
+never execute in demo mode. Storage/parent access and actual API-egress checks remain
+strict; preloads are reported separately, not concealed as zero network traffic.
 
 ## Publication And Commits
 
 See PHASE6E8_EVIDENCE.json for exact source hashes, local/published proof and commits.
-Publication verification is pending at this intermediate report stage.
+Final source publication: 936dd3a954557cdb3f590fcd0775a2b8ce595809.
+[Pages run 34826303976](https://github.com/Yourizorge/fitmetzorge-staging/actions/runs/34826303976)
+completed successfully. Published Edge browser: 936/936 checks PASS, 120 layout
+inspections across all 24 variants, no unexpected execution/egress/storage errors.
+All 76 public files are byte-identical to Git (60 legacy + 7 frozen 6E-7 + 9 new
+synthetic files); all 168 private offline/test paths return HTTP404.
+The 59 protected legacy files and 141 frozen sources remain unchanged. The only
+baseline index diff is the small opt-in inert-template bootstrap, not normal app logic.
+Immutable source publication artifact:
+supabase/.temp/phase6e8-publication-936dd3a954557cdb3f590fcd0775a2b8ce595809.json.
+The closing docs-only publication is verified separately against the same runtime.
+
+Commits:
+- b58a6b3d0ff2f50e63d3ecf15a7e4be2e4d22289: 6E-7 freeze / 6E-8 preregistration.
+- eee1c8cce04894d771cdc1a4ad0fcc2f7d5c68d4: initial executable 6E-8 implementation.
+- e28fed0191e88e2d59a7c3bdcbb7a15b5e7fc431: local evidence and scoped ownerreview.
+- a4687afec152670edb13629acabb4c0adfa42e35: native bootstrap / inert demo isolation.
+- 936dd3a954557cdb3f590fcd0775a2b8ce595809: intake choice retention and final source.
+- The containing final documentation commit records this verified result; its exact
+  remote HEAD is reported with the final push/Pages check, avoiding self-hash recursion.
 Only staging main/Pages is authorized. No production, APPFMZ or separate website.
 
 ## Remaining Limits And Next Step

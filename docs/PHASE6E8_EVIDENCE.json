@@ -1,7 +1,7 @@
 {
-  "status": "LOCAL TECHNICAL PASS / PUBLICATION PENDING",
+  "status": "TECHNICAL PASS / READY FOR OWNER REVIEW",
   "synthetic_only": true,
-  "source_commit": "eee1c8cce04894d771cdc1a4ad0fcc2f7d5c68d4",
+  "source_commit": "936dd3a954557cdb3f590fcd0775a2b8ce595809",
   "baseline": "5b65755f349379378b84b67a9f6ad3da0bab10db",
   "preregistration_commit": "b58a6b3d0ff2f50e63d3ecf15a7e4be2e4d22289",
   "sources": [
@@ -25,9 +25,9 @@
     },
     {
       "file": "_offline/phase6e8/test/browser.cjs",
-      "git_blob": "5680bc5a23f8de4a9dba98eb517ab3e8a4e77320",
-      "sha256": "feaf6591f8b8f9f4b270a00ad29f593a6798a56991caf88e52cdd81768aa004a",
-      "working_sha256": "feaf6591f8b8f9f4b270a00ad29f593a6798a56991caf88e52cdd81768aa004a"
+      "git_blob": "4b8f49018e6d6f1d8c85efb4714f26ee5235dada",
+      "sha256": "91496c0d07a03bf01f31daa3ed7b4f3985fc1f4181bddaa082469819854c232a",
+      "working_sha256": "91496c0d07a03bf01f31daa3ed7b4f3985fc1f4181bddaa082469819854c232a"
     },
     {
       "file": "_offline/phase6e8/test/contract.test.cjs",
@@ -37,15 +37,15 @@
     },
     {
       "file": "_offline/phase6e8/test/evidence.cjs",
-      "git_blob": "9ccc0d451732cf8356bbb6f1ba845dee75fdf129",
-      "sha256": "ff0b0f8fdfe15ebcbaa7902de8506d053ef7f5dcf87432078c97cc0469838a97",
-      "working_sha256": "ff0b0f8fdfe15ebcbaa7902de8506d053ef7f5dcf87432078c97cc0469838a97"
+      "git_blob": "aa487fd79396f7e3cc46d822fb4171c8c0b874ad",
+      "sha256": "f45ffe7403583f5cb14073f755febdbb38c5b3c61a20aa591f335ced20035c58",
+      "working_sha256": "f45ffe7403583f5cb14073f755febdbb38c5b3c61a20aa591f335ced20035c58"
     },
     {
       "file": "_offline/phase6e8/test/isolation.test.cjs",
-      "git_blob": "fe8b0e0b6e057a60c8abbbee8fec53794c25ebf2",
-      "sha256": "ef084fe3a4f989be425ad661b3457364c8887719fc54842d06c6c4f01e898a37",
-      "working_sha256": "ef084fe3a4f989be425ad661b3457364c8887719fc54842d06c6c4f01e898a37"
+      "git_blob": "500e2bc0705a74b76c712720d824001fee2d85b3",
+      "sha256": "1cc0a702c52ec2067a29d616bb3b7a0b04be6e35262eade99b473b8ef39e2786",
+      "working_sha256": "1cc0a702c52ec2067a29d616bb3b7a0b04be6e35262eade99b473b8ef39e2786"
     },
     {
       "file": "_offline/phase6e8/test/publication.cjs",
@@ -61,9 +61,9 @@
     },
     {
       "file": "coach-review-demo/app.js",
-      "git_blob": "495831caa7165d1d9c284e95d22faf31e707a050",
-      "sha256": "0e65d22eea9eacfb5afca8445e164c5b69f74e3f1b2926b50cc2a98292f3a562",
-      "working_sha256": "0e65d22eea9eacfb5afca8445e164c5b69f74e3f1b2926b50cc2a98292f3a562"
+      "git_blob": "ed85e23081cede7dc210b18131d8f64673e3e24a",
+      "sha256": "e89225593140ef61c1c61a9c2e87a24ede31047026f11fa02b0ce3a1ce738a94",
+      "working_sha256": "e89225593140ef61c1c61a9c2e87a24ede31047026f11fa02b0ce3a1ce738a94"
     },
     {
       "file": "coach-review-demo/catalog.js",
@@ -85,9 +85,9 @@
     },
     {
       "file": "coach-review-demo/entry.js",
-      "git_blob": "8a74c94bb7e1589172f13d7b3dd91289bdabeb43",
-      "sha256": "9a8be5f686cbcae7b57728e068ef60336a6e489b2452852f466db0622b5cf52e",
-      "working_sha256": "9a8be5f686cbcae7b57728e068ef60336a6e489b2452852f466db0622b5cf52e"
+      "git_blob": "9825e5306adb962af2353bb69d08af7fc439299f",
+      "sha256": "6232e5d387182328141de46e4d862f6c60777378803d926e4be199d545b26989",
+      "working_sha256": "6232e5d387182328141de46e4d862f6c60777378803d926e4be199d545b26989"
     },
     {
       "file": "coach-review-demo/index.html",
@@ -115,9 +115,9 @@
     },
     {
       "file": "index.html",
-      "git_blob": "455703e514f67a93cbbe6f7427f496a8a77e4dae",
-      "sha256": "51f733ee50b37f11e8c933d22bedfe7f7a2b26a7f08054c0dd88e6537afc2ead",
-      "working_sha256": "51f733ee50b37f11e8c933d22bedfe7f7a2b26a7f08054c0dd88e6537afc2ead"
+      "git_blob": "8f218c5700b3fb059f4b4ac515786d674e40d966",
+      "sha256": "559c98ad4071846d3aab11ee068cf892bfda73d85410ed1c636c88f59a1a32ac",
+      "working_sha256": "559c98ad4071846d3aab11ee068cf892bfda73d85410ed1c636c88f59a1a32ac"
     }
   ],
   "frozen": {
@@ -196,15 +196,16 @@
       }
     },
     "raw_artifact": "supabase/.temp/phase6e8-tests.json",
-    "raw_sha256": "c08eb4ecd1f0b4b9f65dfc5849967c3c4af885d8b7f40d888526c6b72d63e3ac"
+    "raw_sha256": "673dcbf174b56a53c06055b52bbac40c6d86238506f3a287865c5fa76dc82694"
   },
   "browser": {
     "local": {
       "artifact": "supabase/.temp/phase6e8-browser/local.json",
-      "sha256": "c8c3dce7735ba7bf984de711e36968c226096af2519eaad5359788d63c7114c0",
-      "checks": 909,
-      "passed": 909,
+      "sha256": "3b1c8f033edc74478c7d909574115fa6e981a6866c8e1995471b2cbbe4efe684",
+      "checks": 936,
+      "passed": 936,
       "layouts": 120,
+      "static_preloads": 240,
       "errors": [],
       "screenshots": [
         {
@@ -241,9 +242,59 @@
         }
       ]
     },
-    "published": null
+    "published": {
+      "artifact": "supabase/.temp/phase6e8-browser/published.json",
+      "sha256": "7c9871355aca748939b9ff8a19adfcbf196f99f0098a7efaa2d1784fe5f1dccf",
+      "checks": 936,
+      "passed": 936,
+      "layouts": 120,
+      "static_preloads": 240,
+      "errors": [],
+      "screenshots": [
+        {
+          "artifact": "supabase/.temp/phase6e8-browser/published-B-390-nl-light.png",
+          "sha256": "7aaec0e04b43906c2f8e71aa28eab5809b74659fa8fa5b785c87b3df632cc4ea"
+        },
+        {
+          "artifact": "supabase/.temp/phase6e8-browser/published-A-390-nl-light.png",
+          "sha256": "7a1a8d4596001e3769920d9d1cfff74065ab0b46d584f9f2014c54b32579e553"
+        },
+        {
+          "artifact": "supabase/.temp/phase6e8-browser/published-B-390-nl-dark.png",
+          "sha256": "a786da2481ad78402ad49cc7b20a246c533d900bddb577f8df73ea1dcc705589"
+        },
+        {
+          "artifact": "supabase/.temp/phase6e8-browser/published-A-390-nl-dark.png",
+          "sha256": "ec63bbf8639e7a2f7a13e3153201a05031bef1decdc86ab9c163dabc0acebd56"
+        },
+        {
+          "artifact": "supabase/.temp/phase6e8-browser/published-B-1280-nl-light.png",
+          "sha256": "087feca1e2a3d17dbcdeb4942d2be5873a722d8f06fe22a4b46fcdd18b34fa37"
+        },
+        {
+          "artifact": "supabase/.temp/phase6e8-browser/published-A-1280-nl-light.png",
+          "sha256": "cca8f282bd1bee96d967503d8d0897c4e9282698dd29b7f20fa2ae0047248402"
+        },
+        {
+          "artifact": "supabase/.temp/phase6e8-browser/published-B-1280-nl-dark.png",
+          "sha256": "bf7eb24eeec9ae22cb7aef67ca244503d057714413ef17856dd64f3978da0cd7"
+        },
+        {
+          "artifact": "supabase/.temp/phase6e8-browser/published-A-1280-nl-dark.png",
+          "sha256": "ab31eafb4ab11ef4c2bf8d53bf77042f0e306df3986d751298dcee291b61f575"
+        }
+      ]
+    }
   },
-  "publication": null,
+  "publication": {
+    "head": "936dd3a954557cdb3f590fcd0775a2b8ce595809",
+    "assets": 76,
+    "all_identical": true,
+    "private_paths": 168,
+    "all_private_404": true,
+    "errors": [],
+    "raw_sha256": "648c72157127ad4483a3a9f120db7355f6fdd4c0796d7c4b235bc71866dbf779"
+  },
   "examples": {
     "file": "docs/PHASE6E8_EXAMPLES.json",
     "count": 33,
