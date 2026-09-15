@@ -12,7 +12,12 @@ providers or production. [Preregistered scope/tests](PHASE6E9_PREREGISTRATION.md
 final published browser: 200 checks / 72 layouts, all pass. No physical phone claim.
 34/34 migration identities; all 66 pre-existing data fingerprints unchanged.
 219 protected files and 76 prior public assets unchanged; 4 isolated demo assets.
-Temporary Auth/fixtures removed, feature flag off. No live AI or real members.
+Original delivery cleanup completed. A new owner-approved 24-hour retest window is
+now OPEN for exactly three new synthetic identities / two workspaces, until
+2026-09-16 09:39:58.660473 UTC (11:39:58.660473 Europe/Amsterdam).
+14 live groups / 200 published browser checks / 72 layouts PASS; 68 existing-cohort
+table fingerprints unchanged. No live AI or real members. No 6E-9 owner freeze.
+[Current retest receipt](PHASE6E9_OWNER_RETEST_WINDOW.md) supersedes the closed-window status.
 [Technical report](PHASE6E9_TECHNICAL_REPORT.md), [owner overview](PHASE6E9_OWNER_OVERVIEW.md)
 and [evidence](PHASE6E9_EVIDENCE.json). [6E-10 proposal](PHASE6E10_PROPOSAL.md) only.
 All earlier frozen contracts and accepted Training remain protected.

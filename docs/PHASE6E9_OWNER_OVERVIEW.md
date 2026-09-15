@@ -27,9 +27,12 @@ Een geslaagde toepassing heeft altijd een serverversie en auditreferentie.
 ## Telefoonretest
 
 De aparte URL: [synthetische backenddemo](https://yourizorge.github.io/fitmetzorge-staging/coach-backend-demo/).
-Na de verplichte cleanup is deze bewust gesloten: er blijven geen testaccounts over.
-Voor jouw fysieke retest is een nieuw kort synthetisch testvenster nodig, met veilig
-aangeleverde tijdelijke inloggegevens. Gebruik nooit een bestaand ledenaccount.
+Nieuw owner-testvenster OPEN tot woensdag 16 september 2026, 11:39:58.660473
+Nederlandse tijd. Exact drie nieuwe identiteiten, geen bestaand ledenaccount.
+De drie instelmails zijn geaccepteerd voor verzending; ontvangst moet de owner bevestigen.
+Zie [actuele toegang en testvolgorde](PHASE6E9_OWNER_RETEST_WINDOW.md).
+De oorspronkelijke v3-v5-volgorde hieronder is historisch: het behouden testbewijs
+laat A nu op v6 staan met een terugzetvoorstel naar v3; B staat op v3 met een concept.
 
 1. Log in als tijdelijk A-lid, accepteer en wissel daarna naar de gekoppelde trainer.
 2. Keur goed en pas apart toe. Ververs: v4 blijft. Herstel v3, herhaal beide

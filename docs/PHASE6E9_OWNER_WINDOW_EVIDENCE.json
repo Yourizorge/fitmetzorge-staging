@@ -1,0 +1,2408 @@
+{
+  "status": "OPEN / AWAITING PHYSICAL OWNER RETEST",
+  "implementation": "05bd11ef25c8972d88e71f374ef422f22cc18463",
+  "expires_at": "2026-09-16 09:39:58.660473+00",
+  "synthetic_accounts": 3,
+  "workspaces": 2,
+  "mail_requests": 3,
+  "mail_api_accepted": true,
+  "delivery_confirmed": false,
+  "checks": [
+    "disabled window denies the new valid login",
+    "ordinary authenticated principal without fixture denied (same new B identity before enrollment)",
+    "anonymous Edge and RPC denied",
+    "exactly three actors; homes and cross-route reads isolated",
+    "member cannot approve as trainer or forge role, route or proposal data",
+    "published mobile workflow, separate approvals, restore, lost-response retry and relogin",
+    "old apply cannot produce a second version or partial write",
+    "stale revision and same-key altered proposal rejected; same apply retry is idempotent",
+    "B has no trainer approval; rejection and edit invalidate activation",
+    "expired server window denies existing sessions and direct table reads",
+    "audit RLS and direct writes cannot cross identity boundaries",
+    "owner start state retained with no automatic approval or application",
+    "all preexisting business rows unchanged excluding only three new profiles and two fixture workspaces",
+    "all 34 migration records unchanged"
+  ],
+  "browser": {
+    "checks": 200,
+    "layouts": 72,
+    "errors": [],
+    "physical_phone": false
+  },
+  "start": {
+    "A": {
+      "version": 6,
+      "revision": 13,
+      "status": "member_pending",
+      "versions": [
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    "B": {
+      "version": 3,
+      "revision": 18,
+      "status": "member_pending",
+      "versions": [
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  "existing_tables_before": [
+    {
+      "name": "ai_private.action_policies",
+      "rows": 5,
+      "sha256": "9a9ba9badc89b1641492fabf8bccd2d43409f81827da846893fb00099940efa6"
+    },
+    {
+      "name": "ai_private.analysis_jobs",
+      "rows": 11,
+      "sha256": "49fa64f8d29ff2d3222ff8f8ea5f2445103f42a81d04b0ef5d13daae40e57d72"
+    },
+    {
+      "name": "ai_private.analysis_safety_recoveries",
+      "rows": 2,
+      "sha256": "f05747ff1ef1eaa0841cace7982202db71c231ae8edabf27febb5a58e562d3f3"
+    },
+    {
+      "name": "ai_private.audit_events",
+      "rows": 56,
+      "sha256": "5ca747c65ae3332c947f4add856a0057f65e8bdc9214da70b8eb43a4f2456963"
+    },
+    {
+      "name": "ai_private.budget_accounts",
+      "rows": 1,
+      "sha256": "cdf61b0c1552c4efa4c7fa9e1aa899bea30ddb28dc01c633f64d40c0d13152db"
+    },
+    {
+      "name": "ai_private.budget_policies",
+      "rows": 1,
+      "sha256": "367fa102a30bf8a523c6081af40d5267ee5a4332740c9061452bad327ac83775"
+    },
+    {
+      "name": "ai_private.consent_documents",
+      "rows": 12,
+      "sha256": "7ab27e9a1f7f2d6ce6c59f3fbd92aa15171727affe254a9a37c2e688c258423c"
+    },
+    {
+      "name": "ai_private.feature_flags",
+      "rows": 3,
+      "sha256": "7229b1ea5ee3208c471aab06630e31b66c6b924d3f457348f56b9d681664a8c3"
+    },
+    {
+      "name": "ai_private.phase6c_runtime_config",
+      "rows": 1,
+      "sha256": "f2c03927101ad1067574cea072e8db207574b18fb8c755077b42b4d4c4b91159"
+    },
+    {
+      "name": "ai_private.phase6d_runtime_config",
+      "rows": 1,
+      "sha256": "f6c8a5115518925c319e36399311c09b17f3f67355338380fc90c973647aaa73"
+    },
+    {
+      "name": "ai_private.provider_configurations",
+      "rows": 1,
+      "sha256": "472c09c0113f39d65d25dc30089e440b99ecb05557f57aacfa6c51354ffca74e"
+    },
+    {
+      "name": "ai_private.provider_models",
+      "rows": 2,
+      "sha256": "b46d9c5b1c78d2a6d81e46bd66178c4092c77012ac683f9a898e7b51293ab84a"
+    },
+    {
+      "name": "ai_private.provider_payload_fields",
+      "rows": 9,
+      "sha256": "8db50ce9555942115bc68f147aac98d2fd1dd556df3c7ae0abad0893a272214a"
+    },
+    {
+      "name": "ai_private.provider_test_budget",
+      "rows": 1,
+      "sha256": "daa69b1556887933ae96eed6ad3efc8beb3daed6647f04c6447d2dd85c20b267"
+    },
+    {
+      "name": "ai_private.provider_test_runs",
+      "rows": 4,
+      "sha256": "3ac31e1b47080ff9f6f12cad5705d48e6462a5a2e54e6d5a148265ffcf4a71d9"
+    },
+    {
+      "name": "ai_private.rate_buckets",
+      "rows": 19,
+      "sha256": "f1c8bf527775497ee8fa31b1a43213a5cec64632b3594cc60a80abc9fbaf5f38"
+    },
+    {
+      "name": "ai_private.rate_policies",
+      "rows": 4,
+      "sha256": "c947f6fd842e9525ea919e9df9419c45b95c89527a417f1d716cebc06bba178f"
+    },
+    {
+      "name": "ai_private.runs",
+      "rows": 27,
+      "sha256": "bfc86a4e7972edd5517fde52456bbae0af3f2950dfe341f6a40edfc402601d04"
+    },
+    {
+      "name": "ai_private.safety_events",
+      "rows": 3,
+      "sha256": "9f82b3e7f62d1c65ce7b3c4263817b42f0055aa4611a7cdf9f647f98193c84f8"
+    },
+    {
+      "name": "ai_private.structured_schemas",
+      "rows": 2,
+      "sha256": "4b93bc774a2c6c695486b7a73dd08a50dc911b3b8483fa34af156131107d8f1c"
+    },
+    {
+      "name": "ai_private.usage_ledger",
+      "rows": 54,
+      "sha256": "872155a9975a6f2a8ca302f8ba2418d8d23e13aef8f80e3d913a0f4ce5bad2f5"
+    },
+    {
+      "name": "legacy_auth_private.client_invitations",
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "public.ai_action_decisions",
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "public.ai_action_proposals",
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "public.ai_analysis_lifecycle_requests",
+      "rows": 3,
+      "sha256": "523a3106a5904020b9b25998b3be6c0fcf65b730393daf214aca967f03c6b0ad"
+    },
+    {
+      "name": "public.ai_analysis_preferences",
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "public.ai_analysis_results",
+      "rows": 12,
+      "sha256": "a220513e5298d51d6fcf8b325c7c1b4046264e0a1f245ed09c6e7a20cd95a499"
+    },
+    {
+      "name": "public.ai_consent_events",
+      "rows": 3,
+      "sha256": "0f93d8f0b7242e5698ba92b08b182931e00be20217e4379a50c3b57a2f0cc0d9"
+    },
+    {
+      "name": "public.ai_context_manifests",
+      "rows": 12,
+      "sha256": "e7e555efa753cbcc86efecdbfd3a82bf4ef63933eaf760fff774551cd61a81e8"
+    },
+    {
+      "name": "public.ai_data_lifecycle_requests",
+      "rows": 4,
+      "sha256": "b3f5ed4e5622c4825150624074a8d07377839f1f3b686c2374ff3ccc76649ae3"
+    },
+    {
+      "name": "public.ai_member_safety_state",
+      "rows": 1,
+      "sha256": "cd76142b2a0037862539f137c188bb0a6fa8f4c87305fa4e826c96d88b54ea4c"
+    },
+    {
+      "name": "public.ai_messages",
+      "rows": 30,
+      "sha256": "cae3c74e611bb501ef5dba1e8494c03af71e3f8209492e4d32fcff405b908660"
+    },
+    {
+      "name": "public.ai_threads",
+      "rows": 10,
+      "sha256": "9dde9768d82c715c50498c5bcd59f71111eb0c407093b41700428f0befb39032"
+    },
+    {
+      "name": "public.body_measurements",
+      "rows": 1,
+      "sha256": "006d936d2f02a0752cd1c70921016da43bb69f50d3461548527002f1462068d6"
+    },
+    {
+      "name": "public.coach_workspaces",
+      "rows": 2,
+      "sha256": "0cbba5ff33c971afb56322d300c77cc13962ee023200fef7590a41158c68273b"
+    },
+    {
+      "name": "public.entitlements",
+      "rows": 4,
+      "sha256": "e65f9e98e8164c3d87914bbb4cb2bf7687287d2b91ebf795476852a31e5857a4"
+    },
+    {
+      "name": "public.exercises",
+      "rows": 898,
+      "sha256": "61526727fd3d45f5cb27e90f6b30d4246d2cb2fee866cb610d3f829603780099"
+    },
+    {
+      "name": "public.fmz6e9_audit",
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "public.fmz6e9_notices",
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "public.food_aliases",
+      "rows": 197,
+      "sha256": "22323e7e18b42719c52c2c3e257f695c883afc2242c10ef75ac8365ed460d6af"
+    },
+    {
+      "name": "public.food_log_items",
+      "rows": 22,
+      "sha256": "db3a7d7a895cb86afb804099e8c201254e6d661e3668543f951e0a4ba5607056"
+    },
+    {
+      "name": "public.food_logs",
+      "rows": 5,
+      "sha256": "7c6d379b2146056c6b716721e507e143daf09df7410210046f5653e6038a21fe"
+    },
+    {
+      "name": "public.food_portions",
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "public.foods",
+      "rows": 65,
+      "sha256": "26b6b9e52ce459254d4277fd9961e8ac045a8fb5e9347e97c1e5cade7b22deca"
+    },
+    {
+      "name": "public.member_app_preferences",
+      "rows": 1,
+      "sha256": "8a390e02af8fd2878d23fe17066bf02145020b547c1f8dcd91507a77bdc5a407"
+    },
+    {
+      "name": "public.member_notifications",
+      "rows": 12,
+      "sha256": "3e7518e8a4cea937016abb9ee4f2cf1ed5c84f4c0455e21f6b48418423eee01d"
+    },
+    {
+      "name": "public.nutrition_food_ingestions",
+      "rows": 1,
+      "sha256": "accc46d558fe2a3b3ff1e8c7c45c2fc4e455b75587c14d7feb6d6659a4834a60"
+    },
+    {
+      "name": "public.nutrition_off_catalog_releases",
+      "rows": 1,
+      "sha256": "fbe5b97f6379d3564e29bb35df7419c08513e9333c8251305cabcda7003bd8e3"
+    },
+    {
+      "name": "public.nutrition_off_product_names",
+      "rows": 74184,
+      "sha256": "75c6f06fb337a78fd55a9fff1d283cf69275f071ace0b55d98956fe967891d6c"
+    },
+    {
+      "name": "public.nutrition_off_products",
+      "rows": 24458,
+      "sha256": "163c8075d8f5166773201185d10a01917f61fe0d40398d475fd44b690f03c973"
+    },
+    {
+      "name": "public.nutrition_preferences",
+      "rows": 2,
+      "sha256": "410ddc28fe6ee54f4f132c0b86070920cbbaa95e1b8b4be4f1b85ff9a3e8a5fe"
+    },
+    {
+      "name": "public.nutrition_provider_food_cache",
+      "rows": 15,
+      "sha256": "4c04094b7434e663fb6a7e63f41f3d0488dbcaf8c20248a29f46d9b90eec75a5"
+    },
+    {
+      "name": "public.nutrition_provider_query_cache",
+      "rows": 17,
+      "sha256": "40fdb69a3dc8653ac60d7e9f88cb1a75d125e687fad470e45dc810376e1b1b86"
+    },
+    {
+      "name": "public.nutrition_provider_rate_buckets",
+      "rows": 68,
+      "sha256": "577c6e82cb24c1d2096db839327e9441ded0798db8c95fb8e1557d0b1dd58272"
+    },
+    {
+      "name": "public.nutrition_provider_runtime_state",
+      "rows": 2,
+      "sha256": "4fd4abdcc447fc946097c38249e935fab758ae8ecc450da248d0cf66b87fb96c"
+    },
+    {
+      "name": "public.nutrition_targets",
+      "rows": 3,
+      "sha256": "c94b7d56f03de2449d4e98e4158395d1c135bd8d5faed3b8b2f3656dea93e43d"
+    },
+    {
+      "name": "public.profiles",
+      "rows": 7,
+      "sha256": "99d6df0a8c96e930c515ab87cfff14ec1397589c040b31e16245e1d3252216c8"
+    },
+    {
+      "name": "public.progress_goals",
+      "rows": 1,
+      "sha256": "6511f28f85183bc7452d51652ce6902bb44b23d938eb074b3054f13f6194fff5"
+    },
+    {
+      "name": "public.progress_preferences",
+      "rows": 2,
+      "sha256": "d28eece70fbf6f620950ee9da2495a5a848b58bad355dcc7b19265b804c97b3d"
+    },
+    {
+      "name": "public.recovery_logs",
+      "rows": 1,
+      "sha256": "bf8697b366752cf6fe0bc04952ceded89599eefc15f8a173f2a159f4f9fc8095"
+    },
+    {
+      "name": "public.training_plan_days",
+      "rows": 7,
+      "sha256": "e2a5ca07dd5f1c2222e1c2273a6a1391db444c8074ba988199d1089bd9dbe04e"
+    },
+    {
+      "name": "public.training_plan_exercises",
+      "rows": 14,
+      "sha256": "00ef1491f75afa09ba487936d4f71f58c65e331505513fe903cc7a4838d8aee6"
+    },
+    {
+      "name": "public.training_plans",
+      "rows": 7,
+      "sha256": "e7f66e81ea95ac60f6ac00027b793d1a98611ec3ee27fb904ed6d7c1648c7b3a"
+    },
+    {
+      "name": "public.user_onboarding",
+      "rows": 3,
+      "sha256": "c1add9902fd2c1957f2bd3d1d1ade218e6cf4987048d5cd8f596ca3c20ad78f2"
+    },
+    {
+      "name": "public.user_settings",
+      "rows": 3,
+      "sha256": "21949dc9a849fa4a41b241b5c18318c6da8aa1d94d1260c24129c8b0d97df654"
+    },
+    {
+      "name": "public.weight_logs",
+      "rows": 2,
+      "sha256": "154b7cdde3780ce4dcc7bd2d858dd9e7ba9213519430bf6cfa282c7dc9e086ea"
+    },
+    {
+      "name": "public.workout_sessions",
+      "rows": 21,
+      "sha256": "79081cd7969695c1e1c88a7aaaf95957155be4e4b2bb51a86266ac94f86b5578"
+    },
+    {
+      "name": "public.workout_set_logs",
+      "rows": 15,
+      "sha256": "dbd66ca11b846d23f1885d26dd5a9318030318b780a6840ca81691827d2f41b2"
+    }
+  ],
+  "existing_tables_after": [
+    {
+      "name": "ai_private.action_policies",
+      "rows": 5,
+      "sha256": "9a9ba9badc89b1641492fabf8bccd2d43409f81827da846893fb00099940efa6"
+    },
+    {
+      "name": "ai_private.analysis_jobs",
+      "rows": 11,
+      "sha256": "49fa64f8d29ff2d3222ff8f8ea5f2445103f42a81d04b0ef5d13daae40e57d72"
+    },
+    {
+      "name": "ai_private.analysis_safety_recoveries",
+      "rows": 2,
+      "sha256": "f05747ff1ef1eaa0841cace7982202db71c231ae8edabf27febb5a58e562d3f3"
+    },
+    {
+      "name": "ai_private.audit_events",
+      "rows": 56,
+      "sha256": "5ca747c65ae3332c947f4add856a0057f65e8bdc9214da70b8eb43a4f2456963"
+    },
+    {
+      "name": "ai_private.budget_accounts",
+      "rows": 1,
+      "sha256": "cdf61b0c1552c4efa4c7fa9e1aa899bea30ddb28dc01c633f64d40c0d13152db"
+    },
+    {
+      "name": "ai_private.budget_policies",
+      "rows": 1,
+      "sha256": "367fa102a30bf8a523c6081af40d5267ee5a4332740c9061452bad327ac83775"
+    },
+    {
+      "name": "ai_private.consent_documents",
+      "rows": 12,
+      "sha256": "7ab27e9a1f7f2d6ce6c59f3fbd92aa15171727affe254a9a37c2e688c258423c"
+    },
+    {
+      "name": "ai_private.feature_flags",
+      "rows": 3,
+      "sha256": "7229b1ea5ee3208c471aab06630e31b66c6b924d3f457348f56b9d681664a8c3"
+    },
+    {
+      "name": "ai_private.phase6c_runtime_config",
+      "rows": 1,
+      "sha256": "f2c03927101ad1067574cea072e8db207574b18fb8c755077b42b4d4c4b91159"
+    },
+    {
+      "name": "ai_private.phase6d_runtime_config",
+      "rows": 1,
+      "sha256": "f6c8a5115518925c319e36399311c09b17f3f67355338380fc90c973647aaa73"
+    },
+    {
+      "name": "ai_private.provider_configurations",
+      "rows": 1,
+      "sha256": "472c09c0113f39d65d25dc30089e440b99ecb05557f57aacfa6c51354ffca74e"
+    },
+    {
+      "name": "ai_private.provider_models",
+      "rows": 2,
+      "sha256": "b46d9c5b1c78d2a6d81e46bd66178c4092c77012ac683f9a898e7b51293ab84a"
+    },
+    {
+      "name": "ai_private.provider_payload_fields",
+      "rows": 9,
+      "sha256": "8db50ce9555942115bc68f147aac98d2fd1dd556df3c7ae0abad0893a272214a"
+    },
+    {
+      "name": "ai_private.provider_test_budget",
+      "rows": 1,
+      "sha256": "daa69b1556887933ae96eed6ad3efc8beb3daed6647f04c6447d2dd85c20b267"
+    },
+    {
+      "name": "ai_private.provider_test_runs",
+      "rows": 4,
+      "sha256": "3ac31e1b47080ff9f6f12cad5705d48e6462a5a2e54e6d5a148265ffcf4a71d9"
+    },
+    {
+      "name": "ai_private.rate_buckets",
+      "rows": 19,
+      "sha256": "f1c8bf527775497ee8fa31b1a43213a5cec64632b3594cc60a80abc9fbaf5f38"
+    },
+    {
+      "name": "ai_private.rate_policies",
+      "rows": 4,
+      "sha256": "c947f6fd842e9525ea919e9df9419c45b95c89527a417f1d716cebc06bba178f"
+    },
+    {
+      "name": "ai_private.runs",
+      "rows": 27,
+      "sha256": "bfc86a4e7972edd5517fde52456bbae0af3f2950dfe341f6a40edfc402601d04"
+    },
+    {
+      "name": "ai_private.safety_events",
+      "rows": 3,
+      "sha256": "9f82b3e7f62d1c65ce7b3c4263817b42f0055aa4611a7cdf9f647f98193c84f8"
+    },
+    {
+      "name": "ai_private.structured_schemas",
+      "rows": 2,
+      "sha256": "4b93bc774a2c6c695486b7a73dd08a50dc911b3b8483fa34af156131107d8f1c"
+    },
+    {
+      "name": "ai_private.usage_ledger",
+      "rows": 54,
+      "sha256": "872155a9975a6f2a8ca302f8ba2418d8d23e13aef8f80e3d913a0f4ce5bad2f5"
+    },
+    {
+      "name": "legacy_auth_private.client_invitations",
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "public.ai_action_decisions",
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "public.ai_action_proposals",
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "public.ai_analysis_lifecycle_requests",
+      "rows": 3,
+      "sha256": "523a3106a5904020b9b25998b3be6c0fcf65b730393daf214aca967f03c6b0ad"
+    },
+    {
+      "name": "public.ai_analysis_preferences",
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "public.ai_analysis_results",
+      "rows": 12,
+      "sha256": "a220513e5298d51d6fcf8b325c7c1b4046264e0a1f245ed09c6e7a20cd95a499"
+    },
+    {
+      "name": "public.ai_consent_events",
+      "rows": 3,
+      "sha256": "0f93d8f0b7242e5698ba92b08b182931e00be20217e4379a50c3b57a2f0cc0d9"
+    },
+    {
+      "name": "public.ai_context_manifests",
+      "rows": 12,
+      "sha256": "e7e555efa753cbcc86efecdbfd3a82bf4ef63933eaf760fff774551cd61a81e8"
+    },
+    {
+      "name": "public.ai_data_lifecycle_requests",
+      "rows": 4,
+      "sha256": "b3f5ed4e5622c4825150624074a8d07377839f1f3b686c2374ff3ccc76649ae3"
+    },
+    {
+      "name": "public.ai_member_safety_state",
+      "rows": 1,
+      "sha256": "cd76142b2a0037862539f137c188bb0a6fa8f4c87305fa4e826c96d88b54ea4c"
+    },
+    {
+      "name": "public.ai_messages",
+      "rows": 30,
+      "sha256": "cae3c74e611bb501ef5dba1e8494c03af71e3f8209492e4d32fcff405b908660"
+    },
+    {
+      "name": "public.ai_threads",
+      "rows": 10,
+      "sha256": "9dde9768d82c715c50498c5bcd59f71111eb0c407093b41700428f0befb39032"
+    },
+    {
+      "name": "public.body_measurements",
+      "rows": 1,
+      "sha256": "006d936d2f02a0752cd1c70921016da43bb69f50d3461548527002f1462068d6"
+    },
+    {
+      "name": "public.coach_workspaces",
+      "rows": 2,
+      "sha256": "0cbba5ff33c971afb56322d300c77cc13962ee023200fef7590a41158c68273b"
+    },
+    {
+      "name": "public.entitlements",
+      "rows": 4,
+      "sha256": "e65f9e98e8164c3d87914bbb4cb2bf7687287d2b91ebf795476852a31e5857a4"
+    },
+    {
+      "name": "public.exercises",
+      "rows": 898,
+      "sha256": "61526727fd3d45f5cb27e90f6b30d4246d2cb2fee866cb610d3f829603780099"
+    },
+    {
+      "name": "public.fmz6e9_audit",
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "public.fmz6e9_notices",
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "public.food_aliases",
+      "rows": 197,
+      "sha256": "22323e7e18b42719c52c2c3e257f695c883afc2242c10ef75ac8365ed460d6af"
+    },
+    {
+      "name": "public.food_log_items",
+      "rows": 22,
+      "sha256": "db3a7d7a895cb86afb804099e8c201254e6d661e3668543f951e0a4ba5607056"
+    },
+    {
+      "name": "public.food_logs",
+      "rows": 5,
+      "sha256": "7c6d379b2146056c6b716721e507e143daf09df7410210046f5653e6038a21fe"
+    },
+    {
+      "name": "public.food_portions",
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "public.foods",
+      "rows": 65,
+      "sha256": "26b6b9e52ce459254d4277fd9961e8ac045a8fb5e9347e97c1e5cade7b22deca"
+    },
+    {
+      "name": "public.member_app_preferences",
+      "rows": 1,
+      "sha256": "8a390e02af8fd2878d23fe17066bf02145020b547c1f8dcd91507a77bdc5a407"
+    },
+    {
+      "name": "public.member_notifications",
+      "rows": 12,
+      "sha256": "3e7518e8a4cea937016abb9ee4f2cf1ed5c84f4c0455e21f6b48418423eee01d"
+    },
+    {
+      "name": "public.nutrition_food_ingestions",
+      "rows": 1,
+      "sha256": "accc46d558fe2a3b3ff1e8c7c45c2fc4e455b75587c14d7feb6d6659a4834a60"
+    },
+    {
+      "name": "public.nutrition_off_catalog_releases",
+      "rows": 1,
+      "sha256": "fbe5b97f6379d3564e29bb35df7419c08513e9333c8251305cabcda7003bd8e3"
+    },
+    {
+      "name": "public.nutrition_off_product_names",
+      "rows": 74184,
+      "sha256": "75c6f06fb337a78fd55a9fff1d283cf69275f071ace0b55d98956fe967891d6c"
+    },
+    {
+      "name": "public.nutrition_off_products",
+      "rows": 24458,
+      "sha256": "163c8075d8f5166773201185d10a01917f61fe0d40398d475fd44b690f03c973"
+    },
+    {
+      "name": "public.nutrition_preferences",
+      "rows": 2,
+      "sha256": "410ddc28fe6ee54f4f132c0b86070920cbbaa95e1b8b4be4f1b85ff9a3e8a5fe"
+    },
+    {
+      "name": "public.nutrition_provider_food_cache",
+      "rows": 15,
+      "sha256": "4c04094b7434e663fb6a7e63f41f3d0488dbcaf8c20248a29f46d9b90eec75a5"
+    },
+    {
+      "name": "public.nutrition_provider_query_cache",
+      "rows": 17,
+      "sha256": "40fdb69a3dc8653ac60d7e9f88cb1a75d125e687fad470e45dc810376e1b1b86"
+    },
+    {
+      "name": "public.nutrition_provider_rate_buckets",
+      "rows": 68,
+      "sha256": "577c6e82cb24c1d2096db839327e9441ded0798db8c95fb8e1557d0b1dd58272"
+    },
+    {
+      "name": "public.nutrition_provider_runtime_state",
+      "rows": 2,
+      "sha256": "4fd4abdcc447fc946097c38249e935fab758ae8ecc450da248d0cf66b87fb96c"
+    },
+    {
+      "name": "public.nutrition_targets",
+      "rows": 3,
+      "sha256": "c94b7d56f03de2449d4e98e4158395d1c135bd8d5faed3b8b2f3656dea93e43d"
+    },
+    {
+      "name": "public.profiles",
+      "rows": 7,
+      "sha256": "99d6df0a8c96e930c515ab87cfff14ec1397589c040b31e16245e1d3252216c8"
+    },
+    {
+      "name": "public.progress_goals",
+      "rows": 1,
+      "sha256": "6511f28f85183bc7452d51652ce6902bb44b23d938eb074b3054f13f6194fff5"
+    },
+    {
+      "name": "public.progress_preferences",
+      "rows": 2,
+      "sha256": "d28eece70fbf6f620950ee9da2495a5a848b58bad355dcc7b19265b804c97b3d"
+    },
+    {
+      "name": "public.recovery_logs",
+      "rows": 1,
+      "sha256": "bf8697b366752cf6fe0bc04952ceded89599eefc15f8a173f2a159f4f9fc8095"
+    },
+    {
+      "name": "public.training_plan_days",
+      "rows": 7,
+      "sha256": "e2a5ca07dd5f1c2222e1c2273a6a1391db444c8074ba988199d1089bd9dbe04e"
+    },
+    {
+      "name": "public.training_plan_exercises",
+      "rows": 14,
+      "sha256": "00ef1491f75afa09ba487936d4f71f58c65e331505513fe903cc7a4838d8aee6"
+    },
+    {
+      "name": "public.training_plans",
+      "rows": 7,
+      "sha256": "e7f66e81ea95ac60f6ac00027b793d1a98611ec3ee27fb904ed6d7c1648c7b3a"
+    },
+    {
+      "name": "public.user_onboarding",
+      "rows": 3,
+      "sha256": "c1add9902fd2c1957f2bd3d1d1ade218e6cf4987048d5cd8f596ca3c20ad78f2"
+    },
+    {
+      "name": "public.user_settings",
+      "rows": 3,
+      "sha256": "21949dc9a849fa4a41b241b5c18318c6da8aa1d94d1260c24129c8b0d97df654"
+    },
+    {
+      "name": "public.weight_logs",
+      "rows": 2,
+      "sha256": "154b7cdde3780ce4dcc7bd2d858dd9e7ba9213519430bf6cfa282c7dc9e086ea"
+    },
+    {
+      "name": "public.workout_sessions",
+      "rows": 21,
+      "sha256": "79081cd7969695c1e1c88a7aaaf95957155be4e4b2bb51a86266ac94f86b5578"
+    },
+    {
+      "name": "public.workout_set_logs",
+      "rows": 15,
+      "sha256": "dbd66ca11b846d23f1885d26dd5a9318030318b780a6840ca81691827d2f41b2"
+    }
+  ],
+  "migrations_before": [
+    {
+      "version": "20260812000000",
+      "name": "legacy_phase1_3_source_baseline",
+      "sha256": "349b63611b7819f4984f27a14b6778235d9a4206b8883bdf1c1dd4838ad942dc"
+    },
+    {
+      "version": "20260813",
+      "name": "trainer_signup_bootstrap",
+      "sha256": "8df5447ef8c122a89035c17d9368dc9fae063f1d5fbe382e92513f27919b907f"
+    },
+    {
+      "version": "20260818",
+      "name": "phase4_nutrition_schema_slice1",
+      "sha256": "84c9da69b1bda2f35c08c7c3b1de4e5d4a73b2779663938e617c50ebd538cd6a"
+    },
+    {
+      "version": "20260819134024",
+      "name": "phase4_nutrition_slice3_atomic_log_item_replacement",
+      "sha256": "fad15d3aa7e25ce09d5d5123c5775bc00f6a6759c07b5e1680a2008f7531cc97"
+    },
+    {
+      "version": "20260819163738",
+      "name": "phase4_nutrition_slice4b_alias_search",
+      "sha256": "8f087bb7234a65e2a07e093e105cc47b3d1233948370ca4e6b389fe86558098c"
+    },
+    {
+      "version": "20260819175756",
+      "name": "phase4_nutrition_slice4c_operational_state",
+      "sha256": "30034f606c10b8c39600a2dc0416d9e598e3797df04fd3936cac62c85b8de6b3"
+    },
+    {
+      "version": "20260820082018",
+      "name": "phase4_nutrition_slice4d_provider_snapshot_logging",
+      "sha256": "d5c38b5cc5f4165fa40c7f531bd3c6d3267f2cd61293849937231be914979667"
+    },
+    {
+      "version": "20260820150513",
+      "name": "phase4_nutrition_slice4d_historical_provider_resolver",
+      "sha256": "b815181aa529eae12ad2d9d0d36f371356217bfadc72b541f17e792149f72e0f"
+    },
+    {
+      "version": "20260822172635",
+      "name": "phase4_nutrition_slice4e_ingestion_alias_search",
+      "sha256": "cbb325a5767229f2376c90eb5ad7944e5e39bb875fb82733a73c75498af01db2"
+    },
+    {
+      "version": "20260824113551",
+      "name": "phase4_nutrition_slice4f_off_catalog_search",
+      "sha256": "f144465862f2864770e7a1eede10efacb282e0e941621916215650c174c65d36"
+    },
+    {
+      "version": "20260826143000",
+      "name": "phase4_nutrition_slice4fc_off_authoritative_logging",
+      "sha256": "3460b644ad7d92cd4881065211c907909c6c516aa7012792f51ebe5237beeadf"
+    },
+    {
+      "version": "20260827125343",
+      "name": "phase4_nutrition_slice4fd_transient_off_barcode",
+      "sha256": "0976592c673dcdc6f35a6f149608defb75dbb8647ac7526bfe5eedd6723b8c62"
+    },
+    {
+      "version": "20260827152727",
+      "name": "phase4_nutrition_slice4fd_transient_off_parent_context_fix",
+      "sha256": "4718f6dd22377b218b71c384adda77b00894476a9ed514403410a04de7eaac0c"
+    },
+    {
+      "version": "20260831145357",
+      "name": "phase5_progress_foundation",
+      "sha256": "d596e1eb0d0a1719cd9e3dee861ce3e17f644f53491a86da218595d508d868d5"
+    },
+    {
+      "version": "20260831150434",
+      "name": "phase5_progress_unit_preference",
+      "sha256": "29933ada157d13b70cb8d6e23f7a2934b6af895a0d81ce015c8e6517751555bd"
+    },
+    {
+      "version": "20260831153512",
+      "name": "phase5_progress_revision_indexes",
+      "sha256": "7a8523b0f011eb1dcf150edd63353da4650d4b97af4217edcb269fae043f725d"
+    },
+    {
+      "version": "20260901161314",
+      "name": "phase5_unit_system_constraint_fix",
+      "sha256": "47d253ff32c9dda86b82b3d12b7b27b10d258970b7acf9b6102eb296906c2b82"
+    },
+    {
+      "version": "20260901183914",
+      "name": "phase6a_ai_trust_foundation",
+      "sha256": "352e45231b1effb76d0e392b3e463f077d769dcf9a300fa7efdb45f8471a534f"
+    },
+    {
+      "version": "20260901184418",
+      "name": "phase6a_ai_consent_event_ordering",
+      "sha256": "4929e9da88737156060e41b673659a7833834b8ac1f2fc53d30cbc8938a2fe4f"
+    },
+    {
+      "version": "20260901190328",
+      "name": "phase6a_pgcrypto_search_path",
+      "sha256": "d68000e5434e818ff871652f0d8b2e6194fd274145f25b8595dd62a18fba0cc4"
+    },
+    {
+      "version": "20260901191328",
+      "name": "phase6a_foreign_key_indexes",
+      "sha256": "d443d33a1ec19f513eb3ddb50ae77188d27eed1f9f44c4171dff5c3040c46749"
+    },
+    {
+      "version": "20260902045834",
+      "name": "phase6b_provider_privacy_cost_gate",
+      "sha256": "70b689a5b4708054158b60e017dc79e0721c41058c784b201aac08b1aa794a50"
+    },
+    {
+      "version": "20260903085454",
+      "name": "phase6c_private_ai_chat",
+      "sha256": "3510cbb5c00ee030b68ca412ecaafdb1a4aa2c5aa05dfc7edab6ba8e01552d30"
+    },
+    {
+      "version": "20260903125150",
+      "name": "phase6c_request_scoped_safety",
+      "sha256": "08e19410005b25591837831ea38b129966ebb50bc832fc6c6142b7d382574659"
+    },
+    {
+      "version": "20260904105918",
+      "name": "phase6d0_legacy_authorization_gate",
+      "sha256": "5b91b22f823a30f86e329b381fe797fd28655d237ad977d6b80d2c99af5485b3"
+    },
+    {
+      "version": "20260904230850",
+      "name": "phase6d_read_only_ai_analyses",
+      "sha256": "46521d50f2a99964956ad78f0eaa6bd9a8b29c2c08ec6439254d3bda9629b998"
+    },
+    {
+      "version": "20260904235253",
+      "name": "phase6d_analysis_lifecycle_safe_code_fix",
+      "sha256": "ae6c48dcf0d32363466c70f1fa3435136ebc4d94f446b23b98d7d08952275453"
+    },
+    {
+      "version": "20260906080455",
+      "name": "phase6d_owner_safety_settings",
+      "sha256": "af1a10deac30a293693bbe45d0ce9c7ff8ee3c0938cf20db956fc1420d174fee"
+    },
+    {
+      "version": "20260906092905",
+      "name": "phase6d_automatic_inbox",
+      "sha256": "e31d0a8aac14bc70d6d014dfba476b7a84a1eb97d45c9aae1b8ed0752f0c3eb3"
+    },
+    {
+      "version": "20260906134827",
+      "name": "phase6d_recent_dashboard_analyses",
+      "sha256": "d3b69f7db3bc97f23412f87a801da0567fd438786d2b1b8bd0546fb8f4a72488"
+    },
+    {
+      "version": "20260907095307",
+      "name": "phase6d_theme_preference",
+      "sha256": "e9c50c579b88a4426e3f82ba9caadb8e3198e10969b8812c0ab3cee9222b9a3d"
+    },
+    {
+      "version": "20260908100106",
+      "name": "training_workout_editor",
+      "sha256": "8a47a265cf689397ebe2b19c0cc8043585ffe8bc053c3f2d8f0aac272383b47c"
+    },
+    {
+      "version": "20260909215122",
+      "name": "training_plan_effort_tracking",
+      "sha256": "80af4c70d30b6df62fe54b7464ae11b5be92e0f5b373079be307a42f95c2140e"
+    },
+    {
+      "version": "20260915072202",
+      "name": "phase6e9_synthetic_authorization",
+      "sha256": "9fddea240c1542a49c85c5d0b73ae8a5c8d13894995e54a8b0e6019f0f0b8488"
+    }
+  ],
+  "migrations_after": [
+    {
+      "version": "20260812000000",
+      "name": "legacy_phase1_3_source_baseline",
+      "sha256": "349b63611b7819f4984f27a14b6778235d9a4206b8883bdf1c1dd4838ad942dc"
+    },
+    {
+      "version": "20260813",
+      "name": "trainer_signup_bootstrap",
+      "sha256": "8df5447ef8c122a89035c17d9368dc9fae063f1d5fbe382e92513f27919b907f"
+    },
+    {
+      "version": "20260818",
+      "name": "phase4_nutrition_schema_slice1",
+      "sha256": "84c9da69b1bda2f35c08c7c3b1de4e5d4a73b2779663938e617c50ebd538cd6a"
+    },
+    {
+      "version": "20260819134024",
+      "name": "phase4_nutrition_slice3_atomic_log_item_replacement",
+      "sha256": "fad15d3aa7e25ce09d5d5123c5775bc00f6a6759c07b5e1680a2008f7531cc97"
+    },
+    {
+      "version": "20260819163738",
+      "name": "phase4_nutrition_slice4b_alias_search",
+      "sha256": "8f087bb7234a65e2a07e093e105cc47b3d1233948370ca4e6b389fe86558098c"
+    },
+    {
+      "version": "20260819175756",
+      "name": "phase4_nutrition_slice4c_operational_state",
+      "sha256": "30034f606c10b8c39600a2dc0416d9e598e3797df04fd3936cac62c85b8de6b3"
+    },
+    {
+      "version": "20260820082018",
+      "name": "phase4_nutrition_slice4d_provider_snapshot_logging",
+      "sha256": "d5c38b5cc5f4165fa40c7f531bd3c6d3267f2cd61293849937231be914979667"
+    },
+    {
+      "version": "20260820150513",
+      "name": "phase4_nutrition_slice4d_historical_provider_resolver",
+      "sha256": "b815181aa529eae12ad2d9d0d36f371356217bfadc72b541f17e792149f72e0f"
+    },
+    {
+      "version": "20260822172635",
+      "name": "phase4_nutrition_slice4e_ingestion_alias_search",
+      "sha256": "cbb325a5767229f2376c90eb5ad7944e5e39bb875fb82733a73c75498af01db2"
+    },
+    {
+      "version": "20260824113551",
+      "name": "phase4_nutrition_slice4f_off_catalog_search",
+      "sha256": "f144465862f2864770e7a1eede10efacb282e0e941621916215650c174c65d36"
+    },
+    {
+      "version": "20260826143000",
+      "name": "phase4_nutrition_slice4fc_off_authoritative_logging",
+      "sha256": "3460b644ad7d92cd4881065211c907909c6c516aa7012792f51ebe5237beeadf"
+    },
+    {
+      "version": "20260827125343",
+      "name": "phase4_nutrition_slice4fd_transient_off_barcode",
+      "sha256": "0976592c673dcdc6f35a6f149608defb75dbb8647ac7526bfe5eedd6723b8c62"
+    },
+    {
+      "version": "20260827152727",
+      "name": "phase4_nutrition_slice4fd_transient_off_parent_context_fix",
+      "sha256": "4718f6dd22377b218b71c384adda77b00894476a9ed514403410a04de7eaac0c"
+    },
+    {
+      "version": "20260831145357",
+      "name": "phase5_progress_foundation",
+      "sha256": "d596e1eb0d0a1719cd9e3dee861ce3e17f644f53491a86da218595d508d868d5"
+    },
+    {
+      "version": "20260831150434",
+      "name": "phase5_progress_unit_preference",
+      "sha256": "29933ada157d13b70cb8d6e23f7a2934b6af895a0d81ce015c8e6517751555bd"
+    },
+    {
+      "version": "20260831153512",
+      "name": "phase5_progress_revision_indexes",
+      "sha256": "7a8523b0f011eb1dcf150edd63353da4650d4b97af4217edcb269fae043f725d"
+    },
+    {
+      "version": "20260901161314",
+      "name": "phase5_unit_system_constraint_fix",
+      "sha256": "47d253ff32c9dda86b82b3d12b7b27b10d258970b7acf9b6102eb296906c2b82"
+    },
+    {
+      "version": "20260901183914",
+      "name": "phase6a_ai_trust_foundation",
+      "sha256": "352e45231b1effb76d0e392b3e463f077d769dcf9a300fa7efdb45f8471a534f"
+    },
+    {
+      "version": "20260901184418",
+      "name": "phase6a_ai_consent_event_ordering",
+      "sha256": "4929e9da88737156060e41b673659a7833834b8ac1f2fc53d30cbc8938a2fe4f"
+    },
+    {
+      "version": "20260901190328",
+      "name": "phase6a_pgcrypto_search_path",
+      "sha256": "d68000e5434e818ff871652f0d8b2e6194fd274145f25b8595dd62a18fba0cc4"
+    },
+    {
+      "version": "20260901191328",
+      "name": "phase6a_foreign_key_indexes",
+      "sha256": "d443d33a1ec19f513eb3ddb50ae77188d27eed1f9f44c4171dff5c3040c46749"
+    },
+    {
+      "version": "20260902045834",
+      "name": "phase6b_provider_privacy_cost_gate",
+      "sha256": "70b689a5b4708054158b60e017dc79e0721c41058c784b201aac08b1aa794a50"
+    },
+    {
+      "version": "20260903085454",
+      "name": "phase6c_private_ai_chat",
+      "sha256": "3510cbb5c00ee030b68ca412ecaafdb1a4aa2c5aa05dfc7edab6ba8e01552d30"
+    },
+    {
+      "version": "20260903125150",
+      "name": "phase6c_request_scoped_safety",
+      "sha256": "08e19410005b25591837831ea38b129966ebb50bc832fc6c6142b7d382574659"
+    },
+    {
+      "version": "20260904105918",
+      "name": "phase6d0_legacy_authorization_gate",
+      "sha256": "5b91b22f823a30f86e329b381fe797fd28655d237ad977d6b80d2c99af5485b3"
+    },
+    {
+      "version": "20260904230850",
+      "name": "phase6d_read_only_ai_analyses",
+      "sha256": "46521d50f2a99964956ad78f0eaa6bd9a8b29c2c08ec6439254d3bda9629b998"
+    },
+    {
+      "version": "20260904235253",
+      "name": "phase6d_analysis_lifecycle_safe_code_fix",
+      "sha256": "ae6c48dcf0d32363466c70f1fa3435136ebc4d94f446b23b98d7d08952275453"
+    },
+    {
+      "version": "20260906080455",
+      "name": "phase6d_owner_safety_settings",
+      "sha256": "af1a10deac30a293693bbe45d0ce9c7ff8ee3c0938cf20db956fc1420d174fee"
+    },
+    {
+      "version": "20260906092905",
+      "name": "phase6d_automatic_inbox",
+      "sha256": "e31d0a8aac14bc70d6d014dfba476b7a84a1eb97d45c9aae1b8ed0752f0c3eb3"
+    },
+    {
+      "version": "20260906134827",
+      "name": "phase6d_recent_dashboard_analyses",
+      "sha256": "d3b69f7db3bc97f23412f87a801da0567fd438786d2b1b8bd0546fb8f4a72488"
+    },
+    {
+      "version": "20260907095307",
+      "name": "phase6d_theme_preference",
+      "sha256": "e9c50c579b88a4426e3f82ba9caadb8e3198e10969b8812c0ab3cee9222b9a3d"
+    },
+    {
+      "version": "20260908100106",
+      "name": "training_workout_editor",
+      "sha256": "8a47a265cf689397ebe2b19c0cc8043585ffe8bc053c3f2d8f0aac272383b47c"
+    },
+    {
+      "version": "20260909215122",
+      "name": "training_plan_effort_tracking",
+      "sha256": "80af4c70d30b6df62fe54b7464ae11b5be92e0f5b373079be307a42f95c2140e"
+    },
+    {
+      "version": "20260915072202",
+      "name": "phase6e9_synthetic_authorization",
+      "sha256": "9fddea240c1542a49c85c5d0b73ae8a5c8d13894995e54a8b0e6019f0f0b8488"
+    }
+  ],
+  "publication": {
+    "head": "05bd11ef25c8972d88e71f374ef422f22cc18463",
+    "at": "2026-09-15T09:37:51.489Z",
+    "base": "https://yourizorge.github.io/fitmetzorge-staging/",
+    "assets": [
+      {
+        "file": "Fit_Met_Zorge_Coach_App_standalone.html",
+        "status": 200,
+        "expected": "1592d6ecebb2527c34dd3a9fa9b1381db18c8dc4af9e64ad7b1ae7c65d357bc4",
+        "published": "1592d6ecebb2527c34dd3a9fa9b1381db18c8dc4af9e64ad7b1ae7c65d357bc4",
+        "identical": true
+      },
+      {
+        "file": "app.bundle.js",
+        "status": 200,
+        "expected": "0aedc9e0c5ef05b96b4b0313090a5f6a5481c8d5a585eaac4f4b61ea9fd459d6",
+        "published": "0aedc9e0c5ef05b96b4b0313090a5f6a5481c8d5a585eaac4f4b61ea9fd459d6",
+        "identical": true
+      },
+      {
+        "file": "app.js",
+        "status": 200,
+        "expected": "8d07fb0e61655e9a2d3a9d91c7e17f6b9b78388d5b52dd0f2cc6a6d1cc9d8579",
+        "published": "8d07fb0e61655e9a2d3a9d91c7e17f6b9b78388d5b52dd0f2cc6a6d1cc9d8579",
+        "identical": true
+      },
+      {
+        "file": "assets/fit-met-zorge-logo-cropped.png",
+        "status": 200,
+        "expected": "c82010c6b05025acc33c69c3eee185775f7e935f53dfdce99b73f4318ce59008",
+        "published": "c82010c6b05025acc33c69c3eee185775f7e935f53dfdce99b73f4318ce59008",
+        "identical": true
+      },
+      {
+        "file": "assets/fit-met-zorge-logo.png",
+        "status": 200,
+        "expected": "4b156a6d55569683703b30e4c349d692cdcffc5b0785114fecb7341c81734897",
+        "published": "4b156a6d55569683703b30e4c349d692cdcffc5b0785114fecb7341c81734897",
+        "identical": true
+      },
+      {
+        "file": "assets/logo.svg",
+        "status": 200,
+        "expected": "17ab07e30519df3052e539e9839a9b4009598ce9f5d93ba4d1e455fcf9e956b8",
+        "published": "17ab07e30519df3052e539e9839a9b4009598ce9f5d93ba4d1e455fcf9e956b8",
+        "identical": true
+      },
+      {
+        "file": "assets/member-ux-consistency.js",
+        "status": 200,
+        "expected": "549beca9ebfe6b1b3f63d254280c5e61b8641809903a2f81dd7c415807314dea",
+        "published": "549beca9ebfe6b1b3f63d254280c5e61b8641809903a2f81dd7c415807314dea",
+        "identical": true
+      },
+      {
+        "file": "assets/phase1-foundation.js",
+        "status": 200,
+        "expected": "f275ad98e4680f4e4436858911fc5800e39a4094ab144ec78d0a92adb75addf6",
+        "published": "f275ad98e4680f4e4436858911fc5800e39a4094ab144ec78d0a92adb75addf6",
+        "identical": true
+      },
+      {
+        "file": "assets/phase2-home-recovery.js",
+        "status": 200,
+        "expected": "5e642249fc7a1af297e5035f3c5d219cd3ff9f9dbdc19d20c24be59089ba2707",
+        "published": "5e642249fc7a1af297e5035f3c5d219cd3ff9f9dbdc19d20c24be59089ba2707",
+        "identical": true
+      },
+      {
+        "file": "assets/phase3-training-engine.js",
+        "status": 200,
+        "expected": "a610eb1baeee9a5727193fcf71a326cbe02df1b0928c3bc3ff70cb80223aa686",
+        "published": "a610eb1baeee9a5727193fcf71a326cbe02df1b0928c3bc3ff70cb80223aa686",
+        "identical": true
+      },
+      {
+        "file": "assets/phase4-nutrition-slice2.js",
+        "status": 200,
+        "expected": "42c00580ac2574787b7deea19b3e70009562c8b628863a09409536f265ee28c2",
+        "published": "42c00580ac2574787b7deea19b3e70009562c8b628863a09409536f265ee28c2",
+        "identical": true
+      },
+      {
+        "file": "assets/phase4-nutrition-slice3.js",
+        "status": 200,
+        "expected": "e07bdd2949f7d87bca19edd8160c23ccae7cddf4279494dc12551b61ea275396",
+        "published": "e07bdd2949f7d87bca19edd8160c23ccae7cddf4279494dc12551b61ea275396",
+        "identical": true
+      },
+      {
+        "file": "assets/phase5-progress.js",
+        "status": 200,
+        "expected": "b47b9ac07d1b21a9aad014d824e398690546e385eed7c249a98e95564d704b7b",
+        "published": "b47b9ac07d1b21a9aad014d824e398690546e385eed7c249a98e95564d704b7b",
+        "identical": true
+      },
+      {
+        "file": "assets/phase6c-private-ai-chat.js",
+        "status": 200,
+        "expected": "f841e8c68f79d481157c7c4bfd0194b406ce1f980a26539667910c32baccae97",
+        "published": "f841e8c68f79d481157c7c4bfd0194b406ce1f980a26539667910c32baccae97",
+        "identical": true
+      },
+      {
+        "file": "assets/phase6d-analysis-inbox.js",
+        "status": 200,
+        "expected": "428c81aab07c815aab74828790c028b0839cdbd83a607b0c9eddbbcc8fc28fbe",
+        "published": "428c81aab07c815aab74828790c028b0839cdbd83a607b0c9eddbbcc8fc28fbe",
+        "identical": true
+      },
+      {
+        "file": "assets/phase6d-hotfix2.css",
+        "status": 200,
+        "expected": "2c7444c64b34183c7a13241c42286f6109e6db782a4026f45b396318b72c25f9",
+        "published": "2c7444c64b34183c7a13241c42286f6109e6db782a4026f45b396318b72c25f9",
+        "identical": true
+      },
+      {
+        "file": "assets/phase6d-owner-settings.css",
+        "status": 200,
+        "expected": "e03ac8dd7752620bb72d4d5bcea4e3c586c7fddce9d2ad2c95fa0a6db1332f58",
+        "published": "e03ac8dd7752620bb72d4d5bcea4e3c586c7fddce9d2ad2c95fa0a6db1332f58",
+        "identical": true
+      },
+      {
+        "file": "assets/phase6d-owner-settings.js",
+        "status": 200,
+        "expected": "6f104de6a08ea6e33de7a05236ac778877e8b0a67132b4e7a50eebc6773adbdd",
+        "published": "6f104de6a08ea6e33de7a05236ac778877e8b0a67132b4e7a50eebc6773adbdd",
+        "identical": true
+      },
+      {
+        "file": "assets/phase6d0-legacy-auth.js",
+        "status": 200,
+        "expected": "fdaca0d3637ca2dcd36fad7a3698ff6c4edae709c582ef3c6709530e2012d4e3",
+        "published": "fdaca0d3637ca2dcd36fad7a3698ff6c4edae709c582ef3c6709530e2012d4e3",
+        "identical": true
+      },
+      {
+        "file": "assets/theme-authority.js",
+        "status": 200,
+        "expected": "7927a84cc5a686e186fadd8de92f8afc0f05d6f256121dcfa92da8d2b6605188",
+        "published": "7927a84cc5a686e186fadd8de92f8afc0f05d6f256121dcfa92da8d2b6605188",
+        "identical": true
+      },
+      {
+        "file": "assets/training-workout-model.js",
+        "status": 200,
+        "expected": "adfbd50e1f879b8b8a325e16794490028620def42c0177fa912cfbf63d95d867",
+        "published": "adfbd50e1f879b8b8a325e16794490028620def42c0177fa912cfbf63d95d867",
+        "identical": true
+      },
+      {
+        "file": "assets/training-workout-ui.js",
+        "status": 200,
+        "expected": "ccec76847f7dfdf0bc114afff3ec977f221a3ee230e1e41134fe4d64be57a930",
+        "published": "ccec76847f7dfdf0bc114afff3ec977f221a3ee230e1e41134fe4d64be57a930",
+        "identical": true
+      },
+      {
+        "file": "assets/training-workout.css",
+        "status": 200,
+        "expected": "d46a38c460645e1b8934d0ad12e3df974bc6dac323e56eb9ae94fb200e4c1298",
+        "published": "d46a38c460645e1b8934d0ad12e3df974bc6dac323e56eb9ae94fb200e4c1298",
+        "identical": true
+      },
+      {
+        "file": "assets/vendor/flag-de.svg",
+        "status": 200,
+        "expected": "efd480af5a154a7651f29da23ee0d09dbc892410fb4041898ddf8face336c575",
+        "published": "efd480af5a154a7651f29da23ee0d09dbc892410fb4041898ddf8face336c575",
+        "identical": true
+      },
+      {
+        "file": "assets/vendor/flag-gb.svg",
+        "status": 200,
+        "expected": "c8be1e7208798a4ae692ee1e937065d498bb29e741943f6172b29118b8ed8066",
+        "published": "c8be1e7208798a4ae692ee1e937065d498bb29e741943f6172b29118b8ed8066",
+        "identical": true
+      },
+      {
+        "file": "assets/vendor/flag-icons-LICENSE.txt",
+        "status": 200,
+        "expected": "8f1195d55a2fd315a07d812328470ca9ba2abb78c8d317ff19619d5125e00cea",
+        "published": "8f1195d55a2fd315a07d812328470ca9ba2abb78c8d317ff19619d5125e00cea",
+        "identical": true
+      },
+      {
+        "file": "assets/vendor/flag-nl.svg",
+        "status": 200,
+        "expected": "8f691f17fe70894537af8e92f2ca47761d353639b0defc15cbe561eb503ab010",
+        "published": "8f691f17fe70894537af8e92f2ca47761d353639b0defc15cbe561eb503ab010",
+        "identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-LICENSE.txt",
+        "status": 200,
+        "expected": "1e7290b35280a048667bbf0ebabac1c7fd52a75300e8b2946ac165715997f2bc",
+        "published": "1e7290b35280a048667bbf0ebabac1c7fd52a75300e8b2946ac165715997f2bc",
+        "identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-archive.svg",
+        "status": 200,
+        "expected": "1a6e1c540c9a1a9b489893cc14ab9f597496c69aab5ba222fdd5b456de9e2fac",
+        "published": "1a6e1c540c9a1a9b489893cc14ab9f597496c69aab5ba222fdd5b456de9e2fac",
+        "identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-arrow-left.svg",
+        "status": 200,
+        "expected": "e31ed0af85ffbed2b54f78f37af197c3b84b24e776cba1d27613d6a9ad555a16",
+        "published": "e31ed0af85ffbed2b54f78f37af197c3b84b24e776cba1d27613d6a9ad555a16",
+        "identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-arrow-up.svg",
+        "status": 200,
+        "expected": "df0ff279d41bba93ae6797ef519ba442b895cd5d546fb36f22b7a656c3b05fd1",
+        "published": "df0ff279d41bba93ae6797ef519ba442b895cd5d546fb36f22b7a656c3b05fd1",
+        "identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-bell.svg",
+        "status": 200,
+        "expected": "129a018bd5025fc992a510e9c95e7868300d888b69c38c69a3466d310919ea13",
+        "published": "129a018bd5025fc992a510e9c95e7868300d888b69c38c69a3466d310919ea13",
+        "identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-calendar.svg",
+        "status": 200,
+        "expected": "2e2a7df92c2cca71dd6de34bb3f7187e276e8e8e003abe2e80b2ffd13347af60",
+        "published": "2e2a7df92c2cca71dd6de34bb3f7187e276e8e8e003abe2e80b2ffd13347af60",
+        "identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-check.svg",
+        "status": 200,
+        "expected": "538432eec072ceeccf5a7aacf347a2ad2bff9937d203dbd0b4f4245d7accd93c",
+        "published": "538432eec072ceeccf5a7aacf347a2ad2bff9937d203dbd0b4f4245d7accd93c",
+        "identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-chevron-right.svg",
+        "status": 200,
+        "expected": "fea488a3b60fd7738bbbf8ca98826ef5c0381347c5fd1048d45ee70a75a51cfe",
+        "published": "fea488a3b60fd7738bbbf8ca98826ef5c0381347c5fd1048d45ee70a75a51cfe",
+        "identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-clock.svg",
+        "status": 200,
+        "expected": "75336afa51ee6da9fec7e9bf5138c20d4e8a85d1133df896fea071c622c12c7c",
+        "published": "75336afa51ee6da9fec7e9bf5138c20d4e8a85d1133df896fea071c622c12c7c",
+        "identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-credit-card.svg",
+        "status": 200,
+        "expected": "4d0394710733a8ca0db566208b0281708ebde7b167b6903491fde0be060bded1",
+        "published": "4d0394710733a8ca0db566208b0281708ebde7b167b6903491fde0be060bded1",
+        "identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-download.svg",
+        "status": 200,
+        "expected": "f68a21e11115edc0aef51ac6f8f4618e14d2b92055f1cb9f5d670efc696bea85",
+        "published": "f68a21e11115edc0aef51ac6f8f4618e14d2b92055f1cb9f5d670efc696bea85",
+        "identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-file-text.svg",
+        "status": 200,
+        "expected": "512f414d72aabc5218b94a9da571df70d8e0b014cfb32ec366b559ec868952d6",
+        "published": "512f414d72aabc5218b94a9da571df70d8e0b014cfb32ec366b559ec868952d6",
+        "identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-globe.svg",
+        "status": 200,
+        "expected": "c3543ac3883a0841aa5d37ff974708fbc37d9c6afe64e14b03d56ed798b0b788",
+        "published": "c3543ac3883a0841aa5d37ff974708fbc37d9c6afe64e14b03d56ed798b0b788",
+        "identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-history.svg",
+        "status": 200,
+        "expected": "682b5fc882578a3bdaac72c72fc27709cb806b61c2d1d51194327b31dde7f239",
+        "published": "682b5fc882578a3bdaac72c72fc27709cb806b61c2d1d51194327b31dde7f239",
+        "identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-languages.svg",
+        "status": 200,
+        "expected": "a33a7bd34876dde0c5a470914dac09fca77f97da75e93e1b1687de2294874c65",
+        "published": "a33a7bd34876dde0c5a470914dac09fca77f97da75e93e1b1687de2294874c65",
+        "identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-loader-circle.svg",
+        "status": 200,
+        "expected": "44ad0f822a89b28a3feecf7276686c818a92a4a9c77cc51404c58929e30f0f3a",
+        "published": "44ad0f822a89b28a3feecf7276686c818a92a4a9c77cc51404c58929e30f0f3a",
+        "identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-log-out.svg",
+        "status": 200,
+        "expected": "3f28d1eedd9a71ec6933578fc1b7cd21c56618e8b9b8339e55bfc133b4eb6bee",
+        "published": "3f28d1eedd9a71ec6933578fc1b7cd21c56618e8b9b8339e55bfc133b4eb6bee",
+        "identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-message-circle.svg",
+        "status": 200,
+        "expected": "f62830d9fbbbf697e53555398d31a342ddec8dd008d707f21cd90bb19befcc87",
+        "published": "f62830d9fbbbf697e53555398d31a342ddec8dd008d707f21cd90bb19befcc87",
+        "identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-plus.svg",
+        "status": 200,
+        "expected": "b29207ee8f5cc0e829c0bab2e5b223fc88687599c6bd40b94ba35f52327615d6",
+        "published": "b29207ee8f5cc0e829c0bab2e5b223fc88687599c6bd40b94ba35f52327615d6",
+        "identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-rotate-cw.svg",
+        "status": 200,
+        "expected": "2c2c5d1f147e829f431182eee79d8d74e81aedcf8177f9e1878a4180ec990a9c",
+        "published": "2c2c5d1f147e829f431182eee79d8d74e81aedcf8177f9e1878a4180ec990a9c",
+        "identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-settings.svg",
+        "status": 200,
+        "expected": "ceea1a72d04b112291222ba9ad0779a12d47d816079fe4174900c724f360b55c",
+        "published": "ceea1a72d04b112291222ba9ad0779a12d47d816079fe4174900c724f360b55c",
+        "identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-shield.svg",
+        "status": 200,
+        "expected": "276e603595736fcb698b0309b04c44ebb88afb28e4753c5670f92c11a01ed043",
+        "published": "276e603595736fcb698b0309b04c44ebb88afb28e4753c5670f92c11a01ed043",
+        "identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-trash-2.svg",
+        "status": 200,
+        "expected": "9268a35cfb4f9d852c3d13f2c91476dd067c21c20e2bcdb0093fd93fd0bf34b7",
+        "published": "9268a35cfb4f9d852c3d13f2c91476dd067c21c20e2bcdb0093fd93fd0bf34b7",
+        "identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-user.svg",
+        "status": 200,
+        "expected": "bb1e0531065db51238a34b348cf8fb8267cd31932dc3f680c9f204a58d1520ea",
+        "published": "bb1e0531065db51238a34b348cf8fb8267cd31932dc3f680c9f204a58d1520ea",
+        "identical": true
+      },
+      {
+        "file": "assets/vendor/lucide-x.svg",
+        "status": 200,
+        "expected": "0f38855d9d5775c10960ae53e46b745f77914b43f78c43bf8abc39f4d5e06de1",
+        "published": "0f38855d9d5775c10960ae53e46b745f77914b43f78c43bf8abc39f4d5e06de1",
+        "identical": true
+      },
+      {
+        "file": "assets/vendor/zxing-browser-0.2.1.LICENSE.txt",
+        "status": 200,
+        "expected": "4c26c3077daa7ce4d56ad91f279fafc395bf33c3a0f1ba9ab8cf511bad148ea5",
+        "published": "4c26c3077daa7ce4d56ad91f279fafc395bf33c3a0f1ba9ab8cf511bad148ea5",
+        "identical": true
+      },
+      {
+        "file": "assets/vendor/zxing-browser-0.2.1.min.js",
+        "status": 200,
+        "expected": "066bc34edfcdd4a33f0964aeec967752a0dea1ccaf36e58e319ac9fcb5070f6a",
+        "published": "066bc34edfcdd4a33f0964aeec967752a0dea1ccaf36e58e319ac9fcb5070f6a",
+        "identical": true
+      },
+      {
+        "file": "assets/youri-ai-avatar-3d-v3-256.webp",
+        "status": 200,
+        "expected": "257f31e6fe4faa7fecf5fb9874eed06d4018dc8c60958aa714e7d4b79a7517dc",
+        "published": "257f31e6fe4faa7fecf5fb9874eed06d4018dc8c60958aa714e7d4b79a7517dc",
+        "identical": true
+      },
+      {
+        "file": "assets/youri-ai-avatar-3d-v3-master.png",
+        "status": 200,
+        "expected": "53edc8c376f097417abde7b74f4c9d85cebad4e2a676ae65620a4cbd65da2e57",
+        "published": "53edc8c376f097417abde7b74f4c9d85cebad4e2a676ae65620a4cbd65da2e57",
+        "identical": true
+      },
+      {
+        "file": "config.js",
+        "status": 200,
+        "expected": "07cc826304b5a9343ef26a21aabae6d00a21fe4c55a1d9feefef6067bcecd6fa",
+        "published": "07cc826304b5a9343ef26a21aabae6d00a21fe4c55a1d9feefef6067bcecd6fa",
+        "identical": true
+      },
+      {
+        "file": "fit-met-zorge-logo.png",
+        "status": 200,
+        "expected": "940c6c9e66d73a642d67f453fc12e46e78f233e60432ea0ad426324af1493ecf",
+        "published": "940c6c9e66d73a642d67f453fc12e46e78f233e60432ea0ad426324af1493ecf",
+        "identical": true
+      },
+      {
+        "file": "index.html",
+        "status": 200,
+        "expected": "559c98ad4071846d3aab11ee068cf892bfda73d85410ed1c636c88f59a1a32ac",
+        "published": "559c98ad4071846d3aab11ee068cf892bfda73d85410ed1c636c88f59a1a32ac",
+        "identical": true
+      },
+      {
+        "file": "styles.css",
+        "status": 200,
+        "expected": "29d376ad4efbaee61dfc65adaced629753cdc5d126c58f5c60ee472324e2a20e",
+        "published": "29d376ad4efbaee61dfc65adaced629753cdc5d126c58f5c60ee472324e2a20e",
+        "identical": true
+      },
+      {
+        "file": "coach-review-demo/app.js",
+        "status": 200,
+        "expected": "e89225593140ef61c1c61a9c2e87a24ede31047026f11fa02b0ce3a1ce738a94",
+        "published": "e89225593140ef61c1c61a9c2e87a24ede31047026f11fa02b0ce3a1ce738a94",
+        "identical": true
+      },
+      {
+        "file": "coach-review-demo/catalog.js",
+        "status": 200,
+        "expected": "e5c30f57e88edcb3b4e8205dbfd8b90ca0397e2bb9117fc4db348bbc1fe83479",
+        "published": "e5c30f57e88edcb3b4e8205dbfd8b90ca0397e2bb9117fc4db348bbc1fe83479",
+        "identical": true
+      },
+      {
+        "file": "coach-review-demo/copy.js",
+        "status": 200,
+        "expected": "87a446e23349d1c998eea28f3b4731d8b73e72be791da6955d4d8dcac8084b4b",
+        "published": "87a446e23349d1c998eea28f3b4731d8b73e72be791da6955d4d8dcac8084b4b",
+        "identical": true
+      },
+      {
+        "file": "coach-review-demo/demo.css",
+        "status": 200,
+        "expected": "e82fe9c793c7758cf60d5aca1197d33471cda5f5ce8b7d8208825d7c6992eaa4",
+        "published": "e82fe9c793c7758cf60d5aca1197d33471cda5f5ce8b7d8208825d7c6992eaa4",
+        "identical": true
+      },
+      {
+        "file": "coach-review-demo/entry.js",
+        "status": 200,
+        "expected": "6232e5d387182328141de46e4d862f6c60777378803d926e4be199d545b26989",
+        "published": "6232e5d387182328141de46e4d862f6c60777378803d926e4be199d545b26989",
+        "identical": true
+      },
+      {
+        "file": "coach-review-demo/index.html",
+        "status": 200,
+        "expected": "702f7bed0b865c521773ffe5c621f1ee323c0e561a93f6f532f18a800690c785",
+        "published": "702f7bed0b865c521773ffe5c621f1ee323c0e561a93f6f532f18a800690c785",
+        "identical": true
+      },
+      {
+        "file": "coach-review-demo/model.js",
+        "status": 200,
+        "expected": "c500eec10f4071f33d723f84dc3f0fcf07c23c1d08bfa17b23c32c546f6ae39e",
+        "published": "c500eec10f4071f33d723f84dc3f0fcf07c23c1d08bfa17b23c32c546f6ae39e",
+        "identical": true
+      },
+      {
+        "file": "coach-review-demo/panel.css",
+        "status": 200,
+        "expected": "bfe4a041f0a5a1f03d24db8224d3fbeb9351880f4750ee7a1a8d2ef08cde37f0",
+        "published": "bfe4a041f0a5a1f03d24db8224d3fbeb9351880f4750ee7a1a8d2ef08cde37f0",
+        "identical": true
+      },
+      {
+        "file": "coach-review-demo/photo-concept.svg",
+        "status": 200,
+        "expected": "18a0dc0b6ea6c40dd7d2d58f8e674c98dada7c80ac2e14d4169ad172d14e01b8",
+        "published": "18a0dc0b6ea6c40dd7d2d58f8e674c98dada7c80ac2e14d4169ad172d14e01b8",
+        "identical": true
+      },
+      {
+        "file": "training-review-demo/app.js",
+        "status": 200,
+        "expected": "cb33f0b75abe0f47d9fb29b845168a8339ee143b5cb5975b88b4d02029c050ce",
+        "published": "cb33f0b75abe0f47d9fb29b845168a8339ee143b5cb5975b88b4d02029c050ce",
+        "identical": true
+      },
+      {
+        "file": "training-review-demo/brand.png",
+        "status": 200,
+        "expected": "c82010c6b05025acc33c69c3eee185775f7e935f53dfdce99b73f4318ce59008",
+        "published": "c82010c6b05025acc33c69c3eee185775f7e935f53dfdce99b73f4318ce59008",
+        "identical": true
+      },
+      {
+        "file": "training-review-demo/copy.js",
+        "status": 200,
+        "expected": "636e97c17a00149cd0f58a8eb39df8867888342480fb375840419e40c9a66196",
+        "published": "636e97c17a00149cd0f58a8eb39df8867888342480fb375840419e40c9a66196",
+        "identical": true
+      },
+      {
+        "file": "training-review-demo/data.js",
+        "status": 200,
+        "expected": "fdc60637c11ce8d2e3ce8309b8b4bce618ef26432f1889783bf440c98c178040",
+        "published": "fdc60637c11ce8d2e3ce8309b8b4bce618ef26432f1889783bf440c98c178040",
+        "identical": true
+      },
+      {
+        "file": "training-review-demo/demo.css",
+        "status": 200,
+        "expected": "9418b98977f6e4dc68abeaafd8cb6faac71934623bfeb1a053506c676eade948",
+        "published": "9418b98977f6e4dc68abeaafd8cb6faac71934623bfeb1a053506c676eade948",
+        "identical": true
+      },
+      {
+        "file": "training-review-demo/index.html",
+        "status": 200,
+        "expected": "67d2ab87de2ca4fb9ea15145234b9aedaff103316f7429124e6fe6c24d2763bb",
+        "published": "67d2ab87de2ca4fb9ea15145234b9aedaff103316f7429124e6fe6c24d2763bb",
+        "identical": true
+      },
+      {
+        "file": "training-review-demo/model.js",
+        "status": 200,
+        "expected": "1b51769dbe8e2753472f2af6bd2d008b1e691ac9ab757da55d06897cdb5bc004",
+        "published": "1b51769dbe8e2753472f2af6bd2d008b1e691ac9ab757da55d06897cdb5bc004",
+        "identical": true
+      },
+      {
+        "file": "coach-backend-demo/app.js",
+        "status": 200,
+        "expected": "b2ae1db2cc820c3c92cf645eff989ae15c48502a6c331669b9dcd3bb65eeb528",
+        "published": "b2ae1db2cc820c3c92cf645eff989ae15c48502a6c331669b9dcd3bb65eeb528",
+        "identical": true
+      },
+      {
+        "file": "coach-backend-demo/demo.css",
+        "status": 200,
+        "expected": "e3c2deef682a0c5b5b900f8706bbb45762a061cd6aaa5f3bb2d95c7a3df21bf8",
+        "published": "e3c2deef682a0c5b5b900f8706bbb45762a061cd6aaa5f3bb2d95c7a3df21bf8",
+        "identical": true
+      },
+      {
+        "file": "coach-backend-demo/index.html",
+        "status": 200,
+        "expected": "7849bcd5c2cd8cbfd0f03882f4fc1e7dd7d60cc396c868e38542914d5b33046b",
+        "published": "7849bcd5c2cd8cbfd0f03882f4fc1e7dd7d60cc396c868e38542914d5b33046b",
+        "identical": true
+      },
+      {
+        "file": "coach-backend-demo/render.js",
+        "status": 200,
+        "expected": "4bdfd737813849d7e16a75a40671bc060ad49e324d17a8c03f8b95ba9df63ead",
+        "published": "4bdfd737813849d7e16a75a40671bc060ad49e324d17a8c03f8b95ba9df63ead",
+        "identical": true
+      }
+    ],
+    "private": [
+      {
+        "file": "_offline/phase6e0/README.md",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/context-hints.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/contract.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/copy.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/corpus.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/engine.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/fixture-seeds.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/known-limitations.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/package.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/recognition-followup-cases.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/retention.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/rules.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/state.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/test/engine.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/test/helpers.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/test/isolation.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/test/limitations.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/test/recognition-followup.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/test/retention.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/test/state.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/test/warning-recovery-proposal.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/warning-recovery-proposal.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e0/warning-recovery-proposal.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/README.md",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/analysis.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/common.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/content-contract.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/context.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/contract.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/flow.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/package.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/preregistered-cases.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/retention.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/test/acceptance.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/test/analysis.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/test/context.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/test/examples.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/test/flow.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/test/helpers.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/test/isolation.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/test/publication-check.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/test/retention.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/test/review-boundaries.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/test/training-followup.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e1/training-followup-cases.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e2/README.md",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e2/contract.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e2/copy.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e2/engine.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e2/package.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e2/preregistered-cases.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e2/test/contract.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e2/test/examples.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e2/test/fixtures.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e2/test/isolation.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e2/test/publication-check.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e2/test/verify.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e3/README.md",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e3/contract.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e3/copy.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e3/engine.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e3/package.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e3/preregistered-cases.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e3/test/contract.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e3/test/examples.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e3/test/fixtures.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e3/test/isolation.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e3/test/verify.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e3/validate.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e4/README.md",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e4/context.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e4/contract.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e4/copy.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e4/engine.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e4/language-cases.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e4/package.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e4/preregistered-cases.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e4/preregistration-errata.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e4/review-answers.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e4/test/contract.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e4/test/examples.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e4/test/examples.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e4/test/fixtures.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e4/test/isolation.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e4/test/language.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e4/test/lifecycle.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e4/test/review.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e4/test/verify.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e4/validate.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e5/README.md",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e5/common.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e5/contract.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e5/copy.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e5/engine.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e5/package.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e5/preregistered-cases.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e5/review.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e5/test/approval.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e5/test/contract.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e5/test/examples.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e5/test/examples.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e5/test/fixtures.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e5/test/isolation.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e5/test/review-hardening.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e5/test/verify.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e5/validate.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e6/README.md",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e6/copy.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e6/engine.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e6/facts.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e6/package.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e6/preregistered-cases.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e6/review.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e6/rules.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e6/test/contract.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e6/test/examples.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e6/test/examples.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e6/test/fixtures.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e6/test/hardening.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e6/test/isolation.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e6/test/review.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e6/test/verify.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e7/README.md",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e7/adapter.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e7/build.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e7/examples.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e7/package.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e7/preregistered-cases.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e7/test/browser.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e7/test/examples.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e7/test/hardening.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e7/test/isolation.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e7/test/verify.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e7/test/workflow.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e8/README.md",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e8/examples.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e8/preregistered-cases.json",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e8/test/browser.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e8/test/contract.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e8/test/evidence.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e8/test/isolation.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e8/test/publication.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e8/test/verify.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e9/ARCHITECTURE.md",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e9/bundle.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e9/deploy.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e9/edge/core.mjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e9/edge/frozen.mjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e9/edge/handler.mjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e9/edge/index.ts",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e9/test/admin.py",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e9/test/browser.mjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e9/test/contract.test.mjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e9/test/evidence.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e9/test/live.mjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e9/test/local.mjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e9/test/owner-window.mjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e9/test/owner-window.test.mjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e9/test/preflight.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e9/test/publication.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e9/test/verify.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e9/ui-build.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/alignment-browser.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/alignment-publication.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/browser.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/catalog-snapshot.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/completion-regression.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/correction-browser.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/correction-publication.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/correction-staging.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/correction-verify.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/correction.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/correction.test.sql",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/evidence.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/mobile-browser-checks.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/mobile-evidence.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/mobile.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/model.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/preservation.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/publication.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/sql-local.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/sql.test.sql",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/staging-check.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/timer-review-browser.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/timer-review-evidence.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/timer-review-publication.cjs",
+        "status": 404
+      },
+      {
+        "file": "_tests/training/timer-review.test.cjs",
+        "status": 404
+      }
+    ],
+    "errors": []
+  },
+  "offline_regressions": 1725,
+  "alias_checks": 10,
+  "production_touched": false,
+  "external_ai_calls": 0,
+  "ai_costs": 0,
+  "cleanup_performed": false,
+  "owner_accepted": false
+}

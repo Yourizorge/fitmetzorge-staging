@@ -6,6 +6,13 @@ Final evidence is recorded in PHASE6E9_EVIDENCE.json.
 
 ## Baseline And Acceptance
 
+Current retest addendum: the original cleanup results below remain historical.
+An owner-approved, exact-three-identity 24-hour window was opened on 2026-09-15.
+See PHASE6E9_OWNER_RETEST_WINDOW.md and PHASE6E9_OWNER_WINDOW_EVIDENCE.json for its
+expiry, retained fixtures, 14 new live security groups and 200 browser checks.
+Only the approved demo email allowlist changed publicly; backend source is unchanged.
+No new migration, real member operation, AI call or 6E-9 acceptance/freeze.
+
 Repository Yourizorge/fitmetzorge-staging, branch main; initial local, cached and
 direct remote HEAD 8b7eb0c9c9488902451fe20e7385b4093237cc24, clean worktree.
 Actual repository is the nested supabase/.temp/phase4fb-staging-deploy checkout,
