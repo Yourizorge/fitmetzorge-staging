@@ -1,5 +1,19 @@
 # FitMetZorge Build Status
 
+## Current: 6E-9 Frozen; 6E-10 Implementation GO
+
+6E-9 COMPLETE / OWNER-ACCEPTED / FROZEN - SYNTHETIC STAGING BACKEND ONLY.
+Owner phone retest passed all three logins, A/B routes and refresh persistence; K1
+accepted and K2 authorizes 6E-10. The old window is CLOSED, three old JWTs refused,
+testflag OFF, proof removed, 68 existing data hashes unchanged. Three exact synthetic
+Auth/profile identities retained with unchanged passwords; no email sent.
+[Freeze receipt](PHASE6E9_FREEZE_RECEIPT.md), [hashes](PHASE6E9_FREEZE_EVIDENCE.json).
+6E-10 implementation IN PROGRESS: version-bound synthetic trainer sources and managed
+<=24h windows. Explicit operator grant only for the synthetic A-trainer and the fixed
+three test identities. [Preregistered tests](PHASE6E10_PREREGISTRATION.md).
+No live AI, real members, medical release or production. Phase 6E INCOMPLETE.
+Earlier pending 6E-9 statements below are historical and superseded.
+
 ## Current: 6E-8 Accepted; 6E-9 Technical Pass
 
 6E-8 COMPLETE / OWNER-ACCEPTED / FROZEN - SYNTHETIC STAGING DEMO ONLY.
