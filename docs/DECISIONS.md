@@ -820,3 +820,16 @@ tests, docs, commits and publication. No real data/photo processing, providers,
 database/migration/Edge/Auth/RLS changes, production or AI costs. Only index.html
 bootstrap is a planned existing-runtime exception; preserve other assets/frozen code.
 6E-8 result acceptance and the later backend/authorization package remain separate.
+
+## Decision 0050: Owner accepts 6E-8/J1-J3 and authorizes synthetic 6E-9
+
+2026-09-15. Physical inspection, both routes, intake/plans/editing, proactive
+fixtures/fictitious photo concept and refresh/reset accepted. 6E-8 COMPLETE /
+OWNER-ACCEPTED / FROZEN - SYNTHETIC STAGING DEMO ONLY. No medical, real photo,
+real member, automatic schema or production approval. Source 936dd3a, delivered
+8b7eb0c; exact hashes and acceptance boundary in PHASE6E8_FREEZE_RECEIPT.md.
+Separate GO: synthetic Auth/backend, server routes, scoped RLS, immutable versions,
+separate approvals/application/restore, minimal audit/notices, failure/concurrency
+tests and safe exact synthetic cleanup, standard-off test flag. Preserve all
+previous decisions and frozen sources. No providers/costs or production.
+6E-9 results require new owner review; 6E-10 is not started.

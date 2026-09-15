@@ -1,6 +1,18 @@
 # FitMetZorge Master Build Plan
 
-## Current: 6E-7 Accepted; 6E-8 Dual-Route Delivery
+## Current: 6E-8 Accepted; 6E-9 Authorized
+
+6E-8 COMPLETE / OWNER-ACCEPTED / FROZEN - SYNTHETIC STAGING DEMO ONLY.
+Owner physical inspection and J1-J3 accepted on 2026-09-15.
+[Freeze receipt](PHASE6E8_FREEZE_RECEIPT.md) and [hashes](PHASE6E8_FREEZE_EVIDENCE.json).
+6E-9 has explicit GO for synthetic-only backend/authorization, not real members,
+providers or production. [Preregistered scope/tests](PHASE6E9_PREREGISTRATION.md).
+Implementation and live verification remain pending; no technical pass yet.
+All earlier frozen contracts and accepted Training remain protected.
+Phase 6E overall INCOMPLETE. 6E-10 NOT STARTED.
+Earlier pending-acceptance statements below are historical and superseded.
+
+## Historical: 6E-7 Accepted; 6E-8 Dual-Route Delivery
 
 6E-7 COMPLETE / OWNER-ACCEPTED / FROZEN - SYNTHETIC DEMO ONLY.
 Physical ownercheck: member acceptance, trainer approval, separate application,
