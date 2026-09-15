@@ -19,6 +19,10 @@ token = transport.credential()
 service = None
 created = {}
 proof_created = False
+owner_window = "--owner-window" in sys.argv
+retained = False
+mail_attempts = set()
+aliases = {"zorgeyouri+6e9-a-lid@gmail.com", "zorgeyouri+6e9-a-trainer@gmail.com", "zorgeyouri+6e9-b-lid@gmail.com"}
 
 def request(url, method="GET", data=None, admin=False):
     global service
@@ -61,8 +65,10 @@ try:
             op = d.get("op")
             if op == "create":
                 email = d["email"]
-                if not re.fullmatch(r"6e9-[a-z0-9-]+@example\.invalid", email):
+                if not (email in aliases if owner_window else re.fullmatch(r"6e9-[a-z0-9-]+@example\.invalid", email)):
                     raise RuntimeError("synthetic_email_required")
+                if email in created.values():
+                    raise RuntimeError("duplicate_identity")
                 if service is None:
                     keys = request(MGMT + "/api-keys?reveal=true")
                     matches = [x["api_key"] for x in keys if x.get("name") == "service_role"]
@@ -92,7 +98,27 @@ try:
                 if len(sql) > 50000 or not any(x in sql for x in ("fmz6e9", "pg_proc", "pg_class", "pg_policies")):
                     raise RuntimeError("synthetic_query_scope_required")
                 result = query(sql)
-            elif op == "cleanup":
+            elif op == "auth_config" and owner_window:
+                config = request(MGMT + "/config/auth")
+                redirect = "https://yourizorge.github.io/fitmetzorge-staging/"
+                result = {"staging_site": config.get("site_url") == redirect,
+                          "staging_redirect": redirect in config.get("uri_allow_list", ""),
+                          "mail_ttl_seconds": config.get("mailer_otp_exp")}
+            elif op == "recover" and owner_window:
+                email = d["email"]
+                if email not in created.values() or email in mail_attempts:
+                    raise RuntimeError("mail_scope_or_duplicate_denied")
+                mail_attempts.add(email)
+                # One standard recovery email per new identity, never return its link.
+                request(BASE + "/auth/v1/recover?redirect_to=https%3A%2F%2Fyourizorge.github.io%2Ffitmetzorge-staging%2F",
+                        "POST", {"email": email}, admin=True)
+                result = {"accepted": True}
+            elif op == "retain" and owner_window:
+                if set(created.values()) != aliases or not proof_created:
+                    raise RuntimeError("incomplete_owner_window")
+                retained = True
+                result = {"retained": True, "accounts": len(created)}
+            elif op == "cleanup" and not owner_window:
                 result = cleanup()
             else:
                 raise RuntimeError("broker_operation_invalid")
@@ -107,7 +133,13 @@ try:
             print(json.dumps({"ok": False, "error": str(e) if isinstance(e, RuntimeError)
                               else "broker_operation_failed"}), flush=True)
 finally:
-    if created or proof_created:
+    if owner_window and not retained and (created or proof_created):
+        # Fail closed, but retain all fixtures for inspection; no premature cleanup.
+        try:
+            query("update fmz6e9_private.config set enabled=false where id")
+        except Exception:
+            print(json.dumps({"ok": False, "error": "disable_owner_window_required"}), flush=True)
+    elif not owner_window and (created or proof_created):
         try:
             cleanup()
         except Exception:

@@ -53,7 +53,7 @@ function intakeData(){const form=root.querySelector("#intake"),i=JSON.parse(JSON
 async function task(fn){if(busy)return;busy=true;render();try{await fn();}catch(e){error(e);}finally{busy=false;render();}}
 root.addEventListener("submit",e=>{e.preventDefault();if(e.target.id!=="login")return;
  const email=e.target.elements.email.value.trim(),password=e.target.elements.password.value;
- if(!/^6e9-[a-z0-9-]+@example\.invalid$/.test(email)){feedback=t("denied");render();return;}
+ if(!["zorgeyouri+6e9-a-lid@gmail.com","zorgeyouri+6e9-a-trainer@gmail.com","zorgeyouri+6e9-b-lid@gmail.com"].includes(email)){feedback=t("denied");render();return;}
  task(async()=>{const r=await fetch(base+"/auth/v1/token?grant_type=password",{method:"POST",headers:{apikey:cfg.SUPABASE_ANON_KEY,"Content-Type":"application/json"},body:JSON.stringify({email,password})});const d=await r.json();if(!r.ok){const x=Error("login");x.status=401;throw x;}
  auth={access_token:d.access_token,refresh_token:d.refresh_token};sessionStorage.setItem(STORE,JSON.stringify(auth));await load();feedback="";});
 });
