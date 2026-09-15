@@ -1,0 +1,12 @@
+"use strict";
+const fs=require("node:fs"),path=require("node:path"),crypto=require("node:crypto"),assert=require("node:assert/strict");
+const root=path.resolve(__dirname,"../.."),receipt=require("../../docs/PHASE6E8_FREEZE_EVIDENCE.json");
+const bytes=fs.readFileSync(path.join(root,"coach-review-demo/app.js"));
+assert.equal(crypto.createHash("sha256").update(bytes).digest("hex"),receipt.sources.find(x=>x.file==="coach-review-demo/app.js").working_sha256);
+const src=bytes.toString("utf8"),start=src.indexOf("const esc="),end=src.indexOf("function render(){");
+assert(start>0&&end>start);
+let body=src.slice(start,end).replaceAll('src="photo-concept.svg"','src="../coach-review-demo/photo-concept.svg"');
+const intro='// Generated presentation adapter from frozen 6E-8; no local command execution.\nwindow.FMZ9Render=function(ctx){\nconst {lang,tab,form,pendingIntake,scenario}=ctx;const M=FMZ8Model,C=FMZ8Catalog,clone=x=>JSON.parse(JSON.stringify(x));const view=clone(ctx.state.view);view.audit=ctx.state.audit.map(x=>({...x,base:x.source_version,version:x.target_version}));view.notifications=[];const a={view:()=>view},b={view:()=>view};\n';
+fs.mkdirSync(path.join(root,"coach-backend-demo"),{recursive:true});
+fs.writeFileSync(path.join(root,"coach-backend-demo/render.js"),intro+body+'\nreturn ctx.state.route==="A"?human():independent();\n};\n');
+console.log("Generated frozen-compatible presentation only");

@@ -1,0 +1,10 @@
+"use strict";
+const fs=require("node:fs"),path=require("node:path"),crypto=require("node:crypto"),assert=require("node:assert/strict");
+const root=path.resolve(__dirname,"../.."),receipt=require("../../docs/PHASE6E8_FREEZE_EVIDENCE.json");
+const files=["coach-review-demo/catalog.js","coach-review-demo/model.js","training-review-demo/data.js","training-review-demo/model.js"];
+const sha=b=>crypto.createHash("sha256").update(b).digest("hex");
+const parts=files.map(file=>{const bytes=fs.readFileSync(path.join(root,file));assert.equal(sha(bytes),receipt.sources.find(x=>x.file===file).working_sha256);return "// Frozen source: "+file+"\n"+bytes.toString("utf8");});
+const out="// Generated read-only frozen dependencies; run bundle.cjs to reproduce.\nconst frozen=(()=>{const globalThis={};const window=globalThis;const module=undefined;\n"+parts.join("\n")+"\nreturn {B:globalThis.FMZ8Model,C:globalThis.FMZ8Catalog,A:globalThis.FMZDemoModel,data:globalThis.FMZDemoData};})();\nexport const {A,B,C,data}=frozen;\n";
+fs.mkdirSync(path.join(__dirname,"edge"),{recursive:true});
+fs.writeFileSync(path.join(__dirname,"edge/frozen.mjs"),out);
+console.log(JSON.stringify({frozen_files:files.length,bundle_sha256:sha(out)}));
