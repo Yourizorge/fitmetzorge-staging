@@ -55,6 +55,11 @@ test("invalid JWT rejected by Auth before RPC",async()=>{
  assert.equal(r.status,401);assert.deepEqual(calls,[url+"/auth/v1/user"]);
 });
 const receipt=JSON.parse(fs.readFileSync(path.join(root,"docs/PHASE6E8_FREEZE_EVIDENCE.json")));
+test("request body is bounded before outbound authentication",async()=>{
+ let calls=0;const h=createHandler({url,key:"public",proof:"private",fetcher:()=>{calls++;throw Error("unexpected");}});
+ const r=await h(new Request(endpoint,{method:"POST",headers:{Authorization:"Bearer fake"},body:"x".repeat(16385)}));
+ assert.equal(r.status,413);assert.equal(calls,0);
+});
 for(const f of receipt.sources)test("frozen byte identity "+f.file,()=>assert.equal(crypto.createHash("sha256").update(fs.readFileSync(path.join(root,f.file))).digest("hex"),f.working_sha256));
 test("entire change scope is only authorized new code and docs",()=>{
  const files=cp.execFileSync("git",["diff","--name-only",receipt.baseline],{cwd:root,encoding:"utf8"}).trim().split(/\r?\n/);

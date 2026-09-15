@@ -56,6 +56,7 @@ try{
  let r;for(let i=0;i<12;i++){r=await edge(a,{op:"read",workspace:a.workspace});if(r.status===200)break;await new Promise(f=>setTimeout(f,5000));}
  assert.equal(r.status,200,JSON.stringify(r.data));assert.equal(r.data.route,"A");assert.equal(r.data.actor_role,"member");
  });
+ if(!process.argv.includes("--browser-only")){
  await check("unauthenticated Edge and REST RPC denied",async()=>{
  denied(await edge(null,{op:"home"}));denied(await request(null,"/rest/v1/rpc/fmz6e9_home",{}));
  });
@@ -146,6 +147,7 @@ try{
  denied(await edge(a,{op:"read",workspace:a.workspace}));
  const audit=await request(a,"/rest/v1/fmz6e9_audit?select=id",undefined,"GET");assert(audit.status!==200||audit.data.length===0);
  });
+ }
  const bt=await seed("browser-trainer","trainer",null,false);
  const ba=await seed("browser-a","A",bt),bb=await seed("browser-b");
  const browser=await browserTest({root,accounts:{memberA:ba,trainerA:bt,memberB:bb},label:process.argv.includes("--published")?"published":"hosted",published:process.argv.includes("--published")});
@@ -155,7 +157,7 @@ try{
  try{report.cleanup=await broker({op:"cleanup"});}
  finally{
  proc.stdin.end();await new Promise(resolve=>proc.once("exit",resolve));
- fs.writeFileSync(path.join(root,"supabase/.temp/phase6e9-live.json"),JSON.stringify(report,null,2)+"\n");
+ fs.writeFileSync(path.join(root,"supabase/.temp/phase6e9-live"+(process.argv.includes("--browser-only")?"-browser":"")+".json"),JSON.stringify(report,null,2)+"\n");
  }
 }
 console.log(JSON.stringify({checks:report.checks.length,cleanup:report.cleanup}));

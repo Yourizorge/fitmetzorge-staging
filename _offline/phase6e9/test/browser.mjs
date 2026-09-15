@@ -30,6 +30,7 @@ export async function browserTest({root,transport,accounts,label="local",publish
  let loseNextApply=false;
  await context.route("https://mokxyyullfhkfalopbzd.supabase.co/**",async route=>{
  const q=route.request();
+ if(q.url().includes("/functions/v1/")&&q.method()==="POST"&&q.postDataJSON()?.command?.action==="open")await new Promise(resolve=>setTimeout(resolve,500));
  const lose=loseNextApply&&q.url().includes("/functions/v1/")&&q.method()==="POST"&&q.postDataJSON()?.command?.action==="apply";
  if(!transport){
  if(lose){loseNextApply=false;await route.fetch();await route.abort("failed");return;}
@@ -53,7 +54,9 @@ export async function browserTest({root,transport,accounts,label="local",publish
  await page.goto(base+"coach-backend-demo/index.html?lang=nl&theme=light");
  await login(accounts.memberA);
  check("A has member role",/Route A.*Lid/.test(await version()));
- await action('[data-command="open"]');
+ await page.locator('[data-command="open"]').click();
+ check("loading state disables duplicate commands",await page.locator('[data-command="open"]').isDisabled()&&(await page.locator("#feedback").innerText()).includes("Bezig"));
+ await idle();
  await action('[data-action="a"][data-value*="member_accept"]');
  check("A trainer approval not usable by member",await page.locator('[data-action="a"][data-value*="trainer_approve"]').isDisabled());
  await logout();await login(accounts.trainerA);
