@@ -833,3 +833,18 @@ separate approvals/application/restore, minimal audit/notices, failure/concurren
 tests and safe exact synthetic cleanup, standard-off test flag. Preserve all
 previous decisions and frozen sources. No providers/costs or production.
 6E-9 results require new owner review; 6E-10 is not started.
+
+## Decision 0051: 6E-9 synthetic backend technical delivery boundary
+
+2026-09-15. Implementation evidence, not owner acceptance. The separate backend
+demo uses real temporary Auth identities, the existing trusted profile/link roles,
+private guarded transaction functions and an isolated standard-off eligibility flag.
+No client actor/route authority or real member input. Frozen A/B model sources remain
+unchanged; this is deterministic synthetic source validation, not medical/live AI.
+23 hosted security groups and 200 final published browser checks pass; all 66
+pre-existing data fingerprints match after cleanup. All temporary identities and
+fixtures removed; no permanent demo accounts or open test window are implied.
+6E-9 TECHNICAL PASS / READY FOR OWNER REVIEW only. Phase 6E remains incomplete.
+6E-10 source-management/test-window lifecycle is proposed, not started. K1/K2 and
+future L1-L3 are new review/GO choices, not inferred acceptances or reopened earlier
+decisions. Owner phone retest needs a new bounded synthetic credential window.

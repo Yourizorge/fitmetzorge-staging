@@ -1,5 +1,9 @@
 # Package 6E-8 Technical Report
 
+Current correction (2026-09-15): owner accepted J1-J3 after physical inspection.
+6E-8 is COMPLETE / OWNER-ACCEPTED / FROZEN - SYNTHETIC STAGING DEMO ONLY.
+See PHASE6E8_FREEZE_RECEIPT.md. Statements below preserve historical delivery status.
+
 6E-8 TECHNICAL PASS / READY FOR OWNER REVIEW - SYNTHETIC STAGING DEMO.
 Result acceptance/freeze and Package 6E-9 are NOT started.
 

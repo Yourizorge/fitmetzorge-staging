@@ -1,13 +1,20 @@
 # FitMetZorge Build Status
 
-## Current: 6E-8 Accepted; 6E-9 Authorized
+## Current: 6E-8 Accepted; 6E-9 Technical Pass
 
 6E-8 COMPLETE / OWNER-ACCEPTED / FROZEN - SYNTHETIC STAGING DEMO ONLY.
 Owner physical inspection and J1-J3 accepted on 2026-09-15.
 [Freeze receipt](PHASE6E8_FREEZE_RECEIPT.md) and [hashes](PHASE6E8_FREEZE_EVIDENCE.json).
 6E-9 has explicit GO for synthetic-only backend/authorization, not real members,
 providers or production. [Preregistered scope/tests](PHASE6E9_PREREGISTRATION.md).
-Implementation and live verification remain pending; no technical pass yet.
+6E-9 TECHNICAL PASS / READY FOR OWNER REVIEW - SYNTHETIC BACKEND ONLY.
+1,725 offline/frozen tests, 48 local SQL groups, 23 real Auth/Edge/REST groups;
+final published browser: 200 checks / 72 layouts, all pass. No physical phone claim.
+34/34 migration identities; all 66 pre-existing data fingerprints unchanged.
+219 protected files and 76 prior public assets unchanged; 4 isolated demo assets.
+Temporary Auth/fixtures removed, feature flag off. No live AI or real members.
+[Technical report](PHASE6E9_TECHNICAL_REPORT.md), [owner overview](PHASE6E9_OWNER_OVERVIEW.md)
+and [evidence](PHASE6E9_EVIDENCE.json). [6E-10 proposal](PHASE6E10_PROPOSAL.md) only.
 All earlier frozen contracts and accepted Training remain protected.
 Phase 6E overall INCOMPLETE. 6E-10 NOT STARTED.
 Earlier pending-acceptance statements below are historical and superseded.

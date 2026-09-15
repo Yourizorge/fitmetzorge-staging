@@ -1,6 +1,8 @@
 # Synthetic 6E-9 Backend Boundary
 
-Implementation under development; no live verification claimed.
+TECHNICAL PASS / READY FOR OWNER REVIEW - SYNTHETIC BACKEND ONLY.
+Actual hosted Auth/Edge/REST, SQL atomicity and published browser evidence are in
+docs/PHASE6E9_TECHNICAL_REPORT.md. Test accounts/fixtures are removed; flag is off.
 The new public entry is separate; accepted 6E-8 and normal app bytes are not edited.
 Frozen deterministic A/B models are bundled verbatim and replay only allowlisted
 synthetic commands. No free text, uploaded images, custom goals or provider inputs.

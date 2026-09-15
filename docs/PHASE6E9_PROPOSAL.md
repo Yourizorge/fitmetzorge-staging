@@ -1,6 +1,8 @@
 # Package 6E-9 Proposal
 
-PROPOSED / NOT STARTED. Separate owner GO required.
+Historical proposal; owner GO is recorded in Decision 0050 (2026-09-15).
+Implemented scope and current evidence: PHASE6E9_TECHNICAL_REPORT.md.
+The proposed object names and not-started language below describe the pre-GO plan.
 
 ## One Concrete Result
 

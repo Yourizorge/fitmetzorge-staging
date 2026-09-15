@@ -1,5 +1,9 @@
 # Package 6E-8 Owner Review
 
+Current correction (2026-09-15): accepted/frozen following the owner's physical
+inspection of J1-J3 and both routes. See PHASE6E8_FREEZE_RECEIPT.md.
+The pending acceptance statements below are historical, not the current status.
+
 TECHNICAL PASS / READY FOR OWNER REVIEW - SYNTHETIC STAGING DEMO.
 1673 offline tests and 936 local / 936 published browser checks PASS.
 Final technical/publication proof: PHASE6E8_TECHNICAL_REPORT.md and PHASE6E8_EVIDENCE.json.
