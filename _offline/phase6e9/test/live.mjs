@@ -50,7 +50,7 @@ try{
  const a=await seed("member-a","A",trainer),b=await seed("member-b");
  trainer.workspace=a.workspace;
  const plain=await seed("no-fixture","B",null,false);
- await check("standard-off feature flag blocks valid new account",async()=>denied(await edge(a,{op:"read",workspace:a.workspace})));
+ await check("standard-off feature flag blocks valid new account",async()=>{const r=await edge(a,{op:"read",workspace:a.workspace});assert.equal(r.status,503);assert.equal(r.data.error,"synthetic_disabled");});
  await broker({op:"proof"});
  await check("real Auth/Edge session accepted and route derived by server",async()=>{
  let r;for(let i=0;i<12;i++){r=await edge(a,{op:"read",workspace:a.workspace});if(r.status===200)break;await new Promise(f=>setTimeout(f,5000));}

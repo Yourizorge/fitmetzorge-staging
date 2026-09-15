@@ -68,6 +68,6 @@ export function present(row){
  const result=summary(row,replay(row));
  delete result.view.audit;delete result.view.notifications;
  return {workspace:row.workspace,revision:row.revision,route:row.route,actor_role:row.actor_role,seed:row.seed,
- basis:row.basis,guard:row.guard,consent:row.consent,...result,
+ basis:row.basis,versions:clone(row.versions||[]),guard:row.guard,consent:row.consent,...result,
  synthetic_only:true,automatic_actions_allowed:false,physical_advice_authorized:false};
 }
