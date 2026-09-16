@@ -1,15 +1,18 @@
 # Package 6E-10 Owneroverzicht
 
-TECHNICAL PASS / READY FOR OWNER REVIEW. Geen owneracceptatie of freeze van 6E-10.
+COMPLETE / OWNER-ACCEPTED / FROZEN - SYNTHETIC STAGING SCOPE ONLY.
+De owner heeft de volledige telefoontest als geslaagd gemeld en 6E-10 expliciet
+geaccepteerd. Dit is uitsluitend acceptatie van de bewezen synthetische scope.
 De ownerbevestiging is exact gekoppeld aan de historische account/sessie/negen rijen.
 De vervolgtests met afzonderlijke databehoudsmetingen zijn geslaagd.
-Het schone testvenster staat open tot donderdag 17 september 2026, 16:22:20 CEST.
-[Link, eenvoudige telefoontest en volledig rapport](PHASE6E10_FOLLOWUP_REPORT.md).
-Gebruik de drie bestaande synthetische logins, niet de gewone owneraccount.
+Het testvenster is gesloten en opgeruimd op 16 september 2026 om 17:05:26 CEST.
+De drie synthetische accounts blijven behouden; alle sessies zijn ingetrokken.
+[Actuele freeze receipt](PHASE6E10_FREEZE_RECEIPT.md).
+[Historisch opleverrapport](PHASE6E10_FOLLOWUP_REPORT.md).
 6E-9 is door de owner fysiek geaccepteerd en frozen; het oude venster is gesloten.
 Deze nieuwe demo gebruikt alleen de drie eerder bewezen synthetische testidentiteiten.
 
-## Wat Je Beoordeelt
+## Geaccepteerde Scope
 
 - L1: trainerbron v1/v2, zichtbare herkomst, onveranderlijke oude voorstellen en
   verse lid-/trainergoedkeuring na een bronwijziging.
@@ -19,7 +22,7 @@ Deze nieuwe demo gebruikt alleen de drie eerder bewezen synthetische testidentit
   Route B krijgt in dit pakket bewust geen trainerbron of nieuw coachingvoorstel.
 
 De identiteit van de beheerder en eerdere productkeuzes zijn al besloten. Dit zijn
-reviewpunten voor de gebouwde uitkomst, geen verzoek om die besluiten te heropenen.
+reviewpunten voor de gebouwde uitkomst, nu begrensd owner-accepted.
 
 ## Concrete Voorbeelden
 
@@ -38,12 +41,16 @@ afzonderlijke zelfrapportages; leeg is niet nul. Historische versies blijven sta
 Actuele/ernstige/terugkerende/oningedeelde klachten en onvoldoende herstelcontext
 zijn hier gecontroleerde testfixtures, geen medische herkenning of trainingsvrijgave.
 
-## Fysieke Retest
+## Fysieke Retest En Bewijsgrens
 
-De definitieve link, vervaltijd en testvolgorde staan in het follow-uprapport hierboven.
-Bestaande wachtwoorden blijven behouden; er worden geen nieuwe e-mails verstuurd.
-Agenttests gebruiken echte synthetische Auth-sessies, maar emuleren de telefoon.
-Ze testen niet het onbekende ownerwachtwoord en vervangen jouw telefoontest niet.
+De owner meldt: synthetische logins, voorstellen/herkomst, gescheiden goedkeuringen,
+toepassen/terugzetten en behoud na verversen/opnieuw inloggen allemaal geslaagd.
+De bewaarde serverregistratie van dit laatste venster bevat voorstel/acceptatie/
+trainergoedkeuring, maar geen apply/restore-actie en slechts plan v1. Die registratie
+bewijst dus niet zelfstandig elk gemeld telefoononderdeel. De bestaande technische
+apply/restore-tests blijven het uitvoerbare bewijs; de owneracceptatie wordt als
+expliciete ownerverklaring vastgelegd, zonder ontbrekende acties te reconstrueren.
+De agent-viewports waren geemuleerd. Geen wachtwoord is getoond of gewijzigd.
 
 ## Vervolg
 

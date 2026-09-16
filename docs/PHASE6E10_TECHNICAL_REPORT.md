@@ -1,6 +1,15 @@
 # Package 6E-10 Technical Report
 
-TECHNICAL PASS / READY FOR OWNER REVIEW / NOT OWNER-ACCEPTED.
+COMPLETE / OWNER-ACCEPTED / FROZEN - SYNTHETIC STAGING SCOPE ONLY.
+Current owner acceptance, exact source hashes and measured early closure:
+[freeze receipt](PHASE6E10_FREEZE_RECEIPT.md) /
+[freeze evidence](PHASE6E10_FREEZE_EVIDENCE.json).
+The owner reports a complete successful physical retest. Retained server receipts
+and the limits of independently corroborating that report are distinguished there.
+No functional code, migration or Edge change was made for acceptance/closure.
+
+## Historical Delivery And Follow-Up
+
 The owner-confirmed login now matches the exact historical account/session/nine rows.
 New 127-table before/after evidence, published UI verification and a fresh owner
 window are complete. See [current full report](PHASE6E10_FOLLOWUP_REPORT.md)
@@ -12,7 +21,9 @@ Read-only follow-up: [investigation](PHASE6E10_READONLY_INVESTIGATION.md),
 [partial test receipts](PHASE6E10_VERIFICATION_PENDING.json).
 Implementation was pushed as 03eb55af7ab1897a3c6a12b82fcb5d182e88c4de.
 The original comparison remains 59/68 equal plus nine explained owner changes.
-The new owner window expires 2026-09-17 16:22:20.720 Europe/Amsterdam.
+The owner window originally expired 2026-09-17 16:22:20.720 Europe/Amsterdam;
+it is now closed early after acceptance. The freeze receipt supersedes open-window
+and pending-acceptance wording in the historical sections below.
 Scope: Yourizorge/fitmetzorge-staging main; mokxyyullfhkfalopbzd only.
 Phase 6E remains INCOMPLETE. No 6E-11 implementation, provider or production action.
 

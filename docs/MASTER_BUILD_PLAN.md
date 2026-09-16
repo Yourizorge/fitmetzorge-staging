@@ -1,6 +1,16 @@
 # FitMetZorge Master Build Plan
 
-## Current: 6E-9 Accepted; 6E-10 Ready For Owner Review
+## Current: 6E-10 Accepted And Frozen
+
+COMPLETE / OWNER-ACCEPTED / FROZEN - SYNTHETIC STAGING SCOPE ONLY.
+Owner physical phone acceptance covers the bounded delivered 6E-10 workflow.
+The owner test window is closed, exact fixtures cleaned and synthetic sessions
+revoked; source/runtime bytes are unchanged. PHASE6E10_FREEZE_RECEIPT.md records
+scope, hashes, evidence limitations and remaining expert/live-use gates.
+6E-11 remains an unstarted proposal, with no inferred implementation GO.
+Phase 6E overall INCOMPLETE. All earlier decisions remain intact.
+
+## Historical: 6E-10 Ready For Owner Review
 
 6E-9 COMPLETE / OWNER-ACCEPTED / FROZEN - SYNTHETIC STAGING BACKEND ONLY.
 K1 physical phone retest accepted; K2 grants the bounded 6E-10 implementation.

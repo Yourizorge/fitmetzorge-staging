@@ -1,6 +1,20 @@
 # FitMetZorge Build Status
 
-## Current: 6E-9 Frozen; 6E-10 Ready For Owner Review
+## Current: 6E-10 Owner-Accepted And Frozen
+
+COMPLETE / OWNER-ACCEPTED / FROZEN - SYNTHETIC STAGING SCOPE ONLY.
+The owner explicitly reports a successful complete physical phone retest and accepts
+6E-10. The exact tested implementation and all earlier frozen sources are preserved.
+The owner window is CLOSED/CLEANED; two synthetic workspaces removed and all three
+synthetic identities' sessions revoked. Accounts/passwords retained, no emails.
+Six new measurement pairs cover 127 tables; protected cohorts, including the nine
+historically explained tables, remain unchanged. No runtime/Edge/migration change.
+See [freeze receipt](PHASE6E10_FREEZE_RECEIPT.md) and
+[source hashes and closure evidence](PHASE6E10_FREEZE_EVIDENCE.json).
+Owner-reported phone results are distinguished from retained server receipts.
+Phase 6E remains INCOMPLETE. 6E-11 NOT STARTED. No real-data/live AI/production GO.
+
+## Historical: 6E-10 Delivery Before Owner Acceptance
 
 6E-10 TECHNICAL PASS / READY FOR OWNER REVIEW, synthetic staging only.
 Owner attestation plus exact account/session/nine-row binding resolves the earlier

@@ -9,7 +9,12 @@ derive authority; only the explicitly selected synthetic A-trainer is an operato
 Immutable source/plan versions bind three separate A approval/application stages.
 B remains isolated, without a platform catalog or A content. No normal-app change.
 Details: _offline/phase6e10/ARCHITECTURE.md and PHASE6E10_TECHNICAL_REPORT.md.
-6E-9 accepted/frozen; 6E-10 TECHNICAL PASS / READY FOR OWNER REVIEW; Phase 6E incomplete.
+6E-9 and 6E-10 owner-accepted/frozen within their synthetic scopes; Phase 6E incomplete.
+6E-10 source hashes and acceptance boundary: PHASE6E10_FREEZE_RECEIPT.md.
+Its owner window is now cleaned and all three synthetic sessions revoked.
+The existing operator/configuration is retained, not expanded; no active participant
+window or fixture content remains. A later window is a separate authorized action.
+No new runtime, database structure, Edge deployment or 6E-11 implementation.
 The owner-confirmed historical session is independently bound to the exact account
 and nine changed rows. Follow-up audit tooling measures all 127 existing tables,
 separates full-table/protected-cohort fingerprints and records synthetic writes.

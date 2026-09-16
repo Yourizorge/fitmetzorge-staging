@@ -882,3 +882,20 @@ known cron operational logs. No new authorization model, migration or runtime ch
 6E-10 TECHNICAL PASS / READY FOR OWNER REVIEW only; L1-L3 and physical retest remain
 open. No owner freeze or 6E-11 implementation. All earlier product decisions remain.
 Current receipt: PHASE6E10_FOLLOWUP_REPORT.md / PHASE6E10_FOLLOWUP_EVIDENCE.json.
+
+## Decision 0054: Owner accepts and freezes proven 6E-10 scope
+
+2026-09-16. The owner explicitly reports the complete physical phone test passed:
+synthetic logins, proposal/source display, separate member/trainer approvals,
+new versions on apply/restore and persistence after refresh/relogin; no anomalies.
+6E-10 COMPLETE / OWNER-ACCEPTED / FROZEN - SYNTHETIC STAGING SCOPE ONLY.
+This accepts the bounded implementation, not real-data use, live AI, medical
+clearance, a new B coaching catalog or completion of Phase 6E.
+Owner testimony is not fabricated server evidence: the final window retained
+proposal/acceptance/approval and plan v1, without apply/restore receipts.
+Those operations retain the earlier technical proof, with this limitation visible.
+The owner authorizes exact-window closure/cleanup; accounts/passwords retained,
+all three synthetic sessions revoked, no real data restoration or runtime change.
+Prior evidence and D1-D12/O1-O5/W1/W2 remain unchanged. Expert and live-use gates
+remain open. 6E-11 is NOT STARTED and receives no GO from this acceptance.
+Receipt: PHASE6E10_FREEZE_RECEIPT.md / PHASE6E10_FREEZE_EVIDENCE.json.

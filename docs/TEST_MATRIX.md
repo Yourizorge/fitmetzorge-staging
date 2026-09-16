@@ -2,6 +2,20 @@
 
 ## 6E-10 Source And Managed Window Verification
 
+OWNER-ACCEPTED / FROZEN - SYNTHETIC STAGING SCOPE ONLY.
+The owner reports the complete physical phone test passed. This is owner testimony,
+separate from agent-emulated tests. The retained final window records one approved
+proposal with separate member/trainer actors, source v1 and plan v1; it contains no
+apply/restore receipt. Apply/restore remain technically proven by the prior suites,
+not newly claimed as observed physical actions. See PHASE6E10_FREEZE_RECEIPT.md.
+Closure: six measured pairs / 127 tables, all protected cohorts unchanged; two
+workspaces removed, three retained accounts signed out globally, three still-signed
+JWTs refused. Idempotent cleanup replay PASS. No broader application suite rerun
+for this closure/documentation-only change. Ten targeted scope/Edge regressions PASS.
+Migration list 38/38, dry-run empty; no migration executed for closure/freeze.
+
+### Historical Delivery Evidence
+
 Prerequisites: owner K1/K2 and explicit synthetic A-trainer operator designation.
 1,734 contract/frozen regressions PASS; 65 fresh local PostgreSQL groups PASS;
 65 strict hosted Auth/Edge/PostgreSQL groups PASS. A 503 never counts as denied
@@ -16,7 +30,8 @@ New 127-table snapshots: 35 before/after pairs across preflight, browser, public
 and owner opening; all protected cohorts identical even across run boundaries.
 Full synthetic rows and cron operational logs have separate fingerprints/write evidence.
 First measurement attempt failed before test writes; retained, not counted as PASS.
-Fresh owner window active until 2026-09-17 16:22:20.720 Europe/Amsterdam.
+The delivered window originally expired 2026-09-17 16:22:20.720 Europe/Amsterdam;
+it was closed early after owner acceptance (current closure receipt linked above).
 Old 34 migration content hashes unchanged; 38 total. No history repair.
 Current: PHASE6E10_FOLLOWUP_REPORT.md and PHASE6E10_FOLLOWUP_EVIDENCE.json.
 Historical investigation and partial receipts remain unchanged.

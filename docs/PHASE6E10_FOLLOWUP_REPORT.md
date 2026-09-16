@@ -1,5 +1,10 @@
 # 6E-10 Follow-up: ownermatch, databehoud en retestvenster
 
+Historisch opleverrapport, bewaard met oorspronkelijke testuitslagen en tijdstippen.
+Actueel: owner-accepted/frozen binnen bewezen synthetische scope; venster gesloten.
+Zie [freeze receipt en sluitbewijs](PHASE6E10_FREEZE_RECEIPT.md).
+De onderstaande open-venster-/pending-reviewstatus geldt uitsluitend bij oplevering.
+
 TECHNICAL PASS / READY FOR OWNER REVIEW - SYNTHETIC STAGING ONLY.
 Geen owneracceptatie/freeze van 6E-10. Phase 6E blijft onvoltooid; 6E-11 niet gestart.
 
