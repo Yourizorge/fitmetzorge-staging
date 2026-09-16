@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import assert from "node:assert/strict";
 import {broker,makeApi,root} from "../test/live.mjs";
+import * as followup from "./followup-audit.mjs";
 const file=path.join(root,"supabase/.temp/phase6e10-owner-window.json");
 if(fs.existsSync(file))throw Error("owner_window_exists_inspect_do_not_replace");
 const receipt=p=>JSON.parse(fs.readFileSync(path.join(root,"supabase/.temp",p)));
@@ -9,10 +10,15 @@ assert.equal(receipt("phase6e10-live.json").pass,true);
 assert.equal(receipt("phase6e10-browser-published/report.json").pass,true);
 assert.equal(receipt("phase6e10-publication.json").pass,true);
 assert.equal(receipt("phase6e10-regressions.json").counts.fail,0);
-assert.equal(receipt("phase6e10-after.json").all_existing_unchanged,true);
+assert.equal(followup.enabled,true,"followup_measurements_required");
+assert.equal(JSON.parse(fs.readFileSync(path.join(root,"docs/PHASE6E10_OWNER_MATCH.json"))).pass,true);
+assert.equal(receipt("phase6e10-followup-browser-published.json").pass,true);
 const b=broker(),out={opened:false,synthetic_only:true,production_touched:false,emails:0,external_ai_calls:0};
+let api,finishStarted=false;
 try{
- const api=await makeApi(b);
+ await followup.begin('owner-window');
+ api=await makeApi(b);
+ await api.anonymous();await api.direct();
  const request=async(role,p)=>{const r=await api.raw(role,p);assert.equal(r.status,200,JSON.stringify(r.data));return r.data;};
  let home=await request("trainer",{op:"home"});
  assert(home.operator);
@@ -38,8 +44,25 @@ try{
  Object.assign(out,{opened:true,workspace,ends_at:v.window.ends_at,starts_at:v.window.starts_at,
  expires_nl:new Date(v.window.ends_at).toLocaleString("nl-NL",{timeZone:"Europe/Amsterdam",dateStyle:"full",timeStyle:"long"}),
  url:"https://yourizorge.github.io/fitmetzorge-staging/coach-source-demo/index.html",
- source_version:1,source_hash:v.sources[0].hash,identities:3,operator:"synthetic_a_trainer",cross_route_denied:true});
+  source_version:1,source_hash:v.sources[0].hash,identities:3,operator:"synthetic_a_trainer",cross_route_denied:true});
+ await followup.checkpoint('fresh_owner_window_and_cross_route_denial',true);
+ await followup.cleanupSessions();finishStarted=true;await followup.finish(true);
  fs.writeFileSync(file,JSON.stringify(out,null,2)+"\n");
  console.log(JSON.stringify(out));
-}catch(e){console.error("owner_window_open_incomplete_inspect_receipt");process.exitCode=1;}
+}catch(e){
+ console.error("owner_window_open_incomplete_inspect_receipt");
+ out.opened=false;out.security_hold=true;
+ try{
+  if(api&&out.window){
+   let h=(await api.raw('trainer',{op:'home'})).data,w=h.windows.find(x=>x.id===out.window);
+   if(w?.status==='active')await api.raw('trainer',{op:'command',window:out.window,workspace:null,key:crypto.randomUUID(),expected:w.revision,action:'revoke',data:{}});
+   h=(await api.raw('trainer',{op:'home'})).data;w=h.windows.find(x=>x.id===out.window);
+   if(w&&w.status!=='cleaned')await api.raw('trainer',{op:'command',window:out.window,workspace:null,key:crypto.randomUUID(),expected:w.revision,action:'cleanup',data:{}});
+  }
+  await followup.cleanupSessions();
+  if(!finishStarted)await followup.finish(false);
+ }catch{out.cleanup_requires_inspection=true;}
+ if(fs.existsSync(file))fs.writeFileSync(file,JSON.stringify(out,null,2)+'\n');
+ process.exitCode=1;
+}
 finally{b.assertQuiet();await b.close();}

@@ -1,0 +1,469 @@
+{
+  "pass": true,
+  "checked_at": "2026-09-16T09:24:47.916661+00:00",
+  "owner_attestation": "Owner confirmed personal mobile Safari use and independently supplied the exact login address.",
+  "owner_account_exact_match": true,
+  "unique_subjects": 1,
+  "unique_sessions": 1,
+  "session_created_at": "2026-09-16 06:56:17.931666+00",
+  "requests": 106,
+  "authenticated_requests": 72,
+  "second_identity": false,
+  "service_role_requests": 0,
+  "phase6e10_requests": 0,
+  "all_nine_rows_same_owner": true,
+  "updates": [
+    {
+      "table_name": "entitlements",
+      "changed_rows": 1,
+      "all_owner": true,
+      "first_update": "2026-09-16 06:57:39.954225+00",
+      "last_update": "2026-09-16 06:57:39.954225+00"
+    },
+    {
+      "table_name": "member_app_preferences",
+      "changed_rows": 1,
+      "all_owner": true,
+      "first_update": "2026-09-16 06:57:39.135103+00",
+      "last_update": "2026-09-16 06:57:39.135103+00"
+    },
+    {
+      "table_name": "member_notifications",
+      "changed_rows": 1,
+      "all_owner": true,
+      "first_update": "2026-09-16 06:56:29.836431+00",
+      "last_update": "2026-09-16 06:56:29.836431+00"
+    },
+    {
+      "table_name": "nutrition_preferences",
+      "changed_rows": 1,
+      "all_owner": true,
+      "first_update": "2026-09-16 06:56:45.778343+00",
+      "last_update": "2026-09-16 06:56:45.778343+00"
+    },
+    {
+      "table_name": "profiles",
+      "changed_rows": 1,
+      "all_owner": true,
+      "first_update": "2026-09-16 06:57:39.954225+00",
+      "last_update": "2026-09-16 06:57:39.954225+00"
+    },
+    {
+      "table_name": "progress_preferences",
+      "changed_rows": 1,
+      "all_owner": true,
+      "first_update": "2026-09-16 06:56:20.592861+00",
+      "last_update": "2026-09-16 06:56:20.592861+00"
+    },
+    {
+      "table_name": "user_onboarding",
+      "changed_rows": 1,
+      "all_owner": true,
+      "first_update": "2026-09-16 06:57:39.954225+00",
+      "last_update": "2026-09-16 06:57:39.954225+00"
+    },
+    {
+      "table_name": "user_settings",
+      "changed_rows": 1,
+      "all_owner": true,
+      "first_update": "2026-09-16 06:57:39.954225+00",
+      "last_update": "2026-09-16 06:57:39.954225+00"
+    },
+    {
+      "table_name": "workout_sessions",
+      "changed_rows": 1,
+      "all_owner": true,
+      "first_update": "2026-09-16 06:56:22.310429+00",
+      "last_update": "2026-09-16 06:56:22.310429+00"
+    }
+  ],
+  "background": [
+    {
+      "category": "transport_timeout",
+      "count": 5,
+      "source": "postgrest_logs"
+    },
+    {
+      "category": "cron_job",
+      "count": 40,
+      "source": "postgres_logs"
+    },
+    {
+      "category": "checkpoint",
+      "count": 4,
+      "source": "postgres_logs"
+    }
+  ],
+  "cron": [
+    {
+      "jobid": 1,
+      "status": "succeeded",
+      "runs": 10
+    },
+    {
+      "jobid": 7,
+      "status": "succeeded",
+      "runs": 10
+    }
+  ],
+  "original_tables": 68,
+  "initial_unchanged": 59,
+  "initial_explained_differences": 9,
+  "new_unexplained_differences": 0,
+  "reconciled_fingerprints": [
+    {
+      "name": "ai_private.action_policies",
+      "rows": 5,
+      "sha256": "9a9ba9badc89b1641492fabf8bccd2d43409f81827da846893fb00099940efa6"
+    },
+    {
+      "name": "ai_private.analysis_jobs",
+      "rows": 11,
+      "sha256": "49fa64f8d29ff2d3222ff8f8ea5f2445103f42a81d04b0ef5d13daae40e57d72"
+    },
+    {
+      "name": "ai_private.analysis_safety_recoveries",
+      "rows": 2,
+      "sha256": "f05747ff1ef1eaa0841cace7982202db71c231ae8edabf27febb5a58e562d3f3"
+    },
+    {
+      "name": "ai_private.audit_events",
+      "rows": 56,
+      "sha256": "5ca747c65ae3332c947f4add856a0057f65e8bdc9214da70b8eb43a4f2456963"
+    },
+    {
+      "name": "ai_private.budget_accounts",
+      "rows": 1,
+      "sha256": "cdf61b0c1552c4efa4c7fa9e1aa899bea30ddb28dc01c633f64d40c0d13152db"
+    },
+    {
+      "name": "ai_private.budget_policies",
+      "rows": 1,
+      "sha256": "367fa102a30bf8a523c6081af40d5267ee5a4332740c9061452bad327ac83775"
+    },
+    {
+      "name": "ai_private.consent_documents",
+      "rows": 12,
+      "sha256": "7ab27e9a1f7f2d6ce6c59f3fbd92aa15171727affe254a9a37c2e688c258423c"
+    },
+    {
+      "name": "ai_private.feature_flags",
+      "rows": 3,
+      "sha256": "7229b1ea5ee3208c471aab06630e31b66c6b924d3f457348f56b9d681664a8c3"
+    },
+    {
+      "name": "ai_private.phase6c_runtime_config",
+      "rows": 1,
+      "sha256": "f2c03927101ad1067574cea072e8db207574b18fb8c755077b42b4d4c4b91159"
+    },
+    {
+      "name": "ai_private.phase6d_runtime_config",
+      "rows": 1,
+      "sha256": "f6c8a5115518925c319e36399311c09b17f3f67355338380fc90c973647aaa73"
+    },
+    {
+      "name": "ai_private.provider_configurations",
+      "rows": 1,
+      "sha256": "472c09c0113f39d65d25dc30089e440b99ecb05557f57aacfa6c51354ffca74e"
+    },
+    {
+      "name": "ai_private.provider_models",
+      "rows": 2,
+      "sha256": "b46d9c5b1c78d2a6d81e46bd66178c4092c77012ac683f9a898e7b51293ab84a"
+    },
+    {
+      "name": "ai_private.provider_payload_fields",
+      "rows": 9,
+      "sha256": "8db50ce9555942115bc68f147aac98d2fd1dd556df3c7ae0abad0893a272214a"
+    },
+    {
+      "name": "ai_private.provider_test_budget",
+      "rows": 1,
+      "sha256": "daa69b1556887933ae96eed6ad3efc8beb3daed6647f04c6447d2dd85c20b267"
+    },
+    {
+      "name": "ai_private.provider_test_runs",
+      "rows": 4,
+      "sha256": "3ac31e1b47080ff9f6f12cad5705d48e6462a5a2e54e6d5a148265ffcf4a71d9"
+    },
+    {
+      "name": "ai_private.rate_buckets",
+      "rows": 19,
+      "sha256": "f1c8bf527775497ee8fa31b1a43213a5cec64632b3594cc60a80abc9fbaf5f38"
+    },
+    {
+      "name": "ai_private.rate_policies",
+      "rows": 4,
+      "sha256": "c947f6fd842e9525ea919e9df9419c45b95c89527a417f1d716cebc06bba178f"
+    },
+    {
+      "name": "ai_private.runs",
+      "rows": 27,
+      "sha256": "bfc86a4e7972edd5517fde52456bbae0af3f2950dfe341f6a40edfc402601d04"
+    },
+    {
+      "name": "ai_private.safety_events",
+      "rows": 3,
+      "sha256": "9f82b3e7f62d1c65ce7b3c4263817b42f0055aa4611a7cdf9f647f98193c84f8"
+    },
+    {
+      "name": "ai_private.structured_schemas",
+      "rows": 2,
+      "sha256": "4b93bc774a2c6c695486b7a73dd08a50dc911b3b8483fa34af156131107d8f1c"
+    },
+    {
+      "name": "ai_private.usage_ledger",
+      "rows": 54,
+      "sha256": "872155a9975a6f2a8ca302f8ba2418d8d23e13aef8f80e3d913a0f4ce5bad2f5"
+    },
+    {
+      "name": "legacy_auth_private.client_invitations",
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "public.ai_action_decisions",
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "public.ai_action_proposals",
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "public.ai_analysis_lifecycle_requests",
+      "rows": 3,
+      "sha256": "523a3106a5904020b9b25998b3be6c0fcf65b730393daf214aca967f03c6b0ad"
+    },
+    {
+      "name": "public.ai_analysis_preferences",
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "public.ai_analysis_results",
+      "rows": 12,
+      "sha256": "a220513e5298d51d6fcf8b325c7c1b4046264e0a1f245ed09c6e7a20cd95a499"
+    },
+    {
+      "name": "public.ai_consent_events",
+      "rows": 3,
+      "sha256": "0f93d8f0b7242e5698ba92b08b182931e00be20217e4379a50c3b57a2f0cc0d9"
+    },
+    {
+      "name": "public.ai_context_manifests",
+      "rows": 12,
+      "sha256": "e7e555efa753cbcc86efecdbfd3a82bf4ef63933eaf760fff774551cd61a81e8"
+    },
+    {
+      "name": "public.ai_data_lifecycle_requests",
+      "rows": 4,
+      "sha256": "b3f5ed4e5622c4825150624074a8d07377839f1f3b686c2374ff3ccc76649ae3"
+    },
+    {
+      "name": "public.ai_member_safety_state",
+      "rows": 1,
+      "sha256": "cd76142b2a0037862539f137c188bb0a6fa8f4c87305fa4e826c96d88b54ea4c"
+    },
+    {
+      "name": "public.ai_messages",
+      "rows": 30,
+      "sha256": "cae3c74e611bb501ef5dba1e8494c03af71e3f8209492e4d32fcff405b908660"
+    },
+    {
+      "name": "public.ai_threads",
+      "rows": 10,
+      "sha256": "9dde9768d82c715c50498c5bcd59f71111eb0c407093b41700428f0befb39032"
+    },
+    {
+      "name": "public.body_measurements",
+      "rows": 1,
+      "sha256": "006d936d2f02a0752cd1c70921016da43bb69f50d3461548527002f1462068d6"
+    },
+    {
+      "name": "public.coach_workspaces",
+      "rows": 2,
+      "sha256": "0cbba5ff33c971afb56322d300c77cc13962ee023200fef7590a41158c68273b"
+    },
+    {
+      "name": "public.entitlements",
+      "rows": 4,
+      "sha256": "5d0fdc0845ac6b84029b1e422412809913732582fd1ab2caf6e41566f03e5e42"
+    },
+    {
+      "name": "public.exercises",
+      "rows": 898,
+      "sha256": "61526727fd3d45f5cb27e90f6b30d4246d2cb2fee866cb610d3f829603780099"
+    },
+    {
+      "name": "public.fmz6e9_audit",
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "public.fmz6e9_notices",
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "public.food_aliases",
+      "rows": 197,
+      "sha256": "22323e7e18b42719c52c2c3e257f695c883afc2242c10ef75ac8365ed460d6af"
+    },
+    {
+      "name": "public.food_log_items",
+      "rows": 22,
+      "sha256": "db3a7d7a895cb86afb804099e8c201254e6d661e3668543f951e0a4ba5607056"
+    },
+    {
+      "name": "public.food_logs",
+      "rows": 5,
+      "sha256": "7c6d379b2146056c6b716721e507e143daf09df7410210046f5653e6038a21fe"
+    },
+    {
+      "name": "public.food_portions",
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "public.foods",
+      "rows": 65,
+      "sha256": "26b6b9e52ce459254d4277fd9961e8ac045a8fb5e9347e97c1e5cade7b22deca"
+    },
+    {
+      "name": "public.member_app_preferences",
+      "rows": 1,
+      "sha256": "65c19d1faacd13ff5d0a20b07b5334ab3e7064b82bd963f6d6638093ec833b78"
+    },
+    {
+      "name": "public.member_notifications",
+      "rows": 12,
+      "sha256": "eebfec7303be087b48506b5cd836e976c923bfafb27b6bfbcc605a4a2e1cf198"
+    },
+    {
+      "name": "public.nutrition_food_ingestions",
+      "rows": 1,
+      "sha256": "accc46d558fe2a3b3ff1e8c7c45c2fc4e455b75587c14d7feb6d6659a4834a60"
+    },
+    {
+      "name": "public.nutrition_off_catalog_releases",
+      "rows": 1,
+      "sha256": "fbe5b97f6379d3564e29bb35df7419c08513e9333c8251305cabcda7003bd8e3"
+    },
+    {
+      "name": "public.nutrition_off_product_names",
+      "rows": 74184,
+      "sha256": "75c6f06fb337a78fd55a9fff1d283cf69275f071ace0b55d98956fe967891d6c"
+    },
+    {
+      "name": "public.nutrition_off_products",
+      "rows": 24458,
+      "sha256": "163c8075d8f5166773201185d10a01917f61fe0d40398d475fd44b690f03c973"
+    },
+    {
+      "name": "public.nutrition_preferences",
+      "rows": 2,
+      "sha256": "cc52196284473dc9e9b04e1b1f67c7e98c4ce33bad68a481152f58567ba10d29"
+    },
+    {
+      "name": "public.nutrition_provider_food_cache",
+      "rows": 15,
+      "sha256": "4c04094b7434e663fb6a7e63f41f3d0488dbcaf8c20248a29f46d9b90eec75a5"
+    },
+    {
+      "name": "public.nutrition_provider_query_cache",
+      "rows": 17,
+      "sha256": "40fdb69a3dc8653ac60d7e9f88cb1a75d125e687fad470e45dc810376e1b1b86"
+    },
+    {
+      "name": "public.nutrition_provider_rate_buckets",
+      "rows": 68,
+      "sha256": "577c6e82cb24c1d2096db839327e9441ded0798db8c95fb8e1557d0b1dd58272"
+    },
+    {
+      "name": "public.nutrition_provider_runtime_state",
+      "rows": 2,
+      "sha256": "4fd4abdcc447fc946097c38249e935fab758ae8ecc450da248d0cf66b87fb96c"
+    },
+    {
+      "name": "public.nutrition_targets",
+      "rows": 3,
+      "sha256": "c94b7d56f03de2449d4e98e4158395d1c135bd8d5faed3b8b2f3656dea93e43d"
+    },
+    {
+      "name": "public.profiles",
+      "rows": 7,
+      "sha256": "2dbee634b2d1ae08bef74889f5c8a85d3d572658ccdb4748f0cb34b2d21d9478"
+    },
+    {
+      "name": "public.progress_goals",
+      "rows": 1,
+      "sha256": "6511f28f85183bc7452d51652ce6902bb44b23d938eb074b3054f13f6194fff5"
+    },
+    {
+      "name": "public.progress_preferences",
+      "rows": 2,
+      "sha256": "9f03be3969d861de514bc3acbe349d4c7ef3344859498edfd7cef39254a253ee"
+    },
+    {
+      "name": "public.recovery_logs",
+      "rows": 1,
+      "sha256": "bf8697b366752cf6fe0bc04952ceded89599eefc15f8a173f2a159f4f9fc8095"
+    },
+    {
+      "name": "public.training_plan_days",
+      "rows": 7,
+      "sha256": "e2a5ca07dd5f1c2222e1c2273a6a1391db444c8074ba988199d1089bd9dbe04e"
+    },
+    {
+      "name": "public.training_plan_exercises",
+      "rows": 14,
+      "sha256": "00ef1491f75afa09ba487936d4f71f58c65e331505513fe903cc7a4838d8aee6"
+    },
+    {
+      "name": "public.training_plans",
+      "rows": 7,
+      "sha256": "e7f66e81ea95ac60f6ac00027b793d1a98611ec3ee27fb904ed6d7c1648c7b3a"
+    },
+    {
+      "name": "public.user_onboarding",
+      "rows": 3,
+      "sha256": "ca147237194e4193e7e352113f60dd80d5a8c03dc2a96153ede120b8d6eaacf8"
+    },
+    {
+      "name": "public.user_settings",
+      "rows": 3,
+      "sha256": "bc5cbf2315eeca1a1658597fb0890889dfda08c98519b3a20113e7f9d57a9d5a"
+    },
+    {
+      "name": "public.weight_logs",
+      "rows": 2,
+      "sha256": "154b7cdde3780ce4dcc7bd2d858dd9e7ba9213519430bf6cfa282c7dc9e086ea"
+    },
+    {
+      "name": "public.workout_sessions",
+      "rows": 21,
+      "sha256": "ae04b7ebb0f280abf8703f5bf2fdfce53a48fbc2265cf1017a4ef0a9caca6ed3"
+    },
+    {
+      "name": "public.workout_set_logs",
+      "rows": 15,
+      "sha256": "dbd66ca11b846d23f1885d26dd5a9318030318b780a6840ca81691827d2f41b2"
+    }
+  ],
+  "preserved_files": {
+    "supabase/.temp/phase6e10-before.json": "1524d4b77463f27d0313a25c93b16a68f2e304ad7eee9be316d01421f3b99333",
+    "supabase/.temp/phase6e10-data-differences.json": "5632e796f42737c0ba622f35f956020b40afc7d721f6ec5442874654b83459be",
+    "_offline/phase6e10/ops/broker.py": "bfaf9c8cfd29c8ee242099f332f5d0d78d75fec651e176824b07c4154963c379",
+    "_offline/phase6e10/ops/evidence.cjs": "9f22c55b7ea4340b7b18db7c13743dacb45c7d4d9a2eab95039d6bf2e7624e18",
+    "docs/PHASE6E10_READONLY_INVESTIGATION.md": "6cf3c7e12ab76d5e075fddd9429bc3558a6bbee36a0cc2d8946463e76aed7d64",
+    "docs/PHASE6E10_READONLY_INVESTIGATION.json": "e5d38a9f1503f9f11ff0f7c8c0c60ea4ec1ebf82f092616bc8824595e9c3ed27"
+  },
+  "secrets_exported": false,
+  "limitations": [
+    "Bounded recorded logs, not a universal proof against credential compromise.",
+    "Owner attestation plus exact account/session/row binding, not browser metadata alone.",
+    "Five transport-timeout records remain documented; they are not counted as authorization denials."
+  ]
+}

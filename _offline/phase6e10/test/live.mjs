@@ -5,6 +5,7 @@ import readline from "node:readline";
 import assert from "node:assert/strict";
 import {fileURLToPath} from "node:url";
 import {runScenarios} from "./scenarios.mjs";
+import * as followup from "../ops/followup-audit.mjs";
 export const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),"../../..");
 export const BASE="https://mokxyyullfhkfalopbzd.supabase.co",PUB="sb_publishable_6OiMLMl946arkI71-ylqkQ_EQWL6kKT";
 export function broker(){
@@ -16,7 +17,7 @@ export function broker(){
  });
  p.stderr.on("data",()=>{unexpected=true;});
  p.on("exit",()=>{while(queue.length)queue.shift().reject(Error("broker_exited"));});
- return {call:d=>new Promise((resolve,reject)=>{queue.push({resolve,reject});p.stdin.write(JSON.stringify(d)+"\n");}),
+ return {call:async d=>{const event=followup.brokerBefore(d);const result=await new Promise((resolve,reject)=>{queue.push({resolve,reject});p.stdin.write(JSON.stringify(d)+"\n");});followup.brokerAfter(d,result,event);return result;},
  close:()=>new Promise(resolve=>{p.once("exit",()=>resolve());p.stdin.end();}),assertQuiet:()=>assert(!unexpected)};
 }
 export async function makeApi(b){
@@ -26,10 +27,11 @@ export async function makeApi(b){
  const sql=q=>b.call({op:"query",sql:q});
  const json=async q=>Object.values((await sql(q))[0])[0];
  async function raw(who,body,proof=true){
+  const event=followup.request(who,body);
   const r=await fetch(BASE+(proof?"/functions/v1/fmz6e10-synthetic":"/rest/v1/rpc/fmz6e10_call"),{
    method:"POST",headers:{Authorization:"Bearer "+sessions[who].access_token,apikey:PUB,"Content-Type":"application/json"},
    body:JSON.stringify(proof?body:{p:body}),signal:AbortSignal.timeout(35000)});
-  return {status:r.status,data:await r.json()};
+  followup.response(event,r.status);return {status:r.status,data:await r.json()};
  }
  return {ids,sessions,raw,sql,json,lit,j,
   fixture:unit=>json("select fmz6e10_private.fixture("+lit(unit)+")"),
