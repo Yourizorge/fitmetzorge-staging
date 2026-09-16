@@ -1,0 +1,422 @@
+{
+  "at": "2026-09-16",
+  "tables": [
+    {
+      "relname": "audit",
+      "relrowsecurity": true,
+      "anon_any": false,
+      "authenticated_any": false,
+      "service_any": false
+    },
+    {
+      "relname": "config",
+      "relrowsecurity": true,
+      "anon_any": false,
+      "authenticated_any": false,
+      "service_any": false
+    },
+    {
+      "relname": "identities",
+      "relrowsecurity": true,
+      "anon_any": false,
+      "authenticated_any": false,
+      "service_any": false
+    },
+    {
+      "relname": "operators",
+      "relrowsecurity": true,
+      "anon_any": false,
+      "authenticated_any": false,
+      "service_any": false
+    },
+    {
+      "relname": "participants",
+      "relrowsecurity": true,
+      "anon_any": false,
+      "authenticated_any": false,
+      "service_any": false
+    },
+    {
+      "relname": "plans",
+      "relrowsecurity": true,
+      "anon_any": false,
+      "authenticated_any": false,
+      "service_any": false
+    },
+    {
+      "relname": "proposals",
+      "relrowsecurity": true,
+      "anon_any": false,
+      "authenticated_any": false,
+      "service_any": false
+    },
+    {
+      "relname": "requests",
+      "relrowsecurity": true,
+      "anon_any": false,
+      "authenticated_any": false,
+      "service_any": false
+    },
+    {
+      "relname": "source_heads",
+      "relrowsecurity": true,
+      "anon_any": false,
+      "authenticated_any": false,
+      "service_any": false
+    },
+    {
+      "relname": "source_versions",
+      "relrowsecurity": true,
+      "anon_any": false,
+      "authenticated_any": false,
+      "service_any": false
+    },
+    {
+      "relname": "windows",
+      "relrowsecurity": true,
+      "anon_any": false,
+      "authenticated_any": false,
+      "service_any": false
+    },
+    {
+      "relname": "workspaces",
+      "relrowsecurity": true,
+      "anon_any": false,
+      "authenticated_any": false,
+      "service_any": false
+    }
+  ],
+  "functions": [
+    {
+      "nspname": "fmz6e10_private",
+      "proname": "calculate",
+      "prosecdef": false,
+      "proconfig": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "anon_exec": false,
+      "authenticated_exec": false,
+      "service_exec": false
+    },
+    {
+      "nspname": "fmz6e10_private",
+      "proname": "call",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "anon_exec": false,
+      "authenticated_exec": true,
+      "service_exec": false
+    },
+    {
+      "nspname": "fmz6e10_private",
+      "proname": "exact",
+      "prosecdef": false,
+      "proconfig": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "anon_exec": false,
+      "authenticated_exec": false,
+      "service_exec": false
+    },
+    {
+      "nspname": "fmz6e10_private",
+      "proname": "fixture",
+      "prosecdef": false,
+      "proconfig": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "anon_exec": false,
+      "authenticated_exec": false,
+      "service_exec": false
+    },
+    {
+      "nspname": "fmz6e10_private",
+      "proname": "immutable",
+      "prosecdef": false,
+      "proconfig": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "anon_exec": false,
+      "authenticated_exec": false,
+      "service_exec": false
+    },
+    {
+      "nspname": "fmz6e10_private",
+      "proname": "live_window",
+      "prosecdef": false,
+      "proconfig": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "anon_exec": false,
+      "authenticated_exec": false,
+      "service_exec": false
+    },
+    {
+      "nspname": "fmz6e10_private",
+      "proname": "number",
+      "prosecdef": false,
+      "proconfig": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "anon_exec": false,
+      "authenticated_exec": false,
+      "service_exec": false
+    },
+    {
+      "nspname": "fmz6e10_private",
+      "proname": "principal",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "anon_exec": false,
+      "authenticated_exec": false,
+      "service_exec": false
+    },
+    {
+      "nspname": "fmz6e10_private",
+      "proname": "read_workspace",
+      "prosecdef": false,
+      "proconfig": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "anon_exec": false,
+      "authenticated_exec": false,
+      "service_exec": false
+    },
+    {
+      "nspname": "fmz6e10_private",
+      "proname": "sha",
+      "prosecdef": false,
+      "proconfig": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "anon_exec": false,
+      "authenticated_exec": false,
+      "service_exec": false
+    },
+    {
+      "nspname": "fmz6e10_private",
+      "proname": "validate_history",
+      "prosecdef": false,
+      "proconfig": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "anon_exec": false,
+      "authenticated_exec": false,
+      "service_exec": false
+    },
+    {
+      "nspname": "fmz6e10_private",
+      "proname": "validate_source",
+      "prosecdef": false,
+      "proconfig": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "anon_exec": false,
+      "authenticated_exec": false,
+      "service_exec": false
+    },
+    {
+      "nspname": "fmz6e10_private",
+      "proname": "window_at",
+      "prosecdef": false,
+      "proconfig": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "anon_exec": false,
+      "authenticated_exec": false,
+      "service_exec": false
+    },
+    {
+      "nspname": "fmz6e10_private",
+      "proname": "workspace_guard",
+      "prosecdef": false,
+      "proconfig": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "anon_exec": false,
+      "authenticated_exec": false,
+      "service_exec": false
+    },
+    {
+      "nspname": "public",
+      "proname": "fmz6e10_call",
+      "prosecdef": false,
+      "proconfig": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "anon_exec": false,
+      "authenticated_exec": true,
+      "service_exec": false
+    }
+  ],
+  "security": [
+    {
+      "name": "rls_enabled_no_policy",
+      "level": "INFO",
+      "count": 45,
+      "new6e10": [
+        {
+          "detail": "Table \\`fmz6e10_private.audit\\` has RLS enabled, but no policies exist",
+          "metadata": {
+            "name": "audit",
+            "type": "table",
+            "schema": "fmz6e10_private"
+          },
+          "observed_at": "2026-09-16T07:59:01.288Z"
+        },
+        {
+          "detail": "Table \\`fmz6e10_private.config\\` has RLS enabled, but no policies exist",
+          "metadata": {
+            "name": "config",
+            "type": "table",
+            "schema": "fmz6e10_private"
+          },
+          "observed_at": "2026-09-16T07:59:01.288Z"
+        },
+        {
+          "detail": "Table \\`fmz6e10_private.identities\\` has RLS enabled, but no policies exist",
+          "metadata": {
+            "name": "identities",
+            "type": "table",
+            "schema": "fmz6e10_private"
+          },
+          "observed_at": "2026-09-16T07:59:01.288Z"
+        },
+        {
+          "detail": "Table \\`fmz6e10_private.operators\\` has RLS enabled, but no policies exist",
+          "metadata": {
+            "name": "operators",
+            "type": "table",
+            "schema": "fmz6e10_private"
+          },
+          "observed_at": "2026-09-16T07:59:01.288Z"
+        },
+        {
+          "detail": "Table \\`fmz6e10_private.participants\\` has RLS enabled, but no policies exist",
+          "metadata": {
+            "name": "participants",
+            "type": "table",
+            "schema": "fmz6e10_private"
+          },
+          "observed_at": "2026-09-16T07:59:01.288Z"
+        },
+        {
+          "detail": "Table \\`fmz6e10_private.plans\\` has RLS enabled, but no policies exist",
+          "metadata": {
+            "name": "plans",
+            "type": "table",
+            "schema": "fmz6e10_private"
+          },
+          "observed_at": "2026-09-16T07:59:01.288Z"
+        },
+        {
+          "detail": "Table \\`fmz6e10_private.proposals\\` has RLS enabled, but no policies exist",
+          "metadata": {
+            "name": "proposals",
+            "type": "table",
+            "schema": "fmz6e10_private"
+          },
+          "observed_at": "2026-09-16T07:59:01.288Z"
+        },
+        {
+          "detail": "Table \\`fmz6e10_private.requests\\` has RLS enabled, but no policies exist",
+          "metadata": {
+            "name": "requests",
+            "type": "table",
+            "schema": "fmz6e10_private"
+          },
+          "observed_at": "2026-09-16T07:59:01.288Z"
+        },
+        {
+          "detail": "Table \\`fmz6e10_private.source_heads\\` has RLS enabled, but no policies exist",
+          "metadata": {
+            "name": "source_heads",
+            "type": "table",
+            "schema": "fmz6e10_private"
+          },
+          "observed_at": "2026-09-16T07:59:01.288Z"
+        },
+        {
+          "detail": "Table \\`fmz6e10_private.source_versions\\` has RLS enabled, but no policies exist",
+          "metadata": {
+            "name": "source_versions",
+            "type": "table",
+            "schema": "fmz6e10_private"
+          },
+          "observed_at": "2026-09-16T07:59:01.288Z"
+        },
+        {
+          "detail": "Table \\`fmz6e10_private.windows\\` has RLS enabled, but no policies exist",
+          "metadata": {
+            "name": "windows",
+            "type": "table",
+            "schema": "fmz6e10_private"
+          },
+          "observed_at": "2026-09-16T07:59:01.288Z"
+        },
+        {
+          "detail": "Table \\`fmz6e10_private.workspaces\\` has RLS enabled, but no policies exist",
+          "metadata": {
+            "name": "workspaces",
+            "type": "table",
+            "schema": "fmz6e10_private"
+          },
+          "observed_at": "2026-09-16T07:59:01.288Z"
+        }
+      ]
+    },
+    {
+      "name": "function_search_path_mutable",
+      "level": "WARN",
+      "count": 1,
+      "new6e10": []
+    },
+    {
+      "name": "authenticated_security_definer_function_executable",
+      "level": "WARN",
+      "count": 68,
+      "new6e10": []
+    },
+    {
+      "name": "auth_leaked_password_protection",
+      "level": "WARN",
+      "count": 1,
+      "new6e10": []
+    }
+  ],
+  "performance": [
+    {
+      "name": "unindexed_foreign_keys",
+      "level": "INFO",
+      "count": 16,
+      "new6e10": []
+    },
+    {
+      "name": "auth_rls_initplan",
+      "level": "WARN",
+      "count": 47,
+      "new6e10": []
+    },
+    {
+      "name": "unused_index",
+      "level": "INFO",
+      "count": 33,
+      "new6e10": [
+        {
+          "detail": "Index \\`proposals_source_ref_idx\\` on table \\`fmz6e10_private.proposals\\` has not been used",
+          "metadata": {
+            "name": "proposals",
+            "type": "table",
+            "schema": "fmz6e10_private"
+          },
+          "observed_at": "2026-09-16T08:03:23.512Z"
+        }
+      ]
+    }
+  ],
+  "pass": true
+}

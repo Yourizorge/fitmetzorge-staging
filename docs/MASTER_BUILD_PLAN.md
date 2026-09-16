@@ -1,5 +1,17 @@
 # FitMetZorge Master Build Plan
 
+## Current: 6E-9 Accepted; 6E-10 Verification
+
+6E-9 COMPLETE / OWNER-ACCEPTED / FROZEN - SYNTHETIC STAGING BACKEND ONLY.
+K1 physical phone retest accepted; K2 grants the bounded 6E-10 implementation.
+Old 6E-9 window closed, exact three synthetic accounts/passwords retained.
+6E-10 source/window implementation is under final verification, not owner-accepted.
+Only the owner-selected synthetic A-trainer manages fixed-participant <=24h windows.
+B remains isolation-only; no new platform coaching or real members/providers.
+See PHASE6E10_TECHNICAL_REPORT.md and PHASE6E10_OWNER_OVERVIEW.md.
+6E-11 has one concrete proposal, NOT STARTED. Phase 6E remains INCOMPLETE.
+Earlier delivery/acceptance statements below are historical.
+
 ## Current: 6E-8 Accepted; 6E-9 Technical Pass
 
 6E-8 COMPLETE / OWNER-ACCEPTED / FROZEN - SYNTHETIC STAGING DEMO ONLY.

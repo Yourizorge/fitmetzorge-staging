@@ -1,5 +1,15 @@
 # FitMetZorge Test Matrix
 
+## 6E-10 Source And Managed Window Verification
+
+Prerequisites: owner K1/K2 and explicit synthetic A-trainer operator designation.
+1,734 contract/frozen regressions PASS; 65 fresh local PostgreSQL groups PASS;
+65 strict hosted Auth/Edge/PostgreSQL groups PASS. A 503 never counts as denied
+authorization. 243 protected files match. Historical failed/loose runs retained.
+Final browser/publication/fresh-checkout and fingerprint receipts are pending.
+Local Auth stubs and emulated viewports are not a physical owner phone test or
+medical validation. Current evidence: PHASE6E10_TECHNICAL_REPORT.md.
+
 ## Current: 6E-9 Frozen; 6E-10 Implementation GO
 
 6E-9 COMPLETE / OWNER-ACCEPTED / FROZEN - SYNTHETIC STAGING BACKEND ONLY.

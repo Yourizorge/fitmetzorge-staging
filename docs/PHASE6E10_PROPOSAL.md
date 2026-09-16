@@ -1,6 +1,11 @@
 # Package 6E-10 Proposal
 
-PROPOSED / NOT STARTED. A separate owner GO is required.
+Historical proposal; superseded by the explicit 6E-10 implementation GO.
+Current scope and evidence: PHASE6E10_TECHNICAL_REPORT.md.
+The owner limited B to isolation-only (no new platform catalog), retained the three
+proven accounts/passwords, and selected only the synthetic A-trainer as operator.
+Window cleanup removes fixture data, not these retained Auth identities.
+The original proposal below is preserved, not current authorization.
 No change to accepted dual routes, D1-D12, O1-O5 or earlier frozen sources.
 
 ## One Concrete Result

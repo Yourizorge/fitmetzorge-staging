@@ -1,5 +1,11 @@
 # Package 6E-9 Owneroverzicht
 
+ACTUELE CORRECTIE: owner heeft K1 en K2 expliciet geaccepteerd na de fysieke
+telefoontest. 6E-9 is COMPLETE / OWNER-ACCEPTED / FROZEN - SYNTHETIC STAGING
+BACKEND ONLY. Het oude venster is gesloten; accounts blijven alleen als bewezen
+synthetische identiteiten behouden voor 6E-10. PHASE6E9_FREEZE_RECEIPT.md is leidend.
+Onderstaande oorspronkelijke levering en venstertijd zijn historisch.
+
 TECHNICAL PASS / READY FOR OWNER REVIEW - SYNTHETIC BACKEND ONLY.
 Bewijs: PHASE6E9_TECHNICAL_REPORT.md en PHASE6E9_EVIDENCE.json.
 1.725 offline/frozen tests, 48 lokale SQL-groepen, 23 echte staging-securitygroepen

@@ -1,5 +1,10 @@
 # Package 6E-9 Technical Report
 
+Current correction: K1 owner phone retest accepted; K2 grants the bounded 6E-10 GO.
+6E-9 is frozen SYNTHETIC STAGING BACKEND ONLY and its old window is closed.
+PHASE6E9_FREEZE_RECEIPT.md supersedes delivery/acceptance/window status below.
+Original technical results and limitations are retained as historical evidence.
+
 TECHNICAL PASS / READY FOR OWNER REVIEW - SYNTHETIC BACKEND ONLY.
 Final evidence is recorded in PHASE6E9_EVIDENCE.json.
 6E-9 is not owner-accepted/frozen. Phase 6E remains incomplete; 6E-10 is not started.

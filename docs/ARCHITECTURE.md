@@ -1,5 +1,16 @@
 # FitMetZorge Architecture
 
+## 6E-10 Synthetic Source/Window Boundary
+
+New standalone coach-source-demo and fmz6e10-synthetic Edge use one guarded
+SECURITY INVOKER RPC and private transaction functions. Twelve private RLS tables
+have no direct client grants. Exact identity/session/profile/link/window checks
+derive authority; only the explicitly selected synthetic A-trainer is an operator.
+Immutable source/plan versions bind three separate A approval/application stages.
+B remains isolated, without a platform catalog or A content. No normal-app change.
+Details: _offline/phase6e10/ARCHITECTURE.md and PHASE6E10_TECHNICAL_REPORT.md.
+6E-9 accepted/frozen; 6E-10 verification in progress; Phase 6E incomplete.
+
 ## Current: 6E-9 Frozen; 6E-10 Implementation GO
 
 6E-9 COMPLETE / OWNER-ACCEPTED / FROZEN - SYNTHETIC STAGING BACKEND ONLY.

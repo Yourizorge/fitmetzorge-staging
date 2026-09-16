@@ -848,3 +848,21 @@ fixtures removed; no permanent demo accounts or open test window are implied.
 6E-10 source-management/test-window lifecycle is proposed, not started. K1/K2 and
 future L1-L3 are new review/GO choices, not inferred acceptances or reopened earlier
 decisions. Owner phone retest needs a new bounded synthetic credential window.
+
+## Decision 0052: Owner accepts 6E-9 and authorizes bounded 6E-10
+
+2026-09-16 documentation. Owner physical retest: three logins, both routes,
+refresh persistence and K1 accepted. 6E-9 COMPLETE / OWNER-ACCEPTED / FROZEN -
+SYNTHETIC STAGING BACKEND ONLY. Exact receipt/hashes: PHASE6E9_FREEZE_RECEIPT.md.
+K2 authorizes executable version-bound synthetic trainer sources, an isolated
+source editor and server-managed <=24h test windows, not live AI or real members.
+Owner explicitly appoints the existing synthetic A-trainer as the sole test-window
+operator for the three proven plus-alias identities. Ordinary trainers gain no
+capability. This does not impersonate the real owner or give access to B content.
+Close the old 6E-9 window and revoke sessions; retain those three Auth identities
+and their passwords without email. New tests receive new window/fixture IDs.
+Window cleanup removes only exact new fixtures, not retained accounts or real rows.
+Route B is isolation-only in 6E-10; no automatic reuse of trainer sources as
+platform rules. Source changes invalidate old approvals; no implicit smaller steps.
+All previous D1-D12/O1-O5/W1/W2 and frozen sources stay intact.
+6E-10 results require owner review; 6E-11 remains only a proposal.
