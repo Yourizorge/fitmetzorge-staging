@@ -1,11 +1,11 @@
 # Package 6E-10 Owneroverzicht
 
-VERIFICATIE GEBLOKKEERD. Geen owneracceptatie of freeze van 6E-10.
-De gebouwde demo is gepubliceerd, maar er is geen actief owner-testvenster.
-De negen afwijkende tabelhashes passen bij een gewone mobiele wachtwoordlogin,
-buiten de drie testidentiteiten. Wie deze sessie gebruikte is nog niet bevestigd.
-Daarom wordt de voorwaardelijke GO niet als vervuld beschouwd.
-[Onderzoeksrapport en exacte vervolgstap](PHASE6E10_READONLY_INVESTIGATION.md).
+TECHNICAL PASS / READY FOR OWNER REVIEW. Geen owneracceptatie of freeze van 6E-10.
+De ownerbevestiging is exact gekoppeld aan de historische account/sessie/negen rijen.
+De vervolgtests met afzonderlijke databehoudsmetingen zijn geslaagd.
+Het schone testvenster staat open tot donderdag 17 september 2026, 16:22:20 CEST.
+[Link, eenvoudige telefoontest en volledig rapport](PHASE6E10_FOLLOWUP_REPORT.md).
+Gebruik de drie bestaande synthetische logins, niet de gewone owneraccount.
 6E-9 is door de owner fysiek geaccepteerd en frozen; het oude venster is gesloten.
 Deze nieuwe demo gebruikt alleen de drie eerder bewezen synthetische testidentiteiten.
 
@@ -40,7 +40,7 @@ zijn hier gecontroleerde testfixtures, geen medische herkenning of trainingsvrij
 
 ## Fysieke Retest
 
-De definitieve link, vervaltijd en testvolgorde volgen pas na publicatiecontrole.
+De definitieve link, vervaltijd en testvolgorde staan in het follow-uprapport hierboven.
 Bestaande wachtwoorden blijven behouden; er worden geen nieuwe e-mails verstuurd.
 Agenttests gebruiken echte synthetische Auth-sessies, maar emuleren de telefoon.
 Ze testen niet het onbekende ownerwachtwoord en vervangen jouw telefoontest niet.

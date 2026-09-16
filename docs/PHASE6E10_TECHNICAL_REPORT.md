@@ -1,11 +1,18 @@
 # Package 6E-10 Technical Report
 
-VERIFICATION BLOCKED / NOT READY FOR OWNER RETEST / NOT OWNER-ACCEPTED.
+TECHNICAL PASS / READY FOR OWNER REVIEW / NOT OWNER-ACCEPTED.
+The owner-confirmed login now matches the exact historical account/session/nine rows.
+New 127-table before/after evidence, published UI verification and a fresh owner
+window are complete. See [current full report](PHASE6E10_FOLLOWUP_REPORT.md)
+and [follow-up evidence](PHASE6E10_FOLLOWUP_EVIDENCE.json).
+The older blocked-state findings below are preserved history, superseded only by
+the explicit owner match and separately recorded new measurements, not a rebaseline.
 Read-only follow-up: [investigation](PHASE6E10_READONLY_INVESTIGATION.md),
 [metadata](PHASE6E10_READONLY_INVESTIGATION.json),
 [partial test receipts](PHASE6E10_VERIFICATION_PENDING.json).
 Implementation was pushed as 03eb55af7ab1897a3c6a12b82fcb5d182e88c4de.
-The original data gate remains unsatisfied; no owner window is active.
+The original comparison remains 59/68 equal plus nine explained owner changes.
+The new owner window expires 2026-09-17 16:22:20.720 Europe/Amsterdam.
 Scope: Yourizorge/fitmetzorge-staging main; mokxyyullfhkfalopbzd only.
 Phase 6E remains INCOMPLETE. No 6E-11 implementation, provider or production action.
 

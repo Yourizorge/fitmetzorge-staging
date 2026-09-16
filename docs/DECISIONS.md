@@ -866,3 +866,19 @@ Route B is isolation-only in 6E-10; no automatic reuse of trainer sources as
 platform rules. Source changes invalidate old approvals; no implicit smaller steps.
 All previous D1-D12/O1-O5/W1/W2 and frozen sources stay intact.
 6E-10 results require owner review; 6E-11 remains only a proposal.
+
+## Decision 0053: Owner-attested activity and measured 6E-10 follow-up
+
+2026-09-16. The owner confirms their ordinary mobile Safari staging use around
+08:56-08:57 Europe/Amsterdam and independently supplies the login address.
+Read-only binding matches one account/session and all nine changed rows; no second
+authenticated actor, service-role request or 6E-10 request in the bounded interval.
+Existing cron/checkpoint and transport-timeout records are explicitly accounted for.
+The conditional GO allows the remaining synthetic publication test and one fresh
+<=24h owner window, with new before/after measurements and operation-level write audit.
+Original baseline/differences/broker/evidence/investigation must remain byte-identical.
+127-table measurements distinguish protected data from exact synthetic rows and
+known cron operational logs. No new authorization model, migration or runtime change.
+6E-10 TECHNICAL PASS / READY FOR OWNER REVIEW only; L1-L3 and physical retest remain
+open. No owner freeze or 6E-11 implementation. All earlier product decisions remain.
+Current receipt: PHASE6E10_FOLLOWUP_REPORT.md / PHASE6E10_FOLLOWUP_EVIDENCE.json.

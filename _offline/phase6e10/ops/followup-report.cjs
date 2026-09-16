@@ -4,7 +4,7 @@ const root=path.resolve(__dirname,'../../..'),read=p=>JSON.parse(fs.readFileSync
 const sha=b=>crypto.createHash('sha256').update(b).digest('hex');
 const match=read('docs/PHASE6E10_OWNER_MATCH.json');assert.equal(match.pass,true);
 for(const [file,hash] of Object.entries(match.preserved_files))assert.equal(sha(fs.readFileSync(path.join(root,file))),hash,file);
-const runs=['browser-published','owner-window'].map(label=>temp('phase6e10-followup-'+label+'.json'));
+const runs=['readonly-preflight','browser-published','publication-preowner','owner-window'].map(label=>temp('phase6e10-followup-'+label+'.json'));
 const browser=temp('phase6e10-browser-published/report.json'),owner=temp('phase6e10-owner-window.json'),publication=temp('phase6e10-publication.json');
 for(const r of [...runs,browser,publication])assert.equal(r.pass,true);
 assert.equal(owner.opened,true);assert.equal(browser.checks.length,27);assert.equal(browser.layouts.length,18);
@@ -14,19 +14,21 @@ function intern(row){const key=JSON.stringify(row);if(!interned.has(key)){intern
 const packed=runs.map(run=>({label:run.label,started_at:run.started_at,finished_at:run.finished_at,pass:run.pass,
  events:run.events,tests:run.tests,snapshots:run.snapshots.map(s=>({at:s.at,table_refs:s.tables.map(intern),nine_table_refs:s.nine.map(intern),
  audit:s.audit,cron:s.cron,state:s.state,preserved_files_match:JSON.stringify(s.preserved_files)===JSON.stringify(match.preserved_files)}))}));
+const protectedBaseline=runs[0].snapshots[0].tables.map(r=>[r.name,r.protected_rows,r.protected_sha256]);
+for(const run of runs)for(const s of run.snapshots)assert.deepEqual(s.tables.map(r=>[r.name,r.protected_rows,r.protected_sha256]),protectedBaseline,'cross-run protected data changed');
 for(const run of runs)for(const t of run.tests){
  assert.equal(t.pass,true);assert.equal(t.existing_protected_unchanged,true);assert.equal(t.nine_unchanged,true);
  const before=run.snapshots[t.before],after=run.snapshots[t.after];assert.equal(before.tables.length,127);assert.equal(after.tables.length,127);
  assert.deepEqual(before.tables.map(r=>[r.name,r.protected_rows,r.protected_sha256]),after.tables.map(r=>[r.name,r.protected_rows,r.protected_sha256]));
 }
-const final=runs[1].snapshots.at(-1).state[0];assert.equal(final.active_windows,1);assert.equal(final.workspaces,2);assert.equal(final.temporary_controls,0);
+const final=runs.at(-1).snapshots.at(-1).state[0];assert.equal(final.active_windows,1);assert.equal(final.workspaces,2);assert.equal(final.temporary_controls,0);
 const history=temp('phase6e10-browser-published-preflight-failed.json');assert.equal(history.pass,false);assert.equal(history.checks.length,0);
 const files=['_offline/phase6e10/ops/followup.py','_offline/phase6e10/ops/followup-audit.mjs','_offline/phase6e10/ops/open-owner.mjs','_offline/phase6e10/test/live.mjs','_offline/phase6e10/test/browser.mjs'];
 const out={status:'TECHNICAL PASS / READY FOR OWNER REVIEW',created_at:new Date().toISOString(),
  implementation_commit:'03eb55af7ab1897a3c6a12b82fcb5d182e88c4de',current_git_head:cp.execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim(),
  tested_files:files.map(file=>({file,sha256:sha(fs.readFileSync(path.join(root,file)))})),
  owner_match:match,original_baseline_overwritten:false,original_differences_preserved:true,
- measurement_format:'table_refs and nine_table_refs are zero-based indices into fingerprint_catalog; a shared boundary is after one test and before the next.',
+ measurement_format:'table_refs and nine_table_refs are zero-based indices into fingerprint_catalog; a shared boundary is after one test and before the next. rows/sha256 cover the entire table; protected_rows/protected_sha256 exclude explicitly synthetic mutable rows and cron operational logs. nine_unchanged refers to these protected cohorts, not the full profiles table during its synthetic linkage test.',
  fingerprint_catalog:catalog,runs:packed,
  cleanup:{browser_test_window_cleaned:true,new_accounts_created:0,temporary_control_accounts_remaining:0,retained_synthetic_identities:3,
  generated_test_sessions_signed_out:true,owner_window_left_active:true,owner_workspaces_retained:2,physical_cleanup_on_expiry_automatic:false},

@@ -1,15 +1,16 @@
 # FitMetZorge Master Build Plan
 
-## Current: 6E-9 Accepted; 6E-10 Verification Blocked
+## Current: 6E-9 Accepted; 6E-10 Ready For Owner Review
 
 6E-9 COMPLETE / OWNER-ACCEPTED / FROZEN - SYNTHETIC STAGING BACKEND ONLY.
 K1 physical phone retest accepted; K2 grants the bounded 6E-10 implementation.
 Old 6E-9 window closed, exact three synthetic accounts/passwords retained.
-6E-10 source/window implementation is deployed, but final verification is blocked.
-Nine changed original data hashes map to a non-synthetic authenticated mobile
-session whose human legitimacy remains unconfirmed. No owner window is active.
-Do not rebaseline or resume synthetic mutations merely because technical tests pass.
-See PHASE6E10_READONLY_INVESTIGATION.md for evidence limits and the exact next step.
+6E-10 TECHNICAL PASS / READY FOR OWNER REVIEW, not owner-accepted or frozen.
+Exact owner account/session/row match plus owner attestation explains the nine
+original differences. New 127-table measurements preserve all non-test data;
+original baseline, differences and investigation remain unchanged.
+Fresh synthetic owner window expires 2026-09-17 16:22:20.720 Europe/Amsterdam.
+See PHASE6E10_FOLLOWUP_REPORT.md for all evidence and physical phone steps.
 Only the owner-selected synthetic A-trainer manages fixed-participant <=24h windows.
 B remains isolation-only; no new platform coaching or real members/providers.
 See PHASE6E10_TECHNICAL_REPORT.md and PHASE6E10_OWNER_OVERVIEW.md.

@@ -9,7 +9,13 @@ derive authority; only the explicitly selected synthetic A-trainer is an operato
 Immutable source/plan versions bind three separate A approval/application stages.
 B remains isolated, without a platform catalog or A content. No normal-app change.
 Details: _offline/phase6e10/ARCHITECTURE.md and PHASE6E10_TECHNICAL_REPORT.md.
-6E-9 accepted/frozen; 6E-10 verification in progress; Phase 6E incomplete.
+6E-9 accepted/frozen; 6E-10 TECHNICAL PASS / READY FOR OWNER REVIEW; Phase 6E incomplete.
+The owner-confirmed historical session is independently bound to the exact account
+and nine changed rows. Follow-up audit tooling measures all 127 existing tables,
+separates full-table/protected-cohort fingerprints and records synthetic writes.
+Original baseline/differences/broker/evidence/investigation remain byte-identical.
+No new server authorization, runtime or schema change was needed for this follow-up.
+See PHASE6E10_FOLLOWUP_REPORT.md and PHASE6E10_FOLLOWUP_EVIDENCE.json.
 
 ## Current: 6E-9 Frozen; 6E-10 Implementation GO
 
@@ -19,7 +25,7 @@ accepted and K2 authorizes 6E-10. The old window is CLOSED, three old JWTs refus
 testflag OFF, proof removed, 68 existing data hashes unchanged. Three exact synthetic
 Auth/profile identities retained with unchanged passwords; no email sent.
 [Freeze receipt](PHASE6E9_FREEZE_RECEIPT.md), [hashes](PHASE6E9_FREEZE_EVIDENCE.json).
-6E-10 implementation IN PROGRESS: version-bound synthetic trainer sources and managed
+6E-10 technical verification PASS: version-bound synthetic trainer sources and managed
 <=24h windows. Explicit operator grant only for the synthetic A-trainer and the fixed
 three test identities. [Preregistered tests](PHASE6E10_PREREGISTRATION.md).
 No live AI, real members, medical release or production. Phase 6E INCOMPLETE.

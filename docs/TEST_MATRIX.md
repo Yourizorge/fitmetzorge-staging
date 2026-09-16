@@ -7,13 +7,19 @@ Prerequisites: owner K1/K2 and explicit synthetic A-trainer operator designation
 65 strict hosted Auth/Edge/PostgreSQL groups PASS. A 503 never counts as denied
 authorization. 243 protected files match. Historical failed/loose runs retained.
 27 local-UI/hosted-backend browser checks and 18 emulated layouts PASS.
-Fresh checkout: 10 targeted tests and 65 SQL groups PASS. Initial published
-84 asset hashes and 209 private-path 404s PASS. Published-UI workflow still pending.
-Original fingerprint gate FAILS: 59/68 equal, nine differences, same row counts.
-Read-only metadata supports ordinary non-synthetic app activity, not confirmed
-human authorization. Conditional GO not satisfied; no fresh owner window.
+Fresh implementation checkout: 10 targeted tests and 65 SQL groups PASS.
+Final published UI: 27 checks / 18 layouts PASS; 10 targeted local regressions PASS.
+Pages after audit commit: 84 exact assets, 214 private-path 404s PASS.
+Original comparison remains 59/68 equal, nine differences, same row counts.
+Exact owner account/session/row match plus owner attestation explains those changes.
+New 127-table snapshots: 35 before/after pairs across preflight, browser, publication
+and owner opening; all protected cohorts identical even across run boundaries.
+Full synthetic rows and cron operational logs have separate fingerprints/write evidence.
+First measurement attempt failed before test writes; retained, not counted as PASS.
+Fresh owner window active until 2026-09-17 16:22:20.720 Europe/Amsterdam.
 Old 34 migration content hashes unchanged; 38 total. No history repair.
-See PHASE6E10_READONLY_INVESTIGATION.md and PHASE6E10_VERIFICATION_PENDING.json.
+Current: PHASE6E10_FOLLOWUP_REPORT.md and PHASE6E10_FOLLOWUP_EVIDENCE.json.
+Historical investigation and partial receipts remain unchanged.
 Local Auth stubs and emulated viewports are not a physical owner phone test or
 medical validation. Current evidence: PHASE6E10_TECHNICAL_REPORT.md.
 
@@ -25,7 +31,7 @@ accepted and K2 authorizes 6E-10. The old window is CLOSED, three old JWTs refus
 testflag OFF, proof removed, 68 existing data hashes unchanged. Three exact synthetic
 Auth/profile identities retained with unchanged passwords; no email sent.
 [Freeze receipt](PHASE6E9_FREEZE_RECEIPT.md), [hashes](PHASE6E9_FREEZE_EVIDENCE.json).
-6E-10 final verification BLOCKED: version-bound synthetic trainer sources and managed
+6E-10 technical verification PASS: version-bound synthetic trainer sources and managed
 <=24h windows. Explicit operator grant only for the synthetic A-trainer and the fixed
 three test identities. [Preregistered tests](PHASE6E10_PREREGISTRATION.md).
 No live AI, real members, medical release or production. Phase 6E INCOMPLETE.
