@@ -6,7 +6,14 @@ Prerequisites: owner K1/K2 and explicit synthetic A-trainer operator designation
 1,734 contract/frozen regressions PASS; 65 fresh local PostgreSQL groups PASS;
 65 strict hosted Auth/Edge/PostgreSQL groups PASS. A 503 never counts as denied
 authorization. 243 protected files match. Historical failed/loose runs retained.
-Final browser/publication/fresh-checkout and fingerprint receipts are pending.
+27 local-UI/hosted-backend browser checks and 18 emulated layouts PASS.
+Fresh checkout: 10 targeted tests and 65 SQL groups PASS. Initial published
+84 asset hashes and 209 private-path 404s PASS. Published-UI workflow still pending.
+Original fingerprint gate FAILS: 59/68 equal, nine differences, same row counts.
+Read-only metadata supports ordinary non-synthetic app activity, not confirmed
+human authorization. Conditional GO not satisfied; no fresh owner window.
+Old 34 migration content hashes unchanged; 38 total. No history repair.
+See PHASE6E10_READONLY_INVESTIGATION.md and PHASE6E10_VERIFICATION_PENDING.json.
 Local Auth stubs and emulated viewports are not a physical owner phone test or
 medical validation. Current evidence: PHASE6E10_TECHNICAL_REPORT.md.
 
@@ -18,7 +25,7 @@ accepted and K2 authorizes 6E-10. The old window is CLOSED, three old JWTs refus
 testflag OFF, proof removed, 68 existing data hashes unchanged. Three exact synthetic
 Auth/profile identities retained with unchanged passwords; no email sent.
 [Freeze receipt](PHASE6E9_FREEZE_RECEIPT.md), [hashes](PHASE6E9_FREEZE_EVIDENCE.json).
-6E-10 implementation IN PROGRESS: version-bound synthetic trainer sources and managed
+6E-10 final verification BLOCKED: version-bound synthetic trainer sources and managed
 <=24h windows. Explicit operator grant only for the synthetic A-trainer and the fixed
 three test identities. [Preregistered tests](PHASE6E10_PREREGISTRATION.md).
 No live AI, real members, medical release or production. Phase 6E INCOMPLETE.

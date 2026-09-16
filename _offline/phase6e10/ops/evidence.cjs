@@ -5,7 +5,7 @@ const head=git("rev-parse","HEAD").toString().trim(),before=temp("phase6e10-befo
 const local=temp("phase6e10-local.json"),live=temp("phase6e10-live.json"),fresh=temp("phase6e10-fresh.json"),publication=temp("phase6e10-publication.json"),reg=temp("phase6e10-regressions.json");
 const localUi=temp("phase6e10-browser-local-ui/report.json"),publishedUi=temp("phase6e10-browser-published/report.json");
 for(const r of [local,live,fresh,publication,localUi,publishedUi])assert.equal(r.pass,true);
-assert.equal(after.all_existing_unchanged,true);assert.deepEqual(before.tables,after.tables);assert.equal(reg.counts.fail,0);
+assert.equal(after.all_existing_unchanged,true);assert.deepEqual([...before.tables].sort((a,b)=>a.name.localeCompare(b.name)),[...after.tables].sort((a,b)=>a.name.localeCompare(b.name)));assert.equal(reg.counts.fail,0);
 const files=git("ls-files").toString().trim().split(/\r?\n/).filter(p=>p.startsWith("_offline/phase6e10/")||p.startsWith("coach-source-demo/")||/supabase\/migrations\/.*phase6e10/.test(p));
 const source=files.map(file=>({file,blob:git("rev-parse","HEAD:"+file).toString().trim(),sha256:sha(git("show","HEAD:"+file)),checkout_sha256:sha(fs.readFileSync(path.join(root,file)))}));
 const browser=r=>({pass:r.pass,checks:r.checks,layouts:r.layouts,physical_phone:r.physical_phone,password_login_tested:r.password_login_tested,standard_auth_sessions:r.standard_auth_sessions,errors:r.errors});

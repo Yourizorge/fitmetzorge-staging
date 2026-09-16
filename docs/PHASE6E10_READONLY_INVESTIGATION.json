@@ -1,0 +1,183 @@
+{
+  "read_only": true,
+  "period": {
+    "start": "2026-09-16T06:50:00Z",
+    "end": "2026-09-16T07:00:00Z"
+  },
+  "changed_profile_actors": [
+    {
+      "updated_at": "2026-09-16 06:57:39.954225+00",
+      "account_created_at": "2026-08-15 18:32:20.990681+00",
+      "owner_inbox": false
+    }
+  ],
+  "sessions": [
+    {
+      "found": true,
+      "belongs_to_changed_actor": true,
+      "enrolled_6e10": false,
+      "created_at": "2026-09-16 06:56:17.931666+00",
+      "updated_at": "2026-09-16 06:56:17.931666+00",
+      "not_after": null,
+      "mobile": true
+    }
+  ],
+  "auth_audit": [
+    {
+      "timestamp": "2026-09-16T06:56:17.000000",
+      "action": "login",
+      "provider": "email",
+      "changed_actor": true,
+      "enrolled_6e10": false
+    }
+  ],
+  "request_limit": 500,
+  "truncated": false,
+  "secrets_exported": false,
+  "login_methods": [
+    {
+      "grant_type": "password",
+      "method": "POST",
+      "path": "/token",
+      "status": "200",
+      "timestamp": "2026-09-16T06:56:18.000000"
+    }
+  ],
+  "updated_row_metadata": [
+    {
+      "table_name": "entitlements",
+      "recently_updated": 1,
+      "changed_actor_rows": 1,
+      "first_update": "2026-09-16 06:57:39.954225+00",
+      "last_update": "2026-09-16 06:57:39.954225+00",
+      "transaction_ids": "1089887907"
+    },
+    {
+      "table_name": "member_app_preferences",
+      "recently_updated": 1,
+      "changed_actor_rows": 1,
+      "first_update": "2026-09-16 06:57:39.135103+00",
+      "last_update": "2026-09-16 06:57:39.135103+00",
+      "transaction_ids": "1089887906"
+    },
+    {
+      "table_name": "member_notifications",
+      "recently_updated": 1,
+      "changed_actor_rows": 1,
+      "first_update": "2026-09-16 06:56:29.836431+00",
+      "last_update": "2026-09-16 06:56:29.836431+00",
+      "transaction_ids": "1089887884"
+    },
+    {
+      "table_name": "nutrition_preferences",
+      "recently_updated": 1,
+      "changed_actor_rows": 1,
+      "first_update": "2026-09-16 06:56:45.778343+00",
+      "last_update": "2026-09-16 06:56:45.778343+00",
+      "transaction_ids": "1089887887"
+    },
+    {
+      "table_name": "profiles",
+      "recently_updated": 1,
+      "changed_actor_rows": 1,
+      "first_update": "2026-09-16 06:57:39.954225+00",
+      "last_update": "2026-09-16 06:57:39.954225+00",
+      "transaction_ids": "1089887907"
+    },
+    {
+      "table_name": "progress_preferences",
+      "recently_updated": 1,
+      "changed_actor_rows": 1,
+      "first_update": "2026-09-16 06:56:20.592861+00",
+      "last_update": "2026-09-16 06:56:20.592861+00",
+      "transaction_ids": "1089887881"
+    },
+    {
+      "table_name": "user_onboarding",
+      "recently_updated": 1,
+      "changed_actor_rows": 1,
+      "first_update": "2026-09-16 06:57:39.954225+00",
+      "last_update": "2026-09-16 06:57:39.954225+00",
+      "transaction_ids": "1089887907"
+    },
+    {
+      "table_name": "user_settings",
+      "recently_updated": 1,
+      "changed_actor_rows": 1,
+      "first_update": "2026-09-16 06:57:39.954225+00",
+      "last_update": "2026-09-16 06:57:39.954225+00",
+      "transaction_ids": "1089887907"
+    },
+    {
+      "table_name": "workout_sessions",
+      "recently_updated": 1,
+      "changed_actor_rows": 1,
+      "first_update": "2026-09-16 06:56:22.310429+00",
+      "last_update": "2026-09-16 06:56:22.310429+00",
+      "transaction_ids": "1089887883"
+    }
+  ],
+  "window_state": [
+    {
+      "active_windows": 0,
+      "workspaces": 0
+    }
+  ],
+  "original_fingerprint_tables": 68,
+  "current_fingerprint_tables": 68,
+  "different_tables": [
+    "public.entitlements",
+    "public.member_app_preferences",
+    "public.member_notifications",
+    "public.nutrition_preferences",
+    "public.profiles",
+    "public.progress_preferences",
+    "public.user_onboarding",
+    "public.user_settings",
+    "public.workout_sessions"
+  ],
+  "unchanged_tables": 59,
+  "original_baseline_sha256": "1524d4b77463f27d0313a25c93b16a68f2e304ad7eee9be316d01421f3b99333",
+  "old_34_migrations_identical": true,
+  "migration_count": 38,
+  "human_operator_confirmed": false,
+  "conditional_go_satisfied": false,
+  "limitations": [
+    "Authenticated password login is not proof of the human operator or uncompromised credentials.",
+    "Request-to-transaction mapping is corroboration, not a complete before/after row audit.",
+    "A bounded log interval cannot prove universal absence of unauthorized access.",
+    "Original fingerprints are preserved; differences are not waived or rebased."
+  ],
+  "request_summary": {
+    "total": 106,
+    "authenticated": 72,
+    "service_role": 0,
+    "enrolled_6e10": 0,
+    "changed_actor": 72,
+    "phase6e10_paths": 0,
+    "all_authenticated_mobile_safari": true
+  },
+  "post_or_mutation_paths": [
+    "/rest/v1/rpc/fmz_phase1_upsert_account_foundation",
+    "/rest/v1/rpc/fmz_phase4_get_current_nutrition_target",
+    "/rest/v1/rpc/fmz_phase4_get_nutrition_day",
+    "/rest/v1/rpc/fmz_phase4_set_nutrition_timezone",
+    "/rest/v1/rpc/fmz_phase5_get_progress_dashboard",
+    "/rest/v1/rpc/fmz_phase5_set_progress_timezone",
+    "/rest/v1/rpc/fmz_phase6a_read_consent_contract",
+    "/rest/v1/rpc/fmz_phase6c_get_chat_status",
+    "/rest/v1/rpc/fmz_phase6c_list_threads",
+    "/rest/v1/rpc/fmz_phase6c_read_thread",
+    "/rest/v1/rpc/fmz_phase6d_get_inbox",
+    "/rest/v1/rpc/fmz_phase6d_get_member_settings",
+    "/rest/v1/rpc/fmz_phase6d_get_status",
+    "/rest/v1/rpc/fmz_phase6d_list_analyses",
+    "/rest/v1/rpc/fmz_phase6d_mark_notification",
+    "/rest/v1/rpc/fmz_phase6d_read_analysis",
+    "/rest/v1/rpc/fmz_phase6d_read_analysis_contract",
+    "/rest/v1/rpc/fmz_phase6d_update_member_settings",
+    "/rest/v1/rpc/fmz_training_get_preferences",
+    "/rest/v1/workout_sessions"
+  ],
+  "local_evidence_sha256": "84c40e024ccedfd39160a64325ebfad5195aa86b545c7c760883dcd87a5c480c"
+}

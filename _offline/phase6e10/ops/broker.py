@@ -62,9 +62,16 @@ def dispatch(d):
         prove()
         before=json.loads(before_path.read_text())
         fp=c.fingerprint(receipt)
-        assert fp==before["tables"]
+        by_name=lambda rows: {r["name"]:r for r in rows}
+        old,current=by_name(before["tables"]),by_name(fp)
+        differences=[{"name":name,"before":old.get(name),"after":current.get(name)} for name in sorted(set(old)|set(current)) if old.get(name)!=current.get(name)]
+        if differences:
+            (c.ROOT/"supabase/.temp/phase6e10-data-differences.json").write_text(json.dumps(differences,indent=2)+"\n")
+            raise RuntimeError("existing_data_fingerprint_difference")
+        fp=sorted(fp,key=lambda r:r["name"])
         migrations=c.query("select version,name,encode(sha256(convert_to(array_to_string(statements,E'\\n'),'UTF8')),'hex') sha256 from supabase_migrations.schema_migrations order by version")
-        assert migrations[:34]==before["migrations"] and len(migrations)==38
+        if migrations[:34]!=before["migrations"] or len(migrations)!=38:
+            raise RuntimeError("migration_history_difference")
         out={"tables":fp,"migrations":migrations,"all_existing_unchanged":True,"real_processing":False,"production_touched":False}
         (c.ROOT/"supabase/.temp/phase6e10-after.json").write_text(json.dumps(out,indent=2)+"\n")
         return {"unchanged_tables":len(fp),"migrations":len(migrations)}

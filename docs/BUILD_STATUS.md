@@ -1,6 +1,15 @@
 # FitMetZorge Build Status
 
-## Current: 6E-9 Frozen; 6E-10 Implementation GO
+## Current: 6E-9 Frozen; 6E-10 Verification Blocked
+
+6E-10 built/deployed at 03eb55af7ab1897a3c6a12b82fcb5d182e88c4de, but NOT ready
+for owner retest. Nine original cohort hashes changed; 59/68 remain identical.
+Read-only request/session/transaction evidence matches an ordinary non-synthetic
+mobile password session on 2026-09-16 08:56-08:57 Europe/Amsterdam. Human legitimacy
+is not confirmed, so the conditional GO is not satisfied. No active owner window.
+[Investigation and exact next step](PHASE6E10_READONLY_INVESTIGATION.md).
+[Partial evidence, not an overall pass](PHASE6E10_VERIFICATION_PENDING.json).
+No baseline overwrite, real-data restoration, runtime change or 6E-11 start.
 
 6E-9 COMPLETE / OWNER-ACCEPTED / FROZEN - SYNTHETIC STAGING BACKEND ONLY.
 Owner phone retest passed all three logins, A/B routes and refresh persistence; K1
@@ -8,7 +17,7 @@ accepted and K2 authorizes 6E-10. The old window is CLOSED, three old JWTs refus
 testflag OFF, proof removed, 68 existing data hashes unchanged. Three exact synthetic
 Auth/profile identities retained with unchanged passwords; no email sent.
 [Freeze receipt](PHASE6E9_FREEZE_RECEIPT.md), [hashes](PHASE6E9_FREEZE_EVIDENCE.json).
-6E-10 implementation IN PROGRESS: version-bound synthetic trainer sources and managed
+6E-10 final verification BLOCKED: version-bound synthetic trainer sources and managed
 <=24h windows. Explicit operator grant only for the synthetic A-trainer and the fixed
 three test identities. [Preregistered tests](PHASE6E10_PREREGISTRATION.md).
 No live AI, real members, medical release or production. Phase 6E INCOMPLETE.

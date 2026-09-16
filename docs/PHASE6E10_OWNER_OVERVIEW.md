@@ -1,6 +1,11 @@
 # Package 6E-10 Owneroverzicht
 
-VERIFICATIE IN UITVOERING. Geen owneracceptatie of freeze van 6E-10.
+VERIFICATIE GEBLOKKEERD. Geen owneracceptatie of freeze van 6E-10.
+De gebouwde demo is gepubliceerd, maar er is geen actief owner-testvenster.
+De negen afwijkende tabelhashes passen bij een gewone mobiele wachtwoordlogin,
+buiten de drie testidentiteiten. Wie deze sessie gebruikte is nog niet bevestigd.
+Daarom wordt de voorwaardelijke GO niet als vervuld beschouwd.
+[Onderzoeksrapport en exacte vervolgstap](PHASE6E10_READONLY_INVESTIGATION.md).
 6E-9 is door de owner fysiek geaccepteerd en frozen; het oude venster is gesloten.
 Deze nieuwe demo gebruikt alleen de drie eerder bewezen synthetische testidentiteiten.
 

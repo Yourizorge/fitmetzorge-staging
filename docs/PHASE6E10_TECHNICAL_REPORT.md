@@ -1,6 +1,11 @@
 # Package 6E-10 Technical Report
 
-VERIFICATION IN PROGRESS / NOT OWNER-ACCEPTED.
+VERIFICATION BLOCKED / NOT READY FOR OWNER RETEST / NOT OWNER-ACCEPTED.
+Read-only follow-up: [investigation](PHASE6E10_READONLY_INVESTIGATION.md),
+[metadata](PHASE6E10_READONLY_INVESTIGATION.json),
+[partial test receipts](PHASE6E10_VERIFICATION_PENDING.json).
+Implementation was pushed as 03eb55af7ab1897a3c6a12b82fcb5d182e88c4de.
+The original data gate remains unsatisfied; no owner window is active.
 Scope: Yourizorge/fitmetzorge-staging main; mokxyyullfhkfalopbzd only.
 Phase 6E remains INCOMPLETE. No 6E-11 implementation, provider or production action.
 
@@ -87,8 +92,14 @@ Auth/database outages stay 503. No claim is made that a transport timeout proves
   no frozen behavior test or source is rewritten. Older isolation matrices are
   replaced for this additive scope, not treated as medical reliability tests.
 - Preservation: all 243 frozen source/runtime files byte-identical.
-- Hosted final strict suite, actual browser matrices, fresh checkout, publication,
-  final fingerprints/ACL/advisors and final owner window: pending final receipts.
+- Hosted strict suite: 65 groups PASS. Local UI with hosted backend: 27 checks,
+  18 emulated layouts PASS. Fresh checkout: 10 targeted tests + 65 SQL groups PASS.
+- Initial Pages assets: 84 identical; all 209 tracked offline/test paths 404.
+  ACL/RLS verified; no new security WARN. New FK-index INFO addressed.
+- Published UI workflow, final fingerprints and owner window remain pending.
+  Read-only follow-up found 59/68 original table hashes equal, nine different.
+  Current metadata matches a non-synthetic password session; its human legitimacy
+  is not confirmed. The conditional GO has not been claimed as satisfied.
 
 Historical loose/failed/interrupted hosted attempts are not final authorization proof.
 Tests use newly created unregistered synthetic ordinary/foreign-trainer controls,
@@ -101,7 +112,10 @@ neither displayed nor changed. Physical phone behavior remains owner retest.
 
 Before: 68 pre-existing-cohort table fingerprints and exact 34 migration records.
 After target: same 68 hashes, same old 34 entries plus four new entries, empty dry-run.
-No real chat, photos, health inputs, member plans, consent or entitlements processed.
+That data target was NOT achieved: nine differences are preserved, not rebased.
+The old 34 migration content hashes are verified identical; 38 entries now exist.
+No real chat, photos, health inputs or member plans used as test data. The subsequent
+read-only investigation used minimal ownership/time/session metadata and aggregates.
 Test-only profile-link changes affect the exact proven synthetic identities and are
 restored in finally blocks. Accounts/passwords remain unchanged after tests.
 

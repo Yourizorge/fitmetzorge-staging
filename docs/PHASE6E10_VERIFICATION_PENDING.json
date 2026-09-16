@@ -1,0 +1,951 @@
+{
+  "status": "VERIFICATION BLOCKED / NOT READY FOR OWNER RETEST",
+  "implementation_commit": "03eb55af7ab1897a3c6a12b82fcb5d182e88c4de",
+  "owner_window_open": false,
+  "owner_accepted": false,
+  "phase6e11_started": false,
+  "production_touched": false,
+  "historical_successful_receipts": [
+    {
+      "file": "phase6e10-local.json",
+      "sha256": "dab276b468ff29db8ddf177bdcee87c3665fef2042c42afb9672b93a75b435bf",
+      "pass": true,
+      "checks": [
+        {
+          "name": "anonymous and direct private-table access denied",
+          "pass": true
+        },
+        {
+          "name": "ordinary and unrelated trainer denied; no proof denied",
+          "pass": true
+        },
+        {
+          "name": "prepared window has no fixture read access",
+          "pass": true
+        },
+        {
+          "name": "activation exact retry is idempotent; fresh-key duplicate denied",
+          "pass": true
+        },
+        {
+          "name": "24-hour hard maximum and exact inclusive-start/exclusive-end boundary",
+          "pass": true
+        },
+        {
+          "name": "Route A/B and operator data-plane isolation",
+          "pass": true
+        },
+        {
+          "name": "member source write and client role spoof denied",
+          "pass": true
+        },
+        {
+          "name": "missing source never invents proposal",
+          "pass": true
+        },
+        {
+          "name": "missing fields and null source values fail closed",
+          "pass": true
+        },
+        {
+          "name": "source versions cannot be overwritten even by privileged maintenance",
+          "pass": true
+        },
+        {
+          "name": "all health/recovery guards and withdrawn consent block proposal without partial writes",
+          "pass": true
+        },
+        {
+          "name": "removed A link and unexpected B trainer deny reads",
+          "pass": true
+        },
+        {
+          "name": "v1 source hash and immutable numeric decisions",
+          "pass": true
+        },
+        {
+          "name": "separate member approval then exact trainer approval required",
+          "pass": true
+        },
+        {
+          "name": "source v2 after member acceptance leaves v1 immutable and blocks approval/apply",
+          "pass": true
+        },
+        {
+          "name": "source change after trainer approval invalidates separate application",
+          "pass": true
+        },
+        {
+          "name": "wrong proposal version and stale window revision denied",
+          "pass": true
+        },
+        {
+          "name": "fault before receipt rolls back plan, approvals and audit",
+          "pass": true
+        },
+        {
+          "name": "concurrent apply commits once; same-key replay and changed-payload rejection",
+          "pass": true
+        },
+        {
+          "name": "restore creates new version with original and current source references",
+          "pass": true
+        },
+        {
+          "name": "withdrawn source blocks new proposals",
+          "pass": true
+        },
+        {
+          "name": "withdrawn source before acceptance; expired source before review",
+          "pass": true
+        },
+        {
+          "name": "other window cannot reuse fixture ID and overlapping activation is denied",
+          "pass": true
+        },
+        {
+          "name": "revocation immediately denies old authenticated read; cleanup retries safe",
+          "pass": true
+        },
+        {
+          "name": "future start refused and expired window cannot reactivate",
+          "pass": true
+        },
+        {
+          "name": "kg exact-unit progression; original values retained",
+          "pass": true
+        },
+        {
+          "name": "kg W1 ambiguous exercise/type",
+          "pass": true
+        },
+        {
+          "name": "kg W2 full step outside available weights",
+          "pass": true
+        },
+        {
+          "name": "kg missing rule",
+          "pass": true
+        },
+        {
+          "name": "kg missing weight step",
+          "pass": true
+        },
+        {
+          "name": "kg mixed unit",
+          "pass": true
+        },
+        {
+          "name": "kg RIR required but missing",
+          "pass": true
+        },
+        {
+          "name": "kg RPE zero is invalid, not missing",
+          "pass": true
+        },
+        {
+          "name": "kg partial set registration",
+          "pass": true
+        },
+        {
+          "name": "kg wrong set identity",
+          "pass": true
+        },
+        {
+          "name": "kg duplicate exercise observations",
+          "pass": true
+        },
+        {
+          "name": "kg non-comparable source version",
+          "pass": true
+        },
+        {
+          "name": "kg missing historical goal",
+          "pass": true
+        },
+        {
+          "name": "kg absent goal key",
+          "pass": true
+        },
+        {
+          "name": "kg absent completed key",
+          "pass": true
+        },
+        {
+          "name": "kg absent observed unit",
+          "pass": true
+        },
+        {
+          "name": "kg absent observed set index",
+          "pass": true
+        },
+        {
+          "name": "kg duplicate session",
+          "pass": true
+        },
+        {
+          "name": "kg exercise type mismatch",
+          "pass": true
+        },
+        {
+          "name": "kg RIR zero valid and optional RPE null preserved",
+          "pass": true
+        },
+        {
+          "name": "lb exact-unit progression; original values retained",
+          "pass": true
+        },
+        {
+          "name": "lb W1 ambiguous exercise/type",
+          "pass": true
+        },
+        {
+          "name": "lb W2 full step outside available weights",
+          "pass": true
+        },
+        {
+          "name": "lb missing rule",
+          "pass": true
+        },
+        {
+          "name": "lb missing weight step",
+          "pass": true
+        },
+        {
+          "name": "lb mixed unit",
+          "pass": true
+        },
+        {
+          "name": "lb RIR required but missing",
+          "pass": true
+        },
+        {
+          "name": "lb RPE zero is invalid, not missing",
+          "pass": true
+        },
+        {
+          "name": "lb partial set registration",
+          "pass": true
+        },
+        {
+          "name": "lb wrong set identity",
+          "pass": true
+        },
+        {
+          "name": "lb duplicate exercise observations",
+          "pass": true
+        },
+        {
+          "name": "lb non-comparable source version",
+          "pass": true
+        },
+        {
+          "name": "lb missing historical goal",
+          "pass": true
+        },
+        {
+          "name": "lb absent goal key",
+          "pass": true
+        },
+        {
+          "name": "lb absent completed key",
+          "pass": true
+        },
+        {
+          "name": "lb absent observed unit",
+          "pass": true
+        },
+        {
+          "name": "lb absent observed set index",
+          "pass": true
+        },
+        {
+          "name": "lb duplicate session",
+          "pass": true
+        },
+        {
+          "name": "lb exercise type mismatch",
+          "pass": true
+        },
+        {
+          "name": "lb RIR zero valid and optional RPE null preserved",
+          "pass": true
+        }
+      ]
+    },
+    {
+      "file": "phase6e10-live.json",
+      "sha256": "75f30f31c6ec9111741b53c1b6c803d0120965888eb981bb4d184131106f0045",
+      "pass": true,
+      "checks": [
+        {
+          "name": "anonymous and direct private-table access denied",
+          "pass": true
+        },
+        {
+          "name": "ordinary and unrelated trainer denied; no proof denied",
+          "pass": true
+        },
+        {
+          "name": "prepared window has no fixture read access",
+          "pass": true
+        },
+        {
+          "name": "activation exact retry is idempotent; fresh-key duplicate denied",
+          "pass": true
+        },
+        {
+          "name": "24-hour hard maximum and exact inclusive-start/exclusive-end boundary",
+          "pass": true
+        },
+        {
+          "name": "Route A/B and operator data-plane isolation",
+          "pass": true
+        },
+        {
+          "name": "member source write and client role spoof denied",
+          "pass": true
+        },
+        {
+          "name": "missing source never invents proposal",
+          "pass": true
+        },
+        {
+          "name": "missing fields and null source values fail closed",
+          "pass": true
+        },
+        {
+          "name": "source versions cannot be overwritten even by privileged maintenance",
+          "pass": true
+        },
+        {
+          "name": "all health/recovery guards and withdrawn consent block proposal without partial writes",
+          "pass": true
+        },
+        {
+          "name": "removed A link and unexpected B trainer deny reads",
+          "pass": true
+        },
+        {
+          "name": "v1 source hash and immutable numeric decisions",
+          "pass": true
+        },
+        {
+          "name": "separate member approval then exact trainer approval required",
+          "pass": true
+        },
+        {
+          "name": "source v2 after member acceptance leaves v1 immutable and blocks approval/apply",
+          "pass": true
+        },
+        {
+          "name": "source change after trainer approval invalidates separate application",
+          "pass": true
+        },
+        {
+          "name": "wrong proposal version and stale window revision denied",
+          "pass": true
+        },
+        {
+          "name": "fault before receipt rolls back plan, approvals and audit",
+          "pass": true
+        },
+        {
+          "name": "concurrent apply commits once; same-key replay and changed-payload rejection",
+          "pass": true
+        },
+        {
+          "name": "restore creates new version with original and current source references",
+          "pass": true
+        },
+        {
+          "name": "withdrawn source blocks new proposals",
+          "pass": true
+        },
+        {
+          "name": "withdrawn source before acceptance; expired source before review",
+          "pass": true
+        },
+        {
+          "name": "other window cannot reuse fixture ID and overlapping activation is denied",
+          "pass": true
+        },
+        {
+          "name": "revocation immediately denies old authenticated read; cleanup retries safe",
+          "pass": true
+        },
+        {
+          "name": "future start refused and expired window cannot reactivate",
+          "pass": true
+        },
+        {
+          "name": "kg exact-unit progression; original values retained",
+          "pass": true
+        },
+        {
+          "name": "kg W1 ambiguous exercise/type",
+          "pass": true
+        },
+        {
+          "name": "kg W2 full step outside available weights",
+          "pass": true
+        },
+        {
+          "name": "kg missing rule",
+          "pass": true
+        },
+        {
+          "name": "kg missing weight step",
+          "pass": true
+        },
+        {
+          "name": "kg mixed unit",
+          "pass": true
+        },
+        {
+          "name": "kg RIR required but missing",
+          "pass": true
+        },
+        {
+          "name": "kg RPE zero is invalid, not missing",
+          "pass": true
+        },
+        {
+          "name": "kg partial set registration",
+          "pass": true
+        },
+        {
+          "name": "kg wrong set identity",
+          "pass": true
+        },
+        {
+          "name": "kg duplicate exercise observations",
+          "pass": true
+        },
+        {
+          "name": "kg non-comparable source version",
+          "pass": true
+        },
+        {
+          "name": "kg missing historical goal",
+          "pass": true
+        },
+        {
+          "name": "kg absent goal key",
+          "pass": true
+        },
+        {
+          "name": "kg absent completed key",
+          "pass": true
+        },
+        {
+          "name": "kg absent observed unit",
+          "pass": true
+        },
+        {
+          "name": "kg absent observed set index",
+          "pass": true
+        },
+        {
+          "name": "kg duplicate session",
+          "pass": true
+        },
+        {
+          "name": "kg exercise type mismatch",
+          "pass": true
+        },
+        {
+          "name": "kg RIR zero valid and optional RPE null preserved",
+          "pass": true
+        },
+        {
+          "name": "lb exact-unit progression; original values retained",
+          "pass": true
+        },
+        {
+          "name": "lb W1 ambiguous exercise/type",
+          "pass": true
+        },
+        {
+          "name": "lb W2 full step outside available weights",
+          "pass": true
+        },
+        {
+          "name": "lb missing rule",
+          "pass": true
+        },
+        {
+          "name": "lb missing weight step",
+          "pass": true
+        },
+        {
+          "name": "lb mixed unit",
+          "pass": true
+        },
+        {
+          "name": "lb RIR required but missing",
+          "pass": true
+        },
+        {
+          "name": "lb RPE zero is invalid, not missing",
+          "pass": true
+        },
+        {
+          "name": "lb partial set registration",
+          "pass": true
+        },
+        {
+          "name": "lb wrong set identity",
+          "pass": true
+        },
+        {
+          "name": "lb duplicate exercise observations",
+          "pass": true
+        },
+        {
+          "name": "lb non-comparable source version",
+          "pass": true
+        },
+        {
+          "name": "lb missing historical goal",
+          "pass": true
+        },
+        {
+          "name": "lb absent goal key",
+          "pass": true
+        },
+        {
+          "name": "lb absent completed key",
+          "pass": true
+        },
+        {
+          "name": "lb absent observed unit",
+          "pass": true
+        },
+        {
+          "name": "lb absent observed set index",
+          "pass": true
+        },
+        {
+          "name": "lb duplicate session",
+          "pass": true
+        },
+        {
+          "name": "lb exercise type mismatch",
+          "pass": true
+        },
+        {
+          "name": "lb RIR zero valid and optional RPE null preserved",
+          "pass": true
+        }
+      ]
+    },
+    {
+      "file": "phase6e10-fresh.json",
+      "sha256": "cb73864ef22c22e7922b45ae76120e8bc12b27e395b76247c94ef78cca0fecb5",
+      "pass": true,
+      "head": "03eb55af7ab1897a3c6a12b82fcb5d182e88c4de",
+      "local_groups": 65,
+      "regressions": {
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "file": "phase6e10-regressions.json",
+      "sha256": "c09395b07686b7e537e5f0e278f7e0cef279c9be21213cb565920aab033aa480",
+      "pass": true,
+      "counts": {
+        "tests": 1734,
+        "pass": 1734,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "file": "phase6e10-browser-local-ui/report.json",
+      "sha256": "3b82b84265350662c0345176ddbefb24888cc36c2c4b9a65ad2121284c2f7709",
+      "pass": true,
+      "checks": [
+        "signed-out page contains no synthetic plan data",
+        "operator creates and activates a fresh managed window",
+        "v1 created by authenticated trainer",
+        "member cannot act as trainer",
+        "refresh preserves server member acceptance",
+        "logout denies still-signed browser JWT",
+        "v2 leaves v1 proposal stale and application unavailable",
+        "trainer approval leaves separate apply button",
+        "trainer unlinked after approval cannot apply",
+        "withdrawn consent after approval cannot apply",
+        "self-reported recovery is not application clearance",
+        "all blocked apply attempts preserve plan version",
+        "18 responsive language/theme layouts",
+        "uncertain application offers same-request retry",
+        "separate application creates v2 and disables duplicate action",
+        "restore creates version 3 with source history retained",
+        "member_reject commits its terminal status",
+        "member_reject cannot be applied",
+        "trainer_reject commits its terminal status",
+        "trainer_reject cannot be applied",
+        "trainer_block commits its terminal status",
+        "trainer_block cannot be applied",
+        "W2 displays full configured step and attempted weight without partial apply",
+        "withdrawn source gives explicit server refusal",
+        "B has neither sources nor A actions nor management",
+        "revoke removes active workspace on refresh",
+        "cleanup is visible and disabled after completion"
+      ],
+      "layouts": [
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844,
+          "lang": "nl",
+          "theme": "light",
+          "pass": true
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844,
+          "lang": "nl",
+          "theme": "dark",
+          "pass": true
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844,
+          "lang": "en",
+          "theme": "light",
+          "pass": true
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844,
+          "lang": "en",
+          "theme": "dark",
+          "pass": true
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844,
+          "lang": "de",
+          "theme": "light",
+          "pass": true
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844,
+          "lang": "de",
+          "theme": "dark",
+          "pass": true
+        },
+        {
+          "name": "tablet",
+          "width": 768,
+          "height": 1024,
+          "lang": "nl",
+          "theme": "light",
+          "pass": true
+        },
+        {
+          "name": "tablet",
+          "width": 768,
+          "height": 1024,
+          "lang": "nl",
+          "theme": "dark",
+          "pass": true
+        },
+        {
+          "name": "tablet",
+          "width": 768,
+          "height": 1024,
+          "lang": "en",
+          "theme": "light",
+          "pass": true
+        },
+        {
+          "name": "tablet",
+          "width": 768,
+          "height": 1024,
+          "lang": "en",
+          "theme": "dark",
+          "pass": true
+        },
+        {
+          "name": "tablet",
+          "width": 768,
+          "height": 1024,
+          "lang": "de",
+          "theme": "light",
+          "pass": true
+        },
+        {
+          "name": "tablet",
+          "width": 768,
+          "height": 1024,
+          "lang": "de",
+          "theme": "dark",
+          "pass": true
+        },
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 1000,
+          "lang": "nl",
+          "theme": "light",
+          "pass": true
+        },
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 1000,
+          "lang": "nl",
+          "theme": "dark",
+          "pass": true
+        },
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 1000,
+          "lang": "en",
+          "theme": "light",
+          "pass": true
+        },
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 1000,
+          "lang": "en",
+          "theme": "dark",
+          "pass": true
+        },
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 1000,
+          "lang": "de",
+          "theme": "light",
+          "pass": true
+        },
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 1000,
+          "lang": "de",
+          "theme": "dark",
+          "pass": true
+        }
+      ],
+      "physical_phone": false,
+      "password_login_tested": false
+    },
+    {
+      "file": "phase6e10-publication.json",
+      "sha256": "5eac9a16222e7dbae77fc091362adb74451be613d15480c62fd96f3e2c2d8ef6",
+      "pass": true,
+      "head": "03eb55af7ab1897a3c6a12b82fcb5d182e88c4de",
+      "published_assets": 84,
+      "private_404": 209
+    }
+  ],
+  "investigation": {
+    "read_only": true,
+    "period": {
+      "start": "2026-09-16T06:50:00Z",
+      "end": "2026-09-16T07:00:00Z"
+    },
+    "changed_profile_actors": [
+      {
+        "updated_at": "2026-09-16 06:57:39.954225+00",
+        "account_created_at": "2026-08-15 18:32:20.990681+00",
+        "owner_inbox": false
+      }
+    ],
+    "sessions": [
+      {
+        "found": true,
+        "belongs_to_changed_actor": true,
+        "enrolled_6e10": false,
+        "created_at": "2026-09-16 06:56:17.931666+00",
+        "updated_at": "2026-09-16 06:56:17.931666+00",
+        "not_after": null,
+        "mobile": true
+      }
+    ],
+    "auth_audit": [
+      {
+        "timestamp": "2026-09-16T06:56:17.000000",
+        "action": "login",
+        "provider": "email",
+        "changed_actor": true,
+        "enrolled_6e10": false
+      }
+    ],
+    "request_limit": 500,
+    "truncated": false,
+    "secrets_exported": false,
+    "login_methods": [
+      {
+        "grant_type": "password",
+        "method": "POST",
+        "path": "/token",
+        "status": "200",
+        "timestamp": "2026-09-16T06:56:18.000000"
+      }
+    ],
+    "updated_row_metadata": [
+      {
+        "table_name": "entitlements",
+        "recently_updated": 1,
+        "changed_actor_rows": 1,
+        "first_update": "2026-09-16 06:57:39.954225+00",
+        "last_update": "2026-09-16 06:57:39.954225+00",
+        "transaction_ids": "1089887907"
+      },
+      {
+        "table_name": "member_app_preferences",
+        "recently_updated": 1,
+        "changed_actor_rows": 1,
+        "first_update": "2026-09-16 06:57:39.135103+00",
+        "last_update": "2026-09-16 06:57:39.135103+00",
+        "transaction_ids": "1089887906"
+      },
+      {
+        "table_name": "member_notifications",
+        "recently_updated": 1,
+        "changed_actor_rows": 1,
+        "first_update": "2026-09-16 06:56:29.836431+00",
+        "last_update": "2026-09-16 06:56:29.836431+00",
+        "transaction_ids": "1089887884"
+      },
+      {
+        "table_name": "nutrition_preferences",
+        "recently_updated": 1,
+        "changed_actor_rows": 1,
+        "first_update": "2026-09-16 06:56:45.778343+00",
+        "last_update": "2026-09-16 06:56:45.778343+00",
+        "transaction_ids": "1089887887"
+      },
+      {
+        "table_name": "profiles",
+        "recently_updated": 1,
+        "changed_actor_rows": 1,
+        "first_update": "2026-09-16 06:57:39.954225+00",
+        "last_update": "2026-09-16 06:57:39.954225+00",
+        "transaction_ids": "1089887907"
+      },
+      {
+        "table_name": "progress_preferences",
+        "recently_updated": 1,
+        "changed_actor_rows": 1,
+        "first_update": "2026-09-16 06:56:20.592861+00",
+        "last_update": "2026-09-16 06:56:20.592861+00",
+        "transaction_ids": "1089887881"
+      },
+      {
+        "table_name": "user_onboarding",
+        "recently_updated": 1,
+        "changed_actor_rows": 1,
+        "first_update": "2026-09-16 06:57:39.954225+00",
+        "last_update": "2026-09-16 06:57:39.954225+00",
+        "transaction_ids": "1089887907"
+      },
+      {
+        "table_name": "user_settings",
+        "recently_updated": 1,
+        "changed_actor_rows": 1,
+        "first_update": "2026-09-16 06:57:39.954225+00",
+        "last_update": "2026-09-16 06:57:39.954225+00",
+        "transaction_ids": "1089887907"
+      },
+      {
+        "table_name": "workout_sessions",
+        "recently_updated": 1,
+        "changed_actor_rows": 1,
+        "first_update": "2026-09-16 06:56:22.310429+00",
+        "last_update": "2026-09-16 06:56:22.310429+00",
+        "transaction_ids": "1089887883"
+      }
+    ],
+    "window_state": [
+      {
+        "active_windows": 0,
+        "workspaces": 0
+      }
+    ],
+    "original_fingerprint_tables": 68,
+    "current_fingerprint_tables": 68,
+    "different_tables": [
+      "public.entitlements",
+      "public.member_app_preferences",
+      "public.member_notifications",
+      "public.nutrition_preferences",
+      "public.profiles",
+      "public.progress_preferences",
+      "public.user_onboarding",
+      "public.user_settings",
+      "public.workout_sessions"
+    ],
+    "unchanged_tables": 59,
+    "original_baseline_sha256": "1524d4b77463f27d0313a25c93b16a68f2e304ad7eee9be316d01421f3b99333",
+    "old_34_migrations_identical": true,
+    "migration_count": 38,
+    "human_operator_confirmed": false,
+    "conditional_go_satisfied": false,
+    "limitations": [
+      "Authenticated password login is not proof of the human operator or uncompromised credentials.",
+      "Request-to-transaction mapping is corroboration, not a complete before/after row audit.",
+      "A bounded log interval cannot prove universal absence of unauthorized access.",
+      "Original fingerprints are preserved; differences are not waived or rebased."
+    ],
+    "request_summary": {
+      "total": 106,
+      "authenticated": 72,
+      "service_role": 0,
+      "enrolled_6e10": 0,
+      "changed_actor": 72,
+      "phase6e10_paths": 0,
+      "all_authenticated_mobile_safari": true
+    },
+    "post_or_mutation_paths": [
+      "/rest/v1/rpc/fmz_phase1_upsert_account_foundation",
+      "/rest/v1/rpc/fmz_phase4_get_current_nutrition_target",
+      "/rest/v1/rpc/fmz_phase4_get_nutrition_day",
+      "/rest/v1/rpc/fmz_phase4_set_nutrition_timezone",
+      "/rest/v1/rpc/fmz_phase5_get_progress_dashboard",
+      "/rest/v1/rpc/fmz_phase5_set_progress_timezone",
+      "/rest/v1/rpc/fmz_phase6a_read_consent_contract",
+      "/rest/v1/rpc/fmz_phase6c_get_chat_status",
+      "/rest/v1/rpc/fmz_phase6c_list_threads",
+      "/rest/v1/rpc/fmz_phase6c_read_thread",
+      "/rest/v1/rpc/fmz_phase6d_get_inbox",
+      "/rest/v1/rpc/fmz_phase6d_get_member_settings",
+      "/rest/v1/rpc/fmz_phase6d_get_status",
+      "/rest/v1/rpc/fmz_phase6d_list_analyses",
+      "/rest/v1/rpc/fmz_phase6d_mark_notification",
+      "/rest/v1/rpc/fmz_phase6d_read_analysis",
+      "/rest/v1/rpc/fmz_phase6d_read_analysis_contract",
+      "/rest/v1/rpc/fmz_phase6d_update_member_settings",
+      "/rest/v1/rpc/fmz_training_get_preferences",
+      "/rest/v1/workout_sessions"
+    ],
+    "local_evidence_sha256": "84c40e024ccedfd39160a64325ebfad5195aa86b545c7c760883dcd87a5c480c"
+  },
+  "pending": [
+    "Confirm legitimate human use of the non-enrolled password session; logs alone cannot do this.",
+    "If resolved, explicitly document separate reconciled baseline without overwriting original evidence.",
+    "Run final published UI workflow, post-test fingerprints and fresh owner window only after the gate is satisfied."
+  ],
+  "limits": [
+    "No overall technical pass or all-original-data-unchanged claim.",
+    "Historical tests are not reclassified as fresh hosted verification.",
+    "Synthetic authority and manually selected safety fixtures do not establish real authority or medical reliability."
+  ]
+}
