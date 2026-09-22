@@ -1,0 +1,183 @@
+{
+  "byte_identical": true,
+  "complete_cycles": {
+    "benchmark": 3,
+    "small_transition_comparison": 2
+  },
+  "deleted_files": 0,
+  "external_ai_calls": 0,
+  "fixture": {
+    "bulk_rows": 100000,
+    "catalog_names": 75000,
+    "catalog_products": 25000,
+    "source_version": "synthetic-fixture-v1",
+    "tables": 143
+  },
+  "hosted_calls": 0,
+  "pass": true,
+  "postgres_version": "PostgreSQL 18.6 on x86_64-windows, compiled by msvc-19.44.35228, 64-bit",
+  "results": [
+    {
+      "client_after": {
+        "available": true,
+        "other_transfer_bytes": 117256,
+        "peak_working_set_bytes": 27152384,
+        "read_transfer_bytes": 1502709,
+        "write_transfer_bytes": 49474
+      },
+      "client_before": {
+        "available": true,
+        "other_transfer_bytes": 106480,
+        "peak_working_set_bytes": 25038848,
+        "read_transfer_bytes": 1406652,
+        "write_transfer_bytes": 410
+      },
+      "database_counter_delta": {
+        "shared_blocks_hit": 14241,
+        "shared_blocks_read": 2443,
+        "temp_bytes": 15515648,
+        "temp_files": 4
+      },
+      "elapsed_seconds": 3.4070000000065193,
+      "full_cycles": 1,
+      "identity_sha256": "c9c1666c6a4d5314839d09d8cb35e6f677d5dc53c511e9ab88d13a1ca6af7b1c",
+      "local_sort_files": 0,
+      "local_sort_read_bytes": 0,
+      "local_sort_write_bytes": 0,
+      "method": "legacy",
+      "query_commands": 6,
+      "result_payload_bytes": 132131,
+      "retries": 0,
+      "server_after": {
+        "available": true,
+        "other_transfer_bytes": 23034,
+        "peak_working_set_bytes": 142790656,
+        "read_transfer_bytes": 17138262,
+        "write_transfer_bytes": 72314500
+      },
+      "server_before": {
+        "available": true,
+        "other_transfer_bytes": 13174,
+        "peak_working_set_bytes": 19542016,
+        "read_transfer_bytes": 492007,
+        "write_transfer_bytes": 0
+      },
+      "wall_seconds_including_worker": 3.85999999998603
+    },
+    {
+      "client_after": {
+        "available": true,
+        "other_transfer_bytes": 123992,
+        "peak_working_set_bytes": 31543296,
+        "read_transfer_bytes": 8707055,
+        "write_transfer_bytes": 7251565
+      },
+      "client_before": {
+        "available": true,
+        "other_transfer_bytes": 111008,
+        "peak_working_set_bytes": 25026560,
+        "read_transfer_bytes": 1408971,
+        "write_transfer_bytes": 474
+      },
+      "database_counter_delta": {
+        "shared_blocks_hit": 15527,
+        "shared_blocks_read": 573,
+        "temp_bytes": 0,
+        "temp_files": 0
+      },
+      "elapsed_seconds": 2.234000000054948,
+      "full_cycles": 1,
+      "identity_sha256": "c9c1666c6a4d5314839d09d8cb35e6f677d5dc53c511e9ab88d13a1ca6af7b1c",
+      "local_sort_files": 7,
+      "local_sort_read_bytes": 7201976,
+      "local_sort_write_bytes": 7201976,
+      "max_buffer_records": 16384,
+      "method": "stream",
+      "query_commands": 6,
+      "result_payload_bytes": 6892214,
+      "retries": 0,
+      "server_after": {
+        "available": true,
+        "other_transfer_bytes": 22474,
+        "peak_working_set_bytes": 96284672,
+        "read_transfer_bytes": 238166,
+        "write_transfer_bytes": 0
+      },
+      "server_before": {
+        "available": true,
+        "other_transfer_bytes": 13174,
+        "peak_working_set_bytes": 19501056,
+        "read_transfer_bytes": 238055,
+        "write_transfer_bytes": 0
+      },
+      "wall_seconds_including_worker": 2.672000000020489
+    },
+    {
+      "client_after": {
+        "available": true,
+        "other_transfer_bytes": 128472,
+        "peak_working_set_bytes": 32284672,
+        "read_transfer_bytes": 8662974,
+        "write_transfer_bytes": 7251567
+      },
+      "client_before": {
+        "available": true,
+        "other_transfer_bytes": 115488,
+        "peak_working_set_bytes": 24969216,
+        "read_transfer_bytes": 1364889,
+        "write_transfer_bytes": 475
+      },
+      "database_counter_delta": {
+        "shared_blocks_hit": 15543,
+        "shared_blocks_read": 557,
+        "temp_bytes": 0,
+        "temp_files": 0
+      },
+      "elapsed_seconds": 2.327999999979511,
+      "full_cycles": 1,
+      "identity_sha256": "c9c1666c6a4d5314839d09d8cb35e6f677d5dc53c511e9ab88d13a1ca6af7b1c",
+      "local_sort_files": 7,
+      "local_sort_read_bytes": 7201976,
+      "local_sort_write_bytes": 7201976,
+      "max_buffer_records": 16384,
+      "method": "stream",
+      "query_commands": 6,
+      "result_payload_bytes": 6892214,
+      "retries": 0,
+      "server_after": {
+        "available": true,
+        "other_transfer_bytes": 22474,
+        "peak_working_set_bytes": 96595968,
+        "read_transfer_bytes": 230598,
+        "write_transfer_bytes": 0
+      },
+      "server_before": {
+        "available": true,
+        "other_transfer_bytes": 13174,
+        "peak_working_set_bytes": 19570688,
+        "read_transfer_bytes": 230487,
+        "write_transfer_bytes": 0
+      },
+      "wall_seconds_including_worker": 2.76500000001397
+    }
+  ],
+  "run_id": "baf153aa-9768-4106-be93-6720cd656cc4",
+  "scope": "synthetic local PostgreSQL only",
+  "source_hashes": {
+    "benchmark.py": "603920518065b786028a9dd6d066129f0a3a3ad3c2fcf80e9cd1704e8bf7e8d1",
+    "fingerprint.py": "c2a59bdb13d8ac1b95c4cf67cd42057d111775b316996a3816cd1b8a0d5ccf57",
+    "guard.py": "75106e9739087c3c82210256a3eb1fc8e9c9f6d5778949abd79869d97e5b12fb",
+    "local_cluster.py": "7e2c1ea6ce11da0cf00ec4e65bc78d5ac0b70067c83ebf26912da5d05d8eee89",
+    "pq.py": "8dba45387f8cddc71af6b7d321db515947eb1debfcf314c0a645f38decf1be8c",
+    "test_offline.py": "a07660b79a35987a3dfc4daeb28029cf623a97db99d7a8270c2a0a7a74be5a5e"
+  },
+  "transition": {
+    "changed_tables": [
+      "public.foods"
+    ],
+    "dataset_identity": "f409d61218a06e0ff5217288cfed003a91d96a8d1519cfd695541c93f2e2e361",
+    "manifest_sha256": "6f3f991c4756a9f798402dfa9878fbf5feb901a96a52a8332ac18fdf11640c6a"
+  },
+  "version": 1,
+  "original_receipt": "supabase/.temp/phase6e11-fingerprint-benchmark-baf153aa-9768-4106-be93-6720cd656cc4.json"
+}

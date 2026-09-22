@@ -1,0 +1,184 @@
+{
+  "byte_identical": true,
+  "complete_cycles": {
+    "benchmark": 3,
+    "small_transition_comparison": 2
+  },
+  "deleted_files": 0,
+  "external_ai_calls": 0,
+  "fixture": {
+    "bulk_rows": 100000,
+    "catalog_names": 75000,
+    "catalog_products": 25000,
+    "source_version": "synthetic-fixture-v1",
+    "tables": 143
+  },
+  "hosted_calls": 0,
+  "pass": true,
+  "postgres_version": "PostgreSQL 18.6 on x86_64-windows, compiled by msvc-19.44.35228, 64-bit",
+  "results": [
+    {
+      "client_after": {
+        "available": true,
+        "other_transfer_bytes": 119696,
+        "peak_working_set_bytes": 27062272,
+        "read_transfer_bytes": 1510705,
+        "write_transfer_bytes": 49477
+      },
+      "client_before": {
+        "available": true,
+        "other_transfer_bytes": 108920,
+        "peak_working_set_bytes": 25104384,
+        "read_transfer_bytes": 1414649,
+        "write_transfer_bytes": 414
+      },
+      "database_counter_delta": {
+        "shared_blocks_hit": 14238,
+        "shared_blocks_read": 2446,
+        "temp_bytes": 15515648,
+        "temp_files": 4
+      },
+      "elapsed_seconds": 3.405999999959022,
+      "full_cycles": 1,
+      "identity_sha256": "c9c1666c6a4d5314839d09d8cb35e6f677d5dc53c511e9ab88d13a1ca6af7b1c",
+      "local_sort_files": 0,
+      "local_sort_read_bytes": 0,
+      "local_sort_write_bytes": 0,
+      "method": "legacy",
+      "query_commands": 6,
+      "result_payload_bytes": 132131,
+      "retries": 0,
+      "server_after": {
+        "available": true,
+        "other_transfer_bytes": 23034,
+        "peak_working_set_bytes": 142602240,
+        "read_transfer_bytes": 17154646,
+        "write_transfer_bytes": 69234308
+      },
+      "server_before": {
+        "available": true,
+        "other_transfer_bytes": 13174,
+        "peak_working_set_bytes": 19652608,
+        "read_transfer_bytes": 492007,
+        "write_transfer_bytes": 0
+      },
+      "wall_seconds_including_worker": 3.8290000000270084
+    },
+    {
+      "client_after": {
+        "available": true,
+        "other_transfer_bytes": 126434,
+        "peak_working_set_bytes": 32010240,
+        "read_transfer_bytes": 8715053,
+        "write_transfer_bytes": 7251570
+      },
+      "client_before": {
+        "available": true,
+        "other_transfer_bytes": 113450,
+        "peak_working_set_bytes": 24911872,
+        "read_transfer_bytes": 1416968,
+        "write_transfer_bytes": 478
+      },
+      "database_counter_delta": {
+        "shared_blocks_hit": 15527,
+        "shared_blocks_read": 573,
+        "temp_bytes": 0,
+        "temp_files": 0
+      },
+      "elapsed_seconds": 2.2969999999040738,
+      "full_cycles": 1,
+      "identity_sha256": "c9c1666c6a4d5314839d09d8cb35e6f677d5dc53c511e9ab88d13a1ca6af7b1c",
+      "local_sort_files": 7,
+      "local_sort_read_bytes": 7201976,
+      "local_sort_write_bytes": 7201976,
+      "max_buffer_records": 16384,
+      "method": "stream",
+      "query_commands": 6,
+      "result_payload_bytes": 6892214,
+      "retries": 0,
+      "server_after": {
+        "available": true,
+        "other_transfer_bytes": 22474,
+        "peak_working_set_bytes": 96342016,
+        "read_transfer_bytes": 238166,
+        "write_transfer_bytes": 0
+      },
+      "server_before": {
+        "available": true,
+        "other_transfer_bytes": 13174,
+        "peak_working_set_bytes": 19431424,
+        "read_transfer_bytes": 238055,
+        "write_transfer_bytes": 0
+      },
+      "wall_seconds_including_worker": 2.73499999998603
+    },
+    {
+      "client_after": {
+        "available": true,
+        "other_transfer_bytes": 130914,
+        "peak_working_set_bytes": 32026624,
+        "read_transfer_bytes": 8663753,
+        "write_transfer_bytes": 7251571
+      },
+      "client_before": {
+        "available": true,
+        "other_transfer_bytes": 117930,
+        "peak_working_set_bytes": 25104384,
+        "read_transfer_bytes": 1365668,
+        "write_transfer_bytes": 479
+      },
+      "database_counter_delta": {
+        "shared_blocks_hit": 15543,
+        "shared_blocks_read": 557,
+        "temp_bytes": 0,
+        "temp_files": 0
+      },
+      "elapsed_seconds": 2.359000000054948,
+      "full_cycles": 1,
+      "identity_sha256": "c9c1666c6a4d5314839d09d8cb35e6f677d5dc53c511e9ab88d13a1ca6af7b1c",
+      "local_sort_files": 7,
+      "local_sort_read_bytes": 7201976,
+      "local_sort_write_bytes": 7201976,
+      "max_buffer_records": 16384,
+      "method": "stream",
+      "query_commands": 6,
+      "result_payload_bytes": 6892214,
+      "retries": 0,
+      "server_after": {
+        "available": true,
+        "other_transfer_bytes": 22474,
+        "peak_working_set_bytes": 96399360,
+        "read_transfer_bytes": 230598,
+        "write_transfer_bytes": 0
+      },
+      "server_before": {
+        "available": true,
+        "other_transfer_bytes": 13174,
+        "peak_working_set_bytes": 19447808,
+        "read_transfer_bytes": 230487,
+        "write_transfer_bytes": 0
+      },
+      "wall_seconds_including_worker": 2.827999999979511
+    }
+  ],
+  "run_id": "0e51c0c5-b59b-467f-9bcc-f61ba3dee4c8",
+  "scope": "synthetic local PostgreSQL only",
+  "source_hashes": {
+    "benchmark.py": "603920518065b786028a9dd6d066129f0a3a3ad3c2fcf80e9cd1704e8bf7e8d1",
+    "fingerprint.py": "c2a59bdb13d8ac1b95c4cf67cd42057d111775b316996a3816cd1b8a0d5ccf57",
+    "guard.py": "5a67b549e983cf4a6c04dd11f57dd4f1a2fce0d4d020a5e504fad315a5f427b3",
+    "local_cluster.py": "7e2c1ea6ce11da0cf00ec4e65bc78d5ac0b70067c83ebf26912da5d05d8eee89",
+    "pq.py": "9d9e4e8d5884538e97302fe77db6fa957b46ec154a957c8fd348f21323e14b27",
+    "test_offline.py": "1c0cade2b0964769fe14087e978d52078c32b0091a9da1470b90f57150970152"
+  },
+  "transition": {
+    "changed_tables": [
+      "public.foods"
+    ],
+    "dataset_identity": "f409d61218a06e0ff5217288cfed003a91d96a8d1519cfd695541c93f2e2e361",
+    "manifest_sha256": "6f3f991c4756a9f798402dfa9878fbf5feb901a96a52a8332ac18fdf11640c6a"
+  },
+  "version": 1,
+  "original_receipt": "supabase/.temp/phase6e11-fingerprint-benchmark-0e51c0c5-b59b-467f-9bcc-f61ba3dee4c8.json",
+  "previous_receipt": "supabase/.temp/phase6e11-fingerprint-benchmark-776d5820-6522-41f2-b1ff-5529cac46efe.json"
+}

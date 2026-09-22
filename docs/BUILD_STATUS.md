@@ -1,5 +1,15 @@
 # FitMetZorge Build Status
 
+## Current: Offline Fingerprint v1 / Local Pass, Hosted NO-GO
+
+22 September: the isolated streaming collector matches the old pinned hashes on
+143 synthetic tables. 36 targeted tests pass; the final local benchmark records
+zero database tempbytes versus 15,515,648 for the old aggregation. Repository-wide
+locking, durable budgets (3 full cycles / 128 queries) and missing-pair stops apply.
+No hosted connection, cleanup or owner window. Write-coverage, PostgreSQL-17
+validation and verified IO recovery remain gates; 6E-11 remains NO-GO.
+[Offline implementation and evidence](PHASE6E11_EFFICIENT_FINGERPRINT_REPORT.md).
+
 ## Current: 6E-10 Owner-Accepted And Frozen
 
 COMPLETE / OWNER-ACCEPTED / FROZEN - SYNTHETIC STAGING SCOPE ONLY.
