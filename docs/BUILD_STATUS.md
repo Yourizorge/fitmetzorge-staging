@@ -1,5 +1,16 @@
 # FitMetZorge Build Status
 
+## Current: PG17 Evidence Pass / Hosted Canary NO-GO
+
+23 September: 36 existing collector tests pass on exact PostgreSQL 17.6, plus
+26 new targeted checks. The 143-table benchmark is byte-equivalent with zero new
+DB tempbytes. The 52-category write register is source-bound, but transitive Auth,
+trigger/cascade and independent-writer coverage is not proven. Historical float
+canonicalization differs and one shared trigger body remains unbound. The latest
+light IO observations (22 September) do not prove recovery. No hosted canary,
+proofrun, cleanup, owner window or new data-preservation claim. 6E-11 stays NO-GO.
+[PG17 evidence, query budgets and exact remaining gates](PHASE6E11_PG17_COVERAGE_REPORT.md).
+
 ## Current: Offline Fingerprint v1 / Local Pass, Hosted NO-GO
 
 22 September: the isolated streaming collector matches the old pinned hashes on

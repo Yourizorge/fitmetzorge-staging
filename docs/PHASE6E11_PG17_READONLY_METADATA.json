@@ -1,0 +1,1550 @@
+{
+  "project": "mokxyyullfhkfalopbzd",
+  "scope": "three read-only metadata queries; no row payloads",
+  "before": {
+    "request_ms": 10176,
+    "observed_at": "2026-09-22 11:37:18.564933+00",
+    "server_version": "PostgreSQL 17.6 on aarch64-unknown-linux-gnu, compiled by gcc (GCC) 15.2.0, 64-bit",
+    "version_num": "170006",
+    "timezone": "UTC",
+    "lc_numeric": "en_US.UTF-8",
+    "lc_monetary": "en_US.UTF-8",
+    "datestyle": "ISO, MDY",
+    "intervalstyle": "postgres",
+    "extra_float_digits": "0",
+    "bytea_output": "hex",
+    "work_mem": "2184kB",
+    "collation": "en_US.UTF-8",
+    "counters": {
+      "temp_bytes": 511312122109,
+      "temp_files": 82690,
+      "stats_reset": "2026-07-24T11:23:13.916197+00:00",
+      "blk_read_time": 0,
+      "blk_write_time": 0
+    },
+    "active_queries": null
+  },
+  "middle": {
+    "request_ms": 5531,
+    "observed_at": "2026-09-22 11:45:18.666902+00",
+    "counters": {
+      "temp_bytes": 511416208449,
+      "temp_files": 82705,
+      "stats_reset": "2026-07-24T11:23:13.916197+00:00"
+    },
+    "statements": [
+      {
+        "calls": 326,
+        "queryid": "-699327191976944610",
+        "query_hash": "096c360fcf4e3f78e1179304fc4e4b2a",
+        "mean_exec_time": 12477.1191344816,
+        "temp_blks_read": 4314088,
+        "fingerprint_shape": true,
+        "temp_blks_written": 4326616
+      },
+      {
+        "calls": 323,
+        "queryid": "-3957083696356868595",
+        "query_hash": "6e7505ca1f72669bf1849c5b7f6cc23d",
+        "mean_exec_time": 11959.516084743,
+        "temp_blks_read": 4288026,
+        "fingerprint_shape": true,
+        "temp_blks_written": 4300448
+      },
+      {
+        "calls": 127,
+        "queryid": "5914352801477589661",
+        "query_hash": "8ca0430cd2588986b27874079c54ac4b",
+        "mean_exec_time": 9513.03251746456,
+        "temp_blks_read": 1653404,
+        "fingerprint_shape": true,
+        "temp_blks_written": 1658155
+      },
+      {
+        "calls": 68,
+        "queryid": "-6903299241385500171",
+        "query_hash": "f536a46078a845230782de8ef1f645a3",
+        "mean_exec_time": 9580.38044498529,
+        "temp_blks_read": 900225,
+        "fingerprint_shape": true,
+        "temp_blks_written": 902768
+      },
+      {
+        "calls": 66,
+        "queryid": "-3391961397559414622",
+        "query_hash": "372ee6f9a882ff49754002549031e7b6",
+        "mean_exec_time": 9331.7458049697,
+        "temp_blks_read": 874525,
+        "fingerprint_shape": true,
+        "temp_blks_written": 876999
+      },
+      {
+        "calls": 57,
+        "queryid": "7926265310483044479",
+        "query_hash": "ba9b680aca37911f601af9e2258c75a9",
+        "mean_exec_time": 10059.036736807,
+        "temp_blks_read": 745489,
+        "fingerprint_shape": true,
+        "temp_blks_written": 747623
+      },
+      {
+        "calls": 95,
+        "queryid": "-3076875962393720596",
+        "query_hash": "0581363b7711e1d8770a12a246d3c357",
+        "mean_exec_time": 152.069173568421,
+        "temp_blks_read": 12160,
+        "fingerprint_shape": false,
+        "temp_blks_written": 108110
+      },
+      {
+        "calls": 8,
+        "queryid": "3555844639300414612",
+        "query_hash": "1185e22aba2661c40ff71b9b25d76ac2",
+        "mean_exec_time": 9454.02937525,
+        "temp_blks_read": 101514,
+        "fingerprint_shape": true,
+        "temp_blks_written": 101810
+      },
+      {
+        "calls": 9,
+        "queryid": "776795365906365977",
+        "query_hash": "1c5fb9720eac66c0e5402c1a55660035",
+        "mean_exec_time": 8513.18228144444,
+        "temp_blks_read": 93883,
+        "fingerprint_shape": true,
+        "temp_blks_written": 94145
+      },
+      {
+        "calls": 5,
+        "queryid": "4127888021548785340",
+        "query_hash": "c02088a6fbadff11eba9d131cd81739c",
+        "mean_exec_time": 15454.3882698,
+        "temp_blks_read": 67552,
+        "fingerprint_shape": true,
+        "temp_blks_written": 67745
+      },
+      {
+        "calls": 4,
+        "queryid": "5083902471367000993",
+        "query_hash": "88d91cddfa651aadc453d2feacb70b40",
+        "mean_exec_time": 8859.1421955,
+        "temp_blks_read": 56248,
+        "fingerprint_shape": true,
+        "temp_blks_written": 56399
+      },
+      {
+        "calls": 4,
+        "queryid": "4507118227270464138",
+        "query_hash": "5aee681126a99b1092c71e3389ee16b1",
+        "mean_exec_time": 10623.46858275,
+        "temp_blks_read": 55213,
+        "fingerprint_shape": true,
+        "temp_blks_written": 55368
+      }
+    ],
+    "jobs": [
+      {
+        "active": true,
+        "job_id": 1,
+        "schedule": "* * * * *",
+        "command_hash": "45c3b740856a1a87c4adfccaff6791f0"
+      },
+      {
+        "active": true,
+        "job_id": 2,
+        "schedule": "*/15 * * * *",
+        "command_hash": "44c66dc2091a052a17c8a4b1e648e38f"
+      },
+      {
+        "active": true,
+        "job_id": 7,
+        "schedule": "* * * * *",
+        "command_hash": "1fb1e4c64700a0ba357ac8eed62ea593"
+      }
+    ]
+  },
+  "after": {
+    "request_ms": 3734,
+    "observed_at": "2026-09-22 11:53:17.638869+00",
+    "counters": {
+      "temp_bytes": 511529466436,
+      "temp_files": 82721,
+      "stats_reset": "2026-07-24T11:23:13.916197+00:00"
+    },
+    "active": null,
+    "fingerprints": [
+      {
+        "calls": 68,
+        "queryid": "-6903299241385500171",
+        "query_hash": "f536a46078a845230782de8ef1f645a3",
+        "temp_blks_read": 900225,
+        "temp_blks_written": 902768
+      },
+      {
+        "calls": 3,
+        "queryid": "5728910032539120962",
+        "query_hash": "4cecc216df63c0fb1c31227c655835ce",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 323,
+        "queryid": "-3957083696356868595",
+        "query_hash": "6e7505ca1f72669bf1849c5b7f6cc23d",
+        "temp_blks_read": 4288026,
+        "temp_blks_written": 4300448
+      },
+      {
+        "calls": 3,
+        "queryid": "-2281929055521395933",
+        "query_hash": "5e2268bc9aefce8468ea357438536525",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "-5422932029926710361",
+        "query_hash": "6d825e0086fcda0074a38091bf7975ab",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "8128830769072943026",
+        "query_hash": "d6ef4dbda28259350fa5eb002f112638",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "8200545800921930929",
+        "query_hash": "d68014841429ef7f2dbcbdf5cb383df6",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "-6180473317782041707",
+        "query_hash": "7cd4d7977ea258c89498765e0a64c880",
+        "temp_blks_read": 38768,
+        "temp_blks_written": 38883
+      },
+      {
+        "calls": 3,
+        "queryid": "-237542762308629345",
+        "query_hash": "c3891f55c2c3142f723d005b7f53edf5",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "2291039104395514766",
+        "query_hash": "1dcfbdd9297c8c17d3a1064c341ce894",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "5634366801097041286",
+        "query_hash": "f47ae1a6592aed988c3f27b80bebb89a",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 57,
+        "queryid": "7926265310483044479",
+        "query_hash": "ba9b680aca37911f601af9e2258c75a9",
+        "temp_blks_read": 745489,
+        "temp_blks_written": 747623
+      },
+      {
+        "calls": 2,
+        "queryid": "-6090808536436103561",
+        "query_hash": "9d8137ac6822761c5fb1ae28a1bf59d4",
+        "temp_blks_read": 24531,
+        "temp_blks_written": 24607
+      },
+      {
+        "calls": 4,
+        "queryid": "5083902471367000993",
+        "query_hash": "88d91cddfa651aadc453d2feacb70b40",
+        "temp_blks_read": 56248,
+        "temp_blks_written": 56399
+      },
+      {
+        "calls": 9,
+        "queryid": "776795365906365977",
+        "query_hash": "1c5fb9720eac66c0e5402c1a55660035",
+        "temp_blks_read": 93883,
+        "temp_blks_written": 94145
+      },
+      {
+        "calls": 3,
+        "queryid": "294069848218297637",
+        "query_hash": "4d2d5c81cdf2cdff62b0bda03912dd0a",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "-1453866933984012084",
+        "query_hash": "57e797ce73708c338246ec393b43b8f2",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 1,
+        "queryid": "-5552821283437975592",
+        "query_hash": "a916f54118c2948d6e74f10807ab777c",
+        "temp_blks_read": 9931,
+        "temp_blks_written": 9960
+      },
+      {
+        "calls": 3,
+        "queryid": "-2601245615559603975",
+        "query_hash": "87118e10e3acc932d41fb871e5bf63dc",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "-2388708218021171862",
+        "query_hash": "60594999414bae7256a9dbf3b8c44089",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 4,
+        "queryid": "5922155205959678730",
+        "query_hash": "bb173209c1b10f10bd51339f04a6f01f",
+        "temp_blks_read": 53051,
+        "temp_blks_written": 53205
+      },
+      {
+        "calls": 3,
+        "queryid": "-3474138140517849363",
+        "query_hash": "a43110a2ee6cb4aadfa70a89f7564d79",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "3987333223058441512",
+        "query_hash": "4db3933356295a622a1c9c4635bcccf1",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "-5911117230656399291",
+        "query_hash": "c1130b1622c236b9223f57e31ed5c9e4",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 2,
+        "queryid": "-3049543094921197224",
+        "query_hash": "30f439828c4d75912b028ce7f5a002f0",
+        "temp_blks_read": 23699,
+        "temp_blks_written": 23773
+      },
+      {
+        "calls": 326,
+        "queryid": "-699327191976944610",
+        "query_hash": "096c360fcf4e3f78e1179304fc4e4b2a",
+        "temp_blks_read": 4314088,
+        "temp_blks_written": 4326616
+      },
+      {
+        "calls": 3,
+        "queryid": "-8303837621041734159",
+        "query_hash": "b140cf122334746c3affb3fbeb2f665d",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "1756370099872630430",
+        "query_hash": "d7b3253044581599facff47d27169e60",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "-4164412908331823136",
+        "query_hash": "f17306e537fd61ddb4fa1b55eaf1b4e1",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "3230935581327391274",
+        "query_hash": "1c3eaf428234b4eb8d5171cbe087bf99",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "-7842425035540315339",
+        "query_hash": "e1b4aebd1b4bdd57c860e727fe7018a0",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 129,
+        "queryid": "-530731842577748824",
+        "query_hash": "7dcbeef9d2d6b38013f7bfa6b8e9f57a",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "-5649718107234926564",
+        "query_hash": "951d32581c796073c8e3ef778e7547fb",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "-4351289208350814739",
+        "query_hash": "e7a9ebc9c3039269c4d54397651b6f1f",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "2857515099699043816",
+        "query_hash": "91f3cbe4cc88863abd7e95109e626918",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "8703148793616806222",
+        "query_hash": "be22d52c6ceae2211c741d424c652ec0",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "-6879648735214870442",
+        "query_hash": "21b03e94a7b0a481203160f600fcecfe",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "1502419038329531860",
+        "query_hash": "cd9271ff0db4bb1e43fc5248911d1c93",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "2587262535470080731",
+        "query_hash": "40eb7b0257474809b63159837615bb97",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "-6284231873050085632",
+        "query_hash": "021f316d296e9ab56a0410fdc1d541e7",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "2644680171752666155",
+        "query_hash": "51a3e3250726fd9e56c1abadb69a43b5",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "3687160764499460381",
+        "query_hash": "2065d96407398d54d83bc84ba28018d0",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "-8768423831898809136",
+        "query_hash": "929ad5747167fcf991432263502a482e",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "687301006055817503",
+        "query_hash": "da73e88b030eea33dbcdfcc7cf5f13f4",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "3634838282447790508",
+        "query_hash": "ff4d5f1235fc8981961a3e0293c16919",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "61878783732271329",
+        "query_hash": "9f7f00c96376cf4c63b5ad9017a0bb8d",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "-6340427904243388263",
+        "query_hash": "10a8dd7ca2cdd69def9dd982f1cbfac9",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "3108350005868788167",
+        "query_hash": "87eb37b29dbd58aecf29276ffc87990e",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "5238852278845116372",
+        "query_hash": "32a46025ee8702294bc2fbc0a83a0daf",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "4338593241060226847",
+        "query_hash": "a2d2c50360b93059b5b7e828ced3de26",
+        "temp_blks_read": 19730,
+        "temp_blks_written": 19776
+      },
+      {
+        "calls": 3,
+        "queryid": "-2442236486581416930",
+        "query_hash": "ff5d0a3954ebae1da6d7439cae3751d0",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "4800434329594301483",
+        "query_hash": "62b3d9b3b4f36fd58027bd727396f2f2",
+        "temp_blks_read": 12041,
+        "temp_blks_written": 12083
+      },
+      {
+        "calls": 3,
+        "queryid": "108214195427524473",
+        "query_hash": "8eff51ff1eac944f718d373aca869561",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "-790752119037002358",
+        "query_hash": "f5dbba3f853ce6b5ef1c37a8e131ced0",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "81157146670837217",
+        "query_hash": "9460f6ee0c3d8e1a9faa676ebf0aeb1d",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "7605304277147880031",
+        "query_hash": "0a28b1c9e6a4af02dc632664e75933fa",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "-4936567225779926857",
+        "query_hash": "e0aca751b04bfe2c94d8b4f2d7782e1d",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "-836282207303911271",
+        "query_hash": "1335f4d4e5827b455c0a4c8041bff538",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "-4578274567649678150",
+        "query_hash": "10a3c064c534612c64ef9f904d2b7245",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 4,
+        "queryid": "-422676091186958681",
+        "query_hash": "0b88ac86871faebef4e5cdb96fe55a84",
+        "temp_blks_read": 52202,
+        "temp_blks_written": 52350
+      },
+      {
+        "calls": 3,
+        "queryid": "5685103826325518501",
+        "query_hash": "fa7c39e700db8f961462c12d904f83ee",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 66,
+        "queryid": "-3391961397559414622",
+        "query_hash": "372ee6f9a882ff49754002549031e7b6",
+        "temp_blks_read": 874525,
+        "temp_blks_written": 876999
+      },
+      {
+        "calls": 3,
+        "queryid": "-3489788365459437686",
+        "query_hash": "d39ac423c4d9e80a5a489f80cffc7fce",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "2902004074838720462",
+        "query_hash": "1e5677955b4727c070762379b244c5c1",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "-5870249634374596689",
+        "query_hash": "0362e23219c354221f302bbf1ede9d59",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "3395082404263033194",
+        "query_hash": "e3fa18693f4042005f6f86030342ac7b",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 127,
+        "queryid": "5914352801477589661",
+        "query_hash": "8ca0430cd2588986b27874079c54ac4b",
+        "temp_blks_read": 1653404,
+        "temp_blks_written": 1658155
+      },
+      {
+        "calls": 3,
+        "queryid": "4473636332297431692",
+        "query_hash": "63175ef2630a1b2c25389cd29d517a2d",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "4943902482522688946",
+        "query_hash": "92fd200678d42ad547d3cfe88fda3e0e",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 8,
+        "queryid": "3555844639300414612",
+        "query_hash": "1185e22aba2661c40ff71b9b25d76ac2",
+        "temp_blks_read": 101514,
+        "temp_blks_written": 101810
+      },
+      {
+        "calls": 2,
+        "queryid": "8398211668574808537",
+        "query_hash": "6708ea9021398d0a5ce61cfa503c6a54",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "4271896995690701319",
+        "query_hash": "bc2501d557b1e02d464d8443f61fc5fd",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "-3165327272287742338",
+        "query_hash": "19dc03c17e45e87f1726eafc4dc606a8",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "6015949755421554427",
+        "query_hash": "29e9a0127904abab7a44979bf1d83c4d",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "-4170500113470630668",
+        "query_hash": "cd1ba4643020ba4b4536734e9ef18e85",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 4,
+        "queryid": "4507118227270464138",
+        "query_hash": "5aee681126a99b1092c71e3389ee16b1",
+        "temp_blks_read": 55213,
+        "temp_blks_written": 55368
+      },
+      {
+        "calls": 3,
+        "queryid": "-4994408318483214977",
+        "query_hash": "37c45097d7149c948d0c4a401e0aa15f",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 1,
+        "queryid": "-577775081153710675",
+        "query_hash": "03d496e7479581c98c7b33da4f85758a",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "816549434101108961",
+        "query_hash": "87bfa4cba70bd8d652a5bfa1ad11bfc0",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "-5818567957645103131",
+        "query_hash": "8b45f296251ab0ce54303527ac4ed058",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 5,
+        "queryid": "4127888021548785340",
+        "query_hash": "c02088a6fbadff11eba9d131cd81739c",
+        "temp_blks_read": 67552,
+        "temp_blks_written": 67745
+      },
+      {
+        "calls": 3,
+        "queryid": "-8872374025949167364",
+        "query_hash": "56ea9b1dcdb6f6fe931dafc03df77753",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "3862383018333179046",
+        "query_hash": "34a9290c68b4ab68cfcbb7813b22106f",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "-329941786555487363",
+        "query_hash": "267fd4e3f198cd6a34f416d4ece76f3b",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "-5202996115401734689",
+        "query_hash": "7c42904635de72606a81d3d48ebf2dd4",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      },
+      {
+        "calls": 3,
+        "queryid": "8335408983659753924",
+        "query_hash": "54f4ab7904e3c045acc9c5f470197be8",
+        "temp_blks_read": 0,
+        "temp_blks_written": 0
+      }
+    ],
+    "function_hashes": [
+      {
+        "schema": "fmz6e11_private",
+        "function": "window_at",
+        "body_sha256": "e6da249099347f0dc08b6c7bc08bd924f3aa0e0151fef1d2e9015af86aceb862"
+      },
+      {
+        "schema": "fmz6e11_private",
+        "function": "fixture",
+        "body_sha256": "29aa8978c305a12eeb9decda790c8a0d36a621eec0ea2ab784d17d7da1aacf9b"
+      },
+      {
+        "schema": "fmz6e11_private",
+        "function": "validate_history",
+        "body_sha256": "204e1f0b656664afa7c452ce40328c574ed52a3ba0356b15ad50d9187b042242"
+      },
+      {
+        "schema": "fmz6e11_private",
+        "function": "principal",
+        "body_sha256": "149d3aea4547bb161e21e0d455b031ec528f75cdba1cc860c8389eac0b6d38a2"
+      },
+      {
+        "schema": "fmz6e11_private",
+        "function": "workspace_guard",
+        "body_sha256": "e36f4ca464791784f4b776c2397a354f727714575629c21ab29d9c511a65a97b"
+      },
+      {
+        "schema": "fmz6e11_private",
+        "function": "immutable",
+        "body_sha256": "e79686ac0b81024ef4519f5ab88647d3f597cd60acc1fcb5458dfe60010e8ec7"
+      },
+      {
+        "schema": "fmz6e11_private",
+        "function": "calculate",
+        "body_sha256": "7006c815bd47ef98b866d5262a864b9f67142ee93551a4fd360e098bffc02bb4"
+      },
+      {
+        "schema": "fmz6e11_private",
+        "function": "live_window",
+        "body_sha256": "9cbac39e3b94e6485eb09510fc568dd7aafdd140e7a9fd93810241632a204490"
+      },
+      {
+        "schema": "fmz6e11_private",
+        "function": "sha",
+        "body_sha256": "6008f9e735a9416cedc78a362fd8b5d0367fa6fcea3bf5c6e86d73f78b5b8337"
+      },
+      {
+        "schema": "fmz6e11_private",
+        "function": "exact",
+        "body_sha256": "c26941b6db85d606b3e37469e2ddb0fd70fa5e8c58de57feb998e22d90613f8c"
+      },
+      {
+        "schema": "fmz6e11_private",
+        "function": "number",
+        "body_sha256": "d9bccf9e4682133e737d18d74917e726876c1d72a26171f7ce4217cf2ccae9f5"
+      },
+      {
+        "schema": "fmz6e11_private",
+        "function": "validate_source",
+        "body_sha256": "018d0424f3907ec9efc6453668ca3459092cf9e502e93387db205abfd48393a6"
+      },
+      {
+        "schema": "fmz6e11_private",
+        "function": "read_workspace",
+        "body_sha256": "b38beabbcc0984d2d16795dde1660f350f04e297903ee338be3052f596b9a9a2"
+      },
+      {
+        "schema": "fmz6e11_private",
+        "function": "b_row",
+        "body_sha256": "bfb7be825ec3e31c4e483880ee9307255bc27f45dd300e965da3a893aa99ad60"
+      },
+      {
+        "schema": "public",
+        "function": "fmz6e11_call",
+        "body_sha256": "919739d69822c7d7b92bcb85eb9d9ed59c818b4479e5934990b27d43def471d0"
+      },
+      {
+        "schema": "fmz6e11_private",
+        "function": "api_call",
+        "body_sha256": "4cb3383993916475f1da1562c0fbb557c850d95505869361a9336220bf7aed92"
+      },
+      {
+        "schema": "fmz6e11_private",
+        "function": "base_call",
+        "body_sha256": "f43802092dc9c9ba4df0796cf31455844ed1a68a3b1e4aa6750951fe9da57609"
+      }
+    ],
+    "foreign_keys": [
+      {
+        "source": "auth.identities",
+        "target": "auth.users",
+        "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "auth.sessions",
+        "target": "auth.users",
+        "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "auth.refresh_tokens",
+        "target": "auth.sessions",
+        "definition": "FOREIGN KEY (session_id) REFERENCES auth.sessions(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "auth.mfa_factors",
+        "target": "auth.users",
+        "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "auth.mfa_challenges",
+        "target": "auth.mfa_factors",
+        "definition": "FOREIGN KEY (factor_id) REFERENCES auth.mfa_factors(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "auth.mfa_amr_claims",
+        "target": "auth.sessions",
+        "definition": "FOREIGN KEY (session_id) REFERENCES auth.sessions(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "auth.sso_domains",
+        "target": "auth.sso_providers",
+        "definition": "FOREIGN KEY (sso_provider_id) REFERENCES auth.sso_providers(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "auth.saml_providers",
+        "target": "auth.sso_providers",
+        "definition": "FOREIGN KEY (sso_provider_id) REFERENCES auth.sso_providers(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "auth.saml_relay_states",
+        "target": "auth.sso_providers",
+        "definition": "FOREIGN KEY (sso_provider_id) REFERENCES auth.sso_providers(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "auth.saml_relay_states",
+        "target": "auth.flow_state",
+        "definition": "FOREIGN KEY (flow_state_id) REFERENCES auth.flow_state(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "auth.one_time_tokens",
+        "target": "auth.users",
+        "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "auth.oauth_authorizations",
+        "target": "auth.oauth_clients",
+        "definition": "FOREIGN KEY (client_id) REFERENCES auth.oauth_clients(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "auth.oauth_authorizations",
+        "target": "auth.users",
+        "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "auth.oauth_consents",
+        "target": "auth.users",
+        "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "auth.oauth_consents",
+        "target": "auth.oauth_clients",
+        "definition": "FOREIGN KEY (client_id) REFERENCES auth.oauth_clients(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "auth.sessions",
+        "target": "auth.oauth_clients",
+        "definition": "FOREIGN KEY (oauth_client_id) REFERENCES auth.oauth_clients(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "recovery_logs",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "auth.webauthn_credentials",
+        "target": "auth.users",
+        "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "auth.webauthn_challenges",
+        "target": "auth.users",
+        "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "workout_set_logs",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "profiles",
+        "target": "auth.users",
+        "definition": "FOREIGN KEY (id) REFERENCES auth.users(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "profiles",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (trainer_id) REFERENCES profiles(id) ON DELETE SET NULL",
+        "delete_action": "n"
+      },
+      {
+        "source": "coach_workspaces",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (trainer_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "user_settings",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "user_onboarding",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "entitlements",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "training_plans",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "workout_sessions",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "nutrition_preferences",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "nutrition_targets",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "nutrition_targets",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (created_by_user_id) REFERENCES profiles(id) ON DELETE SET NULL",
+        "delete_action": "n"
+      },
+      {
+        "source": "nutrition_targets",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (accepted_by_user_id) REFERENCES profiles(id) ON DELETE SET NULL",
+        "delete_action": "n"
+      },
+      {
+        "source": "foods",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (owner_user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "food_logs",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "food_log_items",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "progress_preferences",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "progress_goals",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "weight_logs",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "body_measurements",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "ai_consent_events",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "ai_threads",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "ai_messages",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "ai_private.runs",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "ai_context_manifests",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "ai_action_proposals",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "ai_action_decisions",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "ai_member_safety_state",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "ai_data_lifecycle_requests",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "ai_private.budget_accounts",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "ai_private.usage_ledger",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "ai_private.rate_buckets",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "ai_private.safety_events",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "ai_private.audit_events",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "ai_private.analysis_jobs",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "member_notifications",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "fmz6e10_private.workspaces",
+        "target": "auth.users",
+        "definition": "FOREIGN KEY (member_id) REFERENCES auth.users(id)",
+        "delete_action": "a"
+      },
+      {
+        "source": "fmz6e10_private.workspaces",
+        "target": "auth.users",
+        "definition": "FOREIGN KEY (trainer_id) REFERENCES auth.users(id)",
+        "delete_action": "a"
+      },
+      {
+        "source": "fmz6e10_private.source_versions",
+        "target": "auth.users",
+        "definition": "FOREIGN KEY (trainer_id) REFERENCES auth.users(id)",
+        "delete_action": "a"
+      },
+      {
+        "source": "fmz6e10_private.proposals",
+        "target": "auth.users",
+        "definition": "FOREIGN KEY (member_actor) REFERENCES auth.users(id)",
+        "delete_action": "a"
+      },
+      {
+        "source": "fmz6e10_private.proposals",
+        "target": "auth.users",
+        "definition": "FOREIGN KEY (trainer_actor) REFERENCES auth.users(id)",
+        "delete_action": "a"
+      },
+      {
+        "source": "fmz6e10_private.audit",
+        "target": "auth.users",
+        "definition": "FOREIGN KEY (actor) REFERENCES auth.users(id)",
+        "delete_action": "a"
+      },
+      {
+        "source": "fmz6e10_private.requests",
+        "target": "auth.users",
+        "definition": "FOREIGN KEY (actor) REFERENCES auth.users(id)",
+        "delete_action": "a"
+      },
+      {
+        "source": "legacy_auth_private.client_invitations",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (trainer_id) REFERENCES profiles(id)",
+        "delete_action": "a"
+      },
+      {
+        "source": "legacy_auth_private.client_invitations",
+        "target": "auth.users",
+        "definition": "FOREIGN KEY (accepted_by) REFERENCES auth.users(id)",
+        "delete_action": "a"
+      },
+      {
+        "source": "auth.scim_users",
+        "target": "auth.sso_providers",
+        "definition": "FOREIGN KEY (sso_provider_id) REFERENCES auth.sso_providers(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "auth.scim_users",
+        "target": "auth.users",
+        "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE SET NULL",
+        "delete_action": "n"
+      },
+      {
+        "source": "auth.scim_tokens",
+        "target": "auth.sso_providers",
+        "definition": "FOREIGN KEY (sso_provider_id) REFERENCES auth.sso_providers(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "auth.mfa_recovery_code_sets",
+        "target": "auth.users",
+        "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "auth.mfa_recovery_code_sets",
+        "target": "auth.mfa_factors",
+        "definition": "FOREIGN KEY (mfa_factor_id) REFERENCES auth.mfa_factors(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "auth.mfa_recovery_codes",
+        "target": "auth.mfa_recovery_code_sets",
+        "definition": "FOREIGN KEY (mfa_recovery_code_set_id) REFERENCES auth.mfa_recovery_code_sets(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "fmz6e11_private.identities",
+        "target": "auth.users",
+        "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id)",
+        "delete_action": "a"
+      },
+      {
+        "source": "fmz6e11_private.operators",
+        "target": "fmz6e11_private.identities",
+        "definition": "FOREIGN KEY (user_id) REFERENCES fmz6e11_private.identities(user_id)",
+        "delete_action": "a"
+      },
+      {
+        "source": "fmz6e11_private.windows",
+        "target": "fmz6e11_private.operators",
+        "definition": "FOREIGN KEY (operator_id) REFERENCES fmz6e11_private.operators(user_id)",
+        "delete_action": "a"
+      },
+      {
+        "source": "fmz6e11_private.participants",
+        "target": "fmz6e11_private.windows",
+        "definition": "FOREIGN KEY (window_id) REFERENCES fmz6e11_private.windows(id)",
+        "delete_action": "a"
+      },
+      {
+        "source": "fmz6e11_private.participants",
+        "target": "fmz6e11_private.identities",
+        "definition": "FOREIGN KEY (user_id) REFERENCES fmz6e11_private.identities(user_id)",
+        "delete_action": "a"
+      },
+      {
+        "source": "fmz6e11_private.workspaces",
+        "target": "fmz6e11_private.windows",
+        "definition": "FOREIGN KEY (window_id) REFERENCES fmz6e11_private.windows(id)",
+        "delete_action": "a"
+      },
+      {
+        "source": "fmz6e11_private.workspaces",
+        "target": "auth.users",
+        "definition": "FOREIGN KEY (member_id) REFERENCES auth.users(id)",
+        "delete_action": "a"
+      },
+      {
+        "source": "fmz6e11_private.workspaces",
+        "target": "auth.users",
+        "definition": "FOREIGN KEY (trainer_id) REFERENCES auth.users(id)",
+        "delete_action": "a"
+      },
+      {
+        "source": "fmz6e11_private.source_versions",
+        "target": "fmz6e11_private.workspaces",
+        "definition": "FOREIGN KEY (workspace_id) REFERENCES fmz6e11_private.workspaces(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "fmz6e11_private.source_versions",
+        "target": "auth.users",
+        "definition": "FOREIGN KEY (trainer_id) REFERENCES auth.users(id)",
+        "delete_action": "a"
+      },
+      {
+        "source": "fmz6e11_private.source_heads",
+        "target": "fmz6e11_private.workspaces",
+        "definition": "FOREIGN KEY (workspace_id) REFERENCES fmz6e11_private.workspaces(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "fmz6e11_private.source_heads",
+        "target": "fmz6e11_private.source_versions",
+        "definition": "FOREIGN KEY (workspace_id, version) REFERENCES fmz6e11_private.source_versions(workspace_id, version)",
+        "delete_action": "a"
+      },
+      {
+        "source": "fmz6e11_private.plans",
+        "target": "fmz6e11_private.workspaces",
+        "definition": "FOREIGN KEY (workspace_id) REFERENCES fmz6e11_private.workspaces(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "fmz6e11_private.proposals",
+        "target": "fmz6e11_private.workspaces",
+        "definition": "FOREIGN KEY (workspace_id) REFERENCES fmz6e11_private.workspaces(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "fmz6e11_private.proposals",
+        "target": "auth.users",
+        "definition": "FOREIGN KEY (member_actor) REFERENCES auth.users(id)",
+        "delete_action": "a"
+      },
+      {
+        "source": "fmz6e11_private.proposals",
+        "target": "auth.users",
+        "definition": "FOREIGN KEY (trainer_actor) REFERENCES auth.users(id)",
+        "delete_action": "a"
+      },
+      {
+        "source": "fmz6e11_private.proposals",
+        "target": "fmz6e11_private.source_versions",
+        "definition": "FOREIGN KEY (workspace_id, source_version) REFERENCES fmz6e11_private.source_versions(workspace_id, version)",
+        "delete_action": "a"
+      },
+      {
+        "source": "fmz6e11_private.proposals",
+        "target": "fmz6e11_private.plans",
+        "definition": "FOREIGN KEY (workspace_id, base_version) REFERENCES fmz6e11_private.plans(workspace_id, version)",
+        "delete_action": "a"
+      },
+      {
+        "source": "fmz6e11_private.audit",
+        "target": "fmz6e11_private.windows",
+        "definition": "FOREIGN KEY (window_id) REFERENCES fmz6e11_private.windows(id)",
+        "delete_action": "a"
+      },
+      {
+        "source": "fmz6e11_private.audit",
+        "target": "auth.users",
+        "definition": "FOREIGN KEY (actor) REFERENCES auth.users(id)",
+        "delete_action": "a"
+      },
+      {
+        "source": "fmz6e11_private.requests",
+        "target": "auth.users",
+        "definition": "FOREIGN KEY (actor) REFERENCES auth.users(id)",
+        "delete_action": "a"
+      },
+      {
+        "source": "fmz6e11_private.requests",
+        "target": "fmz6e11_private.windows",
+        "definition": "FOREIGN KEY (window_id) REFERENCES fmz6e11_private.windows(id)",
+        "delete_action": "a"
+      },
+      {
+        "source": "fmz6e11_private.b_states",
+        "target": "fmz6e11_private.workspaces",
+        "definition": "FOREIGN KEY (workspace_id) REFERENCES fmz6e11_private.workspaces(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "fmz6e11_private.b_versions",
+        "target": "fmz6e11_private.workspaces",
+        "definition": "FOREIGN KEY (workspace_id) REFERENCES fmz6e11_private.workspaces(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "fmz6e11_private.inbox_state",
+        "target": "fmz6e11_private.workspaces",
+        "definition": "FOREIGN KEY (workspace_id) REFERENCES fmz6e11_private.workspaces(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "fmz6e11_private.inbox_state",
+        "target": "auth.users",
+        "definition": "FOREIGN KEY (actor) REFERENCES auth.users(id)",
+        "delete_action": "a"
+      },
+      {
+        "source": "fmz6e11_private.events",
+        "target": "fmz6e11_private.windows",
+        "definition": "FOREIGN KEY (window_id) REFERENCES fmz6e11_private.windows(id)",
+        "delete_action": "a"
+      },
+      {
+        "source": "fmz6e11_private.events",
+        "target": "auth.users",
+        "definition": "FOREIGN KEY (actor) REFERENCES auth.users(id)",
+        "delete_action": "a"
+      },
+      {
+        "source": "ai_analysis_preferences",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "ai_analysis_results",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "ai_analysis_lifecycle_requests",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "member_app_preferences",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "ai_private.analysis_safety_recoveries",
+        "target": "profiles",
+        "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE",
+        "delete_action": "c"
+      },
+      {
+        "source": "fmz6e9_private.subjects",
+        "target": "auth.users",
+        "definition": "FOREIGN KEY (member_id) REFERENCES auth.users(id)",
+        "delete_action": "a"
+      },
+      {
+        "source": "fmz6e9_private.subjects",
+        "target": "auth.users",
+        "definition": "FOREIGN KEY (trainer_id) REFERENCES auth.users(id)",
+        "delete_action": "a"
+      },
+      {
+        "source": "fmz6e9_private.requests",
+        "target": "auth.users",
+        "definition": "FOREIGN KEY (actor) REFERENCES auth.users(id)",
+        "delete_action": "a"
+      },
+      {
+        "source": "fmz6e10_private.identities",
+        "target": "auth.users",
+        "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id)",
+        "delete_action": "a"
+      }
+    ],
+    "triggers": [
+      {
+        "table": "profiles",
+        "enabled": "O",
+        "trigger": "profiles_touch_updated_at",
+        "function": "touch_updated_at()",
+        "body_sha256": "a168126301b25f7fe7be9694c104cb8e0b4a75bae20fb0abf805045dbf91e93f"
+      },
+      {
+        "table": "auth.users",
+        "enabled": "O",
+        "trigger": "fmz_after_auth_user_insert_bootstrap",
+        "function": "fmz_handle_new_auth_user()",
+        "body_sha256": "fbc81f3498807bf66f8a5855c7b64af5568e09cda072cba2cd0d8c17b84714ec"
+      },
+      {
+        "table": "fmz6e11_private.source_versions",
+        "enabled": "O",
+        "trigger": "source_immutable",
+        "function": "fmz6e11_private.immutable()",
+        "body_sha256": "e79686ac0b81024ef4519f5ab88647d3f597cd60acc1fcb5458dfe60010e8ec7"
+      },
+      {
+        "table": "fmz6e11_private.plans",
+        "enabled": "O",
+        "trigger": "plan_immutable",
+        "function": "fmz6e11_private.immutable()",
+        "body_sha256": "e79686ac0b81024ef4519f5ab88647d3f597cd60acc1fcb5458dfe60010e8ec7"
+      },
+      {
+        "table": "fmz6e11_private.b_versions",
+        "enabled": "O",
+        "trigger": "b_version_immutable",
+        "function": "fmz6e11_private.immutable()",
+        "body_sha256": "e79686ac0b81024ef4519f5ab88647d3f597cd60acc1fcb5458dfe60010e8ec7"
+      }
+    ]
+  },
+  "hosted_fingerprint_cycles": 0,
+  "hosted_mutations": 0
+}
