@@ -24,6 +24,8 @@ def allowed(path):
                 or path in EXTRAS)
 def sha(data):
     return hashlib.sha256(data).hexdigest()
+def advisor_sql(data):
+    return "begin read only;set local statement_timeout='30s';set local pgrst.db_schemas='public,storage,graphql_public';\n"+data.decode()+";\nrollback;"
 def clean(text):
     text = re.sub(r"eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+", "[JWT_REDACTED]", text)
     text = re.sub(r"(?i)postgres(?:ql)?://[^\s\"']+", "[LOCAL_DATABASE_URL]", text)
@@ -234,8 +236,10 @@ where n.nspname in ('fmz6e11_private','fmz6e11_audit_private') and p.prokind='f'
         url = "https://raw.githubusercontent.com/supabase/splinter/"+SPLINTER+"/splinter.sql"
         with urllib.request.urlopen(url,timeout=30) as response: data=response.read(1000000)
         if sha(data)!=SPLINTER_SHA: raise RuntimeError("advisor_source_digest")
-        p = self.sql("begin;set local statement_timeout='30s';set local pgrst.db_schemas='public,storage,graphql_public';\n"+data.decode()+"\nrollback;")
+        query = advisor_sql(data)
+        p = self.sql(query)
         self.save("advisors.json",{"commit":SPLINTER,"sha256":SPLINTER_SHA,"output":clean(p.stdout),
+            "executed_sql_sha256":sha(query.encode()),
             "scope":"local database security/performance; no hosted Auth configuration"})
         if "|ERROR|" in p.stdout: raise RuntimeError("advisor_errors")
         for line in p.stdout.splitlines():

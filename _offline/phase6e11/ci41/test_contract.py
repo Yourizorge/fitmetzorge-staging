@@ -5,6 +5,12 @@ HERE=pathlib.Path(__file__).resolve().parent
 spec=importlib.util.spec_from_file_location("runner",HERE/"runner.py")
 runner=importlib.util.module_from_spec(spec);spec.loader.exec_module(runner)
 class Contract(unittest.TestCase):
+    def test_advisor_wrapper_separates_unterminated_upstream_query(self):
+        sql=runner.advisor_sql(b'select 1')
+        self.assertTrue(sql.startswith('begin read only;'))
+        self.assertTrue(sql.endswith('select 1;\nrollback;'))
+    def test_advisor_wrapper_accepts_already_terminated_query(self):
+        self.assertTrue(runner.advisor_sql(b'select 1;').endswith('select 1;;\nrollback;'))
     def test_6a_fixture_is_additive_and_retains_every_original_assertion(self):
         raw=(HERE.parents[2]/'supabase/tests'/fixture_compat.NAME).read_bytes()
         sql,changed=fixture_compat.adapt(fixture_compat.NAME,raw)
