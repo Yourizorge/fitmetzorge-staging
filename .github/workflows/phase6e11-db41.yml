@@ -1,0 +1,51 @@
+name: 6E-11 clean database 41
+run-name: "6E-11 DB41 ${{ inputs.candidate_sha256 }}"
+on:
+  workflow_dispatch:
+    inputs:
+      candidate_blob:
+        description: Immutable candidate blob in this repository
+        required: true
+        type: string
+      candidate_sha256:
+        description: SHA256 of candidate JSON bytes
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: phase6e11-db41
+  cancel-in-progress: false
+jobs:
+  clean-database:
+    if: github.repository == 'Yourizorge/fitmetzorge-staging' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Empty Supabase PG17 and all 41 canonical migrations
+        env:
+          CANDIDATE_BLOB: ${{ inputs.candidate_blob }}
+          CANDIDATE_SHA256: ${{ inputs.candidate_sha256 }}
+          GH_READ_TOKEN: ${{ github.token }}
+        run: python3 _offline/phase6e11/ci41/runner.py
+      - name: Preserve sanitized evidence in job log without artifact storage
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import base64, hashlib, os, pathlib
+          root = pathlib.Path(os.environ["RUNNER_TEMP"]) / "fmz-db41-evidence"
+          for file in sorted(root.glob("*")):
+              if file.is_file() and file.suffix in (".json", ".txt"):
+                  data = file.read_bytes()
+                  if len(data) > 2000000:
+                      raise SystemExit("evidence_limit")
+                  print("FMZ_EVIDENCE_BEGIN " + file.name + " " + hashlib.sha256(data).hexdigest())
+                  encoded = base64.b64encode(data).decode()
+                  for offset in range(0, len(encoded), 4000):
+                      print("FMZ_DATA " + encoded[offset:offset + 4000])
+                  print("FMZ_EVIDENCE_END " + file.name)
+          PY
