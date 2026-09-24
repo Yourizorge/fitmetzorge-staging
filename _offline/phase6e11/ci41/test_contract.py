@@ -1,9 +1,22 @@
 import importlib.util, json, pathlib, tempfile, unittest
+import fixture_compat
 from unittest.mock import patch
 HERE=pathlib.Path(__file__).resolve().parent
 spec=importlib.util.spec_from_file_location("runner",HERE/"runner.py")
 runner=importlib.util.module_from_spec(spec);spec.loader.exec_module(runner)
 class Contract(unittest.TestCase):
+    def test_6a_fixture_is_additive_and_retains_every_original_assertion(self):
+        raw=(HERE.parents[2]/'supabase/tests'/fixture_compat.NAME).read_bytes()
+        sql,changed=fixture_compat.adapt(fixture_compat.NAME,raw)
+        self.assertTrue(changed)
+        self.assertEqual(sql.replace(fixture_compat.ADDITION,'',1),raw.decode())
+        self.assertIn("if sqlerrm <> 'ai_consent_or_access_changed' then raise",sql)
+        self.assertIn("'private_chat','granted','phase6d-private-chat-v1'",sql)
+    def test_changed_historical_fixture_is_not_silently_adapted(self):
+        with self.assertRaisesRegex(RuntimeError,'historical_6a_fixture_source_changed'):
+            fixture_compat.adapt(fixture_compat.NAME,b'select 1;')
+    def test_other_fixtures_are_not_adapted(self):
+        self.assertEqual(fixture_compat.adapt('other.sql',b'select 1;'),('select 1;',False))
     def test_allowed_sources(self):
         self.assertTrue(runner.allowed("supabase/migrations/"+runner.M41))
         self.assertTrue(runner.allowed("supabase/tests/20260901_example.sql"))

@@ -1,6 +1,7 @@
 """Disposable Docker-only CI. Never connects to a linked/hosted database."""
 import base64, hashlib, importlib.util, io, json, os, pathlib, re
 import shutil, subprocess, sys, tarfile, time, types, unittest, urllib.request
+from fixture_compat import adapt
 
 HERE = pathlib.Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
@@ -174,6 +175,9 @@ where n.nspname in ('fmz6e11_private','fmz6e11_audit_private') and p.prokind='f'
         if [r["version"] for r in history] != [pathlib.Path(p).name.split("_")[0] for p in migrations]:
             raise RuntimeError("history_identity")
         self.result["clean_rebuild"] = "41/41_PASS"
+        extensions = self.rows("select e.extname,e.extversion,n.nspname from pg_extension e join pg_namespace n on n.oid=e.extnamespace where e.extname in ('pgcrypto','pg_trgm','pg_cron') order by 1")
+        self.save('installed-extensions.json',extensions)
+        if len(extensions)!=3: raise RuntimeError('extensions_not_installed')
     def check_bridge(self):
         schema = "fmz6e11_workflow_audit"
         funcs = self.rows("select proname,prosecdef,proconfig,proacl::text from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='"+schema+"' order by 1")
@@ -201,7 +205,13 @@ where n.nspname in ('fmz6e11_private','fmz6e11_audit_private') and p.prokind='f'
         sql_tests = sorted(folder.glob("*.sql"))
         self.result["sql_regressions_planned"] = len(sql_tests)
         for index, test in enumerate(sql_tests,1):
-            self.sql(test.read_text())
+            raw = test.read_bytes()
+            sql, adapted = adapt(test.name, raw)
+            self.save('regression-%02d-source.json' % index, {'file':test.name,
+                'original_sha256':sha(raw),'executed_sha256':sha(sql.encode()),
+                'additive_current_fixture_prerequisites':adapted,
+                'adapter_sha256':sha((HERE/'fixture_compat.py').read_bytes())})
+            self.sql(sql)
             self.result["sql_regressions_passed"] = index
         self.command("identity-tests",["node","--test",str(folder/"phase6d0-migration-identity-check.test.cjs")])
         audit_dir = self.sources/"_offline/phase6e11/readiness_v1/txaudit"

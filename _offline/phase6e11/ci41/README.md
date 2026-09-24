@@ -23,6 +23,11 @@ Docker psql, bridge ACL/RLS/invoker/search-path/default-off checks, official pin
 Splinter security/performance advisors, CLI lint and local db-push dry-run.
 An advisor error or bridge warning is not silently waived.
 This proves a disposable schema environment, not live Auth/JWT or a hosted workflow.
+The unchanged historical 6A fixture lacks the separate private-chat consent and age
+context required by the accepted 6D service-completion gate. The separate hash-bound
+CI adapter proves that denial first, then adds only those synthetic prerequisites.
+Every original test assertion remains; original/executed/adapter hashes are recorded.
+The first failing CI run remains historical evidence, not a retroactive pass.
 The existing real-Auth/server-transport and bounded hosted proof gates still apply.
 
 The workflow has no push trigger or automatic retry. A failed rebuild is NO-GO.
