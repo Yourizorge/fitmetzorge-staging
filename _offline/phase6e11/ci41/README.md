@@ -1,5 +1,10 @@
 # Clean Database Gate 41
 
+Current result: clean CI PASS (run 36034533557); hosted application remains NO-GO
+because the required secure native database credential is unavailable. Canonical
+sources were committed only after CI PASS. See
+../../../docs/PHASE6E11_MIGRATION41_CI_REPORT.md and its separate JSON receipt.
+
 Phase 1 infrastructure only. No canonical migration is committed by this bootstrap.
 The manual main-only workflow takes an immutable Git blob and independent SHA256.
 The blob contains only allowlisted SQL/test source bytes, not staging data or credentials.

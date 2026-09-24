@@ -1,0 +1,111 @@
+{
+  "format": 1,
+  "as_of_utc": "2026-09-24T17:55:43.754124Z",
+  "scope": {
+    "repository": "Yourizorge/fitmetzorge-staging",
+    "branch": "main",
+    "project": "mokxyyullfhkfalopbzd"
+  },
+  "status": "CLEAN_CI_PASS_HOSTED_CREDENTIAL_BLOCKED_NO_GO",
+  "ci": {
+    "run_id": 36034533557,
+    "url": "https://github.com/Yourizorge/fitmetzorge-staging/actions/runs/36034533557",
+    "workflow_commit": "4505ec03656adb3e0c21bdafdfa179f7f6527da5",
+    "candidate_sha256": "34977f2d3533bf5016ead342062249ef79386e722983b78e4b84b327104a4413",
+    "candidate_blob": "05e54d766970a225775c4b8a54882c93b5f716fb",
+    "sources_verified": 58,
+    "evidence_files_verified": 186,
+    "evidence_manifest": "supabase/.temp/phase6e11-ci41-aa9b084310374d52bd403cf4036273e8/run-36034533557/manifest.json",
+    "evidence_manifest_sha256": "ca875b9c5ad3c353981ef808daaddadca91309cc37a3a65e25b0ce00f4c6c38f",
+    "migrations_applied": 41,
+    "cli": "2.117.0",
+    "cli_release_sha256": "69c05f85b9e47ee706d30f1a6ca8a526b4e337bfd12c7ef1ef522d24e7280d24",
+    "postgres": "17.6",
+    "image": "public.ecr.aws/supabase/postgres:17.6.1.167",
+    "image_id": "sha256:66089200353d90686fe9b252a47d17d078364bf47c50190852c33dc850a0191f",
+    "image_digest": "sha256:6942962433a569e87f228b4d4ab7e11db5deca64e43babb3a038443ad6c4f1bb",
+    "extensions": {
+      "pgcrypto": "1.3",
+      "pg_trgm": "1.6",
+      "pg_cron": "1.6.4"
+    },
+    "dry_run": "EMPTY",
+    "sql_regression_suites_passed": 12,
+    "migration_identity_tests_passed": 12,
+    "audit_tests_passed": 22,
+    "bridge_acl_denials_passed": 16,
+    "local_ci_contract_tests_passed": 14,
+    "new_bridge_advisor_warnings": 0,
+    "new_bridge_advisor_errors": 0,
+    "hosted_requests": 0,
+    "member_data_used": false
+  },
+  "retained_failures": [
+    {
+      "run_id": 36032822899,
+      "clean_migrations": 41,
+      "cause": "Historical 6A fixture lacks later accepted 6D chat consent and synthetic age prerequisites; separate additive hash-bound adapter tests denial before adding them. Canonical fixture unchanged."
+    },
+    {
+      "run_id": 36033774034,
+      "clean_migrations": 41,
+      "cause": "Read-only advisor wrapper appended ROLLBACK to unterminated upstream SQL. Explicit separator added and boundary tests pass. Canonical SQL unchanged."
+    }
+  ],
+  "canonical_commit": "d34799e1b4764572b8b8386691fafbe204bb1de8",
+  "migrations_sha256": {
+    "20260916162120_phase6e11_final_app_integration.sql": "e07c22a6116c970e7cc14830bbb47fb085aa0740696d7311090ead2da5eba0ae",
+    "20260924130052_phase6e11_private_transaction_audit.sql": "10db658a56ee0e32fef891fca4fe6522526d059f4ee056baf32ab9acda2a2146",
+    "20260924155822_phase6e11_rpc_bridge.sql": "4d474becdc5c3a7343562602115f9333b5cffc6bed0c323fca3abc560843af7d"
+  },
+  "hosted": {
+    "measured_at": "2026-09-24 17:55:43.754124+00",
+    "migration_count": 40,
+    "latest_migration": "20260924130052",
+    "bridge_installed": false,
+    "pg_version_num": "170006",
+    "other_active_queries": 0,
+    "io_waiting_backends": 0,
+    "query_signature": "fmz6e11_ci41_metadata_close_v1",
+    "full_data_preservation_remeasured": false,
+    "dry_run": "ONLY_M41_PENDING_NOT_EMPTY",
+    "migration41_registered_hash": null,
+    "new_application_mutations": 0,
+    "new_auth_mutations": 0,
+    "new_workflow_actions": 0,
+    "new_full_fingerprint_cycles": 0,
+    "cleanup_performed": false,
+    "owner_window_opened": false,
+    "external_ai_calls": 0
+  },
+  "preservation": {
+    "historical_manifest": "supabase/.temp/phase6e11-m41-close-4517376d77284985954035a37bacfc2e/manifest.json",
+    "historical_manifest_sha256": "93e63ef5a08b61d0b2d6cc825a86299d00fc94fbf0d3ff817394148479586362",
+    "historical_bound_files_reverified": 363,
+    "historical_pairs": 112,
+    "historical_incomplete_step": 113,
+    "frozen_files_verified": 189,
+    "live_runtime_assets": 84,
+    "retained_uncommitted_runtime_assets": 88,
+    "prior_report_overwritten": false
+  },
+  "credentials": {
+    "owner_reports_existing_database_password_unknown": true,
+    "password_reset": false,
+    "new_password_stored_by_assistant": false,
+    "powershell_policy_changed": false,
+    "tls_verification_weakened": false
+  },
+  "remaining": [
+    "Secure scoped PostgreSQL credential and verified CA/native transport",
+    "Protected measurement before/after hosted migration",
+    "Hosted 41/41 SQL identity and empty dry-run",
+    "Real JWT/server bridge/observer binding and required Auth routes",
+    "Bounded hosted workflow/audit proof and synthetic cleanup",
+    "Owner window only after complete technical PASS"
+  ],
+  "production_touched": false,
+  "real_member_ai_enabled": false,
+  "external_ai_calls": 0,
+  "external_ai_cost_eur": "0.00"
+}
