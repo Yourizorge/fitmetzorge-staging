@@ -1,2 +1,6 @@
 # Preserve reviewed 6D-0 SQL bytes in Windows and Unix checkouts.
 supabase/migrations/20260904105918_phase6d0_legacy_authorization_gate.sql text eol=lf
+# Keep the CI-reviewed private function bodies identical across checkouts.
+supabase/migrations/20260916162120_phase6e11_final_app_integration.sql text eol=lf
+supabase/migrations/20260924130052_phase6e11_private_transaction_audit.sql text eol=lf
+supabase/migrations/20260924155822_phase6e11_rpc_bridge.sql text eol=lf
