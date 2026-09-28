@@ -1,5 +1,98 @@
 # FitMetZorge Architecture
 
+## 6E-11 Current Request Binding (28 September 2026)
+
+M42 is installed, private and default-off. Auth events are separate from the
+application transaction. Verified session claims and one strict request ID bind
+intent, workflow writes and audit in that transaction; a separate after-state seal
+blocks further mutations while incomplete. No managed Auth/Storage/Realtime DDL.
+The Edge-native adapter is locally proven but not deployed: its strict server
+connection configuration is unresolved. No elevated secrets leave Edge.
+See [the current proof and boundary](PHASE6E11_REQUEST_BINDING_REPORT.md).
+Earlier candidate sections below are retained history, not the current migration count.
+
+## 6E-11 Additive Private Bridge Candidate
+
+Migration 41 adds a private SECURITY INVOKER call(jsonb), control/intents and
+versions helper; no original_call copy or api_call replacement. Existing workflow
+and audit functions remain unchanged. Default disabled, postgres server context
+only; no PUBLIC/anon/authenticated/service_role entry, no exposed-schema change.
+Strict intent binds server request UUID, existing synthetic principal/session,
+actor/workspace, full request hash, run/action, exact writes and result versions.
+Missing known observers or ambiguous/orphaned intents fail closed. No FK on the
+old audit table, avoiding new implicit triggers there. Existing public/Edge route
+does not invoke this new entry: real server transport/JWT proof remains a gate.
+Local targeted PG17 proof is not a full Supabase rebuild or hosted Auth proof.
+All-41 replay is blocked by missing platform extensions; migration 41 is not applied.
+See PHASE6E11_MIGRATION41_REPORT.md and the private BOUNDARY_AND_WITHDRAWAL.md.
+
+## Historical: 6E-11 Hosted Measurement Boundary
+
+The owner-authorized hosted_v2/v3 adapters now connect the retained synchronous
+measurement_v2 primitive to actual staging calls. Every mutation requires the full
+before_saved -> action_started -> action_confirmed -> after_saved -> pair_validated
+-> next_step_allowed chain. Direct 143-table snapshots precede export/validation;
+an incomplete pair latches NO-GO and forbids later actions and cleanup.
+Historical fixtures and sessions are separately hash-bound until full new proof.
+Private IPC retains sanitized correlation/status/hash/exit metadata, not Auth bodies.
+Long Windows paths use explicit extended-path reads/writes without deleting files.
+The corrected Playwright adapter extends only its 25-second AbortSignal deadline
+to accommodate evidence persistence. No application timeout, backend authority or
+runtime code changes. Pure layout checks reject mutation commands; all mutation
+pairs and interstep drift checks remain. See PHASE6E11_HOSTED_CHAIN_REPORT.md.
+
+Current unresolved boundary: cleanup_identities groups multiple gated mutations
+inside one IPC call. The bridge's 300-second call deadline can expire between or
+during a later mutation despite complete earlier pairs. The corrected run proves
+this at step 113, followed by SIGTERM and no direct after receipt. The latch prevents
+later writes, but does not guarantee completion of an in-flight measurement.
+Future repair must give each cleanup mutation its own bounded operation and test
+deadline/process-stop behavior. No deadline bypass, synthesized after or silent
+resume of this stopped journal is allowed. Four remaining synthetic controls stay.
+
+## Historical: 6E-11 Local Measurement Primitive
+
+The separate measurement_v2 journal persists six hash-linked, fsynced stages and
+sanitized failure phase/type before allowing another step. It is synchronous and
+single-writer, fails closed on interruption/corruption/reentry, and retains a direct
+snapshot before validation. It has no network imports or hosted authorization role.
+Not yet wired into the hosted broker; its tests use an explicit protocol double.
+The old hash-pinned instrumentation is unchanged. Exact old exception unavailable;
+structural diagnostic information loss reproduced. NO-GO remains. See
+PHASE6E11_TARGETED_REPAIR_REPORT.md. No runtime, SQL, Edge or Auth-policy change.
+
+## 6E-11 Integration Candidate: Paused
+
+21 September outcome: the new latch worked after missing response/postmeasurement
+proof on B reopen. Server commit is independently recovered, but no retrospective
+after-receipt or Technical Pass is fabricated. Exact transport-versus-measurement
+failure phase is not retained by the generic error code and remains a tooling limit.
+Expired feature access is false while fixture/session rows remain; cleanup did not run.
+Current report: PHASE6E11_PROOFRUN_REPORT.md. No new runtime/schema/Edge deployment.
+
+The new proofrun adds local-only `proof_store.py`, `proof_gate.py` and
+`proof_operations.py`. It retains the historical HALT and hash-binds a new owner-
+authorized manifest to the historical disposition, original baseline/reconciliation,
+negative tests and exact instrumentation sources. Exclusive files, fsync, checksum
+readback and restart validation fail closed on incomplete evidence. Actor-specific
+Auth cohorts supplement all 143 table fingerprints. Expected synthetic tables and
+request/proposal bindings precede writes; immutable event/version exports precede
+cleanup. A new failure cannot restart writes through finally cleanup. No deployed
+runtime, SQL, Edge or authorization change is introduced by this instrumentation.
+The historical report below remains inconclusive; current proof plan is
+PHASE6E11_PROOFRUN_PREREGISTRATION.md.
+
+Normal-app loader plus four new assets connect only proven synthetic identities to
+fmz-phase6e11 and the new fmz6e11_private namespace. A uses pinned source transactions;
+B uses the existing fixed 6E-8/6E-9 catalog, without publisher authority. Durable denial
+receipts survive business rollback. Direct tables are ACL-denied with RLS enabled.
+The client network restriction is additional preservation, never server authority.
+No legacy workspace is created for these accounts. Old frozen code stays unchanged
+except the explicitly approved loader/HTML integration, not yet published.
+Owner drift is separately reconciled; a subsequent unrecorded cron status blocks
+completion. The local gate now waits for settled known jobs and latches NO-GO,
+including cleanup. [Current report](PHASE6E11_RESUME_REPORT.md).
+
 ## 6E-10 Synthetic Source/Window Boundary
 
 New standalone coach-source-demo and fmz6e10-synthetic Edge use one guarded

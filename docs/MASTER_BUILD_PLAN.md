@@ -1,5 +1,87 @@
 # FitMetZorge Master Build Plan
 
+## Current: 6E-11 M42 Installed / Hosted Edge Configuration Blocked
+
+Clean 1..42 CI PASS, hosted/local 42/42, SQL partition verified and dry-run EMPTY.
+153 protected table hashes unchanged. No complete hosted workflow or owner GO.
+The immediate gate is the exact Edge database configuration mismatch; the approved
+temporary read-only probe has been removed. Do not widen authorization or repeat
+the closed probe without its required explicit authorization. After safe resolution,
+real Auth, A/B transactions, cleanup and complete preservation still need proof.
+No owner acceptance/freeze and no 6E-12. [Current report](PHASE6E11_REQUEST_BINDING_REPORT.md).
+
+## Retained: 6E-11 Additive Bridge / Hosted Admission Blocked
+
+The authorized migration 41 now exists, CLI timestamp 20260924155822.
+Targeted installation, 45 existing workflow pairs through the private entry,
+27 negative cases and preserved 45/33/68 regressions pass. No product scope change.
+First remaining prerequisite: a local Supabase-compatible PG17 platform with
+real pgcrypto, pg_trgm and pg_cron, then a complete fresh all-41 rebuild. The present
+minimal Windows PG17 bundle is not sufficient; no skipped SQL or cron stubs allowed.
+After full local admission: safe private server transport and observer binding,
+hosted baseline/advisors, apply exact 41, prove 41/41 and empty dry-run, then one
+bounded bridge test. Management/cleanup, six Auth routes and canary still need proof.
+No cleanup/commit/push/Pages/owner window before their gates. Migration permission
+is already granted; do not reopen the old 40/40 authorization question.
+Historical evidence, frozen sources and runtime remain preserved. No 6E-12.
+Current report: PHASE6E11_MIGRATION41_REPORT.md.
+
+## Historical: 6E-11 Hosted Evidence Chain
+
+The latest owner instruction authorizes the connected fail-closed hosted chain and
+one corrected mutation repetition, preserving all original evidence and fixtures.
+The historical exception remains unknown; three lost diagnostic paths are now
+distinguished without fabricating a historical after snapshot. Initial canary passed;
+the first full run stopped with complete pairs on a proven test-instrumentation
+timeout. The corrected run follows the preregistered isolated adapter, unchanged
+runtime, 81 local checks and clean read-only inventory.
+Corrected functional proof: 80/80 PASS and a durable pre-cleanup manifest. Closure
+is NO-GO: a batch-level 300-second IPC deadline killed the worker at cleanup step
+113 after action_started, leaving a missing direct pair. 112 full-run pairs and
+25 canary pairs are complete. Late inventories never replace the missing pair.
+The allowed corrected mutation repetition is exhausted: preserve evidence and
+four remaining control accounts; no further cleanup, commit/push/Pages or owner window.
+Next required work is a separately bounded closure-evidence repair with one mutation
+per IPC operation and deadline/process-stop injection tests, not 6E-12 or a product
+redesign. It has NOT started and cannot bypass or rewrite the failed run.
+Current report: PHASE6E11_HOSTED_CHAIN_REPORT.md.
+Phase 6E remains INCOMPLETE. No 6E-11 owner acceptance/freeze and no 6E-12.
+
+## Historical: 6E-11 Targeted Repair Evidence Boundary
+
+The exact original b_reopen trigger was not persisted. Three distinct injected
+faults reproduce the same old artifact signature; only structural information loss
+is proven. A separate local journal and 56 focused checks pass. The owner's
+prerequisite of a proven historical cause remains unfulfilled; no hosted
+rerun, cleanup or publication has started.
+Current remaining evidence and sequence: PHASE6E11_TARGETED_REPAIR_REPORT.md.
+No acceptance, freeze or 6E-12. Existing implementation and historical reports remain.
+
+## Historical: 6E-11 Final-App Integration Paused
+
+21 September: NEW PROOFRUN NO-GO. The B reopen request committed, but its immediate
+local response/postmeasurement proof is incomplete. The persistent latch stopped all
+later writes/cleanup. 47 complete pairs, 14 hosted checks, zero current protected drift;
+remaining synthetic objects are retained in an expired, inaccessible window.
+No commit/push/publication/owner window. PHASE6E11_PROOFRUN_REPORT.md is current.
+Further recovery must not replace the incomplete pair with a retrospective PASS.
+
+17 September update: an independent instrumented proofrun is owner-authorized and
+in progress. The previous attempt is permanently inconclusive, not completion
+evidence. Original reports and latches remain. The new fail-closed evidence controller
+must prove apply, restore, cron, cleanup, all regressions and protected data before
+publication. [Current proof plan](PHASE6E11_PROOFRUN_PREREGISTRATION.md).
+The paused-attempt narrative below is historical; no additional owner waiver is needed.
+
+Explicit GO replaces the older unstarted publisher proposal. The owner chose the
+existing fixed synthetic B catalog, without a separate publisher. Local implementation
+and an isolated server deployment exist; Technical Pass and publication are pending.
+Initial ordinary-account drift is now owner-confirmed and exactly reconciled.
+The resumed hosted attempt has a new unresolved cron-status evidence gap; writes and
+publication are latched off. [Current report](PHASE6E11_RESUME_REPORT.md).
+[Exact pause status and remaining work](PHASE6E11_NO_GO_REPORT.md).
+Phase 6E remains INCOMPLETE. No acceptance/freeze of 6E-11 and no 6E-12.
+
 ## Current: 6E-10 Accepted And Frozen
 
 COMPLETE / OWNER-ACCEPTED / FROZEN - SYNTHETIC STAGING SCOPE ONLY.

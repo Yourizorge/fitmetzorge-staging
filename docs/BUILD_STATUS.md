@@ -1,6 +1,289 @@
 # FitMetZorge Build Status
 
-## Current: PG17 Evidence Pass / Hosted Canary NO-GO
+## Current: Migration 42 PASS / Hosted Edge Configuration NO-GO
+
+28 September: the owner replaced the shared Auth/workflow-transaction requirement
+with server-verified session/request binding and one atomic application transaction.
+New private M42 is implemented, clean CI42 PASS, applied once, local/hosted 42/42,
+fresh dry-run EMPTY. M41 and all frozen sources remain unchanged.
+153 protected tables / 100771 row hashes match before/after. Zero own temp writes.
+A false aggregate FETCH-time stop is explained by all 14 preserved per-call profiles;
+the original NO_GO receipt remains unchanged. No heavy measurement was repeated.
+45 local driver pairs, 33 request security tests, 64 Node checks, 12 installation/load
+checks and 17 historical receipt tests PASS. Local Auth stubs are not hosted Auth proof.
+The separately authorized, temporary read-only Edge diagnostic verified CI identity,
+then refused the injected database configuration before opening a connection.
+The exact mismatching setting remains unknown; further diagnostic deployment was
+blocked by auto-review's bounded-attempt limit. No bypass or secret export.
+Temporary diagnostic function removed; JIT disabled/zero mappings. No Auth/app writes,
+new synthetic fixtures, application Edge deployment, owner window or freeze.
+84 live assets and 88 local candidate assets preserved. CI-only pushes republished
+unchanged staging assets. Existing dirty application work remains unmodified.
+6E-11 and owner retest remain NO-GO. No 6E-12.
+[Migration, exact proof, deployment boundary and remaining gate](PHASE6E11_REQUEST_BINDING_REPORT.md).
+
+## Retained: Auth Witness Mechanics PASS / Hosted Chain NO-GO
+
+28 September follow-up: owner explicitly permits necessary additive migration 42.
+The prior permission question is resolved. M41 alone cannot bind separate GoTrue
+transactions. Actual Auth health is v2.197.0. One explicit read-only catalog probe:
+13 commands, zero own temp writes, ROLLBACK confirmed, JIT revoked, no Auth/app writes.
+A deferred-only local design failed two coverage counterexamples. A new bounded
+buffer passes 18 PG17 surrogate controls; a strict receipt join passes 17 unit tests.
+39 existing Edge/scope regressions pass. These are NOT real hosted Auth proof.
+Every Auth transaction still needs an authoritative request anchor; the validator
+rejects a pre-login transaction without one. No guessing by actor/time is permitted.
+The CLI-created migration42 scaffold is retained as an offline .sql.draft only:
+no implemented migration42, no CI42 PASS, no staging application. Canonical/observed
+hosted count remains 41/41. The last accepted empty dry-run was not repeated.
+41 migrations, 189 frozen sources, 88 runtime assets, 58 CI sources, 5372 historical
+artifacts and 888 reference artifacts verified unchanged. 112 historical pairs
+and incomplete step113 preserved. No hosted fixtures, cleanup, commit, push,
+Edge/Pages deployment or owner window. Existing dirty worktree preserved.
+6E-11 remains NO-GO for owner retest; no freeze and no 6E-12.
+[Migration decision, falsified design and exact remaining Auth gate](PHASE6E11_CHAIN_V3_REPORT.md).
+
+## Retained: Local Edge/Driver PASS / Hosted Auth NO-GO
+
+28 September: new isolated Edge-native adapter uses the existing Edge-only proof,
+unchanged A/B engine and private migration-41 bridge. No secret export or second
+secret route. 39 unit/regression checks and Deno typechecks PASS.
+45 existing A/B action contracts PASS through real local TLS/postgres.js/PG17:
+110 inserts, 58 updates, exact audit pairs. Auth uses local stubs, NOT hosted proof.
+Fixed JSONB double-serialization and exact JavaScript wire-hash preregistration.
+New fail-closed parameter-logging preflight; no server setting changed.
+Hosted Auth transaction witness and audited setup/intent/cleanup lifecycle remain
+open. M41 cannot bind separate GoTrue transactions. Clarification pending on an
+additive Auth-audit migration 42 versus the explicit 41/41 requirement.
+No hosted SQL/Auth/fixture writes, migration, deployment, commit or push this turn.
+No JIT lease; read-only control plane confirms disabled/zero mappings and SSL on.
+189 frozen files, 88 candidate assets, 58 CI sources, 5372 prior artifacts,
+112 complete historical pairs and incomplete step113 retained.
+Accepted cursor/migration41 proofs retained without new heavy scans or dry-run.
+Previous status bytes archived in the new closeout before this update.
+Owner window closed/not opened; 6E-11 owner retest NO-GO; no freeze or 6E-12.
+[Edge candidate, real local driver proof and exact remaining gates](PHASE6E11_EDGE_BRIDGE_REPORT.md).
+
+## Retained: Full Cursor And Migration 41 PASS / Workflow NO-GO
+
+28 September: bounded fixture preparation and all three local cursor cycles PASS:
+143 synthetic tables / 100176 rows, chunks 2048/4096/8192, commands 124/76/52,
+zero own temporary writes, exact independent golden hashes, no CHECKPOINT.
+One hosted read-only canary PASS: 151 tables / 100769 hashes, two cycles,
+114 commands, explicit RO, verify-full, zero own spill, complete equal pair.
+Migration 41 applied once through CLI 2.117.0: hosted/local 41/41, registered SQL
+matches, dry-run empty, protected data/catalog unchanged, private bridge disabled.
+59 pure regression checks PASS. Own query spill zero; 21.39 MB background temp
+reported separately, not attributed to the collector or claimed fully diagnosed.
+Native workflow admission remains blocked: required application-server proof is
+only present in Edge, not available to the native adapter. No secret substitution
+or authorization bypass. Real Auth/workflow/observer attachment/cleanup unproven.
+JIT disabled, zero mappings; no owner window. No commit/push/publication.
+84 live / 88 candidate assets preserved; 22 checked offline paths HTTP404.
+Frozen sources, independent reference and 112 pairs retained; step113 incomplete.
+Original status bytes archived under the closeout receipt before this update.
+No owner acceptance/freeze; 6E-11 phone retest NO-GO; no 6E-12.
+[Full bounded proof, applied migration and remaining authentication gate](PHASE6E11_CURSOR_V2_REPORT.md).
+
+## Retained: Independent Archive Reference PASS / Full Cursor NO-GO
+
+28 September follow-up: a genuinely separate standard-library reference verifies
+all 100769 retained digests / 151 tables at chunks 2048, 4096 and 8192 against
+the sealed golden hashes. No collector/cursor imports or SQL. Four intentional
+digest mutations detected, three incomplete inputs rejected, 12 canonical
+fixture cases and 11 additional limit/exclusion/cleanup unit tests PASS.
+Own successful temporary digest runs cleaned; all negative evidence preserved.
+Independent 143-table fixture expectation: 100176 rows, six duplicates.
+Full local cursor calibration is NOT PASS. One local harness EXPLAIN-tag error
+was corrected. Next run reached 37 fetches with zero temporary writes, then
+stopped on ordinary shared-buffer writes. Local fixture freeze/checkpoint
+preparation was attempted under the same 5000ms cap; CHECKPOINT then timed out
+(6.280s physical completion). Stop: no further DB run or timeout increase.
+All local servers stopped. No hosted trial, JIT activation, migration, workflow,
+cleanup, commit, push, Pages publication or owner window. Last observed hosted
+40 / local 41; no fresh dry-run. 189 frozen files, 58 CI sources, 88 runtime assets,
+112 historical pairs, old 81920 incomplete digests and incomplete step113 retained.
+6E-11 and owner retest remain NO-GO; no 6E-12.
+[Independent proof, exact local stops and remaining gate](PHASE6E11_REFERENCE_REPORT.md).
+
+## Retained: Bounded Cursor Candidate / Local Admission NO-GO
+
+28 September: prior hosted explicit-readonly PASS retained. Old 57014 diagnosed
+from immutable files: 81920 durable digests, last durable nutrition_off_products;
+exact canceled server row and unflushed buffer remain unknown.
+New repeatable-read NO SCROLL cursor candidate is offline only.
+Small PG17.6 utility probe PASS (8194 rows, zero own temp blocks).
+Full local legacy oracle timed out at 5000ms, globally and after a per-table
+correction on synthetic nutrition_off_product_names. Stop before cursor cycles;
+no higher timeout or new hosted attempt. Full local calibration is NOT PASS.
+14 new pure contract tests PASS. Three local replays of the retained 100769
+digests / 151 tables equal the original hashes; not new database-transfer proof.
+395 old artifacts, 25 executed source hashes, 189 frozen files, 58 CI sources,
+88 candidate runtime assets and 112 historical pairs preserved; step113 incomplete.
+No hosted/JIT activation, migration, application/cleanup write, commit, push,
+Pages publication or owner window. Last observed 40 hosted / 41 local unchanged
+by this task; no new dry-run. Existing dirty work retained. No 6E-12.
+[Bounded transfer evidence and exact remaining gate](PHASE6E11_CURSOR_REPORT.md).
+
+## Retained: Hosted Explicit Read-only PASS / Migration Baseline NO-GO
+
+27 September: the newly authorized explicit-transaction hosted trial PASS.
+One fresh connection, BEGIN TRANSACTION READ ONLY, immediate on check, unchanged
+transaction identity, eight complete pairs, ROLLBACK and close: 47 commands.
+Text-free reader and synthetic rowhash stream: zero own temporary writes.
+JIT disabled with zero mappings. Original sources and historical stops retained.
+
+Authorized migration continuation then stopped BEFORE migration application:
+the 151-table baseline stream was canceled (SQLSTATE 57014) after 5.192s with
+the preregistered 5000ms server limit. Its after-counter pair is incomplete.
+17 commands; ROLLBACK confirmed and JIT revoked. No retry, mutation or cleanup.
+Combined: 64 commands, one complete light cycle and one incomplete full cycle.
+40 hosted / 41 local; no new dry-run. Workflow and owner window remain NO-GO.
+79 final local checks PASS; earlier local harness failures retained separately.
+189 frozen files, 58 CI sources, 256 prior artifacts and 112 historical pairs
+unchanged; step113 remains incomplete. 84 live and 88 candidate assets unchanged;
+nine new offline paths return HTTP404. No commit, push or publication.
+[Exact proof and retained migration-baseline stop](PHASE6E11_EXPLICIT_TX_REPORT.md).
+
+## Retained: Text-free PG17 PASS / Hosted Read-only Gate NO-GO
+
+27 September follow-up: original text-free reader reused byte-for-byte. Real PG17
+and 53 focused offline/regression tests PASS; NULL, duplicates, pages, exclusions,
+fingerprint equivalence and terminal observer proof verified with zero temporary IO.
+One native hosted canary stopped after six commands: exact project/role/version and
+40 migrations matched, but transaction_read_only was off despite the startup option.
+The adapter omitted the proven explicit BEGIN READ ONLY. Corrected and retested
+offline with default read-only off; no hosted retry. Runner closed before credentials.
+JIT disabled, zero mappings; SSL remains on. No app/member writes, migration, cleanup,
+commit, push, publication or owner window. 40 hosted / 41 local; no new dry-run.
+189 frozen files, 58 CI sources and all 112 historical pairs unchanged; retain step113.
+84 live assets byte-identical; new offline paths HTTP404. Existing dirty work retained.
+[Exact reader proof, retained canary stop and local correction](PHASE6E11_TEXTFREE_REPORT.md).
+
+## Retained: JIT And CLI PASS / Migration Paused On Own Observer IO
+
+27 September: explicitly approved staging SSL-enforcement enabled; owner-only
+temporary PAT/JIT with session-pooler, verify-full and official CA is proven.
+Pinned CLI 2.117.0 dry-run succeeds with only migration 41 pending.
+Clean 41-migration CI remains PASS; 58 source hashes reverified. No password reset.
+A new metadata-query syntax failure was corrected and retained. The next bounded
+baseline completed (151 tables / 100769 row hashes), but its own stats-text observer
+caused 3399 temp blocks over three calls. Stream itself: zero temp blocks.
+This regressed the existing text-free observer design. Hosted runner now explicitly
+closed before credential use. JIT disabled, mappings removed, probes closed; SSL stays on.
+40 hosted / 41 local; migration 41 NOT applied. No final preservation-pair PASS,
+workflow/cleanup/owner window, commit, push or publication. 25 local checks PASS.
+Retain all original evidence, 112 historical pairs and incomplete step 113.
+[Exact JIT proof, observer regression and remaining gate](PHASE6E11_JIT_POOLER_REPORT.md).
+
+## Retained: Additive Migration 41 Built / Full Rebuild Gate NO-GO
+
+24 September: CLI 2.117.0 created 20260924155822_phase6e11_rpc_bridge.sql.
+Only new private objects, default disabled, SECURITY INVOKER; no existing
+function/table/trigger/policy/row replaced. 45 new pairs, 27 negative checks,
+16 access denials and 22 audit-core tests PASS. Original 45/33 and 68 regressions PASS.
+All 40 historical SQL files unchanged. Fresh checkout prepared, but full rebuild
+cannot run: stripped PG17 bundle lacks psql and pgcrypto/pg_trgm/pg_cron; no Docker/WSL.
+Migration permission is granted, NOT an open owner question. Hosted application
+is gated on full local PASS: 41 local files / 40 hosted; dry-run has exactly 41 pending.
+No migration/Edge/Auth/member write, cleanup, commit, push, publish or owner window.
+84 live / 88 candidate runtime assets unchanged; 383 private paths HTTP404.
+189 frozen files and 112 historical pairs retained; step113 remains incomplete.
+Transport, hosted workflow observers, management/cleanup and six Auth routes remain
+unproven. No overall Technical Pass, owner acceptance/freeze or 6E-12.
+[Exact evidence, environment blocker and next step](PHASE6E11_MIGRATION41_REPORT.md).
+Previous status bytes are archived in the new closeout manifest; old reports/hashes
+are retained, not rewritten.
+
+## Retained: Local Server-side RPC Bridge PASS / Hosted NO-GO
+
+24 September follow-up: 45 existing A/B actions now use a default-disabled private
+server adapter through the original public RPC, with session/request/workspace,
+exact writeset and output-version binding. 33 negative tests and 68 regressions PASS.
+Local Auth stubs only: no hosted workflow/Auth PASS. Audit core unchanged, no probe retry.
+40/40 migration identities unchanged; new private hook versus explicit 40/40 limit
+and missing configured native DB transport are open admission points. Management,
+cleanup and six Auth service routes remain unproven/blocked; no 143-table scan.
+112 historical pairs and incomplete step113 preserved; 189 frozen files unchanged.
+84 live and 88 local runtime assets unchanged; 375 private paths HTTP404.
+No hosted mutation, cleanup, migration, Edge deploy, commit, push or Pages publish.
+No owner window/acceptance/freeze or 6E-12. Prior empty dry-run is historical only.
+[Server adapter, exact tests and remaining admission points](PHASE6E11_RPC_BRIDGE_REPORT.md).
+
+## Retained: Hosted Audit Repeat PASS / Workflow Canary NO-GO
+
+24 September: exactly one corrected hosted I/U/D repeat PASS, with three expected
+writes on xid 1091832953, zero temporary blocks and a sealed before/after pair.
+The new private run is disabled; the original halt and three old auditrows remain.
+No audit-core rebuild. 45 local A/B pairs, 7 local O5 pairs, 5 negative workflow
+tests and 68 regressions PASS. Auth stubs are NOT hosted authorization proof.
+36 hosted function hashes and DML inventory retained; actual hosted workflow
+binding, management/cascade coverage and six Auth routes remain unproven/blocked.
+No complete 52/52 or 143-table preservation claim; canary and owner window NO-GO.
+40/40 migration identities; fresh dry-run empty. No new migration or Edge deploy.
+84 live / 88 candidate runtime assets unchanged; 369 private paths HTTP404;
+189 frozen offline files unchanged. 112 old pairs and incomplete step113 retained.
+No cleanup, commit, push, Pages publication, owner acceptance or 6E-12.
+[Corrected repeat, exact coverage and blockers](PHASE6E11_WORKFLOW_AUDIT_REPORT.md).
+
+## Retained: Transaction-bound Private Audit / Owner Retest NO-GO
+
+24 September: 109 targeted checks PASS. One hosted private fixture transaction
+records exactly INSERT, UPDATE and DELETE, including the deleted key, with a
+durable scoped before/after pair. The chain halted after_saved on a read-only
+load policy wrongly reused for a mutation (17 ms, zero temp blocks, seven shared
+buffer writes). Halt retained; mutation-budget correction tested locally only.
+No second hosted action or full workflow canary. Six Auth routes remain blocked;
+the two new fixture observers are NOT full existing-table write coverage.
+Additive private audit migration 20260924130052 applied: 40/40 migration identities,
+empty dry-run. No existing runtime/Edge/table/trigger changed by this addition.
+Private probe expired 24 September 15:08:41 CEST; no owner window or cleanup.
+112 historical pairs preserved, step113 incomplete. 84 live/88 local assets
+unchanged, 362 private paths 404; 189 frozen offline files unchanged.
+No new commit/push/Pages/owner acceptance. Previous uncommitted work retained.
+[Current transaction proof and exact remaining gaps](PHASE6E11_TXAUDIT_REPORT.md).
+
+## Retained: Query-level Load / Small Transport PASS, Owner Retest NO-GO
+
+23 September: 179/179 local checks pass. Bounded 25-row hosted transport and
+explicit offline resume pass. Four page queries and eight measured text-free
+counter queries have zero temporary reads/writes; background temp growth alone
+is no longer a canary failure. No full hosted fingerprint/IO round was repeated.
+Seven forbidden categories have source-bound local/ACL security proof; six Auth
+routes are individually excluded as unproven, not counted as successful writes.
+The targeted mutation runner still lacks an independent forbidden-write witness
+and complete action/row integration. No mutation canary or usable owner window.
+All 112 historical pairs and incomplete step113 retained. 84 live and 88 local
+runtime assets unchanged; 352 private paths HTTP404. No cleanup, commit, push,
+deployment or owner acceptance. Existing uncommitted work is retained.
+[Current query-level evidence and exact limitations](PHASE6E11_QUERY_LEVEL_REPORT.md).
+
+## Retained: Temp-write Closure / Hosted And Owner Retest NO-GO
+
+23 September: 119/119 offline checks pass. The full pg_stat_statements view caused
+observer-generated temporary writes; corrected text-free windows still show
+unattributed background temp growth. No IO recovery or canary admission.
+All 52 routes are explicitly classified: 39 schema-effect reviews, six Auth
+service-transaction gaps, seven forbidden hosted categories. A four-row hosted
+VALUES HTTP probe passes, not native 143-table streaming. All 112 historical
+pairs plus incomplete step 113 remain intact. Prior 55 sources/18 artifacts,
+84 live assets and 88 local candidate assets unchanged; 340 private paths 404.
+No mutation, cleanup, commit, push, new publication or owner window.
+[Current findings and exact remaining blockers](PHASE6E11_CLOSURE_REPORT.md).
+
+## Retained: Binding Follow-up / Hosted NO-GO
+
+23 September: the triggerbody discrepancy is proven CRLF/LF normalization, not a
+functional object change. Exact PG17 SQL/source/manifest binding and 93/93 offline
+regressions pass. All 52 write categories are mapped; 39 have reviewed schema
+effect closure, but Auth/independent-writer attribution and hosted transport/gate
+integration remain open. All 112 retained complete pairs validate; step 113 is
+still incomplete. A fresh light IO sample adds 50,849,163 tempbytes in 230 seconds
+with unchanged legacy fingerprint calls; IO recovery is not proven. No canary,
+cleanup, window, commit, push or publication. Runtime remains unchanged.
+[Full follow-up, evidence and exact remaining gates](PHASE6E11_BINDING_FOLLOWUP_REPORT.md).
+
+## Retained: PG17 Evidence Pass / Hosted Canary NO-GO
 
 23 September: 36 existing collector tests pass on exact PostgreSQL 17.6, plus
 26 new targeted checks. The 143-table benchmark is byte-equivalent with zero new
@@ -20,6 +303,93 @@ locking, durable budgets (3 full cycles / 128 queries) and missing-pair stops ap
 No hosted connection, cleanup or owner window. Write-coverage, PostgreSQL-17
 validation and verified IO recovery remain gates; 6E-11 remains NO-GO.
 [Offline implementation and evidence](PHASE6E11_EFFICIENT_FINGERPRINT_REPORT.md).
+
+## Current: 6E-11 Disk IO Pause / NO-GO
+
+22 September: heavy hosted proofruns, full fingerprints, cleanup and owner windows
+are paused after the staging Disk IO warning. Read-only statistics identify 649
+calls of two dominant fingerprint variants with 65.819 GiB temporary writes;
+664 distinct completed 143-table snapshots are retained for 21 September.
+No local synthetic runner or active fingerprint remains. Dashboard daily Disk IO
+shows 57% for its 22 September label; hourly graphs fail to load. Short current
+load is low, but budget recovery and equivalent cheaper preservation are unproven.
+No runtime/database/Edge change, upgrade, cleanup, commit, push or publication.
+12 local IO-audit tests pass. Existing evidence and dirty changes are retained.
+[Separate IO report and restart gates](PHASE6E11_DISK_IO_REPORT.md).
+
+## Retained: 6E-11 Hosted Evidence Chain / NO-GO At Cleanup IPC Deadline
+
+21 September: the six-phase measurement chain is now connected to hosted operations.
+First canary: 25 complete pairs. First full run: 57/80 checks, 80 complete pairs,
+zero incomplete pairs; stopped on an app-timeout/test-instrumentation mismatch.
+Read-only stop inventory: 143 tables, zero protected or unexplained raw drift.
+The single corrected run passed all 80 functional checks and sealed 90 complete
+mutation pairs before cleanup; its canary passed 25 pairs. Cleanup then reached
+112 complete full-run pairs and stopped at step 113: one missing confirmation/after
+pair when a five-minute IPC deadline killed the batched account-cleanup worker.
+No third mutation run or further cleanup is allowed under this bounded instruction.
+Late read-only inventory: 143 protected cohorts unchanged; zero workspaces,
+participants, events, accessible/enabled/uncleaned windows or test sessions.
+Four temporary control accounts remain (three profiles). Historical evidence is
+unchanged; original fixtures were released only after the full functional seal.
+No commit, push, new publication or owner window. Existing Pages: 84 exact assets,
+304 private paths HTTP404; migrations 39/39 and dry-run empty; Edge v2 unchanged.
+All 88 candidate runtime files are unchanged. No owner acceptance/freeze or 6E-12.
+[Current hosted-chain report](PHASE6E11_HOSTED_CHAIN_REPORT.md).
+
+## Historical: 6E-11 Targeted Instrumentation Repair / NO-GO
+
+21 September follow-up: permanent staging autonomy is updated in AGENTS.md without
+permission changes. 56 targeted local checks PASS. A separate six-phase journal
+is locally tested but NOT connected to hosted operations. Fault injection proves
+the old generic catch loses information: three distinct faults yield the same
+missing-after signature. The exact historical trigger cannot be reconstructed.
+Required historical-cause evidence remains missing; no new hosted run or cleanup.
+Read-only 143-table pair: ZERO protected drift. Historical sources/report/47 pairs
+unchanged; 2 workspaces, 2 controls, 5 synthetic sessions retained. Window expired.
+39/39 migrations, empty dry-run, Edge v2 unchanged; 84 runtime assets identical and
+258 private paths HTTP404. No commits/push/Pages/new owner window/6E-12.
+[Current targeted report](PHASE6E11_TARGETED_REPAIR_REPORT.md).
+
+## Historical: 6E-11 Proofrun Stopped / NO-GO
+
+21 September closing inventory: new proofrun stopped at missing response/postmeasurement
+for `b_reopen`. 47 complete measurement pairs and 14 hosted checks are retained; A apply
+1->2 and restored apply 2->3 are durable, but complete B/UI/cleanup proof is missing.
+Current 143-table inventory has ZERO protected drift. The internal window expired
+17 September 20:24:23.788 Europe/Amsterdam and is server-inaccessible, NOT cleaned.
+Two workspaces, two denial controls and five synthetic Auth-session rows remain.
+No new commit, push, frontend publication or owner window. Remote main remains
+96fc380e47420474efde5509eab0a944398b1190. 39/39 migrations; empty dry-run;
+84 published baseline assets identical; 254 private paths HTTP404.
+[Final proofrun report](PHASE6E11_PROOFRUN_REPORT.md). No 6E-12 or owner freeze.
+
+## Historical: 6E-11 New Instrumented Proofrun
+
+The owner explicitly authorizes an independent new proofrun after read-only evidence
+recovery. The old attempt is definitively INCONCLUSIVE / NOT TECHNICAL-PASS EVIDENCE;
+its precise cron trigger and hosted apply/restore are not reconstructed. Its reports,
+baseline and HALT remain unchanged. No new owner decision is required for this rerun.
+The new run remains IN PROGRESS, not Technical Pass or published. Each operation uses
+durable before/after evidence, declared writes and a separate persistent run HALT.
+27 instrumentation tests and 79 current local SQL groups PASS. All 2,397 frozen/current
+regressions and the additional lifecycle test PASS. Hosted completion is still required.
+[New preregistration and historical disposition](PHASE6E11_PROOFRUN_PREREGISTRATION.md).
+No owner window, owner acceptance/freeze or 6E-12. Production remains forbidden.
+
+## Historical: 6E-11 Paused At Data-Preservation Gate
+
+6E-11 IN PROGRESS / NO-GO due to an unresolved background-status evidence gap.
+The owner activity is CONFIRMED and exactly reconciled, not an open owner question.
+Current resumption, cleanup, test totals and remaining control:
+[17 September report](PHASE6E11_RESUME_REPORT.md).
+The following initial-stop description is historical.
+The additive migration and isolated Edge entry are deployed; frontend remains local,
+uncommitted and unpublished. Three hosted checks passed before a pre-write gate
+caught new ordinary-account differences. No rollback or baseline overwrite.
+See [pause report](PHASE6E11_NO_GO_REPORT.md) for exact evidence, remaining fixtures,
+internal-window expiry and the required clarification. No owner window/6E-12.
+The 6E-10 acceptance below remains valid; its "not started" statements are historical.
 
 ## Current: 6E-10 Owner-Accepted And Frozen
 

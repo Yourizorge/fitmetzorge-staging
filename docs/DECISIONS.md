@@ -2,6 +2,18 @@
 
 Approved architecture and product decisions must be recorded here chronologically.
 
+## 28 September 2026: Separate Auth Events and Atomic Application Requests
+
+Owner instruction accepts separate normal Auth events and one request-bound
+application transaction. Do not require or claim a shared GoTrue/workflow transaction.
+Use only server-verified minimal claims, an exact request identity, idempotency,
+preregistered writesets and durable before/after seals. M41 and earlier decisions
+remain unchanged; M42 is additive, private, invoker and default-off.
+The owner separately approved only a short read-only OIDC diagnostic, not a mutating
+CI controller. That probe is removed. Its further attempt was blocked by auto-review;
+the permission must not be generalized to a new authorization service.
+No 6E-11 owner acceptance or live member AI. [Evidence](PHASE6E11_REQUEST_BINDING_REPORT.md).
+
 ## Decision 0001: Staging-first release model
 
 Status: APPROVED
@@ -899,3 +911,65 @@ all three synthetic sessions revoked, no real data restoration or runtime change
 Prior evidence and D1-D12/O1-O5/W1/W2 remain unchanged. Expert and live-use gates
 remain open. 6E-11 is NOT STARTED and receives no GO from this acceptance.
 Receipt: PHASE6E10_FREEZE_RECEIPT.md / PHASE6E10_FREEZE_EVIDENCE.json.
+
+## Decision 0055: Bounded 6E-11 App Integration And Fixed Synthetic B Catalog
+
+The owner gives implementation GO for the normal stagingapp with only the three
+proven synthetic identities. Route B uses the accepted fixed 6E-8/6E-9 catalog,
+not a new publisher role or new coaching rules. A retains source-bound member
+acceptance, trainer approval and separate application; B confirmation/activation
+remain distinct. Durable apply/restore audit proof is required before publication.
+All earlier frozen sources and decisions remain, with only the explicit minimal
+loader/HTML integration exception. No real-member AI, provider calls or production.
+
+On 17 September the owner confirms authorized Safari activity on 16 September
+20:25-20:27 local time. Exact bounded metadata match permits separate reconciliation,
+not removal of owner data or a blanket drift waiver. Unknown writes or insufficient
+proof require NO-GO. The new historical cron-status evidence gap is NOT waived.
+No 6E-11 owner acceptance/freeze and no 6E-12. PHASE6E11_RESUME_REPORT.md is current.
+
+## Decision 0056: Preserve Historical Gap And Independently Prove 6E-11
+
+17 September 2026: the owner explicitly authorizes a new isolated synthetic proofrun
+if exact historical cron/apply/restore evidence cannot be recovered. Read-only
+investigation did not recover it. The earlier attempt is permanently INCONCLUSIVE /
+NOT TECHNICAL-PASS EVIDENCE. Its evidence, missing receipt and HALT remain unchanged;
+no status is guessed and no later success replaces missing historical evidence.
+The existing report's request for an owner evidence decision is superseded by this GO.
+New durable instrumentation and negative tests precede hosted writes. Missing new
+proof, unexplained drift or unsafe cleanup latches NO-GO. Publication and one <=24h
+owner window require complete new technical proof. No product choices are reopened,
+no real-member AI/providers/costs/production, no owner freeze and no 6E-12.
+
+## Decision 0057: Permanent Staging Autonomy And Targeted Proof Repair
+
+21 September 2026: the owner grants standing authority for normal safe reversible
+staging work in this repository/main and mokxyyullfhkfalopbzd. AGENTS.md records the
+exact permissions and stop boundaries. on-request, auto_review and workspace-write
+remain; managed approval/sandbox limits are not bypassed. Production is forbidden.
+Physical owner acceptance and explicit agreement remain required before freeze.
+
+The targeted b_reopen task retains the historical report, 47 complete pairs and
+missing immediate measurement. Maximum two new failed proofruns; complete new
+proof before publication or an owner window. Technical investigation proves generic
+error handling discarded diagnostic information, but not the original exception.
+The exact historical-cause requirement is not silently waived. Separate local
+measurement repair and read-only inventory are complete; hosted continuation,
+cleanup, commits and publication remain unperformed. No product decision reopened,
+no 6E-11 acceptance/freeze and no 6E-12. See PHASE6E11_TARGETED_REPAIR_REPORT.md.
+
+## Decision 0058: Connect Hosted Evidence And Permit One Corrected Repetition
+
+21 September 2026: the owner explicitly requests hosted six-phase evidence,
+separate durable before/after files and differentiated failure diagnostics.
+The historical unknown exception is not invented. Original fixtures and evidence
+must remain intact until a fully validated new proof and durable manifest exist.
+Only then are scoped synthetic cleanup, commit/push, Pages and a bounded owner
+window allowed. A new incomplete pair, unknown write or functional failure is
+NO-GO. No owner acceptance/freeze, no 6E-12 and no product decisions reopened.
+
+The first connected canary succeeds; the full attempt stops on a test-deadline
+mismatch with complete mutation pairs. The one corrected mutation repetition
+uses an isolated test-only deadline adapter, unchanged runtime and a wider retained
+fixture inventory. Zero-mutation local filesystem preflight failures remain
+historical evidence, not successful hosted attempts or an extra mutation allowance.

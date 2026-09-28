@@ -1,5 +1,117 @@
 # FitMetZorge Test Matrix
 
+## 6E-11 Current Request/M42 Evidence
+
+Clean CI42 and 12 SQL regressions PASS; hosted 42/42 and fresh dry-run EMPTY.
+45 real-driver local A/B pairs, 33 security checks, 39 baseline plus 6 new request
+and 19 read-only OIDC tests PASS; 12 installation/load tests PASS. Local Auth
+surrogates are not real hosted Auth evidence. Separate retained buffer/receipt
+mechanics pass 18/17 tests, respectively. No hosted workflow or delete PASS claimed.
+153 protected tables match across M42. Temporary OIDC admission succeeds after exact
+immutable GitHub subject binding, then fails closed on Edge DB configuration.
+The diagnostic is removed; owner retest remains NO-GO. [Full report](PHASE6E11_REQUEST_BINDING_REPORT.md).
+The older results below remain historical and are not cumulative proof of completion.
+
+## 6E-11 Migration 41 Local Verification
+
+Current result: targeted additive bridge PASS; full rebuild/hosted/owner NO-GO.
+- 45/45 existing A/B action pairs through the new private invoker entry.
+- 27/27 negative request/session/scope/audit/version/role checks.
+- 16/16 schema/table/function denials for client roles and PUBLIC inheritance.
+- Installation leaves all compared existing definitions and fixture rows unchanged;
+  repeat application refused. New functions invoker, fixed search_path, default off.
+- Original historical adapter: 45 pairs and 33 negative controls still PASS.
+- Existing regressions: 12 + 40 + 4 + 12 = 68 PASS; audit I/U/D suite: 22 PASS.
+- Fresh checkout with all 41 exact source files: prepared. Full database rebuild:
+  NOT PASS. Runner lacks bundled psql; actual PG17 catalog lacks pgcrypto/pg_trgm/pg_cron.
+- No hosted bridge/Auth/management/cleanup or complete advisor PASS claimed.
+- 84 live and 88 candidate assets equal; 383 offline/test paths HTTP404;
+  189 frozen sources and 112 historic pairs preserved, step113 still incomplete.
+Corrected test setup and initial failures remain archived, not counted as successes.
+Exact hashes and artifacts: PHASE6E11_MIGRATION41_REPORT.md.
+
+## Historical: 6E-11 Hosted Chain Follow-Up
+
+Current status is NO-GO at corrected-run cleanup, not a functional PASS overall.
+Distinct evidence:
+- Original wrapper fault injections reproduce three collapsed diagnoses.
+- Initial hosted adapter/local journal/report/IPC checks: 72 PASS.
+- Corrected adapter suite: 81 PASS (22 adapter/guard, 20 primitive, 27 legacy,
+  6 legacy report, 6 IPC/browser instrumentation checks); not additive to 72.
+- Current local SQL: 79 groups PASS; frozen/current regressions: 2,397 PASS,
+  with separate Auth and training-completion scripts passing.
+- Canary v2: 25 complete direct pairs. Full v2: 57/80 checks and 80 complete
+  pairs, zero incomplete; UI timeout stopped remaining checks and cleanup.
+- Stop inventory: 143 tables and original retained objects unchanged. Additional
+  fixtures from that run are preserved, not misrepresented as cleaned.
+- Corrected v3 read-only preflight PASS. Failed long-path preflight had zero
+  action_started records and is retained.
+- Corrected v3: 80/80 functional checks PASS (including 54 responsive layouts),
+  canary 25 complete pairs; full run 112 complete pairs and one incomplete pair
+  at cleanup step 113. Its 90 pre-cleanup pairs and full functional manifest were
+  saved before historical fixtures were released. This is NOT Technical Pass.
+- Cleanup IPC timeout: one 300-second request spans multiple measured deletions.
+  Worker SIGTERM after the next action_started leaves action_confirmed/after_saved
+  missing. Current injection tests did not cover aggregate cleanup-batch duration.
+- Read-only stop inventory: zero protected drift in 143 tables, including all nine
+  separately tracked tables. Zero accessible windows/workspaces/test sessions;
+  four synthetic control accounts retained, three profiles. No late observation
+  is counted as the missing direct pair.
+- Publication recheck: existing 84 assets exact; 304 offline/test paths HTTP404.
+  Migration list 39/39; dry-run empty. No new frontend or Edge publication.
+- Four pure read-only closeout comparator tests PASS. Fourteen prepared owner-window
+  gate tests PASS, but no hosted owner-window execution; not additional route proofs.
+
+No physical-phone result is claimed. Current evidence and limitations:
+PHASE6E11_HOSTED_CHAIN_REPORT.md; PHASE6E11_CORRECTED_HOSTED_PREREGISTRATION.md.
+
+## Historical: 6E-11 Targeted Local Follow-Up
+
+21 September: 20 new local instrumentation tests + 27 old proof/control tests +
+6 independent report tests + 3 frozen/scope/isolation checks = 56 PASS.
+Five consecutive isolated measurement pairs use synthetic protocol doubles, NOT
+hosted or SQL product execution. Old-wrapper fault injection proves diagnostic
+ambiguity, not the missing historical exception. Original 47 pairs remain unchanged.
+New read-only 143-table pair: no protected drift; 39/39 migrations, empty dry-run;
+84 baseline assets identical, 258 private paths HTTP404. Zero new hosted runs.
+NO-GO; see PHASE6E11_TARGETED_REPAIR_REPORT.md and its preregistration/receipts.
+
+## 6E-11 Incomplete Verification
+
+21 September final: 27 instrumentation tests, 6 independent report tests, 79 local SQL
+groups and 2,397 regressions PASS; one additional lifecycle test PASS. New hosted run:
+14 complete checks, then NO-GO with one missing response/postmeasurement receipt.
+47 complete operation pairs and all current 143 protected table cohorts match;
+incomplete proof, B completion, hosted UI, cleanup and fresh-checkout/publication remain
+open. No current physical phone or Technical Pass claim. Baseline Pages 84 exact assets /
+254 private 404 paths; migration list 39/39 and empty dry-run. Current evidence:
+PHASE6E11_PROOFRUN_REPORT.md, PHASE6E11_PROOFRUN_EVIDENCE.json,
+PHASE6E11_PROOFRUN_STOP_INVENTORY.json. Earlier in-progress descriptions below are historical.
+
+New-run prerequisites: 27 local evidence/control tests PASS, including all seven
+preregistered failure cases, wrong actor/request/proposal/version binding, evidence
+write/readback failure and retained/absent denial-control inventory. Current local
+SQL suite: 79 groups PASS, now also asserting same-key restore replay and fresh-key
+stale restore refusal. 2,397 regressions and one additional cron lifecycle test PASS.
+These totals are distinct; the 10 targeted Edge/scope/lifecycle tests overlap them.
+Read-only setup corrections and stopped pre-write inventories are not hosted successes.
+The previous hosted attempts are permanently INCONCLUSIVE. The new hosted proofrun
+is still in progress; no completed apply/restore/cleanup or publication is inferred.
+See PHASE6E11_PROOFRUN_PREREGISTRATION.md. Historical results follow unchanged.
+
+Current: 79 local SQL groups, 62 local browser checks, 2,397 regression tests and
+one additional lifecycle test PASS. Six resumed hosted groups observed PASS before
+a new NO-GO; hosted completion/fresh checkout/publication remain incomplete.
+39/39 migrations and an empty dry-run verified. No physical-phone claim.
+[Current evidence](PHASE6E11_RESUME_REPORT.md).
+
+Historical initial attempt: 76 local SQL groups, 24 initial app-browser checks and 2,397 current regression tests
+PASS. Three hosted authorization groups PASS. Hosted workflow completion, final
+browser matrices/keyboard/account switching, fresh checkout, post-migration dry-run,
+publication and cleanup remain pending after a databehoud NO-GO. No Technical Pass.
+Historical cache/scope failures and their narrowly updated adapters remain documented.
+[Evidence and exact limits](PHASE6E11_NO_GO_REPORT.md). No physical-phone claim.
+
 ## 6E-10 Source And Managed Window Verification
 
 OWNER-ACCEPTED / FROZEN - SYNTHETIC STAGING SCOPE ONLY.

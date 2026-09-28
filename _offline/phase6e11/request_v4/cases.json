@@ -1,0 +1,24 @@
+{
+  "scope": "synthetic application requests; Auth events are separate transactions",
+  "preregistered": true,
+  "required": [
+    "existing 45 Route A/B workflow pairs through the real PostgreSQL driver",
+    "claims verified by Auth server before the native transport is called",
+    "wrong issuer, audience, expired claim, wrong actor/session denied",
+    "revoked session, ordinary account, cross-workspace and cross-route denied",
+    "unique request ID bound to session, payload hash and idempotency key",
+    "same idempotency key cannot apply twice; changed payload denied",
+    "intent, audit, application mutation and result share one application transaction",
+    "interruption before mutation and after mutation rolls back all request state",
+    "missing, extra and duplicated audit rows fail closed",
+    "cleanup DELETE remains visible in retained private audit metadata",
+    "no new writes, triggers or DDL in managed Auth, Storage or Realtime",
+    "no grants to anon, authenticated, service_role or PUBLIC on new private objects",
+    "all new functions SECURITY INVOKER and fixed search_path",
+    "frozen sources and migration 41 byte-identical",
+    "clean migrations 1..42 on real Supabase PostgreSQL 17.6, no extension mocks",
+    "real Auth login, refresh, logout and session revocation separately evidenced before hosted PASS"
+  ],
+  "hosted_allowed_before_ci_pass": false,
+  "external_ai_calls": 0
+}
