@@ -1,0 +1,4 @@
+# Staging app assets stay public; database and offline test sources do not.
+exclude:
+  - supabase
+  - _offline
