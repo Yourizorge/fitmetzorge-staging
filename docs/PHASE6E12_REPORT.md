@@ -3,6 +3,12 @@ Ticket: SU-487979. Enige scope: Yourizorge/fitmetzorge-staging, main.
 Baseline: 00403d24d30bf2c3886df6d6c437fcc3dc39277b.
 6E-11 hosted blijft NO-GO. 6E-12 wordt alleen als offline concept opgeleverd.
 
+## Definitieve Oplevering
+OFFLINE TECHNICAL PASS / READY FOR OWNER REVIEW. 2591 technische controles PASS;
+283 browsercontroles zowel lokaal als gepubliceerd PASS. Pages is gepubliceerd;
+84 bestaande assets ongewijzigd, 6 nieuwe demo-assets correct, 15 private paden 404.
+Zie [publicatiebewijs en beperkingen](PHASE6E12_PUBLICATION_RECEIPT.md).
+
 ## Afhankelijkheid En Uitvoering
 De vooraf vastgelegde [splitsing en cases](PHASE6E12_DEPENDENCIES_AND_CASES.md)
 scheiden onafhankelijk werk van hosted bewijs. De nieuwste owner-GO vervangt
