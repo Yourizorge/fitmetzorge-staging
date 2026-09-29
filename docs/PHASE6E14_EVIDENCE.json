@@ -1,0 +1,151 @@
+{
+  "package": "6E-14",
+  "status": "TECHNICAL PASS / READY FOR OWNER REVIEW",
+  "owner_accepted": false,
+  "frozen": false,
+  "baseline": "2a0bb0abae2e12f7993bf6abe90698a4e27ead40",
+  "source_sha256": {
+    "_offline/phase6e14/build.cjs": "35d99c9447da3fd81986a85197f6b3c85fd3fed02c2207f6a9eacf284bd8b7bf",
+    "_offline/phase6e14/catalog.cjs": "8d7bc22dab5dd695378597f1c690d460f497e58984cc9d72ac2ad923bd46e9e4",
+    "_offline/phase6e14/engine.cjs": "b059bbeaa4acbdcc1b8092c80aa9e51d013ae9db8ef58d1773522e367c19456a",
+    "_offline/phase6e14/evidence.cjs": "7933ef833202f2115b1b4c269b9d5f27562303362e7725c8678e04d3b865c0a6",
+    "_offline/phase6e14/fixtures.cjs": "33590b14f91a0fffc34a887efde9843ef940dd5de4bcc5f70b4eb0c2153e537f",
+    "_offline/phase6e14/ops.cjs": "55e3600823f00eaa69e3fc62200a8048f6d1e9862f81f3a3f45d48bf20743973",
+    "_offline/phase6e14/publication.cjs": "aea5035bb7442ce33b3b4e9590c4479ab8df3c044ac0a2bbbfb24abe84d9afdb",
+    "_offline/phase6e14/README.md": "5182acb6ca5343f8079ad3dd638e954a46fe09e9356b0fdc2b4c4848e3a7742e",
+    "_offline/phase6e14/run_tests.cjs": "fc58da84ce51f8f06e20a8d7e02a812200d1eff018af36d0570dcec6bb937d72",
+    "_offline/phase6e14/serve.cjs": "1dfda83ef3520225fb83a39c22b8a5be01b2880489a832310625038e4b324586",
+    "_offline/phase6e14/test/browser.cjs": "0457e9d23dc9fb3d526a817e261e46328d98a79c0ff534f25d6ea9951f62ac62",
+    "_offline/phase6e14/test/contract.test.cjs": "ce98da51f1e60974487b9cf00ef772c5123c8bc7f493bc2f4fd0f9e361696ac9",
+    "_offline/phase6e14/test/isolation.test.cjs": "34eb87d5eecefde07dcec43fc8c7b68f635e008ced61c4ec501eadca67a1a4c7",
+    "bounded-adjustments-demo/app.js": "70302a7b65f5a6f4171aca8a4904aba7c237fad79a299ac1f378d76d542a4ec7",
+    "bounded-adjustments-demo/copy.js": "e69e61e069b6c4d6b4cc7edb9b1cb58f11ded682aefbf67ea8f0ad06f35046bc",
+    "bounded-adjustments-demo/data.js": "40430b44affe59f1c0f783c1a3ac7e3199c0397d13d2ef59f5dd28850c7ea417",
+    "bounded-adjustments-demo/demo.css": "eef7b0e18e3be93e2a6890d7a36d509d65604f5aeb8684a353aeb4e367101d61",
+    "bounded-adjustments-demo/index.html": "6a79bac70a5c674b6934175a2ce39f5bea2a5303a19d97edb0b1ca82eaf63286",
+    "bounded-adjustments-demo/model.js": "d70ecb7d3d6d89b9e5863b96ca7a697e3a42d2028516f9c9569b2228e70db5da"
+  },
+  "tests": {
+    "new": {
+      "tests": 389,
+      "pass": 389,
+      "fail": 0,
+      "skipped": 0
+    },
+    "frozen6e13": {
+      "tests": 233,
+      "pass": 233,
+      "fail": 0,
+      "skipped": 0
+    },
+    "earlier_frozen": {
+      "new6e12": {
+        "tests": 457,
+        "pass": 457,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e0": {
+        "tests": 711,
+        "pass": 711,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e1": {
+        "tests": 292,
+        "pass": 292,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e2": {
+        "tests": 159,
+        "pass": 159,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e3": {
+        "tests": 111,
+        "pass": 111,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e4": {
+        "tests": 229,
+        "pass": 229,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e5": {
+        "tests": 144,
+        "pass": 144,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e6": {
+        "tests": 112,
+        "pass": 112,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e7": {
+        "tests": 184,
+        "pass": 184,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e8": {
+        "tests": 149,
+        "pass": 149,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e9": {
+        "tests": 35,
+        "pass": 35,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e10": {
+        "tests": 8,
+        "pass": 8,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    "total": 3213,
+    "known_limitation_observations_are_not_recognition_success": true,
+    "medical_validation": false
+  },
+  "browser": {
+    "checks": 490,
+    "layouts": 49,
+    "errors": 0,
+    "unexpected_egress": 0,
+    "physical_phone_test": false
+  },
+  "preservation": {
+    "working_files": 1122,
+    "historical_evidence": 58,
+    "valid_old_pairs": 112,
+    "step113": "historical incomplete",
+    "migrations": {
+      "supabase/migrations/20260924155822_phase6e11_rpc_bridge.sql": "4d474becdc5c3a7343562602115f9333b5cffc6bed0c323fca3abc560843af7d",
+      "supabase/migrations/20260928120846_phase6e11_request_binding.sql": "5eebec968d2dae27d4e1462dbcc9de8d9e5599552ff145ad099e57fffd5f5f7c"
+    }
+  },
+  "evidence_files": {
+    "supabase/.temp/phase6e14-1790673921720/6e14-tests-1790675532033.json": "c42cb6df6fe200c3c58bfde15983524ff573835502b6680584ed136922915500",
+    "supabase/.temp/phase6e14-1790673921720/6e13-tests-1790675539216.json": "1aec920f6efe279bffac4a31a927f4dd78c481215f12bc89b999fa38753a4eeb",
+    "supabase/.temp/phase6e14-1790673921720/final-ui/local-browser-1790675623993.json": "cf149a52d1895ec3bb2565bc6e608461ad4f78d8ebe4164308404a7061a51f90",
+    "supabase/.temp/phase6e14-1790673921720/unit-regressions.json": "34c4bb00d1caa635d3d52ba9a02c972b870cbb20f8c0453bd7c1cde00728c4cb",
+    "supabase/.temp/phase6e14-1790673921720/before.json": "fe0c7e1bcc93fb38fe33d024780aa801d778998e32d4dbffb4a88a7885bfbd8e",
+    "supabase/.temp/phase6e11-support-wait-74b97a33fa684a938c93397036c9b843/manifest.json": "a170ab184def4a1759102b43e0e3715f00ce0cdfe8187d52d67a38cea5a4cb03"
+  },
+  "support_hold": "6E11 HOSTED / SU-487979",
+  "hosted_supabase_operations": 0,
+  "external_ai_calls": 0,
+  "external_ai_cost_eur": "0.00",
+  "real_member_ai_enabled": false,
+  "production_touched": false,
+  "publication": "separate post-push receipt"
+}
