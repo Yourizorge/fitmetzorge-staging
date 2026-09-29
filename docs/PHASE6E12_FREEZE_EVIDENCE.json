@@ -1,0 +1,118 @@
+{
+  "package": "6E-12",
+  "status": "COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE/SYNTHETIC ONLY",
+  "accepted_on": "2026-09-29",
+  "source_commit": "dd29496a507df95afc06e4de4d034f2b0197eaa2",
+  "publication_commit": "78dd89853eae4e184b21f8ee0efa19fc03bbea1a",
+  "owner_physical_test": "Explicitly accepted registration/reflection, snapshots/versions, new review for source change, separate approve/apply, restore as new version without history deletion",
+  "sources": [
+    {
+      "file": "_offline/phase6e12/build.cjs",
+      "working_sha256": "fd7d0328d372187167140affebc2344fd6f6ba1806347fe36783b51ed7122f6d",
+      "git_sha256": "fd7d0328d372187167140affebc2344fd6f6ba1806347fe36783b51ed7122f6d"
+    },
+    {
+      "file": "_offline/phase6e12/core.cjs",
+      "working_sha256": "5702ac90dc951c30651df150376be2913a30c84b72bdd009edbef82fd6e0d816",
+      "git_sha256": "5702ac90dc951c30651df150376be2913a30c84b72bdd009edbef82fd6e0d816"
+    },
+    {
+      "file": "_offline/phase6e12/evidence.cjs",
+      "working_sha256": "c0144c0f68f385e4b5e3da29a6e0899229f05fe04b4fad44498da1ff37e3d182",
+      "git_sha256": "c0144c0f68f385e4b5e3da29a6e0899229f05fe04b4fad44498da1ff37e3d182"
+    },
+    {
+      "file": "_offline/phase6e12/no_network.cjs",
+      "working_sha256": "fbbe8122b7f5cf6cd8e461afbea9e2e4f1ce44ee0e308fc8bc80f4a5902eb6e4",
+      "git_sha256": "fbbe8122b7f5cf6cd8e461afbea9e2e4f1ce44ee0e308fc8bc80f4a5902eb6e4"
+    },
+    {
+      "file": "_offline/phase6e12/protect.cjs",
+      "working_sha256": "f7436edf5ec1d0bf9418f6bfa69010171fe10b9b4847ecc4567e6c1bcc1374f0",
+      "git_sha256": "f7436edf5ec1d0bf9418f6bfa69010171fe10b9b4847ecc4567e6c1bcc1374f0"
+    },
+    {
+      "file": "_offline/phase6e12/publication.cjs",
+      "working_sha256": "10ba4affd226c5afca129aa919be99f7bc08212630ef1530db6355ea5c58ee68",
+      "git_sha256": "10ba4affd226c5afca129aa919be99f7bc08212630ef1530db6355ea5c58ee68"
+    },
+    {
+      "file": "_offline/phase6e12/README.md",
+      "working_sha256": "dbb8930602f32e0aa1b174241b8b69e25fc728a76460c38918b11905b1eb9edd",
+      "git_sha256": "dbb8930602f32e0aa1b174241b8b69e25fc728a76460c38918b11905b1eb9edd"
+    },
+    {
+      "file": "_offline/phase6e12/run_tests.cjs",
+      "working_sha256": "24a3c15d30281c16208c6688cc8c991af029718c49cf6b92dc604ad9e4d3d99e",
+      "git_sha256": "24a3c15d30281c16208c6688cc8c991af029718c49cf6b92dc604ad9e4d3d99e"
+    },
+    {
+      "file": "_offline/phase6e12/serve.cjs",
+      "working_sha256": "f74ab47e061634649ae71d9d11872c91c8464efe4b42bf996e091a136569480d",
+      "git_sha256": "f74ab47e061634649ae71d9d11872c91c8464efe4b42bf996e091a136569480d"
+    },
+    {
+      "file": "_offline/phase6e12/test/browser.cjs",
+      "working_sha256": "f62794be1088fd35f7626995a08bf72a6d56f1cb1ca5ef2f4dc1f19d84ab982d",
+      "git_sha256": "f62794be1088fd35f7626995a08bf72a6d56f1cb1ca5ef2f4dc1f19d84ab982d"
+    },
+    {
+      "file": "_offline/phase6e12/test/core.test.cjs",
+      "working_sha256": "3500bd03db4beb25917ad8765bec69458bfeb3db546d3a4d1b95c8a9391e14ba",
+      "git_sha256": "3500bd03db4beb25917ad8765bec69458bfeb3db546d3a4d1b95c8a9391e14ba"
+    },
+    {
+      "file": "_offline/phase6e12/test/memory.test.cjs",
+      "working_sha256": "2fac67a6a186f5b35fa2551b063b405217e364a08b170474cec8eed3f9fbfd3e",
+      "git_sha256": "2fac67a6a186f5b35fa2551b063b405217e364a08b170474cec8eed3f9fbfd3e"
+    },
+    {
+      "file": "_offline/phase6e12/test/preservation.test.cjs",
+      "working_sha256": "ade99abc0b18add5753970cc9b9626bde8c1410fe8cf9de3745bcd007a803177",
+      "git_sha256": "ade99abc0b18add5753970cc9b9626bde8c1410fe8cf9de3745bcd007a803177"
+    },
+    {
+      "file": "workout-reflection-demo/app.js",
+      "working_sha256": "fe49b161580068a2d18e455111fb92eb0135d1a7250665d7188b7cedf31682b4",
+      "git_sha256": "fe49b161580068a2d18e455111fb92eb0135d1a7250665d7188b7cedf31682b4"
+    },
+    {
+      "file": "workout-reflection-demo/copy.js",
+      "working_sha256": "cf11e6bbd02b5b6a2c095684c152bd86b6d746e1269fa7061a1e908fdbe2a8b3",
+      "git_sha256": "cf11e6bbd02b5b6a2c095684c152bd86b6d746e1269fa7061a1e908fdbe2a8b3"
+    },
+    {
+      "file": "workout-reflection-demo/data.js",
+      "working_sha256": "a2163f3cfa3bf50aa9d56f299fcce1b2894788f2153fc2c91b0936a474101e4c",
+      "git_sha256": "a2163f3cfa3bf50aa9d56f299fcce1b2894788f2153fc2c91b0936a474101e4c"
+    },
+    {
+      "file": "workout-reflection-demo/demo.css",
+      "working_sha256": "af78202ab83fb07449e9c7f521ba0e0fbce5b3c5f1c26a72472352e185ae3d58",
+      "git_sha256": "af78202ab83fb07449e9c7f521ba0e0fbce5b3c5f1c26a72472352e185ae3d58"
+    },
+    {
+      "file": "workout-reflection-demo/index.html",
+      "working_sha256": "569cecabf9d9294131840f6f7d8c6c553c4cceaf4af56c4065141de12a777835",
+      "git_sha256": "569cecabf9d9294131840f6f7d8c6c553c4cceaf4af56c4065141de12a777835"
+    },
+    {
+      "file": "workout-reflection-demo/memory.js",
+      "working_sha256": "195a0e0eb242ca62692da3f020a507dd41950888e04317050016e84ddfb58abb",
+      "git_sha256": "195a0e0eb242ca62692da3f020a507dd41950888e04317050016e84ddfb58abb"
+    }
+  ],
+  "technical_evidence_sha256": "72e12bf3f4947645541e5dd0457af2362f56483db32419d916ca483d7fb2726d",
+  "historical_tests": 2591,
+  "historical_browser_checks": 283,
+  "runtime_assets_frozen": 84,
+  "live_server_integration_authorized": false,
+  "hosted_6e11": "SUPPORT HOLD SU-487979",
+  "expert_reviews_open": [
+    "medical",
+    "privacy",
+    "legal",
+    "language"
+  ],
+  "whole_phase6e_complete": false
+}
