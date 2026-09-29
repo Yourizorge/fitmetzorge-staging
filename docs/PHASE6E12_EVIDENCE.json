@@ -1,0 +1,143 @@
+{
+  "status": "OFFLINE_TECHNICAL_PASS_READY_FOR_OWNER_REVIEW",
+  "ticket": "SU-487979",
+  "hosted6e11": "NO_GO",
+  "baseline": "00403d24d30bf2c3886df6d6c437fcc3dc39277b",
+  "owner_accepted": false,
+  "frozen": false,
+  "unit_tests": 2591,
+  "new_behavior_tests": 179,
+  "source_identity_tests": 278,
+  "groups": {
+    "new6e12": {
+      "tests": 457,
+      "pass": 457,
+      "fail": 0,
+      "skipped": 0
+    },
+    "frozen6e0": {
+      "tests": 711,
+      "pass": 711,
+      "fail": 0,
+      "skipped": 0
+    },
+    "frozen6e1": {
+      "tests": 292,
+      "pass": 292,
+      "fail": 0,
+      "skipped": 0
+    },
+    "frozen6e2": {
+      "tests": 159,
+      "pass": 159,
+      "fail": 0,
+      "skipped": 0
+    },
+    "frozen6e3": {
+      "tests": 111,
+      "pass": 111,
+      "fail": 0,
+      "skipped": 0
+    },
+    "frozen6e4": {
+      "tests": 229,
+      "pass": 229,
+      "fail": 0,
+      "skipped": 0
+    },
+    "frozen6e5": {
+      "tests": 144,
+      "pass": 144,
+      "fail": 0,
+      "skipped": 0
+    },
+    "frozen6e6": {
+      "tests": 112,
+      "pass": 112,
+      "fail": 0,
+      "skipped": 0
+    },
+    "frozen6e7": {
+      "tests": 184,
+      "pass": 184,
+      "fail": 0,
+      "skipped": 0
+    },
+    "frozen6e8": {
+      "tests": 149,
+      "pass": 149,
+      "fail": 0,
+      "skipped": 0
+    },
+    "frozen6e9": {
+      "tests": 35,
+      "pass": 35,
+      "fail": 0,
+      "skipped": 0
+    },
+    "frozen6e10": {
+      "tests": 8,
+      "pass": 8,
+      "fail": 0,
+      "skipped": 0
+    }
+  },
+  "historical_checkout_byte_guards_replaced": 219,
+  "browser": {
+    "checks": 283,
+    "layouts": 24,
+    "storage_attempts": 0,
+    "errors": 0,
+    "physical_phone_test": false
+  },
+  "existing_worktree_files_unchanged": 1070,
+  "historical_evidence_files_unchanged": 58,
+  "historical_pairs": 112,
+  "historical_step113": "incomplete",
+  "migrations": {
+    "20260924155822_phase6e11_rpc_bridge.sql": "4d474becdc5c3a7343562602115f9333b5cffc6bed0c323fca3abc560843af7d",
+    "20260928120846_phase6e11_request_binding.sql": "5eebec968d2dae27d4e1462dbcc9de8d9e5599552ff145ad099e57fffd5f5f7c"
+  },
+  "evidence": {
+    "unit_sha256": "2454f024dadb58a7d5c9e6cbf749bd0395f9657b6dbf5ff67cc41cbd6ecc73c2",
+    "browser_sha256": "c45a213eae9c80c38b543c5b91f60c5ecbd82e87956ee668d9f8abdd336bdd45",
+    "before_sha256": "ef32a4746336ab089bd78974c63df7eb139d6500e19ab68cd8dd0d24f9d07145",
+    "historical_manifest_sha256": "a170ab184def4a1759102b43e0e3715f00ce0cdfe8187d52d67a38cea5a4cb03"
+  },
+  "source_sha256": {
+    "_offline/phase6e12/build.cjs": "fd7d0328d372187167140affebc2344fd6f6ba1806347fe36783b51ed7122f6d",
+    "_offline/phase6e12/core.cjs": "5702ac90dc951c30651df150376be2913a30c84b72bdd009edbef82fd6e0d816",
+    "_offline/phase6e12/evidence.cjs": "c0144c0f68f385e4b5e3da29a6e0899229f05fe04b4fad44498da1ff37e3d182",
+    "_offline/phase6e12/no_network.cjs": "fbbe8122b7f5cf6cd8e461afbea9e2e4f1ce44ee0e308fc8bc80f4a5902eb6e4",
+    "_offline/phase6e12/protect.cjs": "f7436edf5ec1d0bf9418f6bfa69010171fe10b9b4847ecc4567e6c1bcc1374f0",
+    "_offline/phase6e12/publication.cjs": "10ba4affd226c5afca129aa919be99f7bc08212630ef1530db6355ea5c58ee68",
+    "_offline/phase6e12/README.md": "dbb8930602f32e0aa1b174241b8b69e25fc728a76460c38918b11905b1eb9edd",
+    "_offline/phase6e12/run_tests.cjs": "24a3c15d30281c16208c6688cc8c991af029718c49cf6b92dc604ad9e4d3d99e",
+    "_offline/phase6e12/serve.cjs": "f74ab47e061634649ae71d9d11872c91c8464efe4b42bf996e091a136569480d",
+    "_offline/phase6e12/test/browser.cjs": "f62794be1088fd35f7626995a08bf72a6d56f1cb1ca5ef2f4dc1f19d84ab982d",
+    "_offline/phase6e12/test/core.test.cjs": "3500bd03db4beb25917ad8765bec69458bfeb3db546d3a4d1b95c8a9391e14ba",
+    "_offline/phase6e12/test/memory.test.cjs": "2fac67a6a186f5b35fa2551b063b405217e364a08b170474cec8eed3f9fbfd3e",
+    "_offline/phase6e12/test/preservation.test.cjs": "ade99abc0b18add5753970cc9b9626bde8c1410fe8cf9de3745bcd007a803177",
+    "workout-reflection-demo/app.js": "fe49b161580068a2d18e455111fb92eb0135d1a7250665d7188b7cedf31682b4",
+    "workout-reflection-demo/copy.js": "cf11e6bbd02b5b6a2c095684c152bd86b6d746e1269fa7061a1e908fdbe2a8b3",
+    "workout-reflection-demo/data.js": "a2163f3cfa3bf50aa9d56f299fcce1b2894788f2153fc2c91b0936a474101e4c",
+    "workout-reflection-demo/demo.css": "af78202ab83fb07449e9c7f521ba0e0fbce5b3c5f1c26a72472352e185ae3d58",
+    "workout-reflection-demo/index.html": "569cecabf9d9294131840f6f7d8c6c553c4cceaf4af56c4065141de12a777835",
+    "workout-reflection-demo/memory.js": "195a0e0eb242ca62692da3f020a507dd41950888e04317050016e84ddfb58abb"
+  },
+  "hosted_database_calls": 0,
+  "jit_attempts": 0,
+  "hosted_auth_tests": 0,
+  "hosted_fixture_cleanup": false,
+  "external_ai_calls": 0,
+  "external_ai_cost_eur": "0.00",
+  "real_member_ai_enabled": false,
+  "production_touched": false,
+  "limits": [
+    "Browser examples are bounded build-time outputs; arbitrary input is facts-only",
+    "Roles are simulated, not authentication",
+    "No hosted security, database or physical-phone proof",
+    "No medical/privacy/legal/language expert approval"
+  ],
+  "publication": "Pending controlled commit/push, then independent Pages verification"
+}
