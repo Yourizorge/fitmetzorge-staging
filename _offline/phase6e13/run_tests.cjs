@@ -1,0 +1,10 @@
+"use strict";
+const fs=require("node:fs"),p=require("node:path"),cp=require("node:child_process"),a=require("node:assert/strict");
+const root=p.resolve(__dirname,"../.."),out=process.argv[2];
+if(!out)throw Error("output_required");
+const files=fs.readdirSync(p.join(__dirname,"test")).filter(f=>f.endsWith(".test.cjs")).map(f=>"_offline/phase6e13/test/"+f);
+const args=["--require","./_offline/phase6e12/no_network.cjs","--test","--test-reporter=tap",...files];
+const r=cp.spawnSync(process.execPath,args,{cwd:root,encoding:"utf8",windowsHide:true,maxBuffer:20000000,timeout:90000});
+const counts=Object.fromEntries(["tests","pass","fail","skipped"].map(k=>[k,Number(r.stdout?.match(new RegExp("^# "+k+" (\\d+)$","m"))?.[1])]));
+const report={counts,exit:r.status,stdout:r.stdout,stderr:r.stderr,network_blocked:true,limitation_observation_tests:1,medical_recognition_validation:false};
+fs.writeFileSync(p.join(out,"6e13-tests-"+Date.now()+".json"),JSON.stringify(report,null,2),{flag:"wx"});console.log(JSON.stringify(counts));a.equal(r.status,0);

@@ -1,0 +1,68 @@
+(function(root,factory){const x=factory();if(typeof module==="object")module.exports=x;else root.FMZ13Copy=x;})(typeof globalThis!=="undefined"?globalThis:this,function(){
+"use strict";
+const copy={
+ nl:{title:"Youri signalen",scope:"Alleen registratievergelijking. Geen oorzaak, medische vrijgave of aanpassing van training of voeding.",banner:"Synthetische offline demo · alleen geheugen · verversen reset alles",
+  invalid:"Dit bronpakket kan niet worden beoordeeld.",context:"Alleen betrouwbare feiten. Deze context geeft geen nieuw reflectievoorstel; chat en eerdere resultaten houden hun eigen toegangsregels.",
+  access:"Geen nieuwe analyse binnen de huidige toestemming of rechten.",binding:"Bronkoppeling of versie klopt niet. Geen conclusie uit dit pakket.",
+  trainer:"De coachroute en trainerbron passen niet. Geen routewissel of wijzigingsvoorstel.",expired:"De bron is verlopen of de tijd klopt niet. Geen conclusie uit verouderde gegevens.",
+  missing:"Een registratie ontbreekt, is onvolledig of betwist. Geen vergelijking of gedeeltelijk voorstel.",comparable:"Eenheid, methode, doel of plansnapshot is niet vergelijkbaar. Geen conclusie.",
+  unchanged:"De geregistreerde waarden zijn gelijk. Geen nieuw signaal of voorstel.",
+  proposal:"Je registraties zijn veranderd. Bekijk de verschillen en controleer of de vastgelegde dagen kloppen. Vergelijk daarna met je bestaande plan; ik wijzig geen training of voeding.",
+  withTrainer:"Je kunt dit zelf met je trainer bespreken. Er wordt niets automatisch gedeeld.",
+  independent:"Ook zonder trainer blijft dit alleen een voorstel om je registraties te bekijken, geen nieuw plan.",
+  metrics:{sleep:"Slaap",recovery:"Ervaren herstel",nutrition:"Gelogde energie",training:"Voltooide sets"},
+  units:{sleep:"min/dag",recovery:"zelfrapportage 1–10",nutrition:"kcal gelogd/dag",training:"sets/3 dagen"},
+  before:"Vorige 3 dagen",after:"Laatste 3 dagen",delta:"Verschil",calculation:"Berekening en bronversies",inbox:"Signaleninbox",sources:"Bronpakket",
+  scenario:"Synthetische situatie",language:"Taal",theme:"Thema",light:"Licht",dark:"Donker",review:"Bekeken",dismiss:"Voorstel afwijzen",replay:"Bron opnieuw ontvangen",correct:"Nieuwe broncorrectie",
+  restore:"Oude waarden als nieuwe versie",expire:"Bron laten verlopen",revoke:"Toestemming intrekken",reset:"Nieuwe demo",history:"Versiegeschiedenis",audit:"Gebeurtenissen",
+  available:"Toegang",chat:"Chat",past:"Bestaande resultaten",analysis:"Nieuwe feiten",yes:"Beschikbaar",no:"Niet beschikbaar",notification:"Er is een nieuw registratieverschil om te bekijken.",
+  pending:"Te bekijken",reviewed:"Bekeken",dismissed:"Afgewezen",superseded:"Vervangen door nieuwe bron",withdrawn:"Niet meer actueel",blocked:"Geen conclusie",facts_only:"Alleen feiten",candidate_only:"Begrensd voorstel",unchangedState:"Geen verschil",
+  goal:"Bestaand doel: consequent registreren",routeA:"Route A · trainergebonden",routeB:"Route B · zelfstandig",safety:"Veiligheidscontext",readonly:"Geen toepasknop; schema en voeding blijven ongewijzigd.",
+  notices:"Gemiddelden op twee decimalen; exacte som en deler staan bij de bronnen. Dit is geen beoordeling van gezondheid of daadwerkelijke voedselinname.",
+  cases:["Vier veranderingen","Alleen slaap","Alleen herstel","Alleen voeding","Alleen training","Gelijke waarden","Nul is geregistreerd","Zonder trainer (Route B)","Ontbrekende waarde","Onvolledig voedingslog","Plansnapshotconflict","Verlopen bron","Trainer ontbreekt (Route A)","Actuele klacht","Oningedeelde klacht","Zelf gemeld herstel","Terugkerende klacht","O5-context verlopen","Bronbericht ontbreekt","Technische uitval","Onduidelijke taal","Analyse-toestemming ingetrokken","Recht ontbreekt"]
+ },
+ en:{title:"Youri signals",scope:"Record comparison only. No causal claim, medical clearance, training or nutrition change.",banner:"Synthetic offline demo · memory only · refresh resets everything",
+  invalid:"This source bundle cannot be assessed.",context:"Reliable facts only. This context permits no new reflection proposal; chat and earlier results retain their separate access rules.",
+  access:"No new analysis under the current consent or access rights.",binding:"Source binding or version does not match. No conclusion from this bundle.",
+  trainer:"The coach route and trainer source do not match. No route switch or change proposal.",expired:"The source has expired or its time is invalid. No conclusion from stale data.",
+  missing:"A record is missing, incomplete or disputed. No comparison or partial proposal.",comparable:"Unit, method, goal or plan snapshot is not comparable. No conclusion.",
+  unchanged:"Recorded values are equal. No new signal or proposal.",
+  proposal:"Your records have changed. Review the differences and check the recorded days. Then compare them with your existing plan; I will not change your training or nutrition.",
+  withTrainer:"You can discuss this with your trainer yourself. Nothing is shared automatically.",
+  independent:"Without a trainer, this is still only a proposal to review your records, not a new plan.",
+  metrics:{sleep:"Sleep",recovery:"Perceived recovery",nutrition:"Logged energy",training:"Completed sets"},
+  units:{sleep:"min/day",recovery:"self-report 1–10",nutrition:"kcal logged/day",training:"sets/3 days"},
+  before:"Previous 3 days",after:"Latest 3 days",delta:"Difference",calculation:"Calculation and source versions",inbox:"Signals inbox",sources:"Source bundle",
+  scenario:"Synthetic case",language:"Language",theme:"Theme",light:"Light",dark:"Dark",review:"Mark reviewed",dismiss:"Dismiss proposal",replay:"Receive source again",correct:"New source correction",
+  restore:"Old values as new version",expire:"Expire source",revoke:"Withdraw consent",reset:"New demo",history:"Version history",audit:"Events",
+  available:"Access",chat:"Chat",past:"Earlier results",analysis:"New facts",yes:"Available",no:"Unavailable",notification:"A new recorded difference is ready to review.",
+  pending:"To review",reviewed:"Reviewed",dismissed:"Dismissed",superseded:"Replaced by new source",withdrawn:"No longer current",blocked:"No conclusion",facts_only:"Facts only",candidate_only:"Bounded proposal",unchangedState:"No difference",
+  goal:"Existing goal: consistent recording",routeA:"Route A · trainer-linked",routeB:"Route B · independent",safety:"Safety context",readonly:"No apply button; plan and nutrition remain unchanged.",
+  notices:"Means rounded to two decimals; exact sum and divisor are shown with the sources. Not a health assessment or proof of actual food intake.",
+  cases:["Four changes","Sleep only","Recovery only","Nutrition only","Training only","Equal values","Recorded zero","Independent (Route B)","Missing value","Incomplete food log","Plan snapshot conflict","Expired source","Missing trainer (Route A)","Current complaint","Unclassified complaint","Self-reported recovery","Recurring complaint","O5 context expired","Source message missing","Technical failure","Unclear language","Analysis consent withdrawn","Entitlement missing"]
+ },
+ de:{title:"Youri Signale",scope:"Nur Vergleich von Aufzeichnungen. Keine Ursache, medizinische Freigabe oder Trainings-/Ernaehrungsaenderung.",banner:"Synthetische Offline-Demo · nur Arbeitsspeicher · Neuladen setzt alles zurueck",
+  invalid:"Dieses Quellenpaket kann nicht bewertet werden.",context:"Nur verlaessliche Fakten. Dieser Kontext erlaubt keinen neuen Reflexionsvorschlag; Chat und bisherige Ergebnisse behalten ihre eigenen Zugriffsregeln.",
+  access:"Keine neue Analyse mit der aktuellen Einwilligung oder Berechtigung.",binding:"Quellenzuordnung oder Version stimmt nicht. Keine Schlussfolgerung aus diesem Paket.",
+  trainer:"Coachroute und Trainerquelle passen nicht. Kein Routenwechsel oder Aenderungsvorschlag.",expired:"Die Quelle ist abgelaufen oder die Zeit stimmt nicht. Keine Schlussfolgerung aus veralteten Daten.",
+  missing:"Eine Erfassung fehlt, ist unvollstaendig oder strittig. Kein Vergleich oder Teilvorschlag.",comparable:"Einheit, Methode, Ziel oder Plansnapshot ist nicht vergleichbar. Keine Schlussfolgerung.",
+  unchanged:"Die erfassten Werte sind gleich. Kein neues Signal oder Vorschlag.",
+  proposal:"Deine Aufzeichnungen haben sich veraendert. Sieh dir die Unterschiede an und pruefe die erfassten Tage. Vergleiche sie dann mit deinem bestehenden Plan; ich aendere weder Training noch Ernaehrung.",
+  withTrainer:"Du kannst dies selbst mit deinem Trainer besprechen. Nichts wird automatisch geteilt.",
+  independent:"Auch ohne Trainer ist dies nur ein Vorschlag zur Pruefung deiner Aufzeichnungen, kein neuer Plan.",
+  metrics:{sleep:"Schlaf",recovery:"Empfundene Erholung",nutrition:"Erfasste Energie",training:"Abgeschlossene Saetze"},
+  units:{sleep:"min/Tag",recovery:"Selbstauskunft 1–10",nutrition:"kcal erfasst/Tag",training:"Saetze/3 Tage"},
+  before:"Vorherige 3 Tage",after:"Letzte 3 Tage",delta:"Differenz",calculation:"Berechnung und Quellenversionen",inbox:"Signalpostfach",sources:"Quellenpaket",
+  scenario:"Synthetischer Fall",language:"Sprache",theme:"Design",light:"Hell",dark:"Dunkel",review:"Gesehen",dismiss:"Vorschlag ablehnen",replay:"Quelle erneut empfangen",correct:"Neue Quellenkorrektur",
+  restore:"Alte Werte als neue Version",expire:"Quelle ablaufen lassen",revoke:"Einwilligung widerrufen",reset:"Neue Demo",history:"Versionsverlauf",audit:"Ereignisse",
+  available:"Zugriff",chat:"Chat",past:"Bisherige Ergebnisse",analysis:"Neue Fakten",yes:"Verfuegbar",no:"Nicht verfuegbar",notification:"Eine neue erfasste Differenz ist zur Pruefung bereit.",
+  pending:"Zu pruefen",reviewed:"Gesehen",dismissed:"Abgelehnt",superseded:"Durch neue Quelle ersetzt",withdrawn:"Nicht mehr aktuell",blocked:"Keine Schlussfolgerung",facts_only:"Nur Fakten",candidate_only:"Begrenzter Vorschlag",unchangedState:"Keine Differenz",
+  goal:"Bestehendes Ziel: konsequent erfassen",routeA:"Route A · mit Trainer",routeB:"Route B · eigenstaendig",safety:"Sicherheitskontext",readonly:"Keine Anwendungsschaltflaeche; Plan und Ernaehrung bleiben unveraendert.",
+  notices:"Mittelwerte auf zwei Dezimalstellen; genaue Summe und Divisor stehen bei den Quellen. Keine Gesundheitsbewertung oder Nachweis der tatsaechlichen Nahrungsaufnahme.",
+  cases:["Vier Aenderungen","Nur Schlaf","Nur Erholung","Nur Ernaehrung","Nur Training","Gleiche Werte","Erfasste Null","Eigenstaendig (Route B)","Fehlender Wert","Unvollstaendiges Ernaehrungslog","Plansnapshot-Konflikt","Abgelaufene Quelle","Trainer fehlt (Route A)","Aktuelle Beschwerden","Nicht eingestufte Beschwerden","Selbst gemeldete Erholung","Wiederkehrende Beschwerden","O5-Kontext abgelaufen","Quellennachricht fehlt","Technischer Fehler","Unklare Sprache","Analyseeinwilligung widerrufen","Berechtigung fehlt"]
+ }
+};
+function number(n,l){return new Intl.NumberFormat(l,{maximumFractionDigits:2}).format(n);}
+function format(l,metric,c){const t=copy[l];return t.metrics[metric]+": "+number(c.previous.sum/c.previous.divisor,l)+" → "+number(c.current.sum/c.current.divisor,l)+" "+t.units[metric]+" ("+(c.delta_numerator>0?"+":"")+number(c.delta_numerator/c.delta_divisor,l)+").";}
+return {copy,number,format};
+});

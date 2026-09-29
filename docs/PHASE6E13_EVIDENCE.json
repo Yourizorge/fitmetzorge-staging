@@ -1,0 +1,154 @@
+{
+  "package": "6E-13",
+  "status": "OFFLINE TECHNICAL PASS / READY FOR OWNER REVIEW",
+  "owner_accepted": false,
+  "frozen": false,
+  "baseline": "78dd89853eae4e184b21f8ee0efa19fc03bbea1a",
+  "source_sha256": {
+    "_offline/phase6e13/build.cjs": "fe56a14feebf780f4f6b0e2b665dea708e4aaa03a25866a08b1587698d061913",
+    "_offline/phase6e13/engine.cjs": "a184c9e2d6a364f44527411602839e644bfce0823b1d45dc569a8312d9635038",
+    "_offline/phase6e13/evidence.cjs": "0f5a5c5d2628c2cd5ef2dad784c169ed9f286c81310bb5f311fa1aa2f8cb373e",
+    "_offline/phase6e13/fixtures.cjs": "ebee30abcd98912d3eb9f3ca352672cd8f37b249059eeaaa3f2f09fefe37c010",
+    "_offline/phase6e13/ops.cjs": "139d055ad5513230c0e9c2472c928d763eb116cf78fe63d78a42097cbac00a29",
+    "_offline/phase6e13/publication.cjs": "e067a96ac45db7e61be029c84a75eb7ab2f172d48137090cc4fb673820de947f",
+    "_offline/phase6e13/README.md": "707e980abda8ec89a1d60c40fb738ed8f7ccbe3b89f14bd0cb08dff88737edd6",
+    "_offline/phase6e13/run_tests.cjs": "d691ace1811645c2331ef87a23e4227b43c891f84d7cf6b5a5581782451d06c9",
+    "_offline/phase6e13/safety.cjs": "38345662f8ce6efbdfbab11a7db5d0d9214122aff38096ef4ff4ff25820b951c",
+    "_offline/phase6e13/serve.cjs": "4197c3a2081b7ac5ace0affd91c0c36acec7d453dc3a1ce9295ce4dd80cc8dac",
+    "_offline/phase6e13/test/browser.cjs": "3e09db3a8d9f4b30fb9a872407929fb95c2f09e06bbfd47432874853d487aee5",
+    "_offline/phase6e13/test/engine.test.cjs": "918ff1e34f3df8aad939093eb9e32fa42b1272a1fe8f91a5e6b5e3203be5f55f",
+    "_offline/phase6e13/test/isolation.test.cjs": "e2d8241922b8adaca0af32564ebfdb6809bffab8971ffefcc20bd2330d6a8f1f",
+    "_offline/phase6e13/test/workflow.test.cjs": "9ee289cccf129fd10fd318dc24ea31f8cfa60857b0cdab178ce7192886c01d78",
+    "proactive-signals-demo/app.js": "39823e97c48f2ba7dd3201274254781f7baa8a4c67e9e72e56428e8de4398797",
+    "proactive-signals-demo/copy.js": "8d91ee949d4a7b34dc5b33fa250c4a9393f032b563c2b6ce720c1580263cb55b",
+    "proactive-signals-demo/data.js": "ed6bbcc1a4c1de661802ce6e13306cd6a68ca8149ab210cbbce9f17e89659c01",
+    "proactive-signals-demo/demo.css": "995b3b8cc816e2447a04017fa7232a2076a1574d371f95f3102f84993f2f7a95",
+    "proactive-signals-demo/index.html": "4bd836217ba76d6a9a7dfb872adad56f631333e8d52f1b2b289845e31c57069d",
+    "proactive-signals-demo/model.js": "72f9d7df076edd3caa95a352061d004fc8cf0fd88cfaaa79caf81171e14f1a78"
+  },
+  "tests": {
+    "new_technical": {
+      "tests": 233,
+      "pass": 233,
+      "fail": 0,
+      "skipped": 0
+    },
+    "limitation_observations": 1,
+    "not_medical_recognition_validation": true,
+    "frozen_groups": {
+      "new6e12": {
+        "tests": 457,
+        "pass": 457,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e0": {
+        "tests": 711,
+        "pass": 711,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e1": {
+        "tests": 292,
+        "pass": 292,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e2": {
+        "tests": 159,
+        "pass": 159,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e3": {
+        "tests": 111,
+        "pass": 111,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e4": {
+        "tests": 229,
+        "pass": 229,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e5": {
+        "tests": 144,
+        "pass": 144,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e6": {
+        "tests": 112,
+        "pass": 112,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e7": {
+        "tests": 184,
+        "pass": 184,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e8": {
+        "tests": 149,
+        "pass": 149,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e9": {
+        "tests": 35,
+        "pass": 35,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e10": {
+        "tests": 8,
+        "pass": 8,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    "frozen_total": 2591
+  },
+  "browser": {
+    "checks": 451,
+    "layouts": 24,
+    "errors": 0,
+    "storage_attempts": 0,
+    "unexpected_egress": 0,
+    "physical_phone_test": false
+  },
+  "preserved": {
+    "existing_files": 1094,
+    "prior_evidence_hashes": 58,
+    "old_pairs": 112,
+    "old_step113": "incomplete historical evidence",
+    "migrations": {
+      "supabase/migrations/20260924155822_phase6e11_rpc_bridge.sql": "4d474becdc5c3a7343562602115f9333b5cffc6bed0c323fca3abc560843af7d",
+      "supabase/migrations/20260928120846_phase6e11_request_binding.sql": "5eebec968d2dae27d4e1462dbcc9de8d9e5599552ff145ad099e57fffd5f5f7c"
+    }
+  },
+  "evidence_files": {
+    "supabase/.temp/phase6e13-1790671508560/6e13-tests-1790672472942.json": "c7086ece79d56a4e08ab86b0ab1ab9cc32b40b4f502d522f788e89b68d2ef844",
+    "supabase/.temp/phase6e13-final-1790672506813/local-browser-1790672557595.json": "964b5c39291539ffa4b7271933228eda52fa5337acad2faafe8da2a1c886d833",
+    "supabase/.temp/phase6e13-1790671508560/before.json": "da46937b3e4561f4da36b878b74cca892bf0f4c6ce86afa66368720db9865f04",
+    "supabase/.temp/phase6e13-1790671508560/unit-regressions.json": "da8331b8c2981756f8ada04aa2fd42ebfdf3d690d23b834e384d1e5ce12db101",
+    "supabase/.temp/phase6e11-support-wait-74b97a33fa684a938c93397036c9b843/manifest.json": "a170ab184def4a1759102b43e0e3715f00ce0cdfe8187d52d67a38cea5a4cb03"
+  },
+  "limitations": [
+    "Fixed synthetic three-day policy; not validated notification cadence or health thresholds",
+    "One known German ordinary paraphrase remains clarification; observation not recognition success",
+    "Source manifests are synthetic integrity, not authentic server authority",
+    "No calorie/load adjustment, independent plan builder or live scheduler",
+    "No real data or medical/privacy/legal/language expert validation"
+  ],
+  "support_hold": "6E11 HOSTED ONLY / SU-487979",
+  "hosted_supabase_operations": 0,
+  "migration_auth_edge_cleanup_operations": 0,
+  "external_ai_calls": 0,
+  "external_ai_cost_eur": "0.00",
+  "real_member_ai_enabled": false,
+  "production_touched": false,
+  "publication": "Separate post-push receipt required"
+}

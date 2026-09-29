@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; frame-src 'none'; worker-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>FitMetZorge | Youri signalen</title>
+<link rel="stylesheet" href="demo.css">
+<script defer src="copy.js"></script><script defer src="model.js"></script><script defer src="data.js"></script><script defer src="app.js"></script>
+</head>
+<body>
+<div id="banner" class="banner"></div>
+<header><img src="../training-review-demo/brand.png" alt="FitMetZorge" width="40" height="40"><div><span>FitMetZorge</span><h1 id="title"></h1></div>
+<div class="preferences"><label><span data-copy="language"></span><select id="language"><option value="nl">NL</option><option value="en">EN</option><option value="de">DE</option></select></label>
+<label><span data-copy="theme"></span><select id="theme"><option value="light">Licht</option><option value="dark">Donker</option></select></label></div></header>
+<main>
+<section class="control-band"><label class="scenario"><span data-copy="scenario"></span><select id="scenario"></select></label><button id="reset" type="button"></button></section>
+<div class="workspace">
+<section class="primary"><div class="section-head"><h2 data-copy="inbox"></h2><span id="count" class="count"></span></div>
+<div id="notification" role="status" aria-live="polite"></div>
+<div id="context" class="context"></div>
+<div id="summary"></div><div id="facts" class="facts"></div>
+<div id="proposal"></div><div id="actions" class="actions"></div>
+<p id="scope" class="muted"></p><p id="notice" class="muted small"></p>
+<details id="calculation-detail"><summary data-copy="calculation"></summary><div id="calculations"></div></details>
+</section>
+<aside><h2 data-copy="sources"></h2><div id="source"></div>
+<div id="source-controls" class="source-controls"></div>
+<h2 data-copy="available"></h2><dl id="access"></dl>
+<h2 data-copy="history"></h2><ol id="history"></ol>
+<details><summary data-copy="audit"></summary><ol id="audit"></ol></details>
+</aside></div>
+</main>
+<footer id="boundary"></footer>
+</body></html>
