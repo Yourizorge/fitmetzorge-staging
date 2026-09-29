@@ -1,0 +1,126 @@
+{
+  "package": "6E-13",
+  "status": "COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE/SYNTHETIC ONLY",
+  "accepted_on": "2026-09-29",
+  "source_commit": "cde2008801e2482f0dffc4dea50d38ba6307d50e",
+  "publication_commit": "2a0bb0abae2e12f7993bf6abe90698a4e27ead40",
+  "owner_physical_test": "S1-S3 explicitly accepted: proactive bounded signals, corrections, dedupe, versions, restore, missing data, complaints, expiry and withdrawal",
+  "sources": [
+    {
+      "file": "_offline/phase6e13/build.cjs",
+      "working_sha256": "fe56a14feebf780f4f6b0e2b665dea708e4aaa03a25866a08b1587698d061913",
+      "git_sha256": "fe56a14feebf780f4f6b0e2b665dea708e4aaa03a25866a08b1587698d061913"
+    },
+    {
+      "file": "_offline/phase6e13/engine.cjs",
+      "working_sha256": "a184c9e2d6a364f44527411602839e644bfce0823b1d45dc569a8312d9635038",
+      "git_sha256": "a184c9e2d6a364f44527411602839e644bfce0823b1d45dc569a8312d9635038"
+    },
+    {
+      "file": "_offline/phase6e13/evidence.cjs",
+      "working_sha256": "0f5a5c5d2628c2cd5ef2dad784c169ed9f286c81310bb5f311fa1aa2f8cb373e",
+      "git_sha256": "0f5a5c5d2628c2cd5ef2dad784c169ed9f286c81310bb5f311fa1aa2f8cb373e"
+    },
+    {
+      "file": "_offline/phase6e13/fixtures.cjs",
+      "working_sha256": "ebee30abcd98912d3eb9f3ca352672cd8f37b249059eeaaa3f2f09fefe37c010",
+      "git_sha256": "ebee30abcd98912d3eb9f3ca352672cd8f37b249059eeaaa3f2f09fefe37c010"
+    },
+    {
+      "file": "_offline/phase6e13/ops.cjs",
+      "working_sha256": "139d055ad5513230c0e9c2472c928d763eb116cf78fe63d78a42097cbac00a29",
+      "git_sha256": "139d055ad5513230c0e9c2472c928d763eb116cf78fe63d78a42097cbac00a29"
+    },
+    {
+      "file": "_offline/phase6e13/publication.cjs",
+      "working_sha256": "e067a96ac45db7e61be029c84a75eb7ab2f172d48137090cc4fb673820de947f",
+      "git_sha256": "e067a96ac45db7e61be029c84a75eb7ab2f172d48137090cc4fb673820de947f"
+    },
+    {
+      "file": "_offline/phase6e13/README.md",
+      "working_sha256": "707e980abda8ec89a1d60c40fb738ed8f7ccbe3b89f14bd0cb08dff88737edd6",
+      "git_sha256": "707e980abda8ec89a1d60c40fb738ed8f7ccbe3b89f14bd0cb08dff88737edd6"
+    },
+    {
+      "file": "_offline/phase6e13/run_tests.cjs",
+      "working_sha256": "d691ace1811645c2331ef87a23e4227b43c891f84d7cf6b5a5581782451d06c9",
+      "git_sha256": "d691ace1811645c2331ef87a23e4227b43c891f84d7cf6b5a5581782451d06c9"
+    },
+    {
+      "file": "_offline/phase6e13/safety.cjs",
+      "working_sha256": "38345662f8ce6efbdfbab11a7db5d0d9214122aff38096ef4ff4ff25820b951c",
+      "git_sha256": "38345662f8ce6efbdfbab11a7db5d0d9214122aff38096ef4ff4ff25820b951c"
+    },
+    {
+      "file": "_offline/phase6e13/serve.cjs",
+      "working_sha256": "4197c3a2081b7ac5ace0affd91c0c36acec7d453dc3a1ce9295ce4dd80cc8dac",
+      "git_sha256": "4197c3a2081b7ac5ace0affd91c0c36acec7d453dc3a1ce9295ce4dd80cc8dac"
+    },
+    {
+      "file": "_offline/phase6e13/test/browser.cjs",
+      "working_sha256": "3e09db3a8d9f4b30fb9a872407929fb95c2f09e06bbfd47432874853d487aee5",
+      "git_sha256": "3e09db3a8d9f4b30fb9a872407929fb95c2f09e06bbfd47432874853d487aee5"
+    },
+    {
+      "file": "_offline/phase6e13/test/engine.test.cjs",
+      "working_sha256": "918ff1e34f3df8aad939093eb9e32fa42b1272a1fe8f91a5e6b5e3203be5f55f",
+      "git_sha256": "918ff1e34f3df8aad939093eb9e32fa42b1272a1fe8f91a5e6b5e3203be5f55f"
+    },
+    {
+      "file": "_offline/phase6e13/test/isolation.test.cjs",
+      "working_sha256": "e2d8241922b8adaca0af32564ebfdb6809bffab8971ffefcc20bd2330d6a8f1f",
+      "git_sha256": "e2d8241922b8adaca0af32564ebfdb6809bffab8971ffefcc20bd2330d6a8f1f"
+    },
+    {
+      "file": "_offline/phase6e13/test/workflow.test.cjs",
+      "working_sha256": "9ee289cccf129fd10fd318dc24ea31f8cfa60857b0cdab178ce7192886c01d78",
+      "git_sha256": "9ee289cccf129fd10fd318dc24ea31f8cfa60857b0cdab178ce7192886c01d78"
+    },
+    {
+      "file": "proactive-signals-demo/app.js",
+      "working_sha256": "39823e97c48f2ba7dd3201274254781f7baa8a4c67e9e72e56428e8de4398797",
+      "git_sha256": "39823e97c48f2ba7dd3201274254781f7baa8a4c67e9e72e56428e8de4398797"
+    },
+    {
+      "file": "proactive-signals-demo/copy.js",
+      "working_sha256": "8d91ee949d4a7b34dc5b33fa250c4a9393f032b563c2b6ce720c1580263cb55b",
+      "git_sha256": "8d91ee949d4a7b34dc5b33fa250c4a9393f032b563c2b6ce720c1580263cb55b"
+    },
+    {
+      "file": "proactive-signals-demo/data.js",
+      "working_sha256": "ed6bbcc1a4c1de661802ce6e13306cd6a68ca8149ab210cbbce9f17e89659c01",
+      "git_sha256": "ed6bbcc1a4c1de661802ce6e13306cd6a68ca8149ab210cbbce9f17e89659c01"
+    },
+    {
+      "file": "proactive-signals-demo/demo.css",
+      "working_sha256": "995b3b8cc816e2447a04017fa7232a2076a1574d371f95f3102f84993f2f7a95",
+      "git_sha256": "995b3b8cc816e2447a04017fa7232a2076a1574d371f95f3102f84993f2f7a95"
+    },
+    {
+      "file": "proactive-signals-demo/index.html",
+      "working_sha256": "4bd836217ba76d6a9a7dfb872adad56f631333e8d52f1b2b289845e31c57069d",
+      "git_sha256": "4bd836217ba76d6a9a7dfb872adad56f631333e8d52f1b2b289845e31c57069d"
+    },
+    {
+      "file": "proactive-signals-demo/model.js",
+      "working_sha256": "72f9d7df076edd3caa95a352061d004fc8cf0fd88cfaaa79caf81171e14f1a78",
+      "git_sha256": "72f9d7df076edd3caa95a352061d004fc8cf0fd88cfaaa79caf81171e14f1a78"
+    }
+  ],
+  "technical_evidence_sha256": "85fe1a7d57044061d14e11520f08653ee6fb416ce6d03e2ca781a7d5a6a6ae42",
+  "publication_receipt_sha256": "9108adfadc1031f896cfa9a5a5eff65f68a29938f7d26a81e1cdbc3b2ea59837",
+  "technical_tests": 2824,
+  "browser_checks_per_run": 451,
+  "browser_layouts": 24,
+  "limitation_observation_not_recognition_success": true,
+  "runtime_assets_frozen": 90,
+  "live_server_integration_authorized": false,
+  "hosted_6e11": "SUPPORT HOLD SU-487979",
+  "expert_reviews_open": [
+    "medical",
+    "privacy",
+    "legal",
+    "language"
+  ],
+  "whole_phase6e_complete": false
+}
