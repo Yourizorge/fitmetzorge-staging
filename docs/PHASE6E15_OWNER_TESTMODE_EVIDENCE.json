@@ -1,0 +1,55 @@
+{
+  "package": "6E-15 owner test mode",
+  "status": "TECHNICAL PASS / READY FOR OWNER RETEST",
+  "owner_accepted": false,
+  "frozen": false,
+  "baseline": "e942b06e30ae47b3128a800147100c0e22eaa4b3",
+  "tests": {
+    "unit": {
+      "tests": 329,
+      "pass": 329,
+      "fail": 0,
+      "skipped": 0
+    },
+    "new_unit": 84,
+    "existing_unit": 245,
+    "new_browser": 1346,
+    "new_layouts": 217,
+    "legacy_browser": 463,
+    "legacy_layouts": 49,
+    "settings_each": 24,
+    "physical_phone": false
+  },
+  "preserved_baseline_files": 1171,
+  "existing_allowed_changes": [
+    "independent-intake-demo/app.js",
+    "independent-intake-demo/index.html",
+    "independent-intake-demo/demo.css",
+    "_offline/phase6e15/serve.cjs"
+  ],
+  "source_sha256": {
+    "independent-intake-demo/app.js": "86300411ede6ee15fd7bb1cb1ab7648ea120a4b20f996740384a218006abe632",
+    "independent-intake-demo/index.html": "def05a2dca8281e23203e992df09d662876fbc8550d7fce3930eb26bd9c04da3",
+    "independent-intake-demo/demo.css": "e10b836cab9bd77affed45c6ed6b36d2210fc14a1a34ff4280fdcc5ab74e96e6",
+    "_offline/phase6e15/serve.cjs": "9123bf75517bb1a99449f8c213b3919c74435871e60caa6e098e8a0784504fde",
+    "independent-intake-demo/review.js": "37b4029926acfc1b0f6f02df1e55300d3e0e21635fa7597f3b5ab6316b538a90",
+    "_offline/phase6e15/owner-review/browser.cjs": "27cacfd713af43e62b2c6fd19fe37fbd5fdc7a72ab66c713dff1237815ae8903",
+    "_offline/phase6e15/owner-review/evidence.cjs": "63eb5aa156279f55413300a104531fcf816a04000ab5d8fde28681127c86da0d",
+    "_offline/phase6e15/owner-review/ops.cjs": "eed99fe4f57151d68ebe6d6be0d57d7b358306ca8e3ee25486b838f07e868ca6",
+    "_offline/phase6e15/owner-review/review.test.cjs": "5741321c91ccb50b4f59c9153fe4de7c8c3e851de0515e87a4bee94f814f407d",
+    "_offline/phase6e15/owner-review/run.cjs": "d55ca6754b8adfe573127d523edad2d0626ed00ccd8353421fd2171f5fef3a1f"
+  },
+  "evidence_sha256": {
+    "supabase/.temp/phase6e15-owner-review-1790786498720/verified/review-tests-1790787190924.json": "6ea89363c0d97678abaf21803bf816a2077c9787e35a9f7fadaa5bf0dd08fe50",
+    "supabase/.temp/phase6e15-owner-review-1790786498720/verified/local-owner-browser-1790787299008.json": "a1ba639ad3169aa9ae7ce11df821fdb4bd3f05340b13ed4fb4b46902bd004297",
+    "supabase/.temp/phase6e15-owner-review-1790786498720/verified/local-browser-1790787433222.json": "c065b7292f92c37aa349de8d20f7b82b932f395c5c48eff2b3a73d6439e2c8de",
+    "supabase/.temp/phase6e15-owner-review-1790786498720/before.json": "ecb168df7e8ec9f4203cda4cbbf5ed65056222d7c4de8d185eee032ebfdab64b"
+  },
+  "runtime_changed": false,
+  "hosted_supabase_operations": 0,
+  "external_ai_calls": 0,
+  "external_ai_cost_eur": "0.00",
+  "real_member_ai_enabled": false,
+  "production_touched": false,
+  "support_hold": "6E-11 SU-487979"
+}

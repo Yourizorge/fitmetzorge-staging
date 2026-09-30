@@ -1,13 +1,28 @@
 <!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'">
-<title>FitMetZorge | 6E-15</title><link rel="icon" href="../training-review-demo/brand.png"><link rel="stylesheet" href="../bounded-adjustments-demo/demo.css"><link rel="stylesheet" href="demo.css">
-<script defer src="../coach-review-demo/catalog.js"></script><script defer src="../coach-review-demo/model.js"></script><script defer src="copy.js"></script><script defer src="data.js"></script><script defer src="model.js"></script><script defer src="app.js"></script></head>
+<title>FitMetZorge | 6E-15</title><link rel="icon" href="../training-review-demo/brand.png"><link rel="stylesheet" href="../bounded-adjustments-demo/demo.css"><link rel="stylesheet" href="demo.css?v=owner-testmode1">
+<script defer src="../coach-review-demo/catalog.js"></script><script defer src="../coach-review-demo/model.js"></script><script defer src="copy.js"></script><script defer src="data.js"></script><script defer src="model.js"></script><script defer src="review.js?v=owner-testmode1"></script><script defer src="app.js?v=owner-testmode1"></script></head>
 <body><header><img src="../training-review-demo/brand.png" alt="FitMetZorge"><div><strong>FitMetZorge</strong><span>6E-15 / Route B / Offline</span></div></header>
 <main><h1 data-word="title"></h1><p class="banner" data-word="demo"></p>
+<section id="owner-tests" lang="nl" aria-labelledby="test-title">
+<h2 id="test-title">Testscenario's</h2>
+<p>Iedere keuze start een nieuwe test met fictieve gegevens. Alleen in deze demo worden testhandelingen uitgevoerd; er verandert niets in je echte app.</p>
+<button id="review-start" class="primary" type="button">Start begeleide owner-test</button>
+<div id="test-buttons" class="test-buttons"></div>
+<div id="review-summary" tabindex="-1">
+<p id="review-step" class="notes"></p><h3 id="review-title">Nog geen test gekozen</h3>
+<p id="review-verdict" role="status" aria-live="polite">Kies hierboven een test of start de begeleide route.</p>
+<dl id="review-facts"></dl>
+<div id="review-checks"></div>
+<p class="notes">PASS betekent dat deze zichtbare synthetische test klopt. Het is geen medische goedkeuring of owneracceptatie van 6E-15.</p>
+<div class="review-nav"><button id="review-prev" type="button">Vorige stap</button><button id="review-next" type="button">Volgende stap</button></div>
+<p id="review-finish"></p>
+<a href="#proposal-section">Bekijk het voorstel en de melding hieronder</a>
+</div></section>
 <div class="toolbar"><label><span data-word="scenario"></span><select id="scenario"></select></label><label><span data-word="language"></span><select id="language"><option value="nl">Nederlands</option><option value="en">English</option><option value="de">Deutsch</option></select></label><label><span data-word="theme"></span><select id="theme"></select></label></div>
 <section><h2 id="status"></h2><p id="reason" role="status"></p><div id="actions" class="actions"></div></section>
 <section><form id="intake-form"><div id="intake"></div><button type="submit" id="save" data-word="save"></button></form></section>
-<section><h2 data-word="draft"></h2><div id="proposal"></div><p id="edit-result" role="status"></p></section>
+<section id="proposal-section"><h2 data-word="draft"></h2><p id="proposal-warning" class="banner" lang="nl" hidden>Eerder concept: geblokkeerd. Niet opnieuw verwerkt en niet beschikbaar voor bevestigen of activeren.</p><div id="proposal"></div><p id="edit-result" role="status"></p></section>
 <section><details><summary data-word="active"></summary><div id="active"></div></details></section>
 <section><details><summary data-word="sources"></summary><pre id="sources"></pre></details></section>
 <section><h2 data-word="history"></h2><p id="versions"></p><ol id="audit"></ol></section>

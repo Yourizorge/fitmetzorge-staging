@@ -1,6 +1,8 @@
 "use strict";
 const D=FMZ15Data,C=FMZ8Catalog,B=FMZ8Model,M=FMZ15Model,L=FMZ15Copy,$=id=>document.getElementById(id),clone=x=>JSON.parse(JSON.stringify(x));
 let locale="nl",scenario="complete",model=M.create(D.fixtures[scenario],D.registry),last="",editError="",lastConfirm=null,lastActivate=null;
+let ownerTest=null;
+const R=FMZ15Review;
 const ix=()=>["nl","en","de"].indexOf(locale),w=k=>L.words[k]?.[ix()]||k,v=k=>L.values[k]?.[ix()]||String(k),label=k=>L.labels[k]?.[ix()]||k;
 const n=(tag,text,cls)=>{const x=document.createElement(tag);if(text!==undefined)x.textContent=text;if(cls)x.className=cls;return x;};
 const error=k=>L.words.errors[k]?.[ix()]||w("noPlan")+" ("+k+")";
@@ -33,7 +35,7 @@ function readForm(){const i=clone(model.view().intake);
  i.records.sleep=i.sleep;i.records.recovery=i.recovery;i.records.revision++;return i;
 }
 function button(parent,id,text,fn,primary=false){const b=n("button",text,primary?"primary":"");b.type="button";b.id=id;b.onclick=fn;parent.append(b);}
-function send(action,data={},e){const event=e||model.event(action,data),r=model.command(event);last=r.ok?r.reason==="idempotent"?w("idempotent"):"":error(r.reason);editError=action==="edit"&&!r.ok?w("unchanged")+" "+error(r.reason):"";
+function send(action,data={},e){ownerTest=null;const event=e||model.event(action,data),r=model.command(event);last=r.ok?r.reason==="idempotent"?w("idempotent"):"":error(r.reason);editError=action==="edit"&&!r.ok?w("unchanged")+" "+error(r.reason):"";
  if(action==="confirm"&&r.ok)lastConfirm=event;if(action==="activate"&&r.ok)lastActivate=event;render();return r;}
 function renderPlan(el,p,i,editable){
  el.replaceChildren();if(!p){el.append(n("p",w("noPlan")));return;}
@@ -41,7 +43,7 @@ function renderPlan(el,p,i,editable){
  for(const [si,session]of p.training.sessions.entries()){
   const section=n("div",undefined,"session");section.append(n("h3",v(session.day)+" | "+p.training.minutes+" "+w("minutes")));
   for(const [ei,ex]of session.exercises.entries()){
-   const box=n("div",undefined,"exercise-editor");box.append(n("strong",C.exercises.find(x=>x.id===ex.id).label[ix()]));
+   const box=n("div",undefined,"exercise-editor"),name=n("strong",C.exercises.find(x=>x.id===ex.id).label[ix()]);name.dataset.reviewExercise=ex.id;box.append(name);
    box.append(n("p",ex.sets+" x "+ex.reps+" | "+w("rest")+": "+ex.rest+" | "+(ex.load??"-")+" "+ex.unit+" | RIR "+(ex.rir??"-")+" / RPE "+(ex.rpe??"-")));
    box.append(n("p",C.policy.catalog+" / "+ex.rule+" / sets."+i.experience,"notes"));
    if(editable){const row=n("div",undefined,"toolbar"),sel=n("select");sel.id="ex-"+si+"-"+ei;opts(sel,B.eligibleExercises(i).filter(x=>x.id===ex.id||!session.exercises.some(e=>e.id===x.id)).map(x=>[x.id,x.label[ix()]]),ex.id);
@@ -56,7 +58,7 @@ function renderPlan(el,p,i,editable){
   const box=n("div",undefined,"meal-editor"),recipe=C.recipes.find(x=>x.id===meal.id);box.append(n("h4",(recipe?.label[ix()]||w("meal"))+" | "+meal.at+":00"));
   if(editable){const sel=n("select");sel.id="meal-"+mi;sel.setAttribute("aria-label",w("meal")+" "+(mi+1));opts(sel,B.eligibleMeals(i).map(x=>[x.id,x.label[ix()]]),meal.id);box.append(sel);button(box,"edit-meal-"+mi,w("edit"),()=>send("edit",{kind:"meal",index:mi,id:sel.value}));}
   for(const [fi,item]of meal.items.entries()){
-   const row=n("div",undefined,"meal-item");row.append(n("span",C.foods.find(x=>x.id===item.food).label[ix()]+" | "+item.g+" g"));
+   const row=n("div",undefined,"meal-item"),name=n("span",C.foods.find(x=>x.id===item.food).label[ix()]+" | "+item.g+" g");name.dataset.reviewFood=item.food;row.append(name);
    if(editable){const sel=n("select");sel.id="food-"+mi+"-"+fi;sel.setAttribute("aria-label",w("item")+" "+(mi+1)+"."+(fi+1));opts(sel,C.foods.filter(x=>B.foodAllowed(x.id,i)).map(x=>[x.id,x.label[ix()]]),item.food);row.append(sel);button(row,"edit-food-"+mi+"-"+fi,w("edit"),()=>send("edit",{kind:"food",meal:mi,index:fi,id:sel.value}));}box.append(row);
   }food.append(box);
  }food.append(n("p",p.nutrition.totals.kcal+" kcal | P "+p.nutrition.totals.protein+" g | C "+p.nutrition.totals.carbs+" g | F "+p.nutrition.totals.fat+" g", "notes"));el.append(food);
@@ -75,12 +77,45 @@ function render(){
  if(s.status==="active"){button(acts,"double-activate",w("doubleActivate"),()=>send("activate",{},lastActivate));if(s.history.length>1)button(acts,"restore",w("restore"),()=>send("restore",{version:s.history.at(-2).version}));}
  form(s.intake);$("save").disabled=s.revoked||!s.intake.consent;
  renderPlan($("proposal"),s.draft?.plan,s.draft?.intake||s.intake,["member_pending","confirmed"].includes(s.status));$("edit-result").textContent=editError;
+ $("proposal-warning").hidden=avail.ok||!s.draft;
  const activeIntake=s.active?s.intakeHistory.find(x=>x.revision===s.active.intakeRevision).intake:s.intake;renderPlan($("active"),s.active?.plan,activeIntake,false);
  $("sources").textContent=JSON.stringify({intake_revision:s.intakeRevision,records:s.intake.records,source:s.source,proposal:s.draft?.refs||null},null,2);
  $("versions").textContent="Intake: "+s.intakeHistory.map(x=>x.revision).join(" / ")+" | Plan: "+(s.history.map(x=>x.version).join(" / ")||"-");
  $("audit").replaceChildren(...s.audit.map(x=>n("li",new Date(x.at).toISOString()+" | "+x.action+" | "+x.status+" | v"+x.from+" -> v"+x.to+" | intake "+x.intake)));
  const sim=$("simulations");sim.replaceChildren();for(const action of ["stale","expire","revoke"])button(sim,action,w(action),()=>send(action));button(sim,"reset",w("reset"),reset);
+ renderOwnerTest();
 }
-function reset(){model=M.create(D.fixtures[scenario],D.registry);last="";editError="";lastConfirm=null;lastActivate=null;render();}
+function reset(){ownerTest=null;model=M.create(D.fixtures[scenario],D.registry);last="";editError="";lastConfirm=null;lastActivate=null;render();}
+function startOwnerTest(index){
+ ownerTest=R.run(R.cases[index].id);model=ownerTest.model;scenario=ownerTest.spec.fixture;last="";editError="";
+ lastConfirm=ownerTest.ledger.filter(x=>x.action==="confirm"&&x.ok).at(-1)?.event||null;
+ lastActivate=ownerTest.ledger.filter(x=>x.action==="activate"&&x.ok).at(-1)?.event||null;
+ render();$("review-summary").focus({preventScroll:true});$("review-summary").scrollIntoView({block:"start"});
+}
+function renderOwnerTest(){
+ const index=ownerTest?R.cases.findIndex(x=>x.id===ownerTest.id):-1;
+ $("test-buttons").replaceChildren();
+ R.cases.forEach((c,i)=>{button($("test-buttons"),"test-"+c.id,(i+1)+". "+c.title,()=>startOwnerTest(i));$("test-"+c.id).setAttribute("aria-pressed",String(i===index));});
+ $("review-prev").disabled=index<=0;$("review-next").disabled=index===R.cases.length-1;
+ $("review-prev").onclick=()=>startOwnerTest(index-1);$("review-next").onclick=()=>startOwnerTest(index+1);
+ $("review-step").textContent=index<0?"Kies een test":("Stap "+(index+1)+" van "+R.cases.length);
+ $("review-finish").textContent=index===8?"Laatste stap. Meld welke uitkomst je ziet en of alles duidelijk is. Je akkoord wordt niet automatisch vastgelegd.":"";
+ $("review-facts").replaceChildren();$("review-checks").replaceChildren();
+ const badge=$("review-verdict");badge.className="";badge.removeAttribute("data-result");
+ if(!ownerTest){$("review-title").textContent="Nog geen actuele test";badge.textContent="Kies een test. Na een handmatige wijziging moet je opnieuw testen.";return;}
+ $("review-title").textContent=ownerTest.spec.title;
+ for(const [title,key]of [["Gewijzigde gegevens","changed"],["Verwacht gedrag","expected"],["Mag er een voorstel komen?","permission"],["Waarom wel of niet?","reason"]])$("review-facts").append(n("dt",title),n("dd",ownerTest.spec[key]));
+ const display={locale:ix(),foods:[...$("proposal").querySelectorAll("[data-review-food]")].map(e=>({id:e.dataset.reviewFood,text:e.textContent})),exercises:[...$("proposal").querySelectorAll("[data-review-exercise]")].map(e=>({id:e.dataset.reviewExercise,text:e.textContent})),versions:$("versions").textContent,confirm:!!$("confirm"),activate:!!$("activate"),blockedNotice:!$("proposal-warning").hidden};
+ const result=R.assess(ownerTest,model.view(),display);badge.textContent=result.pass?"PASS - het zichtbare resultaat klopt.":"AFWIJKING - het resultaat wijkt af. Meld deze test; nog niet goedkeuren.";badge.className=result.pass?"review-pass":"review-fail";badge.dataset.result=result.pass?"pass":"fail";
+ const words={build:"voorstel maken",edit:"product wijzigen",confirm:"bevestigen",activate:"activeren",intake:"intake wijzigen",stale:"bronconflict",revoke:"toestemming intrekken",restore:"terugzetvoorstel",success:"uitgevoerd",idempotent:"niets dubbel gewijzigd",excluded:"uitgesloten product geweigerd",incomplete:"verplicht gegeven ontbreekt",safety:"klacht blokkeert plan",machine_rule_missing:"apparaatregel ontbreekt",rule_source:"bronversie klopt niet",version_conflict:"verouderde of dubbele aanvraag geweigerd",consent:"geen toestemming",member_pending:"wacht op bevestiging"};
+ const ul=n("ul");
+ for(const c of result.checks){let title=c.label;if(title.startsWith("Uitkomst "))title="Testhandeling: "+(words[title.slice(9)]||title.slice(9));const li=n("li",(c.pass?"Klopt: ":"AFWIJKING: ")+title+" - "+(words[c.observed]||c.observed));li.className=c.pass?"check-ok":"check-fail";ul.append(li);}
+ const details=n("details");details.append(n("summary","Bekijk de uitgevoerde controles"),ul);$("review-checks").append(details);
+ const direct=result.checks.filter(c=>/in voedingsvoorstel|in training|in trainingsvoorstel|Aantal planversies|Versie [12] behouden|Nieuwe versie bevat/.test(c.label));
+ for(const c of direct)$("review-checks").prepend(n("p",(c.pass?"Klopt: ":"AFWIJKING: ")+c.label+" - "+c.observed,c.pass?"check-ok":"check-fail"));
+}
+$("review-start").onclick=()=>startOwnerTest(0);
+for(const event of ["input","change"])$("intake-form").addEventListener(event,()=>{if(ownerTest){ownerTest=null;renderOwnerTest();}});
+for(const event of ["input","change"])$("proposal").addEventListener(event,()=>{if(ownerTest){ownerTest=null;renderOwnerTest();}});
 $("language").onchange=e=>{locale=e.target.value;render();};$("theme").onchange=e=>{document.body.dataset.theme=e.target.value;};$("scenario").onchange=e=>{scenario=e.target.value;reset();};
 $("intake-form").onsubmit=e=>{e.preventDefault();send("intake",readForm());};render();
