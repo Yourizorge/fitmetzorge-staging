@@ -1,0 +1,154 @@
+{
+  "package": "6E-15",
+  "status": "TECHNICAL PASS / READY FOR OWNER REVIEW",
+  "owner_accepted": false,
+  "frozen": false,
+  "baseline": "5a96c303e037beaf1183b2c0073de922f886fd7c",
+  "source_sha256": {
+    "_offline/phase6e15/build.cjs": "60c8fbf9f2deb280da146a4890c6c65ba7a5d7e19bfc3a96713a5d1c237cd39d",
+    "_offline/phase6e15/evidence.cjs": "6e043b7c3f1556ba9c88dd1e2dd61dfb77db987967004b46663e3cee585c5282",
+    "_offline/phase6e15/ops.cjs": "7cf72db0e2c62d1da7cb1dc46c259626470eb344c61f4c335bf0cb1841ebfdf5",
+    "_offline/phase6e15/publication.cjs": "3a370cd33298bc55bde02d92e0f67894bde7d274ff99ec575d974dbf5115e4d1",
+    "_offline/phase6e15/README.md": "424356d06498ac7432d903683571a6df78875462829508936344728f8f26f3cd",
+    "_offline/phase6e15/run_tests.cjs": "df3c8033a15531d837590f7c258f9946f6dad0dc6641f697886691ba2687875a",
+    "_offline/phase6e15/serve.cjs": "70ed300ee26819fcd287f0ff01007aed736f502f9c731b854c5f5a76ab70014c",
+    "_offline/phase6e15/test/browser.cjs": "257970ae18fef84aadcff0712845d36eef8954856287e3184e5b099d553d501b",
+    "_offline/phase6e15/test/contract.test.cjs": "fb32de5b4016ec52991bf65076f531f116e15689e9819bfe5b7d185f761ddd97",
+    "independent-intake-demo/app.js": "4af449ad022dd95e6ef4df4cf227e3d29b2574a077a36effcf85ca6b455e48a2",
+    "independent-intake-demo/copy.js": "9483fe0ce62b53c9149062e3e5e84ff41466a8ea83020d72b1a117619055f518",
+    "independent-intake-demo/data.js": "c757bfffde8d88644c5dd9730028cda86acb8edcba3b9bc9ae8db63e8fb2f9bc",
+    "independent-intake-demo/demo.css": "cf896b6952d17e5b4ed0b39ea4e106d213824d625e2956b8d22d0436b073f30e",
+    "independent-intake-demo/index.html": "4af340b803285336396b87ddd16f1ede1217c87096c138f63ebad54d0f6298f7",
+    "independent-intake-demo/model.js": "5e3a968a6a1a16822e7a783ed8e1cfd5c21643fc6189cbf219b40b59fc42cf99"
+  },
+  "tests": {
+    "new": {
+      "tests": 245,
+      "pass": 245,
+      "fail": 0,
+      "skipped": 0
+    },
+    "frozen14": {
+      "tests": 389,
+      "pass": 389,
+      "fail": 0,
+      "skipped": 0
+    },
+    "frozen13": {
+      "tests": 233,
+      "pass": 233,
+      "fail": 0,
+      "skipped": 0
+    },
+    "earlier": {
+      "new6e12": {
+        "tests": 457,
+        "pass": 457,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e0": {
+        "tests": 711,
+        "pass": 711,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e1": {
+        "tests": 292,
+        "pass": 292,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e2": {
+        "tests": 159,
+        "pass": 159,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e3": {
+        "tests": 111,
+        "pass": 111,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e4": {
+        "tests": 229,
+        "pass": 229,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e5": {
+        "tests": 144,
+        "pass": 144,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e6": {
+        "tests": 112,
+        "pass": 112,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e7": {
+        "tests": 184,
+        "pass": 184,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e8": {
+        "tests": 149,
+        "pass": 149,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e9": {
+        "tests": 35,
+        "pass": 35,
+        "fail": 0,
+        "skipped": 0
+      },
+      "frozen6e10": {
+        "tests": 8,
+        "pass": 8,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    "total": 3458,
+    "medical_validation": false,
+    "known_limitation_observations_not_recognition_success": true
+  },
+  "browser": {
+    "checks": 463,
+    "settings": 24,
+    "layout_inspections": 49,
+    "errors": 0,
+    "unexpected_egress": 0,
+    "physical_owner_test": false
+  },
+  "preserved": {
+    "working_files": 1150,
+    "historical_evidence": 58,
+    "pairs": 112,
+    "step113": "historical incomplete",
+    "migrations": {
+      "supabase/migrations/20260924155822_phase6e11_rpc_bridge.sql": "4d474becdc5c3a7343562602115f9333b5cffc6bed0c323fca3abc560843af7d",
+      "supabase/migrations/20260928120846_phase6e11_request_binding.sql": "5eebec968d2dae27d4e1462dbcc9de8d9e5599552ff145ad099e57fffd5f5f7c"
+    }
+  },
+  "evidence_files": {
+    "supabase/.temp/phase6e15-1790783630466/6e15-tests-1790784775096.json": "d614f0bee96990c3329b1b18a5610886f81ce54c38177ca5a4672ecd8dd31b17",
+    "supabase/.temp/phase6e15-1790783630466/6e14-tests-1790784655319.json": "0725e471ba1c2c8fdbc0191703d4b0994eede67bc41eadedf342bdc1c82aa1a2",
+    "supabase/.temp/phase6e15-1790783630466/6e13-tests-1790784643496.json": "c694571b2240a7ac350e628ac56e3c78047bb42de94437a6c586197768defcfa",
+    "supabase/.temp/phase6e15-1790783630466/unit-regressions.json": "5ff59568184f7d2cebc1c209729ccf02999704f7bdf21a46714499b3a22ce4ef",
+    "supabase/.temp/phase6e15-1790783630466/local-browser-1790784594373.json": "4065f3551ed51eb03b73389e4785a8d5d830bdf37ea96b02cfaa0491d3a1c65e",
+    "supabase/.temp/phase6e15-1790783630466/before.json": "4f2da722920a1e093a4dbcd86dd2321b691fafd9772e8aabbaceb7922ced1600",
+    "supabase/.temp/phase6e11-support-wait-74b97a33fa684a938c93397036c9b843/manifest.json": "a170ab184def4a1759102b43e0e3715f00ce0cdfe8187d52d67a38cea5a4cb03"
+  },
+  "support_hold": "6E11 hosted / SU-487979",
+  "hosted_supabase_operations": 0,
+  "external_ai_calls": 0,
+  "external_ai_cost_eur": "0.00",
+  "real_member_ai_enabled": false,
+  "production_touched": false
+}
