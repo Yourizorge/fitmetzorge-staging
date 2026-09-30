@@ -1,0 +1,125 @@
+{
+  "package": "6E-14",
+  "status": "COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE/SYNTHETIC ONLY",
+  "accepted_on": "2026-09-30",
+  "owner_physical_test": "Explicit P1-P3 acceptance: proposals/explanation, bounded registration/recovery, source corrections/history/idempotent application/restoration",
+  "source_commit": "cd2bc1ad3a6fcba9aa89b7be28b276db832c70b7",
+  "publication_commit": "5a96c303e037beaf1183b2c0073de922f886fd7c",
+  "sources": [
+    {
+      "file": "_offline/phase6e14/build.cjs",
+      "working_sha256": "35d99c9447da3fd81986a85197f6b3c85fd3fed02c2207f6a9eacf284bd8b7bf",
+      "git_sha256": "35d99c9447da3fd81986a85197f6b3c85fd3fed02c2207f6a9eacf284bd8b7bf"
+    },
+    {
+      "file": "_offline/phase6e14/catalog.cjs",
+      "working_sha256": "8d7bc22dab5dd695378597f1c690d460f497e58984cc9d72ac2ad923bd46e9e4",
+      "git_sha256": "8d7bc22dab5dd695378597f1c690d460f497e58984cc9d72ac2ad923bd46e9e4"
+    },
+    {
+      "file": "_offline/phase6e14/engine.cjs",
+      "working_sha256": "b059bbeaa4acbdcc1b8092c80aa9e51d013ae9db8ef58d1773522e367c19456a",
+      "git_sha256": "b059bbeaa4acbdcc1b8092c80aa9e51d013ae9db8ef58d1773522e367c19456a"
+    },
+    {
+      "file": "_offline/phase6e14/evidence.cjs",
+      "working_sha256": "7933ef833202f2115b1b4c269b9d5f27562303362e7725c8678e04d3b865c0a6",
+      "git_sha256": "7933ef833202f2115b1b4c269b9d5f27562303362e7725c8678e04d3b865c0a6"
+    },
+    {
+      "file": "_offline/phase6e14/fixtures.cjs",
+      "working_sha256": "33590b14f91a0fffc34a887efde9843ef940dd5de4bcc5f70b4eb0c2153e537f",
+      "git_sha256": "33590b14f91a0fffc34a887efde9843ef940dd5de4bcc5f70b4eb0c2153e537f"
+    },
+    {
+      "file": "_offline/phase6e14/ops.cjs",
+      "working_sha256": "55e3600823f00eaa69e3fc62200a8048f6d1e9862f81f3a3f45d48bf20743973",
+      "git_sha256": "55e3600823f00eaa69e3fc62200a8048f6d1e9862f81f3a3f45d48bf20743973"
+    },
+    {
+      "file": "_offline/phase6e14/publication.cjs",
+      "working_sha256": "aea5035bb7442ce33b3b4e9590c4479ab8df3c044ac0a2bbbfb24abe84d9afdb",
+      "git_sha256": "aea5035bb7442ce33b3b4e9590c4479ab8df3c044ac0a2bbbfb24abe84d9afdb"
+    },
+    {
+      "file": "_offline/phase6e14/README.md",
+      "working_sha256": "5182acb6ca5343f8079ad3dd638e954a46fe09e9356b0fdc2b4c4848e3a7742e",
+      "git_sha256": "5182acb6ca5343f8079ad3dd638e954a46fe09e9356b0fdc2b4c4848e3a7742e"
+    },
+    {
+      "file": "_offline/phase6e14/run_tests.cjs",
+      "working_sha256": "fc58da84ce51f8f06e20a8d7e02a812200d1eff018af36d0570dcec6bb937d72",
+      "git_sha256": "fc58da84ce51f8f06e20a8d7e02a812200d1eff018af36d0570dcec6bb937d72"
+    },
+    {
+      "file": "_offline/phase6e14/serve.cjs",
+      "working_sha256": "1dfda83ef3520225fb83a39c22b8a5be01b2880489a832310625038e4b324586",
+      "git_sha256": "1dfda83ef3520225fb83a39c22b8a5be01b2880489a832310625038e4b324586"
+    },
+    {
+      "file": "_offline/phase6e14/test/browser.cjs",
+      "working_sha256": "0457e9d23dc9fb3d526a817e261e46328d98a79c0ff534f25d6ea9951f62ac62",
+      "git_sha256": "0457e9d23dc9fb3d526a817e261e46328d98a79c0ff534f25d6ea9951f62ac62"
+    },
+    {
+      "file": "_offline/phase6e14/test/contract.test.cjs",
+      "working_sha256": "ce98da51f1e60974487b9cf00ef772c5123c8bc7f493bc2f4fd0f9e361696ac9",
+      "git_sha256": "ce98da51f1e60974487b9cf00ef772c5123c8bc7f493bc2f4fd0f9e361696ac9"
+    },
+    {
+      "file": "_offline/phase6e14/test/isolation.test.cjs",
+      "working_sha256": "34eb87d5eecefde07dcec43fc8c7b68f635e008ced61c4ec501eadca67a1a4c7",
+      "git_sha256": "34eb87d5eecefde07dcec43fc8c7b68f635e008ced61c4ec501eadca67a1a4c7"
+    },
+    {
+      "file": "bounded-adjustments-demo/app.js",
+      "working_sha256": "70302a7b65f5a6f4171aca8a4904aba7c237fad79a299ac1f378d76d542a4ec7",
+      "git_sha256": "70302a7b65f5a6f4171aca8a4904aba7c237fad79a299ac1f378d76d542a4ec7"
+    },
+    {
+      "file": "bounded-adjustments-demo/copy.js",
+      "working_sha256": "e69e61e069b6c4d6b4cc7edb9b1cb58f11ded682aefbf67ea8f0ad06f35046bc",
+      "git_sha256": "e69e61e069b6c4d6b4cc7edb9b1cb58f11ded682aefbf67ea8f0ad06f35046bc"
+    },
+    {
+      "file": "bounded-adjustments-demo/data.js",
+      "working_sha256": "40430b44affe59f1c0f783c1a3ac7e3199c0397d13d2ef59f5dd28850c7ea417",
+      "git_sha256": "40430b44affe59f1c0f783c1a3ac7e3199c0397d13d2ef59f5dd28850c7ea417"
+    },
+    {
+      "file": "bounded-adjustments-demo/demo.css",
+      "working_sha256": "eef7b0e18e3be93e2a6890d7a36d509d65604f5aeb8684a353aeb4e367101d61",
+      "git_sha256": "eef7b0e18e3be93e2a6890d7a36d509d65604f5aeb8684a353aeb4e367101d61"
+    },
+    {
+      "file": "bounded-adjustments-demo/index.html",
+      "working_sha256": "6a79bac70a5c674b6934175a2ce39f5bea2a5303a19d97edb0b1ca82eaf63286",
+      "git_sha256": "6a79bac70a5c674b6934175a2ce39f5bea2a5303a19d97edb0b1ca82eaf63286"
+    },
+    {
+      "file": "bounded-adjustments-demo/model.js",
+      "working_sha256": "d70ecb7d3d6d89b9e5863b96ca7a697e3a42d2028516f9c9569b2228e70db5da",
+      "git_sha256": "d70ecb7d3d6d89b9e5863b96ca7a697e3a42d2028516f9c9569b2228e70db5da"
+    }
+  ],
+  "evidence_sha256": "c79cc8b1ee3ff0cc33d3f3fd9128318f23996c4109fae4265fb72538fab82728",
+  "publication_receipt_sha256": "218bf9f62dc07e72d29374e745fd5aa86b5836915c2d68ea3443e821634cb0b9",
+  "tests": 3213,
+  "browser_checks_per_run": 490,
+  "settings": 24,
+  "layout_inspections": 49,
+  "pages_runs": [
+    36552675167,
+    36553295825
+  ],
+  "old_runtime_assets_preserved": 96,
+  "live_server_authorized": false,
+  "whole_phase6e_complete": false,
+  "open_reviews": [
+    "medical",
+    "privacy",
+    "legal",
+    "language"
+  ],
+  "hosted_6e11": "SUPPORT HOLD SU-487979"
+}
