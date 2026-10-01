@@ -23,13 +23,13 @@ werkende beslislogica vastgelegd in PHASE6E16_EXAMPLES.json.
 
 ## Alleen nieuwe reviewpunten
 
-- S1: zijn de verschillende regels, bronvermelding en reden per oefenrol begrijpelijk
+- 16-R1: zijn de verschillende regels, bronvermelding en reden per oefenrol begrijpelijk
   als productontwerp? Voorstel: deze versiegebonden structuur accepteren; fictieve
   trainingsgetallen blijven concept totdat deskundige inhoudscontrole is afgerond.
-- S2: zijn tijdsberekening, zelf bewerken en duidelijke weigeringen bruikbaar?
+- 16-R2: zijn tijdsberekening, zelf bewerken en duidelijke weigeringen bruikbaar?
   Voorstel: niets automatisch afronden of passend maken; binnen bereik opnieuw
   kiezen en afzonderlijk bevestigen/activeren. Tijd blijft een planning, geen norm.
-- S3: zijn historie, kg/lb, leeg gewicht en versieherstel helder?
+- 16-R3: zijn historie, kg/lb, leeg gewicht en versieherstel helder?
   Voorstel: originele bronwaarden apart bewaren, geen automatische omzetting of
   startgewicht, progressiestap alleen tonen; herstel altijd als nieuwe versie.
 
@@ -43,6 +43,6 @@ productontwerp is geen medische, juridische, privacy- of taalvalidatie.
    te geven omdat er terecht niets gewijzigd is. Controleer oude/nieuwe waarden.
 3. Bekijk vooral8/9 (bewerken),13 (20kg blijft20kg),14 (nieuwe bron),15 (versies1/2/3)
    en16 (klacht/toestemming). Probeer ook donker thema en EN/DE.
-4. Meld S1-S3 akkoord of noem het stapnummer en wat niet klopt.
+4. Meld 16-R1 t/m 16-R3 akkoord of noem het stapnummer en wat niet klopt.
 
 6E-11 blijft SUPPORT HOLD SU-487979; geen nieuwe hosted handeling of17-start.
