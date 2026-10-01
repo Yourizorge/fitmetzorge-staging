@@ -1,0 +1,1106 @@
+{
+  "status": "TECHNICAL PASS / READY FOR OWNER REVIEW",
+  "owner_accepted": false,
+  "frozen": false,
+  "pages_run": 36869290225,
+  "source_commit": "aafa5e7cfcef21e6c993be9da7f40898f276a39d",
+  "freeze16_commit": "87e7d2f878dc3b6613a14af47679d9ec1822799d",
+  "publication": {
+    "phase": "after",
+    "head": "aafa5e7cfcef21e6c993be9da7f40898f276a39d",
+    "existing": [
+      {
+        "file": "Fit_Met_Zorge_Coach_App_standalone.html",
+        "hash": "1592d6ecebb2527c34dd3a9fa9b1381db18c8dc4af9e64ad7b1ae7c65d357bc4",
+        "status": 200,
+        "sha256": "1592d6ecebb2527c34dd3a9fa9b1381db18c8dc4af9e64ad7b1ae7c65d357bc4"
+      },
+      {
+        "file": "app.bundle.js",
+        "hash": "0aedc9e0c5ef05b96b4b0313090a5f6a5481c8d5a585eaac4f4b61ea9fd459d6",
+        "status": 200,
+        "sha256": "0aedc9e0c5ef05b96b4b0313090a5f6a5481c8d5a585eaac4f4b61ea9fd459d6"
+      },
+      {
+        "file": "app.js",
+        "hash": "8d07fb0e61655e9a2d3a9d91c7e17f6b9b78388d5b52dd0f2cc6a6d1cc9d8579",
+        "status": 200,
+        "sha256": "8d07fb0e61655e9a2d3a9d91c7e17f6b9b78388d5b52dd0f2cc6a6d1cc9d8579"
+      },
+      {
+        "file": "assets/fit-met-zorge-logo-cropped.png",
+        "hash": "c82010c6b05025acc33c69c3eee185775f7e935f53dfdce99b73f4318ce59008",
+        "status": 200,
+        "sha256": "c82010c6b05025acc33c69c3eee185775f7e935f53dfdce99b73f4318ce59008"
+      },
+      {
+        "file": "assets/fit-met-zorge-logo.png",
+        "hash": "4b156a6d55569683703b30e4c349d692cdcffc5b0785114fecb7341c81734897",
+        "status": 200,
+        "sha256": "4b156a6d55569683703b30e4c349d692cdcffc5b0785114fecb7341c81734897"
+      },
+      {
+        "file": "assets/logo.svg",
+        "hash": "17ab07e30519df3052e539e9839a9b4009598ce9f5d93ba4d1e455fcf9e956b8",
+        "status": 200,
+        "sha256": "17ab07e30519df3052e539e9839a9b4009598ce9f5d93ba4d1e455fcf9e956b8"
+      },
+      {
+        "file": "assets/member-ux-consistency.js",
+        "hash": "549beca9ebfe6b1b3f63d254280c5e61b8641809903a2f81dd7c415807314dea",
+        "status": 200,
+        "sha256": "549beca9ebfe6b1b3f63d254280c5e61b8641809903a2f81dd7c415807314dea"
+      },
+      {
+        "file": "assets/phase1-foundation.js",
+        "hash": "f275ad98e4680f4e4436858911fc5800e39a4094ab144ec78d0a92adb75addf6",
+        "status": 200,
+        "sha256": "f275ad98e4680f4e4436858911fc5800e39a4094ab144ec78d0a92adb75addf6"
+      },
+      {
+        "file": "assets/phase2-home-recovery.js",
+        "hash": "5e642249fc7a1af297e5035f3c5d219cd3ff9f9dbdc19d20c24be59089ba2707",
+        "status": 200,
+        "sha256": "5e642249fc7a1af297e5035f3c5d219cd3ff9f9dbdc19d20c24be59089ba2707"
+      },
+      {
+        "file": "assets/phase3-training-engine.js",
+        "hash": "a610eb1baeee9a5727193fcf71a326cbe02df1b0928c3bc3ff70cb80223aa686",
+        "status": 200,
+        "sha256": "a610eb1baeee9a5727193fcf71a326cbe02df1b0928c3bc3ff70cb80223aa686"
+      },
+      {
+        "file": "assets/phase4-nutrition-slice2.js",
+        "hash": "42c00580ac2574787b7deea19b3e70009562c8b628863a09409536f265ee28c2",
+        "status": 200,
+        "sha256": "42c00580ac2574787b7deea19b3e70009562c8b628863a09409536f265ee28c2"
+      },
+      {
+        "file": "assets/phase4-nutrition-slice3.js",
+        "hash": "e07bdd2949f7d87bca19edd8160c23ccae7cddf4279494dc12551b61ea275396",
+        "status": 200,
+        "sha256": "e07bdd2949f7d87bca19edd8160c23ccae7cddf4279494dc12551b61ea275396"
+      },
+      {
+        "file": "assets/phase5-progress.js",
+        "hash": "b47b9ac07d1b21a9aad014d824e398690546e385eed7c249a98e95564d704b7b",
+        "status": 200,
+        "sha256": "b47b9ac07d1b21a9aad014d824e398690546e385eed7c249a98e95564d704b7b"
+      },
+      {
+        "file": "assets/phase6c-private-ai-chat.js",
+        "hash": "f841e8c68f79d481157c7c4bfd0194b406ce1f980a26539667910c32baccae97",
+        "status": 200,
+        "sha256": "f841e8c68f79d481157c7c4bfd0194b406ce1f980a26539667910c32baccae97"
+      },
+      {
+        "file": "assets/phase6d-analysis-inbox.js",
+        "hash": "428c81aab07c815aab74828790c028b0839cdbd83a607b0c9eddbbcc8fc28fbe",
+        "status": 200,
+        "sha256": "428c81aab07c815aab74828790c028b0839cdbd83a607b0c9eddbbcc8fc28fbe"
+      },
+      {
+        "file": "assets/phase6d-hotfix2.css",
+        "hash": "2c7444c64b34183c7a13241c42286f6109e6db782a4026f45b396318b72c25f9",
+        "status": 200,
+        "sha256": "2c7444c64b34183c7a13241c42286f6109e6db782a4026f45b396318b72c25f9"
+      },
+      {
+        "file": "assets/phase6d-owner-settings.css",
+        "hash": "e03ac8dd7752620bb72d4d5bcea4e3c586c7fddce9d2ad2c95fa0a6db1332f58",
+        "status": 200,
+        "sha256": "e03ac8dd7752620bb72d4d5bcea4e3c586c7fddce9d2ad2c95fa0a6db1332f58"
+      },
+      {
+        "file": "assets/phase6d-owner-settings.js",
+        "hash": "6f104de6a08ea6e33de7a05236ac778877e8b0a67132b4e7a50eebc6773adbdd",
+        "status": 200,
+        "sha256": "6f104de6a08ea6e33de7a05236ac778877e8b0a67132b4e7a50eebc6773adbdd"
+      },
+      {
+        "file": "assets/phase6d0-legacy-auth.js",
+        "hash": "fdaca0d3637ca2dcd36fad7a3698ff6c4edae709c582ef3c6709530e2012d4e3",
+        "status": 200,
+        "sha256": "fdaca0d3637ca2dcd36fad7a3698ff6c4edae709c582ef3c6709530e2012d4e3"
+      },
+      {
+        "file": "assets/theme-authority.js",
+        "hash": "7927a84cc5a686e186fadd8de92f8afc0f05d6f256121dcfa92da8d2b6605188",
+        "status": 200,
+        "sha256": "7927a84cc5a686e186fadd8de92f8afc0f05d6f256121dcfa92da8d2b6605188"
+      },
+      {
+        "file": "assets/training-workout-model.js",
+        "hash": "adfbd50e1f879b8b8a325e16794490028620def42c0177fa912cfbf63d95d867",
+        "status": 200,
+        "sha256": "adfbd50e1f879b8b8a325e16794490028620def42c0177fa912cfbf63d95d867"
+      },
+      {
+        "file": "assets/training-workout-ui.js",
+        "hash": "ccec76847f7dfdf0bc114afff3ec977f221a3ee230e1e41134fe4d64be57a930",
+        "status": 200,
+        "sha256": "ccec76847f7dfdf0bc114afff3ec977f221a3ee230e1e41134fe4d64be57a930"
+      },
+      {
+        "file": "assets/training-workout.css",
+        "hash": "d46a38c460645e1b8934d0ad12e3df974bc6dac323e56eb9ae94fb200e4c1298",
+        "status": 200,
+        "sha256": "d46a38c460645e1b8934d0ad12e3df974bc6dac323e56eb9ae94fb200e4c1298"
+      },
+      {
+        "file": "assets/vendor/flag-de.svg",
+        "hash": "efd480af5a154a7651f29da23ee0d09dbc892410fb4041898ddf8face336c575",
+        "status": 200,
+        "sha256": "efd480af5a154a7651f29da23ee0d09dbc892410fb4041898ddf8face336c575"
+      },
+      {
+        "file": "assets/vendor/flag-gb.svg",
+        "hash": "c8be1e7208798a4ae692ee1e937065d498bb29e741943f6172b29118b8ed8066",
+        "status": 200,
+        "sha256": "c8be1e7208798a4ae692ee1e937065d498bb29e741943f6172b29118b8ed8066"
+      },
+      {
+        "file": "assets/vendor/flag-icons-LICENSE.txt",
+        "hash": "8f1195d55a2fd315a07d812328470ca9ba2abb78c8d317ff19619d5125e00cea",
+        "status": 200,
+        "sha256": "8f1195d55a2fd315a07d812328470ca9ba2abb78c8d317ff19619d5125e00cea"
+      },
+      {
+        "file": "assets/vendor/flag-nl.svg",
+        "hash": "8f691f17fe70894537af8e92f2ca47761d353639b0defc15cbe561eb503ab010",
+        "status": 200,
+        "sha256": "8f691f17fe70894537af8e92f2ca47761d353639b0defc15cbe561eb503ab010"
+      },
+      {
+        "file": "assets/vendor/lucide-LICENSE.txt",
+        "hash": "1e7290b35280a048667bbf0ebabac1c7fd52a75300e8b2946ac165715997f2bc",
+        "status": 200,
+        "sha256": "1e7290b35280a048667bbf0ebabac1c7fd52a75300e8b2946ac165715997f2bc"
+      },
+      {
+        "file": "assets/vendor/lucide-archive.svg",
+        "hash": "1a6e1c540c9a1a9b489893cc14ab9f597496c69aab5ba222fdd5b456de9e2fac",
+        "status": 200,
+        "sha256": "1a6e1c540c9a1a9b489893cc14ab9f597496c69aab5ba222fdd5b456de9e2fac"
+      },
+      {
+        "file": "assets/vendor/lucide-arrow-left.svg",
+        "hash": "e31ed0af85ffbed2b54f78f37af197c3b84b24e776cba1d27613d6a9ad555a16",
+        "status": 200,
+        "sha256": "e31ed0af85ffbed2b54f78f37af197c3b84b24e776cba1d27613d6a9ad555a16"
+      },
+      {
+        "file": "assets/vendor/lucide-arrow-up.svg",
+        "hash": "df0ff279d41bba93ae6797ef519ba442b895cd5d546fb36f22b7a656c3b05fd1",
+        "status": 200,
+        "sha256": "df0ff279d41bba93ae6797ef519ba442b895cd5d546fb36f22b7a656c3b05fd1"
+      },
+      {
+        "file": "assets/vendor/lucide-bell.svg",
+        "hash": "129a018bd5025fc992a510e9c95e7868300d888b69c38c69a3466d310919ea13",
+        "status": 200,
+        "sha256": "129a018bd5025fc992a510e9c95e7868300d888b69c38c69a3466d310919ea13"
+      },
+      {
+        "file": "assets/vendor/lucide-calendar.svg",
+        "hash": "2e2a7df92c2cca71dd6de34bb3f7187e276e8e8e003abe2e80b2ffd13347af60",
+        "status": 200,
+        "sha256": "2e2a7df92c2cca71dd6de34bb3f7187e276e8e8e003abe2e80b2ffd13347af60"
+      },
+      {
+        "file": "assets/vendor/lucide-check.svg",
+        "hash": "538432eec072ceeccf5a7aacf347a2ad2bff9937d203dbd0b4f4245d7accd93c",
+        "status": 200,
+        "sha256": "538432eec072ceeccf5a7aacf347a2ad2bff9937d203dbd0b4f4245d7accd93c"
+      },
+      {
+        "file": "assets/vendor/lucide-chevron-right.svg",
+        "hash": "fea488a3b60fd7738bbbf8ca98826ef5c0381347c5fd1048d45ee70a75a51cfe",
+        "status": 200,
+        "sha256": "fea488a3b60fd7738bbbf8ca98826ef5c0381347c5fd1048d45ee70a75a51cfe"
+      },
+      {
+        "file": "assets/vendor/lucide-clock.svg",
+        "hash": "75336afa51ee6da9fec7e9bf5138c20d4e8a85d1133df896fea071c622c12c7c",
+        "status": 200,
+        "sha256": "75336afa51ee6da9fec7e9bf5138c20d4e8a85d1133df896fea071c622c12c7c"
+      },
+      {
+        "file": "assets/vendor/lucide-credit-card.svg",
+        "hash": "4d0394710733a8ca0db566208b0281708ebde7b167b6903491fde0be060bded1",
+        "status": 200,
+        "sha256": "4d0394710733a8ca0db566208b0281708ebde7b167b6903491fde0be060bded1"
+      },
+      {
+        "file": "assets/vendor/lucide-download.svg",
+        "hash": "f68a21e11115edc0aef51ac6f8f4618e14d2b92055f1cb9f5d670efc696bea85",
+        "status": 200,
+        "sha256": "f68a21e11115edc0aef51ac6f8f4618e14d2b92055f1cb9f5d670efc696bea85"
+      },
+      {
+        "file": "assets/vendor/lucide-file-text.svg",
+        "hash": "512f414d72aabc5218b94a9da571df70d8e0b014cfb32ec366b559ec868952d6",
+        "status": 200,
+        "sha256": "512f414d72aabc5218b94a9da571df70d8e0b014cfb32ec366b559ec868952d6"
+      },
+      {
+        "file": "assets/vendor/lucide-globe.svg",
+        "hash": "c3543ac3883a0841aa5d37ff974708fbc37d9c6afe64e14b03d56ed798b0b788",
+        "status": 200,
+        "sha256": "c3543ac3883a0841aa5d37ff974708fbc37d9c6afe64e14b03d56ed798b0b788"
+      },
+      {
+        "file": "assets/vendor/lucide-history.svg",
+        "hash": "682b5fc882578a3bdaac72c72fc27709cb806b61c2d1d51194327b31dde7f239",
+        "status": 200,
+        "sha256": "682b5fc882578a3bdaac72c72fc27709cb806b61c2d1d51194327b31dde7f239"
+      },
+      {
+        "file": "assets/vendor/lucide-languages.svg",
+        "hash": "a33a7bd34876dde0c5a470914dac09fca77f97da75e93e1b1687de2294874c65",
+        "status": 200,
+        "sha256": "a33a7bd34876dde0c5a470914dac09fca77f97da75e93e1b1687de2294874c65"
+      },
+      {
+        "file": "assets/vendor/lucide-loader-circle.svg",
+        "hash": "44ad0f822a89b28a3feecf7276686c818a92a4a9c77cc51404c58929e30f0f3a",
+        "status": 200,
+        "sha256": "44ad0f822a89b28a3feecf7276686c818a92a4a9c77cc51404c58929e30f0f3a"
+      },
+      {
+        "file": "assets/vendor/lucide-log-out.svg",
+        "hash": "3f28d1eedd9a71ec6933578fc1b7cd21c56618e8b9b8339e55bfc133b4eb6bee",
+        "status": 200,
+        "sha256": "3f28d1eedd9a71ec6933578fc1b7cd21c56618e8b9b8339e55bfc133b4eb6bee"
+      },
+      {
+        "file": "assets/vendor/lucide-message-circle.svg",
+        "hash": "f62830d9fbbbf697e53555398d31a342ddec8dd008d707f21cd90bb19befcc87",
+        "status": 200,
+        "sha256": "f62830d9fbbbf697e53555398d31a342ddec8dd008d707f21cd90bb19befcc87"
+      },
+      {
+        "file": "assets/vendor/lucide-plus.svg",
+        "hash": "b29207ee8f5cc0e829c0bab2e5b223fc88687599c6bd40b94ba35f52327615d6",
+        "status": 200,
+        "sha256": "b29207ee8f5cc0e829c0bab2e5b223fc88687599c6bd40b94ba35f52327615d6"
+      },
+      {
+        "file": "assets/vendor/lucide-rotate-cw.svg",
+        "hash": "2c2c5d1f147e829f431182eee79d8d74e81aedcf8177f9e1878a4180ec990a9c",
+        "status": 200,
+        "sha256": "2c2c5d1f147e829f431182eee79d8d74e81aedcf8177f9e1878a4180ec990a9c"
+      },
+      {
+        "file": "assets/vendor/lucide-settings.svg",
+        "hash": "ceea1a72d04b112291222ba9ad0779a12d47d816079fe4174900c724f360b55c",
+        "status": 200,
+        "sha256": "ceea1a72d04b112291222ba9ad0779a12d47d816079fe4174900c724f360b55c"
+      },
+      {
+        "file": "assets/vendor/lucide-shield.svg",
+        "hash": "276e603595736fcb698b0309b04c44ebb88afb28e4753c5670f92c11a01ed043",
+        "status": 200,
+        "sha256": "276e603595736fcb698b0309b04c44ebb88afb28e4753c5670f92c11a01ed043"
+      },
+      {
+        "file": "assets/vendor/lucide-trash-2.svg",
+        "hash": "9268a35cfb4f9d852c3d13f2c91476dd067c21c20e2bcdb0093fd93fd0bf34b7",
+        "status": 200,
+        "sha256": "9268a35cfb4f9d852c3d13f2c91476dd067c21c20e2bcdb0093fd93fd0bf34b7"
+      },
+      {
+        "file": "assets/vendor/lucide-user.svg",
+        "hash": "bb1e0531065db51238a34b348cf8fb8267cd31932dc3f680c9f204a58d1520ea",
+        "status": 200,
+        "sha256": "bb1e0531065db51238a34b348cf8fb8267cd31932dc3f680c9f204a58d1520ea"
+      },
+      {
+        "file": "assets/vendor/lucide-x.svg",
+        "hash": "0f38855d9d5775c10960ae53e46b745f77914b43f78c43bf8abc39f4d5e06de1",
+        "status": 200,
+        "sha256": "0f38855d9d5775c10960ae53e46b745f77914b43f78c43bf8abc39f4d5e06de1"
+      },
+      {
+        "file": "assets/vendor/zxing-browser-0.2.1.LICENSE.txt",
+        "hash": "4c26c3077daa7ce4d56ad91f279fafc395bf33c3a0f1ba9ab8cf511bad148ea5",
+        "status": 200,
+        "sha256": "4c26c3077daa7ce4d56ad91f279fafc395bf33c3a0f1ba9ab8cf511bad148ea5"
+      },
+      {
+        "file": "assets/vendor/zxing-browser-0.2.1.min.js",
+        "hash": "066bc34edfcdd4a33f0964aeec967752a0dea1ccaf36e58e319ac9fcb5070f6a",
+        "status": 200,
+        "sha256": "066bc34edfcdd4a33f0964aeec967752a0dea1ccaf36e58e319ac9fcb5070f6a"
+      },
+      {
+        "file": "assets/youri-ai-avatar-3d-v3-256.webp",
+        "hash": "257f31e6fe4faa7fecf5fb9874eed06d4018dc8c60958aa714e7d4b79a7517dc",
+        "status": 200,
+        "sha256": "257f31e6fe4faa7fecf5fb9874eed06d4018dc8c60958aa714e7d4b79a7517dc"
+      },
+      {
+        "file": "assets/youri-ai-avatar-3d-v3-master.png",
+        "hash": "53edc8c376f097417abde7b74f4c9d85cebad4e2a676ae65620a4cbd65da2e57",
+        "status": 200,
+        "sha256": "53edc8c376f097417abde7b74f4c9d85cebad4e2a676ae65620a4cbd65da2e57"
+      },
+      {
+        "file": "config.js",
+        "hash": "07cc826304b5a9343ef26a21aabae6d00a21fe4c55a1d9feefef6067bcecd6fa",
+        "status": 200,
+        "sha256": "07cc826304b5a9343ef26a21aabae6d00a21fe4c55a1d9feefef6067bcecd6fa"
+      },
+      {
+        "file": "fit-met-zorge-logo.png",
+        "hash": "940c6c9e66d73a642d67f453fc12e46e78f233e60432ea0ad426324af1493ecf",
+        "status": 200,
+        "sha256": "940c6c9e66d73a642d67f453fc12e46e78f233e60432ea0ad426324af1493ecf"
+      },
+      {
+        "file": "index.html",
+        "hash": "559c98ad4071846d3aab11ee068cf892bfda73d85410ed1c636c88f59a1a32ac",
+        "status": 200,
+        "sha256": "559c98ad4071846d3aab11ee068cf892bfda73d85410ed1c636c88f59a1a32ac"
+      },
+      {
+        "file": "styles.css",
+        "hash": "29d376ad4efbaee61dfc65adaced629753cdc5d126c58f5c60ee472324e2a20e",
+        "status": 200,
+        "sha256": "29d376ad4efbaee61dfc65adaced629753cdc5d126c58f5c60ee472324e2a20e"
+      },
+      {
+        "file": "coach-review-demo/app.js",
+        "hash": "e89225593140ef61c1c61a9c2e87a24ede31047026f11fa02b0ce3a1ce738a94",
+        "status": 200,
+        "sha256": "e89225593140ef61c1c61a9c2e87a24ede31047026f11fa02b0ce3a1ce738a94"
+      },
+      {
+        "file": "coach-review-demo/catalog.js",
+        "hash": "e5c30f57e88edcb3b4e8205dbfd8b90ca0397e2bb9117fc4db348bbc1fe83479",
+        "status": 200,
+        "sha256": "e5c30f57e88edcb3b4e8205dbfd8b90ca0397e2bb9117fc4db348bbc1fe83479"
+      },
+      {
+        "file": "coach-review-demo/copy.js",
+        "hash": "87a446e23349d1c998eea28f3b4731d8b73e72be791da6955d4d8dcac8084b4b",
+        "status": 200,
+        "sha256": "87a446e23349d1c998eea28f3b4731d8b73e72be791da6955d4d8dcac8084b4b"
+      },
+      {
+        "file": "coach-review-demo/demo.css",
+        "hash": "e82fe9c793c7758cf60d5aca1197d33471cda5f5ce8b7d8208825d7c6992eaa4",
+        "status": 200,
+        "sha256": "e82fe9c793c7758cf60d5aca1197d33471cda5f5ce8b7d8208825d7c6992eaa4"
+      },
+      {
+        "file": "coach-review-demo/entry.js",
+        "hash": "6232e5d387182328141de46e4d862f6c60777378803d926e4be199d545b26989",
+        "status": 200,
+        "sha256": "6232e5d387182328141de46e4d862f6c60777378803d926e4be199d545b26989"
+      },
+      {
+        "file": "coach-review-demo/index.html",
+        "hash": "702f7bed0b865c521773ffe5c621f1ee323c0e561a93f6f532f18a800690c785",
+        "status": 200,
+        "sha256": "702f7bed0b865c521773ffe5c621f1ee323c0e561a93f6f532f18a800690c785"
+      },
+      {
+        "file": "coach-review-demo/model.js",
+        "hash": "c500eec10f4071f33d723f84dc3f0fcf07c23c1d08bfa17b23c32c546f6ae39e",
+        "status": 200,
+        "sha256": "c500eec10f4071f33d723f84dc3f0fcf07c23c1d08bfa17b23c32c546f6ae39e"
+      },
+      {
+        "file": "coach-review-demo/panel.css",
+        "hash": "bfe4a041f0a5a1f03d24db8224d3fbeb9351880f4750ee7a1a8d2ef08cde37f0",
+        "status": 200,
+        "sha256": "bfe4a041f0a5a1f03d24db8224d3fbeb9351880f4750ee7a1a8d2ef08cde37f0"
+      },
+      {
+        "file": "coach-review-demo/photo-concept.svg",
+        "hash": "18a0dc0b6ea6c40dd7d2d58f8e674c98dada7c80ac2e14d4169ad172d14e01b8",
+        "status": 200,
+        "sha256": "18a0dc0b6ea6c40dd7d2d58f8e674c98dada7c80ac2e14d4169ad172d14e01b8"
+      },
+      {
+        "file": "training-review-demo/app.js",
+        "hash": "cb33f0b75abe0f47d9fb29b845168a8339ee143b5cb5975b88b4d02029c050ce",
+        "status": 200,
+        "sha256": "cb33f0b75abe0f47d9fb29b845168a8339ee143b5cb5975b88b4d02029c050ce"
+      },
+      {
+        "file": "training-review-demo/brand.png",
+        "hash": "c82010c6b05025acc33c69c3eee185775f7e935f53dfdce99b73f4318ce59008",
+        "status": 200,
+        "sha256": "c82010c6b05025acc33c69c3eee185775f7e935f53dfdce99b73f4318ce59008"
+      },
+      {
+        "file": "training-review-demo/copy.js",
+        "hash": "636e97c17a00149cd0f58a8eb39df8867888342480fb375840419e40c9a66196",
+        "status": 200,
+        "sha256": "636e97c17a00149cd0f58a8eb39df8867888342480fb375840419e40c9a66196"
+      },
+      {
+        "file": "training-review-demo/data.js",
+        "hash": "fdc60637c11ce8d2e3ce8309b8b4bce618ef26432f1889783bf440c98c178040",
+        "status": 200,
+        "sha256": "fdc60637c11ce8d2e3ce8309b8b4bce618ef26432f1889783bf440c98c178040"
+      },
+      {
+        "file": "training-review-demo/demo.css",
+        "hash": "9418b98977f6e4dc68abeaafd8cb6faac71934623bfeb1a053506c676eade948",
+        "status": 200,
+        "sha256": "9418b98977f6e4dc68abeaafd8cb6faac71934623bfeb1a053506c676eade948"
+      },
+      {
+        "file": "training-review-demo/index.html",
+        "hash": "67d2ab87de2ca4fb9ea15145234b9aedaff103316f7429124e6fe6c24d2763bb",
+        "status": 200,
+        "sha256": "67d2ab87de2ca4fb9ea15145234b9aedaff103316f7429124e6fe6c24d2763bb"
+      },
+      {
+        "file": "training-review-demo/model.js",
+        "hash": "1b51769dbe8e2753472f2af6bd2d008b1e691ac9ab757da55d06897cdb5bc004",
+        "status": 200,
+        "sha256": "1b51769dbe8e2753472f2af6bd2d008b1e691ac9ab757da55d06897cdb5bc004"
+      },
+      {
+        "file": "coach-backend-demo/app.js",
+        "hash": "b2ae1db2cc820c3c92cf645eff989ae15c48502a6c331669b9dcd3bb65eeb528",
+        "status": 200,
+        "sha256": "b2ae1db2cc820c3c92cf645eff989ae15c48502a6c331669b9dcd3bb65eeb528"
+      },
+      {
+        "file": "coach-backend-demo/demo.css",
+        "hash": "e3c2deef682a0c5b5b900f8706bbb45762a061cd6aaa5f3bb2d95c7a3df21bf8",
+        "status": 200,
+        "sha256": "e3c2deef682a0c5b5b900f8706bbb45762a061cd6aaa5f3bb2d95c7a3df21bf8"
+      },
+      {
+        "file": "coach-backend-demo/index.html",
+        "hash": "7849bcd5c2cd8cbfd0f03882f4fc1e7dd7d60cc396c868e38542914d5b33046b",
+        "status": 200,
+        "sha256": "7849bcd5c2cd8cbfd0f03882f4fc1e7dd7d60cc396c868e38542914d5b33046b"
+      },
+      {
+        "file": "coach-backend-demo/render.js",
+        "hash": "4bdfd737813849d7e16a75a40671bc060ad49e324d17a8c03f8b95ba9df63ead",
+        "status": 200,
+        "sha256": "4bdfd737813849d7e16a75a40671bc060ad49e324d17a8c03f8b95ba9df63ead"
+      },
+      {
+        "file": "coach-source-demo/app.mjs",
+        "hash": "e87f21d787f264acdf744e2db306d89e6fba66fcdd261dd59f5060bca4b18a0f",
+        "status": 200,
+        "sha256": "e87f21d787f264acdf744e2db306d89e6fba66fcdd261dd59f5060bca4b18a0f"
+      },
+      {
+        "file": "coach-source-demo/demo.css",
+        "hash": "bc642aee68dcdea9d740310098799dfc1d567b37df7b7631213de69988107bfc",
+        "status": 200,
+        "sha256": "bc642aee68dcdea9d740310098799dfc1d567b37df7b7631213de69988107bfc"
+      },
+      {
+        "file": "coach-source-demo/index.html",
+        "hash": "81da30777f39a80a6ce6380e3a9a251a564a531a88181a7631317c62d093c60e",
+        "status": 200,
+        "sha256": "81da30777f39a80a6ce6380e3a9a251a564a531a88181a7631317c62d093c60e"
+      },
+      {
+        "file": "coach-source-demo/strings.mjs",
+        "hash": "6c5e24d0d66d7276259fe673390eed5bd39f185436b7251a31c0136f44282d19",
+        "status": 200,
+        "sha256": "6c5e24d0d66d7276259fe673390eed5bd39f185436b7251a31c0136f44282d19"
+      },
+      {
+        "file": "workout-reflection-demo/app.js",
+        "hash": "fe49b161580068a2d18e455111fb92eb0135d1a7250665d7188b7cedf31682b4",
+        "status": 200,
+        "sha256": "fe49b161580068a2d18e455111fb92eb0135d1a7250665d7188b7cedf31682b4"
+      },
+      {
+        "file": "workout-reflection-demo/copy.js",
+        "hash": "cf11e6bbd02b5b6a2c095684c152bd86b6d746e1269fa7061a1e908fdbe2a8b3",
+        "status": 200,
+        "sha256": "cf11e6bbd02b5b6a2c095684c152bd86b6d746e1269fa7061a1e908fdbe2a8b3"
+      },
+      {
+        "file": "workout-reflection-demo/data.js",
+        "hash": "a2163f3cfa3bf50aa9d56f299fcce1b2894788f2153fc2c91b0936a474101e4c",
+        "status": 200,
+        "sha256": "a2163f3cfa3bf50aa9d56f299fcce1b2894788f2153fc2c91b0936a474101e4c"
+      },
+      {
+        "file": "workout-reflection-demo/demo.css",
+        "hash": "af78202ab83fb07449e9c7f521ba0e0fbce5b3c5f1c26a72472352e185ae3d58",
+        "status": 200,
+        "sha256": "af78202ab83fb07449e9c7f521ba0e0fbce5b3c5f1c26a72472352e185ae3d58"
+      },
+      {
+        "file": "workout-reflection-demo/index.html",
+        "hash": "569cecabf9d9294131840f6f7d8c6c553c4cceaf4af56c4065141de12a777835",
+        "status": 200,
+        "sha256": "569cecabf9d9294131840f6f7d8c6c553c4cceaf4af56c4065141de12a777835"
+      },
+      {
+        "file": "workout-reflection-demo/memory.js",
+        "hash": "195a0e0eb242ca62692da3f020a507dd41950888e04317050016e84ddfb58abb",
+        "status": 200,
+        "sha256": "195a0e0eb242ca62692da3f020a507dd41950888e04317050016e84ddfb58abb"
+      },
+      {
+        "file": "proactive-signals-demo/app.js",
+        "hash": "39823e97c48f2ba7dd3201274254781f7baa8a4c67e9e72e56428e8de4398797",
+        "status": 200,
+        "sha256": "39823e97c48f2ba7dd3201274254781f7baa8a4c67e9e72e56428e8de4398797"
+      },
+      {
+        "file": "proactive-signals-demo/copy.js",
+        "hash": "8d91ee949d4a7b34dc5b33fa250c4a9393f032b563c2b6ce720c1580263cb55b",
+        "status": 200,
+        "sha256": "8d91ee949d4a7b34dc5b33fa250c4a9393f032b563c2b6ce720c1580263cb55b"
+      },
+      {
+        "file": "proactive-signals-demo/data.js",
+        "hash": "ed6bbcc1a4c1de661802ce6e13306cd6a68ca8149ab210cbbce9f17e89659c01",
+        "status": 200,
+        "sha256": "ed6bbcc1a4c1de661802ce6e13306cd6a68ca8149ab210cbbce9f17e89659c01"
+      },
+      {
+        "file": "proactive-signals-demo/demo.css",
+        "hash": "995b3b8cc816e2447a04017fa7232a2076a1574d371f95f3102f84993f2f7a95",
+        "status": 200,
+        "sha256": "995b3b8cc816e2447a04017fa7232a2076a1574d371f95f3102f84993f2f7a95"
+      },
+      {
+        "file": "proactive-signals-demo/index.html",
+        "hash": "4bd836217ba76d6a9a7dfb872adad56f631333e8d52f1b2b289845e31c57069d",
+        "status": 200,
+        "sha256": "4bd836217ba76d6a9a7dfb872adad56f631333e8d52f1b2b289845e31c57069d"
+      },
+      {
+        "file": "proactive-signals-demo/model.js",
+        "hash": "72f9d7df076edd3caa95a352061d004fc8cf0fd88cfaaa79caf81171e14f1a78",
+        "status": 200,
+        "sha256": "72f9d7df076edd3caa95a352061d004fc8cf0fd88cfaaa79caf81171e14f1a78"
+      },
+      {
+        "file": "bounded-adjustments-demo/app.js",
+        "hash": "70302a7b65f5a6f4171aca8a4904aba7c237fad79a299ac1f378d76d542a4ec7",
+        "status": 200,
+        "sha256": "70302a7b65f5a6f4171aca8a4904aba7c237fad79a299ac1f378d76d542a4ec7"
+      },
+      {
+        "file": "bounded-adjustments-demo/copy.js",
+        "hash": "e69e61e069b6c4d6b4cc7edb9b1cb58f11ded682aefbf67ea8f0ad06f35046bc",
+        "status": 200,
+        "sha256": "e69e61e069b6c4d6b4cc7edb9b1cb58f11ded682aefbf67ea8f0ad06f35046bc"
+      },
+      {
+        "file": "bounded-adjustments-demo/data.js",
+        "hash": "40430b44affe59f1c0f783c1a3ac7e3199c0397d13d2ef59f5dd28850c7ea417",
+        "status": 200,
+        "sha256": "40430b44affe59f1c0f783c1a3ac7e3199c0397d13d2ef59f5dd28850c7ea417"
+      },
+      {
+        "file": "bounded-adjustments-demo/demo.css",
+        "hash": "eef7b0e18e3be93e2a6890d7a36d509d65604f5aeb8684a353aeb4e367101d61",
+        "status": 200,
+        "sha256": "eef7b0e18e3be93e2a6890d7a36d509d65604f5aeb8684a353aeb4e367101d61"
+      },
+      {
+        "file": "bounded-adjustments-demo/index.html",
+        "hash": "6a79bac70a5c674b6934175a2ce39f5bea2a5303a19d97edb0b1ca82eaf63286",
+        "status": 200,
+        "sha256": "6a79bac70a5c674b6934175a2ce39f5bea2a5303a19d97edb0b1ca82eaf63286"
+      },
+      {
+        "file": "bounded-adjustments-demo/model.js",
+        "hash": "d70ecb7d3d6d89b9e5863b96ca7a697e3a42d2028516f9c9569b2228e70db5da",
+        "status": 200,
+        "sha256": "d70ecb7d3d6d89b9e5863b96ca7a697e3a42d2028516f9c9569b2228e70db5da"
+      },
+      {
+        "file": "independent-intake-demo/app.js",
+        "hash": "86300411ede6ee15fd7bb1cb1ab7648ea120a4b20f996740384a218006abe632",
+        "status": 200,
+        "sha256": "86300411ede6ee15fd7bb1cb1ab7648ea120a4b20f996740384a218006abe632"
+      },
+      {
+        "file": "independent-intake-demo/copy.js",
+        "hash": "9483fe0ce62b53c9149062e3e5e84ff41466a8ea83020d72b1a117619055f518",
+        "status": 200,
+        "sha256": "9483fe0ce62b53c9149062e3e5e84ff41466a8ea83020d72b1a117619055f518"
+      },
+      {
+        "file": "independent-intake-demo/data.js",
+        "hash": "c757bfffde8d88644c5dd9730028cda86acb8edcba3b9bc9ae8db63e8fb2f9bc",
+        "status": 200,
+        "sha256": "c757bfffde8d88644c5dd9730028cda86acb8edcba3b9bc9ae8db63e8fb2f9bc"
+      },
+      {
+        "file": "independent-intake-demo/demo.css",
+        "hash": "e10b836cab9bd77affed45c6ed6b36d2210fc14a1a34ff4280fdcc5ab74e96e6",
+        "status": 200,
+        "sha256": "e10b836cab9bd77affed45c6ed6b36d2210fc14a1a34ff4280fdcc5ab74e96e6"
+      },
+      {
+        "file": "independent-intake-demo/index.html",
+        "hash": "def05a2dca8281e23203e992df09d662876fbc8550d7fce3930eb26bd9c04da3",
+        "status": 200,
+        "sha256": "def05a2dca8281e23203e992df09d662876fbc8550d7fce3930eb26bd9c04da3"
+      },
+      {
+        "file": "independent-intake-demo/model.js",
+        "hash": "5e3a968a6a1a16822e7a783ed8e1cfd5c21643fc6189cbf219b40b59fc42cf99",
+        "status": 200,
+        "sha256": "5e3a968a6a1a16822e7a783ed8e1cfd5c21643fc6189cbf219b40b59fc42cf99"
+      },
+      {
+        "file": "independent-intake-demo/review.js",
+        "hash": "37b4029926acfc1b0f6f02df1e55300d3e0e21635fa7597f3b5ab6316b538a90",
+        "status": 200,
+        "sha256": "37b4029926acfc1b0f6f02df1e55300d3e0e21635fa7597f3b5ab6316b538a90"
+      },
+      {
+        "file": "training-rules-demo/app.js",
+        "hash": "1ca8d76a4271a2f84834513afb2cbe5f633a1654bbcc39fd82fae01b5b9b3c8d",
+        "status": 200,
+        "sha256": "1ca8d76a4271a2f84834513afb2cbe5f633a1654bbcc39fd82fae01b5b9b3c8d"
+      },
+      {
+        "file": "training-rules-demo/catalog.js",
+        "hash": "450c25900acb8fe7594e2d02ace169d46f527065a73a4b50777d85540b633ee3",
+        "status": 200,
+        "sha256": "450c25900acb8fe7594e2d02ace169d46f527065a73a4b50777d85540b633ee3"
+      },
+      {
+        "file": "training-rules-demo/copy.js",
+        "hash": "1737181fed834eddb9bb5649bc9f1cc306af062a0cc978ad377d56868f8ee86d",
+        "status": 200,
+        "sha256": "1737181fed834eddb9bb5649bc9f1cc306af062a0cc978ad377d56868f8ee86d"
+      },
+      {
+        "file": "training-rules-demo/demo.css",
+        "hash": "adf341ed346feadef7c218c3bcfdb8aa7d08f78e6be04443e02b0ab8d248a1da",
+        "status": 200,
+        "sha256": "adf341ed346feadef7c218c3bcfdb8aa7d08f78e6be04443e02b0ab8d248a1da"
+      },
+      {
+        "file": "training-rules-demo/fixtures.js",
+        "hash": "11a12e396c6783d3fb1844821e55007c0840dda06398b7642366b26ec0b436fd",
+        "status": 200,
+        "sha256": "11a12e396c6783d3fb1844821e55007c0840dda06398b7642366b26ec0b436fd"
+      },
+      {
+        "file": "training-rules-demo/index.html",
+        "hash": "572635787eee60ef7cda039085255b7b3fb343882e937da808039f36fe427200",
+        "status": 200,
+        "sha256": "572635787eee60ef7cda039085255b7b3fb343882e937da808039f36fe427200"
+      },
+      {
+        "file": "training-rules-demo/model.js",
+        "hash": "ca345fa6f73d215cd625a0534ddee101ea85196486937b3a4e1782dd2814c736",
+        "status": 200,
+        "sha256": "ca345fa6f73d215cd625a0534ddee101ea85196486937b3a4e1782dd2814c736"
+      },
+      {
+        "file": "training-rules-demo/review.js",
+        "hash": "5679a4b6f23466af26b721d843f3410490405a73b2ef4228b7fcb10c5ca9b0eb",
+        "status": 200,
+        "sha256": "5679a4b6f23466af26b721d843f3410490405a73b2ef4228b7fcb10c5ca9b0eb"
+      }
+    ],
+    "added": [
+      {
+        "file": "nutrition-rules-demo/app.js",
+        "expected": "ddb96b1a46f71619d1905fdaf9487c8c261433ebb8d53d9872c1a5a59d0abf55",
+        "status": 200,
+        "sha256": "ddb96b1a46f71619d1905fdaf9487c8c261433ebb8d53d9872c1a5a59d0abf55"
+      },
+      {
+        "file": "nutrition-rules-demo/catalog.js",
+        "expected": "bca6cc1ea0716e8a943c28e5178f7340860cee2afa93f12ff437fe135dd467c5",
+        "status": 200,
+        "sha256": "bca6cc1ea0716e8a943c28e5178f7340860cee2afa93f12ff437fe135dd467c5"
+      },
+      {
+        "file": "nutrition-rules-demo/copy.js",
+        "expected": "07832a3977df8419662407f46e93d0648c35f05a0ce2f50c639ce2edf25454e3",
+        "status": 200,
+        "sha256": "07832a3977df8419662407f46e93d0648c35f05a0ce2f50c639ce2edf25454e3"
+      },
+      {
+        "file": "nutrition-rules-demo/demo.css",
+        "expected": "8cb339f77376f78ea15d55c0be90228dd4ff4bd19698c6eea0457888468ef893",
+        "status": 200,
+        "sha256": "8cb339f77376f78ea15d55c0be90228dd4ff4bd19698c6eea0457888468ef893"
+      },
+      {
+        "file": "nutrition-rules-demo/fixtures.js",
+        "expected": "bf30c336f8deb49243c01d2c3c059858c890eb8738ac3e05510bd56559ca66b5",
+        "status": 200,
+        "sha256": "bf30c336f8deb49243c01d2c3c059858c890eb8738ac3e05510bd56559ca66b5"
+      },
+      {
+        "file": "nutrition-rules-demo/index.html",
+        "expected": "d2a11808d657d3ab7e0a14fcab5401a491c1caadf236802c69f11bcf960a0351",
+        "status": 200,
+        "sha256": "d2a11808d657d3ab7e0a14fcab5401a491c1caadf236802c69f11bcf960a0351"
+      },
+      {
+        "file": "nutrition-rules-demo/model.js",
+        "expected": "563e8228f6b0cc6f29252a33535d45ba48f8d4955fdfdb40841b9b06ce148d88",
+        "status": 200,
+        "sha256": "563e8228f6b0cc6f29252a33535d45ba48f8d4955fdfdb40841b9b06ce148d88"
+      },
+      {
+        "file": "nutrition-rules-demo/review.js",
+        "expected": "898efa3e30403bb41190bd0b82d27ad018120693ebc5a23ae1040c0144bebaaa",
+        "status": 200,
+        "sha256": "898efa3e30403bb41190bd0b82d27ad018120693ebc5a23ae1040c0144bebaaa"
+      }
+    ],
+    "private": [
+      {
+        "file": "_offline/phase6e12/build.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e12/core.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e12/evidence.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e12/no_network.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e12/protect.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e12/publication.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e12/README.md",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e12/run_tests.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e12/serve.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e12/test/browser.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e12/test/core.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e12/test/memory.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e12/test/preservation.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e13/build.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e13/engine.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e13/evidence.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e13/fixtures.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e13/ops.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e13/publication.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e13/README.md",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e13/run_tests.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e13/safety.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e13/serve.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e13/test/browser.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e13/test/engine.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e13/test/isolation.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e13/test/workflow.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e14/build.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e14/catalog.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e14/engine.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e14/evidence.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e14/fixtures.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e14/ops.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e14/publication.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e14/README.md",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e14/run_tests.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e14/serve.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e14/test/browser.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e14/test/contract.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e14/test/isolation.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e15/build.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e15/evidence.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e15/ops.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e15/publication.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e15/README.md",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e15/run_tests.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e15/serve.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e15/owner-review/browser.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e15/owner-review/evidence.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e15/owner-review/ops.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e15/owner-review/review.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e15/owner-review/run.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e15/test/browser.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e15/test/contract.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e16/browser.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e16/contract.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e16/evidence.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e16/ops.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e16/publication.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e16/README.md",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e16/run.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e16/serve.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e17/browser.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e17/contract.test.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e17/evidence.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e17/ops.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e17/publication.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e17/README.md",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e17/run.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e17/serve.cjs",
+        "status": 404
+      },
+      {
+        "file": "_offline/phase6e11/request_v4/transport.mjs",
+        "status": 404
+      },
+      {
+        "file": "supabase/migrations/20260924155822_phase6e11_rpc_bridge.sql",
+        "status": 404
+      },
+      {
+        "file": "supabase/migrations/20260928120846_phase6e11_request_binding.sql",
+        "status": 404
+      }
+    ],
+    "supabase_calls": 0,
+    "status": "PUBLICATION_PASS"
+  },
+  "browser": {
+    "checks": 2682,
+    "layouts": 481,
+    "settings": 24,
+    "errors": [],
+    "emulated_only": true
+  },
+  "source_git_sha256": {
+    "nutrition-rules-demo/app.js": "ddb96b1a46f71619d1905fdaf9487c8c261433ebb8d53d9872c1a5a59d0abf55",
+    "nutrition-rules-demo/catalog.js": "bca6cc1ea0716e8a943c28e5178f7340860cee2afa93f12ff437fe135dd467c5",
+    "nutrition-rules-demo/copy.js": "07832a3977df8419662407f46e93d0648c35f05a0ce2f50c639ce2edf25454e3",
+    "nutrition-rules-demo/demo.css": "8cb339f77376f78ea15d55c0be90228dd4ff4bd19698c6eea0457888468ef893",
+    "nutrition-rules-demo/fixtures.js": "bf30c336f8deb49243c01d2c3c059858c890eb8738ac3e05510bd56559ca66b5",
+    "nutrition-rules-demo/index.html": "d2a11808d657d3ab7e0a14fcab5401a491c1caadf236802c69f11bcf960a0351",
+    "nutrition-rules-demo/model.js": "563e8228f6b0cc6f29252a33535d45ba48f8d4955fdfdb40841b9b06ce148d88",
+    "nutrition-rules-demo/review.js": "898efa3e30403bb41190bd0b82d27ad018120693ebc5a23ae1040c0144bebaaa",
+    "_offline/phase6e17/browser.cjs": "051e71f9d4a1311515ec75bfa46e30ad1009d2d0b5f69caa6112b0bb5cf583e1",
+    "_offline/phase6e17/contract.test.cjs": "21de5c5111917ce45bd85f17f6a10b7dcca334cb8c5987598a59c57717a312d3",
+    "_offline/phase6e17/evidence.cjs": "f9556571e27942854de0cc9c0d080057d27a3b1c2b2ae9fd3521807c39f25f9d",
+    "_offline/phase6e17/ops.cjs": "f33d52765ed0e5f55a67ad72ff8b512284cc8727c4dabb7ed5e85394b5ca3c3c",
+    "_offline/phase6e17/publication.cjs": "3fbc51cde0919a782fc60de48cb90bf230f59b353161b32ba905f46d9330a95d",
+    "_offline/phase6e17/README.md": "048edc24a5ea4bc4a02f088553aba68b97f5e62e4497818826af55edc85a5857",
+    "_offline/phase6e17/run.cjs": "b79951e503d768894d025e0a9fd5a12230a61f1a0b6a5a044ec769325599d0d0",
+    "_offline/phase6e17/serve.cjs": "bb004dd4f995f1a5173e0ef7316c8082cad20865f82da632af0e7deff125da57"
+  },
+  "raw_sha256": {
+    "supabase/.temp/phase6e17-1790859713868/publication-before-1790861385882.json": "71eaa8c2fdb72dd782eeda9a150bd10da23351492df63792434dde9d72bf0351",
+    "supabase/.temp/phase6e17-1790859713868/publication-after-1790861658738.json": "b06ca34f541eb72377d191bb8217097d3560b54ffb8873f8d849a4709f5fdcfd",
+    "supabase/.temp/phase6e17-1790859713868/published-browser-1790861759591.json": "4057b02276374b214380f51d47857d2077984de4e01d9c019a3776284ea0276b"
+  },
+  "screenshot_sha256": {
+    "supabase/.temp/phase6e17-1790859713868/published-1790861686978-390-nl-light.png": "83dcd3232771d21e1f9ee4fb597c5cc2d6740f30a83d6832c8f4e4bb1adffd3d",
+    "supabase/.temp/phase6e17-1790859713868/published-1790861686978-plan-390-nl-light.png": "deeb0e8439274cfb23c3adccd486816d391af20acd9b97eda4eaac940ca59e88",
+    "supabase/.temp/phase6e17-1790859713868/published-1790861686978-390-nl-dark.png": "fbfa0334672b26ac853651e2195908a0e6d6b43b3ba7a91c34dd1e1e0dd40433",
+    "supabase/.temp/phase6e17-1790859713868/published-1790861686978-plan-390-nl-dark.png": "34f3422640c7ee40685f9cce0b7912026df60a6647d259ea9c853b9a0176f243",
+    "supabase/.temp/phase6e17-1790859713868/published-1790861686978-1280-nl-light.png": "9cefe5efc46432385ff45e31862e37fabc6f5497f8e4d2c1f613b373720ba8d9",
+    "supabase/.temp/phase6e17-1790859713868/published-1790861686978-plan-1280-nl-light.png": "f77af175b277eb2a06e1557a44af8e69007247266308e5546b91dc060b09e5a0",
+    "supabase/.temp/phase6e17-1790859713868/published-1790861686978-1280-nl-dark.png": "fb0a64771d271bdbf4cd1ea0ffba2892f28043e8ee0014e07088058b53e1054e",
+    "supabase/.temp/phase6e17-1790859713868/published-1790861686978-plan-1280-nl-dark.png": "988aa922372eb78e89a6d9b966e5839cf5ce06da21e6e77664ff34c8fa765789"
+  },
+  "hosted_supabase_calls": 0,
+  "external_ai_calls": 0,
+  "real_member_ai": false,
+  "production_touched": false
+}
