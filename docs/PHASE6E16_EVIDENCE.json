@@ -1,0 +1,207 @@
+{
+  "package": "6E-16",
+  "status": "LOCAL TECHNICAL PASS; publication verified separately",
+  "baseline": "968b4f0257303af5c60e8a7370a252c20641a806",
+  "source_sha256": {
+    "training-rules-demo/app.js": "1ca8d76a4271a2f84834513afb2cbe5f633a1654bbcc39fd82fae01b5b9b3c8d",
+    "training-rules-demo/catalog.js": "450c25900acb8fe7594e2d02ace169d46f527065a73a4b50777d85540b633ee3",
+    "training-rules-demo/copy.js": "1737181fed834eddb9bb5649bc9f1cc306af062a0cc978ad377d56868f8ee86d",
+    "training-rules-demo/demo.css": "adf341ed346feadef7c218c3bcfdb8aa7d08f78e6be04443e02b0ab8d248a1da",
+    "training-rules-demo/fixtures.js": "11a12e396c6783d3fb1844821e55007c0840dda06398b7642366b26ec0b436fd",
+    "training-rules-demo/index.html": "572635787eee60ef7cda039085255b7b3fb343882e937da808039f36fe427200",
+    "training-rules-demo/model.js": "ca345fa6f73d215cd625a0534ddee101ea85196486937b3a4e1782dd2814c736",
+    "training-rules-demo/review.js": "5679a4b6f23466af26b721d843f3410490405a73b2ef4228b7fcb10c5ca9b0eb",
+    "_offline/phase6e16/browser.cjs": "cd2639bffc7494fbef1a3d09b0eedb3fc0b641821d3da09a3e0529ccc7d5c32b",
+    "_offline/phase6e16/contract.test.cjs": "49dbb4b392d905dd83e5f56051f371e85b1ef2691eb87481d5fdb7ca320f894c",
+    "_offline/phase6e16/evidence.cjs": "ee9552285d37bc8920065b867e558e601788bf3b5b02ff96354af11e350073f5",
+    "_offline/phase6e16/ops.cjs": "97201d5fd87b0c49603911d1b86c49b6af1565b16a2ddbf4ad5a8980e6fe6129",
+    "_offline/phase6e16/publication.cjs": "7f3a89dd0485621d4f7803fcb80be28121fd91daf51a304b3e2e7711d3c5c373",
+    "_offline/phase6e16/README.md": "3076499b9241e5f326ce53458681571d3fc6c1af6fcfcee0bf4c10cfdff78342",
+    "_offline/phase6e16/run.cjs": "8154b11e70eca65bafee8f3eeb98d5f36c2ceebbb0220d11027516c3260daebf",
+    "_offline/phase6e16/serve.cjs": "280200acdf8073a8ad8109518aafcff77be6e2ae237fe35509f5ea7c814a677c"
+  },
+  "tests": {
+    "total": 3749,
+    "new16": 207,
+    "frozen": 3542,
+    "groups": [
+      {
+        "name": "contract-1790846253873.json",
+        "counts": {
+          "tests": 536,
+          "pass": 536,
+          "fail": 0,
+          "skipped": 0
+        },
+        "exit": 0
+      },
+      {
+        "name": "new6e12",
+        "counts": {
+          "tests": 457,
+          "pass": 457,
+          "fail": 0,
+          "skipped": 0
+        },
+        "exit": 0
+      },
+      {
+        "name": "frozen6e0",
+        "counts": {
+          "tests": 711,
+          "pass": 711,
+          "fail": 0,
+          "skipped": 0
+        },
+        "exit": 0
+      },
+      {
+        "name": "frozen6e1",
+        "counts": {
+          "tests": 292,
+          "pass": 292,
+          "fail": 0,
+          "skipped": 0
+        },
+        "exit": 0
+      },
+      {
+        "name": "frozen6e2",
+        "counts": {
+          "tests": 159,
+          "pass": 159,
+          "fail": 0,
+          "skipped": 0
+        },
+        "exit": 0
+      },
+      {
+        "name": "frozen6e3",
+        "counts": {
+          "tests": 111,
+          "pass": 111,
+          "fail": 0,
+          "skipped": 0
+        },
+        "exit": 0
+      },
+      {
+        "name": "frozen6e4",
+        "counts": {
+          "tests": 229,
+          "pass": 229,
+          "fail": 0,
+          "skipped": 0
+        },
+        "exit": 0
+      },
+      {
+        "name": "frozen6e5",
+        "counts": {
+          "tests": 144,
+          "pass": 144,
+          "fail": 0,
+          "skipped": 0
+        },
+        "exit": 0
+      },
+      {
+        "name": "frozen6e6",
+        "counts": {
+          "tests": 112,
+          "pass": 112,
+          "fail": 0,
+          "skipped": 0
+        },
+        "exit": 0
+      },
+      {
+        "name": "frozen6e7",
+        "counts": {
+          "tests": 184,
+          "pass": 184,
+          "fail": 0,
+          "skipped": 0
+        },
+        "exit": 0
+      },
+      {
+        "name": "frozen6e8",
+        "counts": {
+          "tests": 149,
+          "pass": 149,
+          "fail": 0,
+          "skipped": 0
+        },
+        "exit": 0
+      },
+      {
+        "name": "frozen6e9",
+        "counts": {
+          "tests": 35,
+          "pass": 35,
+          "fail": 0,
+          "skipped": 0
+        },
+        "exit": 0
+      },
+      {
+        "name": "frozen6e10",
+        "counts": {
+          "tests": 8,
+          "pass": 8,
+          "fail": 0,
+          "skipped": 0
+        },
+        "exit": 0
+      },
+      {
+        "name": "6e13-tests-1790846487361.json",
+        "counts": {
+          "tests": 233,
+          "pass": 233,
+          "fail": 0,
+          "skipped": 0
+        },
+        "exit": 0
+      },
+      {
+        "name": "6e14-tests-1790846488815.json",
+        "counts": {
+          "tests": 389,
+          "pass": 389,
+          "fail": 0,
+          "skipped": 0
+        },
+        "exit": 0
+      }
+    ],
+    "known_limitations_not_recognition_success": true,
+    "medical_validation": false
+  },
+  "browser": {
+    "checks": 1812,
+    "layouts": 385,
+    "settings": 24,
+    "emulated_only": true
+  },
+  "preservation": {
+    "status": "PASS",
+    "files": 1185,
+    "historical": 58
+  },
+  "raw_evidence": {
+    "supabase/.temp/phase6e16-1790845408324/contract-1790846253873.json": "43745d7f7ad9f10afe4d3dcf7e5af179def2d83852874ba38a850e572416a1b5",
+    "supabase/.temp/phase6e16-1790845408324/unit-regressions.json": "5c389c37bee78c350166a95cd05635775e33b4829e17ff40cfbfd012a87ee6da",
+    "supabase/.temp/phase6e16-1790845408324/6e13-tests-1790846487361.json": "fbc222aee4843303bee6cb23fe9d99b9fa3fd412daa5a4ed962482601630f50a",
+    "supabase/.temp/phase6e16-1790845408324/6e14-tests-1790846488815.json": "19157e36e37c47d91081acb7b77befdc43d7ba27e21e0f6a0e630cb2216118e3",
+    "supabase/.temp/phase6e16-1790845408324/local-browser-1790846453643.json": "1493b8fec907e3db581eefd075b1df6a33196ed189913436289f0fd8cef66fe7",
+    "supabase/.temp/phase6e16-1790845408324/preserve-1790846546313.json": "75422dfca29b01e6bbb27843f2cce8b239cf4e06c40f3cc8ffe8780a10b2101f"
+  },
+  "owner_accepted": false,
+  "frozen": false,
+  "hosted_calls": 0,
+  "external_ai_calls": 0,
+  "real_member_ai": false,
+  "support_hold": "SU-487979"
+}
