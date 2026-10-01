@@ -1,0 +1,218 @@
+{
+  "package": "6E-17",
+  "status": "LOCAL TECHNICAL PASS; publication separately verified",
+  "baseline": "6adb23c6ff38628b2cb00a618fe4a76bc0477029",
+  "source_sha256": {
+    "nutrition-rules-demo/app.js": "ddb96b1a46f71619d1905fdaf9487c8c261433ebb8d53d9872c1a5a59d0abf55",
+    "nutrition-rules-demo/catalog.js": "bca6cc1ea0716e8a943c28e5178f7340860cee2afa93f12ff437fe135dd467c5",
+    "nutrition-rules-demo/copy.js": "07832a3977df8419662407f46e93d0648c35f05a0ce2f50c639ce2edf25454e3",
+    "nutrition-rules-demo/demo.css": "8cb339f77376f78ea15d55c0be90228dd4ff4bd19698c6eea0457888468ef893",
+    "nutrition-rules-demo/fixtures.js": "bf30c336f8deb49243c01d2c3c059858c890eb8738ac3e05510bd56559ca66b5",
+    "nutrition-rules-demo/index.html": "d2a11808d657d3ab7e0a14fcab5401a491c1caadf236802c69f11bcf960a0351",
+    "nutrition-rules-demo/model.js": "563e8228f6b0cc6f29252a33535d45ba48f8d4955fdfdb40841b9b06ce148d88",
+    "nutrition-rules-demo/review.js": "898efa3e30403bb41190bd0b82d27ad018120693ebc5a23ae1040c0144bebaaa",
+    "_offline/phase6e17/browser.cjs": "051e71f9d4a1311515ec75bfa46e30ad1009d2d0b5f69caa6112b0bb5cf583e1",
+    "_offline/phase6e17/contract.test.cjs": "21de5c5111917ce45bd85f17f6a10b7dcca334cb8c5987598a59c57717a312d3",
+    "_offline/phase6e17/evidence.cjs": "f9556571e27942854de0cc9c0d080057d27a3b1c2b2ae9fd3521807c39f25f9d",
+    "_offline/phase6e17/ops.cjs": "f33d52765ed0e5f55a67ad72ff8b512284cc8727c4dabb7ed5e85394b5ca3c3c",
+    "_offline/phase6e17/publication.cjs": "3fbc51cde0919a782fc60de48cb90bf230f59b353161b32ba905f46d9330a95d",
+    "_offline/phase6e17/README.md": "048edc24a5ea4bc4a02f088553aba68b97f5e62e4497818826af55edc85a5857",
+    "_offline/phase6e17/run.cjs": "b79951e503d768894d025e0a9fd5a12230a61f1a0b6a5a044ec769325599d0d0",
+    "_offline/phase6e17/serve.cjs": "bb004dd4f995f1a5173e0ef7316c8082cad20865f82da632af0e7deff125da57"
+  },
+  "tests": {
+    "total": 4038,
+    "new17": 289,
+    "frozen": 3749,
+    "groups": [
+      {
+        "name": "contract-1790861075847.json",
+        "counts": {
+          "tests": 289,
+          "pass": 289,
+          "fail": 0,
+          "skipped": 0
+        },
+        "exit": 0
+      },
+      {
+        "name": "frozen16\\contract-1790860903915.json",
+        "counts": {
+          "tests": 536,
+          "pass": 536,
+          "fail": 0,
+          "skipped": 0
+        },
+        "exit": 0
+      },
+      {
+        "name": "new6e12",
+        "counts": {
+          "tests": 457,
+          "pass": 457,
+          "fail": 0,
+          "skipped": 0
+        },
+        "exit": 0
+      },
+      {
+        "name": "frozen6e0",
+        "counts": {
+          "tests": 711,
+          "pass": 711,
+          "fail": 0,
+          "skipped": 0
+        },
+        "exit": 0
+      },
+      {
+        "name": "frozen6e1",
+        "counts": {
+          "tests": 292,
+          "pass": 292,
+          "fail": 0,
+          "skipped": 0
+        },
+        "exit": 0
+      },
+      {
+        "name": "frozen6e2",
+        "counts": {
+          "tests": 159,
+          "pass": 159,
+          "fail": 0,
+          "skipped": 0
+        },
+        "exit": 0
+      },
+      {
+        "name": "frozen6e3",
+        "counts": {
+          "tests": 111,
+          "pass": 111,
+          "fail": 0,
+          "skipped": 0
+        },
+        "exit": 0
+      },
+      {
+        "name": "frozen6e4",
+        "counts": {
+          "tests": 229,
+          "pass": 229,
+          "fail": 0,
+          "skipped": 0
+        },
+        "exit": 0
+      },
+      {
+        "name": "frozen6e5",
+        "counts": {
+          "tests": 144,
+          "pass": 144,
+          "fail": 0,
+          "skipped": 0
+        },
+        "exit": 0
+      },
+      {
+        "name": "frozen6e6",
+        "counts": {
+          "tests": 112,
+          "pass": 112,
+          "fail": 0,
+          "skipped": 0
+        },
+        "exit": 0
+      },
+      {
+        "name": "frozen6e7",
+        "counts": {
+          "tests": 184,
+          "pass": 184,
+          "fail": 0,
+          "skipped": 0
+        },
+        "exit": 0
+      },
+      {
+        "name": "frozen6e8",
+        "counts": {
+          "tests": 149,
+          "pass": 149,
+          "fail": 0,
+          "skipped": 0
+        },
+        "exit": 0
+      },
+      {
+        "name": "frozen6e9",
+        "counts": {
+          "tests": 35,
+          "pass": 35,
+          "fail": 0,
+          "skipped": 0
+        },
+        "exit": 0
+      },
+      {
+        "name": "frozen6e10",
+        "counts": {
+          "tests": 8,
+          "pass": 8,
+          "fail": 0,
+          "skipped": 0
+        },
+        "exit": 0
+      },
+      {
+        "name": "6e13-tests-1790860991332.json",
+        "counts": {
+          "tests": 233,
+          "pass": 233,
+          "fail": 0,
+          "skipped": 0
+        },
+        "exit": 0
+      },
+      {
+        "name": "6e14-tests-1790860993098.json",
+        "counts": {
+          "tests": 389,
+          "pass": 389,
+          "fail": 0,
+          "skipped": 0
+        },
+        "exit": 0
+      }
+    ],
+    "known_limitations_not_recognition_success": true,
+    "nutrition_medical_validation": false
+  },
+  "browser": {
+    "checks": 2682,
+    "layouts": 481,
+    "settings": 24,
+    "emulated_only": true
+  },
+  "preservation": {
+    "status": "PASS",
+    "files": 1210,
+    "historical": 58
+  },
+  "raw_sha256": {
+    "supabase/.temp/phase6e17-1790859713868/contract-1790861075847.json": "28d748461658ac25c52843d61980895fb82b17f6e9661db5de08eb8d08b8e4af",
+    "supabase/.temp/phase6e17-1790859713868/frozen16/contract-1790860903915.json": "3b9a62cc8e0b6448a227734ccf731f2da52a9e99e39322f37b63d374b092144a",
+    "supabase/.temp/phase6e17-1790859713868/unit-regressions.json": "512800fc496ae715dd9e1e179d0101be11ccb49f8b49ed57538e5be6a24c5dd3",
+    "supabase/.temp/phase6e17-1790859713868/6e13-tests-1790860991332.json": "f38b059085a46ae9e2d4e71fee039e64a52063f14c8227b3c82938589d188b96",
+    "supabase/.temp/phase6e17-1790859713868/6e14-tests-1790860993098.json": "28aa155c6e5e78f7e622bfa265e9798271a793b204fa8e001500f5e2a6723f9b",
+    "supabase/.temp/phase6e17-1790859713868/local-browser-1790861169879.json": "996f884bc6e647083d20b8196ddc04116049b0ae1a988198b5bb9b2718eb2765",
+    "supabase/.temp/phase6e17-1790859713868/preserve-1790861303865.json": "b2626813c03158f9384fd84c0827f6b09a1a4ce675679f2c54d703dcf04a8332"
+  },
+  "owner_accepted": false,
+  "frozen": false,
+  "hosted_supabase_calls": 0,
+  "external_ai_calls": 0,
+  "real_member_ai": false,
+  "support_hold": "SU-487979"
+}

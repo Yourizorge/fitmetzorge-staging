@@ -1,0 +1,5 @@
+(function(root){"use strict";const C=typeof module==='object'?require('./catalog.js'):root.FMZ17Catalog,copy=x=>JSON.parse(JSON.stringify(x)),known=value=>({status:'known',value}),na=()=>({status:'not_applicable',value:null}),missing=()=>({status:'missing',value:null});
+const intake={goal:known('maintain'),age:known(30),eligible:known(true),height:known({value:175,unit:'cm'}),weight:known({value:75,unit:'kg'}),activity:known('moderate'),trainingFrequency:known(3),target:known({id:'syn17-target',version:1}),meals:known(3),moments:known(['08:00','13:00','19:00','20:00']),favorites:na(),excluded:na(),allergies:known([]),diet:known('plant'),restrictions:na(),maxRecipes:known(2),prepMinutes:known(20),budget:missing(),language:known('nl'),units:known('metric'),health:known('none'),consent:known(true)};
+const base={synthetic_only:true,route:'B',person:'syn17-member',clock:C.clock,intake,catalog:copy(C.data)};
+const api={base,known,na,missing,copy};if(typeof module==='object')module.exports=api;else root.FMZ17Fixtures=api;
+})(globalThis);
