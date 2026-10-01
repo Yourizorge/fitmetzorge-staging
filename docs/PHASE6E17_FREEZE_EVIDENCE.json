@@ -1,0 +1,117 @@
+{
+  "package": "6E-17",
+  "status": "COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE/SYNTHETIC ONLY",
+  "accepted_on": "2026-10-01",
+  "owner_acceptance": "Physical phone test of all20 scenarios;17-R1/17-R2/17-R3 accepted for operation and safety boundaries; synthetic nutrition values are NOT substantively or professionally validated",
+  "source_commit": "aafa5e7cfcef21e6c993be9da7f40898f276a39d",
+  "publication_commit": "dfa3dac9d3e3b3cd326eda28b867b84eed94587b",
+  "sources": [
+    {
+      "file": "nutrition-rules-demo/app.js",
+      "working_sha256": "ddb96b1a46f71619d1905fdaf9487c8c261433ebb8d53d9872c1a5a59d0abf55",
+      "git_sha256": "ddb96b1a46f71619d1905fdaf9487c8c261433ebb8d53d9872c1a5a59d0abf55"
+    },
+    {
+      "file": "nutrition-rules-demo/catalog.js",
+      "working_sha256": "bca6cc1ea0716e8a943c28e5178f7340860cee2afa93f12ff437fe135dd467c5",
+      "git_sha256": "bca6cc1ea0716e8a943c28e5178f7340860cee2afa93f12ff437fe135dd467c5"
+    },
+    {
+      "file": "nutrition-rules-demo/copy.js",
+      "working_sha256": "07832a3977df8419662407f46e93d0648c35f05a0ce2f50c639ce2edf25454e3",
+      "git_sha256": "07832a3977df8419662407f46e93d0648c35f05a0ce2f50c639ce2edf25454e3"
+    },
+    {
+      "file": "nutrition-rules-demo/demo.css",
+      "working_sha256": "8cb339f77376f78ea15d55c0be90228dd4ff4bd19698c6eea0457888468ef893",
+      "git_sha256": "8cb339f77376f78ea15d55c0be90228dd4ff4bd19698c6eea0457888468ef893"
+    },
+    {
+      "file": "nutrition-rules-demo/fixtures.js",
+      "working_sha256": "bf30c336f8deb49243c01d2c3c059858c890eb8738ac3e05510bd56559ca66b5",
+      "git_sha256": "bf30c336f8deb49243c01d2c3c059858c890eb8738ac3e05510bd56559ca66b5"
+    },
+    {
+      "file": "nutrition-rules-demo/index.html",
+      "working_sha256": "d2a11808d657d3ab7e0a14fcab5401a491c1caadf236802c69f11bcf960a0351",
+      "git_sha256": "d2a11808d657d3ab7e0a14fcab5401a491c1caadf236802c69f11bcf960a0351"
+    },
+    {
+      "file": "nutrition-rules-demo/model.js",
+      "working_sha256": "563e8228f6b0cc6f29252a33535d45ba48f8d4955fdfdb40841b9b06ce148d88",
+      "git_sha256": "563e8228f6b0cc6f29252a33535d45ba48f8d4955fdfdb40841b9b06ce148d88"
+    },
+    {
+      "file": "nutrition-rules-demo/review.js",
+      "working_sha256": "898efa3e30403bb41190bd0b82d27ad018120693ebc5a23ae1040c0144bebaaa",
+      "git_sha256": "898efa3e30403bb41190bd0b82d27ad018120693ebc5a23ae1040c0144bebaaa"
+    },
+    {
+      "file": "_offline/phase6e17/browser.cjs",
+      "working_sha256": "051e71f9d4a1311515ec75bfa46e30ad1009d2d0b5f69caa6112b0bb5cf583e1",
+      "git_sha256": "051e71f9d4a1311515ec75bfa46e30ad1009d2d0b5f69caa6112b0bb5cf583e1"
+    },
+    {
+      "file": "_offline/phase6e17/contract.test.cjs",
+      "working_sha256": "21de5c5111917ce45bd85f17f6a10b7dcca334cb8c5987598a59c57717a312d3",
+      "git_sha256": "21de5c5111917ce45bd85f17f6a10b7dcca334cb8c5987598a59c57717a312d3"
+    },
+    {
+      "file": "_offline/phase6e17/evidence.cjs",
+      "working_sha256": "f9556571e27942854de0cc9c0d080057d27a3b1c2b2ae9fd3521807c39f25f9d",
+      "git_sha256": "f9556571e27942854de0cc9c0d080057d27a3b1c2b2ae9fd3521807c39f25f9d"
+    },
+    {
+      "file": "_offline/phase6e17/ops.cjs",
+      "working_sha256": "f33d52765ed0e5f55a67ad72ff8b512284cc8727c4dabb7ed5e85394b5ca3c3c",
+      "git_sha256": "f33d52765ed0e5f55a67ad72ff8b512284cc8727c4dabb7ed5e85394b5ca3c3c"
+    },
+    {
+      "file": "_offline/phase6e17/publication.cjs",
+      "working_sha256": "3fbc51cde0919a782fc60de48cb90bf230f59b353161b32ba905f46d9330a95d",
+      "git_sha256": "3fbc51cde0919a782fc60de48cb90bf230f59b353161b32ba905f46d9330a95d"
+    },
+    {
+      "file": "_offline/phase6e17/README.md",
+      "working_sha256": "048edc24a5ea4bc4a02f088553aba68b97f5e62e4497818826af55edc85a5857",
+      "git_sha256": "048edc24a5ea4bc4a02f088553aba68b97f5e62e4497818826af55edc85a5857"
+    },
+    {
+      "file": "_offline/phase6e17/run.cjs",
+      "working_sha256": "b79951e503d768894d025e0a9fd5a12230a61f1a0b6a5a044ec769325599d0d0",
+      "git_sha256": "b79951e503d768894d025e0a9fd5a12230a61f1a0b6a5a044ec769325599d0d0"
+    },
+    {
+      "file": "_offline/phase6e17/serve.cjs",
+      "working_sha256": "bb004dd4f995f1a5173e0ef7316c8082cad20865f82da632af0e7deff125da57",
+      "git_sha256": "bb004dd4f995f1a5173e0ef7316c8082cad20865f82da632af0e7deff125da57"
+    }
+  ],
+  "reports": {
+    "docs/PHASE6E17_EVIDENCE.json": "af19d3d92eaecb8a8f5f31b9d21396b1ea326c834b61ddb66e93f6d508d10355",
+    "docs/PHASE6E17_PUBLICATION_EVIDENCE.json": "a753261fc391a06b1c12f3946188b5134a9b6ef1ea9a8131b6f111864f849f6a",
+    "docs/PHASE6E17_PUBLICATION_RECEIPT.md": "dbaaba864a60eae7a79f22fbbd5a9552aaf962d28d00a53487e563b92b3a0643",
+    "docs/PHASE6E17_OWNER_OVERVIEW.md": "b7f4721ac74daecb8e55f4193a49d3a59abff523672bfe0c80f49bffa145ac57",
+    "docs/PHASE6E17_EXAMPLES.json": "7fe6058aba80bbc0e14879fedab203f11e3601fff47e8cc0859a930ac194ad0b"
+  },
+  "tests": {
+    "total": 4038,
+    "new17": 289,
+    "frozen": 3749,
+    "browser_local": 2682,
+    "browser_published": 2682,
+    "settings": 24,
+    "layouts": 481
+  },
+  "pages_runs": [
+    36869290225,
+    36870106318
+  ],
+  "old_assets": 117,
+  "new_assets": 8,
+  "private404": 73,
+  "expert_validation": false,
+  "live_release": false,
+  "whole_phase_complete": false,
+  "support_hold": "SU-487979"
+}
