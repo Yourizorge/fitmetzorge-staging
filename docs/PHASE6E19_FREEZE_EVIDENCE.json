@@ -1,0 +1,127 @@
+{
+  "package": "6E-19",
+  "status": "COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE/SYNTHETIC ONLY",
+  "accepted_on": "2026-10-04",
+  "owner_acceptance": "Physical phone test: all sixteen scenarios and manual operation PASS;19-R1/R2/R3 accepted for operation, explanation and safety boundaries. No expert validation or live release.",
+  "source_commit": "fe1ac14cb4f44989e61134a3314f1b4e8ea52df2",
+  "publication_commit": "5b8b0ca1f0e5dc35f25853183d0b43ef1c34334f",
+  "sources": [
+    {
+      "file": "_offline/phase6e19/browser.cjs",
+      "working_sha256": "a36851fe72aa496b983ba1cb549d7968892c1206ad7c65e62e5ada1b3d28d58a",
+      "git_sha256": "a36851fe72aa496b983ba1cb549d7968892c1206ad7c65e62e5ada1b3d28d58a"
+    },
+    {
+      "file": "_offline/phase6e19/build.cjs",
+      "working_sha256": "042b8a134c0629995c5b540c13d1f3dd10a25613c1097777997409f2df0fa062",
+      "git_sha256": "042b8a134c0629995c5b540c13d1f3dd10a25613c1097777997409f2df0fa062"
+    },
+    {
+      "file": "_offline/phase6e19/contract.test.cjs",
+      "working_sha256": "f1e544f50bd3df3c3ee54b328b285d0cbd67d3224650c6b1cae533d2ddf910aa",
+      "git_sha256": "f1e544f50bd3df3c3ee54b328b285d0cbd67d3224650c6b1cae533d2ddf910aa"
+    },
+    {
+      "file": "_offline/phase6e19/evidence.cjs",
+      "working_sha256": "a7532e9750b7741988282aa782e3d9af29069e6ce75544ae184a2c2ddda435b2",
+      "git_sha256": "a7532e9750b7741988282aa782e3d9af29069e6ce75544ae184a2c2ddda435b2"
+    },
+    {
+      "file": "_offline/phase6e19/ops.cjs",
+      "working_sha256": "1a6899583def8185f4839f97462553c5773a5c4b126eb38eb439f8b3203e411e",
+      "git_sha256": "1a6899583def8185f4839f97462553c5773a5c4b126eb38eb439f8b3203e411e"
+    },
+    {
+      "file": "_offline/phase6e19/publication.cjs",
+      "working_sha256": "eb5ac37a52ada5f4089348af173118e2f54666fd432578976a66403e8411d57c",
+      "git_sha256": "eb5ac37a52ada5f4089348af173118e2f54666fd432578976a66403e8411d57c"
+    },
+    {
+      "file": "_offline/phase6e19/README.md",
+      "working_sha256": "6802866e33512ec84ef911b6fda4f5f5ad2d60d08cdcef7169e8746b577f5049",
+      "git_sha256": "6802866e33512ec84ef911b6fda4f5f5ad2d60d08cdcef7169e8746b577f5049"
+    },
+    {
+      "file": "_offline/phase6e19/run.cjs",
+      "working_sha256": "32907812a4fa7d3c399191510a65107a8e8ea72641e0f2be2cfe9e452636c169",
+      "git_sha256": "32907812a4fa7d3c399191510a65107a8e8ea72641e0f2be2cfe9e452636c169"
+    },
+    {
+      "file": "_offline/phase6e19/serve.cjs",
+      "working_sha256": "40a694eb323b23345892171a4fec9c933c895eaacc35cf50ddc3560451c19e6e",
+      "git_sha256": "40a694eb323b23345892171a4fec9c933c895eaacc35cf50ddc3560451c19e6e"
+    },
+    {
+      "file": "recovery-checkin-demo/app.js",
+      "working_sha256": "67140e50dee023b1fe625ef98d154be612d9911e6e11607a67fcf28278a37bab",
+      "git_sha256": "67140e50dee023b1fe625ef98d154be612d9911e6e11607a67fcf28278a37bab"
+    },
+    {
+      "file": "recovery-checkin-demo/copy.js",
+      "working_sha256": "c7368a1afb0ee11b8584c9bf5b718880c8ff7f7ce7bcd86c3d15b371bd63c16d",
+      "git_sha256": "c7368a1afb0ee11b8584c9bf5b718880c8ff7f7ce7bcd86c3d15b371bd63c16d"
+    },
+    {
+      "file": "recovery-checkin-demo/data.js",
+      "working_sha256": "eeae7da071b39617eb2e68035805af96675051420091d35847e728bdca0c08cc",
+      "git_sha256": "eeae7da071b39617eb2e68035805af96675051420091d35847e728bdca0c08cc"
+    },
+    {
+      "file": "recovery-checkin-demo/demo.css",
+      "working_sha256": "db9bb0e4edf9d83d7838fdb605a8e2313dcbf6105ed3838f04dc97cb8939fb39",
+      "git_sha256": "db9bb0e4edf9d83d7838fdb605a8e2313dcbf6105ed3838f04dc97cb8939fb39"
+    },
+    {
+      "file": "recovery-checkin-demo/fixtures.js",
+      "working_sha256": "b28d60fe44eb509db409354c7fb6bafd461a09d30e770513f56c48b6ce493b20",
+      "git_sha256": "b28d60fe44eb509db409354c7fb6bafd461a09d30e770513f56c48b6ce493b20"
+    },
+    {
+      "file": "recovery-checkin-demo/index.html",
+      "working_sha256": "47f59cd3933c7082cb376e657dd25bcbd67a926e96a5706c12f3a8422eb84c63",
+      "git_sha256": "47f59cd3933c7082cb376e657dd25bcbd67a926e96a5706c12f3a8422eb84c63"
+    },
+    {
+      "file": "recovery-checkin-demo/model.js",
+      "working_sha256": "7a6d700ec1c91727d9666f5a8f3795b4b07dfba7bcf07199311868d3b93f0505",
+      "git_sha256": "7a6d700ec1c91727d9666f5a8f3795b4b07dfba7bcf07199311868d3b93f0505"
+    },
+    {
+      "file": "recovery-checkin-demo/review.js",
+      "working_sha256": "e1a2c789c4668e7795844314e7b431f2369b45e4412053a6ebc28f37cf89e87d",
+      "git_sha256": "e1a2c789c4668e7795844314e7b431f2369b45e4412053a6ebc28f37cf89e87d"
+    }
+  ],
+  "reports": {
+    "docs/PHASE6E19_EVIDENCE.json": "36e197aaa0b8026ace9f6c0510fe3e98f0c306ae7276c712b65ebbf21359422b",
+    "docs/PHASE6E19_PUBLICATION_EVIDENCE.json": "5b869e7fa4841cad6acb33244c86b944efb2e37bd8a8047062aaa6143f79fd81",
+    "docs/PHASE6E19_PUBLICATION_RECEIPT.md": "df6fbfa1066af3ea17208d839eaa5d8272887a9682907c6a0096322bfcf6142c",
+    "docs/PHASE6E19_OWNER_OVERVIEW.md": "95a65af48bb88ae6c96cb42d302d3bcbc9501741760df755ef665cb0736aaa5d",
+    "docs/PHASE6E19_EXAMPLES.json": "47cfd567d26249b71d4ffedd6ad30394b2163532588d4c716dfb83c8ffe51ae4",
+    "docs/PHASE6E19_INITIAL_EVIDENCE.json": "cc93893ae0785885fc6009f3e12a69e13d1820a2747a57d195f0705eb741cd25",
+    "docs/PHASE6E19_INITIAL_EXAMPLES.json": "30871a413dde6ceb83023f69267487c304b23fe7977df7abb58f71a7ccc16cc0",
+    "docs/PHASE6E19_REQUEST_ID_EVIDENCE.json": "49cb693827feab2bd8b499a7d36633c0b8c11db90028005b18d43138621f9539",
+    "docs/PHASE6E19_TECHNICAL_REPORT.md": "c3c43228170012064f902e447281dff0ecc5c3a1f67e4ed7727611716619ca36",
+    "docs/PHASE6E19_STATUS_AND_CONTRACT.md": "d4bcac7437da1e7bd7434449d16f48cb7496041d9b5f5acc6d800159b8fe19b0"
+  },
+  "tests": {
+    "total": 4716,
+    "new19": 343,
+    "frozen": 4373,
+    "browser_local": 2274,
+    "browser_published": 2274,
+    "settings": 24,
+    "layouts": 385
+  },
+  "pages_runs": [
+    37191076998,
+    37191475762
+  ],
+  "old_assets": 132,
+  "new_assets": 8,
+  "private404": 90,
+  "expert_validation": false,
+  "live_release": false,
+  "whole_phase_complete": false,
+  "support_hold": "SU-487979"
+}
