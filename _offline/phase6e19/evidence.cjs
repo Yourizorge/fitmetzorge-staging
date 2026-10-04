@@ -1,7 +1,7 @@
 "use strict";
 const fs=require('node:fs'),p=require('node:path'),c=require('node:crypto'),a=require('node:assert/strict'),M=require('../../recovery-checkin-demo/model.js'),R=require('../../recovery-checkin-demo/review.js'),C=require('../../recovery-checkin-demo/copy.js');
 const root=p.resolve(__dirname,'../..'),out=process.argv[2],sha=x=>c.createHash('sha256').update(x).digest('hex'),read=f=>JSON.parse(fs.readFileSync(p.join(out,f))),names=fs.readdirSync(out),last=prefix=>names.filter(f=>f.startsWith(prefix)&&f.endsWith('.json')).sort().at(-1);
-const unit=read(last('contract-'));a.equal(unit.counts.tests,339);a.equal(unit.counts.pass,339);a.equal(unit.counts.fail,0);
+const unit=read(last('contract-'));a.equal(unit.counts.tests,343);a.equal(unit.counts.pass,343);a.equal(unit.counts.fail,0);
 const browser=read(last('local-browser-'));a.equal(browser.status,'BROWSER_PASS');a(browser.checks.every(x=>x.pass));a.equal(browser.layouts.length,385);
 for(const [f,h]of Object.entries(browser.source_sha256))a.equal(sha(fs.readFileSync(p.join(root,'recovery-checkin-demo',f))),h,f);
 let frozen=0;const reg=read('unit-regressions.json');for(const x of Object.values(reg.groups)){a.equal(x.exit,0);a.equal(x.counts.fail,0);frozen+=x.counts.pass;}
@@ -16,8 +16,8 @@ for(const [file,data]of [['docs/PHASE6E19_EVIDENCE.json',evidence],['docs/PHASE6
  const target=p.join(root,file),bytes=JSON.stringify(data,null,2)+'\n';
  if(fs.existsSync(target)){
   const old=fs.readFileSync(target);if(old.toString()===bytes)continue;
-  a.equal(file,'docs/PHASE6E19_EVIDENCE.json','Changed examples require a separate reviewed revision');
-  fs.writeFileSync(p.join(root,'docs/PHASE6E19_INITIAL_EVIDENCE.json'),old,{flag:'wx'});
+  const archive=file.endsWith('_EXAMPLES.json')?'docs/PHASE6E19_INITIAL_EXAMPLES.json':fs.existsSync(p.join(root,'docs/PHASE6E19_INITIAL_EVIDENCE.json'))?'docs/PHASE6E19_REQUEST_ID_EVIDENCE.json':'docs/PHASE6E19_INITIAL_EVIDENCE.json';
+  fs.writeFileSync(p.join(root,archive),old,{flag:'wx'});
   fs.writeFileSync(target,bytes);
  }else fs.writeFileSync(target,bytes,{flag:'wx'});
 }

@@ -15,7 +15,7 @@ const rows=[
 ['complete',['Check-in afronden','Complete check-in','Check-in abschliessen'],'checkin_complete','member_pending',1],
 ['edit',['Check-intijd aanpassen','Change check-in time','Check-in-Zeit aendern'],'applied','applied',2],
 ['atomic',['Onderbreking','Interruption','Unterbrechung'],'record_change','confirmed',1],
-['restore',['Vorige check-inversie','Previous check-in version','Vorherige Check-in-Version'],'applied','applied',3]];
+['restore',['Vorige check-inversie','Previous check-in version','Vorherige Check-in-Version'],'applied','applied',4]];
 const scenarios=rows.map(([id,title,reason,status,version])=>({id,title,reason,status,version}));
 function run(id){
  const spec=scenarios.find(x=>x.id===id),f=F.copy(F.cases[id]);if(!spec)throw Error('scenario');if(id==='expired')f.sources.expires=f.clock+86400000;
@@ -31,7 +31,7 @@ function run(id){
  if(id==='complete'){send('complete');send('complete');}
  if(id==='edit'){send('accept');send('edit',{at:'20:00'});send('accept');send('apply');}
  if(id==='atomic'){send('accept');send('apply',{},'member',{fault_before_commit:true});}
- if(id==='restore'){send('accept');send('apply');send('restore',{version:1});send('accept');send('apply');}
+ if(id==='restore'){send('accept');send('apply');send('restore',{version:1});send('edit',{at:'20:00'});send('accept');send('apply');send('restore',{version:2});send('accept');send('apply');}
  }
  return {spec,model,events};
 }
@@ -43,7 +43,7 @@ function assess(r,s=r.model.view()){
  if(r.spec.id==='complete')pass=pass&&s.completion?.id==='syn19-checkin-1';
  if(r.spec.id==='atomic')pass=pass&&r.events.at(-1).reason==='atomic_fault'&&s.audit.every(x=>x.action!=='apply');
  if(r.spec.id==='trainer')pass=pass&&r.events.some(x=>x.reason==='actor')&&s.active.trainer===true;
- if(r.spec.id==='restore')pass=pass&&s.history[0].option==='after_workout'&&s.history[1].option==='daily'&&s.active.option==='after_workout';
+ if(r.spec.id==='restore')pass=pass&&s.history[0].option==='after_workout'&&s.history[1].option==='daily'&&s.history[2].at==='20:00'&&s.active.option==='daily'&&s.active.at==='08:00'&&s.active.restores===2&&r.events.some(x=>x.reason==='restore');
  return {pass:!!pass};
 }
 const api={scenarios,run,assess};if(typeof module==='object')module.exports=api;else root.FMZ19Review=api;})(globalThis);

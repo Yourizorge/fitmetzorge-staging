@@ -63,6 +63,12 @@ bindings. Restoration creates a new proposal and version with fresh approvals,
 within the rule's explicit allowedRestore list. No physical advice or automatic
 action is authorized.
 
+Restoration also checks the catalog's CURRENT recovery category and allowed time.
+The original after_workout cadence remains in history but cannot be restored
+while the current declared low category selects daily. Scenario16 first changes
+the permitted daily time08:00 ->20:00, then restores08:00 as version4. It also
+proves the forbidden old cadence was rejected. No rule exception is invented.
+
 Current/uncertain/unresolved health context blocks planning; recording and reliable
 facts remain available. Self-reported resolution does not clear the safety latch.
 This is an explicit fixture context, NOT new NLP recognition or a medical service.

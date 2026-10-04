@@ -31,7 +31,7 @@ function compare(f){
 function option(f){
  const q=f.rule,expected=D.options.find(x=>x.id==='daily');
  if(!q)fail('rule_missing');
- if(!exact(q,['id','version','origin','option','optionVersion','allowedRestore','plan','planVersion','status','at','expires','trainer'])||q.id!=='syn19-'+f.route+'-checkin'||q.version!==1||q.origin!==expected.source||q.option!=='daily'||q.optionVersion!==1||!same(q.allowedRestore,['after_workout','daily'])||q.plan!==f.plan.id||q.planVersion!==f.plan.version||q.status!=='active')fail('rule_conflict');
+ if(!exact(q,['id','version','origin','option','optionVersion','allowedRestore','plan','planVersion','status','at','expires','trainer'])||q.id!=='syn19-'+f.route+'-checkin'||q.version!==1||q.origin!==expected.source||q.option!=='daily'||q.optionVersion!==1||!same(q.allowedRestore,['daily'])||q.plan!==f.plan.id||q.planVersion!==f.plan.version||q.status!=='active')fail('rule_conflict');
  if(!int(q.at)||!int(q.expires)||q.at>f.clock||q.expires<=f.clock)fail('rule_expired');
  if(f.route==='A'&&!same(q.trainer,{id:'syn19-trainer',relationshipVersion:1,status:'active'})||f.route==='B'&&q.trainer!==null)fail('trainer');
  if(f.reportedRecovery!==expected.requiresReportedRecovery)fail('classification_missing');
@@ -95,8 +95,9 @@ function create(input){
     }else{
      gate();compare({...s.input,clock:s.clock});option({...s.input,clock:s.clock});
      if(e.action==='edit'){
-      if(!exact(e.data,['at'])||!s.input.agenda.allowedTimes.includes(e.data.at)||!s.proposal||!['member_pending','trainer_pending','approved','confirmed'].includes(s.status))fail('time_option');
-      s.proposal.at=e.data.at;s.member=false;s.trainer=false;s.status='member_pending';
+      if(!exact(e.data,['at'])||!s.input.agenda.allowedTimes.includes(e.data.at)||!s.proposal||!['member_pending','trainer_pending','approved','confirmed','applied'].includes(s.status))fail('time_option');
+      if(s.status==='applied')s.proposal={...option(s.input),sourceRevision:s.revision,base:s.active.version,restores:null};
+      s.proposal.at=e.data.at;s.member=false;s.trainer=false;s.status='member_pending';s.reason='edit_time';
      }else if(e.action==='accept'){
       if(s.status!=='member_pending'||!s.proposal)fail('status');s.member=true;s.status=input.route==='A'?'trainer_pending':'confirmed';
      }else if(e.action==='approve'){
@@ -109,7 +110,7 @@ function create(input){
       s.history.push(copy(s.active));s.status='applied';s.member=false;s.trainer=false;s.cards.find(c=>c.id===s.currentCard).state='reviewed';s.reason='applied';
      }else if(e.action==='restore'){
       if(!exact(e.data,['version'])||s.status!=='applied'||e.data.version===s.active.version)fail('status');const h=s.history.find(x=>x.version===e.data.version);
-      if(!h||!D.options.some(x=>x.id===h.option)||!s.input.rule.allowedRestore.includes(h.option))fail('restore');
+      if(!h||!D.options.some(x=>x.id===h.option&&x.requiresReportedRecovery===s.input.reportedRecovery)||!s.input.rule.allowedRestore.includes(h.option)||!s.input.agenda.allowedTimes.includes(h.at))fail('restore');
       s.proposal={option:h.option,optionVersion:1,at:h.at,sourceRevision:s.revision,base:s.active.version,restores:h.version,changesTraining:false,changesNutrition:false};s.member=false;s.trainer=false;s.status='member_pending';s.reason='restore';
      }else fail('action');
     }

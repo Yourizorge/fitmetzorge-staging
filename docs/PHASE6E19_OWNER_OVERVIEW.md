@@ -40,6 +40,10 @@ Goedkeuring van deze demo valideert geen synthetische trainings-/voedingswaarden
    Route A vraagt daartussen afzonderlijke trainergoedkeuring.
 5. Ververs: alles reset. Dit is verwacht; er is geen duurzame serveropslag.
 
+Bij terugzetten moet ook de oude keuze nog bij de actuele bronregel passen.
+Stap16 bewaart de oude frequentie, weigert herstel daarvan, en herstelt daarna
+wel een eerder toegestaan dagelijks tijdstip als een nieuwe versie.
+
 Meld of19-R1/R2/R3 akkoord zijn en eventueel het scenarionummer van een afwijking.
 Een desktopbrowser in mobiele afmetingen is hier getest; deze fysieke telefoon-
 en Safari-controle blijft de owneracceptatie. 6E11 blijft SUPPORT HOLD SU-487979.

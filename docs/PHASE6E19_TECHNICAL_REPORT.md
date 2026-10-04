@@ -32,6 +32,11 @@ Local failures were retained and corrected:
 - Final review found that no-op record/refresh/completion requests also need to
   reserve their request ID. They now reject a changed payload under the same ID;
   three focused regressions cover this. Initial evidence is retained separately.
+- Source-rule review also tightened restoration: allowedRestore cannot override
+  the catalog's current recovery category. Both routes reject the historical
+  after_workout cadence under declared low. A valid daily time edit/restoration
+  instead produces versions2/3/4 with fresh approvals; version1 remains intact.
+  Initial and intermediate proof manifests/examples are retained, not rewritten.
 All failures/earlier local runs remain append-only evidence, not erased.
 
 Final totals and hashes are in PHASE6E19_EVIDENCE.json. Earlier frozen tests retain
