@@ -1,0 +1,149 @@
+{
+  "package": "6E-19",
+  "status": "LOCAL_TECHNICAL_PASS; publication separately verified",
+  "source_sha256": {
+    "_offline/phase6e19/browser.cjs": "8a72abd060da3faf431b5ed1512c90560066d09c88c2804f91b69f765d7257f3",
+    "_offline/phase6e19/build.cjs": "042b8a134c0629995c5b540c13d1f3dd10a25613c1097777997409f2df0fa062",
+    "_offline/phase6e19/contract.test.cjs": "3e868f8851806964303d20fa650b301bbbb6895096e571761b8842fb4148e956",
+    "_offline/phase6e19/evidence.cjs": "e0ae5fa327141e527ee46cd6a5c5a17522ffc577357177a2d0c052c14a539008",
+    "_offline/phase6e19/ops.cjs": "1a6899583def8185f4839f97462553c5773a5c4b126eb38eb439f8b3203e411e",
+    "_offline/phase6e19/publication.cjs": "eb5ac37a52ada5f4089348af173118e2f54666fd432578976a66403e8411d57c",
+    "_offline/phase6e19/README.md": "6802866e33512ec84ef911b6fda4f5f5ad2d60d08cdcef7169e8746b577f5049",
+    "_offline/phase6e19/run.cjs": "32907812a4fa7d3c399191510a65107a8e8ea72641e0f2be2cfe9e452636c169",
+    "_offline/phase6e19/serve.cjs": "40a694eb323b23345892171a4fec9c933c895eaacc35cf50ddc3560451c19e6e",
+    "recovery-checkin-demo/app.js": "196c22e37700798dc1ba8c71f71d89fd512a719f3f23bce39ba9524966f2a025",
+    "recovery-checkin-demo/copy.js": "6c5a6e1fac18220c623b1820b3f60a9c8eb725c5262b90b77f3ee29a79560431",
+    "recovery-checkin-demo/data.js": "eeae7da071b39617eb2e68035805af96675051420091d35847e728bdca0c08cc",
+    "recovery-checkin-demo/demo.css": "db9bb0e4edf9d83d7838fdb605a8e2313dcbf6105ed3838f04dc97cb8939fb39",
+    "recovery-checkin-demo/fixtures.js": "1c439b574fb6dea285430cb494f8fe6dbed15426e5c3b358536820a9227bb111",
+    "recovery-checkin-demo/index.html": "47f59cd3933c7082cb376e657dd25bcbd67a926e96a5706c12f3a8422eb84c63",
+    "recovery-checkin-demo/model.js": "b0155a5a801384bd092b559d50e23250d8bc40bc5229c337d51f27cfbbce774d",
+    "recovery-checkin-demo/review.js": "a640bedc4696ae217c565032f76bec76c111c04779c891c86048e1274dd6ae32"
+  },
+  "tests": {
+    "new19": {
+      "tests": 336,
+      "pass": 336,
+      "fail": 0,
+      "skipped": 0
+    },
+    "frozen": 4373,
+    "total": 4709,
+    "network_blocked": true,
+    "medical_validation": false,
+    "known_limitation_observations_not_recognition_success": true
+  },
+  "browser": {
+    "assertions": 2272,
+    "layouts": 385,
+    "settings": 24,
+    "scenarios": 16,
+    "widths": [
+      320,
+      390,
+      768,
+      1280
+    ],
+    "languages": [
+      "nl",
+      "en",
+      "de"
+    ],
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "physical_phone": false,
+    "no_unexpected_requests": true
+  },
+  "preserve": {
+    "status": "PASS",
+    "files": 1260,
+    "historical": 58
+  },
+  "publication_before": {
+    "old": 132,
+    "private404": 88
+  },
+  "raw_evidence": {
+    "supabase/.temp/phase6e19-1791100934210/6e13-tests-1791102720379.json": "55a40db23ff1626d9278423eb8e922d1597c464df3573d2ecae189dccfbfe86d",
+    "supabase/.temp/phase6e19-1791100934210/6e14-tests-1791102726280.json": "5e825a114e58fe0723177c55d1061c1353ac053138630abc252ae8591267462d",
+    "supabase/.temp/phase6e19-1791100934210/before.json": "8d55f10a4259422380a8676629ce1fb60a65195d8d38a4db63dd7c570bd90d10",
+    "supabase/.temp/phase6e19-1791100934210/contract-1791102390329.json": "ea33a4efbe16ddfa6022e4a456b7272922ab2deb9384665f367f35a3ba897a58",
+    "supabase/.temp/phase6e19-1791100934210/contract-1791102594053.json": "ae81ed9816e20b411739fb8526b10367cd634f8a1685672e2e9c837a6ed686ef",
+    "supabase/.temp/phase6e19-1791100934210/contract-1791102733593.json": "e5b5e7b8216d32d13d022a60038a47d9734188c50d1297c478fc3a14c0407768",
+    "supabase/.temp/phase6e19-1791100934210/contract-1791102740564.json": "bedb5c9fbbc97e8327e15ca6dec44b16fd73f50c02875017f878ded70bd0756c",
+    "supabase/.temp/phase6e19-1791100934210/contract-1791102748665.json": "16e8874283af0a4b3f431445f46c638d1c94342769018b9295f8f58f24df96a1",
+    "supabase/.temp/phase6e19-1791100934210/contract-1791102819905.json": "ae1a41ccf55acc965ca83bed31d9ce608754e9abf9784a75574484dcc8eadbc2",
+    "supabase/.temp/phase6e19-1791100934210/contract-1791102997444.json": "6aae834cba3b80d7302a9602207c4b6221135483aa7e004cdd57b0852eb7c0c3",
+    "supabase/.temp/phase6e19-1791100934210/frozen-12-1791102715487.json": "6fa0a474fcae0f1bb192cb3bbcaafe32038be07766a78e55b7f6f25292298f40",
+    "supabase/.temp/phase6e19-1791100934210/frozen-13-1791102720406.json": "a11944594682eabea8bab06d0f7e963aafceb45c819ff976260475995cdce143",
+    "supabase/.temp/phase6e19-1791100934210/frozen-14-1791102726307.json": "b2cf9531b6d508c778f09a6516bfdc0a95a70f991e391dae3c582e6aec5eaa3e",
+    "supabase/.temp/phase6e19-1791100934210/frozen-16-1791102733628.json": "887d36bba54138421497b65dec430e8bf58ab768439e96b294fed9095d5bc9cf",
+    "supabase/.temp/phase6e19-1791100934210/frozen-17-1791102740596.json": "009491ed437cf04a2930c6f3f0cc02043446ebcf1db3996260f12eda791eb75d",
+    "supabase/.temp/phase6e19-1791100934210/frozen-18-1791102748692.json": "d206cffff3255da6f907369cfa82e0d2274890da1e1a7fa5d2102f052b57d206",
+    "supabase/.temp/phase6e19-1791100934210/local-browser-1791102650113.json": "29e2449731d75af15b433391fd50f2b20499c3ad649251f2be6d73811fe6c98c",
+    "supabase/.temp/phase6e19-1791100934210/local-browser-1791102987473.json": "d9823a4040afbe37aede6fc12bc23f2d4373dca14d6115dce2750dbddf477641",
+    "supabase/.temp/phase6e19-1791100934210/local-browser-1791103245821.json": "9f1feab86fbfca90f2cc1ddf9afbc2be20c179628f23b72d604fd40ae3774fef",
+    "supabase/.temp/phase6e19-1791100934210/preserve-1791102931766.json": "9e521ab5b51c47c40eaeab147b82c8a5520414f8d058ef62af29573a2eaca52d",
+    "supabase/.temp/phase6e19-1791100934210/preserve-1791103327819.json": "9e521ab5b51c47c40eaeab147b82c8a5520414f8d058ef62af29573a2eaca52d",
+    "supabase/.temp/phase6e19-1791100934210/publication-before-1791102884373.json": "e16369669bec41e7bbb6596b421c9a30a3fea456a1e8657a0ad34e1558811525",
+    "supabase/.temp/phase6e19-1791100934210/unit-regressions.json": "bab4b55abd6bd5501b6ccbc6c8a6ea352227c80e0ef8cb598e4bcaf5eb5500ff"
+  },
+  "screenshots": [
+    {
+      "file": "supabase/.temp/phase6e19-1791100934210/local-1791103132718-agenda-390-nl-light.png",
+      "sha256": "64dee3999f77a7046ade22eb47a6af2277dac1164088a8782a44c6296efd6a51"
+    },
+    {
+      "file": "supabase/.temp/phase6e19-1791100934210/local-1791103132718-facts-390-nl-light.png",
+      "sha256": "f606834fbe706d214233460788d32b578cf2b16e8f83fa7ea6eb132a5a0541a3"
+    },
+    {
+      "file": "supabase/.temp/phase6e19-1791100934210/local-1791103132718-review-390-nl-light.png",
+      "sha256": "e1cdc3a3931aef65684e7b6599a073317642e4306cbd599d5f788fc2ede9651e"
+    },
+    {
+      "file": "supabase/.temp/phase6e19-1791100934210/local-1791103132718-agenda-390-nl-dark.png",
+      "sha256": "211a0a8c488daa9842e0c3745350c43b3d71dc540ecd0bdeeebac47234fa1a31"
+    },
+    {
+      "file": "supabase/.temp/phase6e19-1791100934210/local-1791103132718-facts-390-nl-dark.png",
+      "sha256": "0d41fce819fe64ec68a210941181da9a57c51aa9022070b181e721ad8b767a50"
+    },
+    {
+      "file": "supabase/.temp/phase6e19-1791100934210/local-1791103132718-review-390-nl-dark.png",
+      "sha256": "e7e79f1e2b3e9dd45b4297c99f81d50f5e59e4d8ad9d55aaa063b72d40241a2f"
+    },
+    {
+      "file": "supabase/.temp/phase6e19-1791100934210/local-1791103132718-agenda-1280-nl-light.png",
+      "sha256": "7699d8855927a88b37b79156badbf92cc0e6dc318dae7a17756ebcbfac8e172c"
+    },
+    {
+      "file": "supabase/.temp/phase6e19-1791100934210/local-1791103132718-facts-1280-nl-light.png",
+      "sha256": "cf16e6dc37c7ef629c3ab9c88ab931c2457c0fca5845a36abe20e2f6d1886c4a"
+    },
+    {
+      "file": "supabase/.temp/phase6e19-1791100934210/local-1791103132718-review-1280-nl-light.png",
+      "sha256": "1356fde3947c1ac6c23c770f373aaad6b4cc9a66f0c0ac07241ef8bf87c441e8"
+    },
+    {
+      "file": "supabase/.temp/phase6e19-1791100934210/local-1791103132718-agenda-1280-nl-dark.png",
+      "sha256": "12ecb4b8dae6bdb3b11b3261caaad3eff39ba19d96e1eeeac9d64b3c10e427c8"
+    },
+    {
+      "file": "supabase/.temp/phase6e19-1791100934210/local-1791103132718-facts-1280-nl-dark.png",
+      "sha256": "587f9856bf1a76f657f17ac6bfc3c7fc81e4d2fc623dad203cce7ddec6036e58"
+    },
+    {
+      "file": "supabase/.temp/phase6e19-1791100934210/local-1791103132718-review-1280-nl-dark.png",
+      "sha256": "63563fbdbaa52985a2835592abaf69ec5fc442ac88209824fb2e5de95b7686fb"
+    }
+  ],
+  "support_hold": "SU-487979",
+  "external_ai_calls": 0,
+  "external_cost_eur": 0,
+  "real_member_ai": false,
+  "production_touched": false,
+  "owner_accepted": false
+}

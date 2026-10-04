@@ -1,0 +1,4841 @@
+[
+  {
+    "case": "arrival",
+    "language": "nl",
+    "title": "Nieuwe registratie",
+    "status": "Wacht op lid",
+    "message": "Nieuwe vergelijkbare registraties tonen een verschil. Bekijk de bronnen en de bestaande check-inoptie; er is niets automatisch toegepast.",
+    "explanation": "Nieuwe vergelijkbare registraties tonen een verschil. Bekijk de bronnen en de bestaande check-inoptie; er is niets automatisch toegepast.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 18,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -6,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 2,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": {
+      "label": "Dagelijkse check-in",
+      "time": "08:00",
+      "basis": "syn19-B-checkin",
+      "version": 1,
+      "applied": false
+    },
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "arrival",
+    "language": "en",
+    "title": "New record",
+    "status": "Awaiting member",
+    "message": "New comparable records show a difference. Review the sources and existing check-in option; nothing was applied automatically.",
+    "explanation": "New comparable records show a difference. Review the sources and existing check-in option; nothing was applied automatically.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 18,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -6,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 2,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": {
+      "label": "Daily check-in",
+      "time": "08:00",
+      "basis": "syn19-B-checkin",
+      "version": 1,
+      "applied": false
+    },
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "arrival",
+    "language": "de",
+    "title": "Neuer Eintrag",
+    "status": "Wartet auf Mitglied",
+    "message": "Neue vergleichbare Eintraege zeigen eine Differenz. Quellen und bestehende Check-in-Option pruefen; nichts wurde automatisch angewendet.",
+    "explanation": "Neue vergleichbare Eintraege zeigen eine Differenz. Quellen und bestehende Check-in-Option pruefen; nichts wurde automatisch angewendet.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 18,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -6,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 2,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": {
+      "label": "Taeglicher Check-in",
+      "time": "08:00",
+      "basis": "syn19-B-checkin",
+      "version": 1,
+      "applied": false
+    },
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "trainer",
+    "language": "nl",
+    "title": "Met trainer",
+    "status": "Toegepast in de test",
+    "message": "Alleen de check-inplanning heeft een nieuwe versie. Training en voeding zijn niet gewijzigd.",
+    "explanation": "Alleen de check-inplanning heeft een nieuwe versie. Training en voeding zijn niet gewijzigd.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 18,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -6,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 2,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": {
+      "label": "Dagelijkse check-in",
+      "time": "08:00",
+      "basis": "syn19-A-checkin",
+      "version": 1,
+      "applied": true
+    },
+    "next_checkin": {
+      "date": "2026-10-02",
+      "at": "08:00",
+      "zone": "UTC",
+      "cadenceVersion": 2
+    },
+    "active_version": 2,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "trainer",
+    "language": "en",
+    "title": "With trainer",
+    "status": "Applied in the test",
+    "message": "Only the check-in schedule has a new version. Training and nutrition did not change.",
+    "explanation": "Only the check-in schedule has a new version. Training and nutrition did not change.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 18,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -6,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 2,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": {
+      "label": "Daily check-in",
+      "time": "08:00",
+      "basis": "syn19-A-checkin",
+      "version": 1,
+      "applied": true
+    },
+    "next_checkin": {
+      "date": "2026-10-02",
+      "at": "08:00",
+      "zone": "UTC",
+      "cadenceVersion": 2
+    },
+    "active_version": 2,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "trainer",
+    "language": "de",
+    "title": "Mit Trainer",
+    "status": "Im Test angewendet",
+    "message": "Nur der Check-in-Plan hat eine neue Version. Training und Ernaehrung wurden nicht geaendert.",
+    "explanation": "Nur der Check-in-Plan hat eine neue Version. Training und Ernaehrung wurden nicht geaendert.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 18,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -6,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 2,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": {
+      "label": "Taeglicher Check-in",
+      "time": "08:00",
+      "basis": "syn19-A-checkin",
+      "version": 1,
+      "applied": true
+    },
+    "next_checkin": {
+      "date": "2026-10-02",
+      "at": "08:00",
+      "zone": "UTC",
+      "cadenceVersion": 2
+    },
+    "active_version": 2,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "duplicate",
+    "language": "nl",
+    "title": "Geen dubbele melding",
+    "status": "Wacht op lid",
+    "message": "Nieuwe vergelijkbare registraties tonen een verschil. Bekijk de bronnen en de bestaande check-inoptie; er is niets automatisch toegepast.",
+    "explanation": "Nieuwe vergelijkbare registraties tonen een verschil. Bekijk de bronnen en de bestaande check-inoptie; er is niets automatisch toegepast.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 18,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -6,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 2,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": {
+      "label": "Dagelijkse check-in",
+      "time": "08:00",
+      "basis": "syn19-B-checkin",
+      "version": 1,
+      "applied": false
+    },
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "duplicate",
+    "language": "en",
+    "title": "No duplicate notice",
+    "status": "Awaiting member",
+    "message": "New comparable records show a difference. Review the sources and existing check-in option; nothing was applied automatically.",
+    "explanation": "New comparable records show a difference. Review the sources and existing check-in option; nothing was applied automatically.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 18,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -6,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 2,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": {
+      "label": "Daily check-in",
+      "time": "08:00",
+      "basis": "syn19-B-checkin",
+      "version": 1,
+      "applied": false
+    },
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "duplicate",
+    "language": "de",
+    "title": "Keine doppelte Meldung",
+    "status": "Wartet auf Mitglied",
+    "message": "Neue vergleichbare Eintraege zeigen eine Differenz. Quellen und bestehende Check-in-Option pruefen; nichts wurde automatisch angewendet.",
+    "explanation": "Neue vergleichbare Eintraege zeigen eine Differenz. Quellen und bestehende Check-in-Option pruefen; nichts wurde automatisch angewendet.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 18,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -6,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 2,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": {
+      "label": "Taeglicher Check-in",
+      "time": "08:00",
+      "basis": "syn19-B-checkin",
+      "version": 1,
+      "applied": false
+    },
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "correction",
+    "language": "nl",
+    "title": "Registratie gecorrigeerd",
+    "status": "Wacht op lid",
+    "message": "Nieuwe vergelijkbare registraties tonen een verschil. Bekijk de bronnen en de bestaande check-inoptie; er is niets automatisch toegepast.",
+    "explanation": "Nieuwe vergelijkbare registraties tonen een verschil. Bekijk de bronnen en de bestaande check-inoptie; er is niets automatisch toegepast.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 20,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -4,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 3,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": {
+      "label": "Dagelijkse check-in",
+      "time": "08:00",
+      "basis": "syn19-B-checkin",
+      "version": 1,
+      "applied": false
+    },
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "correction",
+    "language": "en",
+    "title": "Corrected record",
+    "status": "Awaiting member",
+    "message": "New comparable records show a difference. Review the sources and existing check-in option; nothing was applied automatically.",
+    "explanation": "New comparable records show a difference. Review the sources and existing check-in option; nothing was applied automatically.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 20,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -4,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 3,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": {
+      "label": "Daily check-in",
+      "time": "08:00",
+      "basis": "syn19-B-checkin",
+      "version": 1,
+      "applied": false
+    },
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "correction",
+    "language": "de",
+    "title": "Korrigierter Eintrag",
+    "status": "Wartet auf Mitglied",
+    "message": "Neue vergleichbare Eintraege zeigen eine Differenz. Quellen und bestehende Check-in-Option pruefen; nichts wurde automatisch angewendet.",
+    "explanation": "Neue vergleichbare Eintraege zeigen eine Differenz. Quellen und bestehende Check-in-Option pruefen; nichts wurde automatisch angewendet.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 20,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -4,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 3,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": {
+      "label": "Taeglicher Check-in",
+      "time": "08:00",
+      "basis": "syn19-B-checkin",
+      "version": 1,
+      "applied": false
+    },
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "unchanged",
+    "language": "nl",
+    "title": "Geen verandering",
+    "status": "Alleen feiten",
+    "message": "De vergelijkbare registraties zijn gelijk. Geen nieuwe melding of wijziging nodig.",
+    "explanation": "De vergelijkbare registraties zijn gelijk. Geen nieuwe melding of wijziging nodig.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": 0,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": 0,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": null,
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "unchanged",
+    "language": "en",
+    "title": "No change",
+    "status": "Facts only",
+    "message": "Comparable records are unchanged. No new notice or change is needed.",
+    "explanation": "Comparable records are unchanged. No new notice or change is needed.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": 0,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": 0,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": null,
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "unchanged",
+    "language": "de",
+    "title": "Keine Aenderung",
+    "status": "Nur Fakten",
+    "message": "Vergleichbare Eintraege sind unveraendert. Keine neue Meldung oder Aenderung noetig.",
+    "explanation": "Vergleichbare Eintraege sind unveraendert. Keine neue Meldung oder Aenderung noetig.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": 0,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": 0,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": null,
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "missing",
+    "language": "nl",
+    "title": "Slaap ontbreekt",
+    "status": "Voorstel geblokkeerd",
+    "message": "Een vereiste slaap- of herstelregistratie ontbreekt of is onvolledig. Geen vergelijking of nieuw voorstel.",
+    "explanation": "Een vereiste slaap- of herstelregistratie ontbreekt of is onvolledig. Geen vergelijking of nieuw voorstel.",
+    "facts": [],
+    "proposal": null,
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "missing",
+    "language": "en",
+    "title": "Sleep missing",
+    "status": "Proposal blocked",
+    "message": "A required sleep or recovery record is missing or incomplete. No comparison or new proposal.",
+    "explanation": "A required sleep or recovery record is missing or incomplete. No comparison or new proposal.",
+    "facts": [],
+    "proposal": null,
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "missing",
+    "language": "de",
+    "title": "Schlaf fehlt",
+    "status": "Vorschlag blockiert",
+    "message": "Ein erforderlicher Schlaf- oder Erholungseintrag fehlt oder ist unvollstaendig. Kein Vergleich oder neuer Vorschlag.",
+    "explanation": "Ein erforderlicher Schlaf- oder Erholungseintrag fehlt oder ist unvollstaendig. Kein Vergleich oder neuer Vorschlag.",
+    "facts": [],
+    "proposal": null,
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "incomparable",
+    "language": "nl",
+    "title": "Andere eenheid",
+    "status": "Voorstel geblokkeerd",
+    "message": "Eenheden of meetmethoden verschillen. Ik vergelijk deze registraties niet.",
+    "explanation": "Eenheden of meetmethoden verschillen. Ik vergelijk deze registraties niet.",
+    "facts": [],
+    "proposal": null,
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "incomparable",
+    "language": "en",
+    "title": "Different unit",
+    "status": "Proposal blocked",
+    "message": "Units or measurement methods differ. I will not compare these records.",
+    "explanation": "Units or measurement methods differ. I will not compare these records.",
+    "facts": [],
+    "proposal": null,
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "incomparable",
+    "language": "de",
+    "title": "Andere Einheit",
+    "status": "Vorschlag blockiert",
+    "message": "Einheiten oder Messmethoden unterscheiden sich. Diese Eintraege werden nicht verglichen.",
+    "explanation": "Einheiten oder Messmethoden unterscheiden sich. Diese Eintraege werden nicht verglichen.",
+    "facts": [],
+    "proposal": null,
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "rule",
+    "language": "nl",
+    "title": "Regel ontbreekt",
+    "status": "Alleen feiten",
+    "message": "De feiten zijn zichtbaar, maar een geldige bronregel ontbreekt. Geen voorstel.",
+    "explanation": "De feiten zijn zichtbaar, maar een geldige bronregel ontbreekt. Geen voorstel.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 18,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -6,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 2,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": null,
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "rule",
+    "language": "en",
+    "title": "Missing rule",
+    "status": "Facts only",
+    "message": "Facts are visible, but a valid source rule is missing. No proposal.",
+    "explanation": "Facts are visible, but a valid source rule is missing. No proposal.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 18,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -6,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 2,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": null,
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "rule",
+    "language": "de",
+    "title": "Regel fehlt",
+    "status": "Nur Fakten",
+    "message": "Fakten sind sichtbar, aber eine gueltige Quellregel fehlt. Kein Vorschlag.",
+    "explanation": "Fakten sind sichtbar, aber eine gueltige Quellregel fehlt. Kein Vorschlag.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 18,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -6,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 2,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": null,
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "no_trainer",
+    "language": "nl",
+    "title": "Trainerbevoegdheid ontbreekt",
+    "status": "Alleen feiten",
+    "message": "De expliciete trainerbevoegdheid ontbreekt. Route A wordt niet omgezet naar Route B.",
+    "explanation": "De expliciete trainerbevoegdheid ontbreekt. Route A wordt niet omgezet naar Route B.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 18,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -6,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 2,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": null,
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "no_trainer",
+    "language": "en",
+    "title": "Trainer authority missing",
+    "status": "Facts only",
+    "message": "Explicit trainer authority is missing. Route A is not converted to Route B.",
+    "explanation": "Explicit trainer authority is missing. Route A is not converted to Route B.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 18,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -6,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 2,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": null,
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "no_trainer",
+    "language": "de",
+    "title": "Trainerbefugnis fehlt",
+    "status": "Nur Fakten",
+    "message": "Explizite Trainerbefugnis fehlt. Route A wird nicht in Route B umgewandelt.",
+    "explanation": "Explizite Trainerbefugnis fehlt. Route A wird nicht in Route B umgewandelt.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 18,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -6,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 2,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": null,
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "health",
+    "language": "nl",
+    "title": "Klacht voorbij gemeld",
+    "status": "Voorstel geblokkeerd",
+    "message": "Een klacht of onopgeloste herstelcontext vraagt afzonderlijke beoordeling. Registreren en betrouwbare feiten blijven beschikbaar; geen planningsvrijgave door zelf gemeld herstel.",
+    "explanation": "Een klacht of onopgeloste herstelcontext vraagt afzonderlijke beoordeling. Registreren en betrouwbare feiten blijven beschikbaar; geen planningsvrijgave door zelf gemeld herstel.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 18,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -6,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 2,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": null,
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "health",
+    "language": "en",
+    "title": "Reported recovery",
+    "status": "Proposal blocked",
+    "message": "A complaint or unresolved recovery context needs separate assessment. Records and reliable facts remain available; reported recovery does not authorize planning.",
+    "explanation": "A complaint or unresolved recovery context needs separate assessment. Records and reliable facts remain available; reported recovery does not authorize planning.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 18,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -6,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 2,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": null,
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "health",
+    "language": "de",
+    "title": "Genesung gemeldet",
+    "status": "Vorschlag blockiert",
+    "message": "Eine Beschwerde oder ungeklaerter Erholungskontext erfordert eigene Pruefung. Eintraege und verlaessliche Fakten bleiben verfuegbar; gemeldete Genesung erlaubt keine Planung.",
+    "explanation": "Eine Beschwerde oder ungeklaerter Erholungskontext erfordert eigene Pruefung. Eintraege und verlaessliche Fakten bleiben verfuegbar; gemeldete Genesung erlaubt keine Planung.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 18,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -6,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 2,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": null,
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "consent",
+    "language": "nl",
+    "title": "Toestemming ingetrokken",
+    "status": "Voorstel geblokkeerd",
+    "message": "Toestemming is ingetrokken. Geen nieuwe verwerking of voorstel. Bestaande testhistorie blijft behouden.",
+    "explanation": "Toestemming is ingetrokken. Geen nieuwe verwerking of voorstel. Bestaande testhistorie blijft behouden.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 18,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -6,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 2,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": null,
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "consent",
+    "language": "en",
+    "title": "Consent withdrawn",
+    "status": "Proposal blocked",
+    "message": "Consent was withdrawn. No new processing or proposal. Existing test history is retained.",
+    "explanation": "Consent was withdrawn. No new processing or proposal. Existing test history is retained.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 18,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -6,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 2,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": null,
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "consent",
+    "language": "de",
+    "title": "Einwilligung widerrufen",
+    "status": "Vorschlag blockiert",
+    "message": "Einwilligung wurde widerrufen. Keine neue Verarbeitung oder Vorschlaege. Bisheriger Testverlauf bleibt erhalten.",
+    "explanation": "Einwilligung wurde widerrufen. Keine neue Verarbeitung oder Vorschlaege. Bisheriger Testverlauf bleibt erhalten.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 18,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -6,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 2,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": null,
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "expired",
+    "language": "nl",
+    "title": "Bron verlopen",
+    "status": "Voorstel geblokkeerd",
+    "message": "De bron is verlopen. Een actuele bron is nodig; de oude bevestiging geldt niet meer.",
+    "explanation": "De bron is verlopen. Een actuele bron is nodig; de oude bevestiging geldt niet meer.",
+    "facts": [],
+    "proposal": null,
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "expired",
+    "language": "en",
+    "title": "Source expired",
+    "status": "Proposal blocked",
+    "message": "The source expired. A current source is needed; prior confirmation is no longer valid.",
+    "explanation": "The source expired. A current source is needed; prior confirmation is no longer valid.",
+    "facts": [],
+    "proposal": null,
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "expired",
+    "language": "de",
+    "title": "Quelle abgelaufen",
+    "status": "Vorschlag blockiert",
+    "message": "Die Quelle ist abgelaufen. Eine aktuelle Quelle ist noetig; vorherige Bestaetigung gilt nicht mehr.",
+    "explanation": "Die Quelle ist abgelaufen. Eine aktuelle Quelle ist noetig; vorherige Bestaetigung gilt nicht mehr.",
+    "facts": [],
+    "proposal": null,
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "complete",
+    "language": "nl",
+    "title": "Check-in afronden",
+    "status": "Wacht op lid",
+    "message": "Deze check-in is eenmaal afgerond met de gekoppelde registratie. Er is geen set of training afgevinkt.",
+    "explanation": "Deze check-in is eenmaal afgerond met de gekoppelde registratie. Er is geen set of training afgevinkt.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 18,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -6,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 2,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": {
+      "label": "Dagelijkse check-in",
+      "time": "08:00",
+      "basis": "syn19-B-checkin",
+      "version": 1,
+      "applied": false
+    },
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "complete",
+    "language": "en",
+    "title": "Complete check-in",
+    "status": "Awaiting member",
+    "message": "This check-in was completed once with its linked record. No set or workout was completed.",
+    "explanation": "This check-in was completed once with its linked record. No set or workout was completed.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 18,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -6,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 2,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": {
+      "label": "Daily check-in",
+      "time": "08:00",
+      "basis": "syn19-B-checkin",
+      "version": 1,
+      "applied": false
+    },
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "complete",
+    "language": "de",
+    "title": "Check-in abschliessen",
+    "status": "Wartet auf Mitglied",
+    "message": "Dieser Check-in wurde einmal mit dem verknuepften Eintrag abgeschlossen. Kein Satz oder Training wurde abgeschlossen.",
+    "explanation": "Dieser Check-in wurde einmal mit dem verknuepften Eintrag abgeschlossen. Kein Satz oder Training wurde abgeschlossen.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 18,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -6,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 2,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": {
+      "label": "Taeglicher Check-in",
+      "time": "08:00",
+      "basis": "syn19-B-checkin",
+      "version": 1,
+      "applied": false
+    },
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "edit",
+    "language": "nl",
+    "title": "Check-intijd aanpassen",
+    "status": "Toegepast in de test",
+    "message": "Alleen de check-inplanning heeft een nieuwe versie. Training en voeding zijn niet gewijzigd.",
+    "explanation": "Alleen de check-inplanning heeft een nieuwe versie. Training en voeding zijn niet gewijzigd.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 18,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -6,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 2,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": {
+      "label": "Dagelijkse check-in",
+      "time": "20:00",
+      "basis": "syn19-B-checkin",
+      "version": 1,
+      "applied": true
+    },
+    "next_checkin": {
+      "date": "2026-10-01",
+      "at": "20:00",
+      "zone": "UTC",
+      "cadenceVersion": 2
+    },
+    "active_version": 2,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "edit",
+    "language": "en",
+    "title": "Change check-in time",
+    "status": "Applied in the test",
+    "message": "Only the check-in schedule has a new version. Training and nutrition did not change.",
+    "explanation": "Only the check-in schedule has a new version. Training and nutrition did not change.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 18,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -6,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 2,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": {
+      "label": "Daily check-in",
+      "time": "20:00",
+      "basis": "syn19-B-checkin",
+      "version": 1,
+      "applied": true
+    },
+    "next_checkin": {
+      "date": "2026-10-01",
+      "at": "20:00",
+      "zone": "UTC",
+      "cadenceVersion": 2
+    },
+    "active_version": 2,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "edit",
+    "language": "de",
+    "title": "Check-in-Zeit aendern",
+    "status": "Im Test angewendet",
+    "message": "Nur der Check-in-Plan hat eine neue Version. Training und Ernaehrung wurden nicht geaendert.",
+    "explanation": "Nur der Check-in-Plan hat eine neue Version. Training und Ernaehrung wurden nicht geaendert.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 18,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -6,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 2,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": {
+      "label": "Taeglicher Check-in",
+      "time": "20:00",
+      "basis": "syn19-B-checkin",
+      "version": 1,
+      "applied": true
+    },
+    "next_checkin": {
+      "date": "2026-10-01",
+      "at": "20:00",
+      "zone": "UTC",
+      "cadenceVersion": 2
+    },
+    "active_version": 2,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "atomic",
+    "language": "nl",
+    "title": "Onderbreking",
+    "status": "Bevestigd; nog niet toegepast",
+    "message": "Nieuwe vergelijkbare registraties tonen een verschil. Bekijk de bronnen en de bestaande check-inoptie; er is niets automatisch toegepast.",
+    "explanation": "De onderbreking liet de hele eerdere toestand intact. Niets gedeeltelijk toegepast.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 18,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -6,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 2,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": {
+      "label": "Dagelijkse check-in",
+      "time": "08:00",
+      "basis": "syn19-B-checkin",
+      "version": 1,
+      "applied": false
+    },
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "atomic",
+    "language": "en",
+    "title": "Interruption",
+    "status": "Confirmed; not applied yet",
+    "message": "New comparable records show a difference. Review the sources and existing check-in option; nothing was applied automatically.",
+    "explanation": "The interruption preserved the entire prior state. Nothing was partially applied.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 18,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -6,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 2,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": {
+      "label": "Daily check-in",
+      "time": "08:00",
+      "basis": "syn19-B-checkin",
+      "version": 1,
+      "applied": false
+    },
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "atomic",
+    "language": "de",
+    "title": "Unterbrechung",
+    "status": "Bestaetigt; noch nicht angewendet",
+    "message": "Neue vergleichbare Eintraege zeigen eine Differenz. Quellen und bestehende Check-in-Option pruefen; nichts wurde automatisch angewendet.",
+    "explanation": "Die Unterbrechung hat den gesamten vorherigen Zustand erhalten. Nichts wurde teilweise angewendet.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 18,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -6,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 2,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": {
+      "label": "Taeglicher Check-in",
+      "time": "08:00",
+      "basis": "syn19-B-checkin",
+      "version": 1,
+      "applied": false
+    },
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 1
+    },
+    "active_version": 1,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "restore",
+    "language": "nl",
+    "title": "Vorige check-inversie",
+    "status": "Toegepast in de test",
+    "message": "Alleen de check-inplanning heeft een nieuwe versie. Training en voeding zijn niet gewijzigd.",
+    "explanation": "Alleen de check-inplanning heeft een nieuwe versie. Training en voeding zijn niet gewijzigd.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 18,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -6,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 2,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": {
+      "label": "Check-in na training",
+      "time": "19:00",
+      "basis": "syn19-B-checkin",
+      "version": 1,
+      "applied": true
+    },
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 3
+    },
+    "active_version": 3,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "restore",
+    "language": "en",
+    "title": "Previous check-in version",
+    "status": "Applied in the test",
+    "message": "Only the check-in schedule has a new version. Training and nutrition did not change.",
+    "explanation": "Only the check-in schedule has a new version. Training and nutrition did not change.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 18,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -6,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 2,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": {
+      "label": "Check-in after training",
+      "time": "19:00",
+      "basis": "syn19-B-checkin",
+      "version": 1,
+      "applied": true
+    },
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 3
+    },
+    "active_version": 3,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  },
+  {
+    "case": "restore",
+    "language": "de",
+    "title": "Vorherige Check-in-Version",
+    "status": "Im Test angewendet",
+    "message": "Nur der Check-in-Plan hat eine neue Version. Training und Ernaehrung wurden nicht geaendert.",
+    "explanation": "Nur der Check-in-Plan hat eine neue Version. Training und Ernaehrung wurden nicht geaendert.",
+    "facts": [
+      {
+        "metric": "sleep",
+        "unit": "min",
+        "previous": {
+          "sum": 1350,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 1080,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -270,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-sleep-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-sleep-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-sleep-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-sleep-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-sleep-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-sleep-5",
+            "version": 1,
+            "day": 1790726400000
+          }
+        ]
+      },
+      {
+        "metric": "recovery",
+        "unit": "score_1_10",
+        "previous": {
+          "sum": 24,
+          "divisor": 3
+        },
+        "current": {
+          "sum": 18,
+          "divisor": 3
+        },
+        "delta": {
+          "numerator": -6,
+          "divisor": 3
+        },
+        "refs": [
+          {
+            "id": "syn19-recovery-0",
+            "version": 1,
+            "day": 1790294400000
+          },
+          {
+            "id": "syn19-recovery-1",
+            "version": 1,
+            "day": 1790380800000
+          },
+          {
+            "id": "syn19-recovery-2",
+            "version": 1,
+            "day": 1790467200000
+          },
+          {
+            "id": "syn19-recovery-3",
+            "version": 1,
+            "day": 1790553600000
+          },
+          {
+            "id": "syn19-recovery-4",
+            "version": 1,
+            "day": 1790640000000
+          },
+          {
+            "id": "syn19-recovery-5",
+            "version": 2,
+            "day": 1790726400000
+          }
+        ]
+      }
+    ],
+    "proposal": {
+      "label": "Check-in nach Training",
+      "time": "19:00",
+      "basis": "syn19-B-checkin",
+      "version": 1,
+      "applied": true
+    },
+    "next_checkin": {
+      "date": "2026-10-05",
+      "at": "19:00",
+      "zone": "UTC",
+      "cadenceVersion": 3
+    },
+    "active_version": 3,
+    "plans_unchanged": true,
+    "automatic_actions_allowed": false
+  }
+]

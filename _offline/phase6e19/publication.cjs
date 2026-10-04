@@ -1,0 +1,14 @@
+"use strict";
+const fs=require('node:fs'),p=require('node:path'),cp=require('node:child_process'),c=require('node:crypto'),a=require('node:assert/strict');
+const root=p.resolve(__dirname,'../..'),[out,phase]=process.argv.slice(2),git=(...v)=>cp.execFileSync(process.env.FMZ_GIT||'git',v,{cwd:root,maxBuffer:40000000}),sha=x=>c.createHash('sha256').update(x).digest('hex'),read=f=>JSON.parse(fs.readFileSync(p.join(root,f)));
+if(!out||!['before','after'].includes(phase))throw Error('args');const head=git('rev-parse','HEAD').toString().trim(),base='https://yourizorge.github.io/fitmetzorge-staging/';
+const old=read('docs/PHASE6E10_FREEZE_EVIDENCE.json').protected.filter(x=>!x.file.startsWith('_')&&!x.file.startsWith('supabase/')).map(x=>({file:x.file,hash:x.sha256}));
+for(const [n,dir]of [['12','workout-reflection-demo/'],['13','proactive-signals-demo/'],['14','bounded-adjustments-demo/'],['15','independent-intake-demo/'],['16','training-rules-demo/'],['17','nutrition-rules-demo/'],['18','combined-plan-demo/']])for(const x of read('docs/PHASE6E'+n+'_FREEZE_EVIDENCE.json').sources.filter(x=>x.file.startsWith(dir)))old.push({file:x.file,hash:x.git_sha256});
+a.equal(old.length,132);const r={phase,head,existing:[],added:[],private:[],supabase_calls:0};
+async function get(file){const x=await fetch(base+file.split('/').map(encodeURIComponent).join('/')+'?p19='+head,{redirect:'error',signal:AbortSignal.timeout(20000)});return {status:x.status,sha256:sha(Buffer.from(await x.arrayBuffer()))};}
+(async()=>{try{
+ for(const x of old){a.equal(sha(git('show','HEAD:'+x.file)),x.hash,x.file);const y=await get(x.file);r.existing.push({...x,...y});a.equal(y.status,200,x.file);a.equal(y.sha256,x.hash,x.file);}
+ if(phase==='after')for(const f of fs.readdirSync(p.join(root,'recovery-checkin-demo'))){const file='recovery-checkin-demo/'+f,expected=sha(git('show','HEAD:'+file)),y=await get(file);r.added.push({file,expected,...y});a.equal(y.status,200,file);a.equal(y.sha256,expected,file);}
+ const hidden=[];for(const n of [12,13,14,15,16,17,18,19]){const dir='_offline/phase6e'+n;for(const f of fs.readdirSync(p.join(root,dir),{recursive:true}).filter(f=>fs.statSync(p.join(root,dir,f)).isFile()))hidden.push(dir+'/'+f.replaceAll('\\','/'));}hidden.push('_offline/phase6e11/request_v4/transport.mjs','supabase/migrations/20260924155822_phase6e11_rpc_bridge.sql','supabase/migrations/20260928120846_phase6e11_request_binding.sql');
+ for(const file of hidden){const y=await get(file);r.private.push({file,status:y.status});a.equal(y.status,404,file);}r.status='PUBLICATION_PASS';
+}catch(e){r.status='PUBLICATION_NO_GO';r.reason=e.message;process.exitCode=1;}finally{fs.writeFileSync(p.join(out,'publication-'+phase+'-'+Date.now()+'.json'),JSON.stringify(r,null,2),{flag:'wx'});console.log(JSON.stringify({status:r.status,old:r.existing.length,demo:r.added.length,private:r.private.length,reason:r.reason}));}})();

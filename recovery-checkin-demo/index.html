@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<title>FitMetZorge | Herstel &amp; check-ins</title><link rel="stylesheet" href="demo.css">
+<script defer src="data.js"></script><script defer src="fixtures.js"></script><script defer src="model.js"></script><script defer src="review.js"></script><script defer src="copy.js"></script><script defer src="app.js"></script></head>
+<body><header><img src="../training-review-demo/brand.png" width="44" height="44" alt="FitMetZorge"><strong>FitMetZorge</strong><span>6E-19</span><nav>
+<label><span id="language-label">Taal</span><select id="language"><option value="nl">Nederlands</option><option value="en">English</option><option value="de">Deutsch</option></select></label>
+<label><span id="theme-label">Thema</span><select id="theme"><option value="light">Licht</option><option value="dark">Donker</option></select></label></nav></header>
+<main><h1 id="title"></h1><p id="notice" class="notice"></p><div class="toolbar"><label>Route <select id="route"><option value="B">B</option><option value="A">A</option></select></label><label id="actor-label"><span id="actor-caption"></span><select id="actor"></select></label><button id="reset"></button></div>
+<section id="agenda"></section><section id="registration"></section><section id="result" aria-live="polite"></section>
+<section id="review"><h2 id="test-title"></h2><button id="start" class="primary"></button><div id="scenario-buttons"></div><div class="guided"><p id="step"></p><h3 id="scenario-title"></h3><p id="expectation"></p><strong id="verdict" role="status"></strong><div class="toolbar"><button id="previous"></button><button id="next"></button></div></div></section>
+<section id="history"></section></main></body></html>
