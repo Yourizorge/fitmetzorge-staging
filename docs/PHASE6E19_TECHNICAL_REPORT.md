@@ -29,6 +29,9 @@ Local failures were retained and corrected:
 - Numeric input preserves NaN/Infinity until rejection rather than JSON-null
   coercion. Applied versions now retain complete rule and source bindings.
 - Exact contract keys and the accepted13 source/comparison window are enforced.
+- Final review found that no-op record/refresh/completion requests also need to
+  reserve their request ID. They now reject a changed payload under the same ID;
+  three focused regressions cover this. Initial evidence is retained separately.
 All failures/earlier local runs remain append-only evidence, not erased.
 
 Final totals and hashes are in PHASE6E19_EVIDENCE.json. Earlier frozen tests retain

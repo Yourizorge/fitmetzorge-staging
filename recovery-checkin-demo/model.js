@@ -78,10 +78,10 @@ function create(input){
     if(e.action==='record'){
      access();const d=e.data;if(!exact(d,['id','version','value']))fail('payload');const x=s.input.rows.find(x=>x.id===d.id);if(!x||d.version!==x.version)fail('record_version');const m=D.metrics[x.metric];
      if(!(d.value===null||int(d.value)&&d.value>=m.min&&d.value<=m.max))fail('value');
-     if(d.value===x.value)return {ok:true,reason:'unchanged_record',state:view()};
+     if(d.value===x.value){done.set(e.id,fp);return {ok:true,reason:'unchanged_record',state:view()};}
      if(s.recordsHistory.length>=20)fail('memory_limit');
      x.value=d.value;x.version++;s.revision++;s.recordsHistory.push(copy(s.input.rows));assess();
-    }else if(e.action==='refresh'){access();if(!s.revision){s.revision++;assess();}else return {ok:true,reason:'already_assessed',state:view()};}
+    }else if(e.action==='refresh'){access();if(!s.revision){s.revision++;assess();}else{done.set(e.id,fp);return {ok:true,reason:'already_assessed',state:view()};}}
     else if(e.action==='context'){
      if(!exact(e.data,['health'])||!['none','current','reported_resolved','unclassified','missing_context'].includes(e.data.health))fail('context');
      s.input.health=e.data.health;s.healthLatch=s.healthLatch||e.data.health!=='none';s.revision++;assess();
@@ -89,7 +89,7 @@ function create(input){
     else if(e.action==='plan_changed'){s.planStale=true;s.revision++;assess();}
     else if(e.action==='rule_revoked'){if(s.input.rule)s.input.rule.status='revoked';s.revision++;assess();}
     else if(e.action==='complete'){
-     access();if(s.completion)return {ok:true,reason:'idempotent',state:view()};
+     access();if(s.completion){done.set(e.id,fp);return {ok:true,reason:'idempotent',state:view()};}
      const row=s.input.rows.find(x=>x.id==='syn19-recovery-5');if(row.value===null)fail('missing');
      s.completion={id:s.input.agenda.checkin.id,record:{id:row.id,version:row.version},at:s.clock};s.reason='checkin_complete';
     }else{
