@@ -15,14 +15,14 @@ is expliciet synthetisch aangeleverd, niet uit de cijfers afgeleid.
 Training en voeding veranderen niet.
 
 ## Alleen nieuwe keuzes
--19-R1: deze combinatie van agenda, ontbrekende registraties en automatisch
+- **19-R1:** deze combinatie van agenda, ontbrekende registraties en automatisch
   zichtbaar brongebonden vergelijkingssignaal. Voorstel: akkoord als feitenreview,
   niet als slaapnorm, medische conclusie of pushbericht.
--19-R2: alleen de bestaande check-inoptie en expliciet gekozen tijd aanbieden,
+- **19-R2:** alleen de bestaande check-inoptie en expliciet gekozen tijd aanbieden,
   wanneer bronregel en routebevoegdheid geldig zijn. Voorstel: akkoord; geen
   automatische aanpassing van training of voeding. Bij klachten blijven
   registratie en betrouwbare feiten bruikbaar, zonder planningsvrijgave.
--19-R3: oude registratieversies en afgeronde check-inbinding behouden; correcties
+- **19-R3:** oude registratieversies en afgeronde check-inbinding behouden; correcties
   laten oude signalen/goedkeuring vervallen en identieke herhaling geeft geen
   dubbel signaal. Voorstel: akkoord. Een gewijzigde bron vraagt nieuwe beoordeling.
 
