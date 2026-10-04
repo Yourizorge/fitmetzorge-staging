@@ -1,0 +1,113 @@
+{
+  "package": "6E-18",
+  "status": "COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE/SYNTHETIC ONLY",
+  "accepted_on": "2026-10-04",
+  "owner_acceptance": "Physical phone test:16 scenarios PASS;18-R1/R2/R3 accepted for joint review, separate confirmation/activation and version restoration. No expert training/nutrition validation or real-member release.",
+  "source_commit": "36fdeeeb729f5f8e69c3838892c888d6aa75619a",
+  "publication_commit": "f6ddb4d4178d7eeda571771fa1bdd6c181e8ca43",
+  "sources": [
+    {
+      "file": "combined-plan-demo/app.js",
+      "working_sha256": "747c9bec9467f16c1fd5fb325529d315c83874a428b580ac345cba454d3289c5",
+      "git_sha256": "747c9bec9467f16c1fd5fb325529d315c83874a428b580ac345cba454d3289c5"
+    },
+    {
+      "file": "combined-plan-demo/copy.js",
+      "working_sha256": "fcf45f2539c8acd25603cdf463f316ffb2361d4b37b39cc611f05ab2be47031a",
+      "git_sha256": "fcf45f2539c8acd25603cdf463f316ffb2361d4b37b39cc611f05ab2be47031a"
+    },
+    {
+      "file": "combined-plan-demo/demo.css",
+      "working_sha256": "3d906561535862b58d3967770658781e90dc96a9e04930b0bfca1b152294f155",
+      "git_sha256": "3d906561535862b58d3967770658781e90dc96a9e04930b0bfca1b152294f155"
+    },
+    {
+      "file": "combined-plan-demo/fixtures.js",
+      "working_sha256": "18e41424811258ad51e8face8a09f310ec5f9ba15541ef982a46a75305aba979",
+      "git_sha256": "18e41424811258ad51e8face8a09f310ec5f9ba15541ef982a46a75305aba979"
+    },
+    {
+      "file": "combined-plan-demo/index.html",
+      "working_sha256": "2980c6d24aac758f3183f1a0aa7bbc83bec68dc53559d7ad8d0e25a1d22e05af",
+      "git_sha256": "2980c6d24aac758f3183f1a0aa7bbc83bec68dc53559d7ad8d0e25a1d22e05af"
+    },
+    {
+      "file": "combined-plan-demo/model.js",
+      "working_sha256": "a26a4537204cc4b38e7bae62c1e1c371d948b7b3b3cd8e964ea51803972628f2",
+      "git_sha256": "a26a4537204cc4b38e7bae62c1e1c371d948b7b3b3cd8e964ea51803972628f2"
+    },
+    {
+      "file": "combined-plan-demo/review.js",
+      "working_sha256": "dbc18f7139a663d01334a41474c118a167d4829b91788ea4dc6a0d42d5198db8",
+      "git_sha256": "dbc18f7139a663d01334a41474c118a167d4829b91788ea4dc6a0d42d5198db8"
+    },
+    {
+      "file": "_offline/phase6e18/browser.cjs",
+      "working_sha256": "ce88efc647b22dccf7f0bcc6e7a98a01c66601be0d5e5e50b63d24faa10e1a0e",
+      "git_sha256": "ce88efc647b22dccf7f0bcc6e7a98a01c66601be0d5e5e50b63d24faa10e1a0e"
+    },
+    {
+      "file": "_offline/phase6e18/contract.test.cjs",
+      "working_sha256": "8a8e911ccde827232e3ec4cfb958f1ce45cf8061c776caf3a797610a62bc7a3e",
+      "git_sha256": "8a8e911ccde827232e3ec4cfb958f1ce45cf8061c776caf3a797610a62bc7a3e"
+    },
+    {
+      "file": "_offline/phase6e18/evidence.cjs",
+      "working_sha256": "ab0fb3055032bc1659a0c03e7fb1eef7d950ff2cf278ac876c4ff2b100c7192b",
+      "git_sha256": "ab0fb3055032bc1659a0c03e7fb1eef7d950ff2cf278ac876c4ff2b100c7192b"
+    },
+    {
+      "file": "_offline/phase6e18/ops.cjs",
+      "working_sha256": "565bcae610033fc4c70d16f2ca3166ebd7984182f3545c11558f9907d1357069",
+      "git_sha256": "565bcae610033fc4c70d16f2ca3166ebd7984182f3545c11558f9907d1357069"
+    },
+    {
+      "file": "_offline/phase6e18/publication.cjs",
+      "working_sha256": "af1b4471fa316f55eba7aa0e78396c196080dbd0471bda5dd841f463d27c41dd",
+      "git_sha256": "af1b4471fa316f55eba7aa0e78396c196080dbd0471bda5dd841f463d27c41dd"
+    },
+    {
+      "file": "_offline/phase6e18/README.md",
+      "working_sha256": "9b404d82c14e49be5db8309557cf687f40d0606ec19d9faa256f53adeb42f287",
+      "git_sha256": "9b404d82c14e49be5db8309557cf687f40d0606ec19d9faa256f53adeb42f287"
+    },
+    {
+      "file": "_offline/phase6e18/run.cjs",
+      "working_sha256": "2777132ab1f975d20f035c99ee3fe67915f3e8012be40144068f282b59a2bce0",
+      "git_sha256": "2777132ab1f975d20f035c99ee3fe67915f3e8012be40144068f282b59a2bce0"
+    },
+    {
+      "file": "_offline/phase6e18/serve.cjs",
+      "working_sha256": "d70bf823c8f6942b2fabe9506b00e72047302a06a2205b498f390230ee597e28",
+      "git_sha256": "d70bf823c8f6942b2fabe9506b00e72047302a06a2205b498f390230ee597e28"
+    }
+  ],
+  "reports": {
+    "docs/PHASE6E18_EVIDENCE.json": "205ccde204ae96fbe222ee373a8a73de673d86272328b98ba9c3832c4a63ac70",
+    "docs/PHASE6E18_PUBLICATION_EVIDENCE.json": "b9e6fb384af42916da9231093e84e05bfd25417ca8ecfcfa6aa3813a6c6071f2",
+    "docs/PHASE6E18_PUBLICATION_RECEIPT.md": "29ec7af6c24a7cf5fefda820a7c61dc9968a69d55a73367033b2c8f84c3310b8",
+    "docs/PHASE6E18_OWNER_OVERVIEW.md": "147cfc061bb23586a6d01b67fd31d4f947ff8ab7f2fff213a7428f1bacc27b79",
+    "docs/PHASE6E18_EXAMPLES.json": "5b33a92ab3c5f6a0ae22a74fbc3a52330021e6de52c3def3e378f36519f1dd2e",
+    "docs/PHASE6E18_INITIAL_EVIDENCE.json": "d89a5a7f8417f0ad5d058ee697de5529cfbe09f13acb214b1b650252b3e83ed9"
+  },
+  "tests": {
+    "total": 4373,
+    "new18": 335,
+    "frozen": 4038,
+    "browser_local": 2171,
+    "browser_published": 2171,
+    "settings": 24,
+    "layouts": 385
+  },
+  "pages_runs": [
+    36880959450,
+    36881740289
+  ],
+  "old_assets": 125,
+  "new_assets": 7,
+  "private404": 81,
+  "expert_validation": false,
+  "live_release": false,
+  "whole_phase_complete": false,
+  "support_hold": "SU-487979"
+}
