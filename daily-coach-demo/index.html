@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>FitMetZorge | Vandaag met Youri</title><link rel="icon" href="../training-review-demo/brand.png"><link rel="stylesheet" href="demo.css"></head>
+<body><header><img src="../training-review-demo/brand.png" alt="FitMetZorge"><div><strong>FitMetZorge</strong><small>6E-20 / SYNTHETIC</small></div><nav><label>Language<select id="language"><option value="nl">Nederlands</option><option value="en">English</option><option value="de">Deutsch</option></select></label><label>Theme<select id="theme"><option value="light">Light</option><option value="dark">Dark</option></select></label></nav></header>
+<main><h1 id="title"></h1><p id="demo-note"></p><div class="toolbar"><label><span id="route-label"></span><select id="route"><option value="B">B / Alex</option><option value="A">A / Alex</option></select></label><label id="actor-label"><span id="actor-title"></span><select id="actor"></select></label><button id="reset"></button></div>
+<section id="today"><h2 id="today-title"></h2><p id="binding"></p><div id="agenda"></div><div class="columns"><div><h3 id="training-title"></h3><div id="training-plan"></div></div><div><h3 id="nutrition-title"></h3><div id="nutrition-plan"></div></div></div></section>
+<section id="registrations"><h2 id="records-title"></h2><p id="partial"></p><div id="records"></div><div class="toolbar" id="record-controls"><label><span id="record-label"></span><select id="record"></select></label><label><span id="actual-label"></span><input id="value" type="number" min="0" max="10000" inputmode="numeric"></label><label>RIR<input id="rir" type="number" min="0" max="10" inputmode="numeric"></label><label>RPE<input id="rpe" type="number" min="1" max="10" inputmode="numeric"></label><button id="save"></button></div></section>
+<section id="recovery"><h2 id="recovery-title"></h2><div id="recovery-records"></div><div class="toolbar"><button id="arrive"></button><button id="correct"></button><button id="complete"></button></div><p id="completion"></p><div id="facts"></div></section>
+<section id="proposal"><h2 id="proposal-title"></h2><strong id="state"></strong><p id="message" aria-live="polite"></p><div id="notices"></div><div id="delta"></div><div id="actions" class="toolbar"></div><details open><summary id="manual-title"></summary><div id="editors" class="toolbar"></div></details></section>
+<section><h2 id="history-title"></h2><div id="versions"></div><details><summary id="audit-title"></summary><ol id="audit"></ol><div id="record-history"></div></details></section>
+<section id="owner-review"><h2 id="tests-title"></h2><button id="start" class="primary"></button><div id="scenario-buttons"></div><div id="review" aria-live="polite"><div class="toolbar"><button id="previous"></button><strong id="step"></strong><button id="next"></button></div><h3 id="scenario-title"></h3><p id="expectation"></p><p id="changed"></p><p id="verdict"></p></div></section>
+<div class="toolbar"><button id="health"></button><button id="resolved"></button><button id="revoke"></button></div><p id="limits"></p>
+</main>
+<script src="../coach-review-demo/catalog.js"></script><script src="../independent-intake-demo/data.js"></script>
+<script src="../training-rules-demo/catalog.js"></script><script src="../training-rules-demo/model.js"></script><script src="../training-rules-demo/fixtures.js"></script>
+<script src="../nutrition-rules-demo/catalog.js"></script><script src="../nutrition-rules-demo/model.js"></script><script src="../nutrition-rules-demo/fixtures.js"></script>
+<script src="../combined-plan-demo/model.js"></script><script src="../combined-plan-demo/fixtures.js"></script>
+<script src="../recovery-checkin-demo/data.js"></script><script src="../recovery-checkin-demo/model.js"></script><script src="../recovery-checkin-demo/fixtures.js"></script>
+<script src="model.js"></script><script src="copy.js"></script><script src="review.js"></script><script src="app.js"></script>
+</body></html>
