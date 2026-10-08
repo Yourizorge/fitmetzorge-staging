@@ -1,0 +1,114 @@
+{
+  "package": "6E-20",
+  "status": "COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE/SYNTHETIC ONLY",
+  "accepted_on": "2026-10-08",
+  "owner_acceptance": "Owner reports physical phone test PASS everywhere; 20-R1,20-R2,20-R3 accepted. No additional physical actions claimed. No expert validation or live release.",
+  "source_commit": "4527c00b5b4bb0542f18b1284f31e5d9f81be47d",
+  "publication_commit": "2fdb7b6cf4529b7b6143ffe846ac0bf151981baf",
+  "sources": [
+    {
+      "file": "_offline/phase6e20/browser.cjs",
+      "working_sha256": "159bc42a9b22cb80ad285eb9f2b66b22a477d60d564a83bcc13b87d6b1f0cda2",
+      "git_sha256": "159bc42a9b22cb80ad285eb9f2b66b22a477d60d564a83bcc13b87d6b1f0cda2"
+    },
+    {
+      "file": "_offline/phase6e20/contract.test.cjs",
+      "working_sha256": "da2a58e6cf23ddd518eb547b2966010a41ed76a63cdac62bb6f61ea25ef05712",
+      "git_sha256": "da2a58e6cf23ddd518eb547b2966010a41ed76a63cdac62bb6f61ea25ef05712"
+    },
+    {
+      "file": "_offline/phase6e20/evidence.cjs",
+      "working_sha256": "f8a69fe9f6128009346b597dde7b3adcbfa3c723510c6f50bed7dac220c9212c",
+      "git_sha256": "f8a69fe9f6128009346b597dde7b3adcbfa3c723510c6f50bed7dac220c9212c"
+    },
+    {
+      "file": "_offline/phase6e20/ops.cjs",
+      "working_sha256": "73e0278b58a3598444d01fcb0677eb2661db15cb86d9bc813af5aea0696842e0",
+      "git_sha256": "73e0278b58a3598444d01fcb0677eb2661db15cb86d9bc813af5aea0696842e0"
+    },
+    {
+      "file": "_offline/phase6e20/publication.cjs",
+      "working_sha256": "ad008a074c765f1abd095b94ad1f7f12a730eb01e8c88163e578890c6463ec04",
+      "git_sha256": "ad008a074c765f1abd095b94ad1f7f12a730eb01e8c88163e578890c6463ec04"
+    },
+    {
+      "file": "_offline/phase6e20/README.md",
+      "working_sha256": "b41dad450a826a844086bc96013ef58b23184b8e79c51de2c84edab436d8b39c",
+      "git_sha256": "b41dad450a826a844086bc96013ef58b23184b8e79c51de2c84edab436d8b39c"
+    },
+    {
+      "file": "_offline/phase6e20/regressions.cjs",
+      "working_sha256": "8cf56deeaee8b05a09e23f97597835e0a815d7916d4f67fa381b33e4747a04dc",
+      "git_sha256": "8cf56deeaee8b05a09e23f97597835e0a815d7916d4f67fa381b33e4747a04dc"
+    },
+    {
+      "file": "_offline/phase6e20/run.cjs",
+      "working_sha256": "6603c67c38d1dc117f192e971d3a8c4d2f853284ddd54b43aa28d6203a79cc00",
+      "git_sha256": "6603c67c38d1dc117f192e971d3a8c4d2f853284ddd54b43aa28d6203a79cc00"
+    },
+    {
+      "file": "_offline/phase6e20/serve.cjs",
+      "working_sha256": "b8441303514e6acdbe4db07f481368e95b5044ba0b728132eaadf30b9bd9d9e9",
+      "git_sha256": "b8441303514e6acdbe4db07f481368e95b5044ba0b728132eaadf30b9bd9d9e9"
+    },
+    {
+      "file": "daily-coach-demo/app.js",
+      "working_sha256": "628b04c483bc4ba3ee5a1151b416fc9b480edfd6094389b674e70c1b72a83f10",
+      "git_sha256": "628b04c483bc4ba3ee5a1151b416fc9b480edfd6094389b674e70c1b72a83f10"
+    },
+    {
+      "file": "daily-coach-demo/copy.js",
+      "working_sha256": "cc2f80f48653fe2b0ce2aa8887c18e5757d074a330e3d49a2aa124c6ef6362aa",
+      "git_sha256": "cc2f80f48653fe2b0ce2aa8887c18e5757d074a330e3d49a2aa124c6ef6362aa"
+    },
+    {
+      "file": "daily-coach-demo/demo.css",
+      "working_sha256": "2afb7e621ff8c0d9575b59626c5bbc2b70f63324346c05dc1967210c824de86c",
+      "git_sha256": "2afb7e621ff8c0d9575b59626c5bbc2b70f63324346c05dc1967210c824de86c"
+    },
+    {
+      "file": "daily-coach-demo/index.html",
+      "working_sha256": "cba4660455ade2508e442a3cb5736f97511718513a1d52e82fd3ecbef213198b",
+      "git_sha256": "cba4660455ade2508e442a3cb5736f97511718513a1d52e82fd3ecbef213198b"
+    },
+    {
+      "file": "daily-coach-demo/model.js",
+      "working_sha256": "acd68f93703f1bb471798fcc8044073d5bf0ff544fcb5e969caf20c76826c540",
+      "git_sha256": "acd68f93703f1bb471798fcc8044073d5bf0ff544fcb5e969caf20c76826c540"
+    },
+    {
+      "file": "daily-coach-demo/review.js",
+      "working_sha256": "81816ae52db36cd2f9f671e61d2ed91219ded2de3227228d97e3b2cf5f40a8a6",
+      "git_sha256": "81816ae52db36cd2f9f671e61d2ed91219ded2de3227228d97e3b2cf5f40a8a6"
+    }
+  ],
+  "reports": {
+    "docs/PHASE6E20_EVIDENCE.json": "e8bde6343de8b0cbcac60595ec998e10b4c355901a59c2ba5d17dfa91d90adf4",
+    "docs/PHASE6E20_PUBLICATION_EVIDENCE.json": "4004e4198fb09c866e725f8807c06c0adfa27c0f47f98c5c12cbc4ab01a48cd1",
+    "docs/PHASE6E20_PUBLICATION_RECEIPT.md": "5a80479186f1e53e7e46f8bd97a68bdf45c6592fdf1b2e376dec6d23e595c258",
+    "docs/PHASE6E20_OWNER_OVERVIEW.md": "5cfb0cde41e74d1085bbe2738ff7d26f1962ca53705966d850d0b66bf454e403",
+    "docs/PHASE6E20_EXAMPLES.json": "d72b9ac2a600fdec454f6160dc15f126f19309f7e6fe8e1122331fcb0448cd01",
+    "docs/PHASE6E20_TECHNICAL_REPORT.md": "6079d552fdedd8f12a0e87608ad44f2eba23cefbb4c6625fa86bdddb33981eb8",
+    "docs/PHASE6E20_STATUS_AND_CONTRACT.md": "269d9b487c53445701fe783b7e9f22bd2f07e654b647b819658d082d91e6642f"
+  },
+  "tests": {
+    "total": 4947,
+    "new20": 231,
+    "frozen": 4716,
+    "browser_local": 2413,
+    "browser_published": 2413,
+    "settings": 24,
+    "layouts": 433
+  },
+  "pages_runs": [
+    37323586458,
+    37763793689
+  ],
+  "old_assets": 140,
+  "new_assets": 6,
+  "private404": 99,
+  "expert_validation": false,
+  "live_release": false,
+  "whole_phase_complete": false,
+  "support_hold": "SU-487979"
+}
