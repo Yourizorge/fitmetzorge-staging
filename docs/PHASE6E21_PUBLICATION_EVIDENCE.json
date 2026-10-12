@@ -1,0 +1,127 @@
+{
+  "package": "6E-21",
+  "status": "TECHNICAL PASS / READY FOR OWNER REVIEW",
+  "verified_at": "2026-10-12T07:14:59.723Z",
+  "source_commit": "1c398bd78fb93885820caa06641cf494b5070f80",
+  "freeze20_commit": "8cfaa11721af39c03460b16278be9f66cc208e96",
+  "source_git_sha256": {
+    "_offline/phase6e21/browser.cjs": "248130533e3fb3713007b6f3094e9dc0484396fbc4e33c8f7de79a4e1f3ec1e5",
+    "_offline/phase6e21/contract.test.cjs": "151d763e585001679b79752980ef7e10497db17bccf43e01e007d42889edc4b7",
+    "_offline/phase6e21/evidence.cjs": "87a96c549f1cc0be32a377f478e0174a372dc86b01c0c9e2bf4d2a17ba16af22",
+    "_offline/phase6e21/ops.cjs": "70c7e3ae226e82d6f346703da65ab8691a9bcc33edad98aa05be47c7da8c1f59",
+    "_offline/phase6e21/publication.cjs": "f03dfa23723d2f575e1a2999cb50d4fdac85e9ac8cd08707998ec7ea1090155e",
+    "_offline/phase6e21/README.md": "9a0f1ddc66bccb54871fb3d59306dd9cb2c0a2c4e04b77da6dcee2c64ec31b76",
+    "_offline/phase6e21/regressions.cjs": "5665c9758e910c435296e752489fcd5fca87529b287fbc86e0f4d5bc82d77d6b",
+    "_offline/phase6e21/run.cjs": "2a7906c576fa9e369b4a46097ec97ddeba8b0773c00902ab323157fa2e04d3c7",
+    "_offline/phase6e21/serve.cjs": "87a8a60ee53fe8803d25b4b286191716cdf3ecbe97dc8f5d00dff8394451ac64",
+    "complete-recording-demo/app.js": "f2cf9d0ec6ebd82bb8adde8c4507bba6e7326e6307d99a969724d9a43fd8d5af",
+    "complete-recording-demo/copy.js": "7d6b5759c48486b2efee29090bfbaf1021a91263ad6052db3d9a0ac1e29a3f95",
+    "complete-recording-demo/demo.css": "a244a967ccc5509e011512e1991ed60ab06435a1612aed3ee7a81ebb630754b2",
+    "complete-recording-demo/index.html": "a3f8981a2d404d010135b366a307e962b37d9eba4c975bc144611d78b12fb3c8",
+    "complete-recording-demo/model.js": "935b84b4d41dfef0c1f2d40bf05e1d51cbec0e36092687d2bb676ff551262157",
+    "complete-recording-demo/review.js": "6c26ef1cdf7e0a5b0da66ef3daeeb0b40fe2d90245b0c32367a799601a3988fa"
+  },
+  "pages": {
+    "id": 38216150163,
+    "name": "pages build and deployment",
+    "status": "completed",
+    "conclusion": "success",
+    "head_sha": "1c398bd78fb93885820caa06641cf494b5070f80",
+    "url": "https://github.com/Yourizorge/fitmetzorge-staging/actions/runs/38216150163"
+  },
+  "tests": {
+    "new21": {
+      "tests": 258,
+      "pass": 258,
+      "fail": 0,
+      "skipped": 0
+    },
+    "frozen": 4947,
+    "total": 5205,
+    "network_blocked": true,
+    "medical_validation": false,
+    "known_limitation_observations_not_recognition_success": true
+  },
+  "browser": {
+    "local": 2703,
+    "published": 2703,
+    "layouts_each": 481,
+    "settings": 24,
+    "scenarios": 20,
+    "physical_phone": false
+  },
+  "runtime": {
+    "old_identical": 146,
+    "new_identical": 6,
+    "private404": 108
+  },
+  "preserve": {
+    "status": "PASS",
+    "files": 1315,
+    "historical": 58
+  },
+  "raw_evidence": {
+    "supabase/.temp/phase6e21-1791456275761/publication-after-1791789072623.json": "ee1c63570b735d6c4c58c6431c3ae7790ffbb06176b2ba1ca80cff780052bd4a",
+    "supabase/.temp/phase6e21-1791456275761/published-browser-1791789219372.json": "cbc5a5d6bc091eb084695d8d7c01265f1fe5ec78720c13ce05018d0c46af73ef",
+    "supabase/.temp/phase6e21-1791456275761/pages-1791789013306.json": "4adb434bd4706a26a38d4d732fcc2c1ab9856a82e7f5a1f5bdfa98190d468859",
+    "supabase/.temp/phase6e21-1791456275761/preserve-1791788973929.json": "2878c6a79e3e662e0abb4ccaeabffd1cdba0393033c40b61422e619e4e2d0fd0",
+    "supabase/.temp/phase6e21-1791456275761/commit-scope-1791789097750.json": "e1224e90efdf156250e8586d9870775c44735943d8a6a286fa29ba8a658aaaf9"
+  },
+  "screenshots": [
+    {
+      "file": "supabase/.temp/phase6e21-1791456275761/published-1791789044229-390-nl-light-registrations.png",
+      "sha256": "61c4420ffd7937f141571f199c10f61afe71a800144c0dfac0b157eb36172fe7"
+    },
+    {
+      "file": "supabase/.temp/phase6e21-1791456275761/published-1791789044229-390-nl-light-food-log.png",
+      "sha256": "335058c7bcc061c32ec99d62a065a2c7adeb60092e30ce61a9ccd57f9c03e516"
+    },
+    {
+      "file": "supabase/.temp/phase6e21-1791456275761/published-1791789044229-390-nl-light-proposal.png",
+      "sha256": "3a283bce4db7dfc97422f560ea78915e071bad84309353f70d0f1fcdcd26d6a8"
+    },
+    {
+      "file": "supabase/.temp/phase6e21-1791456275761/published-1791789044229-390-nl-dark-registrations.png",
+      "sha256": "6754812d3bfb7ab2f8a8d56e91dafd4bc28340b59c6e167ab0510a11c47348fd"
+    },
+    {
+      "file": "supabase/.temp/phase6e21-1791456275761/published-1791789044229-390-nl-dark-food-log.png",
+      "sha256": "03034f051ef0a1effd948c5fd3b971bd7149b3aa11801d3c893b17674b74d94a"
+    },
+    {
+      "file": "supabase/.temp/phase6e21-1791456275761/published-1791789044229-390-nl-dark-proposal.png",
+      "sha256": "4b21297ebf703728590de83070bf2fb98fa39bd3f67e665648c61d97c6cf0110"
+    },
+    {
+      "file": "supabase/.temp/phase6e21-1791456275761/published-1791789044229-1280-nl-light-registrations.png",
+      "sha256": "7e9f569c31cfa05e007d74dd3fb74c7e8a94c8d7f9b37292aa5e022bca365380"
+    },
+    {
+      "file": "supabase/.temp/phase6e21-1791456275761/published-1791789044229-1280-nl-light-food-log.png",
+      "sha256": "05bc8d969eaf55fb4221e1b0eacd83160df3667c2b8fa3c0c2e5282bb5693185"
+    },
+    {
+      "file": "supabase/.temp/phase6e21-1791456275761/published-1791789044229-1280-nl-light-proposal.png",
+      "sha256": "968b07382867612c40532332d7fdbc57b7dd0e9138dad4f2014f08467e714271"
+    },
+    {
+      "file": "supabase/.temp/phase6e21-1791456275761/published-1791789044229-1280-nl-dark-registrations.png",
+      "sha256": "0bb84762ba65beedc78caab82cdc45834f39a19c967d419984c0bb5ee4e42dfc"
+    },
+    {
+      "file": "supabase/.temp/phase6e21-1791456275761/published-1791789044229-1280-nl-dark-food-log.png",
+      "sha256": "41b7fea639dafd2ab6762d5d6b9cfaab393fe472d355d6e92bd569ffee0b811e"
+    },
+    {
+      "file": "supabase/.temp/phase6e21-1791456275761/published-1791789044229-1280-nl-dark-proposal.png",
+      "sha256": "12178f04a89dcdf9704465fa1e0403dc3be736b91d849b44ef6c32b19d89e246"
+    }
+  ],
+  "supabase_hosted_operations": 0,
+  "support_hold": "SU-487979",
+  "external_ai_calls": 0,
+  "external_cost_eur": 0,
+  "real_member_ai": false,
+  "production_touched": false,
+  "owner_accepted": false
+}

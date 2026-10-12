@@ -7,8 +7,8 @@ not rewritten. Later accepted contracts override older directional audits.
 20: COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE/SYNTHETIC ONLY.
 The owner reports physical phone PASS everywhere and accepts20-R1/R2/R3. No extra
 physical actions claimed. Exact source/report hashes in20_FREEZE_EVIDENCE.
-21: implementation under verification; final technical/publication receipts govern
-TECHNICAL PASS / READY FOR OWNER REVIEW. No21 acceptance or freeze.
+21: TECHNICAL PASS / READY FOR OWNER REVIEW. Final verification is in
+PHASE6E21_PUBLICATION_RECEIPT and PUBLICATION_EVIDENCE. No21 acceptance or freeze.
 Phase6E remains incomplete. D1-D12,O1-O5 and frozen0-20 unchanged.
 6E11 SUPPORT HOLD SU-487979; no hosted Supabase/JIT/Auth/migration/Edge/cleanup.
 Migration41/42,112 valid historical pairs and incomplete113 retained.

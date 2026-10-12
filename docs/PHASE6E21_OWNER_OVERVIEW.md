@@ -1,5 +1,5 @@
 # 6E-21 Ownerreview
-Status: READY FOR OWNER REVIEW pas na technische en publicatiecontrole.
+Status: TECHNICAL PASS / READY FOR OWNER REVIEW. Publicatiecontrole12-10-2026 geslaagd.
 6E-20 is owner-accepted/frozen op basis van je gemelde telefoontest (overal PASS,
 20-R1/R2/R3 akkoord). Geen aanvullende fysieke testhandelingen geclaimd.
 

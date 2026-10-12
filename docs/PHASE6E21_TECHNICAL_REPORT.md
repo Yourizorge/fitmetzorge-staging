@@ -23,6 +23,9 @@ Full planned-food coverage is deliberately distinct from complete daily intake.
 Corrected records invalidate completed summaries without deleting historical versions.
 
 ## Verification
+Final:258 new +4947 frozen tests =5205 passed. Local/published browser2703 assertions
+and481 layouts each passed. Pages38216150163 succeeded;146 old assets unchanged,
+six new assets match Git;108 private paths404. See the separate publication receipt.
 Preregistered cases preceded domain code. Contract and browser totals, canonical
 source hashes and append-only raw evidence are in PHASE6E21_EVIDENCE and the separate
 publication receipt. Frozen0-20 tests run locally with the existing network guard.
