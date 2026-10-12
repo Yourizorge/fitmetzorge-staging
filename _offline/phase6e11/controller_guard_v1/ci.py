@@ -19,6 +19,7 @@ EXTRA|={'_offline/phase6e11/textfree_v1/native.py'}
 old.EXTRA|=EXTRA
 
 class Gate(old.Gate):
+    controller_node_count=197
     def fetch(self):
         migrations=super().fetch()
         files=json.loads((self.out/'candidate.json').read_text())['sources']
@@ -33,8 +34,8 @@ class Gate(old.Gate):
         output=self.command('full-controller-guard-tests',['node','--test','--test-reporter=tap',*map(str,tests)])
         import re
         count=re.search(r'# tests (\d+)',output.stdout)
-        if not count or int(count[1])!=197:raise RuntimeError('full_node_count')
-        self.result['full_controller_guard_node_tests']=197
+        if not count or int(count[1])!=self.controller_node_count:raise RuntimeError('full_node_count')
+        self.result['full_controller_guard_node_tests']=int(count[1])
         self.command('artifact-receipt-tests',['python3',str(self.sources/'_offline/phase6e11/controller_guard_v1/test_artifact.py')])
         self.result['artifact_receipt_tests']=8
         folder=self.sources/'_offline/phase6e11/controller_guard_v1'

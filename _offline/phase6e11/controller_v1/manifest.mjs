@@ -36,7 +36,12 @@ export function validateManifest(value){
    if(!AUTH.has(c.operation)||c.workspace!==null||c.writes.length!==0)fail('auth_scope');
   }else if(c.kind==='workflow'){
    const w=m.workspaces.find(x=>x.id===c.workspace);
-   if(!w||!BY_ROLE[actor.role].has(c.operation)||(actor.role==='b_member')!==(w.route==='B'))fail('workflow_scope');
+   const operatorCleanup=full&&c.operation==='cleanup_batch'&&actor.role==='a_trainer'&&
+    m.cleanup?.operator_id===actor.id&&m.cleanup?.requires_revoked_window===true&&
+    c.writes.length>0&&c.writes.length<=8&&c.writes.every(x=>x.operation==='DELETE');
+   if(full&&c.operation==='cleanup_batch'&&!operatorCleanup)fail('cleanup_scope');
+   if(!w||!BY_ROLE[actor.role].has(c.operation)||
+      !operatorCleanup&&(actor.role==='b_member')!==(w.route==='B'))fail('workflow_scope');
    for(const write of c.writes){
     if(!write||!/^fmz6e11_private\.[a-z_]+$/.test(write.table)||!['INSERT','UPDATE','DELETE'].includes(write.operation)||
        !Array.isArray(write.key)||!write.key.length||write.key.some(k=>typeof k!=='string'&&!Number.isSafeInteger(k)))fail('write_scope');

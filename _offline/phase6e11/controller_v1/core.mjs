@@ -17,7 +17,13 @@ export async function sha(value){
 }
 export function safeFailure(error,phase){
   const code=error instanceof Halt&&/^[a-z][a-z0-9_]{1,63}$/.test(error.code)?error.code:'operation_failed';
-  return {phase,code};
+  const value={phase,code};
+  if(error instanceof Halt&&Array.isArray(error.cleanupFailures)){
+    value.changes=error.cleanupFailures.slice(0,2).map(x=>({
+      phase:/^[a-z][a-z0-9_]{1,63}$/.test(x?.phase)?x.phase:'cleanup',
+      code:/^[a-z][a-z0-9_]{1,63}$/.test(x?.code)?x.code:'cleanup_unconfirmed'}));
+  }
+  return value;
 }
 // Only typed technical metadata, never arbitrary API responses or error messages.
 export function metadata(value){

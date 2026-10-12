@@ -9,7 +9,8 @@ prior=importlib.util.module_from_spec(spec);spec.loader.exec_module(prior)
 NAMES=['budget.mjs','budget.test.mjs','database_checks.py','ci.py','scoped_cycle.mjs',
  'scoped_cycle.test.mjs','request_transport.mjs','request_transport.test.mjs','auth_arm.py',
  'test_auth_arm.py','scenario.py','sequence.py','command_ledger.py','test_command_ledger.py',
- 'component_trace.mjs','admission.py','test_admission.py','test_sequence.py']
+ 'component_trace.mjs','admission.py','test_admission.py','test_sequence.py','artifact.py','test_artifact.py',
+ 'cleanup_manifest.test.mjs']
 EXTRA={'_offline/phase6e11/endchain_v1/'+n for n in NAMES}
 EXTRA|={'_offline/phase6e11/request_v4/'+n for n in ['transport.mjs','connection_options.mjs','config_shape.mjs']}
 EXTRA|={'_offline/phase6e11/resume_v1/read_only.mjs','_offline/phase6e11/transport_v1/contract.mjs',
@@ -17,6 +18,7 @@ EXTRA|={'_offline/phase6e11/resume_v1/read_only.mjs','_offline/phase6e11/transpo
 EXTRA|=set(SOURCES)
 prior.EXTRA|=EXTRA;prior.old.EXTRA|=EXTRA
 class Gate(prior.Gate):
+    controller_node_count=198
     migration_count=44
     migration_last=M44
     def fetch(self):
@@ -59,8 +61,10 @@ class Gate(prior.Gate):
         self.result['endchain_budget_database_checks']=result['checks']
         self.command('endchain-arm-unit',['python3',str(folder/'test_auth_arm.py')])
         self.result['endchain_arm_unit_tests']=4
-        self.command('endchain-python-unit',['python3','-m','unittest','discover','-s',str(folder),'-p','test_*.py'])
-        self.result['endchain_python_tests']=37
+        py=self.command('endchain-python-unit',['python3','-m','unittest','discover','-s',str(folder),'-p','test_*.py'])
+        n=re.search(r'Ran (\d+) tests',py.stdout+'\n'+py.stderr)
+        if not n or int(n[1])<47:raise RuntimeError('endchain_python_incomplete')
+        self.result['endchain_python_tests']=int(n[1])
         self.command('endchain-command-trace',['node',str(folder/'component_trace.mjs')])
         self.result['hosted_admitted']=False
         self.result['full_chain_admission']=False

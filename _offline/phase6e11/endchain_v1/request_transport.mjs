@@ -14,13 +14,20 @@ export function createTransport({postgres,connectionUrl,ca,sessionHost,onCommand
  return async({input,claims,proof,requestId})=>{
   if(busy||closed)throw new Halt('admission','transport_closed_or_busy');
   if(!UUID.test(requestId||'')||!claims||!proof)throw new Halt('admission','request_context_missing');
-  busy=true;let sql,phase='begin',committed=false,transaction=false;
+  busy=true;let sql,phase='begin',committed=false,transaction=false,failure=null,result,connectionLost=false,teardown=false;
+  const cleanupFailure=(phase,code)=>{
+   closed=true;
+   if(!failure)failure=new Halt(phase,code);
+   else (failure.cleanupFailures??=[]).push({phase,code});
+  };
   const query=async(text,args=[])=>{
+   if(connectionLost)throw new Halt(phase,'connection_lost_no_reconnect');
    onCommand(phase);
    return deadline(()=>sql.unsafe(text,args),5000,()=>{closed=true;sql.end({timeout:0}).catch(()=>{});});
   };
   try{
    const options=connectionOptions(connectionUrl,ca,sessionHost);
+   options.onclose=()=>{if(!teardown){connectionLost=true;closed=true;}};
    sql=postgres(options);
    transaction=true;await query('BEGIN');
    phase='identity';const rows=await query(IDENTITY);
@@ -34,19 +41,22 @@ export function createTransport({postgres,connectionUrl,ca,sessionHost,onCommand
    // A standalone SQL statement is its own transaction. This seal is still
    // separate from the committed call; failure leaves the M42 receipt unsealed.
    phase='seal';await query('select fmz6e11_request_private.seal($1::uuid)',[requestId]);
-   return response[0].value;
+   result=response[0].value;
   }catch(error){
    closed=true;
-   throw new Halt(phase,error instanceof Halt?error.code:committed?'committed_seal_unconfirmed':'request_transaction_unconfirmed');
+   failure=new Halt(phase,error instanceof Halt?error.code:committed?'committed_seal_unconfirmed':'request_transaction_unconfirmed');
   }finally{
    try{
-    if(sql&&transaction){phase='rollback';try{await query('ROLLBACK');}catch{closed=true;throw new Halt(phase,'rollback_unconfirmed');}}
+    if(sql&&transaction){phase='rollback';try{await query('ROLLBACK');}catch{cleanupFailure(phase,'rollback_unconfirmed');}}
    }finally{
     try{
+     teardown=true;
      if(sql)try{await deadline(()=>sql.end({timeout:2}),2000,()=>{closed=true;sql.end({timeout:0}).catch(()=>{});});}
-     catch{closed=true;throw new Halt('close','connection_close_unconfirmed');}
+     catch{cleanupFailure('close','connection_close_unconfirmed');}
     }finally{busy=false;}
    }
   }
+  if(failure)throw failure;
+  return result;
  };
 }

@@ -51,3 +51,13 @@ test('forensic measurement cannot raise the query budget',async()=>{
  await assert.rejects(r.controller.execute(contract,r.adapter),/connection_deadline/);
  assert.equal(r.state.failure.after.code,'command_budget');assert.equal(r.controller.step,0);
 });
+
+test('durable stop retains primary phase and both sanitized cleanup failures',async()=>{
+ const error=new Halt('call','request_transaction_unconfirmed');
+ error.cleanupFailures=[{phase:'rollback',code:'rollback_unconfirmed'},{phase:'close',code:'connection_close_unconfirmed'}];
+ const r=rig({actionError:error});await r.controller.claim();
+ await assert.rejects(r.controller.execute(contract,r.adapter),/request_transaction_unconfirmed/);
+ assert.deepEqual(r.state.failure.actual,{phase:'call',code:'request_transaction_unconfirmed'});
+ assert.deepEqual(r.state.failure.changes,error.cleanupFailures);
+ assert.equal(r.state.failure.pair_complete,false);assert.equal(r.controller.step,0);
+});

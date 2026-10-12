@@ -27,3 +27,21 @@ test('unregistered SQL and data content are not accepted',async()=>{
  r.next={...r.next,value:{password:'not-loggable'}};
  await assert.rejects(r.c.read('rows'),/metadata_field_denied/);await r.c.end();
 });
+
+for(const stage of ['begin','read'])test('sanitized '+stage+' failure survives rollback and close faults',async()=>{
+ let broken=false,closed=0;
+ const c=new ScopedCycle({instance:'test',queries:{rows:"select '{}'::jsonb"},
+  query:async q=>{
+   if(q==='ROLLBACK'||stage==='begin'||broken)throw Error('postgres://secret');
+   return [{readonly:true,fresh:true,backend:123,bound:true,instance:'test'}];
+  },close:async()=>{closed++;throw Error('Bearer secret');}});
+ if(stage==='read'){await c.begin();broken=true;}
+ let original;
+ try{stage==='begin'?await c.begin():await c.read('rows');}catch(e){original=e;}
+ if(stage==='read')await assert.rejects(c.end(),e=>e===original);
+ assert.equal(original.code,stage==='begin'?'readonly_begin_unconfirmed':'scoped_read_unconfirmed');
+ assert.deepEqual(original.cleanupFailures,[{phase:'rollback',code:'rollback_unconfirmed'},
+  {phase:'close',code:'connection_close_unconfirmed'}]);
+ assert.ok(!JSON.stringify(original).includes('secret'));assert.equal(closed,1);
+ await c.end();assert.equal(closed,1);
+});

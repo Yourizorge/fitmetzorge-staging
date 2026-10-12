@@ -12,7 +12,7 @@ export class ScopedCycle{
   if(typeof query!=='function'||typeof close!=='function'||!queries||Object.getPrototypeOf(queries)!==Object.prototype)
    throw new Halt('admission','scoped_configuration');
   this.query=query;this.close=close;this.queries=Object.freeze({...queries});
-  this.instance=instance;this.backend=null;this.active=false;this.closed=false;this.busy=false;this.started=false;
+  this.instance=instance;this.backend=null;this.active=false;this.closed=false;this.busy=false;this.started=false;this.failure=null;
  }
  async begin(){
   if(this.started||this.closed)throw new Halt('admission','cycle_reuse');
@@ -23,7 +23,10 @@ export class ScopedCycle{
    if(rows.length!==1||r.readonly!==true||r.fresh!==true||r.bound!==true||
       r.instance!==this.instance||!Number.isSafeInteger(r.backend)||r.backend<1)throw new Halt('measurement','readonly_unconfirmed');
    this.backend=r.backend;this.active=true;
-  }catch(error){await this.end();throw error;}
+  }catch(error){
+   this.failure=error instanceof Halt?error:new Halt('measurement','readonly_begin_unconfirmed');
+   await this.end();throw this.failure;
+  }
   finally{this.busy=false;}
  }
  async read(key,args=[]){
@@ -40,14 +43,25 @@ export class ScopedCycle{
    if(rows.length!==1||r.backend!==this.backend||r.readonly!==true||r.fresh!==true)
     throw new Halt('measurement','scoped_connection_changed');
    return metadata(r.value);
-  }catch(error){this.active=false;throw error;}
+  }catch(error){
+   this.active=false;this.failure=error instanceof Halt?error:new Halt('measurement','scoped_read_unconfirmed');
+   throw this.failure;
+  }
   finally{this.busy=false;}
  }
  async end(){
   if(this.closed)return;
   this.closed=true;this.active=false;
+  const failures=[];
   try{if(this.started)await this.query('ROLLBACK');}
-  catch{throw new Halt('measurement','rollback_unconfirmed');}
-  finally{await this.close();}
+  catch{failures.push({phase:'rollback',code:'rollback_unconfirmed'});}
+  try{await this.close();}
+  catch{failures.push({phase:'close',code:'connection_close_unconfirmed'});}
+  if(failures.length){
+   const first=failures.shift();
+   if(this.failure)failures.unshift(first);
+   else this.failure=new Halt(first.phase,first.code);
+   this.failure.cleanupFailures=failures;throw this.failure;
+  }
  }
 }

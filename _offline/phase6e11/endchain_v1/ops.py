@@ -37,5 +37,8 @@ def main():
         runs=g.api('/actions/workflows/'+workflow+'/runs?per_page=10&event=workflow_dispatch')['workflow_runs']
         print(json.dumps([{k:x[k] for k in ['id','status','conclusion','head_sha','html_url']} for x in runs if digest in x['display_title']]));return
     if mode=='collect':return g.collect(disk(folder),int(sys.argv[3]))
+    if mode=='artifact':
+        from artifact import collect
+        return collect(folder,int(sys.argv[3]),g.api)
     raise RuntimeError('mode')
 if __name__=='__main__':main()
