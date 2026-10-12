@@ -6,7 +6,7 @@ old=importlib.util.module_from_spec(spec);spec.loader.exec_module(old)
 CONTROLLER_NAMES=['core.mjs','core.test.mjs','oidc.mjs','oidc.test.mjs','store.mjs','auth.mjs','auth.test.mjs',
  'auth_guard.mjs','auth_guard.test.mjs','manifest.mjs','manifest.test.mjs','workflow_evidence.mjs',
  'workflow_evidence.test.mjs','forensic.test.mjs']
-GUARD_NAMES=['guard.py','checks.py','issuance.mjs','issuance.test.mjs','ci.py','local.py','lifecycle.py','hosted_lifecycle.py','ops.py','test_artifact.py']
+GUARD_NAMES=['guard.py','checks.py','issuance.mjs','issuance.test.mjs','ci.py','local.py','lifecycle.py','hosted_lifecycle.py','ops.py','test_artifact.py','artifact.py']
 EXTRA={'_offline/phase6e11/controller_v1/'+n for n in CONTROLLER_NAMES}
 EXTRA|={'_offline/phase6e11/controller_guard_v1/'+n for n in GUARD_NAMES}
 EXTRA|={'_offline/phase6e11/edge_bridge_v2/handler.mjs',*('_offline/phase6e11/edge/'+n for n in ['handler.mjs','core.mjs','frozen.mjs'])}
