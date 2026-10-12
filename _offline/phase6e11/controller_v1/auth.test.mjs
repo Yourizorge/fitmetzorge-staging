@@ -24,7 +24,8 @@ function rig({changeIdentity={},changeExpected={},responseTransform=x=>x,failPat
   else assert.fail('unregistered_auth_path');
   return Response.json(responseTransform(value,path),{headers:{'x-request-id':id(90)}});
  };
- return {calls,auth:new SyntheticAuth({expected:{...expected,...changeExpected},identity:{...identity,...changeIdentity},key:'anon-fixture',admin:'admin-private',fetcher,now:()=>now}),get refresh(){return refresh;}};
+ return {calls,auth:new SyntheticAuth({expected:{...expected,...changeExpected},identity:{...identity,...changeIdentity},key:'anon-fixture',admin:'admin-private',fetcher,now:()=>now,
+   guard:async(_identity,action)=>action()}),get refresh(){return refresh;}};
 }
 test('complete synthetic Auth lifecycle returns metadata only and local logout',async()=>{
  const r=rig(),proof=[];

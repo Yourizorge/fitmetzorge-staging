@@ -1,5 +1,16 @@
 # Synthetic controller candidate
 
+## Latest Follow-Up
+
+12 October, after f783384: M43 is now applied and proven hosted 43/43 with an
+empty dry-run, unchanged protected data and revoked JIT. The new controller
+remains NO-GO at Auth alias stability; no hosted Auth/workflow writes or owner
+window were started. See `docs/PHASE6E11_M43_HOSTED_FOLLOWUP_REPORT.md` and its
+evidence receipt for current status. The installation notes below describe
+the preserved earlier attempts, not the current migration count. The changed
+controller must not reuse the old CI admission. The Auth guard is fail-closed
+on the current partial email index; it is not a deployable bypass.
+
 Status: LOCAL/CI COMPONENT PASS; HOSTED WORKFLOW NO-GO.
 This directory is excluded from GitHub Pages. It is not an application Edge
 entry point, and must not be deployed by pointing an Edge Function at it.

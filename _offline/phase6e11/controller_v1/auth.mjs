@@ -9,7 +9,7 @@ export function assertIdentity(identity,expected){
 }
 export class SyntheticAuth {
  #access=null;#refresh=null;#link=null;#claims=null;#revoked=false;#issued=false;
- constructor({expected,identity,key,admin,fetcher=fetch,now=Date.now,check=()=>{}}){
+ constructor({expected,identity,key,admin,fetcher=fetch,now=Date.now,check=()=>{},guard}){
   assertIdentity(identity,expected);
   if(typeof key!=='string'||!key||typeof admin!=='string'||!admin)throw new Halt('configuration','auth_credentials_absent');
   this.expected=Object.freeze(structuredClone(expected));this.fetcher=fetcher;this.now=now;this.check=check;
@@ -29,7 +29,10 @@ export class SyntheticAuth {
    if(!response.ok)throw new Halt('auth',response.status===429?'auth_rate_limited':'auth_request_rejected');
    return {value,receipt};
   };
-  this.issueRequest=()=>this.request('/admin/generate_link','POST',{type:'magiclink',email:EMAILS[this.expected.role]},admin,true);
+  this.issueRequest=()=>{
+   if(typeof guard!=='function')throw new Halt('auth_guard','identity_guard_absent');
+   return guard(this.expected,()=>this.request('/admin/generate_link','POST',{type:'magiclink',email:EMAILS[this.expected.role]},admin,true));
+  };
  }
  async issue(){
   if(this.#issued||this.#revoked)throw new Halt('auth','auth_sequence');

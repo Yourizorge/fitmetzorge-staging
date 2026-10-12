@@ -64,24 +64,34 @@ export class Controller {
     if(!UUID.test(contract?.actor)||!UUID.test(contract?.action_id)||!UUID.test(contract?.request_id)||
       contract.workspace!==null&&!UUID.test(contract.workspace)||contract.step!==this.step||!Array.isArray(contract.writes))
       throw new Halt('admission','contract_invalid');
-    this.busy=true;let phase='before_saved';
+    this.busy=true;let phase='before_saved',before=null,actionAttempted=false,afterAttempted=false;
     try {
-      const before=metadata(await adapter.measure('before'));
+      before=metadata(await adapter.measure('before'));
       await this.store.before(this.grant.id,contract,before,await sha(contract));
       this.check();phase='action_started';await this.store.record(this.grant.id,this.step,phase,{contract_sha:await sha(contract)});
       this.check();
-      const result=await adapter.act();
+      actionAttempted=true;const result=await adapter.act();
       phase='action_confirmed';await this.store.record(this.grant.id,this.step,phase,metadata(result));
-      phase='after_saved';const after=metadata(await adapter.measure('after'));
+      phase='after_saved';afterAttempted=true;const after=metadata(await adapter.measure('after'));
       await this.store.record(this.grant.id,this.step,phase,after);
       phase='pair_validated';const verified=await adapter.validate(before,result,after);
       if(verified?.pair_complete!==true||verified?.protected_equal!==true)throw new Halt(phase,'pair_invalid');
       await this.store.record(this.grant.id,this.step,phase,metadata(verified));
       this.step++;return metadata(verified);
     } catch(error){
+      const failure=safeFailure(error,phase);
+      if(error instanceof Halt&&/^[a-z][a-z0-9_]{1,63}$/.test(error.phase))failure.actual={phase:error.phase,code:failure.code};
+      // An unconfirmed action is never promoted to confirmed or retried. Its
+      // bounded after-state belongs to the stopped evidence, not a valid pair.
+      if(actionAttempted&&!afterAttempted){
+        failure.before=before;failure.pair_complete=false;afterAttempted=true;
+        try{failure.after=metadata(await adapter.measure('after'));}
+        catch(afterError){failure.after={status:'missing',...safeFailure(afterError,'after_saved')};}
+      }
       this.stopped=true;
-      try {await this.store.halt(this.grant.id,this.step,safeFailure(error,phase));} catch {}
-      throw new Halt(phase,safeFailure(error,phase).code);
+      try {await this.store.halt(this.grant.id,this.step,failure);}
+      catch {throw new Halt('evidence','failure_record_missing');}
+      throw new Halt(phase,failure.code);
     } finally {this.busy=false;}
   }
 }

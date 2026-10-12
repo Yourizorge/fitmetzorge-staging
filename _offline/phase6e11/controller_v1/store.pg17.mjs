@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {execFileSync,spawnSync} from 'node:child_process';
 import {Store} from './store.mjs';
-import {sha} from './core.mjs';
+import {sha,Controller,Halt,PROJECT} from './core.mjs';
 if(!/^561[123]\d$/.test(process.env.FMZ_LOCAL_PORT||''))throw Error('local_port_required');
 const args=['-X','-q','-h','127.0.0.1','-p',process.env.FMZ_LOCAL_PORT,'-U','postgres','-d','postgres','-v','ON_ERROR_STOP=1','-At'];
 const quote=x=>x===null?'null':typeof x==='number'?String(x):"'"+String(x).replaceAll("'","''")+"'";
@@ -42,6 +42,25 @@ await denied('command limit cannot be hidden on close',()=>store.close(g.id,fals
 await denied('stopped run cannot continue',()=>store.before(g.id,{...c,step:1},{count:0},'c'.repeat(64)));
 await good('close without wiping proof',()=>store.close(g.id,false,20));
 await good('evidence retained after close',async()=>assert.equal(raw('select count(*) from fmz6e11_controller_private.evidence;').trim(),'7'));
+const forensicGrant={...g,id:id(20),run:'10003',project:PROJECT,starts:Date.now(),expires:Date.now()+300000};
+const controller=new Controller({grant:forensicGrant,store});
+const forensicContract={...c,action_id:id(21),request_id:id(22)};
+raw('create table public.synthetic_lost_response(id integer primary key);');
+await good('forensic run claimed',()=>controller.claim());
+await good('unconfirmed mutation remains stopped with durable after-state',async()=>{
+ await assert.rejects(controller.execute(forensicContract,{
+  measure:async()=>({count:Number(raw('select count(*) from public.synthetic_lost_response;').trim())}),
+  act:async()=>{raw('insert into public.synthetic_lost_response values(1);');throw new Halt('transport','connection_deadline');},
+  validate:async()=>assert.fail('unknown action cannot validate')
+ }),/connection_deadline/);
+ const evidence=JSON.parse(raw(`select metadata from fmz6e11_controller_private.evidence where run_id='${forensicGrant.id}' and phase='stopped';`));
+ assert.equal(evidence.before.count,0);assert.equal(evidence.after.count,1);assert.equal(evidence.pair_complete,false);
+ assert.equal(evidence.actual.phase,'transport');assert.equal(evidence.actual.code,'connection_deadline');
+ assert.equal(raw(`select next_step from fmz6e11_controller_private.runs where id='${forensicGrant.id}';`).trim(),'0');
+});
+await denied('forensic stop does not permit cleanup or another step',()=>controller.execute({...forensicContract,step:1},{}));
+await denied('forensic evidence cannot be marked complete',()=>store.close(forensicGrant.id,true,30));
+await good('forensic close preserves unknown-outcome proof',()=>store.close(forensicGrant.id,false,30));
 for(const role of ['anon','authenticated','service_role'])for(const table of ['runs','steps','evidence'])for(const operation of ['select','insert','update','delete']){
  const cmd={select:'select * from '+table,insert:'insert into '+table+' default values',update:'update '+table+' set '+(table==='runs'?'next_step=next_step':table==='steps'?'step=step':'phase=phase'),delete:'delete from '+table}[operation];
  const p=spawnSync(process.env.FMZ_LOCAL_PSQL,args,{input:`begin;set local role ${role};set search_path=fmz6e11_controller_private;${cmd};rollback;`,encoding:'utf8',windowsHide:true});

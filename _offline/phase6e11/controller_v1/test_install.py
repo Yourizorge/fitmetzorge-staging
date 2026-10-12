@@ -1,13 +1,17 @@
-import copy,importlib.util,pathlib,unittest
+import copy,importlib.util,json,pathlib,unittest
 from unittest.mock import patch
 HERE=pathlib.Path(__file__).resolve().parent
 spec=importlib.util.spec_from_file_location('controller_install_test',HERE/'install.py')
 m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
 
 class InstallTests(unittest.TestCase):
-    def test_tested_candidate(self):
-        result=m.admitted()
-        self.assertEqual(result['migration_sha256'],m.c.sha(m.ROOT/'supabase/migrations'/m.M43))
+    def test_applied_migration_retains_historical_ci_proof(self):
+        result=json.loads((m.CI/'result.json').read_text())
+        sources=json.loads((m.CI/'candidate.json').read_text())['sources']
+        self.assertEqual(result['status'],'CLEAN_CI_PASS')
+        self.assertEqual(result['clean_rebuild'],'43/43_PASS')
+        name='supabase/migrations/'+m.M43
+        self.assertEqual(sources[name],m.c.sha(m.ROOT/name))
     def test_untested_source_cannot_reuse_ci(self):
         real=m.c.sha
         with patch.object(m.c,'sha',side_effect=lambda p:'0'*64 if pathlib.Path(p).name=='store.mjs' else real(p)):
