@@ -13,12 +13,19 @@ ROLES=guard.ROLES
 def run(gate):
     if os.environ.get('GITHUB_REPOSITORY')!='Yourizorge/fitmetzorge-staging' or os.environ.get('GITHUB_REF')!='refs/heads/main':
         raise RuntimeError('ci_only')
+    phase='initialization';command_evidence=[]
     def private(args,**kwargs):
         p=subprocess.run(args,capture_output=True,text=True,timeout=kwargs.pop('timeout',30),**kwargs)
-        if p.returncode:raise RuntimeError('ci_private_command_failed')
+        state=re.search(r'ERROR:\s+([0-9A-Z]{5}):',p.stderr)
+        code=state[1] if state else None
+        command_evidence.append({'phase':phase,'exitcode':p.returncode,'sqlstate':code})
+        if p.returncode:raise RuntimeError('ci_'+phase+'_failed'+('_'+code if code else ''))
         return p.stdout.strip()
-    def sql(text):
-        return private(['docker','exec','-i',gate.container,'psql','-X','-U','postgres','-d','postgres','-qAt','-v','ON_ERROR_STOP=1'],input=text)
+    def sql(text,actor='postgres'):
+        args=['docker','exec','-i',gate.container]
+        if actor=='supabase_auth_admin':args+=['sh','-c','PGPASSWORD="$POSTGRES_PASSWORD" exec psql -X -h 127.0.0.1 -U supabase_auth_admin -d postgres -qAt -v ON_ERROR_STOP=1 -v VERBOSITY=sqlstate']
+        else:args+=['psql','-X','-U','postgres','-d','postgres','-qAt','-v','ON_ERROR_STOP=1','-v','VERBOSITY=sqlstate']
+        return private(args,input=text)
     def rows(text):return json.loads(sql('select coalesce(jsonb_agg(x),\'[]\') from ('+text+') x'))
     secret=secrets.token_hex(32)
     def jwt(role):
@@ -48,8 +55,10 @@ def run(gate):
     process=psql=timer=None;receipt=None;ids={};run_id=str(uuid.uuid4());captures=[];container_started=False
     try:
         # Remove only fixtures created by the immediately preceding CI checks.
+        phase='local_fixture_cleanup'
         fixed=[f'68000000-0000-4000-8000-{i:012}' for i in range(1,5)]
         sql('delete from auth.users where id in ('+','.join(guard.literal(x) for x in fixed)+')')
+        phase='local_container_start'
         private(args,env=env);container_started=True;env.clear();password=None
         healthy=False
         for _ in range(10):
@@ -60,20 +69,23 @@ def run(gate):
             time.sleep(1)
         if not healthy:raise RuntimeError('ci_auth_health')
         # Technical metadata only. These observers exist exclusively in CI.
+        phase='local_observer_schema'
         sql("""create schema fmz_ci_auth_observer;
-create table fmz_ci_auth_observer.events(seq bigint generated always as identity,table_name text,operation text,xid text,key_sha text);
+create table fmz_ci_auth_observer.events(seq bigint generated always as identity,table_name text,operation text,xid text,key_sha text,actor_sha text);
 grant usage on schema fmz_ci_auth_observer to supabase_auth_admin;
 grant insert on fmz_ci_auth_observer.events to supabase_auth_admin;
 grant usage on all sequences in schema fmz_ci_auth_observer to supabase_auth_admin;
 create function fmz_ci_auth_observer.observe() returns trigger language plpgsql security invoker set search_path=pg_catalog,pg_temp as $$
 declare v jsonb;begin
 v:=case when TG_OP='DELETE' then to_jsonb(OLD) else to_jsonb(NEW) end;
-insert into fmz_ci_auth_observer.events(table_name,operation,xid,key_sha) values(TG_TABLE_SCHEMA||'.'||TG_TABLE_NAME,TG_OP,pg_current_xact_id()::text,encode(sha256(convert_to(coalesce(v->>'id',v->>'token',v->>'user_id',v->>'session_id','no-key'),'UTF8')),'hex'));
+insert into fmz_ci_auth_observer.events(table_name,operation,xid,key_sha,actor_sha) values(TG_TABLE_SCHEMA||'.'||TG_TABLE_NAME,TG_OP,pg_current_xact_id()::text,encode(sha256(convert_to(coalesce(v->>'id',v->>'token',v->>'user_id',v->>'session_id','no-key'),'UTF8')),'hex'),encode(sha256(convert_to(case when TG_TABLE_NAME='users' then v->>'id' when TG_TABLE_NAME='audit_log_entries' then v->'payload'->>'actor_id' else v->>'user_id' end,'UTF8')),'hex'));
 return null;end$$;
 grant execute on function fmz_ci_auth_observer.observe() to supabase_auth_admin;
-do $$declare r record;begin for r in select c.oid,n.nspname,c.relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='auth' and c.relkind='r' and c.relname<>'schema_migrations' loop
+""")
+        phase='local_observer_triggers'
+        sql("""do $$declare r record;begin for r in select c.oid,n.nspname,c.relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='auth' and c.relkind='r' and c.relname<>'schema_migrations' loop
 execute format('create trigger fmz_ci_auth_observe after insert or update or delete on %I.%I for each row execute function fmz_ci_auth_observer.observe()',r.nspname,r.relname);
-end loop;end$$;""")
+end loop;end$$;""",'supabase_auth_admin')
         psql=subprocess.Popen(['docker','exec','-i',gate.container,'psql','-X','-U','postgres','-d','postgres','-qAt','-v','ON_ERROR_STOP=1'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
         def session_query(query,values):
             for index,value in reversed(list(enumerate(values,1))):query=query.replace('$'+str(index),guard.literal(value))
@@ -112,9 +124,11 @@ end loop;end$$;""")
                 elif op=='query':value=session_query(request['sql'],request['args'])
                 elif op=='before':value=int(sql('select coalesce(max(seq),0) from fmz_ci_auth_observer.events'))
                 elif op=='after':
-                    events=rows('select table_name,operation,xid,key_sha from fmz_ci_auth_observer.events where seq>'+str(int(request['before']))+' order by seq')
+                    events=rows('select table_name,operation,xid,key_sha,actor_sha from fmz_ci_auth_observer.events where seq>'+str(int(request['before']))+' order by seq')
                     capture={'role':request['role'],'operation':request['operation'],'events':events,'pair_complete':False}
                     captures.append(capture)
+                    actor_sha=hashlib.sha256(ids[request['role']].encode()).hexdigest()
+                    if any(e['actor_sha']!=actor_sha for e in events):raise RuntimeError('ci_auth_actor_mismatch')
                     allowed={
                         'issue':{'auth.users','auth.audit_log_entries','auth.one_time_tokens'},
                         'verify':{'auth.users','auth.identities','auth.sessions','auth.refresh_tokens','auth.audit_log_entries','auth.one_time_tokens'},
@@ -134,7 +148,7 @@ end loop;end$$;""")
                 else:raise RuntimeError('ci_ipc_denied')
                 reply={'value':value}
             except Exception as error:
-                code=str(error) if re.fullmatch('[a-z_]+[0-9]*',str(error)) else 'ci_action_failed'
+                code=str(error) if re.fullmatch('[a-zA-Z0-9_]+',str(error)) else 'ci_action_failed'
                 reply={'error':code}
             process.stdin.write(json.dumps(reply)+'\n');process.stdin.flush()
         process.wait(timeout=5)
@@ -147,5 +161,5 @@ end loop;end$$;""")
         for p in (process,psql):
             if p and p.poll() is None:p.kill();p.communicate(timeout=5)
         if receipt:sql(guard.remove(run_id,ids,receipt))
-        gate.save('real-auth-ci-observed.json',{'image':IMAGE,'digests':image,'completed_pairs':captures,'hosted_requests':0})
+        gate.save('real-auth-ci-observed.json',{'image':IMAGE,'digests':image,'completed_pairs':captures,'command_evidence':command_evidence,'last_phase':phase,'hosted_requests':0})
         if container_started:private(['docker','rm','-f',NAME])
