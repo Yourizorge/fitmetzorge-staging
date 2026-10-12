@@ -2,7 +2,8 @@
 
 Owner GO: 12 October 2026. Baseline `fea115915286d22eae81b1a7cc4637860599ed78`.
 Only staging `mokxyyullfhkfalopbzd`; migrations remain 43/43.
-Status: LOCAL/CI CANDIDATE, not hosted admission or owner acceptance.
+Status: HOSTED GUARD LIFECYCLE PASS; Auth/workflow composition not yet admitted.
+No owner acceptance or freeze.
 
 The owner's temporary-guard GO is the narrow exception to the earlier controller
 design's managed-schema-trigger prohibition. It does not permit any other Auth
@@ -113,3 +114,33 @@ is not used as complete admission. No hosted mutation followed. Subsequent CI
 uses the pinned official upload-artifact action, a one-day artifact, GitHub's
 archive digest and a per-file manifest. Local negative tests reject wrong run,
 attempt, HEAD, expired artifact, archive/file hashes and unsafe/extra paths.
+
+## Full Token-Issuance Boundary
+
+The lifecycle canary `0dd37225-718b-42bc-9621-5663539b4bee` passed with 68
+commands and no Auth or application calls. All five temporary objects were
+removed, the 556 original catalog entries matched, and JIT returned to zero
+mappings. This does not prove Auth or member-data preservation for a workflow.
+
+Composition review found that both `/verify` and refresh issue session tokens;
+guarding only `/admin/generate_link` was insufficient. The candidate now checks
+the exact live guard separately on all three endpoints. Raw credential-bearing
+request helpers are private. Eleven extra unit regressions cover this boundary,
+including removal/expiry/identity change between requests. Logout does not
+require a still-active issuing guard.
+
+A new disposable CI test is preregistered before hosted Auth. It runs the
+official GoTrue `v2.196.0` container beside the clean 43-migration database,
+using local random credentials only, loopback HTTP only and no outgoing email.
+It executes issue, verify, get-user, refresh, local logout and actual server
+rejection of the old session for all three local synthetic identities.
+Technical CI-only observers record table/operation/transaction/key hash, not
+row contents or tokens. Their permissions and triggers must NOT be copied to
+hosted Auth. Every Auth result remains CI-only until the hosted measurement
+and controller composition have their own complete evidence.
+
+Sources: official [Docker configuration](https://github.com/supabase/supabase/blob/master/docker/docker-compose.yml),
+[generateLink](https://supabase.com/docs/reference/javascript/auth-admin-generatelink)
+and [verifyOtp](https://supabase.com/docs/reference/javascript/auth-verifyotp).
+The latter marks legacy magiclink verification deprecated; current compatibility
+must be tested, not assumed. No deployed Auth configuration is changed here.

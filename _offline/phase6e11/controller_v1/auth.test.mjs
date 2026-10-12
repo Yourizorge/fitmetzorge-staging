@@ -8,7 +8,7 @@ const identity={id:id(1),email:EMAILS.a_member,registered_role:'a_member',profil
 const b64=o=>Buffer.from(JSON.stringify(o)).toString('base64url');
 const jwt=(sub=id(1),session=id(10))=>b64({alg:'HS256'})+'.'+b64({sub,session_id:session,iss:'https://mokxyyullfhkfalopbzd.supabase.co/auth/v1',aud:'authenticated',role:'authenticated',exp:now/1000+3600})+'.LOCAL_FAKE_SIGNATURE';
 const user={id:id(1),email:EMAILS.a_member};
-function rig({changeIdentity={},changeExpected={},responseTransform=x=>x,failPath=null}={}){
+function rig({changeIdentity={},changeExpected={},responseTransform=x=>x,failPath=null,guard=async(_identity,action)=>action()}={}){
  const calls=[];let refresh=0;
  const fetcher=async(url,opt)=>{
   assert.equal(new URL(url).origin,'https://mokxyyullfhkfalopbzd.supabase.co');assert.equal(opt.redirect,'error');
@@ -25,7 +25,7 @@ function rig({changeIdentity={},changeExpected={},responseTransform=x=>x,failPat
   return Response.json(responseTransform(value,path),{headers:{'x-request-id':id(90)}});
  };
  return {calls,auth:new SyntheticAuth({expected:{...expected,...changeExpected},identity:{...identity,...changeIdentity},key:'anon-fixture',admin:'admin-private',fetcher,now:()=>now,
-   guard:async(_identity,action)=>action()}),get refresh(){return refresh;}};
+   guard}),get refresh(){return refresh;}};
 }
 test('complete synthetic Auth lifecycle returns metadata only and local logout',async()=>{
  const r=rig(),proof=[];
@@ -67,4 +67,23 @@ test('refresh cannot silently substitute another session',async()=>{
 test('clearing secrets is not a claim of server signout',async()=>{
  const r=rig();await r.auth.issue();await r.auth.verify();r.auth.clear();await assert.rejects(r.auth.withToken(()=>{}));
  assert.equal(r.calls.length,2);
+});
+
+test('all three token issuing routes attest the guard independently',async()=>{
+ let checks=0;const r=rig({guard:async(value,action)=>{assert.deepEqual(value,expected);checks++;return action();}});
+ for(const op of ['issue','verify','getUser','refresh','logout'])await r.auth[op]();
+ assert.equal(checks,3);assert.equal(r.calls.length,5);
+});
+for(const operation of ['issue','verify','refresh'])for(const reason of ['removed','expired','identity_changed'])
+test(operation+' refuses '+reason+' guard before HTTP',async()=>{
+ let available=true;const r=rig({guard:async(_value,action)=>{if(!available)throw Error('guard_'+reason);return action();}});
+ if(operation!=='issue')await r.auth.issue();
+ if(operation==='refresh')await r.auth.verify();
+ const before=r.calls.length;available=false;
+ await assert.rejects(r.auth[operation](),new RegExp('guard_'+reason));assert.equal(r.calls.length,before);
+ await assert.rejects(r.auth[operation](),/auth_sequence/);assert.equal(r.calls.length,before);
+ if(operation==='refresh'){await r.auth.logout();assert.equal(r.calls.at(-1).path,'/auth/v1/logout?scope=local');}
+});
+test('raw credential-bearing request and issuance callbacks are not public capabilities',()=>{
+ const r=rig();assert.equal(r.auth.request,undefined);assert.equal(r.auth.issueRequest,undefined);
 });

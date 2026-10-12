@@ -8,16 +8,17 @@ export function assertIdentity(identity,expected){
     identity.enabled!==true||identity.operator!==(expected.role==='a_trainer'))throw new Halt('auth','identity_not_allowlisted');
 }
 export class SyntheticAuth {
- #access=null;#refresh=null;#link=null;#claims=null;#revoked=false;#issued=false;
+ #access=null;#refresh=null;#link=null;#claims=null;#revoked=false;#issued=false;#request;#issueRequest;
  constructor({expected,identity,key,admin,fetcher=fetch,now=Date.now,check=()=>{},guard}){
   assertIdentity(identity,expected);
   if(typeof key!=='string'||!key||typeof admin!=='string'||!admin)throw new Halt('configuration','auth_credentials_absent');
   this.expected=Object.freeze(structuredClone(expected));this.fetcher=fetcher;this.now=now;this.check=check;
   // Credentials are captured, not object properties serialized into evidence.
-  this.request=async(path,method,body,authorization,privileged=false)=>{
+  this.#request=async(path,method,body,authorization,privileged=false)=>{
    this.check();
    const allowed=new Set(['/admin/generate_link','/verify','/user','/token?grant_type=refresh_token','/logout?scope=local']);
    if(!allowed.has(path))throw new Halt('auth','auth_path_denied');
+   const send=async()=>{
    let response;
    try{response=await fetcher(BASE+'/auth/v1'+path,{method,redirect:'error',signal:AbortSignal.timeout(5000),
      headers:{apikey:privileged?admin:key,...(authorization?{Authorization:'Bearer '+authorization}:{}),'Content-Type':'application/json'},
@@ -28,16 +29,23 @@ export class SyntheticAuth {
    const receipt={http_status:response.status,request_id:UUID.test(requestId||'')?requestId:null};
    if(!response.ok)throw new Halt('auth',response.status===429?'auth_rate_limited':'auth_request_rejected');
    return {value,receipt};
+   };
+   // Verification and refresh issue session tokens too. None of the three
+   // issuing endpoints may run on the strength of an earlier guard check.
+   if(['/admin/generate_link','/verify','/token?grant_type=refresh_token'].includes(path)){
+    if(typeof guard!=='function')throw new Halt('auth_guard','identity_guard_absent');
+    return guard(this.expected,send);
+   }
+   return send();
   };
-  this.issueRequest=()=>{
-   if(typeof guard!=='function')throw new Halt('auth_guard','identity_guard_absent');
-   return guard(this.expected,()=>this.request('/admin/generate_link','POST',{type:'magiclink',email:EMAILS[this.expected.role]},admin,true));
+  this.#issueRequest=()=>{
+   return this.#request('/admin/generate_link','POST',{type:'magiclink',email:EMAILS[this.expected.role]},admin,true);
   };
  }
  async issue(){
   if(this.#issued||this.#revoked)throw new Halt('auth','auth_sequence');
   this.#issued=true;
-  const {value,receipt}=await this.issueRequest();
+  const {value,receipt}=await this.#issueRequest();
   const user=value?.user||value,properties=value?.properties||value;
   if(user?.id!==this.expected.id||user.email!==EMAILS[this.expected.role]||typeof properties.hashed_token!=='string'||!properties.hashed_token)
     throw new Halt('auth','issued_identity_mismatch');
@@ -46,7 +54,7 @@ export class SyntheticAuth {
  async verify(){
   if(!this.#link||this.#access||this.#revoked)throw new Halt('auth','auth_sequence');
   const token=this.#link;this.#link=null;
-  const {value,receipt}=await this.request('/verify','POST',{type:'magiclink',token_hash:token},'');
+  const {value,receipt}=await this.#request('/verify','POST',{type:'magiclink',token_hash:token},'');
   this.#adopt(value);return {...receipt,session_sha:await sha(this.#claims.session_id)};
  }
  #adopt(value){
@@ -58,7 +66,7 @@ export class SyntheticAuth {
  }
  async getUser(){
   if(!this.#access||this.#revoked)throw new Halt('auth','auth_sequence');
-  const {value,receipt}=await this.request('/user','GET',undefined,this.#access);
+  const {value,receipt}=await this.#request('/user','GET',undefined,this.#access);
   let claims;try{claims=verifiedClaims('Bearer '+this.#access,value,this.now());}catch{throw new Halt('auth','session_identity_mismatch');}
   if(claims.sub!==this.expected.id||claims.session_id!==this.#claims.session_id)throw new Halt('auth','session_identity_mismatch');
   return {...receipt,session_sha:await sha(claims.session_id)};
@@ -66,12 +74,12 @@ export class SyntheticAuth {
  async refresh(){
   if(!this.#access||!this.#refresh||this.#revoked)throw new Halt('auth','auth_sequence');
   const old=this.#refresh;this.#refresh=null;
-  const {value,receipt}=await this.request('/token?grant_type=refresh_token','POST',{refresh_token:old},'');
+  const {value,receipt}=await this.#request('/token?grant_type=refresh_token','POST',{refresh_token:old},'');
   this.#adopt(value);return {...receipt,session_sha:await sha(this.#claims.session_id)};
  }
  async logout(){
   if(!this.#access||this.#revoked)throw new Halt('auth','auth_sequence');
-  const {receipt}=await this.request('/logout?scope=local','POST',undefined,this.#access);
+  const {receipt}=await this.#request('/logout?scope=local','POST',undefined,this.#access);
   this.#revoked=true;this.#refresh=null;return {...receipt,session_sha:await sha(this.#claims.session_id)};
  }
  async withToken(callback){
