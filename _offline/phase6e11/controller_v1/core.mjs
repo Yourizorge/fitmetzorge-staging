@@ -1,3 +1,4 @@
+import {limitFor} from '../endchain_v1/budget.mjs';
 export const PROJECT='mokxyyullfhkfalopbzd';
 export const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 const HASH=/^[0-9a-f]{64}$/;
@@ -53,7 +54,7 @@ export function validateGrant(g,now=Date.now()){
 export class Controller {
   constructor({grant,store,now=Date.now,maxCommands=128}){
     validateGrant(grant,now());
-    if(!Number.isSafeInteger(maxCommands)||maxCommands<1||maxCommands>128)throw new Halt('admission','budget_invalid');
+    if(!Number.isSafeInteger(maxCommands)||maxCommands<1||maxCommands>limitFor(grant))throw new Halt('admission','budget_invalid');
     Object.assign(this,{grant:Object.freeze(structuredClone(grant)),store,now,maxCommands,commands:0,step:0,claimed:false,stopped:false,busy:false});
   }
   check(){if(this.stopped||this.now()>=this.grant.expires)throw new Halt('admission','controller_closed');}

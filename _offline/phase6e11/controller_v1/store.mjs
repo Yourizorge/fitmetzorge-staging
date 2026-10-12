@@ -1,4 +1,5 @@
 import {Halt,metadata,sha} from './core.mjs';
+import {limitFor,PURPOSE} from '../endchain_v1/budget.mjs';
 const S='fmz6e11_controller_private';
 const TAG='/* fmz6e11:controller_v1:evidence */ ';
 const previous={action_started:'before_saved',action_confirmed:'action_started',after_saved:'action_confirmed',pair_validated:'after_saved'};
@@ -40,7 +41,7 @@ export class Store {
       [run,step,JSON.stringify(value),await sha(value)]);
   }
   async close(run,complete,count){
-    if(typeof complete!=='boolean'||!Number.isSafeInteger(count)||count<0||count>128)throw new Halt('evidence','close_budget');
+    if(typeof complete!=='boolean'||!Number.isSafeInteger(count)||count<0||count>limitFor({id:run,budget_ref:PURPOSE}))throw new Halt('evidence','close_budget');
     return this.one(`update ${S}.runs set state=$2,command_count=$3,closed_at=clock_timestamp()
       where id=$1::uuid and state in ('running','stopped') and ($2<>'complete' or
         (state='running' and next_step>0 and next_step=(select count(*) from ${S}.steps where run_id=$1::uuid)

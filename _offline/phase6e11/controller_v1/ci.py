@@ -8,6 +8,8 @@ old=previous.old
 M43='20261012104331_phase6e11_controller_evidence.sql'
 EXTRA={'_offline/phase6e11/controller_v1/'+n for n in ['core.mjs','core.test.mjs','oidc.mjs','oidc.test.mjs','store.mjs']}
 class Gate(previous.Gate42):
+    migration_count=43
+    migration_last=M43
     def fetch(self):
         blob=os.environ['CANDIDATE_BLOB'];expected=os.environ['CANDIDATE_SHA256']
         if not re.fullmatch('[0-9a-f]{40}',blob) or not re.fullmatch('[0-9a-f]{64}',expected):raise RuntimeError('candidate_format')
@@ -20,7 +22,7 @@ class Gate(previous.Gate42):
         if old.sha(data)!=expected:raise RuntimeError('candidate_digest')
         bundle=json.loads(data);manifest={}
         migrations=sorted(p for p in bundle['files'] if p.startswith('supabase/migrations/'))
-        if len(migrations)!=43 or len({pathlib.Path(p).name.split('_')[0] for p in migrations})!=43 or pathlib.Path(migrations[-1]).name!=M43:raise RuntimeError('exactly_43_unique')
+        if len(migrations)!=self.migration_count or len({pathlib.Path(p).name.split('_')[0] for p in migrations})!=self.migration_count or pathlib.Path(migrations[-1]).name!=self.migration_last:raise RuntimeError('exact_migration_composition')
         for name,encoded in bundle['files'].items():
             if not old.allowed(name) and name not in EXTRA:raise RuntimeError('candidate_path_denied')
             raw=base64.b64decode(encoded,validate=True);path=self.sources/name
@@ -38,11 +40,14 @@ class Gate(previous.Gate42):
         self.result['candidate_sha256']=expected
         return migrations
     def rebuild(self,migrations):
-        super().rebuild(migrations);self.result['clean_rebuild']='43/43_PASS'
+        super().rebuild(migrations);self.result['clean_rebuild']=str(self.migration_count)+'/'+str(self.migration_count)+'_PASS'
+    def check_controller_functions(self):
+        if self.rows("select p.oid from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='fmz6e11_controller_private'"):raise RuntimeError('controller_function_unexpected')
+        return 0
     def check_bridge(self):
         super().check_bridge()
         schema='fmz6e11_controller_private'
-        if self.rows("select p.oid from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='"+schema+"'"):raise RuntimeError('controller_function_unexpected')
+        functions=self.check_controller_functions()
         tables=self.rows("select relname,relrowsecurity from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='"+schema+"' and c.relkind='r' order by 1")
         if [x['relname'] for x in tables]!=['evidence','runs','steps'] or not all(x['relrowsecurity'] for x in tables):raise RuntimeError('controller_rls')
         denied=[]
@@ -57,7 +62,7 @@ class Gate(previous.Gate42):
                     p=self.sql('begin;set local role '+role+';'+query+';rollback;',False)
                     if not p.returncode or 'permission denied' not in p.stderr:raise RuntimeError('controller_acl')
                     denied.append({'role':role,'table':table,'operation':operation,'denied':True})
-        self.save('controller-security.json',{'tables':tables,'functions':0,'default_closed':True,'denials':denied})
+        self.save('controller-security.json',{'tables':tables,'functions':functions,'default_closed':True,'denials':denied})
         self.result['controller_security']='PASS'
     def regressions(self):
         super().regressions()
