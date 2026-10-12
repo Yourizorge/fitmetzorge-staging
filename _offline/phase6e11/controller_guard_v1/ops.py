@@ -34,6 +34,6 @@ def main():
         digest=json.loads((folder/'blob.json').read_text())['sha256']
         r=g.api('/actions/workflows/phase6e11-guard-ci.yml/runs?per_page=10&event=workflow_dispatch')['workflow_runs']
         print(json.dumps([{k:x[k] for k in ['id','status','conclusion','head_sha','html_url']} for x in r if digest in x['display_title']]));return
-    if action=='collect':return g.collect(folder,int(sys.argv[3]))
+    if action=='collect':return g.collect(disk(folder),int(sys.argv[3]))
     raise RuntimeError('mode')
 if __name__=='__main__':main()

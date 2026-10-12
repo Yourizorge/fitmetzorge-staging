@@ -30,6 +30,7 @@ def run(sql,hold):
     success('insert into auth.users(id,email,is_sso_user) values('+literal(OTHER)+",'unrelated@example.invalid',false)")
     before=catalog()
     try:
+        check('actual_auth_database_role',success('select current_user','supabase_auth_admin')=='supabase_auth_admin')
         r,receipt=begin();check('three_exact_triggers_invoker_acl',len(state(r)['triggers'])==3)
         # Dedicated open transaction holds the old row-lock scheme while a
         # separate Auth connection proves the new trigger catches the race.

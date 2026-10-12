@@ -34,7 +34,13 @@ class Gate(old.Gate):
         g=importlib.util.module_from_spec(spec);sys.modules['guard']=g;spec.loader.exec_module(g)
         spec=importlib.util.spec_from_file_location('guard_database_checks',folder/'checks.py')
         checks=importlib.util.module_from_spec(spec);spec.loader.exec_module(checks)
-        def args(actor):return ['docker','exec','-i',self.container,'psql','-X','-U',actor,'-d','postgres','-qAt','-v','ON_ERROR_STOP=1']
+        def args(actor):
+            if actor=='supabase_auth_admin':
+                # This is the disposable container's own local credential, not
+                # a staging secret. Peer/socket auth is intentionally denied.
+                return ['docker','exec','-i',self.container,'sh','-c',
+                    'PGPASSWORD="$POSTGRES_PASSWORD" exec psql -X -h 127.0.0.1 -U supabase_auth_admin -d postgres -qAt -v ON_ERROR_STOP=1']
+            return ['docker','exec','-i',self.container,'psql','-X','-U',actor,'-d','postgres','-qAt','-v','ON_ERROR_STOP=1']
         def sql(q,actor='postgres'):
             if actor in ('anon','authenticated','service_role'):
                 q='set role '+actor+';'+q;actor='postgres'
@@ -52,6 +58,6 @@ class Gate(old.Gate):
                 except subprocess.TimeoutExpired:p.kill();p.communicate()
         result=checks.run(sql,hold)
         self.save('temporary-guard-database.json',result)
-        if result['checks']!=25 or result['guard_objects_remaining']!=0:raise RuntimeError('guard_database_incomplete')
+        if result['checks']!=26 or result['guard_objects_remaining']!=0:raise RuntimeError('guard_database_incomplete')
         self.result['temporary_guard_database']=result['status'];self.result['temporary_guard_checks']=result['checks']
 if __name__=='__main__':sys.exit(Gate().run())
