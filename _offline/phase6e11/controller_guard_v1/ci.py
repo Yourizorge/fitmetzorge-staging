@@ -10,6 +10,7 @@ GUARD_NAMES=['guard.py','checks.py','issuance.mjs','issuance.test.mjs','ci.py','
 EXTRA={'_offline/phase6e11/controller_v1/'+n for n in CONTROLLER_NAMES}
 EXTRA|={'_offline/phase6e11/controller_guard_v1/'+n for n in GUARD_NAMES}
 EXTRA|={'_offline/phase6e11/edge_bridge_v2/handler.mjs',*('_offline/phase6e11/edge/'+n for n in ['handler.mjs','core.mjs','frozen.mjs'])}
+EXTRA|={'_offline/phase6e11/auth_metadata_v1/'+n for n in ['audit.py','checks.py','local.py']}
 old.EXTRA|=EXTRA
 
 class Gate(old.Gate):
@@ -62,6 +63,13 @@ class Gate(old.Gate):
         self.save('temporary-guard-database.json',result)
         if result['checks']!=34 or result['guard_objects_remaining']!=0:raise RuntimeError('guard_database_incomplete')
         self.result['temporary_guard_database']=result['status'];self.result['temporary_guard_checks']=result['checks']
+        metadata_folder=self.sources/'_offline/phase6e11/auth_metadata_v1'
+        sys.path.insert(0,str(metadata_folder))
+        spec=importlib.util.spec_from_file_location('metadata_database_checks',metadata_folder/'checks.py')
+        meta=importlib.util.module_from_spec(spec);spec.loader.exec_module(meta)
+        result=meta.run(sql,hold,checks.IDS);self.save('auth-metadata-database.json',result)
+        if result['checks']!=32:raise RuntimeError('metadata_database_incomplete')
+        self.result['auth_metadata_database']=result['status'];self.result['auth_metadata_checks']=result['checks']
         spec=importlib.util.spec_from_file_location('guard_real_auth_ci',folder/'auth_service.py')
         real=importlib.util.module_from_spec(spec);spec.loader.exec_module(real)
         result=real.run(self);self.save('real-auth-ci.json',result)

@@ -5,6 +5,7 @@ and sanitized outcomes may be returned to the CI artifact writer.
 """
 import base64,hashlib,hmac,json,os,pathlib,re,secrets,subprocess,threading,time,urllib.request,uuid
 import guard
+import audit
 
 IMAGE='supabase/gotrue:v2.196.0'
 NAME='fmz-guard-auth-ci'
@@ -52,7 +53,7 @@ def run(gate):
         'GOTRUE_LOG_LEVEL':'panic'}
     for k,v in public.items():args+=['-e',k+'='+v]
     args.append(IMAGE)
-    process=psql=timer=None;receipt=None;ids={};run_id=str(uuid.uuid4());captures=[];container_started=False
+    process=psql=timer=None;receipt=None;metadata_receipt=None;ids={};run_id=str(uuid.uuid4());captures=[];container_started=False
     try:
         # Remove only fixtures created by the immediately preceding CI checks.
         phase='local_fixture_cleanup'
@@ -127,19 +128,28 @@ end loop;end$$;""",'supabase_auth_admin')
                     phase='operator_seed'
                     sql('insert into fmz6e11_private.operators values('+guard.literal(ids['a_trainer'])+',true)')
                     phase='guard_install'
-                    sql(guard.install(run_id,ids,180));receipt=guard.validate(json.loads(sql(guard.inspect(run_id,ids))),run_id,ids);value=receipt
+                    sql(guard.install(run_id,ids,180));receipt=guard.validate(json.loads(sql(guard.inspect(run_id,ids))),run_id,ids)
+                    phase='metadata_install'
+                    sql(audit.install(run_id,ids,receipt['expires_at']))
+                    metadata_receipt=audit.validate(json.loads(sql(audit.inspect(run_id,ids))),run_id,ids,receipt['expires_at']);value=receipt
                 elif op=='query':value=session_query(request['sql'],request['args'])
-                elif op=='before':value=int(sql('select coalesce(max(seq),0) from fmz_ci_auth_observer.events'))
+                elif op=='before':
+                    action=str(uuid.uuid4());sql(audit.arm(run_id,ids,action,request['role'],request['operation']))
+                    if json.loads(sql(audit.events(run_id,ids,action)))!=[]:raise RuntimeError('metadata_before_not_empty')
+                    value={'action':action,'seq':int(sql('select coalesce(max(seq),0) from fmz_ci_auth_observer.events'))}
                 elif op=='after':
-                    events=rows('select table_name,operation,xid,key_sha,actor_sha from fmz_ci_auth_observer.events where seq>'+str(int(request['before']))+' order by seq')
-                    capture={'role':request['role'],'operation':request['operation'],'events':events,'pair_complete':False}
+                    events=rows('select table_name,operation,xid,key_sha,actor_sha from fmz_ci_auth_observer.events where seq>'+str(int(request['before']['seq']))+' order by seq')
+                    observed=json.loads(sql(audit.events(run_id,ids,request['before']['action'])))
+                    capture={'role':request['role'],'operation':request['operation'],'events':events,'scoped_audit':observed,'pair_complete':False}
                     captures.append(capture)
+                    keys=('table_name','operation','xid','key_sha','actor_sha')
+                    if sorted(tuple(e[k] for k in keys) for e in events)!=sorted(tuple(e[k] for k in keys) for e in observed):raise RuntimeError('ci_independent_observer_mismatch')
                     actor_sha=hashlib.sha256(ids[request['role']].encode()).hexdigest()
                     if any(e['actor_sha']!=actor_sha for e in events):raise RuntimeError('ci_auth_actor_mismatch')
                     allowed={
                         'issue':{'auth.users','auth.audit_log_entries','auth.one_time_tokens'},
                         'verify':{'auth.users','auth.identities','auth.sessions','auth.refresh_tokens','auth.audit_log_entries','auth.one_time_tokens','auth.mfa_amr_claims'},
-                        'getUser':set(),'refresh':{'auth.sessions','auth.refresh_tokens','auth.audit_log_entries'},
+                        'getUser':set(),'refresh':{'auth.users','auth.sessions','auth.refresh_tokens','auth.audit_log_entries'},
                         'logout':{'auth.sessions','auth.refresh_tokens','auth.audit_log_entries','auth.mfa_amr_claims'},'revoked_denial':set()}
                     if any(e['table_name'] not in allowed[request['operation']] for e in events):raise RuntimeError('ci_auth_extra_write')
                     required={'issue':[('auth.users','UPDATE')],
@@ -148,9 +158,11 @@ end loop;end$$;""",'supabase_auth_admin')
                         'logout':[('auth.sessions','DELETE'),('auth.mfa_amr_claims','DELETE')],'getUser':[],'revoked_denial':[]}
                     if any(not any(e['table_name']==t and e['operation']==op for e in events) for t,op in required[request['operation']]):
                         raise RuntimeError('ci_auth_missing_write')
+                    sql(audit.disarm(run_id,ids,request['before']['action']))
                     capture['pair_complete']=True;value={'events':events,'pair_complete':True}
                 elif op=='remove':
                     if request['receipt']!=receipt:raise RuntimeError('ci_removal_receipt')
+                    sql(audit.remove(run_id,ids,metadata_receipt));metadata_receipt=None
                     sql(guard.remove(run_id,ids,receipt));receipt=None;value=True
                 else:raise RuntimeError('ci_ipc_denied')
                 reply={'value':value}
@@ -167,6 +179,7 @@ end loop;end$$;""",'supabase_auth_admin')
         if timer:timer.cancel()
         for p in (process,psql):
             if p and p.poll() is None:p.kill();p.communicate(timeout=5)
+        if metadata_receipt:sql(audit.remove(run_id,ids,metadata_receipt))
         if receipt:sql(guard.remove(run_id,ids,receipt))
         gate.save('real-auth-ci-observed.json',{'image':IMAGE,'digests':image,'completed_pairs':captures,'command_evidence':command_evidence,'last_phase':phase,'hosted_requests':0})
         if container_started:private(['docker','rm','-f',NAME])
