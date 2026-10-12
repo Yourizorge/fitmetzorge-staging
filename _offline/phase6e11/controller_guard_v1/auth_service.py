@@ -16,7 +16,7 @@ def run(gate):
     phase='initialization';command_evidence=[]
     def private(args,**kwargs):
         p=subprocess.run(args,capture_output=True,text=True,timeout=kwargs.pop('timeout',30),**kwargs)
-        state=re.search(r'ERROR:\s+([0-9A-Z]{5}):',p.stderr)
+        state=re.search(r'ERROR:\s+([0-9A-Z]{5})\b',p.stderr)
         code=state[1] if state else None
         command_evidence.append({'phase':phase,'exitcode':p.returncode,'sqlstate':code})
         if p.returncode:raise RuntimeError('ci_'+phase+'_failed'+('_'+code if code else ''))
@@ -115,11 +115,14 @@ end loop;end$$;""",'supabase_auth_admin')
             try:
                 if op=='install':
                     ids=request['ids'];guard.scope(run_id,ids)
-                    for role,uid in ids.items():
+                    for role in ('a_trainer','a_member','b_member'):
+                        phase='profile_seed_'+role;uid=ids[role]
                         trainer=guard.literal(ids['a_trainer'])+'::uuid' if role=='a_member' else 'null'
                         sql('insert into public.profiles(id,email,role,name,trainer_id) values('+guard.literal(uid)+','+guard.literal(guard.ALIASES[role])+','+guard.literal('trainer' if role=='a_trainer' else 'client')+",'CI synthetic',"+trainer+') on conflict(id) do update set role=excluded.role,email=excluded.email,trainer_id=excluded.trainer_id;'+
                             'insert into fmz6e11_private.identities(user_id,role,provenance_sha) values('+guard.literal(uid)+','+guard.literal(role)+","+guard.literal('c'*64)+');')
+                    phase='operator_seed'
                     sql('insert into fmz6e11_private.operators values('+guard.literal(ids['a_trainer'])+',true)')
+                    phase='guard_install'
                     sql(guard.install(run_id,ids,180));receipt=guard.validate(json.loads(sql(guard.inspect(run_id,ids))),run_id,ids);value=receipt
                 elif op=='query':value=session_query(request['sql'],request['args'])
                 elif op=='before':value=int(sql('select coalesce(max(seq),0) from fmz_ci_auth_observer.events'))
