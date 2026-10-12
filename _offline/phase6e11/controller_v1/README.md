@@ -2,6 +2,23 @@
 
 ## Latest Follow-Up
 
+Temporary identity guard lifecycle is now proven hosted and safely removed;
+see `docs/PHASE6E11_AUTH_GUARD_HOSTED_REPORT.md`. Verification and refresh now
+require live guard attestation too. Hosted Auth/workflow composition remains
+NO-GO; no token was issued in the guard lifecycle canary. The owner subsequently
+approved a separate temporary managed-Auth metadata audit, exact three identities,
+maximum ten minutes, local/CI admission first and exact safety removal. The first
+real GoTrue CI run passed all 18 Auth cases; hosted Auth is not yet proven.
+See `docs/PHASE6E11_TEMP_AUTH_METADATA_DESIGN.md`. Older blockers remain history.
+The separate current status and native-adapter evidence are in
+`docs/PHASE6E11_AUTH_METADATA_FOLLOWUP_REPORT.md`. Eighteen real CI Auth cases
+have exact write-contract checks; this is not hosted Auth admission. The owner
+approved one new 180-second/128-command native audit probe without token issuance
+or workflow writes. Historical canary failures and incomplete pairs are retained.
+That probe is now PASS: 107 commands, 32.672 seconds, exact one-row I/U/D,
+complete pair, zero measured own temp blocks, temporary objects removed and
+JIT mappings zero. The hosted HTTP Auth/controller/workflow chain remains NO-GO.
+
 12 October, after f783384: M43 is now applied and proven hosted 43/43 with an
 empty dry-run, unchanged protected data and revoked JIT. The new controller
 remains NO-GO at Auth alias stability; no hosted Auth/workflow writes or owner

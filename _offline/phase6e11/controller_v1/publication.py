@@ -10,6 +10,9 @@ def main():
     head=o.g.git('rev-parse','HEAD');remote=o.g.git('ls-remote','origin','refs/heads/main').split()[0]
     if head!=remote or o.g.git('branch','--show-current')!='main':raise RuntimeError('git_scope')
     names=[p.relative_to(o.ROOT).as_posix() for p in HERE.iterdir() if p.is_file()]
+    for folder_name in ('controller_guard_v1','auth_metadata_v1'):
+        names += [p.relative_to(o.ROOT).as_posix() for p in (HERE.parent/folder_name).iterdir() if p.is_file()]
+    names += ['.github/workflows/phase6e11-guard-ci.yml']
     names+=['supabase/migrations/'+o.ci.M43,'.github/workflows/phase6e11-controller-ci.yml']
     result={'head':head,'remote_head':remote,'hidden':[],'supabase_calls':0}
     for name in sorted(names):

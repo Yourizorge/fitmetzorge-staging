@@ -118,4 +118,8 @@ retry, extension, or dependent hosted Auth/workflow run is authorized by this
 small additional budget. The existing broader workflow scope still requires
 its own complete source-bound admission and execution plan.
 
-Status: new owner-approved CI admission pending; no hosted Auth PASS claimed.
+Status: fresh CI 38278953845 PASS; hosted native audit probe
+`da412c5b-9212-4acc-bb53-dbc0b311c6bc` PASS. Exact I/U/D, complete pair,
+zero measured own temp writes, exact safety removal and zero JIT mappings.
+This does not prove hosted HTTP Auth or Route A/B. See
+`PHASE6E11_AUTH_METADATA_FOLLOWUP_REPORT.md` for scope and immutable manifest.
