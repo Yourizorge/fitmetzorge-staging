@@ -10,7 +10,7 @@ life=importlib.util.module_from_spec(spec);spec.loader.exec_module(life)
 def disk(p):return pathlib.Path('\\\\?\\'+str(p.resolve())) if os.name=='nt' else p
 def admit(folder):
     p=disk(folder);r=json.loads((p/'result.json').read_text())
-    if r.get('status')!='CLEAN_CI_PASS' or r.get('temporary_guard_checks')!=32 or r.get('full_controller_guard_node_tests')!=186:raise m.Stop('new_guard_ci_required')
+    if r.get('status')!='CLEAN_CI_PASS' or r.get('temporary_guard_checks')!=34 or r.get('full_controller_guard_node_tests')!=186:raise m.Stop('new_guard_ci_required')
     sources=json.loads((p/'candidate.json').read_text())['sources']
     for name,sha in sources.items():
         if hashlib.sha256(disk(m.ROOT/name).read_bytes()).hexdigest()!=sha:raise m.Stop('tested_composition_changed')
@@ -25,6 +25,7 @@ def main(ci):
         'max_commands':128,'safety_reserved_commands':40,'max_seconds':240,'connections':1,'full_fingerprint_cycles':0,'retries':0,
         'scope':'exact temporary guard installation and unconditional removal only; NOT Auth/workflow PASS'})
     journal=db=ledger=None;granted=False;cleanup=False;serial=0;normal=0;safety=0;deadline=time.monotonic()+240
+    safety_storage_errors=[]
     result={'status':'NO_GO','auth_calls':0,'application_writes':0,'folder':folder.name,'phase':'admission'}
     try:
         token=m.p.jit.sb.credential();journal=j.Journal(token,folder);journal.inspect()
@@ -72,9 +73,25 @@ def main(ci):
                     if not value:break
                     db.lib.PQclear(value)
             for command in life.ddl_commands(sql):
-                charge();ledger.event('ddl_command_started',sql_sha256=hashlib.sha256(command.encode()).hexdigest(),safety=cleanup)
+                charge()
+                def event(name,**fields):
+                    try:ledger.event(name,**fields)
+                    except Exception:
+                        if not cleanup:raise
+                        safety_storage_errors.append(name)
+                event('ddl_command_started',sql_sha256=hashlib.sha256(command.encode()).hexdigest(),safety=cleanup)
                 db.query(command,timeout=8)
-                ledger.event('ddl_command_confirmed',safety=cleanup)
+                event('ddl_command_confirmed',safety=cleanup)
+        def safety_read(sql):
+            # Only exact owned-object inspection/removal confirmation. This
+            # cannot be vetoed by an earlier measurement/admission NO-GO.
+            charge();db.query('BEGIN TRANSACTION READ ONLY',timeout=5)
+            try:
+                charge()
+                if db.query("select current_setting('transaction_read_only')",timeout=5)!=[['on']]:raise m.Stop('safety_readonly')
+                charge();return db.query(sql,timeout=5)
+            finally:
+                charge();db.query('ROLLBACK',timeout=5)
         def save(name,value):m.save(folder/(name+'.json'),value)
         result['phase']='project_binding'
         meta=json.loads(read(m.p.jit.META_SQL)[0][0])
@@ -83,7 +100,8 @@ def main(ci):
             raise m.Stop('project_or_migration_binding')
         save('project-binding',{'project':j.jit.PROJECT,'migrations':43,'verify_full':True,'ca_hostname':True,'jit':True})
         result['phase']='lifecycle'
-        result.update(life.execute(run=run,ids=ids,query=query,read=read,save=save,seconds=180))
+        result.update(life.execute(run=run,ids=ids,query=query,read=read,safety_read=safety_read,save=save,seconds=180))
+        if safety_storage_errors:result.update(status='NO_GO',missing_safety_journal=safety_storage_errors)
     except j.Rejected as error:result.update(status='NO_GO',phase=error.phase,reason=error.code)
     except Exception as error:
         result['reason']=str(error) if isinstance(error,(m.Stop,ValueError)) and re.fullmatch('[a-zA-Z0-9_]+',str(error)) else type(error).__name__

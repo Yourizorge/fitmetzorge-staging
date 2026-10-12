@@ -76,16 +76,20 @@ def run(sql,hold):
         check('final_original_catalog',catalog()==before)
         spec=importlib.util.spec_from_file_location('guard_lifecycle_checks',pathlib.Path(__file__).with_name('lifecycle.py'))
         lifecycle=importlib.util.module_from_spec(spec);spec.loader.exec_module(lifecycle)
-        for fault in ('none','action','lost_commit_ack','after_save','before_save'):
+        for fault in ('none','action','lost_commit_ack','after_save','before_save','measurement_gate_failure','persistent_storage_failure'):
             evidence={};qcount=[0]
             def read(q):
                 value=success(q)
                 return [[value]] if ':inspect */' in q else [line.split('|') for line in value.splitlines()]
+            def gated_read(q):
+                if fault=='measurement_gate_failure' and qcount[0]>0:raise RuntimeError('simulated_load_no_go')
+                return read(q)
             def query(q,cost):
                 qcount[0]+=1;value=success(q)
                 if fault=='lost_commit_ack' and ':install */' in q:raise RuntimeError('simulated_transport_failure')
                 return value
             def save(name,value):
+                if fault=='persistent_storage_failure' and qcount[0]>0:raise RuntimeError('simulated_disk_full')
                 if fault=='before_save' and name=='before-catalog' or fault=='after_save' and name=='after-install-catalog':
                     raise RuntimeError('simulated_disk_failure')
                 if name in evidence:raise RuntimeError('historical_overwrite')
@@ -93,7 +97,7 @@ def run(sql,hold):
             def action(receipt):
                 if fault=='action':raise RuntimeError('simulated_controller_no_go')
                 return {'status':'LOCAL_ONLY'}
-            result=lifecycle.execute(run=str(uuid.uuid4()),ids=IDS,query=query,read=read,save=save,action=action)
+            result=lifecycle.execute(run=str(uuid.uuid4()),ids=IDS,query=query,read=gated_read,safety_read=read,save=save,action=action)
             if fault=='before_save':
                 ok=result['status']=='NO_GO' and qcount[0]==0
             else:

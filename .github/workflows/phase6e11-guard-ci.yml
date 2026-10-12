@@ -34,15 +34,25 @@ jobs:
         if: always()
         run: |
           python3 - <<'PY'
-          import base64, hashlib, os, pathlib
+          import hashlib, json, os, pathlib
           root = pathlib.Path(os.environ["RUNNER_TEMP"]) / "fmz-db41-evidence"
+          manifest = {}
           for file in sorted(root.glob("*")):
               if file.is_file() and file.suffix in (".json", ".txt"):
                   data = file.read_bytes()
                   if len(data) > 2000000: raise SystemExit("evidence_limit")
-                  print("FMZ_EVIDENCE_BEGIN " + file.name + " " + hashlib.sha256(data).hexdigest())
-                  encoded = base64.b64encode(data).decode()
-                  for offset in range(0, len(encoded), 4000):
-                      print("FMZ_DATA " + encoded[offset:offset + 4000])
-                  print("FMZ_EVIDENCE_END " + file.name)
+                  manifest[file.name] = hashlib.sha256(data).hexdigest()
+          with (root / "artifact-manifest.json").open("x") as out:
+              json.dump(manifest, out, sort_keys=True)
+          print(json.dumps({"files": len(manifest), "manifest_sha256": hashlib.sha256((root / "artifact-manifest.json").read_bytes()).hexdigest()}))
           PY
+      - name: Preserve exact synthetic evidence bytes
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: phase6e11-guard-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/fmz-db41-evidence/*.json
+            ${{ runner.temp }}/fmz-db41-evidence/*.txt
+          retention-days: 1
+          if-no-files-found: error

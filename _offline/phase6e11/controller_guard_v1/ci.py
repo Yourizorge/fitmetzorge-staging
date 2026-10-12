@@ -6,7 +6,7 @@ old=importlib.util.module_from_spec(spec);spec.loader.exec_module(old)
 CONTROLLER_NAMES=['core.mjs','core.test.mjs','oidc.mjs','oidc.test.mjs','store.mjs','auth.mjs','auth.test.mjs',
  'auth_guard.mjs','auth_guard.test.mjs','manifest.mjs','manifest.test.mjs','workflow_evidence.mjs',
  'workflow_evidence.test.mjs','forensic.test.mjs']
-GUARD_NAMES=['guard.py','checks.py','issuance.mjs','issuance.test.mjs','ci.py','local.py','lifecycle.py','hosted_lifecycle.py']
+GUARD_NAMES=['guard.py','checks.py','issuance.mjs','issuance.test.mjs','ci.py','local.py','lifecycle.py','hosted_lifecycle.py','ops.py','test_artifact.py']
 EXTRA={'_offline/phase6e11/controller_v1/'+n for n in CONTROLLER_NAMES}
 EXTRA|={'_offline/phase6e11/controller_guard_v1/'+n for n in GUARD_NAMES}
 EXTRA|={'_offline/phase6e11/edge_bridge_v2/handler.mjs',*('_offline/phase6e11/edge/'+n for n in ['handler.mjs','core.mjs','frozen.mjs'])}
@@ -29,6 +29,8 @@ class Gate(old.Gate):
         count=re.search(r'# tests (\d+)',output.stdout)
         if not count or int(count[1])!=186:raise RuntimeError('full_node_count')
         self.result['full_controller_guard_node_tests']=186
+        self.command('artifact-receipt-tests',['python3',str(self.sources/'_offline/phase6e11/controller_guard_v1/test_artifact.py')])
+        self.result['artifact_receipt_tests']=8
         folder=self.sources/'_offline/phase6e11/controller_guard_v1'
         spec=importlib.util.spec_from_file_location('guard',folder/'guard.py')
         g=importlib.util.module_from_spec(spec);sys.modules['guard']=g;spec.loader.exec_module(g)
@@ -58,6 +60,6 @@ class Gate(old.Gate):
                 except subprocess.TimeoutExpired:p.kill();p.communicate()
         result=checks.run(sql,hold)
         self.save('temporary-guard-database.json',result)
-        if result['checks']!=32 or result['guard_objects_remaining']!=0:raise RuntimeError('guard_database_incomplete')
+        if result['checks']!=34 or result['guard_objects_remaining']!=0:raise RuntimeError('guard_database_incomplete')
         self.result['temporary_guard_database']=result['status'];self.result['temporary_guard_checks']=result['checks']
 if __name__=='__main__':sys.exit(Gate().run())

@@ -48,7 +48,7 @@ def compare(before,after,schema,installed):
     if additions!=(expected if installed else set()):raise ValueError('unexpected_catalog_additions')
     return {'existing_objects_equal':True,'existing_objects':len(a),'own_additions':len(additions)}
 
-def execute(*,run,ids,query,read,save,seconds=180,action=None):
+def execute(*,run,ids,query,read,save,seconds=180,action=None,safety_read=None):
     """query executes owned DDL; read uses a separate explicit RO transaction.
 
     Attempted install may have committed despite a lost acknowledgment. Inspect
@@ -58,13 +58,18 @@ def execute(*,run,ids,query,read,save,seconds=180,action=None):
     schema=g.scope(run,ids);attempted=False;receipt=None;phase='before_saved'
     result={'status':'NO_GO','guard_removed':False,'action_executed':False}
     before=None
-    def state():return json.loads(read(g.inspect(run,ids))[0][0])
+    safety_storage=[]
+    def state(reader):return json.loads(reader(g.inspect(run,ids))[0][0])
+    safety_read=safety_read or read
     def record(name,value):save(name,value)
+    def safety_record(name,value):
+        try:record(name,value)
+        except Exception:safety_storage.append(name)
     try:
         before=read(catalog_sql());record('before-catalog',before)
         phase='action_started';record('install-started',{'run':run,'sql_sha256':hashlib.sha256(g.install(run,ids,seconds).encode()).hexdigest()})
         attempted=True;query(g.install(run,ids,seconds),7)
-        phase='action_confirmed';current=state();record('installed-state',current)
+        phase='action_confirmed';current=state(read);record('installed-state',current)
         receipt=g.validate(current,run,ids);record('removal-receipt',receipt)
         phase='after_saved';after=read(catalog_sql());record('after-install-catalog',after)
         phase='pair_validated';pair=compare(before,after,schema,True);record('install-pair',pair)
@@ -80,18 +85,20 @@ def execute(*,run,ids,query,read,save,seconds=180,action=None):
                 # No repeated mutation. A read establishes whether installation
                 # actually committed; rollback of any failed DDL is unconditional.
                 query('ROLLBACK',1)
-                current=state();record('safety-inspection',current)
+                current=state(safety_read);safety_record('safety-inspection',current)
                 if current['functions']:
                     proven=g.validate(current,run,ids,active=False)
                     if receipt is not None and proven!=receipt:raise ValueError('removal_receipt_changed')
-                    record('safety-removal-started',proven)
+                    safety_record('safety-removal-started',proven)
                     query(g.remove(run,ids,proven),5)
                 elif current['triggers'] or current['other_relations'] or current['dependencies']:
                     raise ValueError('unknown_guard_objects')
-                final=read(catalog_sql());record('after-removal-catalog',final)
-                pair=compare(before,final,schema,False);record('removal-pair',pair)
+                final=safety_read(catalog_sql());safety_record('after-removal-catalog',final)
+                pair=compare(before,final,schema,False);safety_record('removal-pair',pair)
                 result.update(guard_removed=True,catalog_restored=True)
             except Exception as error:
                 result.update(status='NO_GO',removal_error_class=type(error).__name__,guard_removed=False)
-        record('lifecycle-result',result)
+        if safety_storage:result.update(status='NO_GO',missing_safety_evidence=safety_storage)
+        try:record('lifecycle-result',result)
+        except Exception:result.update(status='NO_GO',result_persistence_failed=True)
     return result

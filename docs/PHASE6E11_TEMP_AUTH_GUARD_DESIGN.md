@@ -100,6 +100,16 @@ or full protected-data PASS is inferred solely from a catalog comparison.
 
 Lost installation acknowledgment is handled by source-bound inspection, not
 repeating installation. Safety removal remains active after a controller stop
-or evidence-storage failure. The lifecycle was tested with the native PG17
+or evidence-storage failure. Minimal read-only safety inspection does not reuse
+the stopped load-admission gate. Missing durable safety evidence remains NO-GO
+even when the guard is demonstrably removed; it never prevents that removal.
+The lifecycle was tested with the native PG17
 single-statement transport as well as disposable Supabase CI. A lifecycle PASS
 is not admission for unimplemented or untested Auth/workflow composition.
+
+CI run 38262806969 was green, but its downloaded log export failed the declared
+SHA-256 for advisors.json in both copies. The originals are retained; this run
+is not used as complete admission. No hosted mutation followed. Subsequent CI
+uses the pinned official upload-artifact action, a one-day artifact, GitHub's
+archive digest and a per-file manifest. Local negative tests reject wrong run,
+attempt, HEAD, expired artifact, archive/file hashes and unsafe/extra paths.
