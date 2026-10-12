@@ -2,6 +2,12 @@
 
 Status: OFFLINE COMPOSITION IN PROGRESS / HOSTED NO-GO.
 
+Latest checkpoint: [local closure and remaining admission](PHASE6E11_ENDCHAIN_LOCAL_CLOSURE.md).
+The current component CI is 44/44 PASS; 71 local workflow/cleanup pairs passed.
+The full hosted composition is NOT admitted. An offline lower-bound replay
+exposes the draft cleanup phase budget at simulated command 940; the one
+authorized hosted run remains unspent.
+
 ## Owner Authority
 
 The owner authorizes one full synthetic endchain with at most 1,280 SQL
