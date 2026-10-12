@@ -17,7 +17,7 @@ def function_body(s,ids,deadline):
  deadline CONSTANT timestamptz := {g.literal(deadline)}::timestamptz;
  ids CONSTANT text[] := {allowed};
  actor text; previous_actor text; row_key text; previous_key text; session_key text;
- ah text; sh text; expected_actor text; active_action uuid;
+ ah text; sh text; old_ah text; expected_actor text; active_action uuid;
 BEGIN
  IF clock_timestamp()>=deadline THEN RETURN NULL; END IF;
  IF TG_TABLE_SCHEMA<>'auth' OR TG_TABLE_NAME NOT IN ({','.join(g.literal(x) for x in TABLES)}) OR TG_WHEN<>'AFTER' THEN RAISE EXCEPTION 'metadata_trigger_binding'; END IF;
@@ -31,8 +31,11 @@ BEGIN
   session_key:=CASE WHEN TG_OP='DELETE' THEN OLD.session_id::text ELSE NEW.session_id::text END;
   sh:=encode(sha256(convert_to(session_key,'UTF8')),'hex');
   SELECT actor_sha INTO ah FROM {s}.session_keys WHERE key_sha=sh;
+  IF TG_OP='UPDATE' THEN
+   SELECT actor_sha INTO old_ah FROM {s}.session_keys WHERE key_sha=encode(sha256(convert_to(OLD.session_id::text,'UTF8')),'hex');
+   IF (ah IS NOT NULL OR old_ah IS NOT NULL) AND OLD.session_id IS DISTINCT FROM NEW.session_id THEN RAISE EXCEPTION 'metadata_actor_change'; END IF;
+  END IF;
   IF ah IS NULL THEN RETURN NULL; END IF;
-  IF TG_OP='UPDATE' AND OLD.session_id IS DISTINCT FROM NEW.session_id THEN RAISE EXCEPTION 'metadata_actor_change'; END IF;
   row_key:=CASE WHEN TG_OP='DELETE' THEN OLD.id::text ELSE NEW.id::text END;
   previous_key:=CASE WHEN TG_OP='INSERT' THEN NULL ELSE OLD.id::text END;
  ELSE

@@ -1,6 +1,7 @@
 """Same synthetic SQL checks in isolated PG17 and the clean Supabase CI stack."""
 import datetime,hashlib,json,time,uuid
 import audit
+import probe
 
 def run(sql,hold,ids):
     passed=[];run_id=str(uuid.uuid4());s=audit.scope(run_id,ids);receipt=None
@@ -56,6 +57,15 @@ def run(sql,hold,ids):
         ok('repeated_updates_not_deduplicated',len(get(action))==7)
         close(action)
         deny('reused_action',audit.arm(run_id,ids,action,'a_member','verify'),'duplicate key','postgres')
+        action=arm();session=str(uuid.uuid4());outside=str(uuid.uuid4());claim=str(uuid.uuid4())
+        q("insert into auth.sessions(id,user_id,created_at,updated_at) values('"+session+"','"+member+"',now(),now()),('"+outside+"','"+other+"',now(),now());"
+          "insert into auth.mfa_amr_claims(id,session_id,authentication_method,created_at,updated_at) values('"+claim+"','"+session+"','password',now(),now());",'supabase_auth_admin')
+        deny('amr_cannot_escape_scope',"update auth.mfa_amr_claims set session_id='"+outside+"' where id='"+claim+"'",'metadata_actor_change')
+        q("delete from auth.sessions where id in ('"+session+"','"+outside+"')",'supabase_auth_admin');close(action)
+        action=arm();session=str(uuid.uuid4());before=q(probe.snapshot(ids,session))
+        q('begin;'+''.join('explain(analyze,verbose,buffers,format json) '+text+';' for text in probe.sql_sequence(session,member))+'commit;','supabase_auth_admin')
+        ok('hosted_probe_same_source',probe.validate(get(action),action,session,member)['delete_retained'] and q(probe.snapshot(ids,session))==before)
+        close(action)
         # Failures do not permit broad removal of unexpected objects.
         q('create table '+s+'.unexpected(id int)')
         deny('unexpected_object_kept',audit.remove(run_id,ids,receipt),'metadata_removal_mismatch','postgres')
