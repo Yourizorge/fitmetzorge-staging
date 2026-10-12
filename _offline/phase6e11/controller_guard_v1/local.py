@@ -1,5 +1,5 @@
 """Disposable PG17 guard tests. No credentials or hosted connection route."""
-import contextlib,hashlib,json,os,pathlib,subprocess,sys
+import contextlib,hashlib,json,os,pathlib,subprocess,sys,uuid
 HERE=pathlib.Path(__file__).resolve().parent
 sys.path.insert(0,str(HERE.parent/'fingerprint_v1'))
 from local_cluster import Cluster
@@ -51,6 +51,27 @@ grant select,insert,update,delete,trigger on auth.users to postgres;"""
         setup+='grant anon,authenticated,service_role to postgres;'
         if sql(setup,'fmz_local_bootstrap').returncode:raise RuntimeError('local_privilege_setup')
         result=run(sql,hold)
+        from pq import LocalDB
+        spec=importlib.util.spec_from_file_location('guard_native_local_lifecycle',HERE/'lifecycle.py')
+        life=importlib.util.module_from_spec(spec);spec.loader.exec_module(life)
+        from checks import IDS
+        db=LocalDB(cluster.port)
+        def native_query(q,cost):
+            for command in life.ddl_commands(q):db.query(command,timeout=5)
+        def native_read(q):
+            db.query('BEGIN TRANSACTION READ ONLY')
+            try:
+                if db.query("select current_setting('transaction_read_only')")!=[['on']]:raise RuntimeError('native_readonly')
+                return db.query(q,timeout=5)
+            finally:db.query('ROLLBACK')
+        evidence={}
+        def native_save(name,value):
+            if name in evidence:raise RuntimeError('overwrite')
+            evidence[name]=value
+        native=life.execute(run=str(uuid.uuid4()),ids=IDS,query=native_query,read=native_read,save=native_save)
+        (cluster.path/'native-guard-lifecycle.json').write_text(json.dumps(evidence,indent=2)+'\n')
+        if native['status']!='GUARD_LIFECYCLE_PASS' or not native['guard_removed']:raise RuntimeError('native_lifecycle_failed')
+        result['native_lifecycle']='PASS'
         result['postgres']='17.6';result['sources']={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in HERE.glob('*.py')}
     except Exception as e:result['reason']=str(e) if isinstance(e,(RuntimeError,ValueError)) else type(e).__name__
     finally:

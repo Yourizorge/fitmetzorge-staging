@@ -4,6 +4,10 @@ Owner GO: 12 October 2026. Baseline `fea115915286d22eae81b1a7cc4637860599ed78`.
 Only staging `mokxyyullfhkfalopbzd`; migrations remain 43/43.
 Status: LOCAL/CI CANDIDATE, not hosted admission or owner acceptance.
 
+The owner's temporary-guard GO is the narrow exception to the earlier controller
+design's managed-schema-trigger prohibition. It does not permit any other Auth
+schema change or managed function replacement.
+
 ## Authority And Lifetime
 
 Exactly the three pre-registered UUIDs AND the three exact existing test aliases
@@ -76,3 +80,26 @@ does not change direct/pooler connections or justify weakening HTTPS/TLS here.
 
 No hosted Auth/workflow proof is implied by a local/CI pass. Historical missing
 pairs remain missing. 6E-21 remains unaccepted; no JARVIS changes or handoff.
+
+## Hosted Lifecycle Admission
+
+Before token issuance, the native adapter must prove the guard's install/remove
+lifecycle on the actual staging ownership model. This canary does not call Auth
+or execute workflows, create fixtures, or scan member rows. It uses the exact
+registered UUIDs, a unique guard schema, a 180-second immutable guard deadline,
+one verified session-pooler connection, owner JIT capped at 300 seconds, and no
+retry. The existing metadata reader measures its own query load; no full table
+fingerprints are added. Project/migration binding must confirm exactly 43/43.
+
+Maximum 128 SQL commands, including 40 commands reserved before installation
+for independent safety inspection/removal. The main path cannot consume this
+reservation. Before/after catalog measurements bind existing Auth/private
+functions, triggers, RLS policies and ACLs. Only one schema, one function and
+three triggers may appear; the original catalog must be restored. No row-write
+or full protected-data PASS is inferred solely from a catalog comparison.
+
+Lost installation acknowledgment is handled by source-bound inspection, not
+repeating installation. Safety removal remains active after a controller stop
+or evidence-storage failure. The lifecycle was tested with the native PG17
+single-statement transport as well as disposable Supabase CI. A lifecycle PASS
+is not admission for unimplemented or untested Auth/workflow composition.

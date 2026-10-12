@@ -1,5 +1,5 @@
 """Same bounded synthetic guard checks for local PG17 and disposable Supabase CI."""
-import json,time,uuid
+import importlib.util,json,pathlib,time,uuid
 from guard import ALIASES,ROLES,install,inspect,validate,remove,scope,literal
 
 IDS={r:'68000000-0000-4000-8000-'+str(i).zfill(12) for i,r in enumerate(ROLES,1)}
@@ -74,6 +74,32 @@ def run(sql,hold):
         end(r,receipt)
         success('update auth.users set email='+literal(ALIASES['a_member'])+' where id='+literal(IDS['a_member']),'supabase_auth_admin')
         check('final_original_catalog',catalog()==before)
+        spec=importlib.util.spec_from_file_location('guard_lifecycle_checks',pathlib.Path(__file__).with_name('lifecycle.py'))
+        lifecycle=importlib.util.module_from_spec(spec);spec.loader.exec_module(lifecycle)
+        for fault in ('none','action','lost_commit_ack','after_save','before_save'):
+            evidence={};qcount=[0]
+            def read(q):
+                value=success(q)
+                return [[value]] if ':inspect */' in q else [line.split('|') for line in value.splitlines()]
+            def query(q,cost):
+                qcount[0]+=1;value=success(q)
+                if fault=='lost_commit_ack' and ':install */' in q:raise RuntimeError('simulated_transport_failure')
+                return value
+            def save(name,value):
+                if fault=='before_save' and name=='before-catalog' or fault=='after_save' and name=='after-install-catalog':
+                    raise RuntimeError('simulated_disk_failure')
+                if name in evidence:raise RuntimeError('historical_overwrite')
+                evidence[name]=value
+            def action(receipt):
+                if fault=='action':raise RuntimeError('simulated_controller_no_go')
+                return {'status':'LOCAL_ONLY'}
+            result=lifecycle.execute(run=str(uuid.uuid4()),ids=IDS,query=query,read=read,save=save,action=action)
+            if fault=='before_save':
+                ok=result['status']=='NO_GO' and qcount[0]==0
+            else:
+                ok=result['guard_removed'] and result['catalog_restored'] and result['status']==('GUARD_LIFECYCLE_PASS' if fault=='none' else 'NO_GO')
+            check('lifecycle_'+fault,ok and catalog()==before)
+        check('lifecycle_original_catalog',catalog()==before)
         return {'status':'GUARD_DATABASE_PASS','checks':len(passed),'passed':passed,'hosted_calls':0,'guard_objects_remaining':0}
     finally:
         # Only exact objects this local test created. Never fixture cleanup here.
