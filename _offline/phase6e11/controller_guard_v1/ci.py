@@ -13,6 +13,9 @@ EXTRA|={'_offline/phase6e11/edge_bridge_v2/handler.mjs',*('_offline/phase6e11/ed
 EXTRA|={'_offline/phase6e11/auth_metadata_v1/'+n for n in ['audit.py','checks.py','local.py','probe.py','hosted.py','test_probe.py']}
 EXTRA|={'_offline/phase6e11/auth_metadata_v1/'+n for n in ['auth_contract.py','test_auth_contract.py','test_hosted.py']}
 EXTRA|={'_offline/phase6e11/auth_metadata_v1/'+n for n in ['hashes.mjs','hashes.test.mjs']}
+EXTRA|={'_offline/phase6e11/auth_metadata_v1/'+n for n in ['failure.py','test_native_transport.py']}
+EXTRA|={'_offline/phase6e11/auth_metadata_v1/'+n for n in ['budget.py','test_budget.py']}
+EXTRA|={'_offline/phase6e11/textfree_v1/native.py'}
 old.EXTRA|=EXTRA
 
 class Gate(old.Gate):
@@ -73,7 +76,11 @@ class Gate(old.Gate):
         if result['checks']!=34:raise RuntimeError('metadata_database_incomplete')
         self.result['auth_metadata_database']=result['status'];self.result['auth_metadata_checks']=result['checks']
         self.command('metadata-probe-unit-tests',['python3',str(metadata_folder/'test_probe.py')])
-        self.result['metadata_probe_unit_tests']=7
+        self.result['metadata_probe_unit_tests']=10
+        self.command('native-transport-contract-tests',['python3',str(metadata_folder/'test_native_transport.py')])
+        self.result['native_transport_tests']=8
+        self.command('owner-budget-tests',['python3',str(metadata_folder/'test_budget.py')])
+        self.result['owner_budget_tests']=4
         self.command('audit-session-hash-tests',['node','--test',str(metadata_folder/'hashes.test.mjs')])
         self.result['audit_session_hash_tests']=4
         spec=importlib.util.spec_from_file_location('guard_real_auth_ci',folder/'auth_service.py')

@@ -1,5 +1,6 @@
 import copy,json,unittest,uuid
 import probe
+from failure import safe_reason
 
 class Probe(unittest.TestCase):
     def test_empty_shape(self):
@@ -17,5 +18,8 @@ class Probe(unittest.TestCase):
         with self.assertRaises(ValueError):probe.validate([],str(uuid.uuid4()),str(uuid.uuid4()),str(uuid.uuid4()))
     def test_exact_three(self):
         self.assertEqual(len(probe.sql_sequence(str(uuid.uuid4()),str(uuid.uuid4()))),3)
+    def test_protocol_reason(self):self.assertEqual(safe_reason(RuntimeError('terminal_row_count')),'terminal_row_count')
+    def test_sqlstate_reason(self):self.assertEqual(safe_reason(RuntimeError('sqlstate_42501')),'sqlstate_42501')
+    def test_secret_redaction(self):self.assertEqual(safe_reason(RuntimeError('password=private-value')),'scoped_action_failed')
 
 if __name__=='__main__':unittest.main()

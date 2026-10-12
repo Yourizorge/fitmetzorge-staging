@@ -2,7 +2,8 @@
 import hashlib,importlib.util,json,os,pathlib,re,sys,time,uuid
 HERE=pathlib.Path(__file__).resolve().parent
 sys.path.insert(0,str(HERE))
-import audit,probe
+import audit,probe,budget
+from failure import safe_reason
 sys.path.insert(0,str(HERE.parent/'controller_v1'))
 import auth_preflight as pre
 j=pre.j;m=pre.m
@@ -13,7 +14,7 @@ def disk(p):return pathlib.Path('\\\\?\\'+str(p.resolve())) if os.name=='nt' els
 
 def admit(folder):
     result=json.loads(disk(folder/'result.json').read_text())
-    if result.get('status')!='CLEAN_CI_PASS' or result.get('auth_metadata_checks')!=34 or result.get('real_auth_ci_checks')!=18 or result.get('real_auth_exact_write_contracts')!=18 or result.get('full_controller_guard_node_tests')!=197:raise ValueError('new_metadata_ci_required')
+    if result.get('status')!='CLEAN_CI_PASS' or result.get('auth_metadata_checks')!=34 or result.get('real_auth_ci_checks')!=18 or result.get('real_auth_exact_write_contracts')!=18 or result.get('full_controller_guard_node_tests')!=197 or result.get('native_transport_tests')!=8 or result.get('owner_budget_tests')!=4:raise ValueError('new_metadata_ci_required')
     sources=json.loads(disk(folder/'candidate.json').read_text())['sources']
     for name,h in sources.items():
         if hashlib.sha256(disk(m.ROOT/name).read_bytes()).hexdigest()!=h:raise ValueError('tested_composition_changed')
@@ -38,16 +39,17 @@ def corrected_admission():
     if (prior/'before-catalog.json').exists() or (prior/'install-started.json').exists():raise ValueError('prior_mutation_not_excluded')
     return {'prior_run':prior.name,'prior_result_sha':hashlib.sha256((prior/'result.json').read_bytes()).hexdigest(),'prior_commands':8}
 
-def main(folder_ci,corrected=False):
+def main(folder_ci,corrected=False,owner_native=False):
     admission=admit(folder_ci);ids=pre.identifiers();run=str(uuid.uuid4());action=str(uuid.uuid4());session=str(uuid.uuid4())
-    prior=corrected_admission() if corrected else {'prior_commands':0}
+    prior=budget.admission(m.ROOT) if owner_native else corrected_admission() if corrected else {'prior_commands':0}
+    max_seconds=180 if owner_native else 240
     normal_limit=88-prior['prior_commands']
     folder=m.ROOT/'supabase/.temp'/('phase6e11-auth-metadata-hosted-'+run.replace('-',''));folder.mkdir()
-    marker='phase6e11-auth-metadata-canary-'+('corrected-' if corrected else '')+'once.json'
+    marker=budget.MARKER if owner_native else 'phase6e11-auth-metadata-canary-'+('corrected-' if corrected else '')+'once.json'
     m.save(m.ROOT/'supabase/.temp'/marker,{'run':run,'folder':folder.name,**prior})
     m.save(folder/'contract.json',{**admission,'run':run,'action':action,'actor_sha':hashlib.sha256(ids['a_member'].encode()).hexdigest(),
         'fixture_sha':hashlib.sha256(session.encode()).hexdigest(),'expected':{'auth.sessions':{'INSERT':1,'UPDATE':1,'DELETE':1}},
-        'max_commands':128-prior['prior_commands'],'combined_max_commands':128,'prior':prior,'safety_reserved':40,'max_seconds':240,'guard_seconds':180,'connections':1,'full_cycles':0,'automatic_retries':0,'auth_calls':0})
+        'max_commands':128-prior['prior_commands'],'combined_max_commands':128,'prior':prior,'safety_reserved':40,'max_seconds':max_seconds,'guard_seconds':180,'connections':1,'full_cycles':0,'automatic_retries':0,'auth_calls':0})
     db=journal=ledger=None;granted=False;cleanup=False;normal=0;safety=0;serial=0;started=time.monotonic()
     result={'status':'NO_GO','auth_calls':0,'application_writes':0,'folder':folder.name}
     def save(name,value):m.save(folder/(name+'.json'),value)
@@ -61,11 +63,14 @@ def main(folder_ci,corrected=False):
                 safety+=1
                 if safety>40:raise m.Stop('safety_budget')
             else:
-                if normal>=normal_limit or time.monotonic()-started>240:raise m.Stop('normal_budget')
+                if normal>=normal_limit or time.monotonic()-started>max_seconds:raise m.Stop('normal_budget')
                 ledger.reserve_query();normal+=1
         granted=True;result['phase']='jit';journal.grant()
         result['phase']='tls';db=m.c.Connection(json.loads((m.c.CONNECT/'connect.json').read_text()),token,m.c.CA)
-        def command(sql):charge();return db.query(sql,timeout=5)
+        native=m.stream.t.old.s.Native(db)
+        def command(sql):
+            charge()
+            return native.query(sql,timeout=5) if sql.startswith('explain (') else db.query(sql,timeout=5)
         def read(sql,persist=True):
             nonlocal serial
             serial+=1;command('BEGIN TRANSACTION READ ONLY')
@@ -133,7 +138,8 @@ def main(folder_ci,corrected=False):
                 command('BEGIN');command("SET LOCAL statement_timeout='2s'");command("SET LOCAL lock_timeout='1s'")
                 plans=[]
                 for index,sql in enumerate(probe.sql_sequence(session,ids['a_member'])):
-                    plan=probe.plan_summary(command('explain(analyze,verbose,buffers,format json) '+sql)[0][0]);save('statement-'+str(index),plan);plans.append(plan)
+                    phase='statement_'+str(index)
+                    plan=probe.plan_summary(command('explain (analyze,verbose,buffers,format json) '+sql)[0][0]);save('statement-'+str(index),plan);plans.append(plan)
                 command('COMMIT');phase='action_confirmed';save('action-confirmed',{'statements':3})
                 events=json.loads(read(audit.events(run,ids,action))[0][0]);save('action-events',events)
                 after=json.loads(read(probe.snapshot(ids,session))[0][0]);save('action-after',after)
@@ -142,7 +148,7 @@ def main(folder_ci,corrected=False):
                 proof=probe.validate(events,action,session,ids['a_member']);save('action-pair',{**proof,'data_equal':True,'plans':plans})
                 command(audit.disarm(run,ids,action));out={'status':'AUDIT_CANARY_PASS',**proof,'data_equal':True}
             except Exception as error:
-                out.update(phase=phase,error_class=type(error).__name__,reason=str(error) if isinstance(error,ValueError) and re.fullmatch('[a-z_]+',str(error)) else 'scoped_action_failed')
+                out.update(phase=phase,error_class=type(error).__name__,reason=safe_reason(error))
                 raise
             finally:
                 # Separately authorized safety removal, not fixture cleanup.
@@ -173,9 +179,11 @@ def main(folder_ci,corrected=False):
             try:journal.close();result['jit_revoked']=True
             except Exception:result.update(status='NO_GO',jit_revoked=False)
         if journal:journal.token=None
-        token=None;result.update(commands=normal+safety,combined_commands=normal+safety+prior['prior_commands'],normal_commands=normal,safety_commands=safety)
+        token=None;result.update(commands=normal+safety,combined_commands=normal+safety+prior['prior_commands'],normal_commands=normal,safety_commands=safety,elapsed_seconds=round(time.monotonic()-started,3))
         save('result',result)
     print(json.dumps(result));return 0 if result['status']=='AUTH_METADATA_HOSTED_CANARY_PASS' else 2
 if __name__=='__main__':
-    if len(sys.argv) not in (2,3) or len(sys.argv)==3 and sys.argv[2]!='--corrected-preflight-once':raise ValueError('arguments')
-    sys.exit(main(pathlib.Path(sys.argv[1]).resolve(),len(sys.argv)==3))
+    modes={'--corrected-preflight-once','--owner-native-audit-once'}
+    if len(sys.argv) not in (2,3) or len(sys.argv)==3 and sys.argv[2] not in modes:raise ValueError('arguments')
+    mode=sys.argv[2] if len(sys.argv)==3 else ''
+    sys.exit(main(pathlib.Path(sys.argv[1]).resolve(),mode=='--corrected-preflight-once',mode=='--owner-native-audit-once'))

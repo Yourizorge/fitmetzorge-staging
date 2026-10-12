@@ -93,4 +93,29 @@ ANALYZE is executed once per statement, with only numerical load evidence
 retained. The before/after comparison and retained DELETE events must match.
 This proves the observer, NOT hosted HTTP Auth or the Route A/B workflow.
 
-Status: corrected CI admission in progress; no hosted Auth PASS claimed.
+## Native Adapter Follow-up
+
+The corrected attempt `15d85ca72ce2405b93c5918c1801b028` remained NO-GO.
+It installed and exactly removed the audit and guard; JIT was disabled with
+zero mappings. It stopped on the first EXPLAIN statement before a committed
+action or complete action pair. The historical error retained only `Stop`,
+not the precise protocol code. That evidence is not rewritten.
+
+Local PG17/libpq reproduces `terminal_row_count` when EXPLAIN is sent through
+the ordinary command-tag decoder. The immutable existing Native EXPLAIN reader
+handles the empty command count correctly, provided the exact `explain (`
+prefix is used. The new runner uses that reader and saves each statement phase
+and only allowlisted protocol/SQLSTATE failure codes. No security or SQL change.
+
+The owner separately approved ONE new native-adapter audit probe on 12 October:
+at most 180 seconds and 128 commands, including 40 reserved safety commands;
+one collector; one new session INSERT/UPDATE/DELETE; no token issuance or
+workflow writes. Prior 103 commands remain a separate consumed historical
+budget. A new write-once marker prevents reuse. Admission checks both old
+cleanup receipts and fresh source-bound CI, including the native decoder tests.
+Safety removal is mandatory even on NO-GO or expired action time; no automatic
+retry, extension, or dependent hosted Auth/workflow run is authorized by this
+small additional budget. The existing broader workflow scope still requires
+its own complete source-bound admission and execution plan.
+
+Status: new owner-approved CI admission pending; no hosted Auth PASS claimed.

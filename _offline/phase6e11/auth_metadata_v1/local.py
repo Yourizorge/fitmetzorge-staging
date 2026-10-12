@@ -1,5 +1,5 @@
 """Disposable local PG17 only; preserve files and stop the owned process."""
-import contextlib,importlib.util,json,os,pathlib,subprocess,sys
+import contextlib,datetime,importlib.util,json,os,pathlib,subprocess,sys,uuid
 HERE=pathlib.Path(__file__).resolve().parent
 sys.path.insert(0,str(HERE.parent/'fingerprint_v1'))
 from local_cluster import Cluster
@@ -46,6 +46,40 @@ create role fmz_local_bootstrap superuser login;
             if sql('insert into auth.users(id,email) values('+audit.g.literal(uid)+','+audit.g.literal(audit.g.ALIASES[role])+')').returncode:raise RuntimeError('local_seed')
         sql("insert into auth.users(id,email) values('68000000-0000-4000-8000-000000000004','outside@example.invalid')")
         result=checks.run(sql,hold,IDS)
+        from pq import LocalDB
+        from failure import safe_reason
+        import probe
+        spec=importlib.util.spec_from_file_location('metadata_native_transport',HERE.parent/'textfree_v1/native.py')
+        native=importlib.util.module_from_spec(spec);spec.loader.exec_module(native)
+        db=LocalDB(cluster.port)
+        try:
+            db.query('BEGIN')
+            try:db.query('explain(analyze,verbose,buffers,format json) select 1')
+            except Exception as error:
+                if safe_reason(error)!='terminal_row_count':raise RuntimeError('native_original_not_reproduced')
+                result['original_native_explain']='terminal_row_count'
+            else:raise RuntimeError('original_native_unexpected_pass')
+        finally:db.close()
+        run_id=str(uuid.uuid4());session=str(uuid.uuid4());action=str(uuid.uuid4())
+        deadline=(datetime.datetime.now(datetime.timezone.utc)+datetime.timedelta(seconds=120)).isoformat()
+        def success(text):
+            p=sql(text)
+            if p.returncode:raise RuntimeError('native_probe_setup')
+            return p.stdout.strip()
+        success(audit.install(run_id,IDS,deadline));receipt=audit.validate(json.loads(success(audit.inspect(run_id,IDS))),run_id,IDS,deadline)
+        db=LocalDB(cluster.port)
+        try:
+            before=success(probe.snapshot(IDS,session));success(audit.arm(run_id,IDS,action,'a_member','verify'))
+            db.query('BEGIN');reader=native.Native(db);plans=[]
+            for text in probe.sql_sequence(session,IDS['a_member']):
+                plans.append(probe.plan_summary(reader.query('explain (analyze,verbose,buffers,format json) '+text)[0][0]))
+            db.query('COMMIT')
+            observed=json.loads(success(audit.events(run_id,IDS,action)))
+            result['native_probe']=probe.validate(observed,action,session,IDS['a_member'])
+            if success(probe.snapshot(IDS,session))!=before:raise RuntimeError('native_probe_drift')
+            result['native_probe'].update(status='PASS',plans=plans,data_equal=True)
+        finally:
+            db.close();success(audit.remove(run_id,IDS,receipt))
     except Exception as e:result['error']=str(e) if isinstance(e,(ValueError,RuntimeError)) else type(e).__name__
     finally:
         cluster.stop();(cluster.path/'metadata-audit.json').write_text(json.dumps(result,indent=2)+'\n')
