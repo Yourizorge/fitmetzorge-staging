@@ -144,3 +144,13 @@ Sources: official [Docker configuration](https://github.com/supabase/supabase/bl
 and [verifyOtp](https://supabase.com/docs/reference/javascript/auth-verifyotp).
 The latter marks legacy magiclink verification deprecated; current compatibility
 must be tested, not assumed. No deployed Auth configuration is changed here.
+
+The real Auth CI additionally exposed `auth.mfa_amr_claims` creation on ordinary
+magiclink verification. This is an authentication-method record, not activation
+of a new MFA product. Its actor is derived from the observed session INSERT,
+not a nonexistent user_id column. The session observation also binds cascade
+DELETE after the parent is gone. See the pinned official
+[AMR model](https://github.com/supabase/auth/blob/v2.196.0/internal/models/amr.go)
+and [local logout](https://github.com/supabase/auth/blob/v2.196.0/internal/api/logout.go).
+This CI correction does not authorize installing metadata observers in hosted
+Auth; only the already approved identity guard has been applied there.

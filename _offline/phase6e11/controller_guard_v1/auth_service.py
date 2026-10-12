@@ -73,12 +73,16 @@ def run(gate):
         sql("""create schema fmz_ci_auth_observer;
 create table fmz_ci_auth_observer.events(seq bigint generated always as identity,table_name text,operation text,xid text,key_sha text,actor_sha text);
 grant usage on schema fmz_ci_auth_observer to supabase_auth_admin;
-grant insert on fmz_ci_auth_observer.events to supabase_auth_admin;
+grant insert,select on fmz_ci_auth_observer.events to supabase_auth_admin;
 grant usage on all sequences in schema fmz_ci_auth_observer to supabase_auth_admin;
 create function fmz_ci_auth_observer.observe() returns trigger language plpgsql security invoker set search_path=pg_catalog,pg_temp as $$
-declare v jsonb;begin
+declare v jsonb;actor_hash text;begin
 v:=case when TG_OP='DELETE' then to_jsonb(OLD) else to_jsonb(NEW) end;
-insert into fmz_ci_auth_observer.events(table_name,operation,xid,key_sha,actor_sha) values(TG_TABLE_SCHEMA||'.'||TG_TABLE_NAME,TG_OP,pg_current_xact_id()::text,encode(sha256(convert_to(coalesce(v->>'id',v->>'token',v->>'user_id',v->>'session_id','no-key'),'UTF8')),'hex'),encode(sha256(convert_to(case when TG_TABLE_NAME='users' then v->>'id' when TG_TABLE_NAME='audit_log_entries' then v->'payload'->>'actor_id' else v->>'user_id' end,'UTF8')),'hex'));
+actor_hash:=encode(sha256(convert_to(case when TG_TABLE_NAME='users' then v->>'id' when TG_TABLE_NAME='audit_log_entries' then v->'payload'->>'actor_id' else v->>'user_id' end,'UTF8')),'hex');
+if TG_TABLE_NAME='mfa_amr_claims' then
+ select e.actor_sha into strict actor_hash from fmz_ci_auth_observer.events e where e.table_name='auth.sessions' and e.key_sha=encode(sha256(convert_to(v->>'session_id','UTF8')),'hex') order by e.seq desc limit 1;
+end if;
+insert into fmz_ci_auth_observer.events(table_name,operation,xid,key_sha,actor_sha) values(TG_TABLE_SCHEMA||'.'||TG_TABLE_NAME,TG_OP,pg_current_xact_id()::text,encode(sha256(convert_to(coalesce(v->>'id',v->>'token',v->>'user_id',v->>'session_id','no-key'),'UTF8')),'hex'),actor_hash);
 return null;end$$;
 grant execute on function fmz_ci_auth_observer.observe() to supabase_auth_admin;
 """)
@@ -134,14 +138,14 @@ end loop;end$$;""",'supabase_auth_admin')
                     if any(e['actor_sha']!=actor_sha for e in events):raise RuntimeError('ci_auth_actor_mismatch')
                     allowed={
                         'issue':{'auth.users','auth.audit_log_entries','auth.one_time_tokens'},
-                        'verify':{'auth.users','auth.identities','auth.sessions','auth.refresh_tokens','auth.audit_log_entries','auth.one_time_tokens'},
+                        'verify':{'auth.users','auth.identities','auth.sessions','auth.refresh_tokens','auth.audit_log_entries','auth.one_time_tokens','auth.mfa_amr_claims'},
                         'getUser':set(),'refresh':{'auth.sessions','auth.refresh_tokens','auth.audit_log_entries'},
-                        'logout':{'auth.sessions','auth.refresh_tokens','auth.audit_log_entries'},'revoked_denial':set()}
+                        'logout':{'auth.sessions','auth.refresh_tokens','auth.audit_log_entries','auth.mfa_amr_claims'},'revoked_denial':set()}
                     if any(e['table_name'] not in allowed[request['operation']] for e in events):raise RuntimeError('ci_auth_extra_write')
                     required={'issue':[('auth.users','UPDATE')],
-                        'verify':[('auth.users','UPDATE'),('auth.sessions','INSERT'),('auth.refresh_tokens','INSERT')],
+                        'verify':[('auth.users','UPDATE'),('auth.sessions','INSERT'),('auth.refresh_tokens','INSERT'),('auth.mfa_amr_claims','INSERT')],
                         'refresh':[('auth.refresh_tokens','UPDATE'),('auth.refresh_tokens','INSERT')],
-                        'logout':[('auth.sessions','DELETE')],'getUser':[],'revoked_denial':[]}
+                        'logout':[('auth.sessions','DELETE'),('auth.mfa_amr_claims','DELETE')],'getUser':[],'revoked_denial':[]}
                     if any(not any(e['table_name']==t and e['operation']==op for e in events) for t,op in required[request['operation']]):
                         raise RuntimeError('ci_auth_missing_write')
                     capture['pair_complete']=True;value={'events':events,'pair_complete':True}
