@@ -13,7 +13,7 @@ def disk(p):return pathlib.Path('\\\\?\\'+str(p.resolve())) if os.name=='nt' els
 
 def admit(folder):
     result=json.loads(disk(folder/'result.json').read_text())
-    if result.get('status')!='CLEAN_CI_PASS' or result.get('auth_metadata_checks')!=34 or result.get('real_auth_ci_checks')!=18 or result.get('full_controller_guard_node_tests')!=197:raise ValueError('new_metadata_ci_required')
+    if result.get('status')!='CLEAN_CI_PASS' or result.get('auth_metadata_checks')!=34 or result.get('real_auth_ci_checks')!=18 or result.get('real_auth_exact_write_contracts')!=18 or result.get('full_controller_guard_node_tests')!=197:raise ValueError('new_metadata_ci_required')
     sources=json.loads(disk(folder/'candidate.json').read_text())['sources']
     for name,h in sources.items():
         if hashlib.sha256(disk(m.ROOT/name).read_bytes()).hexdigest()!=h:raise ValueError('tested_composition_changed')
@@ -29,13 +29,25 @@ def same_catalog(before,after,schema,installed):
     elif additions:raise ValueError('audit_removal_incomplete')
     return {'existing_objects':len(a),'existing_equal':True,'own_additions':len(additions)}
 
-def main(folder_ci):
+def tagged_metadata(sql):return '/* fmz6e11:qv1:auth_metadata_admission */ '+sql
+
+def corrected_admission():
+    prior=m.ROOT/'supabase/.temp/phase6e11-auth-metadata-hosted-19239cccf8c244fe9c8845ca1a92c722'
+    value=json.loads((prior/'result.json').read_text());rb=json.loads((prior/'io-admission/rollback.json').read_text());closed=json.loads((prior/'closed.json').read_text())
+    if value.get('reason')!='unregistered_readonly_query' or value.get('commands')!=8 or value.get('auth_calls')!=0 or not value.get('jit_revoked') or not rb.get('confirmed') or closed.get('remaining_mappings')!=0:raise ValueError('wrong_corrected_attempt')
+    if (prior/'before-catalog.json').exists() or (prior/'install-started.json').exists():raise ValueError('prior_mutation_not_excluded')
+    return {'prior_run':prior.name,'prior_result_sha':hashlib.sha256((prior/'result.json').read_bytes()).hexdigest(),'prior_commands':8}
+
+def main(folder_ci,corrected=False):
     admission=admit(folder_ci);ids=pre.identifiers();run=str(uuid.uuid4());action=str(uuid.uuid4());session=str(uuid.uuid4())
+    prior=corrected_admission() if corrected else {'prior_commands':0}
+    normal_limit=88-prior['prior_commands']
     folder=m.ROOT/'supabase/.temp'/('phase6e11-auth-metadata-hosted-'+run.replace('-',''));folder.mkdir()
-    m.save(m.ROOT/'supabase/.temp/phase6e11-auth-metadata-canary-once.json',{'run':run,'folder':folder.name})
+    marker='phase6e11-auth-metadata-canary-'+('corrected-' if corrected else '')+'once.json'
+    m.save(m.ROOT/'supabase/.temp'/marker,{'run':run,'folder':folder.name,**prior})
     m.save(folder/'contract.json',{**admission,'run':run,'action':action,'actor_sha':hashlib.sha256(ids['a_member'].encode()).hexdigest(),
         'fixture_sha':hashlib.sha256(session.encode()).hexdigest(),'expected':{'auth.sessions':{'INSERT':1,'UPDATE':1,'DELETE':1}},
-        'max_commands':128,'safety_reserved':40,'max_seconds':240,'guard_seconds':180,'connections':1,'full_cycles':0,'retries':0,'auth_calls':0})
+        'max_commands':128-prior['prior_commands'],'combined_max_commands':128,'prior':prior,'safety_reserved':40,'max_seconds':240,'guard_seconds':180,'connections':1,'full_cycles':0,'automatic_retries':0,'auth_calls':0})
     db=journal=ledger=None;granted=False;cleanup=False;normal=0;safety=0;serial=0;started=time.monotonic()
     result={'status':'NO_GO','auth_calls':0,'application_writes':0,'folder':folder.name}
     def save(name,value):m.save(folder/(name+'.json'),value)
@@ -49,7 +61,7 @@ def main(folder_ci):
                 safety+=1
                 if safety>40:raise m.Stop('safety_budget')
             else:
-                if normal>=88 or time.monotonic()-started>240:raise m.Stop('normal_budget')
+                if normal>=normal_limit or time.monotonic()-started>240:raise m.Stop('normal_budget')
                 ledger.reserve_query();normal+=1
         granted=True;result['phase']='jit';journal.grant()
         result['phase']='tls';db=m.c.Connection(json.loads((m.c.CONNECT/'connect.json').read_text()),token,m.c.CA)
@@ -91,10 +103,11 @@ def main(folder_ci):
         # Reuse the exact text-free monitor for the read-only project admission.
         class Charged(m.Ledger):
             def reserve_query(self):charge();return super().reserve_query()
+        result['phase']='read_only_project_admission'
         io_folder=folder/'io-admission';io_folder.mkdir();child=Charged(io_folder/'ledger',lock_scope=io_folder/'lock')
         tx=m.stream.t.old.s.Transaction(db,io_folder,child)
         try:
-            tx.start_readonly();meta=json.loads(tx.measured(m.p.jit.META_SQL,'metadata_project')[0][0]);save('io-admission',tx.close_proof())
+            tx.start_readonly();meta=json.loads(tx.measured(tagged_metadata(m.p.jit.META_SQL),'metadata_project')[0][0]);save('io-admission',tx.close_proof())
         finally:
             rb=tx.rollback();child.close()
             if not rb['confirmed']:raise ValueError('rollback_failed')
@@ -160,7 +173,9 @@ def main(folder_ci):
             try:journal.close();result['jit_revoked']=True
             except Exception:result.update(status='NO_GO',jit_revoked=False)
         if journal:journal.token=None
-        token=None;result.update(commands=normal+safety,normal_commands=normal,safety_commands=safety)
+        token=None;result.update(commands=normal+safety,combined_commands=normal+safety+prior['prior_commands'],normal_commands=normal,safety_commands=safety)
         save('result',result)
     print(json.dumps(result));return 0 if result['status']=='AUTH_METADATA_HOSTED_CANARY_PASS' else 2
-if __name__=='__main__':sys.exit(main(pathlib.Path(sys.argv[1]).resolve()))
+if __name__=='__main__':
+    if len(sys.argv) not in (2,3) or len(sys.argv)==3 and sys.argv[2]!='--corrected-preflight-once':raise ValueError('arguments')
+    sys.exit(main(pathlib.Path(sys.argv[1]).resolve(),len(sys.argv)==3))

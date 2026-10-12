@@ -11,6 +11,7 @@ EXTRA={'_offline/phase6e11/controller_v1/'+n for n in CONTROLLER_NAMES}
 EXTRA|={'_offline/phase6e11/controller_guard_v1/'+n for n in GUARD_NAMES}
 EXTRA|={'_offline/phase6e11/edge_bridge_v2/handler.mjs',*('_offline/phase6e11/edge/'+n for n in ['handler.mjs','core.mjs','frozen.mjs'])}
 EXTRA|={'_offline/phase6e11/auth_metadata_v1/'+n for n in ['audit.py','checks.py','local.py','probe.py','hosted.py','test_probe.py']}
+EXTRA|={'_offline/phase6e11/auth_metadata_v1/'+n for n in ['auth_contract.py','test_auth_contract.py','test_hosted.py']}
 old.EXTRA|=EXTRA
 
 class Gate(old.Gate):
@@ -76,4 +77,14 @@ class Gate(old.Gate):
         real=importlib.util.module_from_spec(spec);spec.loader.exec_module(real)
         result=real.run(self);self.save('real-auth-ci.json',result)
         self.result['real_auth_ci']=result['status'];self.result['real_auth_ci_checks']=result['checks']
+        from auth_contract import Contract
+        contracts={}
+        for row in result['proof']:
+            role=row['role']
+            if role not in contracts:contracts[role]=Contract(row['after']['events'][0]['actor_sha'])
+            contracts[role].validate(row['operation'],row['after']['events'],row['result'].get('session_sha'))
+        if len(contracts)!=3 or any(c.step!=6 for c in contracts.values()):raise RuntimeError('auth_exact_contract_incomplete')
+        self.result['real_auth_exact_write_contracts']=18
+        self.command('auth-exact-negative-tests',['python3',str(metadata_folder/'test_auth_contract.py'),str(self.out/'real-auth-ci-observed.json')])
+        self.result['auth_exact_negative_tests']=4
 if __name__=='__main__':sys.exit(Gate().run())

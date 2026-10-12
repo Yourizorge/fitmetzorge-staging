@@ -71,4 +71,26 @@ session revocation from JWT expiry; local helper denial is not a hosted denial.
 [Pinned AMR source](https://github.com/supabase/auth/blob/v2.196.0/internal/models/amr.go)
 binds AMR claims to session_id, not user_id.
 
-Status: implementation/admission in progress; no hosted Auth PASS claimed.
+## Canary Admission
+
+The first audit canary stopped during read-only project admission on the
+adapter's query allowlist (`unregistered_readonly_query`), not TLS or Auth.
+Run `19239cccf8c244fe9c8845ca1a92c722`: eight commands, zero row/DDL writes,
+confirmed rollback, JIT disabled and zero mappings. Evidence is immutable.
+
+A single corrected source-bound admission adds the existing required query
+signature, without changing query contents or weakening the read-only gate.
+Local tests exercise the real adapter: old query denied, corrected query
+admitted, payload unchanged (3/3). The corrected marker is separate; neither
+attempt marker is overwritten. It inherits the eight commands already used:
+both attempts combined must remain within 128. No automatic loop or lease
+extension. The first attempt never installed a guard/audit or opened an active
+protection window. The corrected active window is limited to 180 seconds.
+
+The tiny canary uses one new synthetic session key and exactly INSERT, UPDATE,
+DELETE in one transaction. It produces no tokens or Auth HTTP calls. EXPLAIN
+ANALYZE is executed once per statement, with only numerical load evidence
+retained. The before/after comparison and retained DELETE events must match.
+This proves the observer, NOT hosted HTTP Auth or the Route A/B workflow.
+
+Status: corrected CI admission in progress; no hosted Auth PASS claimed.
