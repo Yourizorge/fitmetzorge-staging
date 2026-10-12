@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import {SyntheticAuth,EMAILS} from '../controller_v1/auth.mjs';
 import {guardedIssuance} from './issuance.mjs';
 import {metadata} from '../controller_v1/core.mjs';
+import {bindSession} from '../auth_metadata_v1/hashes.mjs';
 const lines=readline.createInterface({input:process.stdin,terminal:false})[Symbol.asyncIterator]();
 const read=async()=>JSON.parse((await lines.next()).value);
 const send=async(value)=>{process.stdout.write(JSON.stringify(value)+'\n');const reply=await read();if(reply.error)throw Error(reply.error);return reply.value;};
@@ -37,7 +38,8 @@ try{
   let access=null;
   for(const operation of ['issue','verify','getUser','refresh','logout']){
    const before=await send({op:'before',role,operation});
-   const result=metadata(await auth[operation]());
+   let result=metadata(await auth[operation]());
+   if(operation!=='issue')result=await bindSession(auth,result);
    if(operation==='refresh')await auth.withToken(token=>{access=token;});
    const after=await send({op:'after',role,operation,before,result});
    proof.push({role,operation,result,after});

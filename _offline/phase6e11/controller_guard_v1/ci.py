@@ -12,6 +12,7 @@ EXTRA|={'_offline/phase6e11/controller_guard_v1/'+n for n in GUARD_NAMES}
 EXTRA|={'_offline/phase6e11/edge_bridge_v2/handler.mjs',*('_offline/phase6e11/edge/'+n for n in ['handler.mjs','core.mjs','frozen.mjs'])}
 EXTRA|={'_offline/phase6e11/auth_metadata_v1/'+n for n in ['audit.py','checks.py','local.py','probe.py','hosted.py','test_probe.py']}
 EXTRA|={'_offline/phase6e11/auth_metadata_v1/'+n for n in ['auth_contract.py','test_auth_contract.py','test_hosted.py']}
+EXTRA|={'_offline/phase6e11/auth_metadata_v1/'+n for n in ['hashes.mjs','hashes.test.mjs']}
 old.EXTRA|=EXTRA
 
 class Gate(old.Gate):
@@ -73,6 +74,8 @@ class Gate(old.Gate):
         self.result['auth_metadata_database']=result['status'];self.result['auth_metadata_checks']=result['checks']
         self.command('metadata-probe-unit-tests',['python3',str(metadata_folder/'test_probe.py')])
         self.result['metadata_probe_unit_tests']=7
+        self.command('audit-session-hash-tests',['node','--test',str(metadata_folder/'hashes.test.mjs')])
+        self.result['audit_session_hash_tests']=4
         spec=importlib.util.spec_from_file_location('guard_real_auth_ci',folder/'auth_service.py')
         real=importlib.util.module_from_spec(spec);spec.loader.exec_module(real)
         result=real.run(self);self.save('real-auth-ci.json',result)
@@ -82,7 +85,7 @@ class Gate(old.Gate):
         for row in result['proof']:
             role=row['role']
             if role not in contracts:contracts[role]=Contract(row['after']['events'][0]['actor_sha'])
-            contracts[role].validate(row['operation'],row['after']['events'],row['result'].get('session_sha'))
+            contracts[role].validate(row['operation'],row['after']['events'],row['result'].get('key_sha'))
         if len(contracts)!=3 or any(c.step!=6 for c in contracts.values()):raise RuntimeError('auth_exact_contract_incomplete')
         self.result['real_auth_exact_write_contracts']=18
         self.command('auth-exact-negative-tests',['python3',str(metadata_folder/'test_auth_contract.py'),str(self.out/'real-auth-ci-observed.json')])
