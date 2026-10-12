@@ -1,0 +1,390 @@
+{
+  "version": "phase6e.integration-register.v1",
+  "date": "2026-10-12",
+  "repository": "Yourizorge/fitmetzorge-staging",
+  "branch": "main",
+  "project": "mokxyyullfhkfalopbzd",
+  "sourceHead": "36ba0d43c46ffc93637cc22282f9adb63ce7f4d7",
+  "scope": "synthetic_only",
+  "supportAnswerRequired": false,
+  "unaccepted": [
+    21
+  ],
+  "requiredGates": [
+    "nativeReadonly",
+    "edgeReadonly",
+    "hostedAuth",
+    "requestAuditPairs",
+    "protectedDataPairs",
+    "migrationIdentity",
+    "emptyDryRun",
+    "hostedWorkflow",
+    "hostedCleanup"
+  ],
+  "gateProof": {
+    "nativeReadonly": "probe-3: PASS, explicit transaction, rollback, instance bound",
+    "edgeReadonly": "NOT PASSED; local corrected helper proven; no fourth hosted probe allowed",
+    "hostedAuth": "NOT RERUN: six routes require signed session/request evidence or enforced exclusion",
+    "requestAuditPairs": "45 local pairs only; hosted request receipts currently zero",
+    "protectedDataPairs": "NO new full/scoped protected data pair; metadata-only diagnosis",
+    "migrationIdentity": "42/42 identities PASS; migration files unchanged, no replay",
+    "emptyDryRun": "NOT RERUN within three-probe budget; historical empty dry-run is not a current result",
+    "hostedWorkflow": "NOT RERUN; local workflow proofs are not hosted authorization",
+    "hostedCleanup": "NOT RERUN; old fixtures preserved, diagnostic function and JIT removed"
+  },
+  "shared": {
+    "authorization": "Server derives subject/session/route from verified Auth and private window/participant/relationship records, never user_metadata or browser role. Deny cross-user/workspace, expired/revoked session/consent/window, and Route A to B fallback.",
+    "storage": "Private synthetic namespace only; immutable source/record/plan versions, compare-and-swap heads, request uniqueness and atomic transactions. No direct Data API access. A proposed schema name is not an installed object.",
+    "audit": "Preregister run/action/actor/workspace/expected row operations; compare complete scoped before/after and transaction-linked INSERT/UPDATE/DELETE records. Missing/extra writes stop next action and cleanup. Preserve 112 historical valid pairs and incomplete113.",
+    "notifications": "Minimal in-app metadata, transactional deduplicated outbox by subject/source revision/rule/purpose. No medical text, email or push. Browser card is not background delivery.",
+    "proof": [
+      "restart_refresh_relogin",
+      "cross_subject_and_route_denial",
+      "source_and_rule_version_conflict",
+      "revoked_consent_and_session",
+      "same_key_same_result_changed_payload_denied",
+      "atomic_failure_no_partial_write",
+      "immutable_history_and_new_version_restore",
+      "expected_writes_and_forbidden_zero",
+      "scoped_cleanup_and_protected_data"
+    ],
+    "rollback": "Disable new synthetic feature admission first; retain immutable histories/receipts; restore only through a NEW version and route-required fresh approvals. Cleanup only owned fixture IDs after sealed evidence. Never down-migrate or rewrite a frozen migration."
+  },
+  "components": [
+    {
+      "id": "safety-context",
+      "packages": [
+        0,
+        1,
+        2
+      ],
+      "frontend": "Accepted warning copy, optional clarification, accessible chat/history/facts presentation.",
+      "server": "Bind signal/message/source version and consent; O5 expiry <=30 days from first registration, no retry extension; no extra chat copy.",
+      "rls": "Subject-owned context; no automatic trainer health sharing.",
+      "edge": "Separate access, factual reflection, recommendation and execution decisions.",
+      "notifications": "No sensitive signal text in notices.",
+      "dependencies": [
+        "foundation-11"
+      ],
+      "tests": [
+        "O5 exact boundary/early deletion/no resurrection",
+        "missing source is not clearance",
+        "other active signals survive clarification"
+      ],
+      "rollback": "Disable recommendation processing; preserve allowed history and applicable deletion obligations.",
+      "status": "accepted_offline_not_server_integrated"
+    },
+    {
+      "id": "trainer-progress",
+      "packages": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "frontend": "Historical planned/actual/next/reason/status, independent RIR/RPE and null versus zero.",
+      "server": "Current versioned trainer authority/rules and explicit option precedence; exact kg/kg or lb/lb values; immutable historic snapshots.",
+      "rls": "Exact member/trainer relationship and active authority, not relationship alone.",
+      "edge": "W1 ambiguity blocks; W2 entire weight step must fit; separate member/trainer/application.",
+      "notifications": "Existing minimal proposal/status notices only.",
+      "dependencies": [
+        "foundation-11",
+        "safety-context"
+      ],
+      "tests": [
+        "wrong trainer/revoked rule",
+        "W1/W2",
+        "same unit/no conversion",
+        "atomic apply and restoration"
+      ],
+      "rollback": "New prior-plan-derived version requiring both approvals; no deletion of prior plan.",
+      "status": "accepted_offline_with_historical_synthetic_9_10_backend_subset"
+    },
+    {
+      "id": "dual-route",
+      "packages": [
+        7,
+        8
+      ],
+      "frontend": "NL/EN/DE status timeline, plan diff, source/reason, route-specific controls.",
+      "server": "No persistence in original memory demo; transfer only allowed workflow to proven server contracts.",
+      "rls": "A trainer path distinct from B catalog path, no client role authority.",
+      "edge": "Existing fixed accepted B catalog, not an invented platform publisher.",
+      "notifications": "Minimal simulated in-app wording already accepted.",
+      "dependencies": [
+        "foundation-11"
+      ],
+      "tests": [
+        "A three stages",
+        "B two stages",
+        "missing trainer no fallback",
+        "restore requires fresh consent"
+      ],
+      "rollback": "Disable integrated entry; original isolated demos unchanged.",
+      "status": "accepted_synthetic_demo_not_live_coaching"
+    },
+    {
+      "id": "synthetic-access",
+      "packages": [
+        9,
+        10
+      ],
+      "frontend": "Existing test login/window and role-specific controls.",
+      "server": "Historically installed synthetic identities/windows/source/plans/audit. No active11 window now.",
+      "rls": "Server expiry, synthetic exact identities, participant isolation and operator restriction.",
+      "edge": "Existing fmz6e9-synthetic and fmz6e10-synthetic historically accepted; do not infer current11 PASS.",
+      "notifications": "No new mail or push.",
+      "dependencies": [],
+      "tests": [
+        "six Auth routes separately",
+        "normal account denied",
+        "revoked sessions denied",
+        "refresh and relogin durable"
+      ],
+      "rollback": "Revoke owned window then seal targeted cleanup; keep evidence and identity unless authorized.",
+      "status": "historically_owner_accepted_hosted_synthetic_scope"
+    },
+    {
+      "id": "foundation-11",
+      "packages": [
+        11
+      ],
+      "frontend": "Current final-app integration candidate is preserved, not newly published.",
+      "server": "Installed private windows/participants/workspaces/source_versions/plans/proposals/b_states/b_versions/events and M41 intents/M42 receipts.",
+      "rls": "Private audit schemas not Data API exposed; fixed search_path; no anon/authenticated direct executable grants.",
+      "edge": "fmz-phase6e11 v2 installed; new request adapter remains locally proven, hosted proof incomplete.",
+      "notifications": "Existing private inbox/events only, not a real-member notification service.",
+      "dependencies": [],
+      "tests": [
+        "corrected Edge read-only",
+        "actual Auth/request/intent/transaction binding",
+        "45 route pairs plus12 cleanup pairs hosted",
+        "advisors and empty dry-run"
+      ],
+      "rollback": "Default disabled controls; no active window; no fixture cleanup until required pairs sealed.",
+      "status": "technical_no_go_not_owner_accepted"
+    },
+    {
+      "id": "registration-12",
+      "packages": [
+        12
+      ],
+      "frontend": "Registration/reflection flow, historical snapshot view and explicit separate actions.",
+      "server": "FIRST NEXT slice: durable synthetic registration revisions against exact session/plan/goal snapshots; do not silently add unaccepted21 full-day scope.",
+      "rls": "Member only own workspace, trainer only permitted linked reflection, no health-copy expansion.",
+      "edge": "Server validators and source-version compare-and-swap before accepted reflection; changed basis invalidates prior approval.",
+      "notifications": "Existing minimal source-bound review status.",
+      "dependencies": [
+        "foundation-11",
+        "safety-context",
+        "trainer-progress"
+      ],
+      "tests": [
+        "original snapshot survives later edits",
+        "registration revisions/relogin",
+        "correction invalidates approvals",
+        "restore as new version"
+      ],
+      "rollback": "Disable new registration route, leave accepted runtime unchanged; preserve revisions and auditable histories.",
+      "status": "accepted_offline_not_server_integrated"
+    },
+    {
+      "id": "signals-13",
+      "packages": [
+        13
+      ],
+      "frontend": "Transparent source/period comparison and proactive review card.",
+      "server": "Versioned comparable records and exact source-window calculations; durable dedupe and source correction retirement.",
+      "rls": "Own subject/window and permitted source purpose only.",
+      "edge": "Only existing comparison rules, not clinical inference or automatic physical advice.",
+      "notifications": "Outbox keyed to source revision/rule; no duplicate retries or stale card.",
+      "dependencies": [
+        "registration-12",
+        "safety-context"
+      ],
+      "tests": [
+        "missing/conflicting/stale records",
+        "exact comparable windows",
+        "source correction retires old signal",
+        "concurrent dedupe"
+      ],
+      "rollback": "Stop outbox delivery and new calculation; retain required evidence and accepted records.",
+      "status": "accepted_offline_not_server_integrated"
+    },
+    {
+      "id": "adjustments-14",
+      "packages": [
+        14
+      ],
+      "frontend": "Explicit before/after plan change and carrying rule.",
+      "server": "Current explicit trainer/catalog options, approved-source basis and atomic plan version.",
+      "rls": "A trainer rules; B fixed catalog; no inferred authority.",
+      "edge": "Safety/capability gates and existing option selection only.",
+      "notifications": "Existing source-bound proposal lifecycle.",
+      "dependencies": [
+        "signals-13",
+        "trainer-progress"
+      ],
+      "tests": [
+        "unsupported option blocked",
+        "stale rule/approval denied",
+        "no automatic apply",
+        "fault rollback"
+      ],
+      "rollback": "Restore permitted earlier choice as new reviewed version.",
+      "status": "accepted_offline_not_server_integrated"
+    },
+    {
+      "id": "intake-15",
+      "packages": [
+        15
+      ],
+      "frontend": "Editable Route B intake and understandable blocked reasons.",
+      "server": "Versioned required intake, consent and catalog matching; explicit allergy exclusions.",
+      "rls": "Route B own workspace only; Route A unchanged.",
+      "edge": "Missing/conflicting/expired rules fail closed; no physical plan with relevant complaint.",
+      "notifications": "No expanded intake or allergy details in notice.",
+      "dependencies": [
+        "foundation-11",
+        "safety-context"
+      ],
+      "tests": [
+        "allergy absence in outputs",
+        "withdrawal blocks processing",
+        "unsupported catalog",
+        "changed intake invalidates basis"
+      ],
+      "rollback": "Disable new intake processor; no invented replacement values or clearance.",
+      "status": "accepted_offline_not_server_integrated"
+    },
+    {
+      "id": "training-16",
+      "packages": [
+        16
+      ],
+      "frontend": "Exact plan days/exercises/sets and manual editing inside accepted limits.",
+      "server": "Versioned exercise identity, unit, bounds, sets/reps/rest; independent RIR/RPE self-report.",
+      "rls": "B member editing rights retained; no trainer bypass on A.",
+      "edge": "Validate entire supplied plan, no invented weight or physical progression.",
+      "notifications": "Existing review lifecycle only.",
+      "dependencies": [
+        "intake-15",
+        "adjustments-14"
+      ],
+      "tests": [
+        "exercise identity and units",
+        "all RIR/RPE combinations",
+        "null versus zero",
+        "invalid set cannot partly apply"
+      ],
+      "rollback": "Retain original plan; restore with current rule validity and fresh approval.",
+      "status": "accepted_offline_not_server_integrated"
+    },
+    {
+      "id": "nutrition-17",
+      "packages": [
+        17
+      ],
+      "frontend": "Exact product/recipe/portion values, totals and transparent limitations.",
+      "server": "Versioned product/recipe/portion catalog, exact arithmetic, explicit existing target; not expert-validated.",
+      "rls": "Purpose-bound B own data; no new A nutrition authority.",
+      "edge": "No calorie formula, fabricated nutrients or allergy-conflicting substitution.",
+      "notifications": "No nutritional or allergy details in notice.",
+      "dependencies": [
+        "intake-15"
+      ],
+      "tests": [
+        "missing nutrients/recipe versions",
+        "portion bounds",
+        "exact totals",
+        "allergy exclusion",
+        "source conflict"
+      ],
+      "rollback": "Restore only current-catalog-eligible prior choice as new version.",
+      "status": "accepted_offline_not_server_integrated"
+    },
+    {
+      "id": "combined-18",
+      "packages": [
+        18
+      ],
+      "frontend": "Joint training/nutrition review with separate confirmation/activation.",
+      "server": "One atomic synthetic aggregate version and full prior snapshot; no partial training/food write.",
+      "rls": "Route-bound subject authority for all aggregate parts.",
+      "edge": "Revalidate both source heads and all approvals inside one transaction.",
+      "notifications": "One minimal aggregate event after successful commit.",
+      "dependencies": [
+        "training-16",
+        "nutrition-17"
+      ],
+      "tests": [
+        "failure between two parts rolls all back",
+        "source changes invalidate joint approval",
+        "double activate",
+        "new-version restoration"
+      ],
+      "rollback": "New jointly reviewed version; never overwrite old aggregate.",
+      "status": "accepted_offline_not_server_integrated"
+    },
+    {
+      "id": "checkins-19",
+      "packages": [
+        19
+      ],
+      "frontend": "Training/check-in agenda, missing sleep/recovery and actual comparisons.",
+      "server": "Versioned occurrence/record/plan/rule bindings; timezone semantics still require explicit server contract.",
+      "rls": "Own records; no automatic trainer health sharing.",
+      "edge": "Only accepted after_workout/daily catalog based on explicit category, not inferred from numbers.",
+      "notifications": "Minimal deduplicated occurrence notice, not background service until proven.",
+      "dependencies": [
+        "signals-13",
+        "combined-18"
+      ],
+      "tests": [
+        "3+3 comparability",
+        "duplicate occurrence",
+        "source correction",
+        "consent",
+        "old cadence ineligible",
+        "DST/timezone before real scheduler"
+      ],
+      "rollback": "Stop scheduling new occurrences; preserve historical records and current authorized plan.",
+      "status": "accepted_offline_not_server_integrated"
+    },
+    {
+      "id": "overview-20",
+      "packages": [
+        20
+      ],
+      "frontend": "One coherent Today view, planned versus actual, clear simulated status.",
+      "server": "Read model binds exact source/record/plan/agenda revisions; accepted first workout/meal slice only.",
+      "rls": "Subject/route scope enforced independently of browser; no cross-person joins.",
+      "edge": "Source correction invalidates stale proposal and ALL approvals; atomic retained version history.",
+      "notifications": "Consume proven outbox without duplicates/stale proposals.",
+      "dependencies": [
+        "registration-12",
+        "checkins-19"
+      ],
+      "tests": [
+        "mixed source revision rejected",
+        "stale approvals",
+        "relogin durable coherent view",
+        "atomic error",
+        "consent",
+        "history retained"
+      ],
+      "rollback": "Disable new overview entry; original app and separate frozen demos unaffected.",
+      "status": "accepted_offline_not_server_integrated"
+    }
+  ],
+  "next": "registration-12",
+  "notAuthorized": [
+    "real_member_processing",
+    "external_ai",
+    "automatic_application",
+    "medical_clearance",
+    "new_physical_rules",
+    "phase21_acceptance",
+    "bulk_demo_publication"
+  ]
+}

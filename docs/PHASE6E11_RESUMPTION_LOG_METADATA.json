@@ -1,0 +1,74 @@
+{
+  "project": "mokxyyullfhkfalopbzd",
+  "windowUTC": [
+    "2026-10-12T07:45:15Z",
+    "2026-10-12T07:46:00Z"
+  ],
+  "source": "supavisor_logs",
+  "exactApplicationName": "fmz6e11-resume-edge-v1",
+  "readOnlyLogAPI": true,
+  "rawMessageExported": false,
+  "note": "Hashed internal Supavisor process IDs are not three client connections. The instrumented Edge attempt opened one client socket. Authentication-success records are label/time bound; no backend session allocation or driver ReadyForQuery confirmation is inferred.",
+  "rows": [
+    {
+      "authentication_success_text": 1,
+      "backend_id_present": 0,
+      "closed_text": 0,
+      "connection_hash": "54FCFC8EC2D22138DD28AF12677E4EA9690FB12EBDC2FE5691696B682486B078",
+      "function": "handle_auth_success/2",
+      "state": "auth_scram_final_wait",
+      "timeout_text": 0,
+      "timestamp": "2026-10-12T07:45:39.202070"
+    },
+    {
+      "authentication_success_text": 1,
+      "backend_id_present": 0,
+      "closed_text": 0,
+      "connection_hash": "1859165F796215258917025E314A4F7A0A63A7BE1999AE9A6709D7457885CD29",
+      "function": "handle_auth_success/2",
+      "state": "auth_scram_final_wait",
+      "timeout_text": 0,
+      "timestamp": "2026-10-12T07:45:39.282745"
+    },
+    {
+      "authentication_success_text": 0,
+      "backend_id_present": 0,
+      "closed_text": 1,
+      "connection_hash": "54FCFC8EC2D22138DD28AF12677E4EA9690FB12EBDC2FE5691696B682486B078",
+      "function": "terminate_with_error/3",
+      "state": "idle",
+      "timeout_text": 0,
+      "timestamp": "2026-10-12T07:45:43.395531"
+    },
+    {
+      "authentication_success_text": 0,
+      "backend_id_present": 0,
+      "closed_text": 0,
+      "connection_hash": "1859165F796215258917025E314A4F7A0A63A7BE1999AE9A6709D7457885CD29",
+      "function": "handle_event/4",
+      "state": "idle",
+      "timeout_text": 0,
+      "timestamp": "2026-10-12T07:45:43.395867"
+    },
+    {
+      "authentication_success_text": 1,
+      "backend_id_present": 0,
+      "closed_text": 0,
+      "connection_hash": "EC5F2130D8416C63BC3EDF9DEF2FD6478449A15B7B30DAB4FF010363C8F3905D",
+      "function": "handle_auth_success/2",
+      "state": "auth_scram_final_wait",
+      "timeout_text": 0,
+      "timestamp": "2026-10-12T07:45:44.032252"
+    },
+    {
+      "authentication_success_text": 0,
+      "backend_id_present": 0,
+      "closed_text": 0,
+      "connection_hash": "EC5F2130D8416C63BC3EDF9DEF2FD6478449A15B7B30DAB4FF010363C8F3905D",
+      "function": "handle_event/4",
+      "state": "idle",
+      "timeout_text": 0,
+      "timestamp": "2026-10-12T07:45:46.120677"
+    }
+  ]
+}
