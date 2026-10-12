@@ -1,0 +1,130 @@
+{
+  "status": "NO_GO_HOSTED_WORKFLOW_NOT_PROVEN",
+  "baseline": "9772d9f0d58f21386515b716de00e3880f7c6438",
+  "local_tests": {
+    "controller_node": 143,
+    "python": 22,
+    "pg17_store": 62,
+    "existing_security": 33,
+    "existing_workflow_pairs": 45,
+    "auth": "synthetic local stubs, NOT hosted Auth proof",
+    "ci_node_overlap": 63,
+    "ci_sql_regression_files": 12
+  },
+  "ci": {
+    "run": 38243722556,
+    "status": "CLEAN_CI_PASS",
+    "migrations": 43,
+    "dry_run": "EMPTY_LOCAL_CI_ONLY",
+    "postgres": "17.6",
+    "cli": "2.117.0"
+  },
+  "migration": {
+    "local": 43,
+    "hosted_last_observed": 42,
+    "pending": "20261012104331_phase6e11_controller_evidence.sql",
+    "sha256": "bab79b7ca5876c2dcef055d0e95997595772aebc051283e69bbeb2ca1dc4bd57",
+    "applied_hosted": false,
+    "fresh_hosted_dry_run": false
+  },
+  "attempts": [
+    {
+      "run": "phase6e11-controller-install-e6994eca04324c5591ad87750c45d2b0",
+      "phase": "before",
+      "reason": "before_plan_shape_budget",
+      "sql_commands": 18,
+      "row_stream_started": false,
+      "read_only_rollback": true,
+      "jit_revoked": true
+    },
+    {
+      "run": "phase6e11-controller-install-1adf3ae609774e22a514872b1c718a40",
+      "phase": "JIT lease admission",
+      "reason": "management_http_406",
+      "sql_commands": 0,
+      "database_connection_opened": false,
+      "jit_revoked": true
+    }
+  ],
+  "remaining_failure_detail": "Which JIT enable/grant/confirmation subrequest returned 406 was not retained by the old helper; no cause invented.",
+  "closure": {
+    "at": "2026-10-12T11:29:12.814862+00:00",
+    "jit_state": "disabled",
+    "remaining_mappings": 0,
+    "ssl": {
+      "appliedSuccessfully": true,
+      "currentConfig": {
+        "database": true
+      }
+    }
+  },
+  "preservation": {
+    "existing_sources": 1376,
+    "changed": [],
+    "full_data_pair_completed": false,
+    "application_writes": 0,
+    "auth_calls": 0,
+    "new_fixtures": 0,
+    "fixture_cleanup": false,
+    "historical_112_and_incomplete_113_unchanged": true
+  },
+  "deployment": {
+    "controller": false,
+    "application_edge": false,
+    "owner_window": false,
+    "owner_acceptance": false,
+    "phase21_accepted": false
+  },
+  "sources": {
+    "_offline/phase6e11/controller_v1/auth.mjs": "3c5bbad823528ca8fd98edeb5e251c1e62a0ab0a271e80530e0d5c7bd9f469c3",
+    "_offline/phase6e11/controller_v1/auth.test.mjs": "63934576a463a2b249ba151afd263038fcae5ec3cff99fedebd9ade61f724553",
+    "_offline/phase6e11/controller_v1/ci.py": "59e1fc5a1a583a3569ac7406f15a1c1923a5664048c4e4201dc926723cfa1366",
+    "_offline/phase6e11/controller_v1/closeout.py": "d939280c026daa9f5343aca2fcbe052b145e0994b8c7eb74a344fe227e6eb9c4",
+    "_offline/phase6e11/controller_v1/core.mjs": "2e0214fcad9763b117bb03236d56851115d0d911dd86f11dfe42bf401e24618c",
+    "_offline/phase6e11/controller_v1/core.test.mjs": "630eaf65191092df28dc1849c2e4f31cfab458ce5edc86618926c791536d2a39",
+    "_offline/phase6e11/controller_v1/install.py": "b5bb9374d0db64060dac42b5c6af494c62297615dbddbf5b9ee21a4f14e51496",
+    "_offline/phase6e11/controller_v1/lease_trace.py": "07e874e5405bf0f748942d3189e84ea48b995a1b22eda6656f32282304ec03c9",
+    "_offline/phase6e11/controller_v1/local_driver.ts": "830b068604d3abe63c2fcc8d7403a7ed8b031ef0c23ebcf834bac371693f2619",
+    "_offline/phase6e11/controller_v1/local_pg17.py": "58a49273ddd3de4c2db38baa70b6bcccc4b8821f8c8431d02aee6601d090769e",
+    "_offline/phase6e11/controller_v1/local_workflow.py": "b57cbc4b47fe1727baf4cebd77d977588526e518452751e4150713cd688fdd9e",
+    "_offline/phase6e11/controller_v1/manifest.mjs": "df24b1635fd0a133a9c7874e64c011bceb34feab1ba780f4846848415eb2ddbb",
+    "_offline/phase6e11/controller_v1/manifest.test.mjs": "354ba8d626a688130c7d81f9ecf8f59afc0483c8a7ead313baf637e1a38fb8d8",
+    "_offline/phase6e11/controller_v1/oidc.mjs": "628d79dce0e9b887f97995f3647140f226825bec458ec99b7fe3d29952587db3",
+    "_offline/phase6e11/controller_v1/oidc.test.mjs": "83bcbe49a582cf5226cc3ffc655c1baa3faa9acfaecc5866037a451cb6932156",
+    "_offline/phase6e11/controller_v1/ops.py": "c4b048e358acd22580a2a15f151ef3e1a7f2446e87ac191acbd90a685025ba4d",
+    "_offline/phase6e11/controller_v1/publication.py": "94211eea64a7748dae5cf7a63240ed930501bfb4f41d4e96e0532f842b67fe78",
+    "_offline/phase6e11/controller_v1/README.md": "d408ebf0bce73dd2c65974776f99b5f53b3d0090b95582bc9d26defec6b3ab70",
+    "_offline/phase6e11/controller_v1/store.mjs": "d5d61e44733dd35ee41cba8a7f2458c4be06a5fd4629b0abec653eb0a4e15a34",
+    "_offline/phase6e11/controller_v1/store.pg17.mjs": "f44f43f9580744e6cf05f0231541c26740fa802117ce69ed80cebd8aa3f9b67d",
+    "_offline/phase6e11/controller_v1/test_install.py": "a25456feb840832ce8a77ede5fc00fa940a4a874c9d97fbbc173da2299d17f05",
+    "_offline/phase6e11/controller_v1/test_lease_trace.py": "c2b66e67c7e0be5222b8f5619667cfc01b0af6d59020f1ef0171206bcd01a500",
+    "_offline/phase6e11/controller_v1/test_transfer.py": "5f1d6cfb3caa8f39d85b4c4f3e9db1fdc70988cf254410f3a8e194c506dd510e",
+    "_offline/phase6e11/controller_v1/transfer.py": "36a36fb3dfd2e6741d85eac412369304ca7e1bf0bf23541d9f33c0fa9ad51a6c",
+    "_offline/phase6e11/controller_v1/verify.py": "3f28445afa89a7a448f1ddb0bee619037b7d6ea21b8e34837b7820bcab5713cb",
+    "_offline/phase6e11/controller_v1/workflow_evidence.mjs": "e3af67eada7c23128a751180029cb7e68035f85941652ba690313802e63acb58",
+    "_offline/phase6e11/controller_v1/workflow_evidence.test.mjs": "d7bd51e3ad599bd24a11d9a389940b5bfce641e62dd8ac83f77fcfc0b27e9987",
+    "supabase/migrations/20261012104331_phase6e11_controller_evidence.sql": "bab79b7ca5876c2dcef055d0e95997595772aebc051283e69bbeb2ca1dc4bd57",
+    ".github/workflows/phase6e11-controller-ci.yml": "cd61861847241823908fe626f8b5ebdc08d45a96c5e8100de0c0ad29a5771938"
+  },
+  "evidence": {
+    "supabase/.temp/phase6e11-controller-final-local/offline-tests-92c1c04be4034807ab0486995872e75d.json": "13335693c10f4e3d82514ddd0d0f6de8e87878f6e67fa613013365d042b8fde5",
+    "supabase/.temp/phase6e11-controller-final-local/run-38243722556/result.json": "bc3952efedf3b01680857a5d71c7bc74904f2a1a0838aca37344c60a148462fa",
+    "supabase/.temp/phase6e11-controller-final-local/run-38243722556/candidate.json": "16017b546f964a7f9c37410600e2cbfc248dfe2480d5e4fa0809e2c34d758b31",
+    "supabase/.temp/phase6e11-controller-install-e6994eca04324c5591ad87750c45d2b0/result.json": "391a24f10f2742552af444651e85d1afdadacf1e3e110fdd079fb5af90bc9781",
+    "supabase/.temp/phase6e11-controller-install-e6994eca04324c5591ad87750c45d2b0/before/identity.json": "0582ea509e71653b0cc648fa248f8ee8ed09af05129784ff203d14b25cc790bf",
+    "supabase/.temp/phase6e11-controller-install-e6994eca04324c5591ad87750c45d2b0/before/manifest.json": "82315bd739949d116b0cb6dc2a388528eb58ce3886f90b3e64f888b939ab86ce",
+    "supabase/.temp/phase6e11-controller-install-e6994eca04324c5591ad87750c45d2b0/lease-revoked.json": "44f529751026c9d5294a82e25c76cb997569552356e55e47d380c4b2220d4683",
+    "supabase/.temp/phase6e11-controller-install-1adf3ae609774e22a514872b1c718a40/result.json": "141dc8d204b2e119cc2f1b29a7caf76cbfa3a8d9bf8659d12c981ff6acaeee2e",
+    "supabase/.temp/phase6e11-controller-install-1adf3ae609774e22a514872b1c718a40/lease-revoked.json": "c0985ac466ce2ed8a0c6e44a4d63fad5f7f6eb6d8def50b5a058a6770105d467",
+    "supabase/.temp/phase6e11-workflow-local-e4ba46eb524f4545aa37c0a48da9d2bf/request-v4-result.json": "9ddcfc747e39959f3c24daf2fbd937e4f630c14f717f0d6675a70e62ea217348",
+    "supabase/.temp/phase6e11-request-security-f1560f6903f34911aeb68be8e516a204/request-security.json": "993e2c7b2a464559b391384c4611ffde6fbae46fea792bb2ae7a08dffbb48875"
+  },
+  "local_pg17_receipt": {
+    "path": "C:\\Users\\Fitme\\AppData\\Local\\Temp\\fmz-fingerprint-offline-c7q71ofw\\controller-local.json",
+    "sha256": "8d2fcdcf2089b7c43712d64e5578cf77b311f5c6937582d4df70fef1d788063b"
+  },
+  "external_ai_calls": 0,
+  "external_cost_eur": 0,
+  "real_member_ai": false,
+  "production_touched": false
+}

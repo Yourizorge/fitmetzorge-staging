@@ -70,6 +70,17 @@ are now taken after the before-stream and before the after-stream, preventing
 14 individually bounded FETCH calls from being misclassified as one slow
 migration statement. Original M42 failure and reconciliation are unchanged.
 
+The first M43 precheck stopped before DECLARE/FETCH and before DDL: the sealed
+cursor's 153-table limit predates M42's two additional tables. Its 18 commands,
+confirmed read-only rollback and JIT revocation remain an incomplete attempt.
+A separate controller adapter accepts exactly the 155 M42 tables, retaining
+the original row/page/memory/IO caps and hash reducer. It does not change any
+sealed source. One cause-specific corrected installation is permitted by this
+preregistered runner, never a retry loop. Its 296-command total includes the
+18 historical commands and 40 CLI reservations; at most three measurement
+cycles including the historical incomplete cycle. No row stream ran in that
+first attempt. The workflow canary cap remains 128.
+
 Auth matrix: exact-account issuance, verification, getUser, refresh, local
 sign-out and rejection of the revoked session. Unprovable routes remain closed.
 Workflow matrix: source/proposal, member accept/reject, trainer approve/reject/
