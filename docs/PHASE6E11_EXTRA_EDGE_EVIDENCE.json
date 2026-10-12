@@ -1,0 +1,244 @@
+{
+  "at": "2026-10-12T10:24:51.295Z",
+  "baseline": "ea77e48cb16e50178cf43508fd14e2f2f9a6be40",
+  "status": "CONNECTION_PASS; WORKFLOW_NOT_RELEASED",
+  "verdict": {
+    "connection": "HOSTED_READONLY_PASS",
+    "diagnosticClosed": true,
+    "workflowAllowed": false,
+    "ownerWindowAllowed": false,
+    "phase12ServerAllowed": false,
+    "phase21Accepted": false,
+    "remaining": [
+      "bounded_mutating_controller_authority",
+      "hosted_Auth",
+      "request_audit_pairs",
+      "Route_A_B",
+      "protected_preservation",
+      "synthetic_cleanup",
+      "current_dry_run"
+    ]
+  },
+  "probe": {
+    "application_writes": 0,
+    "auth_calls": 0,
+    "secrets_returned": false,
+    "status": "EDGE_READONLY_CONNECTION_PASS",
+    "transport": {
+      "attempts": 1,
+      "authenticated": true,
+      "bound": true,
+      "code": null,
+      "commands": 4,
+      "driver": "deno_native_3_4_7",
+      "elapsed_ms": 1652,
+      "ended": true,
+      "events": [
+        {
+          "ms": 1,
+          "phase": "dns_resolution",
+          "state": "entered"
+        },
+        {
+          "ms": 4,
+          "phase": "readonly_begin",
+          "state": "requested"
+        },
+        {
+          "ms": 6,
+          "phase": "tcp_connection",
+          "state": "entered"
+        },
+        {
+          "ms": 90,
+          "phase": "tls_upgrade",
+          "state": "entered"
+        },
+        {
+          "ms": 175,
+          "phase": "tls_handshake",
+          "state": "entered"
+        },
+        {
+          "ms": 262,
+          "phase": "pooler_or_postgres_authentication",
+          "state": "entered"
+        },
+        {
+          "ms": 1388,
+          "phase": "readonly_begin",
+          "state": "confirmed"
+        },
+        {
+          "ms": 1388,
+          "phase": "readonly_guard",
+          "state": "requested"
+        },
+        {
+          "ms": 1475,
+          "phase": "readonly_guard",
+          "state": "confirmed"
+        },
+        {
+          "ms": 1475,
+          "phase": "readonly_identity",
+          "state": "requested"
+        },
+        {
+          "ms": 1565,
+          "phase": "readonly_identity",
+          "state": "confirmed"
+        },
+        {
+          "ms": 1565,
+          "phase": "rollback",
+          "state": "requested"
+        },
+        {
+          "ms": 1651,
+          "phase": "rollback",
+          "state": "confirmed"
+        }
+      ],
+      "explicit_handshake": true,
+      "failure": null,
+      "mode": "session_ipv4",
+      "phase": "metadata_complete",
+      "readonly": true,
+      "rollback": true,
+      "tcp": true,
+      "tls": true,
+      "transport_phase": "pooler_or_postgres_authentication"
+    }
+  },
+  "closed": {
+    "application_writes": 0,
+    "at": "2026-10-12T10:07:53.501530+00:00",
+    "auth_calls": 0,
+    "database_queries": "see_connection_result",
+    "jit": {
+      "mappings": 0,
+      "state": "disabled"
+    },
+    "temporary_function_http": 404
+  },
+  "admission": {
+    "ambient_temp_bytes": 0,
+    "application_writes": 0,
+    "auth_calls": 0,
+    "correction": "62 application observers plus 2 M40 audit fixtures, not 62 total observers",
+    "evidence_sha256": "b60942e9413e580d508dedaed9c60d758d9e9a82821d04abd01192bbe54e5a6d",
+    "jit_revoked": true,
+    "m40_sha256": "10db658a56ee0e32fef891fca4fe6522526d059f4ee056baf32ab9acda2a2146",
+    "migrations": 42,
+    "observers": {
+      "application": 62,
+      "audit_fixtures": 2,
+      "total": 64
+    },
+    "original_status_unchanged": "NO_GO",
+    "own_temp_blocks_written": 0,
+    "protected_full_snapshot_not_taken": true,
+    "queries": 13,
+    "registered_migration_hashes_unchanged": true,
+    "rollback_confirmed": true,
+    "source_sha256": "13b3756ef6c9522450b2a851d47bd083b5653aad6dee8a1d93e433746639972f",
+    "status": "READONLY_ADMISSION_METADATA_PASS",
+    "workflow_pass": false
+  },
+  "tests": {
+    "targeted_node": 175,
+    "targeted_python": 25,
+    "total": 200,
+    "local_metadata_sql": "PASS; not a new clean build",
+    "previous_frozen_regressions": 4947,
+    "previous_frozen_regressions_rerun": false
+  },
+  "preservation": {
+    "files": 1366,
+    "historical": 465,
+    "changed": []
+  },
+  "sources": {
+    "_offline/phase6e11/extra_edge_v1/admission.py": "703adcd28e8f1d6739a0ccf61489983b98a98442cec8dd4cf07308630611cfee",
+    "_offline/phase6e11/extra_edge_v1/admission_review.py": "13b3756ef6c9522450b2a851d47bd083b5653aad6dee8a1d93e433746639972f",
+    "_offline/phase6e11/extra_edge_v1/closeout.cjs": "2f27976a69d5bbc869b8be46b1ad3baf47453798dba6b98c690523679266e646",
+    "_offline/phase6e11/extra_edge_v1/control.py": "aa4f343059b505ea053bed89a38298efb948afdc805cd3759aad9719884e1c44",
+    "_offline/phase6e11/extra_edge_v1/edge_probe.ts": "4d24e831d1838075d3257f4f116bbb8a3bc8bd00b78af96e630217b0b53d2f72",
+    "_offline/phase6e11/extra_edge_v1/local_admission.py": "db997958c5cea1779e67ebc8296e5207f677adf0dcf329d2e717e9cfec32ef07",
+    "_offline/phase6e11/extra_edge_v1/receipt.cjs": "ba06d76a8d2fcc324ad239c52e0755e0c1b5e9f0fd1763a8d456ac567601baab",
+    "_offline/phase6e11/extra_edge_v1/receipt.test.cjs": "75ac32bdf5c9efd92d03f6608fc0b827c2f9c67ba2b9554dceca21c8bf8599ba",
+    "_offline/phase6e11/extra_edge_v1/test_admission.py": "4abd8944e822cf6b641b2089a3e630c279bd0bf3c8842f5a05c2600ebbb86667",
+    "_offline/phase6e11/extra_edge_v1/test_admission_review.py": "dacf3b3062c14ddee32c9560c7e86e73dbc5471c1c9d82cd674dc136a82608bc",
+    "_offline/phase6e11/extra_edge_v1/trace.mjs": "b6778e0850639b3434f27737b4658c9ac7b2b3f271c3aa3d791ffd9cbe806d4f",
+    "_offline/phase6e11/extra_edge_v1/trace.test.mjs": "7607d3500d2e49cf4ba516e8718bfb1e1c27478e68087c4b802435888bf44121"
+  },
+  "evidence": {
+    "supabase/.temp/phase6e11-resume-extra-c29be9dc5e0b4ff4ba9de047322e157a/before.json": "8488ee024012caabaf40d4469d295a5480d108db984a1d475640d0c955c3e14f",
+    "supabase/.temp/phase6e11-resume-extra-c29be9dc5e0b4ff4ba9de047322e157a/bundle-binding.json": "b07aaff17118493733480bb5a517229a888aa832da4f1ce30923e395ab42fff3",
+    "supabase/.temp/phase6e11-resume-extra-c29be9dc5e0b4ff4ba9de047322e157a/checks-1791800584064.json": "6dce70fa23bfa6f1895d087faa7d76e74e781d7a66a88b6388cb2f23e0c5f0d7",
+    "supabase/.temp/phase6e11-resume-extra-c29be9dc5e0b4ff4ba9de047322e157a/closed.json": "17bb55c680cf10c790000efe2b63bb7e4e40e62dbe29d6ac048fd10fa1eea109",
+    "supabase/.temp/phase6e11-resume-extra-c29be9dc5e0b4ff4ba9de047322e157a/deployed.json": "35fe41394e6899fe1e8c9627b7979fa39b508932a7e23be60cea3e650acbff33",
+    "supabase/.temp/phase6e11-resume-extra-c29be9dc5e0b4ff4ba9de047322e157a/dispatch-intent.json": "40bb53c12dc1bb426dd3da7fec0238f0bd2f4fb625147787612e19401c637475",
+    "supabase/.temp/phase6e11-resume-extra-c29be9dc5e0b4ff4ba9de047322e157a/extra-probe-result.json": "c51d6f56462f86ad153e28786258c7424c3790f6737ea05004bf9ffbd6c0871e",
+    "supabase/.temp/phase6e11-resume-extra-c29be9dc5e0b4ff4ba9de047322e157a/extra-tests.json": "c7640b7ba46eed1d0c27d8e064d7e7d55e2e3c10b1086b850238cad803b3bf18",
+    "supabase/.temp/phase6e11-resume-extra-c29be9dc5e0b4ff4ba9de047322e157a/local-tests.json": "d71578c0dff3b58e254d035f62a19558e70ad2122172bcf9d31ad2baf1a2729e",
+    "supabase/.temp/phase6e11-resume-extra-c29be9dc5e0b4ff4ba9de047322e157a/run.json": "cefb3dbe3fe78df0debc436d451dc16cdd671aa1eb61733665a1044ea53600d5",
+    "supabase/.temp/phase6e11-resume-extra-c29be9dc5e0b4ff4ba9de047322e157a/typecheck.json": "ee93e563f8f4c7c4ed0a3a75ae1bb4e4c3e630370bc0a1efd3cc4f8a08c4c238",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/002-intent.json": "904e23d0dcc3aa37b217830f5c218d063a80627854ab6a58d0bced20eebe0d40",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/002-result.json": "75cbfb14e3c122576713e3cf81ff6fab9e714a992e91039843e21ad7ecd139dd",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/003-intent.json": "208bdf704c6829bbae0f814e925b42cc53c3d8b3741448c45b535ec9f91a2afd",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/003-result.json": "e01c758b2de33a5ffa61d030553371fca94101429a11792cff68104087f58e96",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/004-intent.json": "3d07761a1c7c2f75fd09d92098632bba57a0f76394296cb4736c1a9f785e8faa",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/004-result.json": "41ffcdda1468113b5bb6bb60180c63294d13f94a985d40300d8cb62159fda5e0",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/005-intent.json": "2107526a3b2708d2f8271dca4d9b0b383c345a62bc1cdcde7a465396644d8f85",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/005-result.json": "d8f63d10a13c7e5a37bc57ed3e5af0607de23d1d8eead41a6da5ce2eff51eab0",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/006-intent.json": "b0ff44377e1bfe0214ed95ff5f7d44a68197d47b0a441399a0344ae3bb62d11e",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/006-result.json": "a0383611d2fd5ba4b15e9f63ad82cdd5f033d9b002cc4c42a4462f439697086f",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/007-intent.json": "4cb81801c7fbc95850bbc222d9709444b61693a74d082a1014c7dff78ead7b6d",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/007-result.json": "2a9af142fb75fae361332d80241e0b8983cbe41f16587ec29f56fdc9fbbc46d8",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/008-intent.json": "d948029d8e5eeeafebe45adb460468688c765abbd6d2c8f821b28a03e4f6fc7f",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/008-result.json": "b83d82befdd322cd0d075377b6241b14a64948ada046ca987da90acdf0fc974a",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/009-intent.json": "93d2d2d52d6f78f382eb8f59bacf6daa62a7812959584b35852dfe53e9cd4e94",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/009-result.json": "e24f27e106d7a4fda927b5df5a62625e1d3ce96cc460b91393eb9616686d9f36",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/010-intent.json": "f84560f0af0de0025f03ba37a2f1329f2f0366c3821e5b6288b22e6cdea4e66d",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/010-result.json": "50995207fc59db9f2a3d37308bc4bd76fea2ba7bd69157e4c6253a5a9f4c027b",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/011-intent.json": "93d2d2d52d6f78f382eb8f59bacf6daa62a7812959584b35852dfe53e9cd4e94",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/011-result.json": "a43de0467163747fc9c958f29a6e729567b35cadcec245f1e5a6235b1984eed2",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/012-intent.json": "90670f21059f1ec687726309ec58473b887ecf48b3232db889e1a7e79191e05a",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/012-result.json": "b4365bcc00e603e1d4a92cd936b8378a14c5e626e93ac906e4ba7cf7c8c6f014",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/013-intent.json": "fdf6fb1aefc5aaeb51b19a46bace7aac44a4dd8db5cdf077f9c2b8e18ab829d6",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/013-result.json": "b4365bcc00e603e1d4a92cd936b8378a14c5e626e93ac906e4ba7cf7c8c6f014",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/binding-01.json": "01ae48608a5876bcb6f93911f7dd7ab2b7debbaa1b8be8133552d3b56ca2024e",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/binding-02.json": "36916b8ee37c6b96a36d4271ece920ad32e4d0eb2a7eabbe18122c3b33629a0e",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/binding-03.json": "6bb7fb03c8af67dcd1a80da822cda254bf214147497716af256953004a7ebf32",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/binding-04.json": "fc4ffd8b14a20de6ad2d8e125c4e2bfffdd7d4d24af2414e2ec5b8dc8ab1d817",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/closing-witness.json": "54777e9f1ee66aca643f4ec9d1310771205851fef59fa4097cf91bbabb15909b",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/intent.json": "e85f845526546f05ffb2e9d081a7e418c842363e46a55bed6b85703c10eba694",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/lease-confirmed.json": "e905f65cc1cd3cf4a4f52ce488c82591546850e94489e623d4e9f5796083da5c",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/lease-request.json": "2e0795e1467d52dfa73a6125d0d9a88eee2e7793472cfb13f3a851f2e153dd53",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/lease-revoked.json": "65a11892a849499a6463143606eb3b62c26deb22f0cdf80f4bba5e770e18e0d6",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/offline-review.json": "812cf4e72d73a1773e8e0d414535e1735d4d3f87498e8b5777c8e7de9affa9ee",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/reader-profile.json": "166e9c293e0f0aa883715842493252a8420aea42905934e2c59509f073bde5d7",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/result.json": "b60942e9413e580d508dedaed9c60d758d9e9a82821d04abd01192bbe54e5a6d",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/rollback.json": "707cfc0abba0ba7f9593af39452052b508e2c16543b59c705a5e8c0b44bf00b8",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/snapshot.json": "0bd07faee05cb4be205f494915faf9b1f2dc7ecaeff4956a9c3bdfed3e6540cb",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/sources.json": "b3f0cc67d6f0cb7eb53cb03f7b9c51b42c75fe9085bfe732276a1ef55bb5e005",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/transaction-confirmed.json": "e7bd934350cac4edb301efe6773d13276a9ad87c679b5d538e1d55a8cd3504b3",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/v2-sources.json": "337f0d528db6d948e30ef37ac310533d60a18648b57ca235641d4a6de0cca079",
+    "supabase/.temp/phase6e11-extra-admission-156f1574ac5b4f388547f4fd68c71d3e/workflow_admission-profile.json": "01719e1a2c53dd935a8679af8f0a9747b5da08a8d1b82f4c8b94b108a8e334bb"
+  },
+  "migration_count": 42,
+  "new_migrations": 0,
+  "fresh_dry_run": false,
+  "application_edge_redeployed": false,
+  "rowhash_cycles": 0,
+  "hosted_workflow_mutations": 0,
+  "hosted_auth_calls": 0,
+  "fixture_cleanup": false,
+  "controller_authority": "pending owner decision; existing OIDC grant read-only only",
+  "external_ai_calls": 0,
+  "external_cost_eur": 0,
+  "real_member_ai": false,
+  "production_touched": false
+}
