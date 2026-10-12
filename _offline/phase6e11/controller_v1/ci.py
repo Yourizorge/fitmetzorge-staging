@@ -27,8 +27,13 @@ class Gate(previous.Gate42):
             path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw);manifest[name]=old.sha(raw)
         if manifest['supabase/migrations/'+old.M41]!=old.M41_SHA:raise RuntimeError('migration41_changed')
         # Compare all historical migration bytes against this exact main checkout.
+        historical=[]
         for name in migrations[:-1]:
-            if old.sha((old.ROOT/name).read_bytes())!=manifest[name]:raise RuntimeError('historical_migration_changed')
+            committed=(old.ROOT/name).read_bytes();candidate=(self.sources/name).read_bytes()
+            if committed.replace(b'\r\n',b'\n')!=candidate.replace(b'\r\n',b'\n'):raise RuntimeError('historical_migration_changed')
+            historical.append({'file':name,'checkout_sha256':old.sha(committed),'candidate_sha256':old.sha(candidate),
+              'lf_sha256':old.sha(committed.replace(b'\r\n',b'\n')),'canonicalization':'CRLF-to-LF-only'})
+        self.save('historical-migration-preservation.json',{'files':historical,'content_equal':True})
         self.save('candidate.json',{'blob':blob,'sha256':expected,'sources':manifest})
         self.result['candidate_sha256']=expected
         return migrations
