@@ -3,6 +3,11 @@ import lifecycle_gates as g
 from sql_protocol import statements
 
 class LifecycleTests(unittest.TestCase):
+    def test_percent_and_repeated_parameters(self):
+        from integral_ci import bind_parameters
+        self.assertEqual(bind_parameters("select x like 'pg_%'",[]),("select x like 'pg_%'",None))
+        self.assertEqual(bind_parameters("select $1,$1 where x like 'fmz%'",['synthetic']),
+            ("select %s,%s where x like 'fmz%%'",['synthetic','synthetic']))
     def test_fixed_read_only_single_commands(self):
         for sql in (g.CATALOG,g.MIGRATIONS,g.ACCESS,g.ABSENCE):
             self.assertEqual(len(statements(sql)),1)

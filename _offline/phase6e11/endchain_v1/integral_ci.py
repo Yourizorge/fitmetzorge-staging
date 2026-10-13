@@ -11,6 +11,12 @@ _spec=importlib.util.spec_from_file_location('integral_candidate_scenario',HERE/
 _scenario=importlib.util.module_from_spec(_spec);_spec.loader.exec_module(_scenario)
 capture=_scenario.capture
 
+def bind_parameters(text,args,convert=lambda x:x):
+    params=[]
+    def bind(match):
+        params.append(convert(args[int(match[1])-1]));return '%s'
+    return re.sub(r'\$(\d+)',bind,text.replace('%','%%') if args else text),params if args else None
+
 def configure_local_tls(gate):
     if os.environ.get('GITHUB_REPOSITORY')!='Yourizorge/fitmetzorge-staging':raise RuntimeError('ci_only')
     # Generated keys stay in disposable CI work/container storage, never the
@@ -43,7 +49,7 @@ def configure_local_tls(gate):
 class Composition:
     runner=HERE/'integral_auth.mjs'
     def __init__(self):
-        self.commands=[];self.pending=[];self.started=time.monotonic();self.events=[]
+        self.commands=[];self.pending=[];self.started=time.monotonic();self.events=[];self.action=None
         self.fixture_context={k:str(uuid.uuid4()) for k in ('window','a','b','key')}
         self.fixture_context['runs']={k:str(uuid.uuid4()) for k in ('seed','activate','delete_window')}
         self.preservation_baseline=None
@@ -60,10 +66,7 @@ class Composition:
             sslmode='verify-full',sslrootcert=str(gate.work/'fmz-ci-ca.crt'),connect_timeout=5)
         p=None
         def query(phase,text,args=()):
-            params=[]
-            def bind(match):
-                params.append(args[int(match[1])-1]);return '%s'
-            bound=re.sub(r'\$(\d+)',bind,text)
+            bound,params=bind_parameters(text,args)
             self.before_sql(phase,text)
             cursor=connection.execute(bound,params)
             rows=cursor.fetchall() if cursor.description else []
@@ -98,6 +101,10 @@ class Composition:
                 query('gates_'+label+'_rollback','ROLLBACK')
             return {'label':label,'commands':value['protocol_commands'],'tables':len(value['tables']),
                 'protected_equal':value['protected_equal']}
+        except Exception as error:
+            gate.save('integral-preservation-'+label+'-stop.json',{'phase':self.commands[-1]['phase'],
+                'exception_class':type(error).__name__,'sqlstate':getattr(error,'sqlstate',None)})
+            raise
         finally:
             if connection.info.transaction_status!=0:
                 try:query('gates_'+label+'_safety_rollback','ROLLBACK')
@@ -109,6 +116,7 @@ class Composition:
         for statement in parsed:
             self.commands.append({'command':len(self.commands)+1,'phase':phase,
                 'sql_sha256':statement['sha256'],
+                'action':self.action,
                 'at_ms':round((time.monotonic()-self.started)*1000),'confirmed':False})
         self.pending.append((len(self.commands)-len(parsed),len(self.commands),time.monotonic()))
     def after_sql(self,phase,sql):
@@ -163,12 +171,7 @@ class Composition:
         def raw_query(channel,phase,text,values=()):
             # SQL templates are fixed candidate sources, values are bound by the
             # driver. Repeated numbered parameters retain their original value.
-            params=[]
-            def bind(match):
-                value=values[int(match[1])-1]
-                params.append(Jsonb(value) if isinstance(value,(dict,list)) else value)
-                return '%s'
-            q=re.sub(r'\$(\d+)',bind,text)
+            q,params=bind_parameters(text,values,lambda value:Jsonb(value) if isinstance(value,(dict,list)) else value)
             self.before_sql(phase,text)
             try:
                 cur=connections[channel].execute(q,params)
@@ -258,6 +261,7 @@ class Composition:
                 reply={}
                 try:
                     if message['op']=='sql':
+                        self.action={'kind':'workflow','step':message['scenario_step']}
                         if message['channel'] not in ('writer','reader','workflow'):raise RuntimeError('ci_channel')
                         if message['channel']=='reader' and message['q']=='ROLLBACK' and monitor is not None:
                             terminal=monitor.close()
@@ -271,7 +275,7 @@ class Composition:
                             monitor=QueryIO(raw_query);monitor.start()
                             reply['commandCount']=len(self.commands)-offset
                     elif message['op']=='persist':
-                        self.events.append(message['event'])
+                        self.events.append({**message['event'],'protocol_count':len(self.commands)})
                         gate.save('integral-pair-%03d-%s.json'%(message['event']['step'],message['event']['phase']),message['event'])
                         if message['event']['step']==45 and message['event']['phase']=='contract':
                             self.preservation(gate,ids,'before_cleanup')

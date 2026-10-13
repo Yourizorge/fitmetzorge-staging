@@ -123,6 +123,8 @@ end loop;end$$;""",'supabase_auth_admin')
             commands+=1
             if time.monotonic()-started>180 or commands>200:raise RuntimeError('ci_auth_budget')
             request=json.loads(line);op=request['op'];phase=op
+            if composition is not None and op=='before':composition.action={'kind':'auth','role':request['role'],'operation':request['operation']}
+            if composition is not None and op in ('install','remove','workflow'):composition.action={'kind':'lifecycle','operation':op}
             if op=='complete':result=request['result'];break
             if op=='failed':raise RuntimeError(request['code'])
             try:

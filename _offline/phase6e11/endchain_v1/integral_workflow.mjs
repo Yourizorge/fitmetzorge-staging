@@ -7,10 +7,10 @@ const lines=readline.createInterface({input:process.stdin,terminal:false})[Symbo
 const read=async()=>JSON.parse((await lines.next()).value);
 const p=await read();
 if(p.mode!=='disposable_ci'||p.authUrl!=='http://127.0.0.1:59999')throw Error('ci_boundary');
-let count=p.commandCount,open=false,result;
+let count=p.commandCount,open=false,result,activeStep=0;
 const events=[];
 const sql=async(channel,phase,q,args=[])=>{
- process.stdout.write(JSON.stringify({op:'sql',channel,phase,q,args})+'\n');
+ process.stdout.write(JSON.stringify({op:'sql',channel,phase,q,args,scenario_step:activeStep})+'\n');
  const r=await read();count=r.commandCount;if(r.error)throw Error(r.error);return r.rows;
 };
 let phase='identity';
@@ -38,6 +38,7 @@ try{
   closeCollector,commandCount:()=>count,includeCleanup:true,persist:async e=>{
    events.push(e);process.stdout.write(JSON.stringify({op:'persist',event:e})+'\n');
    const r=await read();if(r.error)throw Error(r.error);
+   if(e.phase==='pair_validated')activeStep=e.step+1;
   },auth:{withToken:(role,callback)=>callback(p.tokens[roleMap[role]]),fetcher:(url,options)=>{
    const u=new URL(url);
    if(u.origin!=='https://mokxyyullfhkfalopbzd.supabase.co'||u.pathname!=='/auth/v1/user')throw Error('ci_auth_route');
