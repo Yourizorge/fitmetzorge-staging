@@ -56,6 +56,30 @@ class Composition:
         first,last,started=self.pending.pop()
         for row in self.commands[first:last]:
             row.update(confirmed=True,duration_ms=round((time.monotonic()-started)*1000))
+    def evidence_query(self,request,sql):
+        text=request['sql'];args=request['args']
+        if not text.startswith('/* fmz6e11:controller_v1:evidence */ ') or 'fmz6e11_controller_private.' not in text:
+            raise RuntimeError('ci_evidence_template_denied')
+        def literal(match):
+            v=args[int(match[1])-1]
+            if v is None:return 'null'
+            if isinstance(v,(dict,list)):v=json.dumps(v,separators=(',',':'))
+            return "'"+str(v).replace("'","''")+"'"
+        bound=re.sub(r'\$(\d+)',literal,text)
+        # Fixed source CTE, no user-provided SQL. Wrapping preserves one command.
+        prefix='/* fmz6e11:controller_v1:evidence */ '
+        body=bound[len(prefix):]
+        tails={
+            'returning phase':"returning jsonb_build_object('phase',phase)::text",
+            'returning id':"returning jsonb_build_object('id',id)::text",
+            'returning state':"returning jsonb_build_object('state',state)::text",
+            'select phase from e':"select jsonb_build_object('phase',phase)::text from e",
+            'select id from r':"select jsonb_build_object('id',id)::text from r"}
+        matches=[k for k in tails if body.rstrip().endswith(k)]
+        if len(matches)!=1:raise RuntimeError('ci_evidence_terminal')
+        tail=matches[0];value=sql(body.rstrip()[:-len(tail)]+tails[tail])
+        rows=[json.loads(line) for line in value.splitlines() if line.startswith('{')]
+        return {'rows':rows,'commandCount':len(self.commands)}
     def workflow(self,gate,request,outer_sql,ids,run_id):
         import psycopg
         from psycopg.rows import dict_row
@@ -113,29 +137,36 @@ class Composition:
             query('setup','control_enable',"update fmz6e11_private.config set enabled=true,proof_hash=encode(sha256(convert_to($1,'UTF8')),'hex')",['synthetic-only-local-proof'])
             query('setup','control_enable',"update fmz6e11_request_private.control set enabled=true,expires_at=clock_timestamp()+interval '3 minutes'")
             times=query('setup','fixture_times',"select clock_timestamp()-interval '10 seconds' starts_at,clock_timestamp()+interval '3 minutes' ends_at")[0]
-            def call(q):
-                query('setup','fixture_begin','BEGIN')
-                try:
-                    query('setup','fixture_bind',"select set_config('request.jwt.claims',$1,true),set_config('request.headers',$2,true)",
-                        [json.dumps(claims),json.dumps(headers)])
-                    value=query('setup','fixture_call','select public.fmz6e11_call($1::jsonb) value',[q])[0]['value']
-                    if value.get('http_status',200)!=200:raise RuntimeError('ci_fixture_denied')
-                    query('setup','fixture_commit','COMMIT');return value
-                except BaseException:
-                    query('setup','fixture_rollback','ROLLBACK');raise
-            prepared=call({'op':'command','action':'prepare','window':None,'workspace':None,'expected':0,'key':str(uuid.uuid4()),
-                'data':{'scenario':'kg',**{k:v.isoformat() for k,v in times.items()}}})
-            window=prepared['window']
-            active=call({'op':'command','action':'activate','window':window,'workspace':None,'expected':prepared['revision'],
-                'key':str(uuid.uuid4()),'data':{}})
-            spaces=query('setup','fixture_receipt','select route,id::text id from fmz6e11_private.workspaces where window_id=$1::uuid',[window])
-            by_route={r['route']:r['id'] for r in spaces}
+            import fixture_lifecycle as fixture
+            ctx={k:str(uuid.uuid4()) for k in ('window','a','b','key')}
+            ctx.update(trainer=ids['a_trainer'],member=ids['a_member'],b_member=ids['b_member'])
+            window=ctx['window'];by_route={'A':ctx['a'],'B':ctx['b']}
+            prepare={'op':'command','action':'prepare','window':None,'workspace':None,'expected':0,'key':ctx['key'],
+                'data':{'scenario':'kg',**{k:v.isoformat() for k,v in times.items()}}}
+            def start_reader():
+                query('reader','lifecycle_reader_begin','BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED READ ONLY')
+                if query('reader','lifecycle_reader_check',"select current_setting('transaction_read_only')='on' readonly")[0]['readonly'] is not True:
+                    raise RuntimeError('ci_lifecycle_readonly')
+            start_reader()
+            seed=fixture.perform(query,gate.save,ctx,'seed',fixture.seed_writes(ctx),fixture.SEED,
+                [window,ctx['a'],ctx['b'],ctx['trainer'],ctx['member'],ctx['b_member'],ctx['key'],
+                 times['starts_at'].isoformat(),times['ends_at'].isoformat(),prepare],claims,headers)
+            if len(seed)!=1 or seed[0]['value'].get('revision')!=1:raise RuntimeError('ci_seed_incomplete')
+            activation={'op':'command','action':'activate','window':window,'workspace':None,'expected':1,
+                'key':str(uuid.uuid4()),'data':{}}
+            active=fixture.perform(query,gate.save,ctx,'activate',[
+                ['windows','UPDATE',[window]],['windows','UPDATE',[window]],
+                ['audit','INSERT',[window,ctx['trainer'],'activate']],['requests','INSERT',[ctx['trainer'],activation['key']]]],
+                'select public.fmz6e11_call($1::jsonb) value',[activation],claims,headers)[0]['value']
+            if active.get('revision')!=2 or active.get('http_status',200)!=200:raise RuntimeError('ci_activation_denied')
+            query('reader','lifecycle_reader_end','ROLLBACK')
             payload={'mode':'disposable_ci','authUrl':'http://127.0.0.1:59999','tokens':request['tokens'],
                 'ca':(gate.work/'fmz-ci-ca.crt').read_text(),
                 'key':request['anon'],'proof':'synthetic-only-local-proof','ids':roles,'window':window,
                 'a':by_route['A'],'b':by_route['B'],'initialRevision':active['revision'],
                 'scenario':capture()['workflow_actions'],'sourceSha':gate.result['head'] if 'head' in gate.result else os.environ['GITHUB_SHA'],
                 'commandCount':0}
+            payload['controllerContext']=request.get('controllerContext')
             # Keep the complete outer count in this adapter. The unchanged
             # controller's own receipt counts its 71-action subchain only.
             offset=len(self.commands)
@@ -177,11 +208,16 @@ class Composition:
                 gate.save('integral-workflow-stop.json',result or {'status':'NO_GO','phase':'child_process'})
                 raise RuntimeError('ci_integral_workflow_incomplete')
             if result['deletes']!=123:raise RuntimeError('ci_integral_delete_count')
+            start_reader()
+            deleted=fixture.perform(query,gate.save,ctx,'delete_window',[['windows','DELETE',[window]]],
+                "delete from fmz6e11_private.windows where id=$1::uuid and status='revoked' and not feature_enabled returning id::text",[window],claims,headers)
+            if deleted!=[{'id':window}]:raise RuntimeError('ci_window_delete_unconfirmed')
+            query('reader','lifecycle_reader_end','ROLLBACK')
             query('setup','control_restore',"update fmz6e11_request_private.control set enabled=false,expires_at=null")
             query('setup','control_restore',"update fmz6e11_private.config set enabled=false,proof_hash=null")
             gate.save('integral-workflow.json',result)
             return {'status':'REAL_AUTH_THROUGH_71_WORKFLOW_PAIRS','pairs':71,'deletes':123,
-                'outer_sql_commands_so_far':len(self.commands),'hosted_admitted':False}
+                'outer_sql_commands_so_far':len(self.commands),'next_step':result['next_step'],'hosted_admitted':False}
         finally:
             if timer:timer.cancel()
             if process and process.poll() is None:process.kill();process.communicate(timeout=5)

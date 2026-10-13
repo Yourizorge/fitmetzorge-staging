@@ -6,6 +6,7 @@ and sanitized outcomes may be returned to the CI artifact writer.
 import base64,hashlib,hmac,json,os,pathlib,re,secrets,subprocess,threading,time,urllib.request,uuid
 import guard
 import audit
+import auth_contract
 
 IMAGE='supabase/gotrue:v2.196.0'
 NAME='fmz-guard-auth-ci'
@@ -14,7 +15,7 @@ ROLES=guard.ROLES
 def run(gate, composition=None):
     if os.environ.get('GITHUB_REPOSITORY')!='Yourizorge/fitmetzorge-staging' or os.environ.get('GITHUB_REF')!='refs/heads/main':
         raise RuntimeError('ci_only')
-    phase='initialization';command_evidence=[]
+    phase='initialization';command_evidence=[];contracts={}
     def private(args,**kwargs):
         p=subprocess.run(args,capture_output=True,text=True,timeout=kwargs.pop('timeout',30),**kwargs)
         state=re.search(r'ERROR:\s+([0-9A-Z]{5})\b',p.stderr)
@@ -113,7 +114,10 @@ end loop;end$$;""",'supabase_auth_admin')
         runner=pathlib.Path(__file__).with_name('auth_service.mjs') if composition is None else composition.runner
         process=subprocess.Popen(['node',str(runner)],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
         timer=threading.Timer(190,process.kill);timer.start()
-        process.stdin.write(json.dumps({'mode':'disposable_ci','url':'http://127.0.0.1:59999','admin':jwt('service_role'),'anon':jwt('anon')})+'\n');process.stdin.flush();secret=None
+        process.stdin.write(json.dumps({'mode':'disposable_ci','url':'http://127.0.0.1:59999','admin':jwt('service_role'),'anon':jwt('anon'),
+            **({'sourceSha':os.environ['GITHUB_SHA'],'authContracts':{
+                operation:[{'table':'auth.'+t,'operation':o,'count':n} for (t,o),n in counts.items()]
+                for operation,counts in auth_contract.COUNTS.items()}} if composition is not None else {})})+'\n');process.stdin.flush();secret=None
         result=None;phase='start';started=time.monotonic();commands=0
         for line in process.stdout:
             commands+=1
@@ -124,6 +128,7 @@ end loop;end$$;""",'supabase_auth_admin')
             try:
                 if op=='install':
                     ids=request['ids'];guard.scope(run_id,ids)
+                    contracts={r:auth_contract.Contract(hashlib.sha256(ids[r].encode()).hexdigest()) for r in ids}
                     for role in ('a_trainer','a_member','b_member'):
                         phase='profile_seed_'+role;uid=ids[role]
                         trainer=guard.literal(ids['a_trainer'])+'::uuid' if role=='a_member' else 'null'
@@ -142,8 +147,12 @@ end loop;end$$;""",'supabase_auth_admin')
                     if composition is not None:composition.after_sql('auth_identity_lock',request['sql'])
                 elif op=='workflow' and composition is not None:
                     value=composition.workflow(gate,request,sql,ids,run_id)
+                elif op=='evidence_query' and composition is not None:
+                    value=composition.evidence_query(request,sql)
                 elif op=='before':
-                    action=str(uuid.uuid4());sql(audit.arm(run_id,ids,action,request['role'],request['operation']))
+                    action=request.get('action') if composition is not None else str(uuid.uuid4())
+                    if str(uuid.UUID(action))!=action:raise RuntimeError('ci_action_binding')
+                    sql(audit.arm(run_id,ids,action,request['role'],request['operation']))
                     if json.loads(sql(audit.events(run_id,ids,action)))!=[]:raise RuntimeError('metadata_before_not_empty')
                     value={'action':action,'seq':int(sql('select coalesce(max(seq),0) from fmz_ci_auth_observer.events'))}
                 elif op=='after':
@@ -167,12 +176,15 @@ end loop;end$$;""",'supabase_auth_admin')
                         'logout':[('auth.sessions','DELETE'),('auth.mfa_amr_claims','DELETE')],'getUser':[],'revoked_denial':[]}
                     if any(not any(e['table_name']==t and e['operation']==op for e in events) for t,op in required[request['operation']]):
                         raise RuntimeError('ci_auth_missing_write')
+                    if composition is not None:
+                        contracts[request['role']].validate(request['operation'],observed,request['result'].get('session_sha'))
                     sql(audit.disarm(run_id,ids,request['before']['action']))
-                    capture['pair_complete']=True;value={'events':events,'pair_complete':True}
+                    capture['pair_complete']=True;value={'events':events,'pair_complete':True,'exact_contract':composition is not None}
                 elif op=='remove':
                     if request['receipt']!=receipt:raise RuntimeError('ci_removal_receipt')
                     sql(audit.remove(run_id,ids,metadata_receipt));metadata_receipt=None
-                    sql(guard.remove(run_id,ids,receipt));receipt=None;value=True
+                    sql(guard.remove(run_id,ids,receipt));receipt=None
+                    value={'removed':True,'commandCount':len(composition.commands)} if composition is not None else True
                 else:raise RuntimeError('ci_ipc_denied')
                 reply={'value':value}
             except Exception as error:
