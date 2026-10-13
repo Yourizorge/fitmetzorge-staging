@@ -10,7 +10,10 @@ def main():
         raise RuntimeError('publication_output_scope')
     head=o.g.git('rev-parse','HEAD');remote=o.g.git('ls-remote','origin','refs/heads/main').split()[0]
     if head!=remote or o.g.git('branch','--show-current')!='main':raise RuntimeError('git_scope')
-    paths=[p.relative_to(o.ROOT).as_posix() for p in HERE.iterdir() if p.is_file()]
+    # Include nested evidence as well as top-level test sources.
+    paths=o.g.git('ls-files','--','_offline/phase6e11/endchain_v1').splitlines()
+    if not paths or any(not p.startswith('_offline/phase6e11/endchain_v1/') for p in paths):
+        raise RuntimeError('publication_path_scope')
     paths+=['.github/workflows/phase6e11-endchain-ci.yml',
         'supabase/migrations/20261012185121_phase6e11_single_endchain_budget.sql']
     result={'head':head,'remote_head':remote,'hidden':[],'supabase_calls':0}
