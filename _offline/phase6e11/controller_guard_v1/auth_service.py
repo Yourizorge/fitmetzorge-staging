@@ -11,7 +11,7 @@ IMAGE='supabase/gotrue:v2.196.0'
 NAME='fmz-guard-auth-ci'
 ROLES=guard.ROLES
 
-def run(gate):
+def run(gate, composition=None):
     if os.environ.get('GITHUB_REPOSITORY')!='Yourizorge/fitmetzorge-staging' or os.environ.get('GITHUB_REF')!='refs/heads/main':
         raise RuntimeError('ci_only')
     phase='initialization';command_evidence=[]
@@ -23,10 +23,13 @@ def run(gate):
         if p.returncode:raise RuntimeError('ci_'+phase+'_failed'+('_'+code if code else ''))
         return p.stdout.strip()
     def sql(text,actor='postgres'):
+        if composition is not None:composition.before_sql(phase,text)
         args=['docker','exec','-i',gate.container]
         if actor=='supabase_auth_admin':args+=['sh','-c','PGPASSWORD="$POSTGRES_PASSWORD" exec psql -X -h 127.0.0.1 -U supabase_auth_admin -d postgres -qAt -v ON_ERROR_STOP=1 -v VERBOSITY=sqlstate']
         else:args+=['psql','-X','-U','postgres','-d','postgres','-qAt','-v','ON_ERROR_STOP=1','-v','VERBOSITY=sqlstate']
-        return private(args,input=text)
+        value=private(args,input=text)
+        if composition is not None:composition.after_sql(phase,text)
+        return value
     def rows(text):return json.loads(sql('select coalesce(jsonb_agg(x),\'[]\') from ('+text+') x'))
     secret=secrets.token_hex(32)
     def jwt(role):
@@ -107,7 +110,8 @@ end loop;end$$;""",'supabase_auth_admin')
                 if line.strip()==marker:break
                 output.append(line)
             return [] if control else json.loads(''.join(output))
-        process=subprocess.Popen(['node',str(pathlib.Path(__file__).with_name('auth_service.mjs'))],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
+        runner=pathlib.Path(__file__).with_name('auth_service.mjs') if composition is None else composition.runner
+        process=subprocess.Popen(['node',str(runner)],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
         timer=threading.Timer(190,process.kill);timer.start()
         process.stdin.write(json.dumps({'mode':'disposable_ci','url':'http://127.0.0.1:59999','admin':jwt('service_role'),'anon':jwt('anon')})+'\n');process.stdin.flush();secret=None
         result=None;phase='start';started=time.monotonic();commands=0
@@ -132,7 +136,12 @@ end loop;end$$;""",'supabase_auth_admin')
                     phase='metadata_install'
                     sql(audit.install(run_id,ids,receipt['expires_at']))
                     metadata_receipt=audit.validate(json.loads(sql(audit.inspect(run_id,ids))),run_id,ids,receipt['expires_at']);value=receipt
-                elif op=='query':value=session_query(request['sql'],request['args'])
+                elif op=='query':
+                    if composition is not None:composition.before_sql('auth_identity_lock',request['sql'])
+                    value=session_query(request['sql'],request['args'])
+                    if composition is not None:composition.after_sql('auth_identity_lock',request['sql'])
+                elif op=='workflow' and composition is not None:
+                    value=composition.workflow(gate,request,sql,ids,run_id)
                 elif op=='before':
                     action=str(uuid.uuid4());sql(audit.arm(run_id,ids,action,request['role'],request['operation']))
                     if json.loads(sql(audit.events(run_id,ids,action)))!=[]:raise RuntimeError('metadata_before_not_empty')
@@ -173,6 +182,9 @@ end loop;end$$;""",'supabase_auth_admin')
         process.wait(timeout=5)
         if not result or process.returncode or result['checks']!=18:raise RuntimeError('ci_auth_incomplete')
         result.update(image=IMAGE,digests=image,guard_removed=receipt is None,checks=18,ci_observers_only=True)
+        if composition is not None:
+            gate.save('integral-complete-protocol-trace.json',{'commands':composition.commands,
+                'outer_sql_commands':len(composition.commands),'hosted_calls':0,'full_chain_admission':False})
         return result
     finally:
         # Never emit raw process output or container logs: Auth may include secrets.

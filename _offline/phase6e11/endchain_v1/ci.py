@@ -10,12 +10,17 @@ NAMES=['budget.mjs','budget.test.mjs','database_checks.py','ci.py','scoped_cycle
  'scoped_cycle.test.mjs','request_transport.mjs','request_transport.test.mjs','auth_arm.py',
  'test_auth_arm.py','scenario.py','sequence.py','command_ledger.py','test_command_ledger.py',
  'component_trace.mjs','admission.py','test_admission.py','test_sequence.py','artifact.py','test_artifact.py',
- 'cleanup_manifest.test.mjs']
+ 'cleanup_manifest.test.mjs','command_register.mjs','command_register.test.mjs',
+ 'session_transport.mjs','session_transport.test.mjs','native_store.mjs','native_store.test.mjs',
+ 'composed_handler.mjs','composed_handler.test.mjs','workflow_composition.mjs','composition_local.ts',
+ 'local_composition.py','local_failure_matrix.py','sql_protocol.py','test_sql_protocol.py',
+ 'capacity_check.py','test_capacity_check.py','integral_auth.mjs','integral_workflow.mjs','integral_ci.py']
 EXTRA={'_offline/phase6e11/endchain_v1/'+n for n in NAMES}
 EXTRA|={'_offline/phase6e11/request_v4/'+n for n in ['transport.mjs','connection_options.mjs','config_shape.mjs']}
 EXTRA|={'_offline/phase6e11/resume_v1/read_only.mjs','_offline/phase6e11/transport_v1/contract.mjs',
  '_offline/phase6e11/readiness_v1/workflow_audit_v1/workflow_local.py'}
 EXTRA|=set(SOURCES)
+EXTRA|={'_offline/phase6e11/cursor_v1/transfer.py'}
 prior.EXTRA|=EXTRA;prior.old.EXTRA|=EXTRA
 class Gate(prior.Gate):
     controller_node_count=198
@@ -38,6 +43,17 @@ class Gate(prior.Gate):
         return 1
     def regressions(self):
         folder=self.sources/'_offline/phase6e11/endchain_v1'
+        # Disposable runner dependency only. PostgreSQL-17 parser, fixed release.
+        self.command('pg17-parser-install',['python3','-m','pip','install','--disable-pip-version-check',
+            '--only-binary=:all:','--target',str(self.sources/'supabase/.temp/phase6e11-pg17-parser'),
+            'pglast==7.20'],timeout=120)
+        self.command('ci-psycopg-install',['python3','-m','pip','install','--disable-pip-version-check',
+            '--only-binary=:all:','--target',str(self.sources/'supabase/.temp/phase6e11-pg17-parser'),
+            'psycopg[binary]==3.2.10'],timeout=120)
+        sys.path.insert(0,str(folder))
+        sys.path.insert(0,str(self.sources/'supabase/.temp/phase6e11-pg17-parser'))
+        import integral_ci
+        self.auth_composition=integral_ci.Composition()
         # Bind the real GoTrue and observer tests to the candidate renderer,
         # while preserving the original audit module on disk.
         sys.path.insert(0,str(self.sources/'_offline/phase6e11/auth_metadata_v1'))

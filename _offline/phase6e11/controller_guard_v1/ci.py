@@ -86,7 +86,7 @@ class Gate(old.Gate):
         self.result['audit_session_hash_tests']=4
         spec=importlib.util.spec_from_file_location('guard_real_auth_ci',folder/'auth_service.py')
         real=importlib.util.module_from_spec(spec);spec.loader.exec_module(real)
-        result=real.run(self);self.save('real-auth-ci.json',result)
+        result=real.run(self,getattr(self,'auth_composition',None));self.save('real-auth-ci.json',result)
         self.result['real_auth_ci']=result['status'];self.result['real_auth_ci_checks']=result['checks']
         from auth_contract import Contract
         contracts={}
