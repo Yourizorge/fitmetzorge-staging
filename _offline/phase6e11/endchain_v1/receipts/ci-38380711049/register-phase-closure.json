@@ -1,0 +1,23 @@
+{
+  "rows": [
+    {
+      "action": "durable_final_receipt",
+      "id": "cmd_02208",
+      "ordinal_in_action": 0,
+      "phase": "closure",
+      "proof": [
+        "complete 89-step evidence",
+        "exact global count",
+        "all pairs validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "controller runs: exact reserved run only"
+      ]
+    }
+  ]
+}

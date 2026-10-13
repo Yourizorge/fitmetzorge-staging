@@ -1,0 +1,719 @@
+{
+  "rows": [
+    {
+      "action": "lifecycle_reader_begin",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "workflow"
+      },
+      "id": "cmd_00478",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "setup",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "eb2b305f4944ccb13b7029330fa1c9ddb8569b88f6d5e2ea3e1ff8a0a0bcd5c9",
+      "timeout_ms": 5000,
+      "trace_command": 254,
+      "writeset": []
+    },
+    {
+      "action": "lifecycle_reader_check",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "workflow"
+      },
+      "id": "cmd_00479",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "setup",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "654b3989d19937e3700b1ef5374ce0b4c77f8460eb8318dd1f40d31c27c21b68",
+      "timeout_ms": 5000,
+      "trace_command": 255,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_fixture_identity",
+      "id": "cmd_00484",
+      "managed": true,
+      "ordinal_in_action": 0,
+      "phase": "setup",
+      "retry": false,
+      "source_bundle_sha": "53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_fixture_identity",
+      "id": "cmd_00485",
+      "managed": true,
+      "ordinal_in_action": 1,
+      "phase": "setup",
+      "retry": false,
+      "source_bundle_sha": "53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_fixture_identity",
+      "id": "cmd_00486",
+      "managed": true,
+      "ordinal_in_action": 2,
+      "phase": "setup",
+      "retry": false,
+      "source_bundle_sha": "53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_fixture_identity",
+      "id": "cmd_00487",
+      "managed": true,
+      "ordinal_in_action": 3,
+      "phase": "setup",
+      "retry": false,
+      "source_bundle_sha": "53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_fixture_identity",
+      "id": "cmd_00488",
+      "managed": true,
+      "ordinal_in_action": 4,
+      "phase": "setup",
+      "retry": false,
+      "source_bundle_sha": "53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "control_before",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "workflow"
+      },
+      "id": "cmd_00492",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "setup",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0b69433b4c0083c2cc02bd77d427a5078d546c8e3745f35aaef0e5bd1ee91216",
+      "timeout_ms": 5000,
+      "trace_command": 263,
+      "writeset": []
+    },
+    {
+      "action": "control_enable",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "workflow"
+      },
+      "id": "cmd_00495",
+      "infrastructure_writeset": "controls",
+      "ordinal_in_action": 0,
+      "phase": "setup",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c",
+      "sql": 1,
+      "state_after": {
+        "controls": true
+      },
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "91453ca691911a5a1b92614d939113fa192f6c8bc2ab20e523811dc1214c93f1",
+      "timeout_ms": 5000,
+      "trace_command": 266,
+      "writeset": []
+    },
+    {
+      "action": "control_enable",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "workflow"
+      },
+      "id": "cmd_00498",
+      "infrastructure_writeset": "controls",
+      "ordinal_in_action": 0,
+      "phase": "setup",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c",
+      "sql": 1,
+      "state_after": {
+        "controls": true
+      },
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "d6824339322e3dcefad1a9bb548eae17a8b6258291147349c0d7b5f3fbcc0a4d",
+      "timeout_ms": 5000,
+      "trace_command": 269,
+      "writeset": []
+    },
+    {
+      "action": "control_after",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "workflow"
+      },
+      "id": "cmd_00499",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "setup",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0b69433b4c0083c2cc02bd77d427a5078d546c8e3745f35aaef0e5bd1ee91216",
+      "timeout_ms": 5000,
+      "trace_command": 270,
+      "writeset": []
+    },
+    {
+      "action": "fixture_times",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "workflow"
+      },
+      "id": "cmd_00502",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "setup",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "a3655ee53b8165343acf5cb2d82f4c100f0ba45431bf3faea15acc2e3b06826e",
+      "timeout_ms": 5000,
+      "trace_command": 273,
+      "writeset": []
+    },
+    {
+      "action": "lifecycle_measure",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "workflow"
+      },
+      "id": "cmd_00505",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "setup",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "f14e9a7794a4e76476658723aa14877a477c0bcc17b2570fc414210cf71c85a3",
+      "timeout_ms": 5000,
+      "trace_command": 276,
+      "writeset": []
+    },
+    {
+      "action": "lifecycle_register",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "workflow"
+      },
+      "id": "cmd_00508",
+      "infrastructure_writeset": "lifecycle_intent",
+      "ordinal_in_action": 0,
+      "phase": "setup",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "c77e901ccd95a9d41d2429b189b4e48c4cee5ee6addd2fd077262b045fde879e",
+      "timeout_ms": 5000,
+      "trace_command": 279,
+      "writeset": []
+    },
+    {
+      "action": "lifecycle_begin",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "workflow"
+      },
+      "id": "cmd_00509",
+      "infrastructure_writeset": "lifecycle_intent",
+      "ordinal_in_action": 0,
+      "phase": "setup",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "a8402858d4f1e1d27afee976520485ebb4b96a5387355b823f0d0b8079729032",
+      "timeout_ms": 5000,
+      "trace_command": 280,
+      "writeset": []
+    },
+    {
+      "action": "lifecycle_start",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "workflow"
+      },
+      "id": "cmd_00512",
+      "infrastructure_writeset": "lifecycle_intent",
+      "ordinal_in_action": 0,
+      "phase": "setup",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "2f006b5963962dcee530a12ac643f6d13740f2c3759eec022b84d4549b86f389",
+      "timeout_ms": 5000,
+      "trace_command": 283,
+      "writeset": []
+    },
+    {
+      "action": "lifecycle_bind",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "workflow"
+      },
+      "id": "cmd_00515",
+      "infrastructure_writeset": "lifecycle_intent",
+      "ordinal_in_action": 0,
+      "phase": "setup",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "2ac216d778bf256f66c62bf776b8ccf47c3108bfe20a6ba905493daa9bbd9e09",
+      "timeout_ms": 5000,
+      "trace_command": 286,
+      "writeset": []
+    },
+    {
+      "action": "lifecycle_action",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "workflow"
+      },
+      "id": "cmd_00518",
+      "infrastructure_writeset": "fixtures",
+      "ordinal_in_action": 0,
+      "phase": "setup",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "8ed1f5ed4a060102c5996d44aed1de096f6613ff45220eb49482e37a0ac90f5c",
+      "timeout_ms": 5000,
+      "trace_command": 289,
+      "writeset": []
+    },
+    {
+      "action": "lifecycle_confirm",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "workflow"
+      },
+      "id": "cmd_00521",
+      "infrastructure_writeset": "lifecycle_intent",
+      "ordinal_in_action": 0,
+      "phase": "setup",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "60fc26f376cb6585a9e884ab795393888eecc409a748132ffa760c12c2a058d7",
+      "timeout_ms": 5000,
+      "trace_command": 292,
+      "writeset": []
+    },
+    {
+      "action": "lifecycle_commit",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "workflow"
+      },
+      "id": "cmd_00522",
+      "infrastructure_writeset": "lifecycle_intent",
+      "ordinal_in_action": 0,
+      "phase": "setup",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f",
+      "timeout_ms": 5000,
+      "trace_command": 293,
+      "writeset": []
+    },
+    {
+      "action": "lifecycle_measure",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "workflow"
+      },
+      "id": "cmd_00523",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "setup",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "f14e9a7794a4e76476658723aa14877a477c0bcc17b2570fc414210cf71c85a3",
+      "timeout_ms": 5000,
+      "trace_command": 294,
+      "writeset": []
+    },
+    {
+      "action": "lifecycle_seal",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "workflow"
+      },
+      "id": "cmd_00526",
+      "infrastructure_writeset": "lifecycle_intent",
+      "ordinal_in_action": 0,
+      "phase": "setup",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "c29f1301ad23b460be7fed1a235c45215c865567558e4fae0ff624f7d4ad64d4",
+      "timeout_ms": 5000,
+      "trace_command": 297,
+      "writeset": []
+    },
+    {
+      "action": "lifecycle_measure",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "workflow"
+      },
+      "id": "cmd_00528",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "setup",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "f14e9a7794a4e76476658723aa14877a477c0bcc17b2570fc414210cf71c85a3",
+      "timeout_ms": 5000,
+      "trace_command": 299,
+      "writeset": []
+    },
+    {
+      "action": "lifecycle_register",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "workflow"
+      },
+      "id": "cmd_00529",
+      "infrastructure_writeset": "lifecycle_intent",
+      "ordinal_in_action": 0,
+      "phase": "setup",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "c77e901ccd95a9d41d2429b189b4e48c4cee5ee6addd2fd077262b045fde879e",
+      "timeout_ms": 5000,
+      "trace_command": 300,
+      "writeset": []
+    },
+    {
+      "action": "lifecycle_begin",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "workflow"
+      },
+      "id": "cmd_00530",
+      "infrastructure_writeset": "lifecycle_intent",
+      "ordinal_in_action": 0,
+      "phase": "setup",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "a8402858d4f1e1d27afee976520485ebb4b96a5387355b823f0d0b8079729032",
+      "timeout_ms": 5000,
+      "trace_command": 301,
+      "writeset": []
+    },
+    {
+      "action": "lifecycle_start",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "workflow"
+      },
+      "id": "cmd_00531",
+      "infrastructure_writeset": "lifecycle_intent",
+      "ordinal_in_action": 0,
+      "phase": "setup",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "2f006b5963962dcee530a12ac643f6d13740f2c3759eec022b84d4549b86f389",
+      "timeout_ms": 5000,
+      "trace_command": 302,
+      "writeset": []
+    },
+    {
+      "action": "lifecycle_bind",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "workflow"
+      },
+      "id": "cmd_00532",
+      "infrastructure_writeset": "lifecycle_intent",
+      "ordinal_in_action": 0,
+      "phase": "setup",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "2ac216d778bf256f66c62bf776b8ccf47c3108bfe20a6ba905493daa9bbd9e09",
+      "timeout_ms": 5000,
+      "trace_command": 303,
+      "writeset": []
+    },
+    {
+      "action": "lifecycle_action",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "workflow"
+      },
+      "id": "cmd_00535",
+      "infrastructure_writeset": "fixtures",
+      "ordinal_in_action": 0,
+      "phase": "setup",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "f88a31a300e1b4032fd7ce4df8d392a6cf7f8f870cb6181f135213aac2064561",
+      "timeout_ms": 5000,
+      "trace_command": 306,
+      "writeset": []
+    },
+    {
+      "action": "lifecycle_confirm",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "workflow"
+      },
+      "id": "cmd_00536",
+      "infrastructure_writeset": "lifecycle_intent",
+      "ordinal_in_action": 0,
+      "phase": "setup",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "60fc26f376cb6585a9e884ab795393888eecc409a748132ffa760c12c2a058d7",
+      "timeout_ms": 5000,
+      "trace_command": 307,
+      "writeset": []
+    },
+    {
+      "action": "lifecycle_commit",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "workflow"
+      },
+      "id": "cmd_00537",
+      "infrastructure_writeset": "lifecycle_intent",
+      "ordinal_in_action": 0,
+      "phase": "setup",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f",
+      "timeout_ms": 5000,
+      "trace_command": 308,
+      "writeset": []
+    },
+    {
+      "action": "lifecycle_measure",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "workflow"
+      },
+      "id": "cmd_00538",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "setup",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "f14e9a7794a4e76476658723aa14877a477c0bcc17b2570fc414210cf71c85a3",
+      "timeout_ms": 5000,
+      "trace_command": 309,
+      "writeset": []
+    },
+    {
+      "action": "lifecycle_seal",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "workflow"
+      },
+      "id": "cmd_00539",
+      "infrastructure_writeset": "lifecycle_intent",
+      "ordinal_in_action": 0,
+      "phase": "setup",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "c29f1301ad23b460be7fed1a235c45215c865567558e4fae0ff624f7d4ad64d4",
+      "timeout_ms": 5000,
+      "trace_command": 310,
+      "writeset": []
+    },
+    {
+      "action": "lifecycle_reader_end",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "workflow"
+      },
+      "id": "cmd_00542",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "setup",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710",
+      "timeout_ms": 5000,
+      "trace_command": 313,
+      "writeset": []
+    }
+  ]
+}

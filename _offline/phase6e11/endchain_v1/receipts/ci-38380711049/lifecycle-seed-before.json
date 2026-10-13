@@ -1,0 +1,226 @@
+{
+  "action": "7a3f9d0b-a331-4279-9c22-b480ceb58883",
+  "contract": [
+    [
+      "windows",
+      "INSERT",
+      [
+        "328e6aa5-b382-4621-bcd9-5e521dd64c00"
+      ]
+    ],
+    [
+      "participants",
+      "INSERT",
+      [
+        "328e6aa5-b382-4621-bcd9-5e521dd64c00",
+        "10a68ddc-fb53-4ed9-9cf5-b87ac4668fdf"
+      ]
+    ],
+    [
+      "participants",
+      "INSERT",
+      [
+        "328e6aa5-b382-4621-bcd9-5e521dd64c00",
+        "6765b67f-a09b-4997-8464-935b0ec8e611"
+      ]
+    ],
+    [
+      "participants",
+      "INSERT",
+      [
+        "328e6aa5-b382-4621-bcd9-5e521dd64c00",
+        "97b6c0e3-8243-404b-9bfd-5fb86e86547d"
+      ]
+    ],
+    [
+      "workspaces",
+      "INSERT",
+      [
+        "ae70a505-478c-4c31-a370-a42963b39401"
+      ]
+    ],
+    [
+      "workspaces",
+      "INSERT",
+      [
+        "8a2e9356-b99a-4a06-aac2-ba992505cb24"
+      ]
+    ],
+    [
+      "plans",
+      "INSERT",
+      [
+        "ae70a505-478c-4c31-a370-a42963b39401",
+        1
+      ]
+    ],
+    [
+      "b_states",
+      "INSERT",
+      [
+        "8a2e9356-b99a-4a06-aac2-ba992505cb24"
+      ]
+    ],
+    [
+      "audit",
+      "INSERT",
+      [
+        "328e6aa5-b382-4621-bcd9-5e521dd64c00",
+        "6765b67f-a09b-4997-8464-935b0ec8e611",
+        "prepare"
+      ]
+    ],
+    [
+      "requests",
+      "INSERT",
+      [
+        "6765b67f-a09b-4997-8464-935b0ec8e611",
+        "5c722cea-9839-46af-aaf3-2fd50cf46589"
+      ]
+    ]
+  ],
+  "run": "349ee89f-c7b0-4bd6-8743-ca3ecfe6bf60",
+  "state": {
+    "accounts": "5737c8235b39bef449afa4a334a8f229f77f8421b4572423a592f75a5acc1e02",
+    "action": null,
+    "coverage": true,
+    "profiles": "49f6d8c5a69c867445ed4d504776bfa600cd2877dad4022876a352db07eb9730",
+    "state": [
+      [
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "windows"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "participants"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "workspaces"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "source_versions"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "source_heads"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "plans"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "proposals"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "audit"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "requests"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "b_states"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "b_versions"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "inbox_state"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "events"
+        }
+      ],
+      [
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "windows"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "participants"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "workspaces"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "source_versions"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "source_heads"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "plans"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "proposals"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "audit"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "requests"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "b_states"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "b_versions"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "inbox_state"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "events"
+        }
+      ]
+    ],
+    "writes": []
+  }
+}

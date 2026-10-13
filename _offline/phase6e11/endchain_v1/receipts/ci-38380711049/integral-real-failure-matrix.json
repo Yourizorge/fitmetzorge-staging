@@ -1,0 +1,93 @@
+{
+  "cases": [
+    {
+      "actual": {
+        "bridge_enabled": 0,
+        "completed": 12,
+        "control_enabled": 0,
+        "receipts": 0,
+        "retained_window": 1,
+        "sealed": 0,
+        "stopped": 1,
+        "temporary_schemas": 0
+      },
+      "case": "before_call",
+      "commands": 358,
+      "diagnostic_sql_commands": 1,
+      "expected": {
+        "bridge_enabled": 0,
+        "completed": 12,
+        "control_enabled": 0,
+        "receipts": 0,
+        "retained_window": 1,
+        "sealed": 0,
+        "stopped": 1,
+        "temporary_schemas": 0
+      },
+      "hosted_calls": 0,
+      "incomplete_pair_preserved": true,
+      "mutation_retried": false,
+      "normal_receipt_reused_as_pass": false
+    },
+    {
+      "actual": {
+        "bridge_enabled": 0,
+        "completed": 12,
+        "control_enabled": 0,
+        "receipts": 1,
+        "retained_window": 1,
+        "sealed": 0,
+        "stopped": 1,
+        "temporary_schemas": 0
+      },
+      "case": "after_commit",
+      "commands": 360,
+      "diagnostic_sql_commands": 1,
+      "expected": {
+        "bridge_enabled": 0,
+        "completed": 12,
+        "control_enabled": 0,
+        "receipts": 1,
+        "retained_window": 1,
+        "sealed": 0,
+        "stopped": 1,
+        "temporary_schemas": 0
+      },
+      "hosted_calls": 0,
+      "incomplete_pair_preserved": true,
+      "mutation_retried": false,
+      "normal_receipt_reused_as_pass": false
+    },
+    {
+      "actual": {
+        "bridge_enabled": 0,
+        "completed": 12,
+        "control_enabled": 0,
+        "receipts": 1,
+        "retained_window": 1,
+        "sealed": 1,
+        "stopped": 1,
+        "temporary_schemas": 0
+      },
+      "case": "after_snapshot",
+      "commands": 362,
+      "diagnostic_sql_commands": 1,
+      "expected": {
+        "bridge_enabled": 0,
+        "completed": 12,
+        "control_enabled": 0,
+        "receipts": 1,
+        "retained_window": 1,
+        "sealed": 1,
+        "stopped": 1,
+        "temporary_schemas": 0
+      },
+      "hosted_calls": 0,
+      "incomplete_pair_preserved": true,
+      "mutation_retried": false,
+      "normal_receipt_reused_as_pass": false
+    }
+  ],
+  "hosted_calls": 0,
+  "separate_empty_CI_databases": true
+}

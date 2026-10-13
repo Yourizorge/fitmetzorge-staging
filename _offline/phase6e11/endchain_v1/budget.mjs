@@ -1,8 +1,10 @@
 // One owner-authorized end-run. Every other run retains the 128-command cap.
 export const ENDCHAIN_RUN_ID='32321f17-07f1-4f3d-aa4b-3218bc7368a4';
 export const PURPOSE='6e11_single_endchain_20261012';
-export const LIMITS=Object.freeze({baseline:64,auth:216,controller:64,route_a:154,
- route_b:154,restore:322,cleanup:240,final:66});
+// Interim allocation: the proven 338 ordinary cleanup commands must fit.
+// This is not full-chain admission; the complete command register must pass too.
+export const LIMITS=Object.freeze({baseline:34,auth:216,controller:20,route_a:144,
+ route_b:132,restore:312,cleanup:386,final:36});
 const RESERVE=Object.freeze({cleanup:48,final:16});
 const SAFETY=new Set(['guard_remove','observer_remove','jit_revoke','proven_fixture_delete','safety_check','record_stop']);
 const LABEL=/^[a-z][a-z0-9_]{1,63}$/;

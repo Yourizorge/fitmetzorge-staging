@@ -38,12 +38,12 @@ test('unrecognized safety operation and wrong safety phase denied',()=>{
  assert.throws(()=>make().charge('cleanup','new_token',{safety:true}),/safety_scope/);
  assert.throws(()=>make().charge('auth','guard_remove',{safety:true}),/safety_scope/);
 });
-test('cleanup reserves 48 commands even after normal phase budget stops',()=>{
+test('all 338 ordinary cleanup commands fit before the 48-command safety reserve',()=>{
  const b=make();
- for(let i=0;i<192;i++)use(b,'cleanup');
+ for(let i=0;i<338;i++)use(b,'cleanup');
  assert.throws(()=>use(b,'cleanup'),/phase_query_budget/);
  for(let i=0;i<48;i++)use(b,'cleanup',true);
- assert.equal(b.used.cleanup,240);
+ assert.equal(b.used.cleanup,386);
 });
 test('one active query only',()=>{
  const b=make();b.charge('baseline','metadata_read');
