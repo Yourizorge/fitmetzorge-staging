@@ -76,7 +76,8 @@ class Composition:
                 sslmode='verify-full',sslrootcert=str(gate.work/'fmz-ci-ca.crt'),connect_timeout=5,
                 options='-c statement_timeout=5000 -c lock_timeout=1000')
         password=None
-        def query(channel,phase,text,values=()):
+        monitor=None;io_receipts=[]
+        def raw_query(channel,phase,text,values=()):
             # SQL templates are fixed candidate sources, values are bound by the
             # driver. Repeated numbered parameters retain their original value.
             params=[]
@@ -92,6 +93,12 @@ class Composition:
                 self.after_sql(phase,text);return rows
             except psycopg.Error as e:
                 raise RuntimeError('ci_sql_'+(e.sqlstate or 'unknown')) from None
+        def query(channel,phase,text,values=()):
+            track=monitor is not None and re.match(r'\s*(?:/\*.*?\*/\s*)?(select|with|insert|update|delete)\b',text,re.I|re.S)
+            qid=monitor.bind(text,values) if track else None
+            result=raw_query(channel,phase,text,values)
+            if qid is not None:monitor.executed(qid)
+            return result
         process=None;timer=None;result=None
         try:
             roles={'member':ids['a_member'],'trainer':ids['a_trainer'],'b':ids['b_member']}
@@ -143,11 +150,23 @@ class Composition:
                 try:
                     if message['op']=='sql':
                         if message['channel'] not in ('writer','reader','workflow'):raise RuntimeError('ci_channel')
+                        if message['channel']=='reader' and message['q']=='ROLLBACK' and monitor is not None:
+                            terminal=monitor.close()
+                            gate.save('integral-workflow-io.json',{'pairs':io_receipts,'terminal':terminal,
+                                'scope':'71 workflow actions including scoped reads and evidence writes; no setup/Auth attribution'})
+                            monitor=None
                         reply={'rows':query(message['channel'],message['phase'],message['q'],message['args']),
                             'commandCount':len(self.commands)-offset}
+                        if message['channel']=='reader' and message['q'].startswith('select current_setting') and monitor is None:
+                            from integral_io import QueryIO
+                            monitor=QueryIO(raw_query);monitor.start()
+                            reply['commandCount']=len(self.commands)-offset
                     elif message['op']=='persist':
                         self.events.append(message['event'])
                         gate.save('integral-pair-%03d-%s.json'%(message['event']['step'],message['event']['phase']),message['event'])
+                        if message['event']['phase']=='pair_validated':
+                            evidence=monitor.checkpoint();io_receipts.append(evidence)
+                            gate.save('integral-io-pair-%03d.json'%message['event']['step'],evidence)
                     else:raise RuntimeError('ci_operation')
                 except Exception as error:
                     reply={'error':str(error) if re.fullmatch('[a-zA-Z0-9_]+',str(error)) else 'ci_query_failed',

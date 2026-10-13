@@ -4,13 +4,13 @@ Logging is enabled only around the isolated CI migration CLI connection and
 restored in finally before the synthetic Auth or workflow client can start.
 Raw log text is kept in memory and never becomes an artifact.
 """
-import datetime,hashlib,os,re,subprocess
+import datetime,hashlib,os,re,subprocess,uuid
 from sql_protocol import statements
 
 TAG='fmz_ci_endchain_meter'
 PREFIX='FMZSQL|'
 
-def parse(raw):
+def parse(raw,prefix=PREFIX,applications=(TAG,)):
     commands=[];block=None
     def finish():
         if block is None:return
@@ -20,11 +20,11 @@ def parse(raw):
         for s in statements(found[1]):
             commands.append({k:s[k] for k in ('sha256','kind','protocol_commands')})
     for line in raw.splitlines():
-        if line.startswith(PREFIX):
+        if line.startswith(prefix):
             finish();block=None
             p=line.split('|',4)
             if len(p)!=5:raise ValueError('ci_cli_log_frame')
-            if p[1]!=TAG:continue
+            if p[1] not in applications:continue
             message=re.sub(r'^\s*LOG:\s*','',p[4])
             block=[message]
         elif block is not None:block.append(line)
@@ -35,7 +35,10 @@ def parse(raw):
 def run(gate,args,timeout):
     if os.environ.get('GITHUB_REPOSITORY')!='Yourizorge/fitmetzorge-staging':raise RuntimeError('ci_only')
     admin=['docker','exec','-i',gate.container,'psql','-X','-U','supabase_admin','-d','postgres','-qAt','-v','ON_ERROR_STOP=1']
-    gate.command('ci-meter-prefix',admin,sql="alter system set log_line_prefix='FMZSQL|%a|%p|%l|';")
+    # A unique server prefix delimits each invocation, including file logs.
+    # The pinned CLI sets @effect/sql-pg itself; it ignores PGAPPNAME.
+    prefix='FMZSQL'+uuid.uuid4().hex+'|'
+    gate.command('ci-meter-prefix',admin,sql="alter system set log_line_prefix='"+prefix+"%a|%p|%l|';")
     gate.command('ci-meter-role-logging',admin,sql="alter role postgres set log_statement='all';")
     gate.command('ci-meter-reload',admin,sql='select pg_reload_conf();')
     meta=subprocess.run(admin,input="select json_build_object('collector',current_setting('logging_collector'),"
@@ -63,15 +66,17 @@ def run(gate,args,timeout):
         logs=subprocess.run(['docker','logs','--since',at,gate.container],capture_output=True,text=True,timeout=10)
     raw=logs.stdout+logs.stderr
     if logs.returncode or len(raw.encode())>2000000:raise RuntimeError('ci_cli_log_budget')
-    apps=sorted(set(line.split('|',4)[1] for line in raw.splitlines() if line.startswith(PREFIX) and len(line.split('|',4))==5))
-    try:commands=parse(raw);error=None
+    apps=sorted(set(line.split('|',4)[1] for line in raw.splitlines() if line.startswith(prefix) and len(line.split('|',4))==5))
+    try:commands=parse(raw,prefix,(TAG,'@effect/sql-pg'));error=None
     except ValueError as e:commands=[];error=str(e)
     raw=None
     result={'arguments':list(args),'exitcode':process.returncode,'commands':commands,
         'protocol_commands':len(commands),'sql_text_exported':False,'hosted_calls':0,
         'cli_sha256':hashlib.sha256(gate.binary.read_bytes()).hexdigest(),
         'scope':'disposable CI session SQL only; not hosted CLI accounting'}
-    result.update(complete=error is None,error=error,application_names=apps)
+    result.update(complete=error is None,error=error,application_names=apps,invocation_prefix=prefix,
+        unexpected_applications=[a for a in apps if a not in (TAG,'@effect/sql-pg')])
+    if result['unexpected_applications']:result.update(complete=False,error='ci_cli_unattributed_connection')
     gate.save('cli-protocol-'+str(len(getattr(gate,'cli_protocol',[])))+'.json',result)
     if not hasattr(gate,'cli_protocol'):gate.cli_protocol=[]
     gate.cli_protocol.append(result)
