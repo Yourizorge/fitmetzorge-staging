@@ -1,6 +1,7 @@
 """Count the pinned CLI's SQL only in disposable CI, never staging logs.
 
-Session-local logging applies only to the isolated migration CLI connection.
+Logging is enabled only around the isolated CI migration CLI connection and
+restored in finally before the synthetic Auth or workflow client can start.
 Raw log text is kept in memory and never becomes an artifact.
 """
 import datetime,hashlib,os,re,subprocess
@@ -33,15 +34,20 @@ def parse(raw):
 
 def run(gate,args,timeout):
     if os.environ.get('GITHUB_REPOSITORY')!='Yourizorge/fitmetzorge-staging':raise RuntimeError('ci_only')
-    gate.sql("alter system set log_line_prefix='FMZSQL|%a|%p|%l|';")
-    gate.sql('select pg_reload_conf();')
+    admin=['docker','exec','-i',gate.container,'psql','-X','-U','supabase_admin','-d','postgres','-qAt','-v','ON_ERROR_STOP=1']
+    gate.command('ci-meter-prefix',admin,sql="alter system set log_line_prefix='FMZSQL|%a|%p|%l|';")
+    gate.command('ci-meter-role-logging',admin,sql="alter role postgres set log_statement='all';")
+    gate.command('ci-meter-reload',admin,sql='select pg_reload_conf();')
     at=datetime.datetime.now(datetime.timezone.utc).isoformat()
     environment={k:v for k,v in os.environ.items() if k not in
         ('GH_READ_TOKEN','GITHUB_TOKEN','SUPABASE_ACCESS_TOKEN','SUPABASE_DB_PASSWORD')}
-    environment['PGOPTIONS']='-c log_statement=all -c application_name='+TAG
+    environment['PGOPTIONS']='-c application_name='+TAG
     environment['PGAPPNAME']=TAG
-    process=subprocess.run([str(gate.binary),'--workdir',str(gate.work),*args],cwd=gate.work,
-        env=environment,capture_output=True,text=True,timeout=timeout)
+    try:
+        process=subprocess.run([str(gate.binary),'--workdir',str(gate.work),*args],cwd=gate.work,
+            env=environment,capture_output=True,text=True,timeout=timeout)
+    finally:
+        gate.command('ci-meter-role-restore',admin,sql='alter role postgres reset log_statement;')
     logs=subprocess.run(['docker','logs','--since',at,gate.container],capture_output=True,text=True,timeout=10)
     raw=logs.stdout+logs.stderr
     if logs.returncode or len(raw.encode())>2000000:raise RuntimeError('ci_cli_log_budget')

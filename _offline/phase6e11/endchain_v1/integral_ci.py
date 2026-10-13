@@ -27,9 +27,14 @@ def configure_local_tls(gate):
         gate.save('integral-tls-'+stage+'.json',{'stage':stage,'exitcode':p.returncode})
         if p.returncode:raise RuntimeError('ci_tls_'+stage)
     key.chmod(0o600)
-    for setting,value in [('ssl_cert_file','/tmp/fmz-ci-ca.crt'),('ssl_key_file','/tmp/fmz-ci-server.key'),('ssl','on')]:
-        gate.sql("alter system set "+setting+"='"+value+"';")
-    gate.sql('select pg_reload_conf();')
+    settings=[('ssl_cert_file','/tmp/fmz-ci-ca.crt'),('ssl_key_file','/tmp/fmz-ci-server.key'),('ssl','on'),
+        ('log_parameter_max_length','0'),('log_parameter_max_length_on_error','0'),('log_statement','none'),
+        ('log_min_duration_statement','-1'),('log_min_duration_sample','-1'),('log_transaction_sample_rate','0')]
+    for setting,value in settings:
+        gate.command('ci-bootstrap-'+setting,['docker','exec','-i',gate.container,'psql','-X','-U','supabase_admin',
+            '-d','postgres','-qAt','-v','ON_ERROR_STOP=1'],sql="alter system set "+setting+"='"+value+"';")
+    gate.command('ci-bootstrap-reload',['docker','exec','-i',gate.container,'psql','-X','-U','supabase_admin',
+        '-d','postgres','-qAt','-v','ON_ERROR_STOP=1'],sql='select pg_reload_conf();')
     public=ca.read_bytes()
     if not public.startswith(b'-----BEGIN CERTIFICATE-----'):raise RuntimeError('ci_ca_fixture')
     gate.save('integral-local-tls.json',{'ca_sha256':hashlib.sha256(public).hexdigest(),
@@ -69,9 +74,7 @@ class Composition:
             connections[channel]=psycopg.connect(host='127.0.0.1',port=port,dbname='postgres',user='postgres',
                 password=password,autocommit=True,prepare_threshold=None,row_factory=dict_row,
                 sslmode='verify-full',sslrootcert=str(gate.work/'fmz-ci-ca.crt'),connect_timeout=5,
-                options='-c statement_timeout=5000 -c lock_timeout=1000 -c log_parameter_max_length=0 '
-                    '-c log_parameter_max_length_on_error=0 -c log_statement=none -c log_min_duration_statement=-1 '
-                    '-c log_min_duration_sample=-1 -c log_transaction_sample_rate=0 -c pgaudit.log_parameter=off')
+                options='-c statement_timeout=5000 -c lock_timeout=1000')
         password=None
         def query(channel,phase,text,values=()):
             # SQL templates are fixed candidate sources, values are bound by the
