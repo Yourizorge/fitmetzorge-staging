@@ -21,6 +21,45 @@ BOOTSTRAP={'local_fixture_cleanup','local_observer_schema','local_observer_trigg
            'profile_seed_a_member','profile_seed_a_trainer','profile_seed_b_member','operator_seed'}
 PAIRS=('before_saved','action_started','action_confirmed','after_saved','pair_validated')
 AUTH_CALLS={'issue':11,'verify':21,'getUser':5,'refresh':27,'logout':10,'revoked_denial':4}
+INFRASTRUCTURE_WRITES={
+ 'controller':[
+  {'table':'fmz6e11_controller_private.runs','operations':['INSERT','UPDATE'],'key':['exact reserved run_id']},
+  {'table':'fmz6e11_controller_private.steps','operations':['INSERT','UPDATE'],'key':['run_id','step']},
+  {'table':'fmz6e11_controller_private.evidence','operations':['INSERT'],'key':['run_id','step','phase']}],
+ 'auth_observer':[
+  {'table':'exact temporary Auth schema.actions','operations':['INSERT'],'key':['action_id']},
+  {'table':'exact temporary Auth schema.control','operations':['UPDATE'],'key':['singleton=true']},
+  {'table':'exact temporary Auth schema.events','operations':['INSERT'],'key':['action_id','actor_sha','row_key_sha','xid']},
+  {'table':'exact temporary Auth schema.session_keys','operations':['INSERT'],'key':['session_sha','actor_sha']}],
+ 'lifecycle_intent':[
+  {'table':'fmz6e11_audit_private.runs','operations':['INSERT'],'key':['preallocated run_id']},
+  {'table':'fmz6e11_audit_private.actors','operations':['INSERT','UPDATE'],'key':['registered synthetic actor UUID']},
+  {'table':'fmz6e11_audit_private.actions','operations':['INSERT','UPDATE'],'key':['run_id','action_id']},
+  {'table':'fmz6e11_audit_private.bindings','operations':['INSERT','DELETE'],'key':['current transaction']},
+  {'table':'fmz6e11_audit_private.writes','operations':['INSERT'],'key':['action_id','ordinal']}],
+ 'request_intent':[
+  {'table':'fmz6e11_request_private.receipts','operations':['INSERT','UPDATE'],'key':['request_id','actor','session','payload_sha']},
+  {'ref':'lifecycle_intent'}],
+ 'controls':[
+  {'table':'fmz6e11_private.config','operations':['UPDATE'],'key':['id=true'],'precondition':'exact original disabled state or this run proof hash'},
+  {'table':'fmz6e11_request_private.control','operations':['UPDATE'],'key':['id=true'],'precondition':'exact original disabled state or this run expiry'}],
+ 'guard_objects':{'operations':['CREATE','DROP'],'scope':'exact run-derived guard/observer schema and source-hashed functions/triggers; no existing object replacement'},
+ 'fixtures':{'source':'fixture_lifecycle.py:seed_writes/perform; workflow_composition.mjs:CLEANUP_LAYOUT',
+  'scope':'preallocated window/workspaces, exact synthetic UUIDs and action keys',
+  'seed_counts':{'INSERT':10},'activate_counts':{'INSERT':2,'UPDATE':2},'window_close_counts':{'DELETE':1},
+  'workflow_cleanup_counts':{'DELETE':123},'proof':'independent expected multiset, same xid/backend, pair then separate seal'},
+ 'readonly':[]}
+
+def infrastructure_ref(command):
+    p=command['phase']
+    if p in ('controller_evidence','evidence_query'):return 'controller'
+    if p in ('guard_install','metadata_install','remove'):return 'guard_objects'
+    if p in ('before','after'):return 'auth_observer'
+    if p in ('control_enable','control_restore'):return 'controls'
+    if p.startswith('lifecycle_') and p not in ('lifecycle_measure','lifecycle_reader_begin','lifecycle_reader_check','lifecycle_reader_end'):
+        return 'fixtures' if p=='lifecycle_action' else 'lifecycle_intent'
+    if p in ('call','seal'):return 'request_intent'
+    return 'readonly'
 
 def sha(value):return hashlib.sha256(json.dumps(value,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 
@@ -126,8 +165,8 @@ def build(folder):
         contract=scenario[step] if kind=='workflow' and step is not None and step<45 else None
         expected=collections.Counter(('fmz6e11_private.'+t,op) for t,op,key in contract['writes']) if contract else None
         binding={'trace_command':c['command'],'template_sha':c['sql_sha256'],
-            'action_binding':action,'writeset':[{'table':t,'operation':op,'count':n} for (t,op),n in sorted(expected.items())] if contract else
-             ['fixed infrastructure source contract; exact run/window/actor scope'],
+            'action_binding':action,'writeset':[{'table':t,'operation':op,'count':n} for (t,op),n in sorted(expected.items())] if contract and c['phase']=='call' else [],
+            'infrastructure_writeset':infrastructure_ref(c),
             'proof':list(PAIRS) if kind in ('workflow','auth') else ['source identity','before/after or read-only receipt']}
         add(phase,c['phase'],1,**binding)
         # Safety reserve deliberately begins at the first attempted setup SQL.
@@ -192,6 +231,7 @@ def build(folder):
         'rows':rows,'prefixes':prefixes,'phase_budgets':counts,'stream_capacity':streams,
         'managed_auth_commands':total_managed,'native_and_cli_capacity':normal-total_managed,
         'observed_native_composition':len(trace),'ci_only_bootstrap_commands':len(bootstrap),
+        'infrastructure_write_contracts':INFRASTRUCTURE_WRITES,
         'ci_only_bootstrap':bootstrap,'sources':source,'source_bundle_sha':bundle,
         'zero_sql_required':[{'action':x,'sql':0,'mandatory':True} for x in
             ['source_ci_admission','exact_project_and_connect_binding','JIT_create_expire_revoke_verify',

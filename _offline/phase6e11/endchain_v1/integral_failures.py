@@ -7,7 +7,7 @@ import importlib.util,json,os,pathlib
 
 def run(gate):
     if os.environ.get('GITHUB_REPOSITORY')!='Yourizorge/fitmetzorge-staging':raise RuntimeError('ci_only')
-    from integral_ci import Composition
+    from integral_ci import Composition,configure_local_tls
     import audit,auth_arm
     path=pathlib.Path(__file__).resolve().parent.parent/'controller_guard_v1/auth_service.py'
     spec=importlib.util.spec_from_file_location('failure_actual_gotrue',path)
@@ -19,6 +19,7 @@ def run(gate):
         composition=Composition(fault)
         try:
             gate.cli('db','reset','--local','--no-seed',timeout=180)
+            configure_local_tls(gate)
             audit.arm=auth_arm.render
             try:real.run(gate,composition)
             except RuntimeError as error:
