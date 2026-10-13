@@ -30,7 +30,9 @@ ACCESS="""select current_database()='postgres' database_ok,current_user='postgre
  (select not exists(select 1 from pg_proc p join pg_namespace n on n.oid=p.pronamespace
   cross join (values('anon'),('authenticated'),('service_role')) roles(name)
   where n.nspname in('fmz6e11_audit_private','fmz6e11_request_private','fmz6e11_controller_private')
-   and (p.prosecdef or p.proconfig is distinct from array['search_path=pg_catalog, pg_temp']
+   and ((p.prosecdef and p.oid<>to_regprocedure('fmz6e11_audit_private.observe()'))
+       or pg_get_userbyid(p.proowner)<>'postgres'
+       or p.proconfig is distinct from array['search_path=pg_catalog, pg_temp']
        or has_function_privilege(roles.name,p.oid,'EXECUTE')))) private_functions_safe"""
 
 ABSENCE="""select
@@ -55,4 +57,3 @@ def check_migrations(rows,expected):
     if len(rows)!=44 or rows[-1]['version']!='20261012185121' or any(not re.fullmatch('[a-f0-9]{64}',r['sql_sha']) for r in rows):
         raise ValueError('lifecycle_migration_identity')
     if expected is not None and rows!=expected:raise ValueError('lifecycle_migration_drift')
-

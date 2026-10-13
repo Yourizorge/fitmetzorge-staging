@@ -12,6 +12,10 @@ class LifecycleTests(unittest.TestCase):
         for sql in (g.CATALOG,g.MIGRATIONS,g.ACCESS,g.ABSENCE):
             self.assertEqual(len(statements(sql)),1)
             self.assertEqual(statements(sql)[0]['kind'],'SelectStmt')
+    def test_existing_private_observer_is_only_definer_exception(self):
+        self.assertIn("p.oid<>to_regprocedure('fmz6e11_audit_private.observe()')",g.ACCESS)
+        self.assertIn("pg_get_userbyid(p.proowner)<>'postgres'",g.ACCESS)
+        self.assertIn("has_function_privilege(roles.name,p.oid,'EXECUTE')",g.ACCESS)
     def test_absence_requires_every_field(self):
         value=dict.fromkeys(('temporary_schemas','sessions','refresh_tokens','windows','workspaces','participants'),0)
         g.check_absence(value)

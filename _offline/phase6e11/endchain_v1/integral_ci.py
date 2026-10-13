@@ -88,7 +88,8 @@ class Composition:
                     qid=monitor.bind(text,args);rows=query('gates_'+label+'_'+name,text,args);monitor.executed(qid)
                     return rows
                 context=self.fixture_context;people=list(ids.values());schemas=context['temporary_schemas']
-                access=checked('access',gates.ACCESS,[people])[0];gates.check_access(access)
+                access=checked('access',gates.ACCESS,[people])[0]
+                gate.save('integral-gates-'+label+'-access.json',access);gates.check_access(access)
                 migrations=checked('migrations',gates.MIGRATIONS)
                 gates.check_migrations(migrations,self.gate_baseline['migrations'] if self.gate_baseline else None)
                 catalog=checked('catalog',gates.CATALOG,[schemas])[0]['value']
@@ -278,7 +279,11 @@ class Composition:
                         self.events.append({**message['event'],'protocol_count':len(self.commands)})
                         gate.save('integral-pair-%03d-%s.json'%(message['event']['step'],message['event']['phase']),message['event'])
                         if message['event']['step']==45 and message['event']['phase']=='contract':
+                            raw_query('reader','preservation_suspend','ROLLBACK')
                             self.preservation(gate,ids,'before_cleanup')
+                            raw_query('reader','preservation_resume','BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED READ ONLY')
+                            if raw_query('reader','preservation_attest',"select current_setting('transaction_read_only')='on' readonly")[0]['readonly'] is not True:
+                                raise RuntimeError('ci_collector_resume')
                         if message['event']['phase']=='pair_validated':
                             evidence=monitor.checkpoint();io_receipts.append(evidence)
                             gate.save('integral-io-pair-%03d.json'%message['event']['step'],evidence)
