@@ -78,7 +78,7 @@ def validate(before,after,expected):
         'before_sha':digest(before),'after_sha':digest(after),'audit_sha':digest(writes)}
 
 def perform(query,save,c,name,effects,sql,args,claims,headers):
-    run,action=str(uuid.uuid4()),str(uuid.uuid4())
+    run,action=c['runs'][name],str(uuid.uuid4())
     def read():return query('reader','lifecycle_measure',SNAPSHOT,[c['window'],c['a'],c['b'],action,
         '{'+','.join(c[n] for n in ('trainer','member','b_member'))+'}'])[0]['value']
     before=read()

@@ -136,6 +136,9 @@ end loop;end$$;""",'supabase_auth_admin')
                             'insert into fmz6e11_private.identities(user_id,role,provenance_sha) values('+guard.literal(uid)+','+guard.literal(role)+","+guard.literal('c'*64)+');')
                     phase='operator_seed'
                     sql('insert into fmz6e11_private.operators values('+guard.literal(ids['a_trainer'])+',true)')
+                    if composition is not None:
+                        composition.fixture_context['temporary_schemas']=[guard.scope(run_id,ids),audit.scope(run_id,ids)]
+                        composition.preservation(gate,ids,'before')
                     phase='guard_install'
                     sql(guard.install(run_id,ids,180));receipt=guard.validate(json.loads(sql(guard.inspect(run_id,ids))),run_id,ids)
                     phase='metadata_install'
@@ -194,6 +197,7 @@ end loop;end$$;""",'supabase_auth_admin')
                     if request['receipt']!=receipt:raise RuntimeError('ci_removal_receipt')
                     sql(audit.remove(run_id,ids,metadata_receipt));metadata_receipt=None
                     sql(guard.remove(run_id,ids,receipt));receipt=None
+                    if composition is not None:composition.preservation(gate,ids,'after_cleanup')
                     value={'removed':True,'commandCount':len(composition.commands)} if composition is not None else True
                 else:raise RuntimeError('ci_ipc_denied')
                 reply={'value':value}

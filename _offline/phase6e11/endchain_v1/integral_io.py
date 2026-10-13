@@ -45,7 +45,8 @@ def delta(before,after,expected):
     for qid,count in expected.items():
         a=old.get(qid);b=new.get(qid)
         if b is None or a and a['since']!=b['since']:raise ValueError('io_counter_missing_or_replaced')
-        d={k:float(b[k])-float(a[k] if a else 0) for k in ('calls','temp_read','temp_written','wal','exec_ms')}
+        d={k:(float if k=='exec_ms' else int)(b[k])-(float if k=='exec_ms' else int)(a[k] if a else 0)
+           for k in ('calls','temp_read','temp_written','wal','exec_ms')}
         if min(d.values())<0 or d['calls']!=count:raise ValueError('io_command_attribution')
         if d['temp_read'] or d['temp_written']:raise ValueError('io_own_spill')
         if d['exec_ms']>5000*count:raise ValueError('io_query_time')

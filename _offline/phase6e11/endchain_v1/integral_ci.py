@@ -44,6 +44,33 @@ class Composition:
     runner=HERE/'integral_auth.mjs'
     def __init__(self):
         self.commands=[];self.pending=[];self.started=time.monotonic();self.events=[]
+        self.fixture_context={k:str(uuid.uuid4()) for k in ('window','a','b','key')}
+        self.fixture_context['runs']={k:str(uuid.uuid4()) for k in ('seed','activate','delete_window')}
+        self.preservation_baseline=None
+    def preservation(self,gate,ids,label):
+        import psycopg,integral_stream
+        from psycopg.rows import dict_row
+        p=subprocess.run(['docker','exec',gate.container,'sh','-c','printf %s "$POSTGRES_PASSWORD"'],capture_output=True,text=True,timeout=10)
+        endpoint=subprocess.run(['docker','port',gate.container,'5432/tcp'],capture_output=True,text=True,timeout=10)
+        choices=[x for x in endpoint.stdout.splitlines() if re.fullmatch(r'(127\.0\.0\.1|0\.0\.0\.0):\d+',x)]
+        if p.returncode or endpoint.returncode or len(choices)!=1:raise RuntimeError('ci_preservation_endpoint')
+        connection=psycopg.connect(host='127.0.0.1',port=int(choices[0].split(':')[1]),dbname='postgres',user='postgres',
+            password=p.stdout.strip(),autocommit=True,prepare_threshold=None,row_factory=dict_row,
+            sslmode='verify-full',sslrootcert=str(gate.work/'fmz-ci-ca.crt'),connect_timeout=5)
+        p=None
+        def query(phase,text,args=()):
+            if args:raise RuntimeError('ci_stream_parameter_shape')
+            self.before_sql(phase,text)
+            cursor=connection.execute(text)
+            rows=cursor.fetchall() if cursor.description else []
+            query.terminal_count=cursor.rowcount
+            self.after_sql(phase,text);return rows
+        try:
+            value=integral_stream.run(query,gate.save,ids,self.fixture_context,label,self.preservation_baseline)
+            if self.preservation_baseline is None:self.preservation_baseline=value
+            return {'label':label,'commands':value['protocol_commands'],'tables':len(value['tables']),
+                'protected_equal':value['protected_equal']}
+        finally:connection.close()
     def before_sql(self,phase,sql):
         parsed=statements(sql)
         if len(self.commands)+len(parsed)>4096:raise RuntimeError('ci_diagnostic_command_ceiling')
@@ -125,7 +152,22 @@ class Composition:
             return result
         process=None;timer=None;result=None
         try:
+            def start_reader():
+                nonlocal monitor
+                query('reader','lifecycle_reader_begin','BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED READ ONLY')
+                if query('reader','lifecycle_reader_check',"select current_setting('transaction_read_only')='on' readonly")[0]['readonly'] is not True:
+                    raise RuntimeError('ci_lifecycle_readonly')
+                from integral_io import QueryIO
+                monitor=QueryIO(raw_query);monitor.start()
+            def end_reader(label):
+                nonlocal monitor
+                if monitor is not None:
+                    gate.save('integral-'+label+'-io.json',monitor.close());monitor=None
+                query('reader','lifecycle_reader_end','ROLLBACK')
+            start_reader()
             roles={'member':ids['a_member'],'trainer':ids['a_trainer'],'b':ids['b_member']}
+            from auth_protocol import STATS,difference
+            auth_before=query('reader','workflow_auth_before','select '+STATS+' value')[0]['value']
             # Verify the actual token with GoTrue again before it supplies claims.
             import urllib.request,base64
             token=request['tokens']['a_trainer']
@@ -134,24 +176,28 @@ class Composition:
             claims=json.loads(base64.urlsafe_b64decode(token.split('.')[1]+'==='))
             if user['id']!=ids['a_trainer'] or claims['sub']!=user['id']:raise RuntimeError('ci_auth_identity')
             headers={'x-fmz6e11-proof':'synthetic-only-local-proof'}
-            query('setup','control_enable',"update fmz6e11_private.config set enabled=true,proof_hash=encode(sha256(convert_to($1,'UTF8')),'hex')",['synthetic-only-local-proof'])
-            query('setup','control_enable',"update fmz6e11_request_private.control set enabled=true,expires_at=clock_timestamp()+interval '3 minutes'")
-            times=query('setup','fixture_times',"select clock_timestamp()-interval '10 seconds' starts_at,clock_timestamp()+interval '3 minutes' ends_at")[0]
+            control_sql="select jsonb_build_object('config',(select to_jsonb(c) from fmz6e11_private.config c where id),'request',(select to_jsonb(c) from fmz6e11_request_private.control c where id)) value"
+            controls=query('reader','control_before',control_sql)[0]['value']
+            if controls!={'config':{'id':True,'enabled':False,'proof_hash':None},'request':{'id':True,'enabled':False,'expires_at':None}}:
+                raise RuntimeError('ci_control_not_closed')
+            if query('setup','control_enable',"update fmz6e11_private.config set enabled=true,proof_hash=encode(sha256(convert_to($1,'UTF8')),'hex') where id and not enabled and proof_hash is null returning id",['synthetic-only-local-proof'])!=[{'id':True}]:raise RuntimeError('ci_control_enable_count')
+            if query('setup','control_enable',"update fmz6e11_request_private.control set enabled=true,expires_at=clock_timestamp()+interval '3 minutes' where id and not enabled and expires_at is null returning id")!=[{'id':True}]:raise RuntimeError('ci_bridge_enable_count')
+            enabled=query('reader','control_after',control_sql)[0]['value']
+            if not enabled['config']['enabled'] or not enabled['request']['enabled']:raise RuntimeError('ci_controls_not_enabled')
+            gate.save('integral-control-enable-pair.json',{'before_sha':hashlib.sha256(json.dumps(controls,sort_keys=True).encode()).hexdigest(),
+                'after_sha':hashlib.sha256(json.dumps(enabled,sort_keys=True).encode()).hexdigest(),'expected_updates':2,'actual_updates':2})
+            times=query('reader','fixture_times',"select clock_timestamp()-interval '10 seconds' starts_at,clock_timestamp()+interval '3 minutes' ends_at")[0]
             import fixture_lifecycle as fixture
-            ctx={k:str(uuid.uuid4()) for k in ('window','a','b','key')}
+            ctx=self.fixture_context
             ctx.update(trainer=ids['a_trainer'],member=ids['a_member'],b_member=ids['b_member'])
             window=ctx['window'];by_route={'A':ctx['a'],'B':ctx['b']}
             prepare={'op':'command','action':'prepare','window':None,'workspace':None,'expected':0,'key':ctx['key'],
                 'data':{'scenario':'kg',**{k:v.isoformat() for k,v in times.items()}}}
-            def start_reader():
-                query('reader','lifecycle_reader_begin','BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED READ ONLY')
-                if query('reader','lifecycle_reader_check',"select current_setting('transaction_read_only')='on' readonly")[0]['readonly'] is not True:
-                    raise RuntimeError('ci_lifecycle_readonly')
-            start_reader()
             seed=fixture.perform(query,gate.save,ctx,'seed',fixture.seed_writes(ctx),fixture.SEED,
                 [window,ctx['a'],ctx['b'],ctx['trainer'],ctx['member'],ctx['b_member'],ctx['key'],
                  times['starts_at'].isoformat(),times['ends_at'].isoformat(),prepare],claims,headers)
             if len(seed)!=1 or seed[0]['value'].get('revision')!=1:raise RuntimeError('ci_seed_incomplete')
+            gate.save('integral-seed-io-pair.json',monitor.checkpoint())
             activation={'op':'command','action':'activate','window':window,'workspace':None,'expected':1,
                 'key':str(uuid.uuid4()),'data':{}}
             active=fixture.perform(query,gate.save,ctx,'activate',[
@@ -159,7 +205,7 @@ class Composition:
                 ['audit','INSERT',[window,ctx['trainer'],'activate']],['requests','INSERT',[ctx['trainer'],activation['key']]]],
                 'select public.fmz6e11_call($1::jsonb) value',[activation],claims,headers)[0]['value']
             if active.get('revision')!=2 or active.get('http_status',200)!=200:raise RuntimeError('ci_activation_denied')
-            query('reader','lifecycle_reader_end','ROLLBACK')
+            end_reader('fixture_setup')
             payload={'mode':'disposable_ci','authUrl':'http://127.0.0.1:59999','tokens':request['tokens'],
                 'ca':(gate.work/'fmz-ci-ca.crt').read_text(),
                 'key':request['anon'],'proof':'synthetic-only-local-proof','ids':roles,'window':window,
@@ -195,6 +241,8 @@ class Composition:
                     elif message['op']=='persist':
                         self.events.append(message['event'])
                         gate.save('integral-pair-%03d-%s.json'%(message['event']['step'],message['event']['phase']),message['event'])
+                        if message['event']['step']==45 and message['event']['phase']=='contract':
+                            self.preservation(gate,ids,'before_cleanup')
                         if message['event']['phase']=='pair_validated':
                             evidence=monitor.checkpoint();io_receipts.append(evidence)
                             gate.save('integral-io-pair-%03d.json'%message['event']['step'],evidence)
@@ -209,12 +257,22 @@ class Composition:
                 raise RuntimeError('ci_integral_workflow_incomplete')
             if result['deletes']!=123:raise RuntimeError('ci_integral_delete_count')
             start_reader()
+            auth_after=query('reader','workflow_auth_after','select '+STATS+' value')[0]['value']
+            auth_load=difference(auth_before,auth_after)
+            if auth_load['commands']!=360 or auth_load['wal_bytes']!=0:raise RuntimeError('ci_workflow_auth_protocol')
+            gate.save('workflow-auth-protocol.json',{'verified_calls':72,**auth_load})
             deleted=fixture.perform(query,gate.save,ctx,'delete_window',[['windows','DELETE',[window]]],
                 "delete from fmz6e11_private.windows where id=$1::uuid and status='revoked' and not feature_enabled returning id::text",[window],claims,headers)
             if deleted!=[{'id':window}]:raise RuntimeError('ci_window_delete_unconfirmed')
-            query('reader','lifecycle_reader_end','ROLLBACK')
-            query('setup','control_restore',"update fmz6e11_request_private.control set enabled=false,expires_at=null")
-            query('setup','control_restore',"update fmz6e11_private.config set enabled=false,proof_hash=null")
+            restore_before=query('reader','control_restore_before',control_sql)[0]['value']
+            if restore_before!=enabled:raise RuntimeError('ci_control_unexpected_drift')
+            if query('setup','control_restore',"update fmz6e11_request_private.control set enabled=false,expires_at=null where id and enabled and expires_at=$1::timestamptz returning id",[enabled['request']['expires_at']])!=[{'id':True}]:raise RuntimeError('ci_bridge_restore_count')
+            if query('setup','control_restore',"update fmz6e11_private.config set enabled=false,proof_hash=null where id and enabled and proof_hash=$1 returning id",[enabled['config']['proof_hash']])!=[{'id':True}]:raise RuntimeError('ci_control_restore_count')
+            restored=query('reader','control_restored',control_sql)[0]['value']
+            if restored!=controls:raise RuntimeError('ci_control_restore_mismatch')
+            gate.save('integral-control-restore-pair.json',{'before_sha':hashlib.sha256(json.dumps(restore_before,sort_keys=True).encode()).hexdigest(),
+                'after_sha':hashlib.sha256(json.dumps(restored,sort_keys=True).encode()).hexdigest(),'expected_updates':2,'actual_updates':2,'original_state_restored':True})
+            end_reader('fixture_closeout')
             gate.save('integral-workflow.json',result)
             return {'status':'REAL_AUTH_THROUGH_71_WORKFLOW_PAIRS','pairs':71,'deletes':123,
                 'outer_sql_commands_so_far':len(self.commands),'next_step':result['next_step'],'hosted_admitted':False}
