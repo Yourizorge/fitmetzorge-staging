@@ -14,7 +14,8 @@ NAMES=['budget.mjs','budget.test.mjs','database_checks.py','ci.py','scoped_cycle
  'session_transport.mjs','session_transport.test.mjs','native_store.mjs','native_store.test.mjs',
  'composed_handler.mjs','composed_handler.test.mjs','workflow_composition.mjs','composition_local.ts',
  'local_composition.py','local_failure_matrix.py','sql_protocol.py','test_sql_protocol.py',
- 'capacity_check.py','test_capacity_check.py','integral_auth.mjs','integral_workflow.mjs','integral_ci.py']
+ 'capacity_check.py','test_capacity_check.py','integral_auth.mjs','integral_workflow.mjs','integral_ci.py',
+ 'cli_meter.py','test_cli_meter.py']
 EXTRA={'_offline/phase6e11/endchain_v1/'+n for n in NAMES}
 EXTRA|={'_offline/phase6e11/request_v4/'+n for n in ['transport.mjs','connection_options.mjs','config_shape.mjs']}
 EXTRA|={'_offline/phase6e11/resume_v1/read_only.mjs','_offline/phase6e11/transport_v1/contract.mjs',
@@ -26,6 +27,23 @@ class Gate(prior.Gate):
     controller_node_count=198
     migration_count=44
     migration_last=M44
+    def install(self):
+        self.command('pg17-parser-install',['python3','-m','pip','install','--disable-pip-version-check',
+            '--only-binary=:all:','--target',str(self.sources/'supabase/.temp/phase6e11-pg17-parser'),
+            'pglast==7.20','psycopg[binary]==3.2.10'],timeout=120)
+        sys.path.insert(0,str(self.sources/'supabase/.temp/phase6e11-pg17-parser'))
+        sys.path.insert(0,str(self.sources/'_offline/phase6e11/endchain_v1'))
+        super().install()
+        import integral_ci
+        integral_ci.configure_local_tls(self)
+    def cli(self,*args,timeout=120):
+        migration=args[:2]==('migration','up') and self.result.get('phase')=='migration_44'
+        dry=args[:2]==('db','push') and '--dry-run' in args
+        if migration or dry:
+            import cli_meter
+            exact=('db','push','--local','--skip-vault','--yes') if migration else args
+            return cli_meter.run(self,exact,timeout)
+        return super().cli(*args,timeout=timeout)
     def fetch(self):
         migrations=super().fetch()
         files=json.loads((self.out/'candidate.json').read_text())['sources']
@@ -41,15 +59,14 @@ class Gate(prior.Gate):
             value=self.rows("select has_function_privilege('"+role+"','fmz6e11_controller_private.single_endchain_receipt()','EXECUTE') allowed")
             if value!=[{'allowed':False}]:raise RuntimeError('endchain_execute_grant')
         return 1
+    def check_bridge(self):
+        super().check_bridge()
+        result=check_budget(lambda q:self.sql(q,False))
+        self.save('endchain-budget-database.json',result)
+        self.result['endchain_budget_database_checks']=result['checks']
     def regressions(self):
         folder=self.sources/'_offline/phase6e11/endchain_v1'
         # Disposable runner dependency only. PostgreSQL-17 parser, fixed release.
-        self.command('pg17-parser-install',['python3','-m','pip','install','--disable-pip-version-check',
-            '--only-binary=:all:','--target',str(self.sources/'supabase/.temp/phase6e11-pg17-parser'),
-            'pglast==7.20'],timeout=120)
-        self.command('ci-psycopg-install',['python3','-m','pip','install','--disable-pip-version-check',
-            '--only-binary=:all:','--target',str(self.sources/'supabase/.temp/phase6e11-pg17-parser'),
-            'psycopg[binary]==3.2.10'],timeout=120)
         sys.path.insert(0,str(folder))
         sys.path.insert(0,str(self.sources/'supabase/.temp/phase6e11-pg17-parser'))
         import integral_ci
@@ -72,9 +89,6 @@ class Gate(prior.Gate):
         count=re.search(r'# tests (\d+)',output.stdout)
         if not count or int(count[1])<46:raise RuntimeError('endchain_node_incomplete')
         self.result['endchain_node_tests']=int(count[1])
-        result=check_budget(lambda q:self.sql(q,False))
-        self.save('endchain-budget-database.json',result)
-        self.result['endchain_budget_database_checks']=result['checks']
         self.command('endchain-arm-unit',['python3',str(folder/'test_auth_arm.py')])
         self.result['endchain_arm_unit_tests']=4
         py=self.command('endchain-python-unit',['python3','-m','unittest','discover','-s',str(folder),'-p','test_*.py'])

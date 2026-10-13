@@ -11,6 +11,26 @@ _spec=importlib.util.spec_from_file_location('integral_candidate_scenario',HERE/
 _scenario=importlib.util.module_from_spec(_spec);_spec.loader.exec_module(_scenario)
 capture=_scenario.capture
 
+def configure_local_tls(gate):
+    if os.environ.get('GITHUB_REPOSITORY')!='Yourizorge/fitmetzorge-staging':raise RuntimeError('ci_only')
+    # Generated keys stay inside the disposable container. Only its public CA
+    # is copied to the local verifier; no staging trust settings are changed.
+    args=['docker','exec','-u','root',gate.container,'sh','-c',
+        "umask 077; openssl req -x509 -newkey rsa:2048 -nodes -days 1 "
+        "-keyout /tmp/fmz-ci-server.key -out /tmp/fmz-ci-ca.crt -subj /CN=localhost "
+        "-addext subjectAltName=DNS:localhost,IP:127.0.0.1 >/dev/null 2>&1 && "
+        "chown postgres:postgres /tmp/fmz-ci-server.key /tmp/fmz-ci-ca.crt"]
+    p=subprocess.run(args,capture_output=True,timeout=15)
+    if p.returncode:raise RuntimeError('ci_tls_fixture')
+    for setting,value in [('ssl_cert_file','/tmp/fmz-ci-ca.crt'),('ssl_key_file','/tmp/fmz-ci-server.key'),('ssl','on')]:
+        gate.sql("alter system set "+setting+"='"+value+"';")
+    gate.sql('select pg_reload_conf();')
+    p=subprocess.run(['docker','exec',gate.container,'cat','/tmp/fmz-ci-ca.crt'],capture_output=True,timeout=5)
+    if p.returncode or not p.stdout.startswith(b'-----BEGIN CERTIFICATE-----'):raise RuntimeError('ci_ca_fixture')
+    ca=gate.work/'fmz-ci-ca.crt';ca.write_bytes(p.stdout)
+    gate.save('integral-local-tls.json',{'ca_sha256':hashlib.sha256(p.stdout).hexdigest(),
+        'hostname':'127.0.0.1','mode':'verify-full','scope':'disposable CI CA, not hosted TLS evidence'})
+
 class Composition:
     runner=HERE/'integral_auth.mjs'
     def __init__(self):
@@ -44,7 +64,10 @@ class Composition:
         for channel in ('setup','writer','reader','workflow'):
             connections[channel]=psycopg.connect(host='127.0.0.1',port=port,dbname='postgres',user='postgres',
                 password=password,autocommit=True,prepare_threshold=None,row_factory=dict_row,
-                connect_timeout=5,options='-c statement_timeout=5000 -c lock_timeout=1000')
+                sslmode='verify-full',sslrootcert=str(gate.work/'fmz-ci-ca.crt'),connect_timeout=5,
+                options='-c statement_timeout=5000 -c lock_timeout=1000 -c log_parameter_max_length=0 '
+                    '-c log_parameter_max_length_on_error=0 -c log_statement=none -c log_min_duration_statement=-1 '
+                    '-c log_min_duration_sample=-1 -c log_transaction_sample_rate=0 -c pgaudit.log_parameter=off')
         password=None
         def query(channel,phase,text,values=()):
             # SQL templates are fixed candidate sources, values are bound by the
@@ -94,6 +117,7 @@ class Composition:
             spaces=query('setup','fixture_receipt','select route,id::text id from fmz6e11_private.workspaces where window_id=$1::uuid',[window])
             by_route={r['route']:r['id'] for r in spaces}
             payload={'mode':'disposable_ci','authUrl':'http://127.0.0.1:59999','tokens':request['tokens'],
+                'ca':(gate.work/'fmz-ci-ca.crt').read_text(),
                 'key':request['anon'],'proof':'synthetic-only-local-proof','ids':roles,'window':window,
                 'a':by_route['A'],'b':by_route['B'],'initialRevision':active['revision'],
                 'scenario':capture()['workflow_actions'],'sourceSha':gate.result['head'] if 'head' in gate.result else os.environ['GITHUB_SHA'],
@@ -123,7 +147,9 @@ class Composition:
                         'commandCount':len(self.commands)-offset}
                 process.stdin.write(json.dumps(reply,default=str)+'\n');process.stdin.flush()
             process.wait(timeout=5)
-            if process.returncode or not result or result.get('pairs')!=71:raise RuntimeError('ci_integral_workflow_incomplete')
+            if process.returncode or not result or result.get('pairs')!=71:
+                gate.save('integral-workflow-stop.json',result or {'status':'NO_GO','phase':'child_process'})
+                raise RuntimeError('ci_integral_workflow_incomplete')
             if result['deletes']!=123:raise RuntimeError('ci_integral_delete_count')
             query('setup','control_restore',"update fmz6e11_request_private.control set enabled=false,expires_at=null")
             query('setup','control_restore',"update fmz6e11_private.config set enabled=false,proof_hash=null")

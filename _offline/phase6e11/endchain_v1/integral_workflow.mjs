@@ -17,7 +17,7 @@ let phase='identity';
 const transport=createSessionTransport({postgres:()=>({
  unsafe:(q,args=[])=>sql('workflow',phase,q,args),end:async()=>{}}),
  connectionUrl:'postgres://postgres:synthetic@db.mokxyyullfhkfalopbzd.supabase.co:5432/postgres?sslmode=verify-full',
- ca:'-----BEGIN CERTIFICATE-----\nCI_IPC_NOT_TLS_PROOF\n-----END CERTIFICATE-----',
+ ca:p.ca,
  sessionHost:'aws-0-eu-west-2.pooler.supabase.com',onCommand:async name=>{phase=name;}});
 const query=(q,args=[])=>sql('writer','controller_evidence',q,args);
 const measureQuery=(q,args=[])=>sql('reader','measurement',q,args);
