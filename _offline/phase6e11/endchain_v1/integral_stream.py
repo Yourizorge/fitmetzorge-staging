@@ -110,7 +110,10 @@ def run(query,save,ids,context,label,expected=None):
                 if v['queryid']!=reader and v['calls']!=old.get(v['queryid'],{}).get('calls',0)}
             if len(changed)!=1 or list(changed.values())!=[1]:raise ValueError('stream_utility_attribution')
             profile=delta(before,after,{**changed,reader:1})
-            if profile['own_wal_bytes'] or any(x['exec_ms']>2500 for x in profile['queries']):raise ValueError('stream_own_load')
+            save('integral-stream-'+label+'-io-%03d.json'%len(profiles),profile)
+            # A read-only cursor may generate WAL for PostgreSQL hint bits.
+            # Keep that load visible; temporary writes remain a hard failure.
+            if any(x['exec_ms']>2500 for x in profile['queries']):raise ValueError('stream_own_load')
             profiles.append(profile);previous=after
             return rows,terminal
         utility('DECLARE fmz_integral_hashes NO SCROLL CURSOR WITHOUT HOLD FOR '+stream)

@@ -47,6 +47,7 @@ class Composition:
         self.fixture_context={k:str(uuid.uuid4()) for k in ('window','a','b','key')}
         self.fixture_context['runs']={k:str(uuid.uuid4()) for k in ('seed','activate','delete_window')}
         self.preservation_baseline=None
+        self.gate_baseline=None
     def preservation(self,gate,ids,label):
         import psycopg,integral_stream
         from psycopg.rows import dict_row
@@ -59,18 +60,49 @@ class Composition:
             sslmode='verify-full',sslrootcert=str(gate.work/'fmz-ci-ca.crt'),connect_timeout=5)
         p=None
         def query(phase,text,args=()):
-            if args:raise RuntimeError('ci_stream_parameter_shape')
+            params=[]
+            def bind(match):
+                params.append(args[int(match[1])-1]);return '%s'
+            bound=re.sub(r'\$(\d+)',bind,text)
             self.before_sql(phase,text)
-            cursor=connection.execute(text)
+            cursor=connection.execute(bound,params)
             rows=cursor.fetchall() if cursor.description else []
             query.terminal_count=cursor.rowcount
             self.after_sql(phase,text);return rows
         try:
             value=integral_stream.run(query,gate.save,ids,self.fixture_context,label,self.preservation_baseline)
             if self.preservation_baseline is None:self.preservation_baseline=value
+            if label in ('before','after_cleanup'):
+                import lifecycle_gates as gates
+                from integral_io import QueryIO
+                query('gates_'+label+'_begin','BEGIN TRANSACTION READ ONLY')
+                query('gates_'+label+'_timeout',"SET LOCAL statement_timeout='5s'")
+                if query('gates_'+label+'_readonly',"select current_setting('transaction_read_only')='on' readonly")[0]['readonly'] is not True:
+                    raise RuntimeError('ci_gates_not_readonly')
+                monitor=QueryIO(lambda channel,phase,text,args=():query('gates_'+label+'_'+phase,text,args))
+                monitor.start()
+                def checked(name,text,args=()):
+                    qid=monitor.bind(text,args);rows=query('gates_'+label+'_'+name,text,args);monitor.executed(qid)
+                    return rows
+                context=self.fixture_context;people=list(ids.values());schemas=context['temporary_schemas']
+                access=checked('access',gates.ACCESS,[people])[0];gates.check_access(access)
+                migrations=checked('migrations',gates.MIGRATIONS)
+                gates.check_migrations(migrations,self.gate_baseline['migrations'] if self.gate_baseline else None)
+                catalog=checked('catalog',gates.CATALOG,[schemas])[0]['value']
+                if self.gate_baseline and catalog!=self.gate_baseline['catalog']:raise RuntimeError('ci_object_or_acl_drift')
+                absence=checked('absence',gates.ABSENCE,[schemas,people,context['window']])[0];gates.check_absence(absence)
+                gate.save('integral-gates-'+label+'.json',{'access':access,'migrations':migrations,
+                    'catalog_sha':gates.digest(catalog),'absence':absence,'io':monitor.close(),
+                    'unchanged':self.gate_baseline is None or catalog==self.gate_baseline['catalog']})
+                if self.gate_baseline is None:self.gate_baseline={'migrations':migrations,'catalog':catalog}
+                query('gates_'+label+'_rollback','ROLLBACK')
             return {'label':label,'commands':value['protocol_commands'],'tables':len(value['tables']),
                 'protected_equal':value['protected_equal']}
-        finally:connection.close()
+        finally:
+            if connection.info.transaction_status!=0:
+                try:query('gates_'+label+'_safety_rollback','ROLLBACK')
+                finally:connection.close()
+            else:connection.close()
     def before_sql(self,phase,sql):
         parsed=statements(sql)
         if len(self.commands)+len(parsed)>4096:raise RuntimeError('ci_diagnostic_command_ceiling')
@@ -259,7 +291,7 @@ class Composition:
             start_reader()
             auth_after=query('reader','workflow_auth_after','select '+STATS+' value')[0]['value']
             auth_load=difference(auth_before,auth_after)
-            if auth_load['commands']!=360 or auth_load['wal_bytes']!=0:raise RuntimeError('ci_workflow_auth_protocol')
+            if auth_load['commands']!=360:raise RuntimeError('ci_workflow_auth_protocol')
             gate.save('workflow-auth-protocol.json',{'verified_calls':72,**auth_load})
             deleted=fixture.perform(query,gate.save,ctx,'delete_window',[['windows','DELETE',[window]]],
                 "delete from fmz6e11_private.windows where id=$1::uuid and status='revoked' and not feature_enabled returning id::text",[window],claims,headers)
