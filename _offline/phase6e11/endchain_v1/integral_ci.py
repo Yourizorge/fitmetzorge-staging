@@ -186,7 +186,7 @@ class Composition:
             result=raw_query(channel,phase,text,values)
             if qid is not None:monitor.executed(qid)
             return result
-        process=None;timer=None;result=None
+        process=None;timer=None;result=None;enabled=None;controls=None;restored=None
         try:
             def start_reader():
                 nonlocal monitor
@@ -217,6 +217,7 @@ class Composition:
             if controls!={'config':{'id':True,'enabled':False,'proof_hash':None},'request':{'id':True,'enabled':False,'expires_at':None}}:
                 raise RuntimeError('ci_control_not_closed')
             if query('setup','control_enable',"update fmz6e11_private.config set enabled=true,proof_hash=encode(sha256(convert_to($1,'UTF8')),'hex') where id and not enabled and proof_hash is null returning id",['synthetic-only-local-proof'])!=[{'id':True}]:raise RuntimeError('ci_control_enable_count')
+            enabled={'config':{'id':True,'enabled':True,'proof_hash':hashlib.sha256(b'synthetic-only-local-proof').hexdigest()},'request':controls['request']}
             if query('setup','control_enable',"update fmz6e11_request_private.control set enabled=true,expires_at=clock_timestamp()+interval '3 minutes' where id and not enabled and expires_at is null returning id")!=[{'id':True}]:raise RuntimeError('ci_bridge_enable_count')
             enabled=query('reader','control_after',control_sql)[0]['value']
             if not enabled['config']['enabled'] or not enabled['request']['enabled']:raise RuntimeError('ci_controls_not_enabled')
@@ -324,6 +325,17 @@ class Composition:
                 if connection.info.transaction_status!=0:
                     try:query(channel,'safety_rollback','ROLLBACK')
                     except Exception:pass
+            if enabled is not None and restored!=controls:
+                try:
+                    before=raw_query('setup','safety_control_before',control_sql)[0]['value']
+                    raw_query('setup','safety_control_restore',"update fmz6e11_request_private.control set enabled=false,expires_at=null where id and enabled and expires_at=$1::timestamptz",[enabled['request']['expires_at']])
+                    raw_query('setup','safety_control_restore',"update fmz6e11_private.config set enabled=false,proof_hash=null where id and enabled and proof_hash=$1",[enabled['config']['proof_hash']])
+                    after=raw_query('setup','safety_control_after',control_sql)[0]['value']
+                    gate.save('integral-safety-control-pair.json',{'before_sha':hashlib.sha256(json.dumps(before,sort_keys=True).encode()).hexdigest(),
+                        'after_sha':hashlib.sha256(json.dumps(after,sort_keys=True).encode()).hexdigest(),'original_restored':after==controls})
+                except Exception as error:
+                    gate.save('integral-safety-control-stop.json',{'exception_class':type(error).__name__,'retry':False})
+            for connection in connections.values():
                 connection.close()
             gate.save('integral-protocol-trace.json',{'commands':self.commands,'events':self.events,
                 'seconds':time.monotonic()-self.started,'hosted_calls':0,'full_chain_admission':False})

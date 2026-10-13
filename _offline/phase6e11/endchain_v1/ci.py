@@ -17,7 +17,7 @@ NAMES=['budget.mjs','budget.test.mjs','database_checks.py','ci.py','scoped_cycle
  'capacity_check.py','test_capacity_check.py','integral_auth.mjs','integral_workflow.mjs','integral_ci.py',
  'cli_meter.py','test_cli_meter.py','integral_io.py','test_integral_io.py','fixture_lifecycle.py','test_fixture_lifecycle.py',
  'auth_protocol.py','test_auth_protocol.py','integral_stream.py','test_integral_stream.py',
- 'lifecycle_gates.py','test_lifecycle_gates.py']
+ 'lifecycle_gates.py','test_lifecycle_gates.py','complete_register.py','test_complete_register.py']
 EXTRA={'_offline/phase6e11/endchain_v1/'+n for n in NAMES}
 EXTRA|={'_offline/phase6e11/request_v4/'+n for n in ['transport.mjs','connection_options.mjs','config_shape.mjs']}
 EXTRA|={'_offline/phase6e11/resume_v1/read_only.mjs','_offline/phase6e11/transport_v1/contract.mjs',
@@ -43,6 +43,9 @@ class Gate(prior.Gate):
         dry=args[:2]==('db','push') and '--dry-run' in args
         if migration or dry:
             import cli_meter
+            if migration:
+                from lifecycle_gates import ci_preflight
+                ci_preflight(self)
             exact=('db','push','--local','--skip-vault','--yes') if migration else args
             return cli_meter.run(self,exact,timeout)
         return super().cli(*args,timeout=timeout)
@@ -105,4 +108,20 @@ class Gate(prior.Gate):
         super().advisors()
         self.result['cli_protocol_complete']=bool(getattr(self,'cli_protocol',[])) and all(x['complete'] for x in self.cli_protocol)
         if not self.result['cli_protocol_complete']:raise RuntimeError('integral_cli_accounting_not_admitted')
+        from complete_register import build
+        register=build(self.out)
+        paths={}
+        for prefix in register['prefixes']:
+            import hashlib
+            path=prefix.pop('path');key=hashlib.sha256(json.dumps(path,sort_keys=True).encode()).hexdigest()
+            if key in paths and paths[key]!=path:raise RuntimeError('safety_path_key_collision')
+            paths[key]=path;prefix['path_id']=key
+        self.save('register-prefix-reserves.json',{'prefixes':register['prefixes'],'safety_paths':paths})
+        for phase in register['phase_budgets']:
+            self.save('register-phase-'+phase+'.json',{'rows':[r for r in register['rows'] if r['phase']==phase]})
+        self.save('complete-command-register.json',{k:v for k,v in register.items() if k not in ('rows','prefixes','ci_only_bootstrap')})
+        self.result['integral_capacity_register']={k:register[k] for k in
+            ('complete_register','normal_capacity','worst_including_safety','phase_budgets','recommended_maximum','fits')}
+        self.result['full_chain_admission']=False
+        self.result['scope']='Integral local GoTrue/controller/workflow/cleanup/IO capacity proof; hosted admission remains denied by the approved budget.'
 if __name__=='__main__':sys.exit(Gate().run())

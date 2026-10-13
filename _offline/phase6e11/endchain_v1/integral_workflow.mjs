@@ -6,6 +6,7 @@ import {createSessionTransport} from './session_transport.mjs';
 const lines=readline.createInterface({input:process.stdin,terminal:false})[Symbol.asyncIterator]();
 const read=async()=>JSON.parse((await lines.next()).value);
 const p=await read();
+const startedAt=performance.now(),cpuStart=process.cpuUsage();
 if(p.mode!=='disposable_ci'||p.authUrl!=='http://127.0.0.1:59999')throw Error('ci_boundary');
 let count=p.commandCount,open=false,result,activeStep=0;
 const events=[];
@@ -51,7 +52,10 @@ try{
 }finally{
  try{await closeCollector();}catch{result={...result,status:'NO_GO',close_failed:true};process.exitCode=2;}
  await transport.close();
+ const cpu=process.cpuUsage(cpuStart),cpuMs=(cpu.user+cpu.system)/1000,wallMs=performance.now()-startedAt;
+ if(cpuMs>=2000||wallMs>=120000){result={...result,status:'NO_GO',code:'ci_worker_lifetime'};process.exitCode=2;}
  for(const key of Object.keys(p.tokens))p.tokens[key]=null;
- process.stdout.write(JSON.stringify({op:'complete',result:{...result,real_local_auth:true,commandCount:count}})+'\n');
+ process.stdout.write(JSON.stringify({op:'complete',result:{...result,real_local_auth:true,commandCount:count,
+  worker_cpu_ms:cpuMs,worker_wall_ms:wallMs,worker_cpu_limit_ms:2000,worker_wall_limit_ms:120000}})+'\n');
  process.stdin.destroy();
 }

@@ -1,5 +1,5 @@
 """Read-only lifecycle gates. Technical metadata only, no hosted transport."""
-import hashlib,json,re
+import hashlib,json,os,re,subprocess,time
 
 CATALOG="""select jsonb_build_object(
  'functions',(select coalesce(jsonb_object_agg(p.oid::text,jsonb_build_object(
@@ -12,7 +12,7 @@ CATALOG="""select jsonb_build_object(
    'name',c.relname,'owner',c.relowner,'acl',c.relacl,'rls',c.relrowsecurity,'force',c.relforcerowsecurity)),'{}')
    from pg_class c join pg_namespace n on n.oid=c.relnamespace
    where (n.nspname in('public','auth') or n.nspname like 'fmz6e11%') and n.nspname<>all($1::text[])),
- 'triggers',(select coalesce(jsonb_object_agg(t.oid::text,encode(sha256(convert_to(pg_get_triggerdef(t.oid)||t.tgenabled,'UTF8')),'hex')),'{}')
+ 'triggers',(select coalesce(jsonb_object_agg(t.oid::text,encode(sha256(convert_to(pg_get_triggerdef(t.oid)||t.tgenabled::text,'UTF8')),'hex')),'{}')
    from pg_trigger t join pg_class c on c.oid=t.tgrelid join pg_namespace n on n.oid=c.relnamespace
    join pg_proc p on p.oid=t.tgfoid join pg_namespace f on f.oid=p.pronamespace
    where (n.nspname in('public','auth') or n.nspname like 'fmz6e11%') and f.nspname<>all($1::text[])),
@@ -57,3 +57,35 @@ def check_migrations(rows,expected):
     if len(rows)!=44 or rows[-1]['version']!='20261012185121' or any(not re.fullmatch('[a-f0-9]{64}',r['sql_sha']) for r in rows):
         raise ValueError('lifecycle_migration_identity')
     if expected is not None and rows!=expected:raise ValueError('lifecycle_migration_drift')
+
+def ci_preflight(gate):
+    """Actual four-command native preflight immediately before candidate M44."""
+    if os.environ.get('GITHUB_REPOSITORY')!='Yourizorge/fitmetzorge-staging':raise RuntimeError('ci_only')
+    import psycopg
+    from psycopg.rows import dict_row
+    from integral_stream import GUARD
+    from sql_protocol import statements
+    password=subprocess.run(['docker','exec',gate.container,'sh','-c','printf %s "$POSTGRES_PASSWORD"'],capture_output=True,text=True,timeout=10)
+    endpoint=subprocess.run(['docker','port',gate.container,'5432/tcp'],capture_output=True,text=True,timeout=10)
+    choices=[x for x in endpoint.stdout.splitlines() if re.fullmatch(r'(127\.0\.0\.1|0\.0\.0\.0):\d+',x)]
+    if password.returncode or endpoint.returncode or len(choices)!=1:raise RuntimeError('ci_preflight_endpoint')
+    connection=psycopg.connect(host='127.0.0.1',port=int(choices[0].split(':')[1]),dbname='postgres',user='postgres',
+        password=password.stdout.strip(),autocommit=True,prepare_threshold=None,row_factory=dict_row,
+        sslmode='verify-full',sslrootcert=str(gate.work/'fmz-ci-ca.crt'),connect_timeout=5,
+        options='-c statement_timeout=5000 -c lock_timeout=1000')
+    password=None;trace=[];migrations=[];opened=False
+    def query(sql):
+        trace.append({'sql_sha256':statements(sql)[0]['sha256'],'confirmed':False})
+        started=time.monotonic();cursor=connection.execute(sql);rows=cursor.fetchall() if cursor.description else []
+        trace[-1].update(confirmed=True,duration_ms=round(1000*(time.monotonic()-started)));return rows
+    try:
+        query('BEGIN TRANSACTION READ ONLY');opened=True
+        identity=query(GUARD)[0]
+        if identity['ro']!='on' or identity['db']!='postgres' or identity['role']!='postgres' or identity['ssl'] is not True:
+            raise ValueError('preflight_identity')
+        migrations=query(MIGRATIONS)
+        if len(migrations)!=43 or migrations[-1]['version']!='20261012104331':raise ValueError('preflight_not_43')
+    finally:
+        if opened:query('ROLLBACK')
+        connection.close()
+        gate.save('integral-preflight.json',{'commands':trace,'migrations':migrations,'hosted_calls':0})

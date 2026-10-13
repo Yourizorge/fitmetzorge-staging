@@ -86,7 +86,7 @@ try{
   hosted_requests:0,emails_sent:0}})+'\n');
 }catch(error){
  if(guard)guard.close();
- if(receipt){try{await send({op:'remove',receipt});}catch{}}
+ if(receipt){try{await send({op:'remove',receipt,stopped:true});}catch{}}
  process.stdout.write(JSON.stringify({op:'failed',code:/^[a-z_]+[0-9]*$/.test(error.message)?error.message:'integral_auth_failed'})+'\n');process.exitCode=2;
 }finally{
  for(const role of Object.keys(auths)){auths[role].clear();tokens[role]=null;}

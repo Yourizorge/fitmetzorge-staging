@@ -58,6 +58,7 @@ def run(gate, composition=None):
     for k,v in public.items():args+=['-e',k+'='+v]
     args.append(IMAGE)
     process=psql=timer=None;receipt=None;metadata_receipt=None;ids={};run_id=str(uuid.uuid4());captures=[];container_started=False
+    removal_attempted={'guard':False,'audit':False}
     try:
         # Remove only fixtures created by the immediately preceding CI checks.
         phase='local_fixture_cleanup'
@@ -197,9 +198,15 @@ end loop;end$$;""",'supabase_auth_admin')
                     capture['pair_complete']=True;value={'events':events,'pair_complete':True,'exact_contract':composition is not None}
                 elif op=='remove':
                     if request['receipt']!=receipt:raise RuntimeError('ci_removal_receipt')
+                    removal_attempted['audit']=True
                     sql(audit.remove(run_id,ids,metadata_receipt));metadata_receipt=None
+                    removal_attempted['guard']=True
                     sql(guard.remove(run_id,ids,receipt));receipt=None
-                    if composition is not None:composition.preservation(gate,ids,'after_cleanup')
+                    if composition is not None and not request.get('stopped'):
+                        composition.preservation(gate,ids,'after_cleanup')
+                    if composition is not None and request.get('stopped'):
+                        s=guard.scope(run_id,ids);a=audit.scope(run_id,ids)
+                        if sql("select count(*) from pg_namespace where nspname in ('"+s+"','"+a+"')")!='0':raise RuntimeError('ci_safety_removal_unconfirmed')
                     value={'removed':True,'commandCount':len(composition.commands)} if composition is not None else True
                 else:raise RuntimeError('ci_ipc_denied')
                 reply={'value':value}
@@ -219,8 +226,10 @@ end loop;end$$;""",'supabase_auth_admin')
         if timer:timer.cancel()
         for p in (process,psql):
             if p and p.poll() is None:p.kill();p.communicate(timeout=5)
-        if metadata_receipt:sql(audit.remove(run_id,ids,metadata_receipt))
-        if receipt:sql(guard.remove(run_id,ids,receipt))
+        if metadata_receipt and not removal_attempted['audit']:
+            removal_attempted['audit']=True;sql(audit.remove(run_id,ids,metadata_receipt))
+        if receipt and not removal_attempted['guard']:
+            removal_attempted['guard']=True;sql(guard.remove(run_id,ids,receipt))
         gate.save('real-auth-ci-observed.json',{'image':IMAGE,'digests':image,'completed_pairs':captures,'command_evidence':command_evidence,'last_phase':phase,'hosted_requests':0})
         if composition is not None:
             gate.save('integral-auth-final-trace.json',{'commands':composition.commands,'last_phase':phase,
