@@ -3,13 +3,13 @@ import readline from 'node:readline';
 import assert from 'node:assert/strict';
 import {SyntheticAuth,EMAILS} from '../controller_v1/auth.mjs';
 import {guardedIssuance} from '../controller_guard_v1/issuance.mjs';
-import {metadata,Controller,sha} from '../controller_v1/core.mjs';
+import {metadata,Controller,sha,Halt} from '../controller_v1/core.mjs';
 import {NativeStore} from './native_store.mjs';
 import {ENDCHAIN_RUN_ID,PURPOSE} from './budget.mjs';
 import {bindSession} from '../auth_metadata_v1/hashes.mjs';
 const lines=readline.createInterface({input:process.stdin,terminal:false})[Symbol.asyncIterator]();
 const read=async()=>JSON.parse((await lines.next()).value);
-const send=async value=>{process.stdout.write(JSON.stringify(value)+'\n');const reply=await read();if(reply.error)throw Error(reply.error);return reply.value;};
+const send=async value=>{process.stdout.write(JSON.stringify(value)+'\n');const reply=await read();if(reply.error)throw new Halt('ci_'+value.op,reply.error);return reply.value;};
 const config=await read(),origin='https://mokxyyullfhkfalopbzd.supabase.co';
 if(config.mode!=='disposable_ci'||config.url!=='http://127.0.0.1:59999')throw Error('ci_boundary');
 const localFetch=(url,options)=>{

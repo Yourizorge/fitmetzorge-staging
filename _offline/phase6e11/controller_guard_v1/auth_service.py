@@ -154,9 +154,19 @@ end loop;end$$;""",'supabase_auth_admin')
                     if str(uuid.UUID(action))!=action:raise RuntimeError('ci_action_binding')
                     sql(audit.arm(run_id,ids,action,request['role'],request['operation']))
                     if json.loads(sql(audit.events(run_id,ids,action)))!=[]:raise RuntimeError('metadata_before_not_empty')
-                    value={'action':action,'seq':int(sql('select coalesce(max(seq),0) from fmz_ci_auth_observer.events'))}
+                    if composition is not None:
+                        from auth_protocol import STATS
+                        value=json.loads(sql("select jsonb_build_object('seq',(select coalesce(max(seq),0) from fmz_ci_auth_observer.events),'auth_stats',"+STATS+")::text"))
+                        value['action']=action
+                    else:value={'action':action,'seq':int(sql('select coalesce(max(seq),0) from fmz_ci_auth_observer.events'))}
                 elif op=='after':
-                    events=rows('select table_name,operation,xid,key_sha,actor_sha from fmz_ci_auth_observer.events where seq>'+str(int(request['before']['seq']))+' order by seq')
+                    event_sql='select table_name,operation,xid,key_sha,actor_sha from fmz_ci_auth_observer.events where seq>'+str(int(request['before']['seq']))+' order by seq'
+                    if composition is not None:
+                        from auth_protocol import STATS,difference
+                        combined=json.loads(sql("select jsonb_build_object('events',(select coalesce(jsonb_agg(e),'[]') from ("+event_sql+") e),'auth_stats',"+STATS+")::text"))
+                        events=combined['events'];protocol=difference(request['before']['auth_stats'],combined['auth_stats'])
+                        gate.save('auth-protocol-%02d.json'%len(captures),{'role':request['role'],'operation':request['operation'],**protocol})
+                    else:events=rows(event_sql)
                     observed=json.loads(sql(audit.events(run_id,ids,request['before']['action'])))
                     capture={'role':request['role'],'operation':request['operation'],'events':events,'scoped_audit':observed,'pair_complete':False}
                     captures.append(capture)
@@ -177,7 +187,7 @@ end loop;end$$;""",'supabase_auth_admin')
                     if any(not any(e['table_name']==t and e['operation']==op for e in events) for t,op in required[request['operation']]):
                         raise RuntimeError('ci_auth_missing_write')
                     if composition is not None:
-                        contracts[request['role']].validate(request['operation'],observed,request['result'].get('session_sha'))
+                        contracts[request['role']].validate(request['operation'],observed,request['result'].get('key_sha'))
                     sql(audit.disarm(run_id,ids,request['before']['action']))
                     capture['pair_complete']=True;value={'events':events,'pair_complete':True,'exact_contract':composition is not None}
                 elif op=='remove':
@@ -206,4 +216,7 @@ end loop;end$$;""",'supabase_auth_admin')
         if metadata_receipt:sql(audit.remove(run_id,ids,metadata_receipt))
         if receipt:sql(guard.remove(run_id,ids,receipt))
         gate.save('real-auth-ci-observed.json',{'image':IMAGE,'digests':image,'completed_pairs':captures,'command_evidence':command_evidence,'last_phase':phase,'hosted_requests':0})
+        if composition is not None:
+            gate.save('integral-auth-final-trace.json',{'commands':composition.commands,'last_phase':phase,
+                'confirmed_pairs':sum(x['pair_complete'] for x in captures),'hosted_calls':0})
         if container_started:private(['docker','rm','-f',NAME])
