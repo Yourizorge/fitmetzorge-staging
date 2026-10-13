@@ -48,7 +48,9 @@ def configure_local_tls(gate):
 
 class Composition:
     runner=HERE/'integral_auth.mjs'
-    def __init__(self):
+    def __init__(self,fault=None):
+        if fault not in (None,'before_call','after_commit','after_snapshot'):raise ValueError('ci_fault_scope')
+        self.fault=fault;self.injected=False;self.step_zero_reads=0
         self.commands=[];self.pending=[];self.started=time.monotonic();self.events=[];self.action=None
         self.fixture_context={k:str(uuid.uuid4()) for k in ('window','a','b','key')}
         self.fixture_context['runs']={k:str(uuid.uuid4()) for k in ('seed','activate','delete_window')}
@@ -173,11 +175,20 @@ class Composition:
             # SQL templates are fixed candidate sources, values are bound by the
             # driver. Repeated numbered parameters retain their original value.
             q,params=bind_parameters(text,values,lambda value:Jsonb(value) if isinstance(value,(dict,list)) else value)
+            first=self.action=={'kind':'workflow','step':0}
+            if first and channel=='reader' and phase=='measurement' and 'scoped_workflow_pair' in text:
+                self.step_zero_reads+=1
+            if not self.injected and first and ((self.fault=='before_call' and channel=='workflow' and phase=='call')
+                    or (self.fault=='after_snapshot' and self.step_zero_reads==2 and channel=='reader' and phase=='measurement')):
+                self.injected=True;raise RuntimeError('ci_injected_'+self.fault)
             self.before_sql(phase,text)
             try:
                 cur=connections[channel].execute(q,params)
                 rows=cur.fetchall() if cur.description else []
-                self.after_sql(phase,text);return rows
+                self.after_sql(phase,text)
+                if not self.injected and first and self.fault=='after_commit' and channel=='workflow' and phase=='commit':
+                    self.injected=True;raise RuntimeError('ci_injected_after_commit')
+                return rows
             except psycopg.Error as e:
                 raise RuntimeError('ci_sql_'+(e.sqlstate or 'unknown')) from None
         def query(channel,phase,text,values=()):
@@ -338,4 +349,5 @@ class Composition:
             for connection in connections.values():
                 connection.close()
             gate.save('integral-protocol-trace.json',{'commands':self.commands,'events':self.events,
-                'seconds':time.monotonic()-self.started,'hosted_calls':0,'full_chain_admission':False})
+                'seconds':time.monotonic()-self.started,'hosted_calls':0,'full_chain_admission':False,
+                'fault':self.fault,'fault_injected':self.injected})

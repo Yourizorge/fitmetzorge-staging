@@ -21,6 +21,10 @@ class RegisterTests(unittest.TestCase):
         self.assertEqual(sum(x['sql'] for x in safety_path()),9)
     def test_missing_unknown_phase_is_not_zero_cost(self):
         with self.assertRaises(ValueError):classify({'phase':'unknown'},[])
+    def test_cleanup_includes_its_evidence_io_and_auth(self):
+        for phase in ('controller_evidence','measurement','io_sample','call'):
+            self.assertEqual(classify({'phase':phase,'action':{'kind':'workflow','step':45}},[]),'cleanup')
+        self.assertEqual(classify({'phase':'evidence_query','action':{'kind':'auth','operation':'logout'}},[]),'cleanup')
     def test_managed_or_extra_queries_cannot_hide_overrun(self):
         with self.assertRaises(ValueError):Escrow({'complete_register':True,'fits':True,'worst_including_safety':1281})
         with self.assertRaises(ValueError):Escrow({'complete_register':False,'fits':True,'worst_including_safety':1})

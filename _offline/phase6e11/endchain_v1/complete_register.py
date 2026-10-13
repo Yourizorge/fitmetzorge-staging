@@ -4,9 +4,15 @@ It cannot run SQL or grant a larger budget. All native protocol commands and
 managed GoTrue commands are counted, with bounded stream capacity and a safety
 suffix at every prefix. CI bootstrap is explicit and is not a hosted action.
 """
-import collections,hashlib,json,pathlib,re
-from scenario import capture
-from sequence import compile_sequence
+import collections,hashlib,importlib.util,json,os,pathlib,re
+
+def bound_module(name,path):
+    spec=importlib.util.spec_from_file_location(name,path)
+    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module);return module
+
+HERE=pathlib.Path(__file__).resolve().parent
+scenario_source=bound_module('register_bound_scenario',HERE/'scenario.py')
+auth_source=bound_module('register_bound_auth',HERE.parent/'auth_metadata_v1/auth_contract.py')
 
 APPROVED=1280
 PHASES=('preflight','migration','baseline','setup','guard','auth','controller','route_a',
@@ -51,12 +57,14 @@ def classify(command,scenario):
     if p.startswith('stream_before_cleanup'):return 'measurements'
     if p.startswith(('stream_after_cleanup','gates_after_cleanup')):return 'final'
     if p.startswith(('stream_before','gates_before')):return 'baseline'
+    if p.startswith('preservation_'):return 'measurements'
+    if a.get('kind')=='workflow' and a.get('step',0)>=45:return 'cleanup'
+    if a.get('kind')=='auth' and a.get('operation') in ('logout','revoked_denial'):return 'cleanup'
     if p in ('guard_install','metadata_install'):return 'guard'
     if p=='remove':return 'cleanup'
     if p.startswith('control_') or p.startswith('lifecycle_') or p=='fixture_times':return 'setup' if a.get('kind')!='workflow' else 'cleanup'
     if p.startswith('io_'):return 'io'
     if p in ('workflow_auth_before','workflow_auth_after'):return 'io'
-    if p.startswith('preservation_'):return 'measurements'
     if p=='controller_evidence' or p=='evidence_query':return 'controller'
     if p in ('before','after','auth_identity_lock'):return 'auth'
     if a.get('kind')=='workflow':
@@ -70,7 +78,8 @@ def classify(command,scenario):
     raise ValueError('register_unclassified_'+p)
 
 def build(folder):
-    folder=pathlib.Path(folder)
+    folder=pathlib.Path(folder).resolve()
+    if os.name=='nt' and not str(folder).startswith('\\\\?\\'):folder=pathlib.Path('\\\\?\\'+str(folder))
     def read(name):return json.loads((folder/name).read_text())
     source=read('endchain-sources.json')['sources'];bundle=sha(source)
     trace=read('integral-complete-protocol-trace.json')['commands']
@@ -93,7 +102,7 @@ def build(folder):
     for label in ('enable','restore'):
         pair=read('integral-control-'+label+'-pair.json')
         if pair['actual_updates']!=2 or pair['expected_updates']!=2:raise ValueError('register_control_pair')
-    scenario=capture()['workflow_actions'];sequence=compile_sequence();rows=[];bootstrap=[]
+    scenario=scenario_source.capture()['workflow_actions'];rows=[];bootstrap=[]
     def add(phase,action,count,**more):
         if phase not in PHASES or type(count) is not int or count<0:raise ValueError('register_row_shape')
         for n in range(count):
@@ -114,9 +123,10 @@ def build(folder):
         phase=classify(c,scenario)
         if phase=='ci_bootstrap':bootstrap.append(c);continue
         action=c.get('action') or {};kind=action.get('kind');step=action.get('step')
-        contract=next((x for x in sequence['actions'] if x['kind']=='workflow' and x['scenario_step']==step),None) if kind=='workflow' and step is not None and step<45 else None
+        contract=scenario[step] if kind=='workflow' and step is not None and step<45 else None
+        expected=collections.Counter(('fmz6e11_private.'+t,op) for t,op,key in contract['writes']) if contract else None
         binding={'trace_command':c['command'],'template_sha':c['sql_sha256'],
-            'action_binding':action,'writeset':contract['expected_counts'] if contract else
+            'action_binding':action,'writeset':[{'table':t,'operation':op,'count':n} for (t,op),n in sorted(expected.items())] if contract else
              ['fixed infrastructure source contract; exact run/window/actor scope'],
             'proof':list(PAIRS) if kind in ('workflow','auth') else ['source identity','before/after or read-only receipt']}
         add(phase,c['phase'],1,**binding)
@@ -156,7 +166,7 @@ def build(folder):
         managed.append(value)
         add('auth' if i<12 else 'cleanup','gotrue_'+value['role']+'_'+value['operation'],value['commands'],
             queryids=[x['queryid'] for x in value['statements']],managed=True,
-            writeset=next(x['expected_counts'] for x in sequence['actions'] if x['kind']=='auth' and x['role']==value['role'] and x['operation']==value['operation']))
+            writeset=[{'table':'auth.'+t,'operation':op,'count':n} for (t,op),n in auth_source.COUNTS[value['operation']].items()])
         move_last_before(value['commands'],lambda row:row.get('action_binding')==
             {'kind':'auth','role':value['role'],'operation':value['operation']})
     value=read('workflow-auth-protocol.json')

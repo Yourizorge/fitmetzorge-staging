@@ -17,7 +17,7 @@ NAMES=['budget.mjs','budget.test.mjs','database_checks.py','ci.py','scoped_cycle
  'capacity_check.py','test_capacity_check.py','integral_auth.mjs','integral_workflow.mjs','integral_ci.py',
  'cli_meter.py','test_cli_meter.py','integral_io.py','test_integral_io.py','fixture_lifecycle.py','test_fixture_lifecycle.py',
  'auth_protocol.py','test_auth_protocol.py','integral_stream.py','test_integral_stream.py',
- 'lifecycle_gates.py','test_lifecycle_gates.py','complete_register.py','test_complete_register.py']
+ 'lifecycle_gates.py','test_lifecycle_gates.py','complete_register.py','test_complete_register.py','integral_failures.py']
 EXTRA={'_offline/phase6e11/endchain_v1/'+n for n in NAMES}
 EXTRA|={'_offline/phase6e11/request_v4/'+n for n in ['transport.mjs','connection_options.mjs','config_shape.mjs']}
 EXTRA|={'_offline/phase6e11/resume_v1/read_only.mjs','_offline/phase6e11/transport_v1/contract.mjs',
@@ -124,4 +124,6 @@ class Gate(prior.Gate):
             ('complete_register','normal_capacity','worst_including_safety','phase_budgets','recommended_maximum','fits')}
         self.result['full_chain_admission']=False
         self.result['scope']='Integral local GoTrue/controller/workflow/cleanup/IO capacity proof; hosted admission remains denied by the approved budget.'
+        from integral_failures import run as failure_matrix
+        self.result['integral_real_failure_cases']=len(failure_matrix(self))
 if __name__=='__main__':sys.exit(Gate().run())
