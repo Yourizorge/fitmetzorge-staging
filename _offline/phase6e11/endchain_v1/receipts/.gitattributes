@@ -1,2 +1,2 @@
 # Preserve the exact CI bytes used by the immutable receipt manifests.
-*.json -text
+*.json -text whitespace=cr-at-eol
