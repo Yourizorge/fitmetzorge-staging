@@ -99,4 +99,8 @@ class Gate(prior.Gate):
         self.result['hosted_admitted']=False
         self.result['full_chain_admission']=False
         self.result['scope']='CI component checks only; complete bound orchestration remains a separate gate.'
+    def advisors(self):
+        super().advisors()
+        self.result['cli_protocol_complete']=bool(getattr(self,'cli_protocol',[])) and all(x['complete'] for x in self.cli_protocol)
+        if not self.result['cli_protocol_complete']:raise RuntimeError('integral_cli_accounting_not_admitted')
 if __name__=='__main__':sys.exit(Gate().run())
