@@ -13,22 +13,26 @@ capture=_scenario.capture
 
 def configure_local_tls(gate):
     if os.environ.get('GITHUB_REPOSITORY')!='Yourizorge/fitmetzorge-staging':raise RuntimeError('ci_only')
-    # Generated keys stay inside the disposable container. Only its public CA
-    # is copied to the local verifier; no staging trust settings are changed.
-    args=['docker','exec','-u','root',gate.container,'sh','-c',
-        "umask 077; openssl req -x509 -newkey rsa:2048 -nodes -days 1 "
-        "-keyout /tmp/fmz-ci-server.key -out /tmp/fmz-ci-ca.crt -subj /CN=localhost "
-        "-addext subjectAltName=DNS:localhost,IP:127.0.0.1 >/dev/null 2>&1 && "
-        "chown postgres:postgres /tmp/fmz-ci-server.key /tmp/fmz-ci-ca.crt"]
-    p=subprocess.run(args,capture_output=True,timeout=15)
-    if p.returncode:raise RuntimeError('ci_tls_fixture')
+    # Generated keys stay in disposable CI work/container storage, never the
+    # evidence artifact. No staging credential or trust setting is changed.
+    key=gate.work/'fmz-ci-server.key';ca=gate.work/'fmz-ci-ca.crt'
+    commands=[('generate',['openssl','req','-x509','-newkey','rsa:2048','-nodes','-days','1',
+        '-keyout',str(key),'-out',str(ca),'-subj','/CN=localhost','-addext','subjectAltName=DNS:localhost,IP:127.0.0.1']),
+        ('key_copy',['docker','cp',str(key),gate.container+':/tmp/fmz-ci-server.key']),
+        ('ca_copy',['docker','cp',str(ca),gate.container+':/tmp/fmz-ci-ca.crt']),
+        ('owner',['docker','exec','-u','root',gate.container,'chown','postgres:postgres','/tmp/fmz-ci-server.key','/tmp/fmz-ci-ca.crt']),
+        ('mode',['docker','exec','-u','root',gate.container,'chmod','600','/tmp/fmz-ci-server.key'])]
+    for stage,args in commands:
+        p=subprocess.run(args,capture_output=True,timeout=15)
+        gate.save('integral-tls-'+stage+'.json',{'stage':stage,'exitcode':p.returncode})
+        if p.returncode:raise RuntimeError('ci_tls_'+stage)
+    key.chmod(0o600)
     for setting,value in [('ssl_cert_file','/tmp/fmz-ci-ca.crt'),('ssl_key_file','/tmp/fmz-ci-server.key'),('ssl','on')]:
         gate.sql("alter system set "+setting+"='"+value+"';")
     gate.sql('select pg_reload_conf();')
-    p=subprocess.run(['docker','exec',gate.container,'cat','/tmp/fmz-ci-ca.crt'],capture_output=True,timeout=5)
-    if p.returncode or not p.stdout.startswith(b'-----BEGIN CERTIFICATE-----'):raise RuntimeError('ci_ca_fixture')
-    ca=gate.work/'fmz-ci-ca.crt';ca.write_bytes(p.stdout)
-    gate.save('integral-local-tls.json',{'ca_sha256':hashlib.sha256(p.stdout).hexdigest(),
+    public=ca.read_bytes()
+    if not public.startswith(b'-----BEGIN CERTIFICATE-----'):raise RuntimeError('ci_ca_fixture')
+    gate.save('integral-local-tls.json',{'ca_sha256':hashlib.sha256(public).hexdigest(),
         'hostname':'127.0.0.1','mode':'verify-full','scope':'disposable CI CA, not hosted TLS evidence'})
 
 class Composition:
