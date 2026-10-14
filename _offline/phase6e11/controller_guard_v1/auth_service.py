@@ -126,7 +126,10 @@ end loop;end$$;""",'supabase_auth_admin')
             request=json.loads(line);op=request['op'];phase=op
             if composition is not None and op=='before':composition.action={'kind':'auth','role':request['role'],'operation':request['operation']}
             if composition is not None and op in ('install','remove','workflow'):composition.action={'kind':'lifecycle','operation':op}
-            if op=='complete':result=request['result'];break
+            if op=='complete':
+                result=request['result']
+                if composition is not None:composition.confirm_closure(gate,result)
+                break
             if op=='failed':raise RuntimeError(request['code'])
             try:
                 if op=='install':
@@ -153,6 +156,8 @@ end loop;end$$;""",'supabase_auth_admin')
                     if composition is not None:composition.after_sql('auth_identity_lock',request['sql'])
                 elif op=='workflow' and composition is not None:
                     value=composition.workflow(gate,request,sql,ids,run_id)
+                elif op=='finalize' and composition is not None:
+                    value=composition.finalize(gate,request)
                 elif op=='evidence_query' and composition is not None:
                     value=composition.evidence_query(request,sql)
                 elif op=='before':

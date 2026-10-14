@@ -12,7 +12,7 @@ export function validateManifest(value){
  const m=structuredClone(value);
  const full=m?.version===2&&m.run_id===ENDCHAIN_RUN_ID&&m.budget_ref===PURPOSE;
  if(!m||(!full&&m.version!==1)||!Array.isArray(m.identities)||m.identities.length!==3||!Array.isArray(m.workspaces)||m.workspaces.length!==2||
-    !Array.isArray(m.actions)||m.actions.length<1||m.actions.length>(full?128:64)||!Number.isSafeInteger(m.max_commands)||m.max_commands<1||m.max_commands>(full?1280:128))fail('manifest_shape');
+    !Array.isArray(m.actions)||m.actions.length<1||m.actions.length>(full?128:64)||!Number.isSafeInteger(m.max_commands)||m.max_commands<1||m.max_commands>limitFor({id:m.run_id,budget_ref:m.budget_ref}))fail('manifest_shape');
  const identities=new Map();
  for(const identity of m.identities){
   if(!identity||!UUID.test(identity.id)||!Object.hasOwn(BY_ROLE,identity.role)||identities.has(identity.role))fail('identity_allowlist');
@@ -55,7 +55,7 @@ export function validateManifest(value){
 // actor, role, SQL, action index or payload parameters.
 export async function boundController({manifest,grant,store,now=Date.now}){
  const fixed=validateManifest(manifest);
- if(fixed.version===2&&(grant.id!==fixed.run_id||grant.budget_ref!==fixed.budget_ref||limitFor(grant)!==1280))fail('manifest_run_binding');
+ if(fixed.version===2&&(grant.id!==fixed.run_id||grant.budget_ref!==fixed.budget_ref||limitFor(grant)!==limitFor({id:fixed.run_id,budget_ref:fixed.budget_ref})))fail('manifest_run_binding');
  if(await sha(fixed)!==grant.manifest_sha)fail('manifest_hash');
  const controller=new Controller({grant,store,now,maxCommands:fixed.max_commands});
  const execute=controller.execute.bind(controller);

@@ -56,6 +56,26 @@ class Composition:
         self.fixture_context['runs']={k:str(uuid.uuid4()) for k in ('seed','activate','delete_window')}
         self.preservation_baseline=None
         self.gate_baseline=None
+        self.closing_receipt=None
+    def finalize(self,gate,request):
+        from closure import counted_close
+        def read(name):return json.loads((gate.out/name).read_text())
+        gate.final_dry_run=gate.cli('db','push','--local','--dry-run','--skip-vault',timeout=90)
+        self.closing_receipt=counted_close(self.commands,read('integral-preflight.json'),
+            [read('cli-protocol-'+str(i)+'.json') for i in range(2)],
+            [read('auth-protocol-%02d.json'%i) for i in range(18)],
+            read('workflow-auth-protocol.json'),request['run_id'],request['purpose'])
+        gate.save('integral-closure-intent.json',self.closing_receipt)
+        return self.closing_receipt
+    def confirm_closure(self,gate,result):
+        receipt=self.closing_receipt
+        if not receipt or result.get('closure')!='confirmed':raise RuntimeError('ci_closure_unconfirmed')
+        if self.commands[-1]['phase']!='final_closure' or not self.commands[-1]['confirmed']:
+            raise RuntimeError('ci_closure_protocol')
+        from closure import BOOTSTRAP
+        total=sum(c['phase'] not in BOOTSTRAP for c in self.commands)+receipt['managed_auth']+receipt['preflight']+receipt['cli']
+        if total!=receipt['global_commands']:raise RuntimeError('ci_closure_count_mismatch')
+        gate.save('integral-closure.json',{**receipt,'confirmed':True})
     def preservation(self,gate,ids,label):
         import psycopg,integral_stream
         from psycopg.rows import dict_row
@@ -114,6 +134,9 @@ class Composition:
                 finally:connection.close()
             else:connection.close()
     def before_sql(self,phase,sql):
+        if self.closing_receipt is not None:
+            if phase!='evidence_query':raise RuntimeError('ci_sql_after_closure_intent')
+            phase='final_closure'
         parsed=statements(sql)
         if len(self.commands)+len(parsed)>4096:raise RuntimeError('ci_diagnostic_command_ceiling')
         for statement in parsed:

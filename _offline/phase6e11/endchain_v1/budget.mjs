@@ -1,14 +1,15 @@
 // One owner-authorized end-run. Every other run retains the 128-command cap.
 export const ENDCHAIN_RUN_ID='32321f17-07f1-4f3d-aa4b-3218bc7368a4';
 export const PURPOSE='6e11_single_endchain_20261012';
-// Interim allocation: the proven 338 ordinary cleanup commands must fit.
-// This is not full-chain admission; the complete command register must pass too.
-export const LIMITS=Object.freeze({baseline:34,auth:216,controller:20,route_a:144,
- route_b:132,restore:312,cleanup:386,final:36});
-const RESERVE=Object.freeze({cleanup:48,final:16});
+// The complete register additionally reserves the exact safety suffix before
+// every mutation. These phase ceilings alone never grant hosted admission.
+export const LIMITS=Object.freeze({preflight:4,migration:14,baseline:67,setup:33,guard:13,
+ auth:318,controller:286,route_a:191,route_b:286,restore:54,measurements:142,io:97,
+ cleanup:633,final:69,closure:1});
+const RESERVE=Object.freeze({cleanup:18,final:18,closure:18});
 const SAFETY=new Set(['guard_remove','observer_remove','jit_revoke','proven_fixture_delete','safety_check','record_stop']);
 const LABEL=/^[a-z][a-z0-9_]{1,63}$/;
-export const limitFor=g=>g?.id===ENDCHAIN_RUN_ID&&g?.budget_ref===PURPOSE?1280:128;
+export const limitFor=g=>g?.id===ENDCHAIN_RUN_ID&&g?.budget_ref===PURPOSE?2226:128;
 export class BudgetStop extends Error{
  constructor(phase,attempt,code){super(code);this.phase=phase;this.command=attempt;this.code=code;}
 }
@@ -28,9 +29,9 @@ export class SqlBudget{
   const elapsed=this.now()-this.started;
   if(elapsed<0||elapsed>=(safety?600000:540000))return this.stop(phase,'run_deadline');
   if(this.stopped&&!safety)throw new BudgetStop(phase,this.total+1,'run_stopped');
-  if(this.total>=1280||!safety&&this.total>=1216)return this.stop(phase,'global_query_budget');
-  const cap=LIMITS[phase]-(safety?0:RESERVE[phase]||0);
-  if(this.used[phase]>=cap)return this.stop(phase,'phase_query_budget');
+  const approved=limitFor({id:this.runId,budget_ref:PURPOSE});
+  if(this.total>=approved||!safety&&this.total>=2208)return this.stop(phase,'global_query_budget');
+  if(!safety&&this.used[phase]>=LIMITS[phase])return this.stop(phase,'phase_query_budget');
   this.total++;this.used[phase]++;this.busy=true;
   const entry={command:this.total,phase,signature,safety,started_ms:elapsed};
   this.events.push(entry);return entry;

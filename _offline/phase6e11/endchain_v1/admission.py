@@ -1,5 +1,6 @@
 """Fail-closed full-chain preregistration. No network, credentials or SQL."""
 import hashlib,json,pathlib,sys
+from closure import allowance,RUN_ID,PURPOSE
 from scenario import capture,ROOT
 
 PHASES=('before_saved','action_started','action_confirmed','after_saved','pair_validated')
@@ -12,7 +13,7 @@ def plan():
     value.update(auth_actions=[{'role':r,'operation':a} for r in ROLES for a in AUTH],
       state_order=[*PHASES,'next_step_allowed'],automatic_retries=0,collectors=1,
       max_seconds=MAX_SECONDS,canary_sql_limit_unchanged=128,
-      approved_full_chain_sql_limit=1280,approval_scope='one_run_only',
+      approved_full_chain_sql_limit=allowance(RUN_ID,PURPOSE),approval_scope='one_run_only',
       reserved_run_id='32321f17-07f1-4f3d-aa4b-3218bc7368a4',hosted_admitted=False,
       setup_and_cleanup_actions='must_be_compiled_and_source_bound_before_admission',
       safety_removal='exact_owned_guard_audit_and_JIT_even_after_NO_GO',
@@ -27,7 +28,7 @@ def validate(value,*,approved_sql_limit=128,compiled_sql_commands=None,lifecycle
     expected=plan()
     if value!=expected:raise ValueError('endchain_manifest_changed')
     if compiled_sql_commands is None or not lifecycle_compiled:raise ValueError('endchain_lifecycle_uncompiled')
-    if not isinstance(approved_sql_limit,int) or isinstance(approved_sql_limit,bool) or approved_sql_limit not in (128,1280):raise ValueError('endchain_budget_not_approved')
+    if not isinstance(approved_sql_limit,int) or isinstance(approved_sql_limit,bool) or approved_sql_limit not in (128,allowance(value['reserved_run_id'],PURPOSE)):raise ValueError('endchain_budget_not_approved')
     if not isinstance(compiled_sql_commands,int) or isinstance(compiled_sql_commands,bool) or compiled_sql_commands<value['minimum_evidence_commands'] or compiled_sql_commands>approved_sql_limit:
         raise ValueError('endchain_query_budget')
     if not source_bound_ci:raise ValueError('endchain_ci_missing')

@@ -19,8 +19,8 @@ def run(sql):
         elif not p.returncode or denied not in p.stderr:
             raise RuntimeError('budget_database_denial_'+name)
         checks.append({'name':name,'pass':True})
-    for n in (0,128,129,1280):case('exact_run_'+str(n),insert(count=n))
-    for n in (-1,1281):case('exact_limit_'+str(n),insert(count=n),'runs_command_count_check')
+    for n in (0,128,129,2226):case('exact_run_'+str(n),insert(count=n))
+    for n in (-1,2227):case('exact_limit_'+str(n),insert(count=n),'runs_command_count_check')
     case('ordinary_128',insert(OTHER,128))
     case('ordinary_129',insert(OTHER,129),'runs_command_count_check')
     for field,value in [('id',"'"+OTHER+"'"),('github_run','124'),('head_sha',"'"+'c'*40+"'"),
@@ -52,4 +52,4 @@ def run(sql):
     p=sql('select count(*) from '+SCHEMA+'.runs;')
     if p.returncode or p.stdout.strip()!='0':raise RuntimeError('local_budget_rows_remain')
     return {'status':'LOCAL_SINGLE_BUDGET_PASS','checks':len(checks),'cases':checks,
-            'hosted_calls':0,'test_rows_remaining':0,'ordinary_cap':128,'single_run_cap':1280}
+            'hosted_calls':0,'test_rows_remaining':0,'ordinary_cap':128,'single_run_cap':2226}

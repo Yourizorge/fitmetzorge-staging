@@ -17,7 +17,8 @@ NAMES=['budget.mjs','budget.test.mjs','database_checks.py','ci.py','scoped_cycle
  'capacity_check.py','test_capacity_check.py','integral_auth.mjs','integral_workflow.mjs','integral_ci.py',
  'cli_meter.py','test_cli_meter.py','integral_io.py','test_integral_io.py','fixture_lifecycle.py','test_fixture_lifecycle.py',
  'auth_protocol.py','test_auth_protocol.py','integral_stream.py','test_integral_stream.py',
- 'lifecycle_gates.py','test_lifecycle_gates.py','complete_register.py','test_complete_register.py','integral_failures.py']
+ 'lifecycle_gates.py','test_lifecycle_gates.py','complete_register.py','test_complete_register.py','integral_failures.py',
+ 'closure.py','test_closure.py']
 EXTRA={'_offline/phase6e11/endchain_v1/'+n for n in NAMES}
 EXTRA|={'_offline/phase6e11/request_v4/'+n for n in ['transport.mjs','connection_options.mjs','config_shape.mjs']}
 EXTRA|={'_offline/phase6e11/resume_v1/read_only.mjs','_offline/phase6e11/transport_v1/contract.mjs',
@@ -41,6 +42,7 @@ class Gate(prior.Gate):
     def cli(self,*args,timeout=120):
         migration=args[:2]==('migration','up') and self.result.get('phase')=='migration_44'
         dry=args[:2]==('db','push') and '--dry-run' in args
+        if dry and getattr(self,'final_dry_run',None) is not None:return self.final_dry_run
         if migration or dry:
             import cli_meter
             if migration:
@@ -122,8 +124,9 @@ class Gate(prior.Gate):
         self.save('complete-command-register.json',{k:v for k,v in register.items() if k not in ('rows','prefixes','ci_only_bootstrap')})
         self.result['integral_capacity_register']={k:register[k] for k in
             ('complete_register','normal_capacity','worst_including_safety','phase_budgets','recommended_maximum','fits')}
-        self.result['full_chain_admission']=False
-        self.result['scope']='Integral local GoTrue/controller/workflow/cleanup/IO capacity proof; hosted admission remains denied by the approved budget.'
+        if register['fits'] is not True:raise RuntimeError('integral_budget_not_admitted')
+        self.result['full_chain_admission']=True
+        self.result['scope']='Integral local GoTrue/controller/workflow/cleanup/IO and confirmed closure; hosted identity and source admission remain separate.'
         from integral_failures import run as failure_matrix
         self.result['integral_real_failure_cases']=len(failure_matrix(self))
 if __name__=='__main__':sys.exit(Gate().run())

@@ -119,7 +119,13 @@ stop costs; uncertain cleanup remains a hard NO-GO.
 - Candidate SHA256: `2709a7f78b8d09a510d14b007c04408ad209d1909d6465a735c66e0907d20d20`.
 - Bound endchain source-map SHA256: `53ef7db9723b88183c97b759c66247cc106494ad25194e307e86fdfba192845c`.
 - GitHub archive SHA256: `8cc6ab28be9ef29dc863f9e3f662d88c1c34470bda7d486697c46aa50904f042`.
-- Retained receipt manifest SHA256: `675401f96d9e1601e8c60c021ff46a6b87b0a9498693ee86fdfba192845c`.
+- Retained receipt manifest SHA256: `675401f96d9e1601e8c60c021ff46a6b87b0a9498693ee86c5ce8fe863763d9e`.
+
+Correction, 14 October 2026: the previous line mixed a shortened manifest hash
+with a different source digest. The replacement above is the full 64-character
+SHA256 recomputed from the unchanged retained MANIFEST.json bytes. Historical
+receipt files have not been edited. The new 2,226-command owner authorization
+requires a fresh CI composition and does not promote this historical run.
 
 Admission binds HEAD **and** the candidate bundle, which includes preserved
 uncommitted dependencies. HEAD alone is not an assertion that every dependency

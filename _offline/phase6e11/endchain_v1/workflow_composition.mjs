@@ -5,7 +5,7 @@ import {Controller,sha,Halt,canonical} from '../controller_v1/core.mjs';
 import {NativeStore} from './native_store.mjs';
 import {validateWorkflow} from '../controller_v1/workflow_evidence.mjs';
 import {createComposedHandler} from './composed_handler.mjs';
-import {ENDCHAIN_RUN_ID,PURPOSE} from './budget.mjs';
+import {ENDCHAIN_RUN_ID,PURPOSE,limitFor} from './budget.mjs';
 import {verifiedClaims,BASE} from '../edge_bridge_v2/handler.mjs';
 
 export const CLEANUP_LAYOUT=[['inbox_state','B',1],['inbox_state','A',1],
@@ -55,7 +55,7 @@ export async function runWorkflow({scenario,ids,sessions,window,a,b,initialRevis
  if(!Array.isArray(scenario)||scenario.length!==45)throw new Halt('admission','scenario_incomplete');
  const grant=controllerContext?.grant||{project:'mokxyyullfhkfalopbzd',id:ENDCHAIN_RUN_ID,budget_ref:PURPOSE,run:'1',sha:sourceSha,
   manifest_sha:await sha(scenario),starts:now(),expires:now()+120000};
- const controller=new Controller({grant,store:new NativeStore(query),now,maxCommands:1280});
+ const controller=new Controller({grant,store:new NativeStore(query),now,maxCommands:limitFor(grant)});
  if(controllerContext){
   if(!Number.isSafeInteger(controllerContext.step)||controllerContext.step!==12)throw new Halt('admission','auth_prefix_incomplete');
   controller.claimed=true;controller.step=controllerContext.step;

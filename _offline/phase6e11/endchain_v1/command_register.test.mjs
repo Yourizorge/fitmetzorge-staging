@@ -40,7 +40,7 @@ test('SQL is never relabelled as HTTP to escape its counter',()=>{
 });
 test('cleanup is reserved after every prefix, not only at entry',()=>{
  const p=input();p.failures[8].commands=Array.from({length:1273},(_,i)=>cmd('cleanup_'+i,'cleanup',{safety:true}));
- const r=compileRegister(p);assert.equal(r.minimum_registered_limit,1281);assert.equal(r.extra_sql,1);
+ const r=compileRegister(p);assert.equal(r.minimum_registered_limit,1281);assert.equal(r.extra_sql,1153);
  assert.equal(r.reserves[8].total,1281);assert.equal(r.budget_fits,false);
 });
 for(const kind of ['normal','cleanup'])test('source edits invalidate '+kind+' commands',()=>{

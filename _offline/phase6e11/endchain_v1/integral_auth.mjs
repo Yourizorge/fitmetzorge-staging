@@ -5,7 +5,7 @@ import {SyntheticAuth,EMAILS} from '../controller_v1/auth.mjs';
 import {guardedIssuance} from '../controller_guard_v1/issuance.mjs';
 import {metadata,Controller,sha,Halt} from '../controller_v1/core.mjs';
 import {NativeStore} from './native_store.mjs';
-import {ENDCHAIN_RUN_ID,PURPOSE} from './budget.mjs';
+import {ENDCHAIN_RUN_ID,PURPOSE,limitFor} from './budget.mjs';
 import {bindSession} from '../auth_metadata_v1/hashes.mjs';
 const lines=readline.createInterface({input:process.stdin,terminal:false})[Symbol.asyncIterator]();
 const read=async()=>JSON.parse((await lines.next()).value);
@@ -61,7 +61,7 @@ try{
  receipt=await send({op:'install',ids});
  const grant={project:'mokxyyullfhkfalopbzd',id:ENDCHAIN_RUN_ID,budget_ref:PURPOSE,run:'1',sha:config.sourceSha,
   manifest_sha:await sha(config.authContracts),starts:Date.now(),expires:Date.parse(receipt.expires_at)};
- controller=new Controller({grant,store:new NativeStore(query),maxCommands:1280});await controller.claim();
+ controller=new Controller({grant,store:new NativeStore(query),maxCommands:limitFor(grant)});await controller.claim();
  guard=guardedIssuance({receipt,query:(sql,args=[])=>send({op:'query',sql,args}),check:()=>{}});
  for(const role of Object.keys(EMAILS)){
   const expected={id:ids[role],role,trainer_id:role==='a_member'?ids.a_trainer:null};
@@ -76,11 +76,9 @@ try{
  guard.close();const removed=await send({op:'remove',receipt});receipt=null;
  if(removed.removed!==true)throw Error('ci_guard_removal');protocolCount=removed.commandCount;
  if(controller.step!==89)throw Error('ci_durable_sequence');
- // Local capacity study: do not falsify the M44 command count to close a run
- // larger than the owner-approved cap. Its budget rejection is retained.
- let closure='not_confirmed';
- try{await controller.store.close(grant.id,true,protocolCount+1);closure='confirmed';}
- catch(e){if(e.phase!=='evidence'||e.code!=='close_budget')throw e;closure='approved_budget_rejected';}
+ const final=await send({op:'finalize',run_id:grant.id,purpose:grant.budget_ref});
+ await controller.store.close(grant.id,true,final.global_commands);
+ const closure='confirmed';
  process.stdout.write(JSON.stringify({op:'complete',result:{status:'INTEGRAL_REAL_AUTH_WORKFLOW_CI_PASS',
   checks:proof.length,proof,workflow,durable_steps:controller.step,closure,protocolCount,
   hosted_requests:0,emails_sent:0}})+'\n');

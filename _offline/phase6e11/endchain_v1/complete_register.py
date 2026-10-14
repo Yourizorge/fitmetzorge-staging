@@ -14,7 +14,8 @@ HERE=pathlib.Path(__file__).resolve().parent
 scenario_source=bound_module('register_bound_scenario',HERE/'scenario.py')
 auth_source=bound_module('register_bound_auth',HERE.parent/'auth_metadata_v1/auth_contract.py')
 
-APPROVED=1280
+from closure import RUN_ID,PURPOSE,allowance
+APPROVED=allowance(RUN_ID,PURPOSE)
 PHASES=('preflight','migration','baseline','setup','guard','auth','controller','route_a',
         'route_b','restore','measurements','io','cleanup','final','closure')
 BOOTSTRAP={'local_fixture_cleanup','local_observer_schema','local_observer_triggers',
@@ -52,7 +53,7 @@ INFRASTRUCTURE_WRITES={
 
 def infrastructure_ref(command):
     p=command['phase']
-    if p in ('controller_evidence','evidence_query'):return 'controller'
+    if p in ('controller_evidence','evidence_query','final_closure'):return 'controller'
     if p in ('guard_install','metadata_install','remove'):return 'guard_objects'
     if p in ('before','after'):return 'auth_observer'
     if p in ('control_enable','control_restore'):return 'controls'
@@ -87,12 +88,13 @@ def reserve_prefixes(rows):
         reserve=max(emergency,cleanup_remaining)
         out.append({'after':i,'used':used,'remaining_normal_cleanup':cleanup_remaining,
                     'emergency_sql':emergency,'reserve':reserve,'required_total':used+reserve,
-                    'path':suffix,'within_1280':used+reserve<=APPROVED})
+                    'path':suffix,'within_approved_limit':used+reserve<=APPROVED})
     return out
 
 def classify(command,scenario):
     p=command['phase'];a=command.get('action') or {}
     if p in BOOTSTRAP:return 'ci_bootstrap'
+    if p=='final_closure':return 'closure'
     if p.startswith('stream_before_cleanup'):return 'measurements'
     if p.startswith(('stream_after_cleanup','gates_after_cleanup')):return 'final'
     if p.startswith(('stream_before','gates_before')):return 'baseline'
@@ -120,6 +122,9 @@ def build(folder):
     folder=pathlib.Path(folder).resolve()
     if os.name=='nt' and not str(folder).startswith('\\\\?\\'):folder=pathlib.Path('\\\\?\\'+str(folder))
     def read(name):return json.loads((folder/name).read_text())
+    closure=read('integral-closure.json')
+    if (closure.get('run_id'),closure.get('purpose'))!=(RUN_ID,PURPOSE) or closure.get('confirmed') is not True:
+        raise ValueError('register_closure_unconfirmed')
     source=read('endchain-sources.json')['sources'];bundle=sha(source)
     trace=read('integral-complete-protocol-trace.json')['commands']
     if [x['command'] for x in trace]!=list(range(1,len(trace)+1)) or not all(x['confirmed'] for x in trace):
@@ -218,15 +223,17 @@ def build(folder):
         add(phase,'gotrue_workflow_identity_'+str(step),5,managed=True,writeset=[])
         move_last_before(5,lambda row:row.get('action_binding')=={'kind':'workflow','step':step})
     for c in cli[1]['commands']:add('final','empty_cli_dry_run',1,template_sha=c['sha256'],writeset=[])
-    add('closure','durable_final_receipt',1,writeset=['controller runs: exact reserved run only'],
-        proof=['complete 89-step evidence','exact global count','all pairs validated'])
+    if closure['global_commands']!=len(trace)-len(bootstrap)+20+594:raise ValueError('register_closure_count')
+    closing=[r for r in rows if r['phase']=='closure']
+    if len(closing)!=1:raise ValueError('register_closure_missing')
+    rows=[r for r in rows if r['phase']!='closure']+closing
     # Managed SQL rows are charged before their HTTP action by the executor.
     # The conservative prefix model reserves them even if the next action fails.
     for i,row in enumerate(rows):row['id']='cmd_'+str(i+1).zfill(5)
     prefixes=reserve_prefixes(rows);normal=sum(x['sql'] for x in rows);worst=max(x['required_total'] for x in prefixes)
     counts=dict(collections.Counter(r['phase'] for r in rows));total_managed=sum(x['sql'] for x in rows if x.get('managed'))
-    return {'version':1,'complete_register':True,'approved_limit':APPROVED,'normal_capacity':normal,
-        'worst_including_safety':worst,'extra_above_1280':max(0,worst-APPROVED),
+    return {'version':2,'run_id':RUN_ID,'purpose':PURPOSE,'complete_register':True,'approved_limit':APPROVED,'normal_capacity':normal,
+        'worst_including_safety':worst,'extra_above_approved_limit':max(0,worst-APPROVED),
         'recommended_maximum':worst,'fits':worst<=APPROVED,'hosted_admitted':False,'hosted_attempt_consumed':False,
         'rows':rows,'prefixes':prefixes,'phase_budgets':counts,'stream_capacity':streams,
         'managed_auth_commands':total_managed,'native_and_cli_capacity':normal-total_managed,
@@ -245,6 +252,8 @@ def build(folder):
 class Escrow:
     """Executable pre-mutation gate. The current cap cannot be raised here."""
     def __init__(self,register):
+        if (register.get('run_id'),register.get('purpose'))!=(RUN_ID,PURPOSE):
+            raise ValueError('register_run_not_authorized')
         if not register.get('complete_register') or register.get('fits') is not True or register['worst_including_safety']>APPROVED:
             raise ValueError('complete_budget_not_admitted')
         self.register=register;self.used=0;self.index=0

@@ -1,5 +1,5 @@
 import unittest
-from complete_register import safety_path,reserve_prefixes,Escrow,classify
+from complete_register import safety_path,reserve_prefixes,Escrow,classify,RUN_ID,PURPOSE
 
 class RegisterTests(unittest.TestCase):
     def test_every_prefix_keeps_remaining_cleanup(self):
@@ -26,16 +26,16 @@ class RegisterTests(unittest.TestCase):
             self.assertEqual(classify({'phase':phase,'action':{'kind':'workflow','step':45}},[]),'cleanup')
         self.assertEqual(classify({'phase':'evidence_query','action':{'kind':'auth','operation':'logout'}},[]),'cleanup')
     def test_managed_or_extra_queries_cannot_hide_overrun(self):
-        with self.assertRaises(ValueError):Escrow({'complete_register':True,'fits':True,'worst_including_safety':1281})
+        with self.assertRaises(ValueError):Escrow({'run_id':RUN_ID,'purpose':PURPOSE,'complete_register':True,'fits':True,'worst_including_safety':2227})
         with self.assertRaises(ValueError):Escrow({'complete_register':False,'fits':True,'worst_including_safety':1})
     def test_active_guard_extends_reserve(self):
         before=reserve_prefixes([{'phase':'guard','sql':1,'state_after':{'guard':True}}])
         self.assertEqual(before[1]['emergency_sql']-before[0]['emergency_sql'],7)
     def test_every_prefix_blocks_when_cleanup_cannot_fit(self):
-        rows=[{'sql':1,'phase':'cleanup'} for _ in range(1275)]
-        register={'complete_register':True,'fits':True,'worst_including_safety':1280,'rows':rows,'prefixes':reserve_prefixes(rows)}
+        rows=[{'sql':1,'phase':'cleanup'} for _ in range(2221)]
+        register={'run_id':RUN_ID,'purpose':PURPOSE,'complete_register':True,'fits':True,'worst_including_safety':2226,'rows':rows,'prefixes':reserve_prefixes(rows)}
         executor=Escrow(register)
-        for _ in range(1271):executor.charge()
+        for _ in range(2217):executor.charge()
         with self.assertRaises(ValueError):executor.charge()
 
 if __name__=='__main__':unittest.main()

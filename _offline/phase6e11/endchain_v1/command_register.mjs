@@ -1,11 +1,12 @@
 // Protocol commands, not helper invocations. No transport or hosted admission.
 import {sha,Halt} from '../controller_v1/core.mjs';
+import {limitFor} from './budget.mjs';
 const LABEL=/^[a-z][a-z0-9_]{1,63}$/;
 const HASH=/^[0-9a-f]{64}$/;
 const PHASES=['baseline','fixtures','guard','observer','auth','controller','route_a',
  'route_b','restore','measurements','io','cleanup','final','closure'];
 const TYPES=['sql','http','local'];
-export const MAX_SQL=1280;
+export const MAX_SQL=128;
 const problem=code=>{throw new Halt('command_register',code);};
 function freeze(value){if(value&&typeof value==='object'){Object.values(value).forEach(freeze);Object.freeze(value);}return value;}
 function integer(n){return Number.isSafeInteger(n)&&n>=0;}
@@ -19,7 +20,8 @@ function command(c){
  if(c.type!=='sql'&&c.protocol_commands!==0)problem('non_sql_misclassified');
  return structuredClone(c);
 }
-export function compileRegister({steps,failures,sourceHashes,complete,missing=[]}){
+export function compileRegister({steps,failures,sourceHashes,complete,missing=[],run=null}){
+ const limit=limitFor(run);
  if(!Array.isArray(steps)||!steps.length||steps.length>4096||!Array.isArray(failures)||
     !sourceHashes||Object.values(sourceHashes).some(v=>!HASH.test(v))||
     typeof complete!=='boolean'||!Array.isArray(missing)||missing.some(v=>!LABEL.test(v)))problem('register_shape');
@@ -54,12 +56,12 @@ export function compileRegister({steps,failures,sourceHashes,complete,missing=[]
   const suffix=paths.get(i),reserve=suffix?count(suffix):null;
   const total=reserve===null?null:used+reserve;
   if(total!==null)worst=Math.max(worst,total);
-  reserves.push({after:i,used,reserved_sql:reserve,total,within_limit:total!==null&&total<=MAX_SQL});
+  reserves.push({after:i,used,reserved_sql:reserve,total,within_limit:total!==null&&total<=limit});
  }
  return {version:1,complete,missing,commands,failures:[...paths].map(([after,commands])=>({after,commands})),
   sourceHashes,phase_counts:phaseCounts,normal_sql:count(commands),minimum_registered_limit:worst,
-  extra_sql:Math.max(0,worst-MAX_SQL),limit:MAX_SQL,reserves,uncovered_prefixes:absent,uncovered_phases:absentPhases,
-  budget_fits:complete&&!missing.length&&!absent.length&&worst<=MAX_SQL,
+  extra_sql:Math.max(0,worst-limit),limit,run:structuredClone(run),reserves,uncovered_prefixes:absent,uncovered_phases:absentPhases,
+  budget_fits:complete&&!missing.length&&!absent.length&&worst<=limit,
   // A register/trace alone cannot grant database or hosted execution.
   hosted_admitted:false};
 }
@@ -69,7 +71,7 @@ export class RegisteredExecutor{
   if(typeof localOnly!=='boolean'||typeof persist!=='function'||!Number.isFinite(expiresAt))problem('executor_shape');
   if(!localOnly)problem('hosted_executor_not_admitted');
   const rebuilt=compileRegister({steps:register.commands,failures:register.failures,
-   sourceHashes:register.sourceHashes,complete:register.complete,missing:register.missing});
+   sourceHashes:register.sourceHashes,complete:register.complete,missing:register.missing,run:register.run});
   if(JSON.stringify(register)!==JSON.stringify(rebuilt))problem('register_modified');
   if(!register.budget_fits)problem('register_not_admitted');
   for(const [name,source] of Object.entries(register.sourceHashes))
@@ -85,7 +87,7 @@ export class RegisteredExecutor{
  }
  async one(c){
   const ordinal=this.used+c.protocol_commands;
-  if(ordinal>MAX_SQL||this.now()>=(this.inSafety?this.safetyExpiresAt:this.expiresAt))problem('hard_limit');
+  if(ordinal>this.register.limit||this.now()>=(this.inSafety?this.safetyExpiresAt:this.expiresAt))problem('hard_limit');
   const entry={id:c.id,phase:c.phase,type:c.type,command:ordinal,source_sha:c.source_sha,
    template_sha:c.template_sha,started_ms:this.now()-this.started,status:'started',safety:this.inSafety};
   // A durable intent precedes ALL protocol commands, including safety removal.
@@ -111,7 +113,7 @@ export class RegisteredExecutor{
   if(this.busy||this.stopped||this.inSafety||this.index>=this.register.commands.length)problem('executor_closed');
   const current=this.register.commands[this.index];
   const prefix=this.register.reserves[this.index+1];
-  if(!prefix.within_limit||this.used+current.protocol_commands+prefix.reserved_sql>MAX_SQL)problem('cleanup_escrow');
+  if(!prefix.within_limit||this.used+current.protocol_commands+prefix.reserved_sql>this.register.limit)problem('cleanup_escrow');
   this.busy=true;
   try{const value=await this.one(current);this.index++;return value;}
   catch(error){this.stopped=true;this.failure={after:this.index+1,phase:current.phase,command:this.used,

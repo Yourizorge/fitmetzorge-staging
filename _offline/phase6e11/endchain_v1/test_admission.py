@@ -22,18 +22,18 @@ class Preregistration(unittest.TestCase):
     def test_old_128_limit_still_denies(self):
         with self.assertRaisesRegex(ValueError,'query_budget'):admission.validate(self.plan,compiled_sql_commands=315,lifecycle_compiled=True)
     def test_expanded_limit_alone_insufficient(self):
-        with self.assertRaisesRegex(ValueError,'ci_missing'):admission.validate(self.plan,approved_sql_limit=1280,compiled_sql_commands=1000,lifecycle_compiled=True)
+        with self.assertRaisesRegex(ValueError,'ci_missing'):admission.validate(self.plan,approved_sql_limit=2226,compiled_sql_commands=1000,lifecycle_compiled=True)
     def test_ci_without_access_denied(self):
-        with self.assertRaisesRegex(ValueError,'access_missing'):admission.validate(self.plan,approved_sql_limit=1280,compiled_sql_commands=1000,lifecycle_compiled=True,source_bound_ci=True)
+        with self.assertRaisesRegex(ValueError,'access_missing'):admission.validate(self.plan,approved_sql_limit=2226,compiled_sql_commands=1000,lifecycle_compiled=True,source_bound_ci=True)
     def test_mutated_plan_denied(self):
         self.plan['automatic_retries']=1
         with self.assertRaisesRegex(ValueError,'manifest_changed'):admission.validate(self.plan)
     def test_request_budget_must_include_all_commands(self):
-        for n in (314,1281):
+        for n in (314,2227):
             with self.subTest(n=n),self.assertRaisesRegex(ValueError,'query_budget'):
-                admission.validate(self.plan,approved_sql_limit=1280,compiled_sql_commands=n,lifecycle_compiled=True)
+                admission.validate(self.plan,approved_sql_limit=2226,compiled_sql_commands=n,lifecycle_compiled=True)
     def test_fully_specified_input_not_hosted_pass(self):
-        r=admission.validate(self.plan,approved_sql_limit=1280,compiled_sql_commands=1000,lifecycle_compiled=True,source_bound_ci=True,hosted_access_attested=True)
+        r=admission.validate(self.plan,approved_sql_limit=2226,compiled_sql_commands=1000,lifecycle_compiled=True,source_bound_ci=True,hosted_access_attested=True)
         self.assertFalse(r['hosted_pass'])
 
 if __name__=='__main__':unittest.main()
