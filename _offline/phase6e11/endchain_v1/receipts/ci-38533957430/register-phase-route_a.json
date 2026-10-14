@@ -1,0 +1,4154 @@
+{
+  "rows": [
+    {
+      "action": "gotrue_workflow_identity_0",
+      "id": "cmd_00543",
+      "managed": true,
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_0",
+      "id": "cmd_00544",
+      "managed": true,
+      "ordinal_in_action": 1,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_0",
+      "id": "cmd_00545",
+      "managed": true,
+      "ordinal_in_action": 2,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_0",
+      "id": "cmd_00546",
+      "managed": true,
+      "ordinal_in_action": 3,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_0",
+      "id": "cmd_00547",
+      "managed": true,
+      "ordinal_in_action": 4,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "begin",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 0
+      },
+      "id": "cmd_00561",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "a8402858d4f1e1d27afee976520485ebb4b96a5387355b823f0d0b8079729032",
+      "timeout_ms": 5000,
+      "trace_command": 327,
+      "writeset": []
+    },
+    {
+      "action": "identity",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 0
+      },
+      "id": "cmd_00564",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "707cd885d9196193537356dd9b75b2a92e81d71ffab140f34792cfce02f3de56",
+      "timeout_ms": 5000,
+      "trace_command": 330,
+      "writeset": []
+    },
+    {
+      "action": "binding",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 0
+      },
+      "id": "cmd_00567",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "2ac216d778bf256f66c62bf776b8ccf47c3108bfe20a6ba905493daa9bbd9e09",
+      "timeout_ms": 5000,
+      "trace_command": 333,
+      "writeset": []
+    },
+    {
+      "action": "call",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 0
+      },
+      "id": "cmd_00570",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bba9e91733ccaf91a30c4710ea28fe4543eac41bc9f9b7838f8f5d650e5fe56b",
+      "timeout_ms": 5000,
+      "trace_command": 336,
+      "writeset": [
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.audit"
+        },
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.events"
+        },
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.requests"
+        },
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.source_heads"
+        },
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.source_versions"
+        },
+        {
+          "count": 1,
+          "operation": "UPDATE",
+          "table": "fmz6e11_private.windows"
+        }
+      ]
+    },
+    {
+      "action": "commit",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 0
+      },
+      "id": "cmd_00571",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f",
+      "timeout_ms": 5000,
+      "trace_command": 337,
+      "writeset": []
+    },
+    {
+      "action": "seal",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 0
+      },
+      "id": "cmd_00574",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "c2d1566dcba7ea62261991865f37f45ec3819a2f1ff037d3bc6eed5456b5ab7d",
+      "timeout_ms": 5000,
+      "trace_command": 340,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_1",
+      "id": "cmd_00580",
+      "managed": true,
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_1",
+      "id": "cmd_00581",
+      "managed": true,
+      "ordinal_in_action": 1,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_1",
+      "id": "cmd_00582",
+      "managed": true,
+      "ordinal_in_action": 2,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_1",
+      "id": "cmd_00583",
+      "managed": true,
+      "ordinal_in_action": 3,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_1",
+      "id": "cmd_00584",
+      "managed": true,
+      "ordinal_in_action": 4,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "begin",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 1
+      },
+      "id": "cmd_00588",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "a8402858d4f1e1d27afee976520485ebb4b96a5387355b823f0d0b8079729032",
+      "timeout_ms": 5000,
+      "trace_command": 349,
+      "writeset": []
+    },
+    {
+      "action": "binding",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 1
+      },
+      "id": "cmd_00589",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "2ac216d778bf256f66c62bf776b8ccf47c3108bfe20a6ba905493daa9bbd9e09",
+      "timeout_ms": 5000,
+      "trace_command": 350,
+      "writeset": []
+    },
+    {
+      "action": "call",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 1
+      },
+      "id": "cmd_00590",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bba9e91733ccaf91a30c4710ea28fe4543eac41bc9f9b7838f8f5d650e5fe56b",
+      "timeout_ms": 5000,
+      "trace_command": 351,
+      "writeset": [
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.audit"
+        },
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.events"
+        },
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.proposals"
+        },
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.requests"
+        },
+        {
+          "count": 1,
+          "operation": "UPDATE",
+          "table": "fmz6e11_private.windows"
+        }
+      ]
+    },
+    {
+      "action": "commit",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 1
+      },
+      "id": "cmd_00591",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f",
+      "timeout_ms": 5000,
+      "trace_command": 352,
+      "writeset": []
+    },
+    {
+      "action": "seal",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 1
+      },
+      "id": "cmd_00592",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "c2d1566dcba7ea62261991865f37f45ec3819a2f1ff037d3bc6eed5456b5ab7d",
+      "timeout_ms": 5000,
+      "trace_command": 353,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_2",
+      "id": "cmd_00598",
+      "managed": true,
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_2",
+      "id": "cmd_00599",
+      "managed": true,
+      "ordinal_in_action": 1,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_2",
+      "id": "cmd_00600",
+      "managed": true,
+      "ordinal_in_action": 2,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_2",
+      "id": "cmd_00601",
+      "managed": true,
+      "ordinal_in_action": 3,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_2",
+      "id": "cmd_00602",
+      "managed": true,
+      "ordinal_in_action": 4,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "begin",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 2
+      },
+      "id": "cmd_00606",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "a8402858d4f1e1d27afee976520485ebb4b96a5387355b823f0d0b8079729032",
+      "timeout_ms": 5000,
+      "trace_command": 362,
+      "writeset": []
+    },
+    {
+      "action": "binding",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 2
+      },
+      "id": "cmd_00607",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "2ac216d778bf256f66c62bf776b8ccf47c3108bfe20a6ba905493daa9bbd9e09",
+      "timeout_ms": 5000,
+      "trace_command": 363,
+      "writeset": []
+    },
+    {
+      "action": "call",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 2
+      },
+      "id": "cmd_00608",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bba9e91733ccaf91a30c4710ea28fe4543eac41bc9f9b7838f8f5d650e5fe56b",
+      "timeout_ms": 5000,
+      "trace_command": 364,
+      "writeset": [
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.events"
+        }
+      ]
+    },
+    {
+      "action": "commit",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 2
+      },
+      "id": "cmd_00609",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f",
+      "timeout_ms": 5000,
+      "trace_command": 365,
+      "writeset": []
+    },
+    {
+      "action": "seal",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 2
+      },
+      "id": "cmd_00610",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "c2d1566dcba7ea62261991865f37f45ec3819a2f1ff037d3bc6eed5456b5ab7d",
+      "timeout_ms": 5000,
+      "trace_command": 366,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_3",
+      "id": "cmd_00616",
+      "managed": true,
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_3",
+      "id": "cmd_00617",
+      "managed": true,
+      "ordinal_in_action": 1,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_3",
+      "id": "cmd_00618",
+      "managed": true,
+      "ordinal_in_action": 2,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_3",
+      "id": "cmd_00619",
+      "managed": true,
+      "ordinal_in_action": 3,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_3",
+      "id": "cmd_00620",
+      "managed": true,
+      "ordinal_in_action": 4,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "begin",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 3
+      },
+      "id": "cmd_00624",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "a8402858d4f1e1d27afee976520485ebb4b96a5387355b823f0d0b8079729032",
+      "timeout_ms": 5000,
+      "trace_command": 375,
+      "writeset": []
+    },
+    {
+      "action": "binding",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 3
+      },
+      "id": "cmd_00625",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "2ac216d778bf256f66c62bf776b8ccf47c3108bfe20a6ba905493daa9bbd9e09",
+      "timeout_ms": 5000,
+      "trace_command": 376,
+      "writeset": []
+    },
+    {
+      "action": "call",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 3
+      },
+      "id": "cmd_00626",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bba9e91733ccaf91a30c4710ea28fe4543eac41bc9f9b7838f8f5d650e5fe56b",
+      "timeout_ms": 5000,
+      "trace_command": 377,
+      "writeset": [
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.audit"
+        },
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.events"
+        },
+        {
+          "count": 1,
+          "operation": "UPDATE",
+          "table": "fmz6e11_private.proposals"
+        },
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.requests"
+        },
+        {
+          "count": 1,
+          "operation": "UPDATE",
+          "table": "fmz6e11_private.windows"
+        }
+      ]
+    },
+    {
+      "action": "commit",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 3
+      },
+      "id": "cmd_00627",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f",
+      "timeout_ms": 5000,
+      "trace_command": 378,
+      "writeset": []
+    },
+    {
+      "action": "seal",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 3
+      },
+      "id": "cmd_00628",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "c2d1566dcba7ea62261991865f37f45ec3819a2f1ff037d3bc6eed5456b5ab7d",
+      "timeout_ms": 5000,
+      "trace_command": 379,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_4",
+      "id": "cmd_00634",
+      "managed": true,
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_4",
+      "id": "cmd_00635",
+      "managed": true,
+      "ordinal_in_action": 1,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_4",
+      "id": "cmd_00636",
+      "managed": true,
+      "ordinal_in_action": 2,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_4",
+      "id": "cmd_00637",
+      "managed": true,
+      "ordinal_in_action": 3,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_4",
+      "id": "cmd_00638",
+      "managed": true,
+      "ordinal_in_action": 4,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "begin",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 4
+      },
+      "id": "cmd_00642",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "a8402858d4f1e1d27afee976520485ebb4b96a5387355b823f0d0b8079729032",
+      "timeout_ms": 5000,
+      "trace_command": 388,
+      "writeset": []
+    },
+    {
+      "action": "binding",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 4
+      },
+      "id": "cmd_00643",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "2ac216d778bf256f66c62bf776b8ccf47c3108bfe20a6ba905493daa9bbd9e09",
+      "timeout_ms": 5000,
+      "trace_command": 389,
+      "writeset": []
+    },
+    {
+      "action": "call",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 4
+      },
+      "id": "cmd_00644",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bba9e91733ccaf91a30c4710ea28fe4543eac41bc9f9b7838f8f5d650e5fe56b",
+      "timeout_ms": 5000,
+      "trace_command": 390,
+      "writeset": [
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.audit"
+        },
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.events"
+        },
+        {
+          "count": 1,
+          "operation": "UPDATE",
+          "table": "fmz6e11_private.proposals"
+        },
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.requests"
+        },
+        {
+          "count": 1,
+          "operation": "UPDATE",
+          "table": "fmz6e11_private.windows"
+        }
+      ]
+    },
+    {
+      "action": "commit",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 4
+      },
+      "id": "cmd_00645",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f",
+      "timeout_ms": 5000,
+      "trace_command": 391,
+      "writeset": []
+    },
+    {
+      "action": "seal",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 4
+      },
+      "id": "cmd_00646",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "c2d1566dcba7ea62261991865f37f45ec3819a2f1ff037d3bc6eed5456b5ab7d",
+      "timeout_ms": 5000,
+      "trace_command": 392,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_5",
+      "id": "cmd_00652",
+      "managed": true,
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_5",
+      "id": "cmd_00653",
+      "managed": true,
+      "ordinal_in_action": 1,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_5",
+      "id": "cmd_00654",
+      "managed": true,
+      "ordinal_in_action": 2,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_5",
+      "id": "cmd_00655",
+      "managed": true,
+      "ordinal_in_action": 3,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_5",
+      "id": "cmd_00656",
+      "managed": true,
+      "ordinal_in_action": 4,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "begin",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 5
+      },
+      "id": "cmd_00660",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "a8402858d4f1e1d27afee976520485ebb4b96a5387355b823f0d0b8079729032",
+      "timeout_ms": 5000,
+      "trace_command": 401,
+      "writeset": []
+    },
+    {
+      "action": "binding",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 5
+      },
+      "id": "cmd_00661",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "2ac216d778bf256f66c62bf776b8ccf47c3108bfe20a6ba905493daa9bbd9e09",
+      "timeout_ms": 5000,
+      "trace_command": 402,
+      "writeset": []
+    },
+    {
+      "action": "call",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 5
+      },
+      "id": "cmd_00662",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bba9e91733ccaf91a30c4710ea28fe4543eac41bc9f9b7838f8f5d650e5fe56b",
+      "timeout_ms": 5000,
+      "trace_command": 403,
+      "writeset": [
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.audit"
+        },
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.events"
+        },
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.plans"
+        },
+        {
+          "count": 1,
+          "operation": "UPDATE",
+          "table": "fmz6e11_private.proposals"
+        },
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.requests"
+        },
+        {
+          "count": 1,
+          "operation": "UPDATE",
+          "table": "fmz6e11_private.windows"
+        },
+        {
+          "count": 1,
+          "operation": "UPDATE",
+          "table": "fmz6e11_private.workspaces"
+        }
+      ]
+    },
+    {
+      "action": "commit",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 5
+      },
+      "id": "cmd_00663",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f",
+      "timeout_ms": 5000,
+      "trace_command": 404,
+      "writeset": []
+    },
+    {
+      "action": "seal",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 5
+      },
+      "id": "cmd_00664",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "c2d1566dcba7ea62261991865f37f45ec3819a2f1ff037d3bc6eed5456b5ab7d",
+      "timeout_ms": 5000,
+      "trace_command": 405,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_6",
+      "id": "cmd_00670",
+      "managed": true,
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_6",
+      "id": "cmd_00671",
+      "managed": true,
+      "ordinal_in_action": 1,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_6",
+      "id": "cmd_00672",
+      "managed": true,
+      "ordinal_in_action": 2,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_6",
+      "id": "cmd_00673",
+      "managed": true,
+      "ordinal_in_action": 3,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_6",
+      "id": "cmd_00674",
+      "managed": true,
+      "ordinal_in_action": 4,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "begin",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 6
+      },
+      "id": "cmd_00678",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "a8402858d4f1e1d27afee976520485ebb4b96a5387355b823f0d0b8079729032",
+      "timeout_ms": 5000,
+      "trace_command": 414,
+      "writeset": []
+    },
+    {
+      "action": "binding",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 6
+      },
+      "id": "cmd_00679",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "2ac216d778bf256f66c62bf776b8ccf47c3108bfe20a6ba905493daa9bbd9e09",
+      "timeout_ms": 5000,
+      "trace_command": 415,
+      "writeset": []
+    },
+    {
+      "action": "call",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 6
+      },
+      "id": "cmd_00680",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bba9e91733ccaf91a30c4710ea28fe4543eac41bc9f9b7838f8f5d650e5fe56b",
+      "timeout_ms": 5000,
+      "trace_command": 416,
+      "writeset": [
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.events"
+        }
+      ]
+    },
+    {
+      "action": "commit",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 6
+      },
+      "id": "cmd_00681",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f",
+      "timeout_ms": 5000,
+      "trace_command": 417,
+      "writeset": []
+    },
+    {
+      "action": "seal",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 6
+      },
+      "id": "cmd_00682",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "c2d1566dcba7ea62261991865f37f45ec3819a2f1ff037d3bc6eed5456b5ab7d",
+      "timeout_ms": 5000,
+      "trace_command": 418,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_7",
+      "id": "cmd_00688",
+      "managed": true,
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_7",
+      "id": "cmd_00689",
+      "managed": true,
+      "ordinal_in_action": 1,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_7",
+      "id": "cmd_00690",
+      "managed": true,
+      "ordinal_in_action": 2,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_7",
+      "id": "cmd_00691",
+      "managed": true,
+      "ordinal_in_action": 3,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_7",
+      "id": "cmd_00692",
+      "managed": true,
+      "ordinal_in_action": 4,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "begin",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 7
+      },
+      "id": "cmd_00696",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "a8402858d4f1e1d27afee976520485ebb4b96a5387355b823f0d0b8079729032",
+      "timeout_ms": 5000,
+      "trace_command": 427,
+      "writeset": []
+    },
+    {
+      "action": "binding",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 7
+      },
+      "id": "cmd_00697",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "2ac216d778bf256f66c62bf776b8ccf47c3108bfe20a6ba905493daa9bbd9e09",
+      "timeout_ms": 5000,
+      "trace_command": 428,
+      "writeset": []
+    },
+    {
+      "action": "call",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 7
+      },
+      "id": "cmd_00698",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bba9e91733ccaf91a30c4710ea28fe4543eac41bc9f9b7838f8f5d650e5fe56b",
+      "timeout_ms": 5000,
+      "trace_command": 429,
+      "writeset": [
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.events"
+        }
+      ]
+    },
+    {
+      "action": "commit",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 7
+      },
+      "id": "cmd_00699",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f",
+      "timeout_ms": 5000,
+      "trace_command": 430,
+      "writeset": []
+    },
+    {
+      "action": "seal",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 7
+      },
+      "id": "cmd_00700",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "c2d1566dcba7ea62261991865f37f45ec3819a2f1ff037d3bc6eed5456b5ab7d",
+      "timeout_ms": 5000,
+      "trace_command": 431,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_9",
+      "id": "cmd_00724",
+      "managed": true,
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_9",
+      "id": "cmd_00725",
+      "managed": true,
+      "ordinal_in_action": 1,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_9",
+      "id": "cmd_00726",
+      "managed": true,
+      "ordinal_in_action": 2,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_9",
+      "id": "cmd_00727",
+      "managed": true,
+      "ordinal_in_action": 3,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_9",
+      "id": "cmd_00728",
+      "managed": true,
+      "ordinal_in_action": 4,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "begin",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 9
+      },
+      "id": "cmd_00732",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "a8402858d4f1e1d27afee976520485ebb4b96a5387355b823f0d0b8079729032",
+      "timeout_ms": 5000,
+      "trace_command": 453,
+      "writeset": []
+    },
+    {
+      "action": "binding",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 9
+      },
+      "id": "cmd_00733",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "2ac216d778bf256f66c62bf776b8ccf47c3108bfe20a6ba905493daa9bbd9e09",
+      "timeout_ms": 5000,
+      "trace_command": 454,
+      "writeset": []
+    },
+    {
+      "action": "call",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 9
+      },
+      "id": "cmd_00734",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bba9e91733ccaf91a30c4710ea28fe4543eac41bc9f9b7838f8f5d650e5fe56b",
+      "timeout_ms": 5000,
+      "trace_command": 455,
+      "writeset": [
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.audit"
+        },
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.events"
+        },
+        {
+          "count": 1,
+          "operation": "UPDATE",
+          "table": "fmz6e11_private.proposals"
+        },
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.requests"
+        },
+        {
+          "count": 1,
+          "operation": "UPDATE",
+          "table": "fmz6e11_private.windows"
+        }
+      ]
+    },
+    {
+      "action": "commit",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 9
+      },
+      "id": "cmd_00735",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f",
+      "timeout_ms": 5000,
+      "trace_command": 456,
+      "writeset": []
+    },
+    {
+      "action": "seal",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 9
+      },
+      "id": "cmd_00736",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "c2d1566dcba7ea62261991865f37f45ec3819a2f1ff037d3bc6eed5456b5ab7d",
+      "timeout_ms": 5000,
+      "trace_command": 457,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_10",
+      "id": "cmd_00742",
+      "managed": true,
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_10",
+      "id": "cmd_00743",
+      "managed": true,
+      "ordinal_in_action": 1,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_10",
+      "id": "cmd_00744",
+      "managed": true,
+      "ordinal_in_action": 2,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_10",
+      "id": "cmd_00745",
+      "managed": true,
+      "ordinal_in_action": 3,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_10",
+      "id": "cmd_00746",
+      "managed": true,
+      "ordinal_in_action": 4,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "begin",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 10
+      },
+      "id": "cmd_00750",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "a8402858d4f1e1d27afee976520485ebb4b96a5387355b823f0d0b8079729032",
+      "timeout_ms": 5000,
+      "trace_command": 466,
+      "writeset": []
+    },
+    {
+      "action": "binding",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 10
+      },
+      "id": "cmd_00751",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "2ac216d778bf256f66c62bf776b8ccf47c3108bfe20a6ba905493daa9bbd9e09",
+      "timeout_ms": 5000,
+      "trace_command": 467,
+      "writeset": []
+    },
+    {
+      "action": "call",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 10
+      },
+      "id": "cmd_00752",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bba9e91733ccaf91a30c4710ea28fe4543eac41bc9f9b7838f8f5d650e5fe56b",
+      "timeout_ms": 5000,
+      "trace_command": 468,
+      "writeset": [
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.audit"
+        },
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.events"
+        },
+        {
+          "count": 1,
+          "operation": "UPDATE",
+          "table": "fmz6e11_private.proposals"
+        },
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.requests"
+        },
+        {
+          "count": 1,
+          "operation": "UPDATE",
+          "table": "fmz6e11_private.windows"
+        }
+      ]
+    },
+    {
+      "action": "commit",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 10
+      },
+      "id": "cmd_00753",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f",
+      "timeout_ms": 5000,
+      "trace_command": 469,
+      "writeset": []
+    },
+    {
+      "action": "seal",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 10
+      },
+      "id": "cmd_00754",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "c2d1566dcba7ea62261991865f37f45ec3819a2f1ff037d3bc6eed5456b5ab7d",
+      "timeout_ms": 5000,
+      "trace_command": 470,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_11",
+      "id": "cmd_00760",
+      "managed": true,
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_11",
+      "id": "cmd_00761",
+      "managed": true,
+      "ordinal_in_action": 1,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_11",
+      "id": "cmd_00762",
+      "managed": true,
+      "ordinal_in_action": 2,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_11",
+      "id": "cmd_00763",
+      "managed": true,
+      "ordinal_in_action": 3,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_11",
+      "id": "cmd_00764",
+      "managed": true,
+      "ordinal_in_action": 4,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "begin",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 11
+      },
+      "id": "cmd_00768",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "a8402858d4f1e1d27afee976520485ebb4b96a5387355b823f0d0b8079729032",
+      "timeout_ms": 5000,
+      "trace_command": 479,
+      "writeset": []
+    },
+    {
+      "action": "binding",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 11
+      },
+      "id": "cmd_00769",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "2ac216d778bf256f66c62bf776b8ccf47c3108bfe20a6ba905493daa9bbd9e09",
+      "timeout_ms": 5000,
+      "trace_command": 480,
+      "writeset": []
+    },
+    {
+      "action": "call",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 11
+      },
+      "id": "cmd_00770",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bba9e91733ccaf91a30c4710ea28fe4543eac41bc9f9b7838f8f5d650e5fe56b",
+      "timeout_ms": 5000,
+      "trace_command": 481,
+      "writeset": [
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.audit"
+        },
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.events"
+        },
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.plans"
+        },
+        {
+          "count": 1,
+          "operation": "UPDATE",
+          "table": "fmz6e11_private.proposals"
+        },
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.requests"
+        },
+        {
+          "count": 1,
+          "operation": "UPDATE",
+          "table": "fmz6e11_private.windows"
+        },
+        {
+          "count": 1,
+          "operation": "UPDATE",
+          "table": "fmz6e11_private.workspaces"
+        }
+      ]
+    },
+    {
+      "action": "commit",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 11
+      },
+      "id": "cmd_00771",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f",
+      "timeout_ms": 5000,
+      "trace_command": 482,
+      "writeset": []
+    },
+    {
+      "action": "seal",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 11
+      },
+      "id": "cmd_00772",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "c2d1566dcba7ea62261991865f37f45ec3819a2f1ff037d3bc6eed5456b5ab7d",
+      "timeout_ms": 5000,
+      "trace_command": 483,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_13",
+      "id": "cmd_00796",
+      "managed": true,
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_13",
+      "id": "cmd_00797",
+      "managed": true,
+      "ordinal_in_action": 1,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_13",
+      "id": "cmd_00798",
+      "managed": true,
+      "ordinal_in_action": 2,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_13",
+      "id": "cmd_00799",
+      "managed": true,
+      "ordinal_in_action": 3,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_13",
+      "id": "cmd_00800",
+      "managed": true,
+      "ordinal_in_action": 4,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "begin",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 13
+      },
+      "id": "cmd_00804",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "a8402858d4f1e1d27afee976520485ebb4b96a5387355b823f0d0b8079729032",
+      "timeout_ms": 5000,
+      "trace_command": 505,
+      "writeset": []
+    },
+    {
+      "action": "binding",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 13
+      },
+      "id": "cmd_00805",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "2ac216d778bf256f66c62bf776b8ccf47c3108bfe20a6ba905493daa9bbd9e09",
+      "timeout_ms": 5000,
+      "trace_command": 506,
+      "writeset": []
+    },
+    {
+      "action": "call",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 13
+      },
+      "id": "cmd_00806",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bba9e91733ccaf91a30c4710ea28fe4543eac41bc9f9b7838f8f5d650e5fe56b",
+      "timeout_ms": 5000,
+      "trace_command": 507,
+      "writeset": [
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.audit"
+        },
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.events"
+        },
+        {
+          "count": 1,
+          "operation": "UPDATE",
+          "table": "fmz6e11_private.proposals"
+        },
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.requests"
+        },
+        {
+          "count": 1,
+          "operation": "UPDATE",
+          "table": "fmz6e11_private.windows"
+        }
+      ]
+    },
+    {
+      "action": "commit",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 13
+      },
+      "id": "cmd_00807",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f",
+      "timeout_ms": 5000,
+      "trace_command": 508,
+      "writeset": []
+    },
+    {
+      "action": "seal",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 13
+      },
+      "id": "cmd_00808",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "c2d1566dcba7ea62261991865f37f45ec3819a2f1ff037d3bc6eed5456b5ab7d",
+      "timeout_ms": 5000,
+      "trace_command": 509,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_15",
+      "id": "cmd_00832",
+      "managed": true,
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_15",
+      "id": "cmd_00833",
+      "managed": true,
+      "ordinal_in_action": 1,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_15",
+      "id": "cmd_00834",
+      "managed": true,
+      "ordinal_in_action": 2,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_15",
+      "id": "cmd_00835",
+      "managed": true,
+      "ordinal_in_action": 3,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_15",
+      "id": "cmd_00836",
+      "managed": true,
+      "ordinal_in_action": 4,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "begin",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 15
+      },
+      "id": "cmd_00840",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "a8402858d4f1e1d27afee976520485ebb4b96a5387355b823f0d0b8079729032",
+      "timeout_ms": 5000,
+      "trace_command": 531,
+      "writeset": []
+    },
+    {
+      "action": "binding",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 15
+      },
+      "id": "cmd_00841",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "2ac216d778bf256f66c62bf776b8ccf47c3108bfe20a6ba905493daa9bbd9e09",
+      "timeout_ms": 5000,
+      "trace_command": 532,
+      "writeset": []
+    },
+    {
+      "action": "call",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 15
+      },
+      "id": "cmd_00842",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bba9e91733ccaf91a30c4710ea28fe4543eac41bc9f9b7838f8f5d650e5fe56b",
+      "timeout_ms": 5000,
+      "trace_command": 533,
+      "writeset": [
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.audit"
+        },
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.events"
+        },
+        {
+          "count": 1,
+          "operation": "UPDATE",
+          "table": "fmz6e11_private.proposals"
+        },
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.requests"
+        },
+        {
+          "count": 1,
+          "operation": "UPDATE",
+          "table": "fmz6e11_private.windows"
+        }
+      ]
+    },
+    {
+      "action": "commit",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 15
+      },
+      "id": "cmd_00843",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f",
+      "timeout_ms": 5000,
+      "trace_command": 534,
+      "writeset": []
+    },
+    {
+      "action": "seal",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 15
+      },
+      "id": "cmd_00844",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "c2d1566dcba7ea62261991865f37f45ec3819a2f1ff037d3bc6eed5456b5ab7d",
+      "timeout_ms": 5000,
+      "trace_command": 535,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_16",
+      "id": "cmd_00850",
+      "managed": true,
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_16",
+      "id": "cmd_00851",
+      "managed": true,
+      "ordinal_in_action": 1,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_16",
+      "id": "cmd_00852",
+      "managed": true,
+      "ordinal_in_action": 2,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_16",
+      "id": "cmd_00853",
+      "managed": true,
+      "ordinal_in_action": 3,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_16",
+      "id": "cmd_00854",
+      "managed": true,
+      "ordinal_in_action": 4,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "begin",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 16
+      },
+      "id": "cmd_00858",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "a8402858d4f1e1d27afee976520485ebb4b96a5387355b823f0d0b8079729032",
+      "timeout_ms": 5000,
+      "trace_command": 544,
+      "writeset": []
+    },
+    {
+      "action": "binding",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 16
+      },
+      "id": "cmd_00859",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "2ac216d778bf256f66c62bf776b8ccf47c3108bfe20a6ba905493daa9bbd9e09",
+      "timeout_ms": 5000,
+      "trace_command": 545,
+      "writeset": []
+    },
+    {
+      "action": "call",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 16
+      },
+      "id": "cmd_00860",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bba9e91733ccaf91a30c4710ea28fe4543eac41bc9f9b7838f8f5d650e5fe56b",
+      "timeout_ms": 5000,
+      "trace_command": 546,
+      "writeset": [
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.audit"
+        },
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.events"
+        },
+        {
+          "count": 1,
+          "operation": "UPDATE",
+          "table": "fmz6e11_private.proposals"
+        },
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.requests"
+        },
+        {
+          "count": 1,
+          "operation": "UPDATE",
+          "table": "fmz6e11_private.windows"
+        }
+      ]
+    },
+    {
+      "action": "commit",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 16
+      },
+      "id": "cmd_00861",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f",
+      "timeout_ms": 5000,
+      "trace_command": 547,
+      "writeset": []
+    },
+    {
+      "action": "seal",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 16
+      },
+      "id": "cmd_00862",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "c2d1566dcba7ea62261991865f37f45ec3819a2f1ff037d3bc6eed5456b5ab7d",
+      "timeout_ms": 5000,
+      "trace_command": 548,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_18",
+      "id": "cmd_00886",
+      "managed": true,
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_18",
+      "id": "cmd_00887",
+      "managed": true,
+      "ordinal_in_action": 1,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_18",
+      "id": "cmd_00888",
+      "managed": true,
+      "ordinal_in_action": 2,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_18",
+      "id": "cmd_00889",
+      "managed": true,
+      "ordinal_in_action": 3,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_18",
+      "id": "cmd_00890",
+      "managed": true,
+      "ordinal_in_action": 4,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "begin",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 18
+      },
+      "id": "cmd_00894",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "a8402858d4f1e1d27afee976520485ebb4b96a5387355b823f0d0b8079729032",
+      "timeout_ms": 5000,
+      "trace_command": 570,
+      "writeset": []
+    },
+    {
+      "action": "binding",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 18
+      },
+      "id": "cmd_00895",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "2ac216d778bf256f66c62bf776b8ccf47c3108bfe20a6ba905493daa9bbd9e09",
+      "timeout_ms": 5000,
+      "trace_command": 571,
+      "writeset": []
+    },
+    {
+      "action": "call",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 18
+      },
+      "id": "cmd_00896",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bba9e91733ccaf91a30c4710ea28fe4543eac41bc9f9b7838f8f5d650e5fe56b",
+      "timeout_ms": 5000,
+      "trace_command": 572,
+      "writeset": [
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.audit"
+        },
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.events"
+        },
+        {
+          "count": 1,
+          "operation": "UPDATE",
+          "table": "fmz6e11_private.proposals"
+        },
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.requests"
+        },
+        {
+          "count": 1,
+          "operation": "UPDATE",
+          "table": "fmz6e11_private.windows"
+        }
+      ]
+    },
+    {
+      "action": "commit",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 18
+      },
+      "id": "cmd_00897",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f",
+      "timeout_ms": 5000,
+      "trace_command": 573,
+      "writeset": []
+    },
+    {
+      "action": "seal",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 18
+      },
+      "id": "cmd_00898",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "c2d1566dcba7ea62261991865f37f45ec3819a2f1ff037d3bc6eed5456b5ab7d",
+      "timeout_ms": 5000,
+      "trace_command": 574,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_19",
+      "id": "cmd_00904",
+      "managed": true,
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_19",
+      "id": "cmd_00905",
+      "managed": true,
+      "ordinal_in_action": 1,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_19",
+      "id": "cmd_00906",
+      "managed": true,
+      "ordinal_in_action": 2,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_19",
+      "id": "cmd_00907",
+      "managed": true,
+      "ordinal_in_action": 3,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_19",
+      "id": "cmd_00908",
+      "managed": true,
+      "ordinal_in_action": 4,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "begin",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 19
+      },
+      "id": "cmd_00912",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "a8402858d4f1e1d27afee976520485ebb4b96a5387355b823f0d0b8079729032",
+      "timeout_ms": 5000,
+      "trace_command": 583,
+      "writeset": []
+    },
+    {
+      "action": "binding",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 19
+      },
+      "id": "cmd_00913",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "2ac216d778bf256f66c62bf776b8ccf47c3108bfe20a6ba905493daa9bbd9e09",
+      "timeout_ms": 5000,
+      "trace_command": 584,
+      "writeset": []
+    },
+    {
+      "action": "call",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 19
+      },
+      "id": "cmd_00914",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bba9e91733ccaf91a30c4710ea28fe4543eac41bc9f9b7838f8f5d650e5fe56b",
+      "timeout_ms": 5000,
+      "trace_command": 585,
+      "writeset": [
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.audit"
+        },
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.events"
+        },
+        {
+          "count": 1,
+          "operation": "UPDATE",
+          "table": "fmz6e11_private.proposals"
+        },
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.requests"
+        },
+        {
+          "count": 1,
+          "operation": "UPDATE",
+          "table": "fmz6e11_private.windows"
+        }
+      ]
+    },
+    {
+      "action": "commit",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 19
+      },
+      "id": "cmd_00915",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f",
+      "timeout_ms": 5000,
+      "trace_command": 586,
+      "writeset": []
+    },
+    {
+      "action": "seal",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 19
+      },
+      "id": "cmd_00916",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "c2d1566dcba7ea62261991865f37f45ec3819a2f1ff037d3bc6eed5456b5ab7d",
+      "timeout_ms": 5000,
+      "trace_command": 587,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_20",
+      "id": "cmd_00922",
+      "managed": true,
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_20",
+      "id": "cmd_00923",
+      "managed": true,
+      "ordinal_in_action": 1,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_20",
+      "id": "cmd_00924",
+      "managed": true,
+      "ordinal_in_action": 2,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_20",
+      "id": "cmd_00925",
+      "managed": true,
+      "ordinal_in_action": 3,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_20",
+      "id": "cmd_00926",
+      "managed": true,
+      "ordinal_in_action": 4,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "begin",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 20
+      },
+      "id": "cmd_00930",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "a8402858d4f1e1d27afee976520485ebb4b96a5387355b823f0d0b8079729032",
+      "timeout_ms": 5000,
+      "trace_command": 596,
+      "writeset": []
+    },
+    {
+      "action": "binding",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 20
+      },
+      "id": "cmd_00931",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "2ac216d778bf256f66c62bf776b8ccf47c3108bfe20a6ba905493daa9bbd9e09",
+      "timeout_ms": 5000,
+      "trace_command": 597,
+      "writeset": []
+    },
+    {
+      "action": "call",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 20
+      },
+      "id": "cmd_00932",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bba9e91733ccaf91a30c4710ea28fe4543eac41bc9f9b7838f8f5d650e5fe56b",
+      "timeout_ms": 5000,
+      "trace_command": 598,
+      "writeset": [
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.events"
+        }
+      ]
+    },
+    {
+      "action": "commit",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 20
+      },
+      "id": "cmd_00933",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f",
+      "timeout_ms": 5000,
+      "trace_command": 599,
+      "writeset": []
+    },
+    {
+      "action": "seal",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 20
+      },
+      "id": "cmd_00934",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "c2d1566dcba7ea62261991865f37f45ec3819a2f1ff037d3bc6eed5456b5ab7d",
+      "timeout_ms": 5000,
+      "trace_command": 600,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_41",
+      "id": "cmd_01384",
+      "managed": true,
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_41",
+      "id": "cmd_01385",
+      "managed": true,
+      "ordinal_in_action": 1,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_41",
+      "id": "cmd_01386",
+      "managed": true,
+      "ordinal_in_action": 2,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_41",
+      "id": "cmd_01387",
+      "managed": true,
+      "ordinal_in_action": 3,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_41",
+      "id": "cmd_01388",
+      "managed": true,
+      "ordinal_in_action": 4,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "begin",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 41
+      },
+      "id": "cmd_01392",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "a8402858d4f1e1d27afee976520485ebb4b96a5387355b823f0d0b8079729032",
+      "timeout_ms": 5000,
+      "trace_command": 953,
+      "writeset": []
+    },
+    {
+      "action": "binding",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 41
+      },
+      "id": "cmd_01393",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "2ac216d778bf256f66c62bf776b8ccf47c3108bfe20a6ba905493daa9bbd9e09",
+      "timeout_ms": 5000,
+      "trace_command": 954,
+      "writeset": []
+    },
+    {
+      "action": "call",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 41
+      },
+      "id": "cmd_01394",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bba9e91733ccaf91a30c4710ea28fe4543eac41bc9f9b7838f8f5d650e5fe56b",
+      "timeout_ms": 5000,
+      "trace_command": 955,
+      "writeset": [
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.events"
+        },
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.inbox_state"
+        },
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.requests"
+        }
+      ]
+    },
+    {
+      "action": "commit",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 41
+      },
+      "id": "cmd_01395",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f",
+      "timeout_ms": 5000,
+      "trace_command": 956,
+      "writeset": []
+    },
+    {
+      "action": "seal",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 41
+      },
+      "id": "cmd_01396",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "c2d1566dcba7ea62261991865f37f45ec3819a2f1ff037d3bc6eed5456b5ab7d",
+      "timeout_ms": 5000,
+      "trace_command": 957,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_42",
+      "id": "cmd_01402",
+      "managed": true,
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_42",
+      "id": "cmd_01403",
+      "managed": true,
+      "ordinal_in_action": 1,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_42",
+      "id": "cmd_01404",
+      "managed": true,
+      "ordinal_in_action": 2,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_42",
+      "id": "cmd_01405",
+      "managed": true,
+      "ordinal_in_action": 3,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gotrue_workflow_identity_42",
+      "id": "cmd_01406",
+      "managed": true,
+      "ordinal_in_action": 4,
+      "phase": "route_a",
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "begin",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 42
+      },
+      "id": "cmd_01410",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "a8402858d4f1e1d27afee976520485ebb4b96a5387355b823f0d0b8079729032",
+      "timeout_ms": 5000,
+      "trace_command": 966,
+      "writeset": []
+    },
+    {
+      "action": "binding",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 42
+      },
+      "id": "cmd_01411",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "2ac216d778bf256f66c62bf776b8ccf47c3108bfe20a6ba905493daa9bbd9e09",
+      "timeout_ms": 5000,
+      "trace_command": 967,
+      "writeset": []
+    },
+    {
+      "action": "call",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 42
+      },
+      "id": "cmd_01412",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bba9e91733ccaf91a30c4710ea28fe4543eac41bc9f9b7838f8f5d650e5fe56b",
+      "timeout_ms": 5000,
+      "trace_command": 968,
+      "writeset": [
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.events"
+        },
+        {
+          "count": 1,
+          "operation": "UPDATE",
+          "table": "fmz6e11_private.inbox_state"
+        },
+        {
+          "count": 1,
+          "operation": "INSERT",
+          "table": "fmz6e11_private.requests"
+        }
+      ]
+    },
+    {
+      "action": "commit",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 42
+      },
+      "id": "cmd_01413",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f",
+      "timeout_ms": 5000,
+      "trace_command": 969,
+      "writeset": []
+    },
+    {
+      "action": "seal",
+      "action_binding": {
+        "kind": "workflow",
+        "step": 42
+      },
+      "id": "cmd_01414",
+      "infrastructure_writeset": "request_intent",
+      "ordinal_in_action": 0,
+      "phase": "route_a",
+      "proof": [
+        "before_saved",
+        "action_started",
+        "action_confirmed",
+        "after_saved",
+        "pair_validated"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c316308ba0eb560b198cf0762c2759c2a5beeecd4440baae60af12b5af751b3d",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "c2d1566dcba7ea62261991865f37f45ec3819a2f1ff037d3bc6eed5456b5ab7d",
+      "timeout_ms": 5000,
+      "trace_command": 970,
+      "writeset": []
+    }
+  ]
+}

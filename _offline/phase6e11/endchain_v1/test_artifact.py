@@ -34,6 +34,17 @@ class Artifact(unittest.TestCase):
             if fault:
                 with self.assertRaises(RuntimeError):ops.collect(folder,123,api)
             else:
+                partial=folder/'artifact-run-123'
+                partial.mkdir();(partial/'evidence.zip').write_bytes(raw)
+                ops.collect(folder,123,api,recover=True)
+                self.assertEqual((partial/'evidence.zip').read_bytes(),raw)
+                self.assertEqual(list(p.name for p in partial.iterdir()),['evidence.zip'])
+                recovered=folder/'artifact-run-123-recovered'
+                self.assertEqual((recovered/'result.json').read_bytes(),result)
+                # Use another empty output root for the ordinary no-overwrite test.
+                folder2=pathlib.Path(tempfile.mkdtemp(prefix='fmz-endchain-artifact-'))
+                for name in ('blob.json','dispatch.json'):(folder2/name).write_bytes((folder/name).read_bytes())
+                folder=folder2
                 ops.collect(folder,123,api)
                 target=folder/'artifact-run-123'
                 self.assertEqual((target/'result.json').read_bytes(),result)

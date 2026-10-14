@@ -1,0 +1,43 @@
+{
+  "commands": 4,
+  "operation": "revoked_denial",
+  "query_text_read": false,
+  "role": "a_member",
+  "scope": "disposable CI GoTrue role",
+  "statements": [
+    {
+      "calls": 1,
+      "exec_ms": 0.02252099999999979,
+      "queryid": "2274992712210537315",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal_bytes": 0
+    },
+    {
+      "calls": 1,
+      "exec_ms": 0.0268609999999998,
+      "queryid": "-6219465920066311142",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal_bytes": 0
+    },
+    {
+      "calls": 1,
+      "exec_ms": 0.022552000000000127,
+      "queryid": "377725305029544001",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal_bytes": 0
+    },
+    {
+      "calls": 1,
+      "exec_ms": 0.007224999999999926,
+      "queryid": "5940240323763689018",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal_bytes": 0
+    }
+  ],
+  "temp_written": 0,
+  "wal_bytes": 0
+}

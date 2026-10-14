@@ -1,0 +1,91 @@
+{
+  "commands": 11,
+  "operation": "issue",
+  "query_text_read": false,
+  "role": "a_member",
+  "scope": "disposable CI GoTrue role",
+  "statements": [
+    {
+      "calls": 1,
+      "exec_ms": 0.018635,
+      "queryid": "2274992712210537315",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal_bytes": 0
+    },
+    {
+      "calls": 1,
+      "exec_ms": 0.002315,
+      "queryid": "-2779562273529891823",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal_bytes": 0
+    },
+    {
+      "calls": 1,
+      "exec_ms": 1.567189,
+      "queryid": "4925167158498311218",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal_bytes": 1880
+    },
+    {
+      "calls": 1,
+      "exec_ms": 0.024596999999999997,
+      "queryid": "-4658128774569121432",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal_bytes": 0
+    },
+    {
+      "calls": 1,
+      "exec_ms": 1.411384,
+      "queryid": "-1124447557603371406",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal_bytes": 1236
+    },
+    {
+      "calls": 1,
+      "exec_ms": 0.0006859999999999991,
+      "queryid": "-2835399305386018931",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal_bytes": 0
+    },
+    {
+      "calls": 2,
+      "exec_ms": 0.0032520000000000014,
+      "queryid": "8482053081020301314",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal_bytes": 0
+    },
+    {
+      "calls": 1,
+      "exec_ms": 0.005319999999999998,
+      "queryid": "11701968915743190",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal_bytes": 0
+    },
+    {
+      "calls": 1,
+      "exec_ms": 2.362089,
+      "queryid": "-7864353741921494888",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal_bytes": 1176
+    },
+    {
+      "calls": 1,
+      "exec_ms": 0.005336,
+      "queryid": "5940240323763689018",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal_bytes": 0
+    }
+  ],
+  "temp_written": 0,
+  "wal_bytes": 4292
+}

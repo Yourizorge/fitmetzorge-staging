@@ -1,0 +1,1505 @@
+{
+  "algorithm": "fmz-legacy-sha256-multiset-pinned-v1",
+  "canonicalization": "PG17 JSONB text UTF8 SHA256 / sorted duplicate-preserving multiset",
+  "frames": [
+    {
+      "page": 0,
+      "rows": 1683,
+      "sha256": "b6a132271bbb68027428cc8b73a610f8277fed9171ae300774794293c455d40c",
+      "terminal_count": 1683
+    },
+    {
+      "page": 1,
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "terminal_count": 0
+    }
+  ],
+  "hosted_admitted": false,
+  "label": "after_cleanup",
+  "plan": [
+    {
+      "name": "_realtime.extensions",
+      "predicate": "true"
+    },
+    {
+      "name": "_realtime.feature_flags",
+      "predicate": "true"
+    },
+    {
+      "name": "_realtime.schema_migrations",
+      "predicate": "true"
+    },
+    {
+      "name": "_realtime.tenants",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.action_policies",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.analysis_jobs",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.analysis_safety_recoveries",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.audit_events",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.budget_accounts",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.budget_policies",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.consent_documents",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.feature_flags",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.phase6c_runtime_config",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.phase6d_runtime_config",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.provider_configurations",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.provider_models",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.provider_payload_fields",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.provider_test_budget",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.provider_test_runs",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.rate_buckets",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.rate_policies",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.runs",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.safety_events",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.structured_schemas",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.usage_ledger",
+      "predicate": "true"
+    },
+    {
+      "name": "auth.audit_log_entries",
+      "predicate": "coalesce(payload->>'actor_id','') not in('184712a2-cf32-4829-8b34-662417cfa042','bd36377e-02fb-4660-8de0-17ff0897723c','ea3eca3a-6c44-4ee2-8d06-6505e83013b7')"
+    },
+    {
+      "name": "auth.custom_oauth_providers",
+      "predicate": "true"
+    },
+    {
+      "name": "auth.flow_state",
+      "predicate": "user_id is null or user_id::text not in('184712a2-cf32-4829-8b34-662417cfa042','bd36377e-02fb-4660-8de0-17ff0897723c','ea3eca3a-6c44-4ee2-8d06-6505e83013b7')"
+    },
+    {
+      "name": "auth.identities",
+      "predicate": "user_id is null or user_id::text not in('184712a2-cf32-4829-8b34-662417cfa042','bd36377e-02fb-4660-8de0-17ff0897723c','ea3eca3a-6c44-4ee2-8d06-6505e83013b7')"
+    },
+    {
+      "name": "auth.instances",
+      "predicate": "true"
+    },
+    {
+      "name": "auth.mfa_amr_claims",
+      "predicate": "session_id not in(select id from auth.sessions where user_id in('184712a2-cf32-4829-8b34-662417cfa042','bd36377e-02fb-4660-8de0-17ff0897723c','ea3eca3a-6c44-4ee2-8d06-6505e83013b7'))"
+    },
+    {
+      "name": "auth.mfa_challenges",
+      "predicate": "true"
+    },
+    {
+      "name": "auth.mfa_factors",
+      "predicate": "user_id is null or user_id::text not in('184712a2-cf32-4829-8b34-662417cfa042','bd36377e-02fb-4660-8de0-17ff0897723c','ea3eca3a-6c44-4ee2-8d06-6505e83013b7')"
+    },
+    {
+      "name": "auth.mfa_recovery_code_sets",
+      "predicate": "user_id is null or user_id::text not in('184712a2-cf32-4829-8b34-662417cfa042','bd36377e-02fb-4660-8de0-17ff0897723c','ea3eca3a-6c44-4ee2-8d06-6505e83013b7')"
+    },
+    {
+      "name": "auth.mfa_recovery_codes",
+      "predicate": "true"
+    },
+    {
+      "name": "auth.oauth_authorizations",
+      "predicate": "user_id is null or user_id::text not in('184712a2-cf32-4829-8b34-662417cfa042','bd36377e-02fb-4660-8de0-17ff0897723c','ea3eca3a-6c44-4ee2-8d06-6505e83013b7')"
+    },
+    {
+      "name": "auth.oauth_client_states",
+      "predicate": "true"
+    },
+    {
+      "name": "auth.oauth_clients",
+      "predicate": "true"
+    },
+    {
+      "name": "auth.oauth_consents",
+      "predicate": "user_id is null or user_id::text not in('184712a2-cf32-4829-8b34-662417cfa042','bd36377e-02fb-4660-8de0-17ff0897723c','ea3eca3a-6c44-4ee2-8d06-6505e83013b7')"
+    },
+    {
+      "name": "auth.one_time_tokens",
+      "predicate": "user_id is null or user_id::text not in('184712a2-cf32-4829-8b34-662417cfa042','bd36377e-02fb-4660-8de0-17ff0897723c','ea3eca3a-6c44-4ee2-8d06-6505e83013b7')"
+    },
+    {
+      "name": "auth.refresh_tokens",
+      "predicate": "user_id is null or user_id::text not in('184712a2-cf32-4829-8b34-662417cfa042','bd36377e-02fb-4660-8de0-17ff0897723c','ea3eca3a-6c44-4ee2-8d06-6505e83013b7')"
+    },
+    {
+      "name": "auth.saml_providers",
+      "predicate": "true"
+    },
+    {
+      "name": "auth.saml_relay_states",
+      "predicate": "true"
+    },
+    {
+      "name": "auth.schema_migrations",
+      "predicate": "true"
+    },
+    {
+      "name": "auth.scim_tokens",
+      "predicate": "true"
+    },
+    {
+      "name": "auth.scim_users",
+      "predicate": "user_id is null or user_id::text not in('184712a2-cf32-4829-8b34-662417cfa042','bd36377e-02fb-4660-8de0-17ff0897723c','ea3eca3a-6c44-4ee2-8d06-6505e83013b7')"
+    },
+    {
+      "name": "auth.sessions",
+      "predicate": "user_id is null or user_id::text not in('184712a2-cf32-4829-8b34-662417cfa042','bd36377e-02fb-4660-8de0-17ff0897723c','ea3eca3a-6c44-4ee2-8d06-6505e83013b7')"
+    },
+    {
+      "name": "auth.sso_domains",
+      "predicate": "true"
+    },
+    {
+      "name": "auth.sso_providers",
+      "predicate": "true"
+    },
+    {
+      "name": "auth.users",
+      "predicate": "id not in('184712a2-cf32-4829-8b34-662417cfa042','bd36377e-02fb-4660-8de0-17ff0897723c','ea3eca3a-6c44-4ee2-8d06-6505e83013b7')"
+    },
+    {
+      "name": "auth.webauthn_challenges",
+      "predicate": "user_id is null or user_id::text not in('184712a2-cf32-4829-8b34-662417cfa042','bd36377e-02fb-4660-8de0-17ff0897723c','ea3eca3a-6c44-4ee2-8d06-6505e83013b7')"
+    },
+    {
+      "name": "auth.webauthn_credentials",
+      "predicate": "user_id is null or user_id::text not in('184712a2-cf32-4829-8b34-662417cfa042','bd36377e-02fb-4660-8de0-17ff0897723c','ea3eca3a-6c44-4ee2-8d06-6505e83013b7')"
+    },
+    {
+      "name": "cron.job",
+      "predicate": "true"
+    },
+    {
+      "name": "cron.job_run_details",
+      "predicate": "false"
+    },
+    {
+      "name": "fmz6e10_private.audit",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e10_private.config",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e10_private.identities",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e10_private.operators",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e10_private.participants",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e10_private.plans",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e10_private.proposals",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e10_private.requests",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e10_private.source_heads",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e10_private.source_versions",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e10_private.windows",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e10_private.workspaces",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e11_audit_private.actions",
+      "predicate": "run_id not in (select run_id from fmz6e11_request_private.receipts where window_id='f9c238b4-712d-4f6b-8a55-c60bd12ad51c' union select unnest(array['0f609ca0-b225-4841-aad6-a67cdeb07bc5','a9580bbf-276f-4dae-878e-caec79884793','7aa65b0e-2751-4dfe-bdfd-3dfe421f8daa']::uuid[]))"
+    },
+    {
+      "name": "fmz6e11_audit_private.actors",
+      "predicate": "id not in('184712a2-cf32-4829-8b34-662417cfa042','bd36377e-02fb-4660-8de0-17ff0897723c','ea3eca3a-6c44-4ee2-8d06-6505e83013b7')"
+    },
+    {
+      "name": "fmz6e11_audit_private.bindings",
+      "predicate": "action_id not in(select id from fmz6e11_audit_private.actions where run_id in (select run_id from fmz6e11_request_private.receipts where window_id='f9c238b4-712d-4f6b-8a55-c60bd12ad51c' union select unnest(array['0f609ca0-b225-4841-aad6-a67cdeb07bc5','a9580bbf-276f-4dae-878e-caec79884793','7aa65b0e-2751-4dfe-bdfd-3dfe421f8daa']::uuid[])))"
+    },
+    {
+      "name": "fmz6e11_audit_private.fixture",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e11_audit_private.forbidden_fixture",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e11_audit_private.relations",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e11_audit_private.runs",
+      "predicate": "id not in (select run_id from fmz6e11_request_private.receipts where window_id='f9c238b4-712d-4f6b-8a55-c60bd12ad51c' union select unnest(array['0f609ca0-b225-4841-aad6-a67cdeb07bc5','a9580bbf-276f-4dae-878e-caec79884793','7aa65b0e-2751-4dfe-bdfd-3dfe421f8daa']::uuid[]))"
+    },
+    {
+      "name": "fmz6e11_audit_private.writes",
+      "predicate": "run_id not in (select run_id from fmz6e11_request_private.receipts where window_id='f9c238b4-712d-4f6b-8a55-c60bd12ad51c' union select unnest(array['0f609ca0-b225-4841-aad6-a67cdeb07bc5','a9580bbf-276f-4dae-878e-caec79884793','7aa65b0e-2751-4dfe-bdfd-3dfe421f8daa']::uuid[]))"
+    },
+    {
+      "name": "fmz6e11_controller_private.evidence",
+      "predicate": "run_id<>'32321f17-07f1-4f3d-aa4b-3218bc7368a4'"
+    },
+    {
+      "name": "fmz6e11_controller_private.runs",
+      "predicate": "id<>'32321f17-07f1-4f3d-aa4b-3218bc7368a4'"
+    },
+    {
+      "name": "fmz6e11_controller_private.steps",
+      "predicate": "run_id<>'32321f17-07f1-4f3d-aa4b-3218bc7368a4'"
+    },
+    {
+      "name": "fmz6e11_private.audit",
+      "predicate": "window_id<>'f9c238b4-712d-4f6b-8a55-c60bd12ad51c'"
+    },
+    {
+      "name": "fmz6e11_private.b_states",
+      "predicate": "workspace_id not in('b2b4c608-4162-4669-ba37-27c18830fa13','823b9b06-f0a6-4aa6-9feb-e06963a6252e')"
+    },
+    {
+      "name": "fmz6e11_private.b_versions",
+      "predicate": "workspace_id not in('b2b4c608-4162-4669-ba37-27c18830fa13','823b9b06-f0a6-4aa6-9feb-e06963a6252e')"
+    },
+    {
+      "name": "fmz6e11_private.config",
+      "predicate": "false"
+    },
+    {
+      "name": "fmz6e11_private.events",
+      "predicate": "window_id<>'f9c238b4-712d-4f6b-8a55-c60bd12ad51c'"
+    },
+    {
+      "name": "fmz6e11_private.identities",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e11_private.inbox_state",
+      "predicate": "workspace_id not in('b2b4c608-4162-4669-ba37-27c18830fa13','823b9b06-f0a6-4aa6-9feb-e06963a6252e')"
+    },
+    {
+      "name": "fmz6e11_private.operators",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e11_private.participants",
+      "predicate": "window_id<>'f9c238b4-712d-4f6b-8a55-c60bd12ad51c'"
+    },
+    {
+      "name": "fmz6e11_private.plans",
+      "predicate": "workspace_id not in('b2b4c608-4162-4669-ba37-27c18830fa13','823b9b06-f0a6-4aa6-9feb-e06963a6252e')"
+    },
+    {
+      "name": "fmz6e11_private.proposals",
+      "predicate": "workspace_id not in('b2b4c608-4162-4669-ba37-27c18830fa13','823b9b06-f0a6-4aa6-9feb-e06963a6252e')"
+    },
+    {
+      "name": "fmz6e11_private.requests",
+      "predicate": "window_id<>'f9c238b4-712d-4f6b-8a55-c60bd12ad51c'"
+    },
+    {
+      "name": "fmz6e11_private.source_heads",
+      "predicate": "workspace_id not in('b2b4c608-4162-4669-ba37-27c18830fa13','823b9b06-f0a6-4aa6-9feb-e06963a6252e')"
+    },
+    {
+      "name": "fmz6e11_private.source_versions",
+      "predicate": "workspace_id not in('b2b4c608-4162-4669-ba37-27c18830fa13','823b9b06-f0a6-4aa6-9feb-e06963a6252e')"
+    },
+    {
+      "name": "fmz6e11_private.windows",
+      "predicate": "id<>'f9c238b4-712d-4f6b-8a55-c60bd12ad51c'"
+    },
+    {
+      "name": "fmz6e11_private.workspaces",
+      "predicate": "window_id<>'f9c238b4-712d-4f6b-8a55-c60bd12ad51c'"
+    },
+    {
+      "name": "fmz6e11_request_private.control",
+      "predicate": "false"
+    },
+    {
+      "name": "fmz6e11_request_private.receipts",
+      "predicate": "window_id<>'f9c238b4-712d-4f6b-8a55-c60bd12ad51c'"
+    },
+    {
+      "name": "fmz6e11_workflow_audit.control",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e11_workflow_audit.intents",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e9_private.config",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e9_private.requests",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e9_private.safety",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e9_private.subjects",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e9_private.versions",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz_ci_auth_observer.events",
+      "predicate": "false"
+    },
+    {
+      "name": "legacy_auth_private.client_invitations",
+      "predicate": "true"
+    },
+    {
+      "name": "public.ai_action_decisions",
+      "predicate": "true"
+    },
+    {
+      "name": "public.ai_action_proposals",
+      "predicate": "true"
+    },
+    {
+      "name": "public.ai_analysis_lifecycle_requests",
+      "predicate": "true"
+    },
+    {
+      "name": "public.ai_analysis_preferences",
+      "predicate": "true"
+    },
+    {
+      "name": "public.ai_analysis_results",
+      "predicate": "true"
+    },
+    {
+      "name": "public.ai_consent_events",
+      "predicate": "true"
+    },
+    {
+      "name": "public.ai_context_manifests",
+      "predicate": "true"
+    },
+    {
+      "name": "public.ai_data_lifecycle_requests",
+      "predicate": "true"
+    },
+    {
+      "name": "public.ai_member_safety_state",
+      "predicate": "true"
+    },
+    {
+      "name": "public.ai_messages",
+      "predicate": "true"
+    },
+    {
+      "name": "public.ai_threads",
+      "predicate": "true"
+    },
+    {
+      "name": "public.body_measurements",
+      "predicate": "true"
+    },
+    {
+      "name": "public.coach_workspaces",
+      "predicate": "true"
+    },
+    {
+      "name": "public.entitlements",
+      "predicate": "true"
+    },
+    {
+      "name": "public.exercises",
+      "predicate": "true"
+    },
+    {
+      "name": "public.fmz6e9_audit",
+      "predicate": "true"
+    },
+    {
+      "name": "public.fmz6e9_notices",
+      "predicate": "true"
+    },
+    {
+      "name": "public.food_aliases",
+      "predicate": "true"
+    },
+    {
+      "name": "public.food_log_items",
+      "predicate": "true"
+    },
+    {
+      "name": "public.food_logs",
+      "predicate": "true"
+    },
+    {
+      "name": "public.food_portions",
+      "predicate": "true"
+    },
+    {
+      "name": "public.foods",
+      "predicate": "true"
+    },
+    {
+      "name": "public.member_app_preferences",
+      "predicate": "true"
+    },
+    {
+      "name": "public.member_notifications",
+      "predicate": "true"
+    },
+    {
+      "name": "public.nutrition_food_ingestions",
+      "predicate": "true"
+    },
+    {
+      "name": "public.nutrition_off_catalog_releases",
+      "predicate": "true"
+    },
+    {
+      "name": "public.nutrition_off_product_names",
+      "predicate": "true"
+    },
+    {
+      "name": "public.nutrition_off_products",
+      "predicate": "true"
+    },
+    {
+      "name": "public.nutrition_preferences",
+      "predicate": "true"
+    },
+    {
+      "name": "public.nutrition_provider_food_cache",
+      "predicate": "true"
+    },
+    {
+      "name": "public.nutrition_provider_query_cache",
+      "predicate": "true"
+    },
+    {
+      "name": "public.nutrition_provider_rate_buckets",
+      "predicate": "true"
+    },
+    {
+      "name": "public.nutrition_provider_runtime_state",
+      "predicate": "true"
+    },
+    {
+      "name": "public.nutrition_targets",
+      "predicate": "true"
+    },
+    {
+      "name": "public.profiles",
+      "predicate": "true"
+    },
+    {
+      "name": "public.progress_goals",
+      "predicate": "true"
+    },
+    {
+      "name": "public.progress_preferences",
+      "predicate": "true"
+    },
+    {
+      "name": "public.recovery_logs",
+      "predicate": "true"
+    },
+    {
+      "name": "public.training_plan_days",
+      "predicate": "true"
+    },
+    {
+      "name": "public.training_plan_exercises",
+      "predicate": "true"
+    },
+    {
+      "name": "public.training_plans",
+      "predicate": "true"
+    },
+    {
+      "name": "public.user_onboarding",
+      "predicate": "true"
+    },
+    {
+      "name": "public.user_settings",
+      "predicate": "true"
+    },
+    {
+      "name": "public.weight_logs",
+      "predicate": "true"
+    },
+    {
+      "name": "public.workout_sessions",
+      "predicate": "true"
+    },
+    {
+      "name": "public.workout_set_logs",
+      "predicate": "true"
+    },
+    {
+      "name": "realtime.messages",
+      "predicate": "true"
+    },
+    {
+      "name": "realtime.messages_2026_10_13",
+      "predicate": "true"
+    },
+    {
+      "name": "realtime.messages_2026_10_14",
+      "predicate": "true"
+    },
+    {
+      "name": "realtime.messages_2026_10_15",
+      "predicate": "true"
+    },
+    {
+      "name": "realtime.messages_2026_10_16",
+      "predicate": "true"
+    },
+    {
+      "name": "realtime.messages_2026_10_17",
+      "predicate": "true"
+    },
+    {
+      "name": "realtime.schema_migrations",
+      "predicate": "true"
+    },
+    {
+      "name": "realtime.subscription",
+      "predicate": "true"
+    },
+    {
+      "name": "storage.buckets",
+      "predicate": "true"
+    },
+    {
+      "name": "storage.buckets_analytics",
+      "predicate": "true"
+    },
+    {
+      "name": "storage.buckets_vectors",
+      "predicate": "true"
+    },
+    {
+      "name": "storage.iceberg_namespaces",
+      "predicate": "true"
+    },
+    {
+      "name": "storage.iceberg_tables",
+      "predicate": "true"
+    },
+    {
+      "name": "storage.migrations",
+      "predicate": "true"
+    },
+    {
+      "name": "storage.objects",
+      "predicate": "true"
+    },
+    {
+      "name": "storage.s3_multipart_uploads",
+      "predicate": "true"
+    },
+    {
+      "name": "storage.s3_multipart_uploads_parts",
+      "predicate": "true"
+    },
+    {
+      "name": "storage.vector_indexes",
+      "predicate": "true"
+    },
+    {
+      "name": "supabase_functions.hooks",
+      "predicate": "true"
+    },
+    {
+      "name": "supabase_functions.migrations",
+      "predicate": "true"
+    },
+    {
+      "name": "supabase_migrations.schema_migrations",
+      "predicate": "version<>'20261012185121'"
+    },
+    {
+      "name": "vault.secrets",
+      "predicate": "true"
+    }
+  ],
+  "profiles": [
+    {
+      "background_attributed_to_collector": false,
+      "background_temp_bytes": 0,
+      "own_temp_written": 0,
+      "own_wal_bytes": 0,
+      "queries": [
+        {
+          "calls": 1,
+          "exec_ms": 17.092694,
+          "queryid": "4577632621261849230",
+          "temp_read": 0,
+          "temp_written": 0,
+          "wal": 0
+        },
+        {
+          "calls": 1,
+          "exec_ms": 13.266373999999999,
+          "queryid": "3204216044500239300",
+          "temp_read": 0,
+          "temp_written": 0,
+          "wal": 0
+        }
+      ]
+    },
+    {
+      "background_attributed_to_collector": false,
+      "background_temp_bytes": 0,
+      "own_temp_written": 0,
+      "own_wal_bytes": 128,
+      "queries": [
+        {
+          "calls": 1,
+          "exec_ms": 15.792824,
+          "queryid": "-6151475249528387694",
+          "temp_read": 0,
+          "temp_written": 0,
+          "wal": 128
+        },
+        {
+          "calls": 1,
+          "exec_ms": 12.324297000000001,
+          "queryid": "3204216044500239300",
+          "temp_read": 0,
+          "temp_written": 0,
+          "wal": 0
+        }
+      ]
+    },
+    {
+      "background_attributed_to_collector": false,
+      "background_temp_bytes": 0,
+      "own_temp_written": 0,
+      "own_wal_bytes": 0,
+      "queries": [
+        {
+          "calls": 1,
+          "exec_ms": 0.002298000000003242,
+          "queryid": "-6151475249528387694",
+          "temp_read": 0,
+          "temp_written": 0,
+          "wal": 0
+        },
+        {
+          "calls": 1,
+          "exec_ms": 11.914958000000013,
+          "queryid": "3204216044500239300",
+          "temp_read": 0,
+          "temp_written": 0,
+          "wal": 0
+        }
+      ]
+    },
+    {
+      "background_attributed_to_collector": false,
+      "background_temp_bytes": 0,
+      "own_temp_written": 0,
+      "own_wal_bytes": 0,
+      "queries": [
+        {
+          "calls": 1,
+          "exec_ms": 0.11250500000000002,
+          "queryid": "8388194433461085640",
+          "temp_read": 0,
+          "temp_written": 0,
+          "wal": 0
+        },
+        {
+          "calls": 1,
+          "exec_ms": 11.851976000000008,
+          "queryid": "3204216044500239300",
+          "temp_read": 0,
+          "temp_written": 0,
+          "wal": 0
+        }
+      ]
+    }
+  ],
+  "protected_equal": true,
+  "protocol_commands": 17,
+  "query_sha256": "b8b3a2fdbaf5f27aaa45cd1786efe0b9e81dd3aacd648e9ad43b55022dc95b6f",
+  "query_text_read": false,
+  "rows": 1683,
+  "snapshot_sha256": "9232f9462ca92e8122b2b7d7b8b5e796070c8493394bb2c9a5c867951c0ec5bd",
+  "source_sha256": "f600f02aa3602135d5909568b6c5fa172b866d4be0f102cb2983727e71b52860",
+  "tables": {
+    "_realtime.extensions": {
+      "rows": 1,
+      "sha256": "9daa7db7213f19defc7ead0e6f549b72dc65aee947d4257fda2ebc3ad37460c5"
+    },
+    "_realtime.feature_flags": {
+      "rows": 1,
+      "sha256": "789c2cce56294a2d15b9172a281609e7b239c6ed91b949886e0f71f515ea3232"
+    },
+    "_realtime.schema_migrations": {
+      "rows": 33,
+      "sha256": "12f87df034e49a91615d8b13e97886817b2cb18750ed727cb2eb9febc6b3045a"
+    },
+    "_realtime.tenants": {
+      "rows": 1,
+      "sha256": "d24f85c5f57f67ca3288d28d37979b6583d99cf0520315d86e50a2131425e454"
+    },
+    "ai_private.action_policies": {
+      "rows": 5,
+      "sha256": "9a9ba9badc89b1641492fabf8bccd2d43409f81827da846893fb00099940efa6"
+    },
+    "ai_private.analysis_jobs": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "ai_private.analysis_safety_recoveries": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "ai_private.audit_events": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "ai_private.budget_accounts": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "ai_private.budget_policies": {
+      "rows": 1,
+      "sha256": "acb40073614b4a5bfe06bd182ef186c9e1665ab5e1d5e942c9766854f1d4ddf0"
+    },
+    "ai_private.consent_documents": {
+      "rows": 12,
+      "sha256": "5b8bb2d9034a63e192720f7d2b66b20f847b92766e4acdfad25d8f6749c4ca3b"
+    },
+    "ai_private.feature_flags": {
+      "rows": 3,
+      "sha256": "80eb00c36b277ec15ae77aedb4ebf46e5f5df0abf653fb4da26915c86ef64025"
+    },
+    "ai_private.phase6c_runtime_config": {
+      "rows": 1,
+      "sha256": "1fcd30a43f94708877f81a06a1a1e5c24e237dc962b5acf008b5195b06a8ccda"
+    },
+    "ai_private.phase6d_runtime_config": {
+      "rows": 1,
+      "sha256": "64a4f0b02453c03f0a2b8fc140a9a3f798cee0f4c55f65da6816d52e1fb9f7f9"
+    },
+    "ai_private.provider_configurations": {
+      "rows": 1,
+      "sha256": "2c2bf0260c83cb3e5bb080c7060de8e0092d1526632f34dd058e65c5cb0a4798"
+    },
+    "ai_private.provider_models": {
+      "rows": 2,
+      "sha256": "b46d9c5b1c78d2a6d81e46bd66178c4092c77012ac683f9a898e7b51293ab84a"
+    },
+    "ai_private.provider_payload_fields": {
+      "rows": 9,
+      "sha256": "8db50ce9555942115bc68f147aac98d2fd1dd556df3c7ae0abad0893a272214a"
+    },
+    "ai_private.provider_test_budget": {
+      "rows": 1,
+      "sha256": "a370b109c5af4e7dc9e7965b50dfbec0feb5d686d9ef9235cba470bc0a68e341"
+    },
+    "ai_private.provider_test_runs": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "ai_private.rate_buckets": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "ai_private.rate_policies": {
+      "rows": 4,
+      "sha256": "c947f6fd842e9525ea919e9df9419c45b95c89527a417f1d716cebc06bba178f"
+    },
+    "ai_private.runs": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "ai_private.safety_events": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "ai_private.structured_schemas": {
+      "rows": 2,
+      "sha256": "84a9e76e329808e2cca3f103fe9c004523141cbfd50df2e4d8b1197089d3a875"
+    },
+    "ai_private.usage_ledger": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "auth.audit_log_entries": {
+      "rows": 3,
+      "sha256": "731f63d98231e0b6ecd0bd5893e9559899b5d2d91b90e06bedf16be4889798d8"
+    },
+    "auth.custom_oauth_providers": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "auth.flow_state": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "auth.identities": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "auth.instances": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "auth.mfa_amr_claims": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "auth.mfa_challenges": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "auth.mfa_factors": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "auth.mfa_recovery_code_sets": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "auth.mfa_recovery_codes": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "auth.oauth_authorizations": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "auth.oauth_client_states": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "auth.oauth_clients": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "auth.oauth_consents": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "auth.one_time_tokens": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "auth.refresh_tokens": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "auth.saml_providers": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "auth.saml_relay_states": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "auth.schema_migrations": {
+      "rows": 82,
+      "sha256": "c780a74ae20e484ba37793f4c7c2c1ab3e18571965220c6a10c9b6bdfc786578"
+    },
+    "auth.scim_tokens": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "auth.scim_users": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "auth.sessions": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "auth.sso_domains": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "auth.sso_providers": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "auth.users": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "auth.webauthn_challenges": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "auth.webauthn_credentials": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "cron.job": {
+      "rows": 3,
+      "sha256": "0d4052ae6f4784e11aa36479c0741352c5d73be948f5ddfd9752e36ed8a47c15"
+    },
+    "cron.job_run_details": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e10_private.audit": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e10_private.config": {
+      "rows": 1,
+      "sha256": "630656100a72c921a185c4f5e6329ef980dc6f7a364d343af2427a31ee1d17a5"
+    },
+    "fmz6e10_private.identities": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e10_private.operators": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e10_private.participants": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e10_private.plans": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e10_private.proposals": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e10_private.requests": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e10_private.source_heads": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e10_private.source_versions": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e10_private.windows": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e10_private.workspaces": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e11_audit_private.actions": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e11_audit_private.actors": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e11_audit_private.bindings": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e11_audit_private.fixture": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e11_audit_private.forbidden_fixture": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e11_audit_private.relations": {
+      "rows": 64,
+      "sha256": "df9a5083b66a20cf30e8c7b13dab2aff19a322bdb1e2a4c7802f972b25a035ec"
+    },
+    "fmz6e11_audit_private.runs": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e11_audit_private.writes": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e11_controller_private.evidence": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e11_controller_private.runs": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e11_controller_private.steps": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e11_private.audit": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e11_private.b_states": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e11_private.b_versions": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e11_private.config": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e11_private.events": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e11_private.identities": {
+      "rows": 3,
+      "sha256": "9db09d7ae838cdca7d7a10370b6773b40ef678f5e6ac513ca7a32e136261a02a"
+    },
+    "fmz6e11_private.inbox_state": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e11_private.operators": {
+      "rows": 1,
+      "sha256": "578c16ebf528d70f268d14e4baf62e31093ca09c3a39f77fdd4e179f85bee465"
+    },
+    "fmz6e11_private.participants": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e11_private.plans": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e11_private.proposals": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e11_private.requests": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e11_private.source_heads": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e11_private.source_versions": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e11_private.windows": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e11_private.workspaces": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e11_request_private.control": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e11_request_private.receipts": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e11_workflow_audit.control": {
+      "rows": 1,
+      "sha256": "fc1b349aec8d6044cee360680ff132561b9e1a421833820982c9491a801305c4"
+    },
+    "fmz6e11_workflow_audit.intents": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e9_private.config": {
+      "rows": 1,
+      "sha256": "e2a4bfd51c894f8124b597054cca5db3b119027fdb41301a3f88d835d0ec99d3"
+    },
+    "fmz6e9_private.requests": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e9_private.safety": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e9_private.subjects": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz6e9_private.versions": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmz_ci_auth_observer.events": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "legacy_auth_private.client_invitations": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.ai_action_decisions": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.ai_action_proposals": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.ai_analysis_lifecycle_requests": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.ai_analysis_preferences": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.ai_analysis_results": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.ai_consent_events": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.ai_context_manifests": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.ai_data_lifecycle_requests": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.ai_member_safety_state": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.ai_messages": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.ai_threads": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.body_measurements": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.coach_workspaces": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.entitlements": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.exercises": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.fmz6e9_audit": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.fmz6e9_notices": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.food_aliases": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.food_log_items": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.food_logs": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.food_portions": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.foods": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.member_app_preferences": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.member_notifications": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.nutrition_food_ingestions": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.nutrition_off_catalog_releases": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.nutrition_off_product_names": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.nutrition_off_products": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.nutrition_preferences": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.nutrition_provider_food_cache": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.nutrition_provider_query_cache": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.nutrition_provider_rate_buckets": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.nutrition_provider_runtime_state": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.nutrition_targets": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.profiles": {
+      "rows": 3,
+      "sha256": "154cc045c152caa4047249813d46ad65da53f38fdab128ed9529c930c3ab2ac9"
+    },
+    "public.progress_goals": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.progress_preferences": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.recovery_logs": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.training_plan_days": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.training_plan_exercises": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.training_plans": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.user_onboarding": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.user_settings": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.weight_logs": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.workout_sessions": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public.workout_set_logs": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "realtime.messages": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "realtime.messages_2026_10_13": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "realtime.messages_2026_10_14": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "realtime.messages_2026_10_15": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "realtime.messages_2026_10_16": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "realtime.messages_2026_10_17": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "realtime.schema_migrations": {
+      "rows": 81,
+      "sha256": "22b462d3578eb29c568693e5f302059ddd6a68646710c36e9a55ae3b625f8604"
+    },
+    "realtime.subscription": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "storage.buckets": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "storage.buckets_analytics": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "storage.buckets_vectors": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "storage.iceberg_namespaces": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "storage.iceberg_tables": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "storage.migrations": {
+      "rows": 68,
+      "sha256": "cd03ac2781cbbf04b7fe8b9580c3d25c6638f8121e2c00fce7ee225229c3a1fc"
+    },
+    "storage.objects": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "storage.s3_multipart_uploads": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "storage.s3_multipart_uploads_parts": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "storage.vector_indexes": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "supabase_functions.hooks": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "supabase_functions.migrations": {
+      "rows": 2,
+      "sha256": "303280ed102369b844cf16c1c38723dfaa4668ef217c47cf007f47856409f962"
+    },
+    "supabase_migrations.schema_migrations": {
+      "rows": 43,
+      "sha256": "e0ee46b0ef5ee8a441cc2477d6d7035320629e046b8b7a016b464b7a4d5daeba"
+    },
+    "vault.secrets": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

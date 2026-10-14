@@ -1,0 +1,360 @@
+{
+  "accounts": "1d64b3cd88aeca93e01bdb8aca6aae781852d71b584e6e50cf989380d1b99bd2",
+  "action": {
+    "actor": "628fc92e-8ff6-42bb-af8a-3e690256f1e2",
+    "after_sha": null,
+    "backend": 512,
+    "before_sha": "b10bbb2d1b5926607d0855934f19c71efeb136b52c3b28f25d077563f94f130f",
+    "confirmed_at": "2026-10-14T15:07:52.365915+00:00",
+    "evidence_sha": null,
+    "expected": [
+      {
+        "new": "f652d2fc2ca4395cbb67fb915ab73fa65f8372be0c9ce615c1b62f0489ed5657",
+        "old": null,
+        "op": "INSERT",
+        "table": "fmz6e11_private.windows"
+      },
+      {
+        "new": "e6b51577d5e053cb2483e9ba79e5788bd7342f31c3b1f9d0497ebce05fc99735",
+        "old": null,
+        "op": "INSERT",
+        "table": "fmz6e11_private.participants"
+      },
+      {
+        "new": "fc7565e678e9b5d5fb95f7250b3bd3657e988709a641fe56ed7e358f03206d64",
+        "old": null,
+        "op": "INSERT",
+        "table": "fmz6e11_private.participants"
+      },
+      {
+        "new": "4b8ae73577502de859575630d4f1c6810289bd7ff83f472cbaa0ef7eff7e7971",
+        "old": null,
+        "op": "INSERT",
+        "table": "fmz6e11_private.participants"
+      },
+      {
+        "new": "0c1cd942c9aa1274ceceba80e25d87225fd2f86eb15db5201cbaefc9a498720a",
+        "old": null,
+        "op": "INSERT",
+        "table": "fmz6e11_private.workspaces"
+      },
+      {
+        "new": "893517e83beec6a51bbf76bd81397257c1ddd9c06cdf78731789211f3ef49925",
+        "old": null,
+        "op": "INSERT",
+        "table": "fmz6e11_private.workspaces"
+      },
+      {
+        "new": "40eb962191e72fa2d1731df1f233ed5c96b3fef60959d04f72a41758bfd21951",
+        "old": null,
+        "op": "INSERT",
+        "table": "fmz6e11_private.plans"
+      },
+      {
+        "new": "a8f691f3baf4214c7d4bf3b73c9cc54d5d17ad40ba47988df8cf3df346639f0f",
+        "old": null,
+        "op": "INSERT",
+        "table": "fmz6e11_private.b_states"
+      },
+      {
+        "new": "785234b1fcd1dbaf49de5d09bb694944b49c72a08e856155233bed5311c1ecce",
+        "old": null,
+        "op": "INSERT",
+        "table": "fmz6e11_private.audit"
+      },
+      {
+        "new": "2f475abbb2ca7f680f61a174f05ea473433cfb7a1d89c28b4abbaed4caf310be",
+        "old": null,
+        "op": "INSERT",
+        "table": "fmz6e11_private.requests"
+      }
+    ],
+    "id": "80fe57d5-7bdd-4a47-9c37-600f5f08d878",
+    "run_id": "ad080cfe-7697-4674-b7dc-89d93379d2f0",
+    "started_at": "2026-10-14T15:07:52.314628+00:00",
+    "state": "action_confirmed",
+    "validated_at": null,
+    "workspace": "ae75ab20-793e-44ba-b0f7-22cdf249e79a",
+    "xid": "1418"
+  },
+  "coverage": true,
+  "profiles": "7306e66d898747bf19bc3118cfa066e0548fffec3f88335362a316521857edbe",
+  "state": [
+    [
+      {
+        "count": 1,
+        "sha": "73309b6fdeb002a4da140aa91c3bdfb8b30bf8b0feaf683d978a717d3cedd1f1",
+        "table": "windows"
+      },
+      {
+        "count": 3,
+        "sha": "64099e6ad7361f019a4a86ea02cedba62b6b31603e9ff516a3c1245d178e9d5f",
+        "table": "participants"
+      },
+      {
+        "count": 1,
+        "sha": "2db6749ed7b268b89994aaad34184b7584483291b930897b17bc6a451c717fe4",
+        "table": "workspaces"
+      },
+      {
+        "count": 0,
+        "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "table": "source_versions"
+      },
+      {
+        "count": 0,
+        "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "table": "source_heads"
+      },
+      {
+        "count": 1,
+        "sha": "72a17fb25ca3e754b2b3fc87c50c456a55fe72b887878702b04d6d3a739982f1",
+        "table": "plans"
+      },
+      {
+        "count": 0,
+        "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "table": "proposals"
+      },
+      {
+        "count": 1,
+        "sha": "dcefa03a8ff78cca01c85203b849a01535252dd253cf96a9eae9216394468a76",
+        "table": "audit"
+      },
+      {
+        "count": 1,
+        "sha": "5cd8015b6fbc353b9abdf09db03033b76f44caa03a7dc26b741bb9d25ed0fd23",
+        "table": "requests"
+      },
+      {
+        "count": 0,
+        "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "table": "b_states"
+      },
+      {
+        "count": 0,
+        "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "table": "b_versions"
+      },
+      {
+        "count": 0,
+        "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "table": "inbox_state"
+      },
+      {
+        "count": 0,
+        "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "table": "events"
+      }
+    ],
+    [
+      {
+        "count": 1,
+        "sha": "73309b6fdeb002a4da140aa91c3bdfb8b30bf8b0feaf683d978a717d3cedd1f1",
+        "table": "windows"
+      },
+      {
+        "count": 3,
+        "sha": "64099e6ad7361f019a4a86ea02cedba62b6b31603e9ff516a3c1245d178e9d5f",
+        "table": "participants"
+      },
+      {
+        "count": 1,
+        "sha": "191f3c9b9726fe26cfb50066480995b289f2ca830a694cd1516b7eca18da2b9d",
+        "table": "workspaces"
+      },
+      {
+        "count": 0,
+        "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "table": "source_versions"
+      },
+      {
+        "count": 0,
+        "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "table": "source_heads"
+      },
+      {
+        "count": 0,
+        "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "table": "plans"
+      },
+      {
+        "count": 0,
+        "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "table": "proposals"
+      },
+      {
+        "count": 1,
+        "sha": "dcefa03a8ff78cca01c85203b849a01535252dd253cf96a9eae9216394468a76",
+        "table": "audit"
+      },
+      {
+        "count": 1,
+        "sha": "5cd8015b6fbc353b9abdf09db03033b76f44caa03a7dc26b741bb9d25ed0fd23",
+        "table": "requests"
+      },
+      {
+        "count": 1,
+        "sha": "13e5bff4caf0521fd4398a60b66455463f86b706e89d924c9bdb22df257573d8",
+        "table": "b_states"
+      },
+      {
+        "count": 0,
+        "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "table": "b_versions"
+      },
+      {
+        "count": 0,
+        "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "table": "inbox_state"
+      },
+      {
+        "count": 0,
+        "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "table": "events"
+      }
+    ]
+  ],
+  "writes": [
+    {
+      "action_id": "80fe57d5-7bdd-4a47-9c37-600f5f08d878",
+      "actor": "628fc92e-8ff6-42bb-af8a-3e690256f1e2",
+      "at": "2026-10-14T15:07:52.346982+00:00",
+      "backend": 512,
+      "new_key_sha": "f652d2fc2ca4395cbb67fb915ab73fa65f8372be0c9ce615c1b62f0489ed5657",
+      "old_key_sha": null,
+      "operation": "INSERT",
+      "ordinal": 1,
+      "run_id": "ad080cfe-7697-4674-b7dc-89d93379d2f0",
+      "table_name": "fmz6e11_private.windows",
+      "workspace": "ae75ab20-793e-44ba-b0f7-22cdf249e79a",
+      "xid": "1418"
+    },
+    {
+      "action_id": "80fe57d5-7bdd-4a47-9c37-600f5f08d878",
+      "actor": "628fc92e-8ff6-42bb-af8a-3e690256f1e2",
+      "at": "2026-10-14T15:07:52.348648+00:00",
+      "backend": 512,
+      "new_key_sha": "e6b51577d5e053cb2483e9ba79e5788bd7342f31c3b1f9d0497ebce05fc99735",
+      "old_key_sha": null,
+      "operation": "INSERT",
+      "ordinal": 2,
+      "run_id": "ad080cfe-7697-4674-b7dc-89d93379d2f0",
+      "table_name": "fmz6e11_private.participants",
+      "workspace": "ae75ab20-793e-44ba-b0f7-22cdf249e79a",
+      "xid": "1418"
+    },
+    {
+      "action_id": "80fe57d5-7bdd-4a47-9c37-600f5f08d878",
+      "actor": "628fc92e-8ff6-42bb-af8a-3e690256f1e2",
+      "at": "2026-10-14T15:07:52.349231+00:00",
+      "backend": 512,
+      "new_key_sha": "fc7565e678e9b5d5fb95f7250b3bd3657e988709a641fe56ed7e358f03206d64",
+      "old_key_sha": null,
+      "operation": "INSERT",
+      "ordinal": 3,
+      "run_id": "ad080cfe-7697-4674-b7dc-89d93379d2f0",
+      "table_name": "fmz6e11_private.participants",
+      "workspace": "ae75ab20-793e-44ba-b0f7-22cdf249e79a",
+      "xid": "1418"
+    },
+    {
+      "action_id": "80fe57d5-7bdd-4a47-9c37-600f5f08d878",
+      "actor": "628fc92e-8ff6-42bb-af8a-3e690256f1e2",
+      "at": "2026-10-14T15:07:52.349778+00:00",
+      "backend": 512,
+      "new_key_sha": "4b8ae73577502de859575630d4f1c6810289bd7ff83f472cbaa0ef7eff7e7971",
+      "old_key_sha": null,
+      "operation": "INSERT",
+      "ordinal": 4,
+      "run_id": "ad080cfe-7697-4674-b7dc-89d93379d2f0",
+      "table_name": "fmz6e11_private.participants",
+      "workspace": "ae75ab20-793e-44ba-b0f7-22cdf249e79a",
+      "xid": "1418"
+    },
+    {
+      "action_id": "80fe57d5-7bdd-4a47-9c37-600f5f08d878",
+      "actor": "628fc92e-8ff6-42bb-af8a-3e690256f1e2",
+      "at": "2026-10-14T15:07:52.351444+00:00",
+      "backend": 512,
+      "new_key_sha": "0c1cd942c9aa1274ceceba80e25d87225fd2f86eb15db5201cbaefc9a498720a",
+      "old_key_sha": null,
+      "operation": "INSERT",
+      "ordinal": 5,
+      "run_id": "ad080cfe-7697-4674-b7dc-89d93379d2f0",
+      "table_name": "fmz6e11_private.workspaces",
+      "workspace": "ae75ab20-793e-44ba-b0f7-22cdf249e79a",
+      "xid": "1418"
+    },
+    {
+      "action_id": "80fe57d5-7bdd-4a47-9c37-600f5f08d878",
+      "actor": "628fc92e-8ff6-42bb-af8a-3e690256f1e2",
+      "at": "2026-10-14T15:07:52.352877+00:00",
+      "backend": 512,
+      "new_key_sha": "40eb962191e72fa2d1731df1f233ed5c96b3fef60959d04f72a41758bfd21951",
+      "old_key_sha": null,
+      "operation": "INSERT",
+      "ordinal": 6,
+      "run_id": "ad080cfe-7697-4674-b7dc-89d93379d2f0",
+      "table_name": "fmz6e11_private.plans",
+      "workspace": "ae75ab20-793e-44ba-b0f7-22cdf249e79a",
+      "xid": "1418"
+    },
+    {
+      "action_id": "80fe57d5-7bdd-4a47-9c37-600f5f08d878",
+      "actor": "628fc92e-8ff6-42bb-af8a-3e690256f1e2",
+      "at": "2026-10-14T15:07:52.353529+00:00",
+      "backend": 512,
+      "new_key_sha": "893517e83beec6a51bbf76bd81397257c1ddd9c06cdf78731789211f3ef49925",
+      "old_key_sha": null,
+      "operation": "INSERT",
+      "ordinal": 7,
+      "run_id": "ad080cfe-7697-4674-b7dc-89d93379d2f0",
+      "table_name": "fmz6e11_private.workspaces",
+      "workspace": "ae75ab20-793e-44ba-b0f7-22cdf249e79a",
+      "xid": "1418"
+    },
+    {
+      "action_id": "80fe57d5-7bdd-4a47-9c37-600f5f08d878",
+      "actor": "628fc92e-8ff6-42bb-af8a-3e690256f1e2",
+      "at": "2026-10-14T15:07:52.354861+00:00",
+      "backend": 512,
+      "new_key_sha": "a8f691f3baf4214c7d4bf3b73c9cc54d5d17ad40ba47988df8cf3df346639f0f",
+      "old_key_sha": null,
+      "operation": "INSERT",
+      "ordinal": 8,
+      "run_id": "ad080cfe-7697-4674-b7dc-89d93379d2f0",
+      "table_name": "fmz6e11_private.b_states",
+      "workspace": "ae75ab20-793e-44ba-b0f7-22cdf249e79a",
+      "xid": "1418"
+    },
+    {
+      "action_id": "80fe57d5-7bdd-4a47-9c37-600f5f08d878",
+      "actor": "628fc92e-8ff6-42bb-af8a-3e690256f1e2",
+      "at": "2026-10-14T15:07:52.356339+00:00",
+      "backend": 512,
+      "new_key_sha": "785234b1fcd1dbaf49de5d09bb694944b49c72a08e856155233bed5311c1ecce",
+      "old_key_sha": null,
+      "operation": "INSERT",
+      "ordinal": 9,
+      "run_id": "ad080cfe-7697-4674-b7dc-89d93379d2f0",
+      "table_name": "fmz6e11_private.audit",
+      "workspace": "ae75ab20-793e-44ba-b0f7-22cdf249e79a",
+      "xid": "1418"
+    },
+    {
+      "action_id": "80fe57d5-7bdd-4a47-9c37-600f5f08d878",
+      "actor": "628fc92e-8ff6-42bb-af8a-3e690256f1e2",
+      "at": "2026-10-14T15:07:52.357806+00:00",
+      "backend": 512,
+      "new_key_sha": "2f475abbb2ca7f680f61a174f05ea473433cfb7a1d89c28b4abbaed4caf310be",
+      "old_key_sha": null,
+      "operation": "INSERT",
+      "ordinal": 10,
+      "run_id": "ad080cfe-7697-4674-b7dc-89d93379d2f0",
+      "table_name": "fmz6e11_private.requests",
+      "workspace": "ae75ab20-793e-44ba-b0f7-22cdf249e79a",
+      "xid": "1418"
+    }
+  ]
+}

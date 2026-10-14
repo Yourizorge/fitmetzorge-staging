@@ -1,0 +1,146 @@
+{
+  "application_names": [
+    "@effect/sql-pg"
+  ],
+  "arguments": [
+    "db",
+    "push",
+    "--local",
+    "--skip-vault",
+    "--yes"
+  ],
+  "cli_sha256": "40efbaffd04e4cbf501b4f29a52c88ca23f81c636ef211e3b255c4e7b81eeb01",
+  "commands": [
+    {
+      "kind": "SelectStmt",
+      "protocol_commands": 1,
+      "sha256": "e004ebd5b5532a4b85984a62f8ad48a81aa3460c1ca07701f386135d72cdecf5"
+    },
+    {
+      "kind": "SelectStmt",
+      "protocol_commands": 1,
+      "sha256": "a399b6fe975faca1ecc7b5049577f7c16879fb533dd25a156216e9c0822f2cd6"
+    },
+    {
+      "kind": "SelectStmt",
+      "protocol_commands": 1,
+      "sha256": "1c621461b67c084010ce6ffd46ac5ada42ab394a41d5bb1ffadbdc8ed6ee961d"
+    },
+    {
+      "kind": "VariableSetStmt",
+      "protocol_commands": 1,
+      "sha256": "7e59df0d742057544fee83804a576779c39e088d2561bb3b6ff9e61337b60db7"
+    },
+    {
+      "kind": "TransactionStmt",
+      "protocol_commands": 1,
+      "sha256": "4335f3977075ec5ee9762c0b501e8ab3f81128f5d21cd113d4d91e185d7876f0"
+    },
+    {
+      "kind": "VariableSetStmt",
+      "protocol_commands": 1,
+      "sha256": "d431b4dfd9187ef03efe706f38505a49143437fa1d0fee70a4df24631245393d"
+    },
+    {
+      "kind": "VariableSetStmt",
+      "protocol_commands": 1,
+      "sha256": "da02339210fb8baf6a812a5ed7fa0b4383f2819a7c67570c137da040f1e2bfab"
+    },
+    {
+      "kind": "AlterTableStmt",
+      "protocol_commands": 1,
+      "sha256": "f7f760b6e140a0440d12954db7bb9b215b3a87fd434fd8653c0a3b7adb59e655"
+    },
+    {
+      "kind": "AlterTableStmt",
+      "protocol_commands": 1,
+      "sha256": "30a401e34dd07f2857bb3d95e30f9f49dbd6e877d62cb8770b37ef8e4c53a071"
+    },
+    {
+      "kind": "CreateFunctionStmt",
+      "protocol_commands": 1,
+      "sha256": "1396863a756fb2f3e5ad0c249b6acf10590e42b4a9874ab04b38b9bca1ca51c4"
+    },
+    {
+      "kind": "GrantStmt",
+      "protocol_commands": 1,
+      "sha256": "a76df78608a26a2598d1ee4cde242da7972a61793b087614407ad6f84dbcce16"
+    },
+    {
+      "kind": "CreateTrigStmt",
+      "protocol_commands": 1,
+      "sha256": "edf1095342ad867b8b30740cb1a3cc9527b3d37b9efaa152d7e7bda03def2a46"
+    },
+    {
+      "kind": "TransactionStmt",
+      "protocol_commands": 1,
+      "sha256": "9505cacb7c710ed17125fcc6cb3669e8ddca6c8cd8af6a31f6b3cd64604c3098"
+    },
+    {
+      "kind": "InsertStmt",
+      "protocol_commands": 1,
+      "sha256": "8c216484b2f937e0549563258eb008a492b01b61f30277ec08eacaeed37be123"
+    }
+  ],
+  "complete": true,
+  "error": null,
+  "exitcode": 0,
+  "hosted_calls": 0,
+  "invocation_prefix": "FMZSQL273cba79045242049a8a82a88b131daf|",
+  "numeric_protocol_coverage": true,
+  "observer_commands": [
+    {
+      "confirmed": true,
+      "kind": "numeric_observer",
+      "protocol_commands": 1,
+      "sha256": "3eb12e5bafe877f825399d2905523e26201831b46d6ebc54e734cdb0961a8fd5"
+    },
+    {
+      "confirmed": true,
+      "kind": "numeric_observer",
+      "protocol_commands": 1,
+      "sha256": "654b3989d19937e3700b1ef5374ce0b4c77f8460eb8318dd1f40d31c27c21b68"
+    },
+    {
+      "confirmed": true,
+      "kind": "numeric_observer",
+      "protocol_commands": 1,
+      "sha256": "4c37732613791f84484c38265c0be027569ee1b7e1d55d69de16b4f9668159ce"
+    },
+    {
+      "confirmed": true,
+      "kind": "numeric_observer",
+      "protocol_commands": 1,
+      "sha256": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710"
+    },
+    {
+      "confirmed": true,
+      "kind": "numeric_observer",
+      "protocol_commands": 1,
+      "sha256": "3eb12e5bafe877f825399d2905523e26201831b46d6ebc54e734cdb0961a8fd5"
+    },
+    {
+      "confirmed": true,
+      "kind": "numeric_observer",
+      "protocol_commands": 1,
+      "sha256": "654b3989d19937e3700b1ef5374ce0b4c77f8460eb8318dd1f40d31c27c21b68"
+    },
+    {
+      "confirmed": true,
+      "kind": "numeric_observer",
+      "protocol_commands": 1,
+      "sha256": "4c37732613791f84484c38265c0be027569ee1b7e1d55d69de16b4f9668159ce"
+    },
+    {
+      "confirmed": true,
+      "kind": "numeric_observer",
+      "protocol_commands": 1,
+      "sha256": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710"
+    }
+  ],
+  "protocol_commands": 14,
+  "scope": "disposable CI session SQL only; not hosted CLI accounting",
+  "sql_text_exported": false,
+  "total_commands": 22,
+  "unexpected_applications": []
+}

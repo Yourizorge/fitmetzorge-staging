@@ -1,0 +1,91 @@
+{
+  "commands": 11,
+  "operation": "issue",
+  "query_text_read": false,
+  "role": "b_member",
+  "scope": "disposable CI GoTrue role",
+  "statements": [
+    {
+      "calls": 1,
+      "exec_ms": 0.01664299999999999,
+      "queryid": "2274992712210537315",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal_bytes": 0
+    },
+    {
+      "calls": 1,
+      "exec_ms": 0.021453,
+      "queryid": "-2779562273529891823",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal_bytes": 0
+    },
+    {
+      "calls": 1,
+      "exec_ms": 1.5377709999999998,
+      "queryid": "4925167158498311218",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal_bytes": 1722
+    },
+    {
+      "calls": 1,
+      "exec_ms": 0.022487000000000007,
+      "queryid": "-4658128774569121432",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal_bytes": 0
+    },
+    {
+      "calls": 1,
+      "exec_ms": 1.223496,
+      "queryid": "-1124447557603371406",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal_bytes": 1158
+    },
+    {
+      "calls": 1,
+      "exec_ms": 0.0006029999999999994,
+      "queryid": "-2835399305386018931",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal_bytes": 0
+    },
+    {
+      "calls": 2,
+      "exec_ms": 0.002913000000000006,
+      "queryid": "8482053081020301314",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal_bytes": 0
+    },
+    {
+      "calls": 1,
+      "exec_ms": 0.0064629999999999965,
+      "queryid": "11701968915743190",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal_bytes": 0
+    },
+    {
+      "calls": 1,
+      "exec_ms": 2.1956109999999995,
+      "queryid": "-7864353741921494888",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal_bytes": 987
+    },
+    {
+      "calls": 1,
+      "exec_ms": 0.004823999999999995,
+      "queryid": "5940240323763689018",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal_bytes": 0
+    }
+  ],
+  "temp_written": 0,
+  "wal_bytes": 3867
+}

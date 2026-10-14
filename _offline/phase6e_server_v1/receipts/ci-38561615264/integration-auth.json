@@ -1,0 +1,14 @@
+{
+  "auth_image": "supabase/gotrue:v2.196.0",
+  "checks": [
+    "real_password_relogin_same_subject",
+    "global_logout_deletes_sessions",
+    "revoked_token_denied",
+    "revoked_token_denied"
+  ],
+  "image_digests": [
+    "supabase/gotrue@sha256:c0c25187a6b835e65a6f6e6c6b39d090e832d40e6de5186f2c038e0411944232",
+    "public.ecr.aws/supabase/gotrue@sha256:c0c25187a6b835e65a6f6e6c6b39d090e832d40e6de5186f2c038e0411944232"
+  ],
+  "secrets_exported": false
+}

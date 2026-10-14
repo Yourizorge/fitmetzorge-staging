@@ -9,20 +9,25 @@ def disk(path):
     return pathlib.Path('\\\\?\\'+str(path)) if os.name=='nt' and not str(path).startswith('\\\\?\\') else path
 def sha(raw):return hashlib.sha256(raw).hexdigest()
 
-def archive(source):
+def archive(source,historical=False):
     source=disk(source)
     def read(name):return json.loads((source/name).read_text())
     collection=read('collection.json');result=read('result.json')
     if result['status']!='CLEAN_CI_PASS' or result['hosted_requests']!=0 or not collection['all_file_hashes_valid']:
         raise ValueError('unverified_ci')
     files=read('artifact-manifest.json')
-    for name,expected in read('endchain-sources.json')['sources'].items():
-        if sha(disk(ROOT/name).read_bytes())!=expected:raise ValueError('source_changed_'+name)
+    changed=[name for name,expected in read('endchain-sources.json')['sources'].items()
+             if sha(disk(ROOT/name).read_bytes())!=expected]
+    if changed and not historical:raise ValueError('source_changed_'+changed[0])
     chosen={'result.json','endchain-sources.json','complete-command-register.json','register-prefix-reserves.json',
+        'integral-closure.json','integral-closure-intent.json',
         'integral-real-failure-matrix.json','integral-complete-protocol-trace.json',
         'integral-workflow.json','integral-workflow-io.json','integral-fixture_setup-io.json',
         'integral-fixture_closeout-io.json','integral-control-enable-pair.json','integral-control-restore-pair.json',
-        'integral-preflight.json','workflow-auth-protocol.json','cli-protocol-0.json','cli-protocol-1.json'}
+        'integral-preflight.json','workflow-auth-protocol.json','cli-protocol-0.json','cli-protocol-1.json',
+        'integral-migration-pair.json','migration-boundary-before.json','migration-boundary-after.json',
+        'runtime-command-meter.json','registered-worker-terminal.json',
+        'cli-numeric-coverage-0.json','cli-numeric-coverage-1.json'}
     chosen.update(name for name in files if name.startswith(('register-phase-','integral-stream-','integral-gates-','lifecycle-')))
     chosen.update('auth-protocol-%02d.json'%i for i in range(18))
     target=disk(HERE/'receipts'/('ci-'+str(collection['run'])))
@@ -39,9 +44,11 @@ def archive(source):
     for name,raw in payloads.items():
         with (target/name).open('xb') as f:f.write(raw);f.flush();os.fsync(f.fileno())
     manifest={**collection,'selected_files':{name:sha(raw) for name,raw in payloads.items()},
-        'source_files_match':True,'historical_evidence_unchanged':True,
-        'status':'INTEGRAL_CI_CAPACITY_PASS_HOSTED_BUDGET_NO_GO'}
+        'source_files_match':not changed,'changed_since_ci':changed,'historical_evidence_unchanged':True,
+        'status':'HISTORICAL_SOURCE_BOUND_CI_NOT_CURRENT_ADMISSION' if changed else 'INTEGRAL_CI_PASS_HOSTED_NOT_EXECUTED'}
     with (target/'MANIFEST.json').open('x') as f:json.dump(manifest,f,indent=2);f.flush();os.fsync(f.fileno())
-    print(json.dumps({'folder':str(target),'files':len(payloads),'source_files_match':True,'manifest_sha256':sha((target/'MANIFEST.json').read_bytes())}))
+    print(json.dumps({'folder':str(target),'files':len(payloads),'source_files_match':not changed,'manifest_sha256':sha((target/'MANIFEST.json').read_bytes())}))
 
-if __name__=='__main__':archive(sys.argv[1])
+if __name__=='__main__':
+    if len(sys.argv)>3 or len(sys.argv)==3 and sys.argv[2]!='--historical':raise ValueError('archive_mode')
+    archive(sys.argv[1],historical=len(sys.argv)==3)

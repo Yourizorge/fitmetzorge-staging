@@ -1,0 +1,42 @@
+{
+  "Data_API_exposed": false,
+  "functions": [
+    {
+      "proconfig": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "proname": "actor",
+      "prosecdef": false
+    },
+    {
+      "proconfig": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "proname": "observe",
+      "prosecdef": false
+    }
+  ],
+  "memberships": [
+    {
+      "admin_option": true,
+      "grantor": "supabase_admin",
+      "inherit_option": false,
+      "member": "postgres",
+      "set_option": false
+    },
+    {
+      "admin_option": false,
+      "grantor": "postgres",
+      "inherit_option": false,
+      "member": "postgres",
+      "set_option": true
+    }
+  ],
+  "roles": [
+    {
+      "rolbypassrls": false,
+      "rolcanlogin": false,
+      "rolsuper": false
+    }
+  ]
+}

@@ -1,0 +1,242 @@
+{
+  "commands": [
+    {
+      "confirmed": true,
+      "duration_ms": 0,
+      "sql_sha256": "3eb12e5bafe877f825399d2905523e26201831b46d6ebc54e734cdb0961a8fd5"
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 1,
+      "sql_sha256": "810cd66d8d73d499bc7d3996e01570ee70418a29d9176388b8d3c57b60347c55"
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 4,
+      "sql_sha256": "c1b191e76b2023233a8ef5feef5da7cc838116790669bb55e5db23cce0b36ffd"
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 0,
+      "sql_sha256": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710"
+    }
+  ],
+  "hosted_calls": 0,
+  "migrations": [
+    {
+      "name": "legacy_phase1_3_source_baseline",
+      "sql_sha": "349b63611b7819f4984f27a14b6778235d9a4206b8883bdf1c1dd4838ad942dc",
+      "version": "20260812000000"
+    },
+    {
+      "name": "trainer_signup_bootstrap",
+      "sql_sha": "8df5447ef8c122a89035c17d9368dc9fae063f1d5fbe382e92513f27919b907f",
+      "version": "20260813"
+    },
+    {
+      "name": "phase4_nutrition_schema_slice1",
+      "sql_sha": "84c9da69b1bda2f35c08c7c3b1de4e5d4a73b2779663938e617c50ebd538cd6a",
+      "version": "20260818"
+    },
+    {
+      "name": "phase4_nutrition_slice3_atomic_log_item_replacement",
+      "sql_sha": "151e37cc1224572252413be7d9ce9868d0ddbf8b8bbd283ce463c8530afb8d0d",
+      "version": "20260819134024"
+    },
+    {
+      "name": "phase4_nutrition_slice4b_alias_search",
+      "sql_sha": "87a909408607e1ab3f4702f35156364c674e5c9a497d4a0f7c44d243261f4dfc",
+      "version": "20260819163738"
+    },
+    {
+      "name": "phase4_nutrition_slice4c_operational_state",
+      "sql_sha": "a31ce251aff98b9fa95f56e6aaeebb6d78f16d4fbe4a4aaa266f48830d70fc85",
+      "version": "20260819175756"
+    },
+    {
+      "name": "phase4_nutrition_slice4d_provider_snapshot_logging",
+      "sql_sha": "cd5d8afbea88234d38658e61dc33b459051ceaa6993259f98f5bad00d4e6a263",
+      "version": "20260820082018"
+    },
+    {
+      "name": "phase4_nutrition_slice4d_historical_provider_resolver",
+      "sql_sha": "0cafea78bf558131aba70f6ce171efa73c911689c658bcacb77f153e800f1507",
+      "version": "20260820150513"
+    },
+    {
+      "name": "phase4_nutrition_slice4e_ingestion_alias_search",
+      "sql_sha": "f042513278a40e9394fc2a222715ca25df03ae1e646a6e856a20473edd30c532",
+      "version": "20260822172635"
+    },
+    {
+      "name": "phase4_nutrition_slice4f_off_catalog_search",
+      "sql_sha": "6a3546e25efaeb57c794327b196e471017104627959184cdeb2917169e9e0d2a",
+      "version": "20260824113551"
+    },
+    {
+      "name": "phase4_nutrition_slice4fc_off_authoritative_logging",
+      "sql_sha": "3460b644ad7d92cd4881065211c907909c6c516aa7012792f51ebe5237beeadf",
+      "version": "20260826143000"
+    },
+    {
+      "name": "phase4_nutrition_slice4fd_transient_off_barcode",
+      "sql_sha": "9ac1069ca1b36c02801da1db22e12ad5228c6395809f8d3b2cbd408c6dc703cb",
+      "version": "20260827125343"
+    },
+    {
+      "name": "phase4_nutrition_slice4fd_transient_off_parent_context_fix",
+      "sql_sha": "7b8316f7e261957fae0e3394fda718e0b16b5fcd423de0c3ca95c357aa899d9e",
+      "version": "20260827152727"
+    },
+    {
+      "name": "phase5_progress_foundation",
+      "sql_sha": "8bbe901ad31c9083ddd795d6f53f459a8c9649d9b3188542a106d04b920ce764",
+      "version": "20260831145357"
+    },
+    {
+      "name": "phase5_progress_unit_preference",
+      "sql_sha": "b3f5f86b3135a1c0980de3026fee461454ea5cc6227875655a0fe2a81d8570a8",
+      "version": "20260831150434"
+    },
+    {
+      "name": "phase5_progress_revision_indexes",
+      "sql_sha": "79ff8de05ec2bbfdf01bbc06b65f27991a76115b7839845cec177edb0bdcbd87",
+      "version": "20260831153512"
+    },
+    {
+      "name": "phase5_unit_system_constraint_fix",
+      "sql_sha": "47761f754d180e4584f96fe678b118cd8040842aff441d908bf0124c19cf0278",
+      "version": "20260901161314"
+    },
+    {
+      "name": "phase6a_ai_trust_foundation",
+      "sql_sha": "c2bb864f60b74fbeff2b327941df87b95036bf0591e939e7ff97232161e6f803",
+      "version": "20260901183914"
+    },
+    {
+      "name": "phase6a_ai_consent_event_ordering",
+      "sql_sha": "2989c11c4eb0bb83290fac35c9a9280cff5d8c940ce8ad6747503523fc7e7592",
+      "version": "20260901184418"
+    },
+    {
+      "name": "phase6a_pgcrypto_search_path",
+      "sql_sha": "7cbd897bc6b7e9f07b10537ef858e6b68bd73711581a99f2770b883d1e8316a0",
+      "version": "20260901190328"
+    },
+    {
+      "name": "phase6a_foreign_key_indexes",
+      "sql_sha": "985e1f50d5400ecafed616a0c252f03ce491f3249905323fb4d2c0cf4543381d",
+      "version": "20260901191328"
+    },
+    {
+      "name": "phase6b_provider_privacy_cost_gate",
+      "sql_sha": "bfbb5bcb5cd0bf3b88c53138fffbf690d9c4668f7bd95a214eab23384d418633",
+      "version": "20260902045834"
+    },
+    {
+      "name": "phase6c_private_ai_chat",
+      "sql_sha": "c05f96232adc00cf0ddc1c499683e17e8c2ae6a04e298ca9aa7d218288c89fc3",
+      "version": "20260903085454"
+    },
+    {
+      "name": "phase6c_request_scoped_safety",
+      "sql_sha": "03e2e79efcd5c379d660322867abe4cd1017c07d87cd27dff8cb3e949b55514f",
+      "version": "20260903125150"
+    },
+    {
+      "name": "phase6d0_legacy_authorization_gate",
+      "sql_sha": "35a82413102c1aac8974a57da74324baa3b34d4de36619dc22dbfe9053d5d229",
+      "version": "20260904105918"
+    },
+    {
+      "name": "phase6d_read_only_ai_analyses",
+      "sql_sha": "46521d50f2a99964956ad78f0eaa6bd9a8b29c2c08ec6439254d3bda9629b998",
+      "version": "20260904230850"
+    },
+    {
+      "name": "phase6d_analysis_lifecycle_safe_code_fix",
+      "sql_sha": "ae6c48dcf0d32363466c70f1fa3435136ebc4d94f446b23b98d7d08952275453",
+      "version": "20260904235253"
+    },
+    {
+      "name": "phase6d_owner_safety_settings",
+      "sql_sha": "af1a10deac30a293693bbe45d0ce9c7ff8ee3c0938cf20db956fc1420d174fee",
+      "version": "20260906080455"
+    },
+    {
+      "name": "phase6d_automatic_inbox",
+      "sql_sha": "e31d0a8aac14bc70d6d014dfba476b7a84a1eb97d45c9aae1b8ed0752f0c3eb3",
+      "version": "20260906092905"
+    },
+    {
+      "name": "phase6d_recent_dashboard_analyses",
+      "sql_sha": "d3b69f7db3bc97f23412f87a801da0567fd438786d2b1b8bd0546fb8f4a72488",
+      "version": "20260906134827"
+    },
+    {
+      "name": "phase6d_theme_preference",
+      "sql_sha": "e9c50c579b88a4426e3f82ba9caadb8e3198e10969b8812c0ab3cee9222b9a3d",
+      "version": "20260907095307"
+    },
+    {
+      "name": "training_workout_editor",
+      "sql_sha": "8a47a265cf689397ebe2b19c0cc8043585ffe8bc053c3f2d8f0aac272383b47c",
+      "version": "20260908100106"
+    },
+    {
+      "name": "training_plan_effort_tracking",
+      "sql_sha": "80af4c70d30b6df62fe54b7464ae11b5be92e0f5b373079be307a42f95c2140e",
+      "version": "20260909215122"
+    },
+    {
+      "name": "phase6e9_synthetic_authorization",
+      "sql_sha": "9fddea240c1542a49c85c5d0b73ae8a5c8d13894995e54a8b0e6019f0f0b8488",
+      "version": "20260915072202"
+    },
+    {
+      "name": "phase6e10_sources_managed_windows",
+      "sql_sha": "fb8aaef4a3542c5d0dcc1f74d42583e76ccd4c002e61e4d26832f7d0547018e9",
+      "version": "20260915104711"
+    },
+    {
+      "name": "phase6e10_source_reference_indexes",
+      "sql_sha": "8c9fcb8bdbaec24f01bda80348e9d3f5ade570f5697319c4b66e53266d275360",
+      "version": "20260916071416"
+    },
+    {
+      "name": "phase6e10_strict_command_versions",
+      "sql_sha": "1e6d0823eefae26233db57e56d096db441a7f01d1714cde9e7f4dfa1e3f522bf",
+      "version": "20260916072203"
+    },
+    {
+      "name": "phase6e10_api_conflict_sqlstate",
+      "sql_sha": "61fc4c7cee9de7360506aebce09640011d70d3012d39b31f12119d7f61658922",
+      "version": "20260916073923"
+    },
+    {
+      "name": "phase6e11_final_app_integration",
+      "sql_sha": "69948fb7f410fa95a538da54b6d565ae80516392cb3e92a16effda4ba6e33aa0",
+      "version": "20260916162120"
+    },
+    {
+      "name": "phase6e11_private_transaction_audit",
+      "sql_sha": "5182e1f0b64477aa062f2b0e95ac6935f5080bd1823ec870ed57f71a04d77307",
+      "version": "20260924130052"
+    },
+    {
+      "name": "phase6e11_rpc_bridge",
+      "sql_sha": "ce857656c5eae67ac9f87d059bc6fb385082c25667adbac019ae76ee05882cbf",
+      "version": "20260924155822"
+    },
+    {
+      "name": "phase6e11_request_binding",
+      "sql_sha": "21c2db7d134e0c1f1cbaefd56c2836fbf6cfe7a0b816abe20e90226d2832c095",
+      "version": "20260928120846"
+    },
+    {
+      "name": "phase6e11_controller_evidence",
+      "sql_sha": "7640f9627bf70267550af6b1d977a90a12069948825b03cdc39f51651b7411e2",
+      "version": "20261012104331"
+    }
+  ]
+}

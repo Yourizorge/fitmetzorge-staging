@@ -1,0 +1,778 @@
+{
+  "rows": [
+    {
+      "action": "candidate_44_migration_aware_cli",
+      "id": "cmd_00056",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "3eb12e5bafe877f825399d2905523e26201831b46d6ebc54e734cdb0961a8fd5",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "candidate_44_migration_aware_cli",
+      "id": "cmd_00057",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "654b3989d19937e3700b1ef5374ce0b4c77f8460eb8318dd1f40d31c27c21b68",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "candidate_44_migration_aware_cli",
+      "id": "cmd_00058",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "4c37732613791f84484c38265c0be027569ee1b7e1d55d69de16b4f9668159ce",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "candidate_44_migration_aware_cli",
+      "id": "cmd_00059",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "candidate_44_migration_aware_cli",
+      "id": "cmd_00060",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "e004ebd5b5532a4b85984a62f8ad48a81aa3460c1ca07701f386135d72cdecf5",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact M44 DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_44_migration_aware_cli",
+      "id": "cmd_00061",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "a399b6fe975faca1ecc7b5049577f7c16879fb533dd25a156216e9c0822f2cd6",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact M44 DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_44_migration_aware_cli",
+      "id": "cmd_00062",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "1c621461b67c084010ce6ffd46ac5ada42ab394a41d5bb1ffadbdc8ed6ee961d",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact M44 DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_44_migration_aware_cli",
+      "id": "cmd_00063",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "7e59df0d742057544fee83804a576779c39e088d2561bb3b6ff9e61337b60db7",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact M44 DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_44_migration_aware_cli",
+      "id": "cmd_00064",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "4335f3977075ec5ee9762c0b501e8ab3f81128f5d21cd113d4d91e185d7876f0",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact M44 DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_44_migration_aware_cli",
+      "id": "cmd_00065",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "d431b4dfd9187ef03efe706f38505a49143437fa1d0fee70a4df24631245393d",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact M44 DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_44_migration_aware_cli",
+      "id": "cmd_00066",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "da02339210fb8baf6a812a5ed7fa0b4383f2819a7c67570c137da040f1e2bfab",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact M44 DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_44_migration_aware_cli",
+      "id": "cmd_00067",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "f7f760b6e140a0440d12954db7bb9b215b3a87fd434fd8653c0a3b7adb59e655",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact M44 DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_44_migration_aware_cli",
+      "id": "cmd_00068",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "30a401e34dd07f2857bb3d95e30f9f49dbd6e877d62cb8770b37ef8e4c53a071",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact M44 DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_44_migration_aware_cli",
+      "id": "cmd_00069",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "1396863a756fb2f3e5ad0c249b6acf10590e42b4a9874ab04b38b9bca1ca51c4",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact M44 DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_44_migration_aware_cli",
+      "id": "cmd_00070",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "a76df78608a26a2598d1ee4cde242da7972a61793b087614407ad6f84dbcce16",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact M44 DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_44_migration_aware_cli",
+      "id": "cmd_00071",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "edf1095342ad867b8b30740cb1a3cc9527b3d37b9efaa152d7e7bda03def2a46",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact M44 DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_44_migration_aware_cli",
+      "id": "cmd_00072",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "9505cacb7c710ed17125fcc6cb3669e8ddca6c8cd8af6a31f6b3cd64604c3098",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact M44 DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_44_migration_aware_cli",
+      "id": "cmd_00073",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "8c216484b2f937e0549563258eb008a492b01b61f30277ec08eacaeed37be123",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact M44 DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_44_migration_aware_cli",
+      "id": "cmd_00074",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "3eb12e5bafe877f825399d2905523e26201831b46d6ebc54e734cdb0961a8fd5",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "candidate_44_migration_aware_cli",
+      "id": "cmd_00075",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "654b3989d19937e3700b1ef5374ce0b4c77f8460eb8318dd1f40d31c27c21b68",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "candidate_44_migration_aware_cli",
+      "id": "cmd_00076",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "4c37732613791f84484c38265c0be027569ee1b7e1d55d69de16b4f9668159ce",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "candidate_44_migration_aware_cli",
+      "id": "cmd_00077",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_begin",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00078",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "3eb12e5bafe877f825399d2905523e26201831b46d6ebc54e734cdb0961a8fd5",
+      "timeout_ms": 5000,
+      "trace_command": 54,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_timeout",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00079",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "2f0ad9318d8daad4452e9726e67089ca3909981bbd333d0f80972dd3f8470f2c",
+      "timeout_ms": 5000,
+      "trace_command": 55,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_readonly",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00080",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "654b3989d19937e3700b1ef5374ce0b4c77f8460eb8318dd1f40d31c27c21b68",
+      "timeout_ms": 5000,
+      "trace_command": 56,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_io_bind",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00081",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "437380dddfde7739b50fb08737e8fb6feaf1dffb0c273da602289e446c3cf998",
+      "timeout_ms": 5000,
+      "trace_command": 57,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_io_sample",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00082",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0b8689aa5a9814bf7225969b10ec65eadce6b7aaa29dc372f6d9b9a19dc3b0f9",
+      "timeout_ms": 5000,
+      "trace_command": 58,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_io_bind",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00083",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "143290e100a36ca810128a83a7035befaced99a17ab337515bd67f694f347570",
+      "timeout_ms": 5000,
+      "trace_command": 59,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_io_sample",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00084",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0b8689aa5a9814bf7225969b10ec65eadce6b7aaa29dc372f6d9b9a19dc3b0f9",
+      "timeout_ms": 5000,
+      "trace_command": 60,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_access",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00085",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "ad5ff4effb3cdfc8647f1bfa24815040cf3b1b20537b36d4f163ee36ccc8cb23",
+      "timeout_ms": 5000,
+      "trace_command": 61,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_io_bind",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00086",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "7831789520a4b6399b38706b38d8f1e7d7b6fd585f26b15d3d47f78d2d348579",
+      "timeout_ms": 5000,
+      "trace_command": 62,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_io_sample",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00087",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0b8689aa5a9814bf7225969b10ec65eadce6b7aaa29dc372f6d9b9a19dc3b0f9",
+      "timeout_ms": 5000,
+      "trace_command": 63,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_migrations",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00088",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "c1b191e76b2023233a8ef5feef5da7cc838116790669bb55e5db23cce0b36ffd",
+      "timeout_ms": 5000,
+      "trace_command": 64,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_io_bind",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00089",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "6d9925467e3246387d7a1c40df6cc5a57639e6cc213c29c3f6d6d9d18f2baa90",
+      "timeout_ms": 5000,
+      "trace_command": 65,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_io_sample",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00090",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0b8689aa5a9814bf7225969b10ec65eadce6b7aaa29dc372f6d9b9a19dc3b0f9",
+      "timeout_ms": 5000,
+      "trace_command": 66,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_catalog",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00091",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "74a7eed5191bbd4282cf64c142d805a57248bdbc3b9043a368c814f47782e501",
+      "timeout_ms": 5000,
+      "trace_command": 67,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_io_bind",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00092",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "96b664380256db558c9f33c23d61e94de601ea6a53a601879d6f3a5caaa223cb",
+      "timeout_ms": 5000,
+      "trace_command": 68,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_io_sample",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00093",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0b8689aa5a9814bf7225969b10ec65eadce6b7aaa29dc372f6d9b9a19dc3b0f9",
+      "timeout_ms": 5000,
+      "trace_command": 69,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_absence",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00094",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "a028588b1357717f917d25dd0873f8882120c7e5207db5c0563beb1739ca97a0",
+      "timeout_ms": 5000,
+      "trace_command": 70,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_io_sample",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00095",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0b8689aa5a9814bf7225969b10ec65eadce6b7aaa29dc372f6d9b9a19dc3b0f9",
+      "timeout_ms": 5000,
+      "trace_command": 71,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_io_closing_witness",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00096",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "8b86e55eb52434a62227554d1d6da0548883b60528e2150b8add16090341dda4",
+      "timeout_ms": 5000,
+      "trace_command": 72,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_rollback",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00097",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "df45825ebe3a7c74a3ae57ebbaabedbe01e44fa68fb13985e65ed4d6dbcb3e60",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710",
+      "timeout_ms": 5000,
+      "trace_command": 73,
+      "writeset": []
+    }
+  ]
+}

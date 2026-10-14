@@ -1,0 +1,51 @@
+{
+  "commands": 5,
+  "operation": "getUser",
+  "query_text_read": false,
+  "role": "a_member",
+  "scope": "disposable CI GoTrue role, not hosted attribution",
+  "statements": [
+    {
+      "calls": 1,
+      "exec_ms": 0.04285,
+      "queryid": "6917587483280143079",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal_bytes": 0
+    },
+    {
+      "calls": 1,
+      "exec_ms": 0.0068520000000000005,
+      "queryid": "-386735372769922701",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal_bytes": 0
+    },
+    {
+      "calls": 1,
+      "exec_ms": 0.019476,
+      "queryid": "-924117328292118960",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal_bytes": 0
+    },
+    {
+      "calls": 1,
+      "exec_ms": 0.034484,
+      "queryid": "377725305029544001",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal_bytes": 0
+    },
+    {
+      "calls": 1,
+      "exec_ms": 0.016280000000000003,
+      "queryid": "2187560102636318334",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal_bytes": 0
+    }
+  ],
+  "temp_written": 0,
+  "wal_bytes": 0
+}

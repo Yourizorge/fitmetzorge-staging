@@ -1,0 +1,1121 @@
+{
+  "rows": [
+    {
+      "action": "stream_before_begin",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00005",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "39a735c5dae2019f7ec2a41de9b4b8f37d979b14d999d9abd06b7f5d1bb9c95a",
+      "timeout_ms": 5000,
+      "trace_command": 17,
+      "writeset": []
+    },
+    {
+      "action": "stream_before_guard",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00006",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "810cd66d8d73d499bc7d3996e01570ee70418a29d9176388b8d3c57b60347c55",
+      "timeout_ms": 5000,
+      "trace_command": 18,
+      "writeset": []
+    },
+    {
+      "action": "stream_before_canonical",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00007",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "7d10b9ef765a9886d89e423ac8a6def20e8589493a8958af253431c52c1d2183",
+      "timeout_ms": 5000,
+      "trace_command": 19,
+      "writeset": []
+    },
+    {
+      "action": "stream_before_inventory",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00008",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "6918384197bebf43afd6b0416425ee07f1ffb2b807f1dd7928925ad4c845540b",
+      "timeout_ms": 5000,
+      "trace_command": 20,
+      "writeset": []
+    },
+    {
+      "action": "stream_before_reader_bind",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00009",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0216fdc5f79878fc4ea70b0b724f14472b8f4f028c6e6dcfe9c0c1b6137cc6d5",
+      "timeout_ms": 5000,
+      "trace_command": 21,
+      "writeset": []
+    },
+    {
+      "action": "stream_before_io",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00010",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "345817700e6ab22ac07149573a908f3971c6a631c32b1b5df4ff167233bdb824",
+      "timeout_ms": 5000,
+      "trace_command": 22,
+      "writeset": []
+    },
+    {
+      "action": "stream_before_utility",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00011",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "6cddb93f52123c05ef4dd7ec8415901c6bbf30aab74b6ff79146403a836bd377",
+      "timeout_ms": 5000,
+      "trace_command": 23,
+      "writeset": []
+    },
+    {
+      "action": "stream_before_io",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00012",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "345817700e6ab22ac07149573a908f3971c6a631c32b1b5df4ff167233bdb824",
+      "timeout_ms": 5000,
+      "trace_command": 24,
+      "writeset": []
+    },
+    {
+      "action": "stream_before_utility",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00013",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0b68d2b66135681be3ded2a4337a56f4dba5c17ea3663ef15ad2dac5501058d1",
+      "timeout_ms": 5000,
+      "trace_command": 25,
+      "writeset": []
+    },
+    {
+      "action": "stream_before_io",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00014",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "345817700e6ab22ac07149573a908f3971c6a631c32b1b5df4ff167233bdb824",
+      "timeout_ms": 5000,
+      "trace_command": 26,
+      "writeset": []
+    },
+    {
+      "action": "stream_before_utility",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00015",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0b68d2b66135681be3ded2a4337a56f4dba5c17ea3663ef15ad2dac5501058d1",
+      "timeout_ms": 5000,
+      "trace_command": 27,
+      "writeset": []
+    },
+    {
+      "action": "stream_before_io",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00016",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "345817700e6ab22ac07149573a908f3971c6a631c32b1b5df4ff167233bdb824",
+      "timeout_ms": 5000,
+      "trace_command": 28,
+      "writeset": []
+    },
+    {
+      "action": "stream_before_utility",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00017",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "1701f0c7aadb2ebb3b3e40ce6e6823010eeeb672426589e9bfc0fe80be50a9c7",
+      "timeout_ms": 5000,
+      "trace_command": 29,
+      "writeset": []
+    },
+    {
+      "action": "stream_before_io",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00018",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "345817700e6ab22ac07149573a908f3971c6a631c32b1b5df4ff167233bdb824",
+      "timeout_ms": 5000,
+      "trace_command": 30,
+      "writeset": []
+    },
+    {
+      "action": "stream_before_io_terminal",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00019",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "3a7a3d78d675bbe1ef751e37b6f7fb72f83cf12ca40264701e4cba35bde3d8fa",
+      "timeout_ms": 5000,
+      "trace_command": 31,
+      "writeset": []
+    },
+    {
+      "action": "stream_before_final_guard",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00020",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "810cd66d8d73d499bc7d3996e01570ee70418a29d9176388b8d3c57b60347c55",
+      "timeout_ms": 5000,
+      "trace_command": 32,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_00021",
+      "optional": true,
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "720444e6e9d015f406cba6446c24d49e0e5cfa95f224b0e04f7ce7fd50d400eb",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_00022",
+      "optional": true,
+      "ordinal_in_action": 1,
+      "phase": "baseline",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "720444e6e9d015f406cba6446c24d49e0e5cfa95f224b0e04f7ce7fd50d400eb",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_00023",
+      "optional": true,
+      "ordinal_in_action": 2,
+      "phase": "baseline",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "720444e6e9d015f406cba6446c24d49e0e5cfa95f224b0e04f7ce7fd50d400eb",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_00024",
+      "optional": true,
+      "ordinal_in_action": 3,
+      "phase": "baseline",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "720444e6e9d015f406cba6446c24d49e0e5cfa95f224b0e04f7ce7fd50d400eb",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_00025",
+      "optional": true,
+      "ordinal_in_action": 4,
+      "phase": "baseline",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "720444e6e9d015f406cba6446c24d49e0e5cfa95f224b0e04f7ce7fd50d400eb",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_00026",
+      "optional": true,
+      "ordinal_in_action": 5,
+      "phase": "baseline",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "720444e6e9d015f406cba6446c24d49e0e5cfa95f224b0e04f7ce7fd50d400eb",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_00027",
+      "optional": true,
+      "ordinal_in_action": 6,
+      "phase": "baseline",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "720444e6e9d015f406cba6446c24d49e0e5cfa95f224b0e04f7ce7fd50d400eb",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_00028",
+      "optional": true,
+      "ordinal_in_action": 7,
+      "phase": "baseline",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "720444e6e9d015f406cba6446c24d49e0e5cfa95f224b0e04f7ce7fd50d400eb",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_00029",
+      "optional": true,
+      "ordinal_in_action": 8,
+      "phase": "baseline",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "720444e6e9d015f406cba6446c24d49e0e5cfa95f224b0e04f7ce7fd50d400eb",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_00030",
+      "optional": true,
+      "ordinal_in_action": 9,
+      "phase": "baseline",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "720444e6e9d015f406cba6446c24d49e0e5cfa95f224b0e04f7ce7fd50d400eb",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_00031",
+      "optional": true,
+      "ordinal_in_action": 10,
+      "phase": "baseline",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "720444e6e9d015f406cba6446c24d49e0e5cfa95f224b0e04f7ce7fd50d400eb",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_00032",
+      "optional": true,
+      "ordinal_in_action": 11,
+      "phase": "baseline",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "720444e6e9d015f406cba6446c24d49e0e5cfa95f224b0e04f7ce7fd50d400eb",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_00033",
+      "optional": true,
+      "ordinal_in_action": 12,
+      "phase": "baseline",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "720444e6e9d015f406cba6446c24d49e0e5cfa95f224b0e04f7ce7fd50d400eb",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_00034",
+      "optional": true,
+      "ordinal_in_action": 13,
+      "phase": "baseline",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "720444e6e9d015f406cba6446c24d49e0e5cfa95f224b0e04f7ce7fd50d400eb",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "stream_before_rollback",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00035",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710",
+      "timeout_ms": 5000,
+      "trace_command": 33,
+      "writeset": []
+    },
+    {
+      "action": "gates_before_begin",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00036",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "3eb12e5bafe877f825399d2905523e26201831b46d6ebc54e734cdb0961a8fd5",
+      "timeout_ms": 5000,
+      "trace_command": 34,
+      "writeset": []
+    },
+    {
+      "action": "gates_before_timeout",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00037",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "2f0ad9318d8daad4452e9726e67089ca3909981bbd333d0f80972dd3f8470f2c",
+      "timeout_ms": 5000,
+      "trace_command": 35,
+      "writeset": []
+    },
+    {
+      "action": "gates_before_readonly",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00038",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "654b3989d19937e3700b1ef5374ce0b4c77f8460eb8318dd1f40d31c27c21b68",
+      "timeout_ms": 5000,
+      "trace_command": 36,
+      "writeset": []
+    },
+    {
+      "action": "gates_before_io_bind",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00039",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "437380dddfde7739b50fb08737e8fb6feaf1dffb0c273da602289e446c3cf998",
+      "timeout_ms": 5000,
+      "trace_command": 37,
+      "writeset": []
+    },
+    {
+      "action": "gates_before_io_sample",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00040",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0b8689aa5a9814bf7225969b10ec65eadce6b7aaa29dc372f6d9b9a19dc3b0f9",
+      "timeout_ms": 5000,
+      "trace_command": 38,
+      "writeset": []
+    },
+    {
+      "action": "gates_before_io_bind",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00041",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "143290e100a36ca810128a83a7035befaced99a17ab337515bd67f694f347570",
+      "timeout_ms": 5000,
+      "trace_command": 39,
+      "writeset": []
+    },
+    {
+      "action": "gates_before_io_sample",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00042",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0b8689aa5a9814bf7225969b10ec65eadce6b7aaa29dc372f6d9b9a19dc3b0f9",
+      "timeout_ms": 5000,
+      "trace_command": 40,
+      "writeset": []
+    },
+    {
+      "action": "gates_before_access",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00043",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "ad5ff4effb3cdfc8647f1bfa24815040cf3b1b20537b36d4f163ee36ccc8cb23",
+      "timeout_ms": 5000,
+      "trace_command": 41,
+      "writeset": []
+    },
+    {
+      "action": "gates_before_io_bind",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00044",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "7831789520a4b6399b38706b38d8f1e7d7b6fd585f26b15d3d47f78d2d348579",
+      "timeout_ms": 5000,
+      "trace_command": 42,
+      "writeset": []
+    },
+    {
+      "action": "gates_before_io_sample",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00045",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0b8689aa5a9814bf7225969b10ec65eadce6b7aaa29dc372f6d9b9a19dc3b0f9",
+      "timeout_ms": 5000,
+      "trace_command": 43,
+      "writeset": []
+    },
+    {
+      "action": "gates_before_migrations",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00046",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "c1b191e76b2023233a8ef5feef5da7cc838116790669bb55e5db23cce0b36ffd",
+      "timeout_ms": 5000,
+      "trace_command": 44,
+      "writeset": []
+    },
+    {
+      "action": "gates_before_io_bind",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00047",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "6d9925467e3246387d7a1c40df6cc5a57639e6cc213c29c3f6d6d9d18f2baa90",
+      "timeout_ms": 5000,
+      "trace_command": 45,
+      "writeset": []
+    },
+    {
+      "action": "gates_before_io_sample",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00048",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0b8689aa5a9814bf7225969b10ec65eadce6b7aaa29dc372f6d9b9a19dc3b0f9",
+      "timeout_ms": 5000,
+      "trace_command": 46,
+      "writeset": []
+    },
+    {
+      "action": "gates_before_catalog",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00049",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "74a7eed5191bbd4282cf64c142d805a57248bdbc3b9043a368c814f47782e501",
+      "timeout_ms": 5000,
+      "trace_command": 47,
+      "writeset": []
+    },
+    {
+      "action": "gates_before_io_bind",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00050",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "96b664380256db558c9f33c23d61e94de601ea6a53a601879d6f3a5caaa223cb",
+      "timeout_ms": 5000,
+      "trace_command": 48,
+      "writeset": []
+    },
+    {
+      "action": "gates_before_io_sample",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00051",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0b8689aa5a9814bf7225969b10ec65eadce6b7aaa29dc372f6d9b9a19dc3b0f9",
+      "timeout_ms": 5000,
+      "trace_command": 49,
+      "writeset": []
+    },
+    {
+      "action": "gates_before_absence",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00052",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "a028588b1357717f917d25dd0873f8882120c7e5207db5c0563beb1739ca97a0",
+      "timeout_ms": 5000,
+      "trace_command": 50,
+      "writeset": []
+    },
+    {
+      "action": "gates_before_io_sample",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00053",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0b8689aa5a9814bf7225969b10ec65eadce6b7aaa29dc372f6d9b9a19dc3b0f9",
+      "timeout_ms": 5000,
+      "trace_command": 51,
+      "writeset": []
+    },
+    {
+      "action": "gates_before_io_closing_witness",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00054",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "8b86e55eb52434a62227554d1d6da0548883b60528e2150b8add16090341dda4",
+      "timeout_ms": 5000,
+      "trace_command": 52,
+      "writeset": []
+    },
+    {
+      "action": "gates_before_rollback",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00055",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "baseline",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "c97c961b27681680f86e68500a070d20b7e45cfe5eba1d8ed1b3dfaf496c7b74",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710",
+      "timeout_ms": 5000,
+      "trace_command": 53,
+      "writeset": []
+    }
+  ]
+}

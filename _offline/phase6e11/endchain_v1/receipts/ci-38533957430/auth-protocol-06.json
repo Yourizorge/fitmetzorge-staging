@@ -1,0 +1,51 @@
+{
+  "commands": 5,
+  "operation": "getUser",
+  "query_text_read": false,
+  "role": "a_trainer",
+  "scope": "disposable CI GoTrue role, not hosted attribution",
+  "statements": [
+    {
+      "calls": 1,
+      "exec_ms": 0.043142000000000014,
+      "queryid": "6917587483280143079",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal_bytes": 0
+    },
+    {
+      "calls": 1,
+      "exec_ms": 0.005810999999999997,
+      "queryid": "-386735372769922701",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal_bytes": 0
+    },
+    {
+      "calls": 1,
+      "exec_ms": 0.019127000000000005,
+      "queryid": "-924117328292118960",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal_bytes": 0
+    },
+    {
+      "calls": 1,
+      "exec_ms": 0.035887,
+      "queryid": "377725305029544001",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal_bytes": 0
+    },
+    {
+      "calls": 1,
+      "exec_ms": 0.01601100000000001,
+      "queryid": "2187560102636318334",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal_bytes": 0
+    }
+  ],
+  "temp_written": 0,
+  "wal_bytes": 0
+}

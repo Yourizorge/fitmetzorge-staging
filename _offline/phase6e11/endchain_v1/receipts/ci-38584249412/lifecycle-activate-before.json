@@ -1,0 +1,180 @@
+{
+  "action": "db0a8a37-7df1-40e1-aa0a-3f5ce851e27a",
+  "contract": [
+    [
+      "windows",
+      "UPDATE",
+      [
+        "f9c238b4-712d-4f6b-8a55-c60bd12ad51c"
+      ]
+    ],
+    [
+      "windows",
+      "UPDATE",
+      [
+        "f9c238b4-712d-4f6b-8a55-c60bd12ad51c"
+      ]
+    ],
+    [
+      "audit",
+      "INSERT",
+      [
+        "f9c238b4-712d-4f6b-8a55-c60bd12ad51c",
+        "bd36377e-02fb-4660-8de0-17ff0897723c",
+        "activate"
+      ]
+    ],
+    [
+      "requests",
+      "INSERT",
+      [
+        "bd36377e-02fb-4660-8de0-17ff0897723c",
+        "f7f7f03e-8a69-4b6d-b153-d5cf6f4dbf6f"
+      ]
+    ]
+  ],
+  "run": "a9580bbf-276f-4dae-878e-caec79884793",
+  "state": {
+    "accounts": "9da89d6e778d05f82ca7bac0849394a7c39e5b708924000816989fc63caa70eb",
+    "action": null,
+    "coverage": true,
+    "profiles": "f33ead074e79965aa3cce39a9dd38d5de0a8695e7be5fdd3db059e25d9ded08c",
+    "state": [
+      [
+        {
+          "count": 1,
+          "sha": "57e0a5e4cca258c791b6721bdaf2b216b2e3b2bfe1e6047547bbb9a8818b4f4b",
+          "table": "windows"
+        },
+        {
+          "count": 3,
+          "sha": "5803d6823884356282a2a8dd0935bf2c95faeb4bccba12f6838c88239466a342",
+          "table": "participants"
+        },
+        {
+          "count": 1,
+          "sha": "58a96e4875174c5a6cb8fbfaadb734cd1ae61b861bcc6d8ac14a55d441a23fb7",
+          "table": "workspaces"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "source_versions"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "source_heads"
+        },
+        {
+          "count": 1,
+          "sha": "bf89440aaf77ea9051c56809923b38e0f8437b1de234fd558ff3f3b0e185eaa4",
+          "table": "plans"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "proposals"
+        },
+        {
+          "count": 1,
+          "sha": "0e89663b25a4de0f5f9ade8eeb63c68d3e5444107925a16f613f6fa8f933cc78",
+          "table": "audit"
+        },
+        {
+          "count": 1,
+          "sha": "d5f26eb52350c564cc9c09fc8172662e28a0815b295e36cdba3a2d73f1598eae",
+          "table": "requests"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "b_states"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "b_versions"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "inbox_state"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "events"
+        }
+      ],
+      [
+        {
+          "count": 1,
+          "sha": "57e0a5e4cca258c791b6721bdaf2b216b2e3b2bfe1e6047547bbb9a8818b4f4b",
+          "table": "windows"
+        },
+        {
+          "count": 3,
+          "sha": "5803d6823884356282a2a8dd0935bf2c95faeb4bccba12f6838c88239466a342",
+          "table": "participants"
+        },
+        {
+          "count": 1,
+          "sha": "be4f686457d6437c7e3c5776843c1507921eb4849e281d4c1540a089c1e09eb5",
+          "table": "workspaces"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "source_versions"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "source_heads"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "plans"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "proposals"
+        },
+        {
+          "count": 1,
+          "sha": "0e89663b25a4de0f5f9ade8eeb63c68d3e5444107925a16f613f6fa8f933cc78",
+          "table": "audit"
+        },
+        {
+          "count": 1,
+          "sha": "d5f26eb52350c564cc9c09fc8172662e28a0815b295e36cdba3a2d73f1598eae",
+          "table": "requests"
+        },
+        {
+          "count": 1,
+          "sha": "45a38211580c5d7789c5652455dd2efcbf55dacfe62fbcbe5a9e7b0ad5e376d7",
+          "table": "b_states"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "b_versions"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "inbox_state"
+        },
+        {
+          "count": 0,
+          "sha": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "table": "events"
+        }
+      ]
+    ],
+    "writes": []
+  }
+}

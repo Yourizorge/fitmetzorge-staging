@@ -1,7 +1,7 @@
 """Verify the exact endchain CI artifact; preserve already collected logs."""
 import hashlib,io,json,os,pathlib,re,zipfile
 def disk(p):return pathlib.Path('\\\\?\\'+str(p.resolve())) if os.name=='nt' else p
-def collect(folder,run,api):
+def collect(folder,run,api,recover=False):
     meta=api('/actions/runs/'+str(run));blob=json.loads((folder/'blob.json').read_text())
     head=json.loads((folder/'dispatch.json').read_text())['head']
     if meta['status']!='completed' or meta['run_attempt']!=1 or meta['head_sha']!=head or blob['sha256'] not in meta['display_title']:
@@ -12,7 +12,13 @@ def collect(folder,run,api):
     artifact=matches[0];raw=api('/actions/artifacts/'+str(artifact['id'])+'/zip',raw=True)
     digest=hashlib.sha256(raw).hexdigest()
     if artifact.get('digest')!='sha256:'+digest:raise RuntimeError('artifact_archive_digest')
-    target=disk(folder/('artifact-run-'+str(run)));target.mkdir(exist_ok=False)
+    original=disk(folder/('artifact-run-'+str(run)))
+    if recover:
+        if not original.is_dir() or sorted(p.name for p in original.iterdir())!=['evidence.zip']:
+            raise RuntimeError('artifact_recovery_not_partial')
+        if hashlib.sha256((original/'evidence.zip').read_bytes()).hexdigest()!=digest:
+            raise RuntimeError('artifact_recovery_archive_changed')
+    target=disk(folder/('artifact-run-'+str(run)+('-recovered' if recover else '')));target.mkdir(exist_ok=False)
     with (target/'evidence.zip').open('xb') as f:f.write(raw)
     with zipfile.ZipFile(io.BytesIO(raw)) as archive:
         names=archive.namelist()
@@ -20,7 +26,9 @@ def collect(folder,run,api):
         # per-file limits remain unchanged. This does not expand SQL budgets.
         if len(names)>1400 or len(names)!=len(set(names)) or any(not re.fullmatch('[a-zA-Z0-9_.-]+\\.(json|txt)',n) for n in names):
             raise RuntimeError('artifact_paths')
-        if sum(x.file_size for x in archive.infolist())>30000000 or any(x.file_size>2000000 for x in archive.infolist()):
+        # Immutable numeric before/after samples raise the measured 1,341-file
+        # archive to 43.2 MB. Keep finite path, compressed and per-file limits.
+        if sum(x.file_size for x in archive.infolist())>48000000 or any(x.file_size>2000000 for x in archive.infolist()):
             raise RuntimeError('artifact_size')
         manifest=json.loads(archive.read('artifact-manifest.json'))
         if set(names)!=set(manifest)|{'artifact-manifest.json'}:raise RuntimeError('artifact_files')
