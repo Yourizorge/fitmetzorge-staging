@@ -22,13 +22,22 @@ NAMES=['budget.mjs','budget.test.mjs','database_checks.py','ci.py','scoped_cycle
  'native_runtime.py','test_native_runtime.py','runtime_budget.py','test_runtime_budget.py','auth_evidence.py','test_auth_evidence.py',
  'registered_lifecycle.py','test_registered_lifecycle.py','metered_composition.py','test_metered_composition.py',
  'registered_runner.py','test_registered_runner.py','cli_stat_reader.py','test_cli_stat_reader.py',
- 'migration_boundary.py','test_migration_boundary.py']
+ 'migration_boundary.py','test_migration_boundary.py','hosted_gate.py','test_hosted_gate.py']
 EXTRA={'_offline/phase6e11/endchain_v1/'+n for n in NAMES}
 EXTRA|={'_offline/phase6e11/request_v4/'+n for n in ['transport.mjs','connection_options.mjs','config_shape.mjs']}
 EXTRA|={'_offline/phase6e11/resume_v1/read_only.mjs','_offline/phase6e11/transport_v1/contract.mjs',
  '_offline/phase6e11/readiness_v1/workflow_audit_v1/workflow_local.py'}
 EXTRA|=set(SOURCES)
 EXTRA|={'_offline/phase6e11/cursor_v1/transfer.py'}
+EXTRA|={'_offline/phase6e11/'+name for name in (
+ 'access_v1/cli_check.py','access_v1/inventory.py','access_v1/jit.py','access_v1/migration_run.py',
+ 'access_v1/migration_snapshot.py','access_v1/temporary.py','ci41/ops.py',
+ 'controller_v1/jit_diagnose.py','controller_v1/install.py','controller_v1/auth_preflight.py','controller_v1/transfer.py',
+ 'request_v4/install.py','migration_cursor_v2/install.py','cursor_hosted_v2/canary.py','cursor_hosted_v2/discovery.py',
+ 'cursor_v2/adapter.py','fingerprint_v1/fingerprint.py','fingerprint_v1/guard.py','fingerprint_v1/local_cluster.py','fingerprint_v1/pq.py',
+ 'm41_tx_v2/measure.py','m41_tx_v2/install.py','readiness_v1/targeted/query_load.py','readiness_v1/targeted/transport.py',
+ 'textfree_tx_v2/connection.py','textfree_tx_v2/hosted.py','textfree_tx_v2/session.py','textfree_v1/monitor.py','textfree_v1/native.py')}
+EXTRA.add('supabase/tests/phase6d0-staging-query.py')
 prior.EXTRA|=EXTRA;prior.old.EXTRA|=EXTRA
 class Gate(prior.Gate):
     cli_namespace='clean44-'

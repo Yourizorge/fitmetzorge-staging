@@ -21,7 +21,8 @@ CONFIG="""select set_config('TimeZone','UTC',true),set_config('DateStyle','ISO, 
  set_config('work_mem','2184kB',true),set_config('statement_timeout','5000',true)"""
 GUARD="""select current_setting('transaction_read_only') ro,current_setting('transaction_isolation') isolation,
  pg_backend_pid() backend,pg_current_snapshot()::text snapshot,
- current_database() db,current_user role,(select ssl from pg_stat_ssl where pid=pg_backend_pid()) ssl"""
+ current_database() db,current_user role,(select ssl from pg_stat_ssl where pid=pg_backend_pid()) ssl,
+ (select encode(sha256(system_identifier::text::bytea),'hex') from pg_control_system()) instance_sha"""
 
 def ident(x):
     if not re.fullmatch('[A-Za-z_][A-Za-z0-9_]*',x):raise ValueError('stream_identifier')
@@ -95,6 +96,7 @@ def run(query,save,ids,context,label,expected=None):
         identity=q('guard',GUARD)[0]
         if identity['ro']!='on' or identity['isolation']!='repeatable read' or identity['db']!='postgres' or identity['role']!='postgres' or identity['ssl'] is not True:
             raise ValueError('stream_identity')
+        if context.get('instance_sha') and identity['instance_sha']!=context['instance_sha']:raise ValueError('stream_project_instance')
         q('canonical',CONFIG)
         plans=plan(q('inventory',INVENTORY),ids,context)
         if expected is not None and plans!=expected['plan']:raise ValueError('stream_inventory_changed')

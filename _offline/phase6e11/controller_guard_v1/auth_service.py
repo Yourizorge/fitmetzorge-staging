@@ -16,7 +16,7 @@ def run(gate, composition=None):
     if os.environ.get('GITHUB_REPOSITORY')!='Yourizorge/fitmetzorge-staging' or os.environ.get('GITHUB_REF')!='refs/heads/main':
         raise RuntimeError('ci_only')
     if hasattr(gate,'prepare_registered_database'):gate.prepare_registered_database()
-    phase='initialization';command_evidence=[];contracts={};scoped_auth_evidence=None;registered=None;native_lock=None
+    phase='initialization';command_evidence=[];contracts={};scoped_auth_evidence=None;registered=None;native_lock=None;native_scalar=None
     def private(args,**kwargs):
         p=subprocess.run(args,capture_output=True,text=True,timeout=kwargs.pop('timeout',30),**kwargs)
         state=re.search(r'ERROR:\s+([0-9A-Z]{5})\b',p.stderr)
@@ -140,10 +140,12 @@ end loop;end$$;""",'supabase_auth_admin')
             phase='operator_seed'
             sql('insert into fmz6e11_private.operators values('+guard.literal(seeded['a_trainer'])+',true)')
             from registered_lifecycle import RegisteredLifecycle
+            from hosted_gate import ScalarSession
+            native_scalar=ScalarSession(composition.native_runtime(gate),composition)
             def registered_sql(text):
                 nonlocal phase
                 phase=composition.current_phase
-                return sql(text)
+                return native_scalar.query(text)
             registered=RegisteredLifecycle(gate=gate,composition=composition,run_id=run_id,ids=seeded,
                 guard=guard,audit=audit,contract_type=auth_contract.Contract,sql=registered_sql,
                 lock_query=session_query,independent_ci=True)
@@ -304,6 +306,7 @@ end loop;end$$;""",'supabase_auth_admin')
                 gate.save('registered-final-removal-status.json',{'removed':registered.removed,
                     'error_class':type(error).__name__,'retry':False})
         if native_lock:native_lock.close()
+        if native_scalar:native_scalar.close()
         if metadata_receipt and not removal_attempted['audit']:
             removal_attempted['audit']=True;sql(audit.remove(run_id,ids,metadata_receipt))
         if receipt and not removal_attempted['guard']:

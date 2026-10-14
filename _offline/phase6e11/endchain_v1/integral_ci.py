@@ -121,6 +121,7 @@ class Composition:
                 absence=checked('absence',gates.ABSENCE,[schemas,people,context['window']])[0];gates.check_absence(absence)
                 if label=='after_migration':
                     from migration_boundary import validate,SOURCE_SHA
+                    gate.save('migration-boundary-after.json',{'migrations':migrations,'catalog':catalog})
                     updated=validate(self.gate_baseline,{'migrations':migrations,'catalog':catalog},gate.sources)
                     gate.save('integral-migration-pair.json',{'before_sha':gates.digest(self.gate_baseline),'after_sha':gates.digest(updated),
                         'migration_sha256':SOURCE_SHA,'complete':True,'history_before':43,'history_after':44,

@@ -13,7 +13,7 @@ class Tests(unittest.TestCase):
         after=copy.deepcopy(before);after['migrations'].append({'version':m.VERSION})
         a=after['catalog'];v=a['m44'];v.update(function_oid=4,trigger_oid=5,constraint_oid=6,migration_statements=[text])
         v['constraint']['expression']=re.search(r'check\((command_count>=0.*?)\);',text,re.S)[1]
-        v['function']={'body_sha':hashlib.sha256(text.split('as $f$',1)[1].split('$f$;',1)[0].encode()).hexdigest(),
+        v['function']={'body_sha':hashlib.sha256(text.split('as $f$',1)[1].split('$f$;',1)[0].replace('\r\n','\n').encode()).hexdigest(),
             'owner':'postgres','definer':False,'path':['search_path=pg_catalog, pg_temp'],'public_execute':False,'forbidden_execute':False}
         v['trigger']={'type':27,'enabled':'O','function_matches':True,'no_filter':True,'no_arguments':True,'constraint':0}
         a['functions']['4']={'hash':'new'};a['triggers']['5']='new';del a['constraints']['3'];a['constraints']['6']={'new':True}
@@ -41,5 +41,7 @@ class Tests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'registered_sql'):m.validate(b,a,root)
     def test_whitespace_not_a_fake_object_change(self):
         self.assertEqual(m.ast('select (1 + 2)'),m.ast('select 1+2;'))
+        root,b,a=self.make();a['catalog']['m44']['migration_statements']=[m.source(root).replace('\r\n','\n')]
+        self.assertEqual(m.validate(b,a,root),a)
 
 if __name__=='__main__':unittest.main()

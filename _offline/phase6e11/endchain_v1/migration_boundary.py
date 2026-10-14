@@ -6,7 +6,7 @@ FILE=VERSION+'_phase6e11_single_endchain_budget.sql'
 SOURCE_SHA='b0e3d6ed8c988ede0405c348665d9d3a6e1bbd4f5f1da0ecf8dc1e8fb9698532'
 TARGET="""jsonb_build_object(
  'function_oid',to_regprocedure('fmz6e11_controller_private.single_endchain_receipt()')::oid,
- 'function',(select jsonb_build_object('body_sha',encode(sha256(convert_to(p.prosrc,'UTF8')),'hex'),
+ 'function',(select jsonb_build_object('body_sha',encode(sha256(convert_to(replace(p.prosrc,E'\\r\\n',E'\\n'),'UTF8')),'hex'),
    'owner',pg_get_userbyid(p.proowner),'definer',p.prosecdef,'path',p.proconfig,
    'public_execute',exists(select 1 from aclexplode(coalesce(p.proacl,acldefault('f',p.proowner))) a where a.grantee=0 and a.privilege_type='EXECUTE'),
    'forbidden_execute',exists(select 1 from (values('anon'),('authenticated'),('service_role')) r(name) where has_function_privilege(r.name,p.oid,'EXECUTE')))
@@ -31,7 +31,7 @@ def ast(text):
         if isinstance(v,dict):return {k:clean(x) for k,x in v.items() if k not in ('location','stmt_location','stmt_len')}
         if isinstance(v,list):return [clean(x) for x in v]
         return v
-    return clean(json.loads(parse_sql_json(text)))['stmts']
+    return clean(json.loads(parse_sql_json(text.replace('\r\n','\n'))))['stmts']
 
 def source(root):
     raw=(pathlib.Path(root)/'supabase/migrations'/FILE).read_bytes()
@@ -50,7 +50,7 @@ def validate(before,after,root):
     if after['migrations'][-1]['version']!=VERSION or not isinstance(at['migration_statements'],list):
         raise ValueError('migration_registration_missing')
     if ast(text)!=ast(';\n'.join(at['migration_statements'])):raise ValueError('migration_registered_sql_changed')
-    body=text.split('as $f$',1)[1].split('$f$;',1)[0]
+    body=text.split('as $f$',1)[1].split('$f$;',1)[0].replace('\r\n','\n')
     expected={'body_sha':hashlib.sha256(body.encode()).hexdigest(),'owner':'postgres','definer':False,
         'path':['search_path=pg_catalog, pg_temp'],'public_execute':False,'forbidden_execute':False}
     if at['function']!=expected:raise ValueError('migration_function_boundary')

@@ -28,7 +28,16 @@ MIGRATIONS="""select version,name,encode(sha256(convert_to(array_to_string(state
 ACCESS="""select current_database()='postgres' database_ok,current_user='postgres' role_ok,
  current_setting('server_version_num')::integer between 170000 and 179999 pg17,
  (select ssl from pg_stat_ssl where pid=pg_backend_pid()) ssl,
- (select count(*)=3 from fmz6e11_private.identities where user_id=any($1::uuid[]) and enabled) registered,
+ (select count(*)=3 and bool_and(i.enabled and u.email=case i.role
+   when 'a_member' then 'zorgeyouri+6e9-a-lid@gmail.com' when 'a_trainer' then 'zorgeyouri+6e9-a-trainer@gmail.com'
+   when 'b_member' then 'zorgeyouri+6e9-b-lid@gmail.com' else '' end
+   and u.email_confirmed_at is not null and p.email=u.email
+   and p.role=case when i.role='a_trainer' then 'trainer' else 'client' end
+   and case when i.role='a_member' then p.trainer_id=(select user_id from fmz6e11_private.identities where role='a_trainer' and user_id=any($1::uuid[])) else p.trainer_id is null end
+   and case when i.role='a_trainer' then o.enabled is true else o.user_id is null end)
+   and count(distinct i.role)=3
+  from fmz6e11_private.identities i join auth.users u on u.id=i.user_id join public.profiles p on p.id=i.user_id
+  left join fmz6e11_private.operators o on o.user_id=i.user_id where i.user_id=any($1::uuid[])) registered,
  (select not exists(select 1 from pg_proc p join pg_namespace n on n.oid=p.pronamespace
   cross join (values('anon'),('authenticated'),('service_role')) roles(name)
   where n.nspname in('fmz6e11_audit_private','fmz6e11_request_private','fmz6e11_controller_private')
@@ -64,19 +73,14 @@ def check_migrations(rows,expected,pending=False):
 def ci_preflight(gate):
     """Actual four-command native preflight immediately before candidate M44."""
     if os.environ.get('GITHUB_REPOSITORY')!='Yourizorge/fitmetzorge-staging':raise RuntimeError('ci_only')
-    import psycopg
-    from psycopg.rows import dict_row
+    from native_runtime import NativeRuntime
+    return preflight(NativeRuntime.disposable(gate),gate.save,getattr(gate,'cli_namespace',''))
+
+def preflight(runtime,save,prefix=''):
+    """Same four-command identity/history gate in CI and exact staging."""
     from integral_stream import GUARD
     from sql_protocol import statements
-    password=subprocess.run(['docker','exec',gate.container,'sh','-c','printf %s "$POSTGRES_PASSWORD"'],capture_output=True,text=True,timeout=10)
-    endpoint=subprocess.run(['docker','port',gate.container,'5432/tcp'],capture_output=True,text=True,timeout=10)
-    choices=[x for x in endpoint.stdout.splitlines() if re.fullmatch(r'(127\.0\.0\.1|0\.0\.0\.0):\d+',x)]
-    if password.returncode or endpoint.returncode or len(choices)!=1:raise RuntimeError('ci_preflight_endpoint')
-    connection=psycopg.connect(host='127.0.0.1',port=int(choices[0].split(':')[1]),dbname='postgres',user='postgres',
-        password=password.stdout.strip(),autocommit=True,prepare_threshold=None,row_factory=dict_row,
-        sslmode='verify-full',sslrootcert=str(gate.work/'fmz-ci-ca.crt'),connect_timeout=5,
-        options='-c statement_timeout=5000 -c lock_timeout=1000')
-    password=None;trace=[];migrations=[];opened=False
+    connection=runtime.connect();trace=[];migrations=[];opened=False
     def query(sql):
         trace.append({'sql_sha256':statements(sql)[0]['sha256'],'confirmed':False})
         started=time.monotonic();cursor=connection.execute(sql);rows=cursor.fetchall() if cursor.description else []
@@ -86,11 +90,13 @@ def ci_preflight(gate):
         identity=query(GUARD)[0]
         if identity['ro']!='on' or identity['db']!='postgres' or identity['role']!='postgres' or identity['ssl'] is not True:
             raise ValueError('preflight_identity')
+        if runtime.environment=='staging' and identity['instance_sha']!='d165ac49d4d2aaa4733f7f220c351c99ff09493dace033a726f6fd722a573a15':
+            raise ValueError('preflight_wrong_project_instance')
         migrations=query(MIGRATIONS)
         if len(migrations)!=43 or migrations[-1]['version']!='20261012104331':raise ValueError('preflight_not_43')
     finally:
         if opened:query('ROLLBACK')
         connection.close()
         value={'commands':trace,'migrations':migrations,'hosted_calls':0}
-        gate.save(getattr(gate,'cli_namespace','')+'integral-preflight.json',value)
+        save(prefix+'integral-preflight.json',value)
     return value
