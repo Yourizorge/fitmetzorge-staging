@@ -26,7 +26,7 @@ def run(gate):
             audit.arm=auth_arm.render
             try:real.run(gate,composition)
             except RuntimeError as error:
-                if str(error)!='ci_integral_workflow_incomplete' or not composition.injected:raise
+                if str(error) not in ('ci_integral_workflow_incomplete','registered_worker_failed') or not composition.injected:raise
             else:raise RuntimeError('ci_expected_integral_failure_missing')
             w=composition.fixture_context['window']
             sql="""select

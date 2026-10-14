@@ -15,7 +15,7 @@ ROLES=guard.ROLES
 def run(gate, composition=None):
     if os.environ.get('GITHUB_REPOSITORY')!='Yourizorge/fitmetzorge-staging' or os.environ.get('GITHUB_REF')!='refs/heads/main':
         raise RuntimeError('ci_only')
-    phase='initialization';command_evidence=[];contracts={};scoped_auth_evidence=None;registered=None
+    phase='initialization';command_evidence=[];contracts={};scoped_auth_evidence=None;registered=None;native_lock=None
     def private(args,**kwargs):
         p=subprocess.run(args,capture_output=True,text=True,timeout=kwargs.pop('timeout',30),**kwargs)
         state=re.search(r'ERROR:\s+([0-9A-Z]{5})\b',p.stderr)
@@ -146,6 +146,16 @@ end loop;end$$;""",'supabase_auth_admin')
             registered=RegisteredLifecycle(gate=gate,composition=composition,run_id=run_id,ids=seeded,
                 guard=guard,audit=audit,contract_type=auth_contract.Contract,sql=registered_sql,
                 lock_query=session_query,independent_ci=True)
+            from registered_runner import IdentitySession,execute
+            native_lock=IdentitySession(composition.native_runtime(gate),composition,run_id,seeded)
+            registered.lock_query=native_lock.query
+            result=execute(gate,composition,registered,{**execution,'admin':jwt('service_role'),'anon':jwt('anon'),
+                'sourceSha':os.environ['GITHUB_SHA'],'ciRun':os.environ.get('GITHUB_RUN_ID','1'),
+                'authContracts':{operation:[{'table':'auth.'+t,'operation':o,'count':n} for (t,o),n in counts.items()]
+                    for operation,counts in auth_contract.COUNTS.items()}})
+            captures=registered.evidence.receipts
+            result.update(image=IMAGE,digests=image,guard_removed=registered.removed,checks=18,ci_observers_only=True)
+            return result
         process=subprocess.Popen(['node',str(runner)],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
         timer=threading.Timer(190,process.kill);timer.start()
         process.stdin.write(json.dumps({'mode':'disposable_ci','url':'http://127.0.0.1:59999','admin':jwt('service_role'),'anon':jwt('anon'),
@@ -292,6 +302,7 @@ end loop;end$$;""",'supabase_auth_admin')
             except Exception as error:
                 gate.save('registered-final-removal-status.json',{'removed':registered.removed,
                     'error_class':type(error).__name__,'retry':False})
+        if native_lock:native_lock.close()
         if metadata_receipt and not removal_attempted['audit']:
             removal_attempted['audit']=True;sql(audit.remove(run_id,ids,metadata_receipt))
         if receipt and not removal_attempted['guard']:

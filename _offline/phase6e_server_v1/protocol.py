@@ -17,6 +17,17 @@ class Session:
             return result
         finally:
             if self.observer:self.observer({**event,'phase':'completed','duration_ms':round((time.monotonic()-started)*1000)})
+    @contextlib.contextmanager
+    def transaction(self):
+        opened=False
+        try:
+            opened=True;self.execute('BEGIN');yield self
+            self.execute('COMMIT');opened=False
+        except Exception:
+            if opened:
+                try:self.execute('ROLLBACK')
+                except Exception:pass
+            raise
 
 @contextlib.contextmanager
 def transaction(connect,observer,operation):

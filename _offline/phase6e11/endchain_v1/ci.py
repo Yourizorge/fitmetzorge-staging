@@ -20,7 +20,8 @@ NAMES=['budget.mjs','budget.test.mjs','database_checks.py','ci.py','scoped_cycle
  'lifecycle_gates.py','test_lifecycle_gates.py','complete_register.py','test_complete_register.py','integral_failures.py',
  'closure.py','test_closure.py','execution_context.mjs','execution_context.test.mjs',
  'native_runtime.py','test_native_runtime.py','runtime_budget.py','test_runtime_budget.py','auth_evidence.py','test_auth_evidence.py',
- 'registered_lifecycle.py','test_registered_lifecycle.py','metered_composition.py','test_metered_composition.py']
+ 'registered_lifecycle.py','test_registered_lifecycle.py','metered_composition.py','test_metered_composition.py',
+ 'registered_runner.py','test_registered_runner.py','cli_stat_reader.py','test_cli_stat_reader.py']
 EXTRA={'_offline/phase6e11/endchain_v1/'+n for n in NAMES}
 EXTRA|={'_offline/phase6e11/request_v4/'+n for n in ['transport.mjs','connection_options.mjs','config_shape.mjs']}
 EXTRA|={'_offline/phase6e11/resume_v1/read_only.mjs','_offline/phase6e11/transport_v1/contract.mjs',

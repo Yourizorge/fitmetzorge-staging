@@ -4,6 +4,7 @@ import psycopg
 from psycopg.rows import dict_row
 from psycopg.conninfo import make_conninfo
 from store import LocalAuth,Denied
+from protocol import Session
 
 IMAGE='supabase/gotrue:v2.197.0'
 NAME='fmz-integration-auth-ci'
@@ -50,14 +51,27 @@ def environment(gate):
             time.sleep(1)
         if not healthy:raise RuntimeError('local_auth_health')
         auth=LocalAuth('http://127.0.0.1:59999');tokens={};claims={};accounts={};admin_token=jwt('service_role')
-        for role in ('a','trainer','b','owner','outsider'):
-            email='fmz-'+uuid.uuid4().hex+'@example.invalid';pw=secrets.token_urlsafe(32)
-            user=auth.call('/admin/users',admin_token,{'email':email,'password':pw,'email_confirm':True})
-            issued=auth.call('/token?grant_type=password',data={'email':email,'password':pw})
-            tokens[role]=issued['access_token'];claims[role]=auth.verify(tokens[role]);accounts[role]={'email':email,'password':pw}
-            if claims[role]['sub']!=user['id']:raise RuntimeError('local_auth_subject')
-        with psycopg.connect(dsn,autocommit=True,row_factory=dict_row) as admin:
-            yield {'dsn':dsn,'auth':auth,'tokens':tokens,'claims':claims,'admin':admin,'accounts':accounts,'image':IMAGE,'digests':digests}
+        with psycopg.connect(dsn,autocommit=True,prepare_threshold=None,row_factory=dict_row) as connection:
+            events=[];admin=Session(connection,events.append,'fixture_admin')
+            from auth_protocol import STATS,difference
+            before=admin.execute('select '+STATS+' value').fetchone()['value']
+            for role in ('a','trainer','b','owner','outsider'):
+                email='fmz-'+uuid.uuid4().hex+'@example.invalid';pw=secrets.token_urlsafe(32)
+                user=auth.call('/admin/users',admin_token,{'email':email,'password':pw,'email_confirm':True})
+                issued=auth.call('/token?grant_type=password',data={'email':email,'password':pw})
+                tokens[role]=issued['access_token'];claims[role]=auth.verify(tokens[role]);accounts[role]={'email':email,'password':pw}
+                if claims[role]['sub']!=user['id']:raise RuntimeError('local_auth_subject')
+            ctx={'dsn':dsn,'auth':auth,'tokens':tokens,'claims':claims,'admin':admin,'accounts':accounts,'image':IMAGE,'digests':digests}
+            try:yield ctx
+            finally:
+                after=admin.execute('select '+STATS+' value').fetchone()['value']
+                load=difference(before,after)
+                complete=[e for e in events if e['phase']=='completed']
+                gate.save('integration-native-admin-protocol.json',{'commands':len(complete),
+                    'failed_commands':sum(not e['confirmed'] for e in complete),
+                    'scope':'disposable fixture/admin, including explicit BEGIN/COMMIT/ROLLBACK; no row values',
+                    'templates':sorted({e['template_sha256'] for e in complete})})
+                gate.save('integration-managed-auth-protocol.json',load)
     finally:
         env.clear()
         if started:private(['docker','rm','-f',NAME])

@@ -39,6 +39,8 @@ def run(gate,args,timeout):
     # The pinned CLI sets @effect/sql-pg itself; it ignores PGAPPNAME.
     prefix='FMZSQL'+uuid.uuid4().hex+'|'
     gate.command('ci-meter-prefix',admin,sql="alter system set log_line_prefix='"+prefix+"%a|%p|%l|';")
+    from cli_stat_reader import SQL,compare
+    numeric_before=gate.rows(SQL)[0]['value']
     gate.command('ci-meter-role-logging',admin,sql="alter role postgres set log_statement='all';")
     gate.command('ci-meter-reload',admin,sql='select pg_reload_conf();')
     meta=subprocess.run(admin,input="select json_build_object('collector',current_setting('logging_collector'),"
@@ -76,6 +78,10 @@ def run(gate,args,timeout):
         'scope':'disposable CI session SQL only; not hosted CLI accounting'}
     result.update(complete=error is None,error=error,application_names=apps,invocation_prefix=prefix,
         unexpected_applications=[a for a in apps if a not in (TAG,'@effect/sql-pg')])
+    numeric_after=gate.rows(SQL)[0]['value']
+    numeric=compare(numeric_before,numeric_after,len(commands))
+    gate.save('cli-numeric-coverage-'+str(len(getattr(gate,'cli_protocol',[])))+'.json',numeric)
+    result['numeric_protocol_coverage']=numeric['all_protocol_visible']
     if result['unexpected_applications']:result.update(complete=False,error='ci_cli_unattributed_connection')
     gate.save('cli-protocol-'+str(len(getattr(gate,'cli_protocol',[])))+'.json',result)
     if not hasattr(gate,'cli_protocol'):gate.cli_protocol=[]

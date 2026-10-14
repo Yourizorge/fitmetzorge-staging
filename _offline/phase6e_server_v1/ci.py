@@ -30,7 +30,14 @@ class Gate(previous.Gate):
             if not name.startswith(('_offline/','supabase/')) and name.endswith('.js'):
                 if (ROOT/name).read_bytes()!=(self.sources/name).read_bytes():raise RuntimeError('frozen_model_changed')
         return migrations
-    def cli(self,*args,timeout=120):return base.Gate.cli(self,*args,timeout=timeout)
+    def cli(self,*args,timeout=120):
+        candidate=args[:2]==('migration','up') and self.result.get('phase')=='local_candidate_45'
+        dry=args[:2]==('db','push') and '--dry-run' in args
+        if candidate or dry:
+            import cli_meter
+            actual=('db','push','--local','--skip-vault','--yes') if candidate else args
+            return cli_meter.run(self,actual,timeout)
+        return base.Gate.cli(self,*args,timeout=timeout)
     def rebuild(self,migrations):
         super().rebuild(migrations)
         path=self.sources/'_offline/phase6e_server_v1/supabase/migrations'/M45

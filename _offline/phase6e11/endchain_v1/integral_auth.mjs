@@ -50,7 +50,7 @@ async function action(role,operation){
 }
 try{
  receipt=await send({op:'install',ids});
- const grant={project:'mokxyyullfhkfalopbzd',id:ENDCHAIN_RUN_ID,budget_ref:PURPOSE,run:'1',sha:config.sourceSha,
+  const grant={project:'mokxyyullfhkfalopbzd',id:ENDCHAIN_RUN_ID,budget_ref:PURPOSE,run:config.ciRun||'1',sha:config.sourceSha,
   manifest_sha:await sha(config.authContracts),starts:Date.now(),expires:Date.parse(receipt.expires_at)};
  controller=new Controller({grant,store:new NativeStore(query),maxCommands:limitFor(grant)});await controller.claim();
  guard=guardedIssuance({receipt,query:(sql,args=[])=>send({op:'query',sql,args}),check:()=>{}});
@@ -70,9 +70,9 @@ try{
  const final=await send({op:'finalize',run_id:grant.id,purpose:grant.budget_ref});
  await controller.store.close(grant.id,true,final.global_commands);
  const closure='confirmed';
- process.stdout.write(JSON.stringify({op:'complete',result:{status:'INTEGRAL_REAL_AUTH_WORKFLOW_CI_PASS',
+ process.stdout.write(JSON.stringify({op:'complete',result:{status:execution.local?'INTEGRAL_REAL_AUTH_WORKFLOW_CI_PASS':'INTEGRAL_REGISTERED_STAGING_CHAIN_COMPLETE',
   checks:proof.length,proof,workflow,durable_steps:controller.step,closure,protocolCount,
-  hosted_requests:0,emails_sent:0}})+'\n');
+  hosted_requests:execution.local?0:90,emails_sent:0,environment:execution.local?'disposable_ci':'staging'}})+'\n');
 }catch(error){
  if(guard)guard.close();
  if(receipt){try{await send({op:'remove',receipt,stopped:true});}catch{}}
