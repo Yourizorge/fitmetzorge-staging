@@ -18,6 +18,8 @@ class Artifact(unittest.TestCase):
             z.writestr('result.json',result);z.writestr('artifact-manifest.json',json.dumps(manifest))
             if fault=='path':z.writestr('../escape.json','{}')
             if fault=='extra':z.writestr('extra.json','{}')
+            if fault=='count':
+                for i in range(1400):z.writestr('bounded'+str(i)+'.json','{}')
         raw=buff.getvalue()
         artifact={'id':1,'name':'phase6e11-endchain-123-1','expired':fault=='expired',
                   'size_in_bytes':len(raw),'digest':'sha256:'+hashlib.sha256(raw).hexdigest()}
@@ -50,5 +52,5 @@ class Artifact(unittest.TestCase):
     def test_head(self):self.run_case('head')
     def test_result_run(self):self.run_case('result')
     def test_wrong_artifact_name(self):self.run_case('name')
+    def test_finite_file_bound(self):self.run_case('count')
 if __name__=='__main__':unittest.main()
-

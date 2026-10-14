@@ -18,7 +18,7 @@ class ExportTests(unittest.TestCase):
         for i in range(1017):files[str(i)+'.json']=b'{}'
         if fault=='path':files['../escape.json']=b'{}'
         if fault=='count':
-            for i in range(1100):files['extra'+str(i)+'.json']=b'{}'
+            for i in range(1400):files['extra'+str(i)+'.json']=b'{}'
         manifest={k:hashlib.sha256(v).hexdigest() for k,v in files.items()}
         if fault=='hash':manifest['0.json']='0'*64
         with zipfile.ZipFile(original/'evidence.zip','w') as z:

@@ -16,7 +16,9 @@ def collect(folder,run,api):
     with (target/'evidence.zip').open('xb') as f:f.write(raw)
     with zipfile.ZipFile(io.BytesIO(raw)) as archive:
         names=archive.namelist()
-        if len(names)>1000 or len(names)!=len(set(names)) or any(not re.fullmatch('[a-zA-Z0-9_.-]+\\.(json|txt)',n) for n in names):
+        # Separate Auth before/after/pair receipts add bounded files; byte and
+        # per-file limits remain unchanged. This does not expand SQL budgets.
+        if len(names)>1400 or len(names)!=len(set(names)) or any(not re.fullmatch('[a-zA-Z0-9_.-]+\\.(json|txt)',n) for n in names):
             raise RuntimeError('artifact_paths')
         if sum(x.file_size for x in archive.infolist())>30000000 or any(x.file_size>2000000 for x in archive.infolist()):
             raise RuntimeError('artifact_size')

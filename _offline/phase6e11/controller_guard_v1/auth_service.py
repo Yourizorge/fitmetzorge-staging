@@ -15,7 +15,7 @@ ROLES=guard.ROLES
 def run(gate, composition=None):
     if os.environ.get('GITHUB_REPOSITORY')!='Yourizorge/fitmetzorge-staging' or os.environ.get('GITHUB_REF')!='refs/heads/main':
         raise RuntimeError('ci_only')
-    phase='initialization';command_evidence=[];contracts={};scoped_auth_evidence=None
+    phase='initialization';command_evidence=[];contracts={};scoped_auth_evidence=None;registered=None
     def private(args,**kwargs):
         p=subprocess.run(args,capture_output=True,text=True,timeout=kwargs.pop('timeout',30),**kwargs)
         state=re.search(r'ERROR:\s+([0-9A-Z]{5})\b',p.stderr)
@@ -129,6 +129,23 @@ end loop;end$$;""",'supabase_auth_admin')
                 'authBase':'http://127.0.0.1:59999','ids':seeded,
                 'identityBinding':{'project':'mokxyyullfhkfalopbzd','preexisting':True,
                     'identities':{r:{'id':seeded[r],'email':guard.ALIASES[r],'registered':True} for r in seeded}}}
+            # Only the disposable CI bootstrap creates profile/role fixtures.
+            # The shared lifecycle below always receives pre-existing identities.
+            for role in ('a_trainer','a_member','b_member'):
+                phase='profile_seed_'+role;uid=seeded[role]
+                trainer=guard.literal(seeded['a_trainer'])+'::uuid' if role=='a_member' else 'null'
+                sql('insert into public.profiles(id,email,role,name,trainer_id) values('+guard.literal(uid)+','+guard.literal(guard.ALIASES[role])+','+guard.literal('trainer' if role=='a_trainer' else 'client')+",'CI synthetic',"+trainer+') on conflict(id) do update set role=excluded.role,email=excluded.email,trainer_id=excluded.trainer_id;'+
+                    'insert into fmz6e11_private.identities(user_id,role,provenance_sha) values('+guard.literal(uid)+','+guard.literal(role)+","+guard.literal('c'*64)+');')
+            phase='operator_seed'
+            sql('insert into fmz6e11_private.operators values('+guard.literal(seeded['a_trainer'])+',true)')
+            from registered_lifecycle import RegisteredLifecycle
+            def registered_sql(text):
+                nonlocal phase
+                phase=composition.current_phase
+                return sql(text)
+            registered=RegisteredLifecycle(gate=gate,composition=composition,run_id=run_id,ids=seeded,
+                guard=guard,audit=audit,contract_type=auth_contract.Contract,sql=registered_sql,
+                lock_query=session_query,independent_ci=True)
         process=subprocess.Popen(['node',str(runner)],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
         timer=threading.Timer(190,process.kill);timer.start()
         process.stdin.write(json.dumps({'mode':'disposable_ci','url':'http://127.0.0.1:59999','admin':jwt('service_role'),'anon':jwt('anon'),
@@ -148,7 +165,12 @@ end loop;end$$;""",'supabase_auth_admin')
                 break
             if op=='failed':raise RuntimeError(request['code'])
             try:
-                if op=='install':
+                if registered is not None:
+                    composition.current_phase=op
+                    value=registered.dispatch(request)
+                    if op=='after':captures.append({'role':request['role'],'operation':request['operation'],
+                        'events':value['events'],'scoped_audit':value['events'],'pair_complete':True})
+                elif op=='install':
                     ids=request['ids'];guard.scope(run_id,ids)
                     contracts={r:auth_contract.Contract(hashlib.sha256(ids[r].encode()).hexdigest()) for r in ids}
                     if composition is not None:
@@ -254,6 +276,7 @@ end loop;end$$;""",'supabase_auth_admin')
             process.stdin.write(json.dumps(reply)+'\n');process.stdin.flush()
         process.wait(timeout=5)
         if not result or process.returncode or result['checks']!=18:raise RuntimeError('ci_auth_incomplete')
+        if registered is not None and not registered.removed:raise RuntimeError('registered_guard_not_removed')
         result.update(image=IMAGE,digests=image,guard_removed=receipt is None,checks=18,ci_observers_only=True)
         if composition is not None:
             gate.save('integral-complete-protocol-trace.json',{'commands':composition.commands,
@@ -264,6 +287,11 @@ end loop;end$$;""",'supabase_auth_admin')
         if timer:timer.cancel()
         for p in (process,psql):
             if p and p.poll() is None:p.kill();p.communicate(timeout=5)
+        if registered is not None and not registered.removed:
+            try:registered.close_temporary()
+            except Exception as error:
+                gate.save('registered-final-removal-status.json',{'removed':registered.removed,
+                    'error_class':type(error).__name__,'retry':False})
         if metadata_receipt and not removal_attempted['audit']:
             removal_attempted['audit']=True;sql(audit.remove(run_id,ids,metadata_receipt))
         if receipt and not removal_attempted['guard']:

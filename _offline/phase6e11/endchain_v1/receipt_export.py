@@ -2,7 +2,7 @@
 
 No network, database or runtime access. The normal collector verified the
 GitHub archive digest before its older 1,000-file bound rejected this bundle.
-This export repeats manifest/source checks under a finite 1,100-file bound.
+This export repeats manifest/source checks under a finite 1,400-file bound.
 """
 import hashlib,json,os,pathlib,re,sys,uuid,zipfile
 
@@ -20,7 +20,7 @@ def export(folder,run,expected_archive_sha):
     import io
     with zipfile.ZipFile(io.BytesIO(raw)) as archive:
         names=archive.namelist()
-        if len(names)>1100 or len(names)!=len(set(names)) or any(not re.fullmatch(r'[A-Za-z0-9_.-]+\.(json|txt)',n) for n in names):
+        if len(names)>1400 or len(names)!=len(set(names)) or any(not re.fullmatch(r'[A-Za-z0-9_.-]+\.(json|txt)',n) for n in names):
             raise ValueError('archive_paths')
         if sum(x.file_size for x in archive.infolist())>30000000 or any(x.file_size>2000000 for x in archive.infolist()):
             raise ValueError('archive_expansion')

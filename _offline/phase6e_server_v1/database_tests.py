@@ -1,10 +1,11 @@
 """Shared actual PostgreSQL tests; caller supplies mock-local or real CI Auth."""
-import concurrent.futures,json,uuid
+import collections,concurrent.futures,json,uuid
+from protocol import transaction
 from store import Store,Denied,domain,digest,SCHEMA
 
 
 def run(dsn,auth,tokens,claims,admin,auth_kind,inspect=None):
-    results=[]
+    results=[];protocol=[]
     def ok(name,condition):
         if not condition:raise AssertionError(name)
         results.append(name)
@@ -32,7 +33,7 @@ def run(dsn,auth,tokens,claims,admin,auth_kind,inspect=None):
         admin.execute('insert into '+SCHEMA+'.revisions(workspace_id,version,state_text,state_sha) values(%s,0,%s,%s)',
             [workspaces[key],raw,digest(raw)])
     baseline=admin.execute('select state_sha from '+SCHEMA+'.workspaces where id=%s',[workspaces['control']]).fetchone()['state_sha']
-    store=Store(dsn,auth,enabled=True)
+    store=Store(dsn,auth,enabled=True,observer=protocol.append)
     if inspect:inspect(store,{'A':workspaces['uiA'],'B':workspaces['uiB']})
     def read(route,role=None):return store.read(workspaces[route],tokens[role or route.lower()])
     def act(route,action,data=None,role=None,fault=None,key=None,version=None):
@@ -64,7 +65,7 @@ def run(dsn,auth,tokens,claims,admin,auth_kind,inspect=None):
         if route=='A':act(route,'approve',role='trainer')
         act(route,'apply')
         ok(route+'_restore_new_version',read(route)['state']['active']['version']==4)
-        restarted=Store(dsn,auth,enabled=True)
+        restarted=Store(dsn,auth,enabled=True,observer=protocol.append)
         ok(route+'_new_connection_persistence',restarted.read(workspaces[route],tokens[route.lower()])==read(route))
     denied('cross_member',lambda:read('A','b'))
     denied('trainer_cannot_read_B',lambda:read('B','trainer'))
@@ -107,7 +108,7 @@ def run(dsn,auth,tokens,claims,admin,auth_kind,inspect=None):
     denied('consent_blocks',lambda:act('B','build'))
     ok('consent_keeps_history',read('B')['state']['history']==history)
     # The server role cannot bypass table RLS or mutate immutable versions.
-    with store.connect() as db,db.transaction():
+    with transaction(store.connect,protocol.append,'rls_negative') as db:
         store.bind(db,claims['b'],str(uuid.uuid4()))
         ok('RLS_cross_member_zero',db.execute('select id from '+SCHEMA+'.workspaces where id=%s',[workspaces['A']]).fetchall()==[])
     for role in ('anon','authenticated','service_role'):
@@ -134,6 +135,19 @@ def run(dsn,auth,tokens,claims,admin,auth_kind,inspect=None):
     ok('delete_audit_exact',{x['table_name']:x['n'] for x in observed}==counts and all(x['tx']==1 for x in observed))
     ok('own_workspaces_absent',admin.execute('select count(*) n from '+SCHEMA+'.workspaces where id=any(%s::uuid[])',[owned]).fetchone()['n']==0)
     ok('control_preserved',admin.execute('select state_sha from '+SCHEMA+'.workspaces where id=%s',[workspaces['control']]).fetchone()['state_sha']==baseline)
-    return {'status':'LOCAL_DATABASE_PASS','tests':len(results),'cases':results,'auth':auth_kind,
+    groups=collections.defaultdict(list)
+    for event in protocol:
+        if event['phase']=='completed':groups[event['call_id']].append(event)
+    costs=collections.defaultdict(list)
+    for events in groups.values():
+        costs[events[0]['operation']].append(len(events))
+        if events[-1]['template_sha256'] not in (digest('COMMIT'),digest('ROLLBACK')) or not events[-1]['confirmed']:
+            raise AssertionError('protocol_terminal_unconfirmed')
+    accounting={'commands':sum(map(len,groups.values())),'transactions':len(groups),
+        'operations':{k:{'calls':len(v),'minimum':min(v),'maximum':max(v),'commands':sum(v)} for k,v in costs.items()},
+        'scope':'native Store protocol including BEGIN/COMMIT/ROLLBACK; separate fixture/admin and managed Auth accounting required',
+        'template_hashes':sorted({e['template_sha256'] for e in protocol}),
+        'row_values_logged':False}
+    return {'status':'LOCAL_DATABASE_PASS','tests':len(results),'cases':results,'auth':auth_kind,'protocol':accounting,
             'before_cleanup':before_cleanup,'deletes':counts,'protected_control_sha':baseline,
             'hosted_requests':0,'scope':'synthetic local candidate; not hosted or owner acceptance'}

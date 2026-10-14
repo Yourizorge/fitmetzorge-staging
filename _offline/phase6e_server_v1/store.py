@@ -3,6 +3,7 @@ import base64,hashlib,json,os,pathlib,re,subprocess,time,urllib.error,urllib.req
 import psycopg
 from psycopg.rows import dict_row
 from psycopg.conninfo import conninfo_to_dict
+from protocol import transaction
 
 HERE=pathlib.Path(__file__).resolve().parent
 SCHEMA='fmz6e_integration_private'
@@ -60,13 +61,13 @@ class LocalAuth:
 
 
 class Store:
-    def __init__(self,dsn,auth,enabled=False):
+    def __init__(self,dsn,auth,enabled=False,observer=None):
         if enabled is not True:raise Denied('feature_disabled')
         settings=conninfo_to_dict(dsn)
         if settings.get('host') not in ('127.0.0.1','localhost') or settings.get('sslmode')!='verify-full':
             raise Denied('local_database_boundary')
         if not pathlib.Path(settings.get('sslrootcert','')).is_file():raise Denied('local_ca_missing')
-        self.dsn=dsn;self.auth=auth
+        self.dsn=dsn;self.auth=auth;self.observer=observer
     def connect(self):
         return psycopg.connect(self.dsn,autocommit=True,row_factory=dict_row,
             prepare_threshold=None,connect_timeout=5,
@@ -81,7 +82,7 @@ class Store:
             [json.dumps(claims),request])
     def read(self,workspace,token):
         identifier(workspace);claims=self.auth.verify(token)
-        with self.connect() as db,db.transaction():
+        with transaction(self.connect,self.observer,'read') as db:
             db.execute('set transaction read only')
             self.bind(db,claims,str(uuid.uuid4()))
             row=db.execute('select * from '+SCHEMA+'.workspaces where id=%s',[workspace]).fetchone()
@@ -106,7 +107,7 @@ class Store:
         raw=json.dumps({'expected':expected,'request':request},sort_keys=True,separators=(',',':'))
         if len(raw)>131072:raise Denied('request_size')
         payload_sha=digest(raw)
-        with self.connect() as db,db.transaction():
+        with transaction(self.connect,self.observer,'execute') as db:
             self.bind(db,claims,request_id)
             row=db.execute('select * from '+SCHEMA+'.workspaces where id=%s for update',[workspace]).fetchone()
             if not row:raise Denied('workspace_denied')
