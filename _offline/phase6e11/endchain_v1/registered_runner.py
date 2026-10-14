@@ -48,6 +48,10 @@ def execute(gate,composition,lifecycle,config):
         try:
             if not lifecycle.removed:lifecycle.close_temporary()
         finally:
+            if result is None:
+                gate.save('registered-incomplete-protocol-trace.json',{'commands':composition.commands,
+                    'runtime_meter':composition.meter.receipt() if hasattr(composition,'meter') else None,
+                    'complete':False,'automatic_retry':False})
             gate.save('registered-worker-terminal.json',{'complete':result is not None,
                 'guard_audit_removed':lifecycle.removed,'messages':count,
                 'duration_ms':round((time.monotonic()-started)*1000),'automatic_retry':False,

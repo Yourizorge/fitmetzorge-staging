@@ -85,9 +85,10 @@ def frame(rows,terminal):
     if sum(len(r['i'])+len(r['h'])+len(r['keep'])+19 for r in rows)>1024*1024:raise ValueError('stream_frame_bytes')
 
 def run(query,save,ids,context,label,expected=None):
-    count=0;frames=[];profiles=[];buffer={};opened=False
+    count=0;frames=[];profiles=[];buffer={};opened=False;active_phase='not_started'
     def q(phase,sql,args=()):
-        nonlocal count
+        nonlocal count,active_phase
+        active_phase=phase
         count+=1
         if count>(96 if phase=='rollback' else 95):raise ValueError('ci_stream_command_ceiling')
         return query('stream_'+label+'_'+phase,sql,args)
@@ -108,10 +109,19 @@ def run(query,save,ids,context,label,expected=None):
         previous=sample();buffer={r['name']:[] for r in plans};total=0
         def utility(sql):
             nonlocal previous
-            before=previous;rows=q('utility',sql);terminal=query.terminal_count;after=sample()
+            before=previous
+            prefix='integral-stream-'+label+'-utility-%03d'%len(profiles)
+            binding={'sql_sha256':hashlib.sha256(sql.encode()).hexdigest(),'reader_queryid':reader}
+            save(prefix+'-before.json',{'binding':binding,'sample':before,'next_command':count+1})
+            rows=q('utility',sql);terminal=query.terminal_count;after=sample()
+            save(prefix+'-after.json',{'binding':binding,'sample':after,'command':count,
+                'returned_rows':len(rows),'terminal_count':terminal})
             old={v['queryid']:v for v in before['statements']}
             changed={v['queryid']:v['calls']-old.get(v['queryid'],{}).get('calls',0) for v in after['statements']
                 if v['queryid']!=reader and v['calls']!=old.get(v['queryid'],{}).get('calls',0)}
+            save(prefix+'-attribution.json',{'binding':binding,'changed_query_calls':changed,
+                'unambiguous':len(changed)==1 and list(changed.values())==[1],
+                'background_attributed_to_collector':False,'query_text_read':False})
             if len(changed)!=1 or list(changed.values())!=[1]:raise ValueError('stream_utility_attribution')
             profile=delta(before,after,{**changed,reader:1})
             save('integral-stream-'+label+'-io-%03d.json'%len(profiles),profile)
@@ -145,5 +155,10 @@ def run(query,save,ids,context,label,expected=None):
             'source_sha256':hashlib.sha256(pathlib.Path(__file__).read_bytes()).hexdigest(),
             'protocol_commands':count+1,'hosted_admitted':False}
         save('integral-stream-'+label+'.json',value);return value
+    except Exception as error:
+        save('integral-stream-'+label+'-stop.json',{'failed_phase':active_phase,'command':count,
+            'exception_class':type(error).__name__,'sqlstate':getattr(error,'sqlstate',None),
+            'completed_frames':len(frames),'completed_profiles':len(profiles),'automatic_retry':False})
+        raise
     finally:
         if opened:q('rollback','ROLLBACK')

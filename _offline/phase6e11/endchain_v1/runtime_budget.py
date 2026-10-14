@@ -99,6 +99,10 @@ class RuntimeBudget:
         if self.pending is not None or (self.managed_pending and not self.stopped):
             raise BudgetStop('runtime_final_unconfirmed')
         self.closed=True
+        return self.receipt()
+
+    def receipt(self):
+        """Observe an incomplete run without closing or authorizing any action."""
         return {'used':self.used,'limit':self.limit,'phases':dict(self.phases),
             'safety':dict(self.safety_spent),'stopped':self.stopped,'stop_reason':self.stop_reason,
             'complete':all(x['confirmed'] for x in self.events),'events':copy.deepcopy(self.events)}

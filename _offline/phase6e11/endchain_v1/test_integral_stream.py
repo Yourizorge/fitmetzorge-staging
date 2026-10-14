@@ -1,5 +1,5 @@
 import unittest
-from integral_stream import predicates,frame,statement,ALL_STATS,CONFIG,GUARD
+from integral_stream import predicates,frame,statement,ALL_STATS,CONFIG,GUARD,run,INVENTORY
 from sql_protocol import statements
 
 ID=lambda n:'78000000-0000-4000-8000-'+str(n).zfill(12)
@@ -20,5 +20,31 @@ class StreamTests(unittest.TestCase):
         sql=statement([{'name':'public.synthetic','predicate':'true'}])
         self.assertNotIn('order by',sql.lower());self.assertNotIn('string_agg',sql.lower())
         for q in (sql,ALL_STATS,CONFIG,GUARD):self.assertEqual(len(statements(q)),1)
+    def test_ambiguous_utility_preserves_both_numeric_samples_before_stop(self):
+        from copy import deepcopy
+        saved={};calls=[];samples=[]
+        before={'statements':[{'queryid':'1','calls':1}]}
+        after={'statements':[{'queryid':'1','calls':2},{'queryid':'2','calls':1},{'queryid':'3','calls':1}]}
+        samples.extend([before,after])
+        def query(phase,sql,args=()):
+            calls.append(phase);query.terminal_count=-1
+            if sql==GUARD:return [{'ro':'on','isolation':'repeatable read','db':'postgres','role':'postgres','ssl':True}]
+            if sql==INVENTORY:return [{'schema':'public','name':'synthetic_'+str(i),'columns':['id']} for i in range(100)]
+            if sql.startswith('EXPLAIN'):return [{'QUERY PLAN':[{'Query Identifier':1}]}]
+            if sql==ALL_STATS:return [{'value':samples.pop(0)}]
+            return []
+        def save(name,value):
+            self.assertNotIn(name,saved);saved[name]=deepcopy(value)
+        context={'window':ID(4),'a':ID(5),'b':ID(6),'runs':{'seed':ID(7)}}
+        with self.assertRaisesRegex(ValueError,'stream_utility_attribution'):
+            run(query,save,{'member':ID(1)},context,'before')
+        prefix='integral-stream-before-utility-000'
+        self.assertEqual(saved[prefix+'-before.json']['sample'],before)
+        self.assertEqual(saved[prefix+'-after.json']['sample'],after)
+        self.assertEqual(saved[prefix+'-attribution.json']['changed_query_calls'],{'2':1,'3':1})
+        self.assertFalse(saved[prefix+'-attribution.json']['background_attributed_to_collector'])
+        self.assertEqual(saved['integral-stream-before-stop.json']['failed_phase'],'io')
+        self.assertEqual(calls[-1],'stream_before_rollback')
+        self.assertFalse(any('FETCH' in phase for phase in calls))
 
 if __name__=='__main__':unittest.main()

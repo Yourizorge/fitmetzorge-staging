@@ -7,7 +7,8 @@ previous=importlib.util.module_from_spec(spec);spec.loader.exec_module(previous)
 base=previous.prior.old.old
 M45='20261014105919_phase6e_synthetic_server_candidate.sql'
 NEW=['domain.cjs','domain.test.cjs','worker.cjs','store.py','database_tests.py','ci.py','ci_auth.py',
-     'server.py','ui.html','ui.js','ui.css','browser_checks.cjs','protocol.py','test_protocol.py','supabase/migrations/'+M45]
+     'server.py','ui.html','ui.js','ui.css','browser_checks.cjs','protocol.py','test_protocol.py',
+     'release_packet.py','test_release_packet.py','supabase/migrations/'+M45]
 EXTRA={'_offline/phase6e_server_v1/'+p for p in NEW}
 EXTRA.add('assets/fit-met-zorge-logo-cropped.png')
 pending=[HERE/'domain.cjs'];seen=set()
@@ -54,6 +55,7 @@ class Gate(previous.Gate):
         base.Gate.regressions(self)
         folder=self.sources/'_offline/phase6e_server_v1';sys.path.insert(0,str(folder))
         self.command('integration-protocol',[sys.executable,'-B',str(folder/'test_protocol.py')])
+        self.command('integration-release-packet',[sys.executable,'-B',str(folder/'test_release_packet.py')])
         output=self.command('integration-domain',['node','--test',str(folder/'domain.test.cjs')])
         count=re.search(r'# tests (\d+)',output.stdout)
         if not count:raise RuntimeError('domain_count')
