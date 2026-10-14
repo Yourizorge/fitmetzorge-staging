@@ -166,6 +166,29 @@ function transition(input,request,role){
    if(!s.recovery.agenda.allowedTimes.includes(data.value))fail('time');
    target.cadence={option:o.option,at:data.value};
   }else if(s.route==='B'&&data.domain==='training_day')target.training.sessions[0].day=data.value;
+  else if(s.route==='B'&&data.domain==='training_exercise'){
+   const d=data.value;
+   if(!exact(d,['session','index','exercise','sets','reps','rest','rir','rpe'])||
+      !Number.isSafeInteger(d.session)||!Number.isSafeInteger(d.index))fail('payload');
+   const catalog=s.pair.training.fixture.catalog,intake=s.pair.training.fixture.intake;
+   const session=target.training.sessions[d.session],exercise=session?.exercises[d.index];
+   if(!exercise)fail('plan_source');
+   const rule=T.selectRule(catalog,intake,exercise.role);
+   const option=T.eligible(catalog,intake,rule).find(e=>e.id===d.exercise);
+   if(!option)fail('excluded');
+   Object.assign(exercise,{exercise:d.exercise,type:option.type,sets:d.sets,reps:d.reps,
+    rest:d.rest,rir:d.rir,rpe:d.rpe,history:T.historical(intake,d.exercise)});
+   exercise.seconds=T.seconds(exercise,rule);
+   session.seconds=catalog.overhead_seconds+session.exercises.reduce((n,e)=>n+e.seconds,0);
+  }
+  else if(s.route==='B'&&data.domain==='nutrition_portion'){
+   const d=data.value;
+   if(!exact(d,['meal','item','grams'])||!Number.isSafeInteger(d.meal)||!Number.isSafeInteger(d.item))fail('payload');
+   const raw=N.raw(target.nutrition);
+   if(!raw[d.meal]?.items?.[d.item])fail('plan_source');
+   raw[d.meal].items[d.item].grams=d.grams;
+   target.nutrition=N.calculate(raw,s.pair.nutrition.fixture.intake,s.pair.nutrition.fixture.catalog,s.clock);
+  }
   else if(s.route==='B'&&data.domain==='nutrition_moment'){
    const raw=N.raw(target.nutrition);raw[0].moment=data.value;
    target.nutrition=N.calculate(raw,s.pair.nutrition.fixture.intake,s.pair.nutrition.fixture.catalog,s.clock);
@@ -216,6 +239,9 @@ function transition(input,request,role){
 }
 function view(s){
  return {...clone(s),foodSummary:C.foodSummary(s.records,s.active.nutrition),
+  reflections:[...new Set(s.records.filter(x=>x.kind==='training').map(x=>x.workout))].map(w=>C.workoutSummary(s.records,w)),
+  unresolvedComparisons:[{metric:'training',reason:'complete_comparable_multi_day_window_missing'},
+                        {metric:'nutrition',reason:'complete_comparable_multi_day_window_missing'}],
   records:s.records.map(row=>({...clone(row),source:hash({planned:row.planned,planVersion:row.planVersion,unit:row.unit})}))};
 }
 module.exports={initial,transition,view,hash,canonical,validateActual};

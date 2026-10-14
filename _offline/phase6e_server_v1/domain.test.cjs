@@ -108,3 +108,34 @@ test('an unchanged registration does not duplicate source or notification',()=>{
  const v={load:0,reps:0,rir:0,rpe:null};s=record(s,row,v);
  assert.deepEqual(record(s,D.view(s).records[0],v),s);
 });
+
+test('B exercise edits use catalog bounds and require separate application',()=>{
+ const s=D.initial('B'),e=s.active.training.sessions[0].exercises[0];
+ const value={session:0,index:0,exercise:e.exercise,sets:e.sets,reps:11,rest:e.rest,rir:null,rpe:null};
+ const proposed=go(s,'edit',{domain:'training_exercise',value});
+ assert.equal(proposed.active.training.sessions[0].exercises[0].reps,10);
+ assert.equal(proposed.review.target.training.sessions[0].exercises[0].reps,11);
+ assert.equal(apply(proposed).active.training.sessions[0].exercises[0].reps,11);
+ for(const change of [{reps:99},{sets:99},{exercise:'invented'},{rir:0}])
+  assert.throws(()=>go(s,'edit',{domain:'training_exercise',value:{...value,...change}}));
+ assert.throws(()=>go(D.initial('A'),'edit',{domain:'training_exercise',value}),/edit_scope/);
+});
+
+test('B portion edits preserve exact sources and reject unavailable portions',()=>{
+ const s=D.initial('B'),value={meal:0,item:0,grams:225};
+ const proposed=go(s,'edit',{domain:'nutrition_portion',value});
+ assert.equal(proposed.active.nutrition.meals[0].items[0].grams,200);
+ assert.equal(proposed.review.target.nutrition.meals[0].items[0].grams,225);
+ assert.equal(apply(proposed).active.nutrition.meals[0].items[0].grams,225);
+ for(const grams of [-1,0,210,9999])assert.throws(()=>go(s,'edit',{domain:'nutrition_portion',value:{...value,grams}}));
+});
+
+test('reflection uses original snapshots and never invents multi-day comparability',()=>{
+ let s=D.initial('B');const row=D.view(s).records[0];
+ s=record(s,row,{load:0,reps:8,rir:0,rpe:null});
+ const v=D.view(s),line=v.reflections[0].lines[0];
+ assert.equal(line.planned.reps.min,10);assert.equal(line.actual.reps,8);
+ assert.equal(line.actual.rir,0);assert.equal(line.actual.rpe,null);
+ assert.equal(v.reflections[0].physical_advice_authorized,false);
+ assert.deepEqual(v.unresolvedComparisons.map(x=>x.metric),['training','nutrition']);
+});

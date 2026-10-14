@@ -9,6 +9,7 @@ M45='20261014105919_phase6e_synthetic_server_candidate.sql'
 NEW=['domain.cjs','domain.test.cjs','worker.cjs','store.py','database_tests.py','ci.py','ci_auth.py',
      'server.py','ui.html','ui.js','ui.css','browser_checks.cjs','supabase/migrations/'+M45]
 EXTRA={'_offline/phase6e_server_v1/'+p for p in NEW}
+EXTRA.add('assets/fit-met-zorge-logo-cropped.png')
 pending=[HERE/'domain.cjs'];seen=set()
 while pending:
     path=pending.pop().resolve()
@@ -79,6 +80,8 @@ class Gate(previous.Gate):
         if len(funcs)!=2 or any(f['prosecdef'] or f['proconfig']!=['search_path=pg_catalog, pg_temp'] for f in funcs):raise RuntimeError('candidate_functions')
         roles=self.rows("select rolcanlogin,rolsuper,rolbypassrls from pg_roles where rolname='fmz6e_integration_server'")
         if roles!=[{'rolcanlogin':False,'rolsuper':False,'rolbypassrls':False}]:raise RuntimeError('candidate_role')
-        self.save('integration-security.json',{'functions':funcs,'roles':roles,'Data_API_exposed':False})
+        memberships=self.rows("select member::regrole::text member,admin_option,inherit_option,set_option from pg_auth_members where roleid='fmz6e_integration_server'::regrole")
+        if memberships!=[{'member':'postgres','admin_option':False,'inherit_option':False,'set_option':True}]:raise RuntimeError('candidate_membership')
+        self.save('integration-security.json',{'functions':funcs,'roles':roles,'memberships':memberships,'Data_API_exposed':False})
 
 if __name__=='__main__':sys.exit(Gate().run())

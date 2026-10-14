@@ -1,5 +1,5 @@
 """Default-off loopback app entry. GoTrue tokens remain in server memory only."""
-import http.cookies,http.server,json,mimetypes,pathlib,secrets,threading,time,uuid
+import http.cookies,http.server,json,mimetypes,pathlib,secrets,threading,time,traceback,uuid
 from store import Denied,identifier
 HERE=pathlib.Path(__file__).resolve().parent
 
@@ -32,10 +32,18 @@ def serve(app,port=8766):
             self.end_headers();self.wfile.write(raw)
         def valid_host(self):
             if self.headers.get('Host')!='127.0.0.1:'+str(self.server.server_port):raise Denied('host')
+        def failed(self,error):
+            frames=[{'file':pathlib.Path(f.filename).name,'line':f.lineno}
+                    for f in traceback.extract_tb(error.__traceback__)
+                    if pathlib.Path(f.filename).parent==HERE]
+            self.send(503,{'code':'server_unavailable','class':type(error).__name__,
+                           'sqlstate':getattr(error,'sqlstate',None),'frames':frames})
         def do_GET(self):
             try:
                 self.valid_host()
                 static={'/':'ui.html','/ui.js':'ui.js','/ui.css':'ui.css'}
+                if self.path=='/brand.png':
+                    return self.send(200,(HERE.parents[1]/'assets/fit-met-zorge-logo-cropped.png').read_bytes(),mime='image/png')
                 if self.path in static:
                     path=HERE/static[self.path]
                     return self.send(200,path.read_bytes(),mime=mimetypes.guess_type(str(path))[0] or 'text/plain')
@@ -50,7 +58,7 @@ def serve(app,port=8766):
                 self.send(200,{'views':views,'csrf':session['csrf']})
             except Denied as e:self.send(403,{'code':str(e)})
             except Exception as e:
-                self.send(503,{'code':'server_unavailable','class':type(e).__name__})
+                self.failed(e)
         def do_POST(self):
             try:
                 self.valid_host()
@@ -83,7 +91,7 @@ def serve(app,port=8766):
             except Denied as e:self.send(403,{'code':str(e)})
             except (ValueError,KeyError,TypeError):self.send(400,{'code':'payload'})
             except Exception as e:
-                self.send(503,{'code':'server_unavailable','class':type(e).__name__})
+                self.failed(e)
     def allowed(workspace,token):
         try:app.store.read(workspace,token);return True
         except Denied:return False

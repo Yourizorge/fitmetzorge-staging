@@ -5,7 +5,7 @@ if(!/^http:\/\/127\.0\.0\.1:\d+$/.test(c.url))throw Error('loopback');
 const {chromium}=require(c.playwright),browser=await chromium.launch({headless:true});let checks=0,stage='login';const screenshots=[],http=[],errors=[];
 const check=(v,m)=>{if(!v)throw Error(m);checks++;};
 try{const context=await browser.newContext(),page=await context.newPage();page.on('pageerror',e=>errors.push(e.name));
-page.on('response',async r=>{const p=new URL(r.url()).pathname;if(p.startsWith('/api/')){let code=null;try{const v=await r.json();if(typeof v.code==='string'&&/^[a-z_]+$/.test(v.code))code=v.code;}catch{}http.push({path:p,status:r.status(),code});}});
+page.on('response',async r=>{const p=new URL(r.url()).pathname;if(p.startsWith('/api/')){let detail={};try{const v=await r.json();if(typeof v.code==='string'&&/^[a-z_]+$/.test(v.code))detail={code:v.code,class:v.class,sqlstate:v.sqlstate,frames:v.frames};}catch{}http.push({path:p,status:r.status(),...detail});}});
 await context.route('**/*',route=>{if(new URL(route.request().url()).origin!==c.url)return route.abort();return route.continue();});
 async function login(role){await page.goto(c.url);await page.locator('#login').waitFor({state:'visible'});await page.locator('[name=email]').fill(c.accounts[role].email);await page.locator('[name=password]').fill(c.accounts[role].password);await page.locator('#login button').click();await page.locator('#app').waitFor({state:'visible'});}
 await login('b');check(await page.locator('#status').innerText().then(x=>x.includes('member')),'member_role');

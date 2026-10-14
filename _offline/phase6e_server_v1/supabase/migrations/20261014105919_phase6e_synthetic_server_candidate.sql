@@ -5,6 +5,10 @@ set local statement_timeout='5s';
 create schema fmz6e_integration_private;
 revoke all on schema fmz6e_integration_private from public,anon,authenticated,service_role;
 create role fmz6e_integration_server nologin nosuperuser nocreatedb nocreaterole noinherit nobypassrls;
+-- Only the private local server connection can enter this restricted role.
+grant fmz6e_integration_server to postgres with inherit false;
+grant fmz6e_integration_server to postgres with set true;
+grant fmz6e_integration_server to postgres with admin false;
 grant usage on schema fmz6e_integration_private to fmz6e_integration_server;
 
 create table fmz6e_integration_private.subjects(
