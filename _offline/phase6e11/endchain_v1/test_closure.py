@@ -7,7 +7,7 @@ class ClosureTests(unittest.TestCase):
     def setUp(self):
         self.trace=[{'command':i+1,'phase':'evidence_query','confirmed':True} for i in range(1518)]
         self.pre={'commands':[{'confirmed':True} for _ in range(4)]}
-        self.cli=[{'protocol_commands':n,'complete':True} for n in (14,2)]
+        self.cli=[{'protocol_commands':n,'complete':True,'observer_commands':[{'confirmed':True}]*8,'total_commands':n+8} for n in (14,2)]
         self.auth=[{'role':r,'operation':op,'commands':n,'statements':[{'temp_written':0}]}
                    for r in ('a_member','a_trainer','b_member')
                    for op,n in {'issue':11,'verify':21,'getUser':5,'refresh':27,'logout':10,'revoked_denial':4}.items()]
@@ -15,7 +15,7 @@ class ClosureTests(unittest.TestCase):
     def close(self,run=RUN_ID,purpose=PURPOSE):
         return counted_close(self.trace,self.pre,self.cli,self.auth,self.workflow,run,purpose)
     def test_counts_auth_cli_protocol_and_own_close(self):
-        self.assertEqual(self.close()['global_commands'],2133)
+        self.assertEqual(self.close()['global_commands'],2149)
     def test_ordinary_limits_unchanged(self):
         for run,purpose in [('other',PURPOSE),(RUN_ID,'other')]:
             self.assertEqual(allowance(run,purpose),128)
@@ -36,6 +36,9 @@ class ClosureTests(unittest.TestCase):
     def test_empty_cli_receipt_not_zero_cost(self):
         self.cli=[]
         with self.assertRaises(ValueError):self.close()
+    def test_numeric_observers_cannot_be_outside_counter(self):
+        self.cli[0]['observer_commands']=[]
+        with self.assertRaisesRegex(ValueError,'observer_count'):self.close()
     def test_over_budget_cannot_close(self):
         self.trace += [{'command':i+1,'phase':'evidence_query','confirmed':True} for i in range(1518,2226)]
         with self.assertRaisesRegex(ValueError,'closure_budget'):self.close()

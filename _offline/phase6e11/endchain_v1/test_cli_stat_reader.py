@@ -19,5 +19,8 @@ class Tests(unittest.TestCase):
     def test_temp_is_not_hidden(self):
         after=snap(17);after['statements'][0]['temp_written']=1
         self.assertEqual(compare(snap(),after,14)['temp_written'],1)
+    def test_explicit_readonly_boundaries_are_separately_counted(self):
+        self.assertTrue(compare(snap(),snap(20),14,between=3)['all_protocol_visible'])
+        self.assertFalse(compare(snap(),snap(20),14)['all_protocol_visible'])
 
 if __name__=='__main__':unittest.main()

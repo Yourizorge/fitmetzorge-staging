@@ -8,12 +8,12 @@ from complete_register import classify,scenario_source,AUTH_CALLS
 from runtime_budget import RuntimeBudget
 from closure import RUN_ID,PURPOSE,BOOTSTRAP
 
-LIMITS=dict(preflight=4,migration=34,baseline=51,setup=33,guard=13,auth=318,controller=286,
-    route_a=191,route_b=286,restore=54,measurements=126,io=97,cleanup=633,final=53,closure=1)
+LIMITS=dict(preflight=4,migration=42,baseline=51,setup=33,guard=13,auth=318,controller=286,
+    route_a=191,route_b=286,restore=54,measurements=126,io=97,cleanup=633,final=61,closure=1)
 
 def capacity():
     return dict(complete_register=True,approved_limit=2226,fits=True,run_id=RUN_ID,purpose=PURPOSE,
-        phase_budgets=LIMITS,normal_capacity=2180,worst_including_safety=2198)
+        phase_budgets=LIMITS,normal_capacity=2196,worst_including_safety=2214)
 
 class MeteredComposition(Composition):
     def __init__(self,*args,**kwargs):
@@ -38,11 +38,11 @@ class MeteredComposition(Composition):
         self.meter.confirm(ticket)
 
     def apply_migration(self,gate):
-        ticket=self.meter.charge('migration',14,action='candidate_44_migration_aware_cli',kind='cli_bound',mutation=True)
+        ticket=self.meter.charge('migration',22,action='candidate_44_migration_aware_cli',kind='cli_bound',mutation=True)
         receipt=gate.apply_endchain_migration()
-        if receipt.get('protocol_commands')!=14 or receipt.get('complete') is not True or receipt.get('numeric_protocol_coverage') is not True:
+        if receipt.get('total_commands')!=22 or receipt.get('protocol_commands')!=14 or receipt.get('complete') is not True or receipt.get('numeric_protocol_coverage') is not True:
             self.abort('migration_protocol_incomplete');raise ValueError('migration_protocol_incomplete')
-        self.meter.confirm(ticket,actual=14)
+        self.meter.confirm(ticket,actual=22)
 
     def abort(self,reason):
         self.meter.stop(reason)
@@ -105,7 +105,7 @@ class MeteredComposition(Composition):
         return result
 
     def finalize(self,gate,request):
-        ticket=self.meter.charge('final',2,action='empty_cli_dry_run',kind='cli_bound')
+        ticket=self.meter.charge('final',10,action='empty_cli_dry_run',kind='cli_bound')
         result=super().finalize(gate,request)
         self.meter.confirm(ticket)
         return result

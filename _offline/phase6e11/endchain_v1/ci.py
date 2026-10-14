@@ -117,6 +117,12 @@ class Gate(prior.Gate):
         # A second disposable build begins at the actual hosted prerequisite.
         # Initial clean44 receipts retain their own immutable namespace.
         super().cli('db','reset','--local','--version','20261012104331','--no-seed',timeout=180)
+        from integral_ci import configure_local_tls
+        saved=self.save
+        try:
+            self.save=lambda name,value:saved('registered-bootstrap-'+name,value)
+            configure_local_tls(self)
+        finally:self.save=saved
         self.cli_namespace='';self.cli_protocol=[]
         self.save('registered-database-bootstrap.json',{'disposable_only':True,'version':'20261012104331','hosted_calls':0})
     def apply_endchain_migration(self):

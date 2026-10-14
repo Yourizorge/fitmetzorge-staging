@@ -22,6 +22,7 @@ while pending:
 previous.prior.old.EXTRA|=EXTRA
 
 class Gate(previous.Gate):
+    cli_namespace=''
     def fetch(self):
         migrations=super().fetch()
         files=json.loads((self.out/'candidate.json').read_text())['sources']

@@ -166,7 +166,8 @@ def build(folder):
     for c in preflight['commands']:add('preflight','project_tls_and_43_history',1,template_sha=c['sql_sha256'],writeset=[])
     cli=[read('cli-protocol-'+str(i)+'.json') for i in range(2)]
     if [c['protocol_commands'] for c in cli]!=[14,2] or not all(c['complete'] for c in cli):raise ValueError('register_cli_shape')
-    for c in cli[0]['commands']:add('migration','candidate_44_migration_aware_cli',1,template_sha=c['sha256'],writeset=['exact M44 DDL and migration identity only'])
+    for c in cli[0]['observer_commands'][:4]+cli[0]['commands']+cli[0]['observer_commands'][4:]:
+        add('migration','candidate_44_migration_aware_cli',1,template_sha=c['sha256'],writeset=['exact M44 DDL and migration identity only'] if c['kind']!='numeric_observer' else [])
     for c in trace:
         phase=classify(c,scenario)
         if phase=='ci_bootstrap':bootstrap.append(c);continue
@@ -225,8 +226,8 @@ def build(folder):
         phase='cleanup' if step>=45 else 'restore' if 'restore' in scenario[step]['request']['action'] else 'route_a' if scenario[step]['route']=='A' else 'route_b'
         add(phase,'gotrue_workflow_identity_'+str(step),5,managed=True,writeset=[])
         move_last_before(5,lambda row:row.get('action_binding')=={'kind':'workflow','step':step})
-    for c in cli[1]['commands']:add('final','empty_cli_dry_run',1,template_sha=c['sha256'],writeset=[])
-    if closure['global_commands']!=len(trace)-len(bootstrap)+20+594:raise ValueError('register_closure_count')
+    for c in cli[1]['observer_commands'][:4]+cli[1]['commands']+cli[1]['observer_commands'][4:]:add('final','empty_cli_dry_run',1,template_sha=c['sha256'],writeset=[])
+    if closure['global_commands']!=len(trace)-len(bootstrap)+36+594:raise ValueError('register_closure_count')
     closing=[r for r in rows if r['phase']=='closure']
     if len(closing)!=1:raise ValueError('register_closure_missing')
     rows=[r for r in rows if r['phase']!='closure']+closing
