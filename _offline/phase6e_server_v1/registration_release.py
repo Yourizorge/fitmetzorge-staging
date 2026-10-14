@@ -14,6 +14,8 @@ def build(folder):
     coverage=[read('cli-numeric-coverage-'+str(i)+'.json') for i in (0,1)]
     if not all(x['complete'] for x in cli) or not all(x['all_protocol_visible'] and x['temp_written']==0 for x in coverage):raise ValueError('cli_evidence')
     if any(s['temp_written'] for s in auth['statements']):raise ValueError('auth_io')
+    io=read('registration12-integration-application-io.json')
+    if set(io['deltas'])!={'postgres','fmz6e_integration_server'} or any(v['temp_written'] for v in io['deltas'].values()):raise ValueError('application_io')
     if read('registration12-browser.json')['status']!='PASS':raise ValueError('browser_required')
     phases=[{'phase':'minimal_migration','commands':cli[0]['protocol_commands'],'evidence':'cli-protocol-0.json'},
             {'phase':'empty_dryrun','commands':cli[1]['protocol_commands'],'evidence':'cli-protocol-1.json'},

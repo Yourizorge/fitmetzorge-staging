@@ -55,6 +55,8 @@ def environment(gate):
             events=[];admin=Session(connection,events.append,'fixture_admin')
             from auth_protocol import STATS,difference
             before=admin.execute('select '+STATS+' value').fetchone()['value']
+            measured_roles=('postgres','fmz6e_integration_server')
+            app_before={role:admin.execute('select '+STATS.replace("rolname='supabase_auth_admin'","rolname='"+role+"'")+' value').fetchone()['value'] for role in measured_roles}
             for role in ('a','trainer','b','owner','outsider'):
                 email='fmz-'+uuid.uuid4().hex+'@example.invalid';pw=secrets.token_urlsafe(32)
                 user=auth.call('/admin/users',admin_token,{'email':email,'password':pw,'email_confirm':True})
@@ -66,6 +68,10 @@ def environment(gate):
             finally:
                 after=admin.execute('select '+STATS+' value').fetchone()['value']
                 load=difference(before,after)
+                app_after={role:admin.execute('select '+STATS.replace("rolname='supabase_auth_admin'","rolname='"+role+"'")+' value').fetchone()['value'] for role in measured_roles}
+                app_load={role:difference(app_before[role],app_after[role]) for role in measured_roles}
+                for value in app_load.values():value['scope']='isolated local CI role; no hosted attribution'
+                gate.save('integration-application-io.json',{'before':app_before,'after':app_after,'deltas':app_load,'query_text_read':False})
                 complete=[e for e in events if e['phase']=='completed']
                 gate.save('integration-native-admin-protocol.json',{'commands':len(complete),
                     'failed_commands':sum(not e['confirmed'] for e in complete),

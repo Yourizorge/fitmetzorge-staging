@@ -11,6 +11,7 @@ class Tests(unittest.TestCase):
          'registration12-integration-native-admin-protocol.json':{'commands':30},
          'registration12-integration-managed-auth-protocol.json':{'commands':400,'statements':[{'temp_written':0}]},
          'registration12-browser.json':{'status':'PASS'}}
+        values['registration12-integration-application-io.json']={'deltas':{'postgres':{'temp_written':0},'fmz6e_integration_server':{'temp_written':0}}}
         for i in (0,1):
             values[f'cli-protocol-{i}.json']={'complete':True,'protocol_commands':10,'observer_commands':[{}]*8}
             values[f'cli-numeric-coverage-{i}.json']={'all_protocol_visible':True,'temp_written':0}
