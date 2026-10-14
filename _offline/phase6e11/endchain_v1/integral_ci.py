@@ -48,7 +48,7 @@ def configure_local_tls(gate):
 
 class Composition:
     runner=HERE/'integral_auth.mjs'
-    def __init__(self,fault=None):
+    def __init__(self,fault=None,runtime=None):
         if fault not in (None,'before_call','after_commit','after_snapshot'):raise ValueError('ci_fault_scope')
         self.fault=fault;self.injected=False;self.step_zero_reads=0
         self.commands=[];self.pending=[];self.started=time.monotonic();self.events=[];self.action=None
@@ -57,6 +57,12 @@ class Composition:
         self.preservation_baseline=None
         self.gate_baseline=None
         self.closing_receipt=None
+        self.runtime=runtime
+    def native_runtime(self,gate):
+        if self.runtime is None:
+            from native_runtime import NativeRuntime
+            self.runtime=NativeRuntime.disposable(gate)
+        return self.runtime
     def finalize(self,gate,request):
         from closure import counted_close
         def read(name):return json.loads((gate.out/name).read_text())
@@ -78,15 +84,7 @@ class Composition:
         gate.save('integral-closure.json',{**receipt,'confirmed':True})
     def preservation(self,gate,ids,label):
         import psycopg,integral_stream
-        from psycopg.rows import dict_row
-        p=subprocess.run(['docker','exec',gate.container,'sh','-c','printf %s "$POSTGRES_PASSWORD"'],capture_output=True,text=True,timeout=10)
-        endpoint=subprocess.run(['docker','port',gate.container,'5432/tcp'],capture_output=True,text=True,timeout=10)
-        choices=[x for x in endpoint.stdout.splitlines() if re.fullmatch(r'(127\.0\.0\.1|0\.0\.0\.0):\d+',x)]
-        if p.returncode or endpoint.returncode or len(choices)!=1:raise RuntimeError('ci_preservation_endpoint')
-        connection=psycopg.connect(host='127.0.0.1',port=int(choices[0].split(':')[1]),dbname='postgres',user='postgres',
-            password=p.stdout.strip(),autocommit=True,prepare_threshold=None,row_factory=dict_row,
-            sslmode='verify-full',sslrootcert=str(gate.work/'fmz-ci-ca.crt'),connect_timeout=5)
-        p=None
+        connection=self.native_runtime(gate).connect()
         def query(phase,text,args=()):
             bound,params=bind_parameters(text,args)
             self.before_sql(phase,text)
@@ -175,24 +173,14 @@ class Composition:
         return {'rows':rows,'commandCount':len(self.commands)}
     def workflow(self,gate,request,outer_sql,ids,run_id):
         import psycopg
-        from psycopg.rows import dict_row
         from psycopg.types.json import Jsonb
         from psycopg import sql as pgsql
-        def private(args):
-            p=subprocess.run(args,capture_output=True,text=True,timeout=10)
-            if p.returncode:raise RuntimeError('ci_local_transport_setup')
-            return p.stdout.strip()
-        password=private(['docker','exec',gate.container,'sh','-c','printf %s "$POSTGRES_PASSWORD"'])
-        ports=private(['docker','port',gate.container,'5432/tcp']).splitlines()
-        endpoints=[x for x in ports if re.fullmatch(r'(127\.0\.0\.1|0\.0\.0\.0):\d+',x)]
-        if len(endpoints)!=1:raise RuntimeError('ci_loopback_binding')
-        port=int(endpoints[0].split(':')[1]);connections={}
-        for channel in ('setup','writer','reader','workflow'):
-            connections[channel]=psycopg.connect(host='127.0.0.1',port=port,dbname='postgres',user='postgres',
-                password=password,autocommit=True,prepare_threshold=None,row_factory=dict_row,
-                sslmode='verify-full',sslrootcert=str(gate.work/'fmz-ci-ca.crt'),connect_timeout=5,
-                options='-c statement_timeout=5000 -c lock_timeout=1000')
-        password=None
+        runtime=self.native_runtime(gate);connections={}
+        try:
+            for channel in ('setup','writer','reader','workflow'):connections[channel]=runtime.connect()
+        except Exception:
+            for connection in connections.values():connection.close()
+            raise
         monitor=None;io_receipts=[]
         def raw_query(channel,phase,text,values=()):
             # SQL templates are fixed candidate sources, values are bound by the
@@ -241,7 +229,7 @@ class Composition:
             # Verify the actual token with GoTrue again before it supplies claims.
             import urllib.request,base64
             token=request['tokens']['a_trainer']
-            req=urllib.request.Request('http://127.0.0.1:59999/user',headers={'Authorization':'Bearer '+token})
+            req=urllib.request.Request(runtime.auth_base+'/user',headers={'Authorization':'Bearer '+token,'apikey':request['anon']})
             with urllib.request.urlopen(req,timeout=5) as response:user=json.loads(response.read(20000))
             claims=json.loads(base64.urlsafe_b64decode(token.split('.')[1]+'==='))
             if user['id']!=ids['a_trainer'] or claims['sub']!=user['id']:raise RuntimeError('ci_auth_identity')
@@ -277,8 +265,8 @@ class Composition:
                 'select public.fmz6e11_call($1::jsonb) value',[activation],claims,headers)[0]['value']
             if active.get('revision')!=2 or active.get('http_status',200)!=200:raise RuntimeError('ci_activation_denied')
             end_reader('fixture_setup')
-            payload={'mode':'disposable_ci','authUrl':'http://127.0.0.1:59999','tokens':request['tokens'],
-                'ca':(gate.work/'fmz-ci-ca.crt').read_text(),
+            from auth_service import guard as identity_guard
+            payload={**runtime.context(ids,identity_guard.ALIASES),'tokens':request['tokens'],
                 'key':request['anon'],'proof':'synthetic-only-local-proof','ids':roles,'window':window,
                 'a':by_route['A'],'b':by_route['B'],'initialRevision':active['revision'],
                 'scenario':capture()['workflow_actions'],'sourceSha':gate.result['head'] if 'head' in gate.result else os.environ['GITHUB_SHA'],

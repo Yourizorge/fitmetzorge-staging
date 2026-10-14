@@ -7,18 +7,14 @@ import {metadata,Controller,sha,Halt} from '../controller_v1/core.mjs';
 import {NativeStore} from './native_store.mjs';
 import {ENDCHAIN_RUN_ID,PURPOSE,limitFor} from './budget.mjs';
 import {bindSession} from '../auth_metadata_v1/hashes.mjs';
+import {executionContext,AUTH_ORIGIN} from './execution_context.mjs';
 const lines=readline.createInterface({input:process.stdin,terminal:false})[Symbol.asyncIterator]();
 const read=async()=>JSON.parse((await lines.next()).value);
 const send=async value=>{process.stdout.write(JSON.stringify(value)+'\n');const reply=await read();if(reply.error)throw new Halt('ci_'+value.op,reply.error);return reply.value;};
-const config=await read(),origin='https://mokxyyullfhkfalopbzd.supabase.co';
-if(config.mode!=='disposable_ci'||config.url!=='http://127.0.0.1:59999')throw Error('ci_boundary');
-const localFetch=(url,options)=>{
- const p=new URL(url);
- if(p.origin!==origin||!p.pathname.startsWith('/auth/v1/'))throw Error('network_boundary');
- return fetch(config.url+p.pathname.slice('/auth/v1'.length)+p.search,options);
-};
+const config=await read(),origin=AUTH_ORIGIN,execution=executionContext(config);
+const localFetch=execution.fetcher;
 let guard,receipt,controller,protocolCount=0;
-const auths={},ids={},proof=[],tokens={};
+const auths={},ids=execution.ids,proof=[],tokens={};
 const query=async(sql,args)=>{
  const result=await send({op:'evidence_query',sql,args});protocolCount=result.commandCount;return result.rows;
 };
@@ -53,11 +49,6 @@ async function action(role,operation){
  proof.push({role,operation,result,after});
 }
 try{
- for(const role of Object.keys(EMAILS)){
-  const response=await localFetch(origin+'/auth/v1/admin/users',{method:'POST',redirect:'error',signal:AbortSignal.timeout(5000),
-   headers:{Authorization:'Bearer '+config.admin,'Content-Type':'application/json'},body:JSON.stringify({email:EMAILS[role],email_confirm:true})});
-  if(!response.ok)throw Error('ci_auth_seed');ids[role]=(await response.json()).id;
- }
  receipt=await send({op:'install',ids});
  const grant={project:'mokxyyullfhkfalopbzd',id:ENDCHAIN_RUN_ID,budget_ref:PURPOSE,run:'1',sha:config.sourceSha,
   manifest_sha:await sha(config.authContracts),starts:Date.now(),expires:Date.parse(receipt.expires_at)};

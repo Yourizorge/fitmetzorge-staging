@@ -18,7 +18,8 @@ NAMES=['budget.mjs','budget.test.mjs','database_checks.py','ci.py','scoped_cycle
  'cli_meter.py','test_cli_meter.py','integral_io.py','test_integral_io.py','fixture_lifecycle.py','test_fixture_lifecycle.py',
  'auth_protocol.py','test_auth_protocol.py','integral_stream.py','test_integral_stream.py',
  'lifecycle_gates.py','test_lifecycle_gates.py','complete_register.py','test_complete_register.py','integral_failures.py',
- 'closure.py','test_closure.py']
+ 'closure.py','test_closure.py','execution_context.mjs','execution_context.test.mjs',
+ 'native_runtime.py','test_native_runtime.py']
 EXTRA={'_offline/phase6e11/endchain_v1/'+n for n in NAMES}
 EXTRA|={'_offline/phase6e11/request_v4/'+n for n in ['transport.mjs','connection_options.mjs','config_shape.mjs']}
 EXTRA|={'_offline/phase6e11/resume_v1/read_only.mjs','_offline/phase6e11/transport_v1/contract.mjs',

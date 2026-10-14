@@ -9,14 +9,23 @@ import {IDENTITY} from './request_transport.mjs';
 export const READ_STATE='select public.fmz6e11_call($1::text::jsonb) as value';
 
 export function createSessionTransport({postgres,connectionUrl,ca,sessionHost,onCommand=()=>{},now=()=>performance.now()}){
- let sql,busy=false,closed=false,lost=false,attested=false,teardown=false;
- const started=now();
  const options=connectionOptions(connectionUrl,ca,sessionHost);
  // Explicit owner closes this dedicated session, including failure. This is
  // not an increased connect/query timeout. The worker limit below is 120s.
  options.idle_timeout=0;options.max_lifetime=0;
- options.onclose=()=>{if(!teardown){lost=true;closed=true;}};
- sql=postgres(options);
+ let lost=()=>{};
+ options.onclose=()=>lost();
+ const sql=postgres(options);
+ return createProtocolSessionTransport({sql,onCommand,now,onLost:callback=>{lost=callback;}});
+}
+
+// Private IPC only: the native owner verifies TLS before supplying this handle.
+// No invented connection URL or second credential copy is needed by the child.
+export function createProtocolSessionTransport({sql,onCommand=()=>{},now=()=>performance.now(),onLost=()=>{}}){
+ if(typeof sql?.unsafe!=='function'||typeof sql?.end!=='function')throw new Halt('admission','private_session_missing');
+ let busy=false,closed=false,lost=false,attested=false,teardown=false;
+ const started=now();
+ onLost(()=>{if(!teardown){lost=true;closed=true;}});
  const lifetime=setTimeout(()=>{
   lost=true;closed=true;sql.end({timeout:0}).catch(()=>{});
  },120000);

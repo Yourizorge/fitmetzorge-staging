@@ -2,12 +2,13 @@
 // SQL travels over private local IPC; no hosted network or credential support.
 import readline from 'node:readline';
 import {runWorkflow} from './workflow_composition.mjs';
-import {createSessionTransport} from './session_transport.mjs';
+import {createProtocolSessionTransport} from './session_transport.mjs';
+import {executionContext,AUTH_ORIGIN} from './execution_context.mjs';
 const lines=readline.createInterface({input:process.stdin,terminal:false})[Symbol.asyncIterator]();
 const read=async()=>JSON.parse((await lines.next()).value);
 const p=await read();
 const startedAt=performance.now(),cpuStart=process.cpuUsage();
-if(p.mode!=='disposable_ci'||p.authUrl!=='http://127.0.0.1:59999')throw Error('ci_boundary');
+const execution=executionContext(p);
 let count=p.commandCount,open=false,result,activeStep=0;
 const events=[];
 const sql=async(channel,phase,q,args=[])=>{
@@ -15,11 +16,9 @@ const sql=async(channel,phase,q,args=[])=>{
  const r=await read();count=r.commandCount;if(r.error)throw Error(r.error);return r.rows;
 };
 let phase='identity';
-const transport=createSessionTransport({postgres:()=>({
- unsafe:(q,args=[])=>sql('workflow',phase,q,args),end:async()=>{}}),
- connectionUrl:'postgres://postgres:synthetic@db.mokxyyullfhkfalopbzd.supabase.co:5432/postgres?sslmode=verify-full',
- ca:p.ca,
- sessionHost:'aws-0-eu-west-2.pooler.supabase.com',onCommand:async name=>{phase=name;}});
+const transport=createProtocolSessionTransport({sql:{
+ unsafe:(q,args=[])=>sql('workflow',phase,q,args),end:async()=>{}},
+ onCommand:async name=>{phase=name;}});
 const query=(q,args=[])=>sql('writer','controller_evidence',q,args);
 const measureQuery=(q,args=[])=>sql('reader','measurement',q,args);
 const closeCollector=async()=>{if(open){await measureQuery('ROLLBACK');open=false;}};
@@ -42,8 +41,8 @@ try{
    if(e.phase==='pair_validated')activeStep=e.step+1;
   },auth:{withToken:(role,callback)=>callback(p.tokens[roleMap[role]]),fetcher:(url,options)=>{
    const u=new URL(url);
-   if(u.origin!=='https://mokxyyullfhkfalopbzd.supabase.co'||u.pathname!=='/auth/v1/user')throw Error('ci_auth_route');
-   return fetch(p.authUrl+'/user',options);
+   if(u.origin!==AUTH_ORIGIN||u.pathname!=='/auth/v1/user')throw Error('ci_auth_route');
+   return execution.fetcher(url,options);
   }}});
 }catch(e){
  result={status:'NO_GO',phase:/^[a-z0-9_]+$/.test(e.phase)?e.phase:'integral_workflow',
@@ -55,7 +54,7 @@ try{
  const cpu=process.cpuUsage(cpuStart),cpuMs=(cpu.user+cpu.system)/1000,wallMs=performance.now()-startedAt;
  if(cpuMs>=2000||wallMs>=120000){result={...result,status:'NO_GO',code:'ci_worker_lifetime'};process.exitCode=2;}
  for(const key of Object.keys(p.tokens))p.tokens[key]=null;
- process.stdout.write(JSON.stringify({op:'complete',result:{...result,real_local_auth:true,commandCount:count,
+ process.stdout.write(JSON.stringify({op:'complete',result:{...result,real_local_auth:execution.local,commandCount:count,
   worker_cpu_ms:cpuMs,worker_wall_ms:wallMs,worker_cpu_limit_ms:2000,worker_wall_limit_ms:120000}})+'\n');
  process.stdin.destroy();
 }

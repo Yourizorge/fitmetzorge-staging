@@ -113,10 +113,26 @@ end loop;end$$;""",'supabase_auth_admin')
                 output.append(line)
             return [] if control else json.loads(''.join(output))
         runner=pathlib.Path(__file__).with_name('auth_service.mjs') if composition is None else composition.runner
+        execution={}
+        if composition is not None:
+            # Disposable setup is deliberately outside the shared registered-
+            # identity executor. That executor cannot call admin/users.
+            seeded={}
+            for role,email in guard.ALIASES.items():
+                payload=json.dumps({'email':email,'email_confirm':True}).encode()
+                req=urllib.request.Request('http://127.0.0.1:59999/admin/users',data=payload,
+                    headers={'Authorization':'Bearer '+jwt('service_role'),'Content-Type':'application/json'},method='POST')
+                with urllib.request.urlopen(req,timeout=5) as response:
+                    seeded[role]=json.loads(response.read(20000))['id']
+            guard.scope(run_id,seeded)
+            execution={'mode':'registered_synthetic','environment':'disposable_ci',
+                'authBase':'http://127.0.0.1:59999','ids':seeded,
+                'identityBinding':{'project':'mokxyyullfhkfalopbzd','preexisting':True,
+                    'identities':{r:{'id':seeded[r],'email':guard.ALIASES[r],'registered':True} for r in seeded}}}
         process=subprocess.Popen(['node',str(runner)],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
         timer=threading.Timer(190,process.kill);timer.start()
         process.stdin.write(json.dumps({'mode':'disposable_ci','url':'http://127.0.0.1:59999','admin':jwt('service_role'),'anon':jwt('anon'),
-            **({'sourceSha':os.environ['GITHUB_SHA'],'authContracts':{
+            **execution,**({'sourceSha':os.environ['GITHUB_SHA'],'authContracts':{
                 operation:[{'table':'auth.'+t,'operation':o,'count':n} for (t,o),n in counts.items()]
                 for operation,counts in auth_contract.COUNTS.items()}} if composition is not None else {})})+'\n');process.stdin.flush();secret=None
         result=None;phase='start';started=time.monotonic();commands=0
