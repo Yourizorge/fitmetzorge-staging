@@ -10,7 +10,8 @@ M46='20261014160019_phase6e_local_outbox.sql'
 NEW=['domain.cjs','domain.test.cjs','windows.cjs','windows.test.cjs','worker.cjs','store.py','database_tests.py','ci.py','ci_auth.py',
      'server.py','ui.html','ui.js','ui.css','browser_checks.cjs','protocol.py','test_protocol.py',
      'release_packet.py','test_release_packet.py','outbox.py','test_outbox.py','planning.py','test_planning.py',
-     'registration12.cjs','registration12.test.cjs','registration_store.py','registration_database.py',
+     'registration12.cjs','registration12.test.cjs','registration_store.py','registration_database.py','registration_browser.cjs',
+     'registration_release.py','test_registration_release.py',
      'supabase/migrations/'+M45,'supabase/migrations/'+M46]
 EXTRA={'_offline/phase6e_server_v1/'+p for p in NEW}
 EXTRA.add('assets/fit-met-zorge-logo-cropped.png')
@@ -27,6 +28,12 @@ previous.prior.old.EXTRA|=EXTRA
 
 class Gate(previous.Gate):
     cli_namespace=''
+    def browser_dependencies(self):
+        deps=self.work/'browser-deps'
+        if not (deps/'node_modules/playwright').exists():
+            self.command('integration-playwright',['npm','install','--prefix',str(deps),'--no-audit','--no-fund','playwright@1.56.1'],timeout=120)
+            self.command('integration-chromium',['node',str(deps/'node_modules/playwright/cli.js'),'install','--with-deps','chromium'],timeout=180)
+        return str(deps/'node_modules/playwright')
     def fetch(self):
         migrations=super().fetch()
         files=json.loads((self.out/'candidate.json').read_text())['sources']
@@ -53,12 +60,28 @@ class Gate(previous.Gate):
         import ci_auth,registration_database
         self.save('registration12-minimal-history.json',{'history':self.rows('select version from supabase_migrations.schema_migrations order by version'),
             'migration_sha256':hashlib.sha256(path.read_bytes()).hexdigest(),'hosted_applied':False})
+        dry=self.cli('db','push','--local','--dry-run','--skip-vault')
+        combined=(dry.stdout+dry.stderr).lower()
+        if 'up to date' not in combined or 'would push' in combined:raise RuntimeError('registration12_pending_migration')
+        self.save('registration12-dry-run.json',{'output_sha256':hashlib.sha256((dry.stdout+dry.stderr).encode()).hexdigest(),
+            'pending':False,'local_only':True})
         # Capture the complete minimal slice independently before optional M46.
         old_save=self.save
         self.save=lambda name,value:old_save('registration12-'+name,value)
         try:
             with ci_auth.environment(self) as ctx:
-                result=registration_database.run(ctx)
+                def browser(store,workspace):
+                    import server,subprocess,threading
+                    app=server.Application(store,[workspace],enabled=True);http=server.serve(app,0)
+                    thread=threading.Thread(target=http.serve_forever,daemon=True);thread.start()
+                    try:
+                        data={'url':'http://127.0.0.1:'+str(http.server_port),'account':ctx['accounts']['a'],
+                            'playwright':self.browser_dependencies(),'screenshots':str(self.out)}
+                        p=subprocess.run(['node',str(folder/'registration_browser.cjs')],input=json.dumps(data),capture_output=True,text=True,timeout=90)
+                        result=json.loads(p.stdout);self.save('browser.json',result)
+                        if p.returncode or result['status']!='PASS':raise RuntimeError('registration12_browser')
+                    finally:http.shutdown();http.server_close();thread.join(timeout=5)
+                result=registration_database.run(ctx,browser)
                 self.save('database.json',result)
                 self.result['registration12_tests']=result['count']
                 self.save('auth.json',ci_auth.auth_checks(ctx))
@@ -76,6 +99,7 @@ class Gate(previous.Gate):
         folder=self.sources/'_offline/phase6e_server_v1';sys.path.insert(0,str(folder))
         self.command('integration-protocol',[sys.executable,'-B',str(folder/'test_protocol.py')])
         self.command('integration-release-packet',[sys.executable,'-B',str(folder/'test_release_packet.py')])
+        self.command('registration-release-packet',[sys.executable,'-B',str(folder/'test_registration_release.py')])
         self.command('integration-outbox',[sys.executable,'-B',str(folder/'test_outbox.py')])
         self.command('integration-planning',[sys.executable,'-B',str(folder/'test_planning.py')])
         output=self.command('integration-domain',['node','--test',str(folder/'domain.test.cjs'),str(folder/'windows.test.cjs'),str(folder/'registration12.test.cjs')])
@@ -88,14 +112,12 @@ class Gate(previous.Gate):
             self.save('integration-auth-table-security.json',{'auth_sessions':row,'auth_objects_changed':False,
                 'session_check':'server verifies exact token sub/session before restricted app role; no new Auth grant or policy'})
             def browser(store,workspaces):
-                deps=self.work/'browser-deps'
-                self.command('integration-playwright',['npm','install','--prefix',str(deps),'--no-audit','--no-fund','playwright@1.56.1'],timeout=120)
-                self.command('integration-chromium',['node',str(deps/'node_modules/playwright/cli.js'),'install','--with-deps','chromium'],timeout=180)
+                playwright=self.browser_dependencies()
                 app=server.Application(store,[workspaces['A'],workspaces['B']],enabled=True)
                 http=server.serve(app,0);thread=threading.Thread(target=http.serve_forever,daemon=True);thread.start()
                 try:
                     data={'url':'http://127.0.0.1:'+str(http.server_port),'accounts':ctx['accounts'],
-                          'playwright':str(deps/'node_modules/playwright'),'screenshots':str(self.out)}
+                          'playwright':playwright,'screenshots':str(self.out)}
                     p=subprocess.run(['node',str(folder/'browser_checks.cjs')],input=json.dumps(data),text=True,capture_output=True,timeout=120)
                     result=json.loads(p.stdout)
                     self.save('integration-browser.json',result)

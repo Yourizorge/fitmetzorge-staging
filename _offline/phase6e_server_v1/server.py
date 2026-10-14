@@ -102,15 +102,24 @@ def serve(app,port=8766):
 if __name__=='__main__':
     import os,sys
     try:
-        if os.environ.get('FMZ_LOCAL_INTEGRATION_ENABLED')!='1':raise Denied('feature_disabled')
+        integration=os.environ.get('FMZ_LOCAL_INTEGRATION_ENABLED')=='1'
+        registration=os.environ.get('FMZ_LOCAL_REGISTRATION12_ENABLED')=='1'
+        if integration==registration:raise Denied('feature_disabled')
         from store import Store,LocalAuth
         path=pathlib.Path(os.environ['FMZ_LOCAL_INTEGRATION_CONFIG']).resolve()
         # Only a private local operator supplies this configuration. Never serve it.
         config=json.loads(path.read_text())
-        if set(config)!= {'dsn','auth_url','workspaces'}:raise Denied('configuration')
-        store=Store(config['dsn'],LocalAuth(config['auth_url']),enabled=True,
-                    full_day21=os.environ.get('FMZ_LOCAL_FULL_DAY21_ENABLED')=='1')
-        app=Application(store,config['workspaces'],enabled=True)
+        if registration:
+            from registration_store import RegistrationStore
+            if set(config)!= {'dsn','auth_url','bindings'}:raise Denied('configuration')
+            store=RegistrationStore(config['dsn'],LocalAuth(config['auth_url']),config['bindings'],enabled=True)
+            workspaces=list(config['bindings'])
+        else:
+            if set(config)!= {'dsn','auth_url','workspaces'}:raise Denied('configuration')
+            store=Store(config['dsn'],LocalAuth(config['auth_url']),enabled=True,
+                        full_day21=os.environ.get('FMZ_LOCAL_FULL_DAY21_ENABLED')=='1')
+            workspaces=config['workspaces']
+        app=Application(store,workspaces,enabled=True)
         http=serve(app)
         print('LOCAL SYNTHETIC ONLY: http://127.0.0.1:8766',flush=True)
         try:http.serve_forever()

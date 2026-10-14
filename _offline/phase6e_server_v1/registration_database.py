@@ -3,7 +3,7 @@ import concurrent.futures,collections,json,uuid
 from store import domain,digest,SCHEMA,Denied
 from registration_store import RegistrationStore
 
-def run(ctx):
+def run(ctx,inspect=None):
     admin,claims,tokens=ctx['admin'],ctx['claims'],ctx['tokens'];events=[];checks=[]
     def ok(name,value):
         if not value:raise AssertionError(name)
@@ -55,7 +55,9 @@ def run(ctx):
     bind();old=admin.execute('select expires_at from '+SCHEMA+'.workspaces where id=%s',[workspace]).fetchone()['expires_at']
     admin.execute("update "+SCHEMA+".workspaces set expires_at=clock_timestamp()-interval '1 second' where id=%s",[workspace])
     deny('real_clock_expiry',read);admin.execute('update '+SCHEMA+'.workspaces set expires_at=%s where id=%s',[old,workspace])
-    act(action='revoke');deny('consent_stops',act);ok('revocation_keeps_history',len(read()['state']['registrations'])==2)
+    if inspect:inspect(store,workspace)
+    length=len(read()['state']['registrations'])
+    act(action='revoke');deny('consent_stops',act);ok('revocation_keeps_history',len(read()['state']['registrations'])==length)
     bind();cleanup=str(uuid.uuid4());admin.execute("select set_config('fmz6e.request_id',%s,false)",[cleanup]);counts={}
     with admin.transaction():
         for table in ('requests','revisions','workspaces'):
