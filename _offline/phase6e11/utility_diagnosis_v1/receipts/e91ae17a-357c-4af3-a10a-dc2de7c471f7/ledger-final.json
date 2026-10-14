@@ -1,0 +1,260 @@
+{
+  "commands": [
+    {
+      "confirmed": true,
+      "duration_ms": 78,
+      "elapsed_ms": 11266,
+      "kind": "TransactionStmt",
+      "number": 1,
+      "phase": "begin",
+      "sent": true,
+      "sql_sha256": "39a735c5dae2019f7ec2a41de9b4b8f37d979b14d999d9abd06b7f5d1bb9c95a",
+      "transaction": null
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 31,
+      "elapsed_ms": 11344,
+      "kind": "SelectStmt",
+      "number": 2,
+      "phase": "guard",
+      "sent": true,
+      "sql_sha256": "810cd66d8d73d499bc7d3996e01570ee70418a29d9176388b8d3c57b60347c55",
+      "transaction": null
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 31,
+      "elapsed_ms": 11407,
+      "kind": "SelectStmt",
+      "number": 3,
+      "phase": "canonical",
+      "sent": true,
+      "sql_sha256": "7d10b9ef765a9886d89e423ac8a6def20e8589493a8958af253431c52c1d2183",
+      "transaction": 1269659
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 47,
+      "elapsed_ms": 11453,
+      "kind": "SelectStmt",
+      "number": 4,
+      "phase": "settings",
+      "sent": true,
+      "sql_sha256": "b228f4e745f10f2b79f5ab9278654652e10547bae9534728ce358c940a89cdb2",
+      "transaction": 1269659
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 62,
+      "elapsed_ms": 11516,
+      "kind": "ExplainStmt",
+      "number": 5,
+      "phase": "reader_bind",
+      "sent": true,
+      "sql_sha256": "0216fdc5f79878fc4ea70b0b724f14472b8f4f028c6e6dcfe9c0c1b6137cc6d5",
+      "transaction": 1269659
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 204,
+      "elapsed_ms": 11578,
+      "kind": "SelectStmt",
+      "number": 6,
+      "phase": "sample_observer_before",
+      "sent": true,
+      "sql_sha256": "345817700e6ab22ac07149573a908f3971c6a631c32b1b5df4ff167233bdb824",
+      "transaction": 1269659
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 94,
+      "elapsed_ms": 11844,
+      "kind": "SelectStmt",
+      "number": 7,
+      "phase": "sample_observer_after",
+      "sent": true,
+      "sql_sha256": "345817700e6ab22ac07149573a908f3971c6a631c32b1b5df4ff167233bdb824",
+      "transaction": 1269659
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 31,
+      "elapsed_ms": 12063,
+      "kind": "DeclareCursorStmt",
+      "number": 8,
+      "phase": "synthetic_declare",
+      "sent": true,
+      "sql_sha256": "d177ef09bfe0a45c341c59029832bf3714fecad6a5bd83cfc0e029a6a5da06b5",
+      "transaction": 1269659
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 93,
+      "elapsed_ms": 12110,
+      "kind": "SelectStmt",
+      "number": 9,
+      "phase": "sample_synthetic_declare",
+      "sent": true,
+      "sql_sha256": "345817700e6ab22ac07149573a908f3971c6a631c32b1b5df4ff167233bdb824",
+      "transaction": 1269659
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 31,
+      "elapsed_ms": 12360,
+      "kind": "FetchStmt",
+      "number": 10,
+      "phase": "synthetic_fetch",
+      "sent": true,
+      "sql_sha256": "22976a4f02cca7c1c2c130939a8d37c5da9dfd74cb697c9668693b1a058aa210",
+      "transaction": 1269659
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 93,
+      "elapsed_ms": 12407,
+      "kind": "SelectStmt",
+      "number": 11,
+      "phase": "sample_synthetic_fetch",
+      "sent": true,
+      "sql_sha256": "345817700e6ab22ac07149573a908f3971c6a631c32b1b5df4ff167233bdb824",
+      "transaction": 1269659
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 31,
+      "elapsed_ms": 12688,
+      "kind": "ClosePortalStmt",
+      "number": 12,
+      "phase": "synthetic_close",
+      "sent": true,
+      "sql_sha256": "64fe90840cfd6e3b32a7dde3aafbcf3e81f5cfaeb39fff9e204dcf1616060b42",
+      "transaction": 1269659
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 109,
+      "elapsed_ms": 12719,
+      "kind": "SelectStmt",
+      "number": 13,
+      "phase": "sample_synthetic_close",
+      "sent": true,
+      "sql_sha256": "345817700e6ab22ac07149573a908f3971c6a631c32b1b5df4ff167233bdb824",
+      "transaction": 1269659
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 172,
+      "elapsed_ms": 12953,
+      "kind": "SelectStmt",
+      "number": 14,
+      "phase": "inventory",
+      "sent": true,
+      "sql_sha256": "6918384197bebf43afd6b0416425ee07f1ffb2b807f1dd7928925ad4c845540b",
+      "transaction": 1269659
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 109,
+      "elapsed_ms": 13141,
+      "kind": "SelectStmt",
+      "number": 15,
+      "phase": "sample_stream_before",
+      "sent": true,
+      "sql_sha256": "345817700e6ab22ac07149573a908f3971c6a631c32b1b5df4ff167233bdb824",
+      "transaction": 1269659
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 578,
+      "elapsed_ms": 13360,
+      "kind": "DeclareCursorStmt",
+      "number": 16,
+      "phase": "original_declare",
+      "sent": true,
+      "sql_sha256": "802bda472982299285302b388e82020478b9cce919dc7dd0926732833d43ddaa",
+      "transaction": 1269659
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 125,
+      "elapsed_ms": 13953,
+      "kind": "SelectStmt",
+      "number": 17,
+      "phase": "sample_original_declare",
+      "sent": true,
+      "sql_sha256": "345817700e6ab22ac07149573a908f3971c6a631c32b1b5df4ff167233bdb824",
+      "transaction": 1269659
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 31,
+      "elapsed_ms": 14235,
+      "kind": "ClosePortalStmt",
+      "number": 18,
+      "phase": "original_close",
+      "sent": true,
+      "sql_sha256": "1701f0c7aadb2ebb3b3e40ce6e6823010eeeb672426589e9bfc0fe80be50a9c7",
+      "transaction": 1269659
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 125,
+      "elapsed_ms": 14266,
+      "kind": "SelectStmt",
+      "number": 19,
+      "phase": "sample_original_close",
+      "sent": true,
+      "sql_sha256": "345817700e6ab22ac07149573a908f3971c6a631c32b1b5df4ff167233bdb824",
+      "transaction": 1269659
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 78,
+      "elapsed_ms": 14500,
+      "kind": "ExplainStmt",
+      "number": 20,
+      "phase": "reader_witness",
+      "sent": true,
+      "sql_sha256": "3a7a3d78d675bbe1ef751e37b6f7fb72f83cf12ca40264701e4cba35bde3d8fa",
+      "transaction": 1269659
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 31,
+      "elapsed_ms": 14594,
+      "kind": "SelectStmt",
+      "number": 21,
+      "phase": "final_guard",
+      "sent": true,
+      "sql_sha256": "810cd66d8d73d499bc7d3996e01570ee70418a29d9176388b8d3c57b60347c55",
+      "transaction": 1269659
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 31,
+      "elapsed_ms": 14641,
+      "kind": "TransactionStmt",
+      "number": 22,
+      "phase": "rollback",
+      "sent": true,
+      "sql_sha256": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710",
+      "transaction": 1269659
+    }
+  ],
+  "result": {
+    "application_writes": 0,
+    "auth_calls": 0,
+    "automatic_retries": 0,
+    "closure_errors": [],
+    "commands": 22,
+    "elapsed_ms": 14688,
+    "original_error": null,
+    "pairs": 5,
+    "real_hash_rows_fetched": 0,
+    "rollback_confirmed": true,
+    "run_id": "e91ae17a-357c-4af3-a10a-dc2de7c471f7",
+    "status": "READ_ONLY_DIAGNOSIS_COLLECTED_NOT_WORKFLOW_PASS"
+  }
+}

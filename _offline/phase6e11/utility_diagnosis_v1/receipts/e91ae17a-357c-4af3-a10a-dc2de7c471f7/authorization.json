@@ -1,0 +1,19 @@
+{
+  "head": "33f0be559429c2ece0ffb23a46ff45ef65826291",
+  "maximum_collectors": 1,
+  "maximum_seconds": 600,
+  "maximum_sql": 128,
+  "no_migration_auth_fixture_or_application_writes": true,
+  "ordinary_stop_seconds": 540,
+  "real_table_fetches": 0,
+  "retries": 0,
+  "run_id": "e91ae17a-357c-4af3-a10a-dc2de7c471f7",
+  "source_request": "1f3971da-1021-4208-835c-de31c29ac281",
+  "sources": {
+    "_offline/phase6e11/endchain_v1/integral_io.py": "fc9b75c8e342cb37eb831b1f04415d4a127d6988bc261c67591572a18354362f",
+    "_offline/phase6e11/endchain_v1/integral_stream.py": "9f344c281faf0254490164ffd1844b7428b38960d2bb3fbf8a7f66cb64c59b23",
+    "_offline/phase6e11/endchain_v1/native_runtime.py": "6e0b05650aeccd16196920c7b73b6be2b22840df5e8fcf776af8ed69bca52b6c",
+    "_offline/phase6e11/endchain_v1/sql_protocol.py": "e9fed4ad8268e051979fc38c19a63aab1ed9f1ce6f82e06183be577e157cfe74",
+    "_offline/phase6e11/utility_diagnosis_v1/probe.py": "1810d1010821ddd50a72466db861f1a9ceb32842108b48767fe645d8b86b9a56"
+  }
+}

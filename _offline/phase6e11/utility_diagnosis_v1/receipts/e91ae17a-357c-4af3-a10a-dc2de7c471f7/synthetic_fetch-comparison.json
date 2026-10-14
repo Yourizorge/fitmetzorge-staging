@@ -1,0 +1,26 @@
+{
+  "background_attribution": "UNRESOLVED",
+  "changed": [
+    {
+      "calls": 1,
+      "exec_ms": 41.781018999999986,
+      "queryid": "3173023848606027568",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal": 0
+    },
+    {
+      "calls": 1,
+      "exec_ms": 0.015195,
+      "queryid": "-5914087762512230787",
+      "temp_read": 0,
+      "temp_written": 0,
+      "wal": 0
+    }
+  ],
+  "old_rule_passes": true,
+  "phase": "synthetic_fetch",
+  "reader_queryid": "3173023848606027568",
+  "row_count": 3,
+  "synthetic_null_duplicates_preserved": true
+}
