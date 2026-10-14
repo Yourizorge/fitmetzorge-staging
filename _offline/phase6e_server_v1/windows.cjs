@@ -26,7 +26,8 @@ function compare(s,b){
  return {bundleHash:hash(b),basis:b.source,revision:b.revision,facts,physical_advice_authorized:false,automatic_actions_allowed:false,sourceTruth:'synthetic_source_validation_not_live_authenticity'};
 }
 function example(s){
- const end=Math.floor(s.clock/DAY)*DAY,b={synthetic_only:true,source:basis(s),subject:s.recovery.subject,goal:s.pair.training.fixture.intake.goal,planVersion:s.active.version,revision:1,issued:s.clock,expires:s.clock+DAY,end,policy:structuredClone(POLICY),rows:[],manifest:[]};
+ const revision=s.comparison?.revision||(s.comparisonHistory?.at(-1)?.revision||0)+1;
+ const end=Math.floor(s.clock/DAY)*DAY,b={synthetic_only:true,source:basis(s),subject:s.recovery.subject,goal:s.pair.training.fixture.intake.goal,planVersion:s.active.version,revision,issued:s.clock,expires:s.clock+DAY,end,policy:structuredClone(POLICY),rows:[],manifest:[]};
  const samples={sleep:[450,450,450,420,420,420],recovery:[8,8,8,6,6,6],nutrition:[2200,2200,2200,2100,2100,2100],training:[6,6,6,4,4,4]};
  for(const [metric,m] of Object.entries(METRICS))for(let d=0;d<6;d++)b.rows.push({id:'syn-window-'+metric+'-'+d,version:1,metric,day:end-(6-d)*DAY,value:samples[metric][d],unit:m.unit,method:m.method,coverage:'complete',quality:'confirmed',subject:b.subject,goal:b.goal,planVersion:b.planVersion});
  b.manifest=b.rows.map(r=>({id:r.id,version:r.version,sha:hash(r)}));return b;

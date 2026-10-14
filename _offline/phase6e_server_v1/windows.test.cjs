@@ -15,6 +15,8 @@ test('source correction invalidates comparison and approvals without removing hi
  let s=D.initial('B');s=apply(s,W.example(s));const old=structuredClone(s.comparisonHistory),r=s.recovery.rows.at(-1);
  s=D.transition(s,{action:'recovery',data:{id:r.id,version:r.version,value:6}},'member');
  a.equal(s.comparison,null);a.deepEqual(s.comparisonHistory,old);a.equal(s.review?.member,false);
+ s=apply(s,W.example(s));a.equal(s.comparison.revision,2);a.deepEqual(s.comparisonHistory[0],old[0]);
+ a.deepEqual(apply(s,W.example(s)),s);
 });
 test('health does not become clearance; withdrawn consent stops new comparisons',()=>{
  let s=D.initial('B');s=D.transition(s,{action:'health',data:{value:'current'}},'member');
