@@ -220,5 +220,52 @@ Before any release12 hosting: complete6E-11, its required physical review and
 the concrete selected-slice release decision. No bulk activation12-21.
 Medical/nutrition/language/privacy/legal reviews remain open where applicable.
 
+## Commits And Publication
+
+| Commit | Scope |
+| --- | --- |
+| 8c9d1c1e6926578ec92e9a93e5cef93c4be2f53d | Registration12, outbox, planning and windows |
+| a77f6f750f5932a584e7f8d968299a3246c61f9f | Independent minimal45 browser/dry-run proof |
+| 166b57bd6f42a5f51e22ed46215d20212c9bcdd6 | Comparison source-revision correction |
+| 7d130ee4bba24de84d3d813bf6f29c4baae38bf5 | Explicit application IO and clearer labels |
+| e94a3206f6a85974f31002f98733642e3b69a55e | Retained raw samples and changed-counter validation |
+| 4acbbeafb566d0c7e694839653d72d0951b853ed | Fail-closed CLI proof and disposable isolation |
+| 1f005f7313e8a3b434bdbe6bdc23eb903273733c | Existing Docker-only admin path; final CI source |
+| b3a3ec6f0f1af1a34b321f02ce5d3fb185ea34a4 | Immutable, sanitized read-only diagnosis |
+| ba12a607288b92d9ce701df7423ab4226705e43f | Current status, complete local receipts and explicit limits |
+
+Only offline candidate/evidence files and current documentation are committed.
+The original dirty AGENTS, request transport, app.js, index.html, BUILD_STATUS,
+PHASE6E11_PROPOSAL and old untracked histories remain preserved, not staged.
+The worktree is intentionally not clean; this is not an unreported runtime
+change or permission to overwrite old work.
+
+Before final publication:152 frozen assets matched and19 old private paths404.
+After source/evidence push ba12a60: all152 still match and all19 remain404.
+These checks make no Supabase calls.
+
+Publication closeout for source/evidence HEAD
+`ba12a607288b92d9ce701df7423ab4226705e43f`:
+
+- [Pages run38605038440](https://github.com/Yourizorge/fitmetzorge-staging/actions/runs/38605038440):success.
+- All281 tracked server candidate/source/receipt paths return404; all37 new
+  diagnosis paths return404. GitHub source availability is not Pages exposure.
+-152 published assets are byte-identical; no existing frontend/runtime release
+  was made. No Supabase migration, Edge deployment or owner window followed.
+- Before-asset receipt `assets-before-1791996009119.json`, SHA256
+  `212f8e6d5b235cec7769f1df104e7b45f049470db83f5685ecba8c32d5128fad`.
+- After-asset receipt `assets-after-1791998167030.json`, SHA256
+  `d8d8e9a4008625e4276e586eff8935b7a4a9a163f992d6178c904f6a50146fb3`.
+- Candidate-isolation receipt `local-candidate-pages-9feafbc12c9e4965bcf714aae3831bf7.json`,
+  SHA256 `3b6e59c73b435fda2d726fee3733a7f08ca371983cb2db560c3c5dc26faca2a8`.
+- Diagnosis-isolation receipt `diagnosis-pages-fb4e456b9bca4ffc9473f03106e4714f.json`,
+  SHA256 `cef549482e1063229bf73995826ebd278a31d1459913425d8cbdfd4aa453b3ea`.
+
+The before receipt is retained in the CI2b275c168a3b4af0b3a674c6106d39c4
+directory; the three after receipts in CI89235da60dcb495ab0094dc1641a6331,
+under ignored `supabase/.temp`. The documentation-only closeout commit does
+not change the tested source manifest or published runtime. Its definitive
+remote HEAD and Pages outcome are checked again in the chat closeout.
+
 External AI calls/cost:0 / EUR0.00. Real-member AI enabled:NO.
 Production touched:NO. JARVIS, APPFMZ and the separate website untouched.

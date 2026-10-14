@@ -52,7 +52,8 @@ It has not started. No automatic second attempt is permitted.
 - [x] Prove selected slice12 local transport/rights/live clock/register/release dossier.
 - [x] Prove integrated local/CI behavior and frozen preservation.
 - [ ] Admit hosted slice12 transport/lifecycle and its full run budget after11.
-- [ ] Finish final Pages isolation and publication checks (closing report).
+- [x] Verify Pages publication,152 unchanged assets,281 server-candidate paths404
+  and37 new diagnosis paths404; the19 older protected paths also remain404.
 
 No production, JARVIS, real-member processing, external AI calls/costs, owner
 acceptance or freeze is authorized by a technical test result.
