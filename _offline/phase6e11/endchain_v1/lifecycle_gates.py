@@ -1,5 +1,6 @@
 """Read-only lifecycle gates. Technical metadata only, no hosted transport."""
 import hashlib,json,os,re,subprocess,time
+from migration_boundary import TARGET,CONSTRAINTS
 
 CATALOG="""select jsonb_build_object(
  'functions',(select coalesce(jsonb_object_agg(p.oid::text,jsonb_build_object(
@@ -18,7 +19,8 @@ CATALOG="""select jsonb_build_object(
    where (n.nspname in('public','auth') or n.nspname like 'fmz6e11%') and f.nspname<>all($1::text[])),
  'policies',(select coalesce(jsonb_object_agg(p.oid::text,to_jsonb(p)),'{}') from pg_policy p
    join pg_class c on c.oid=p.polrelid join pg_namespace n on n.oid=c.relnamespace
-   where (n.nspname in('public','auth') or n.nspname like 'fmz6e11%') and n.nspname<>all($1::text[]))) value"""
+   where (n.nspname in('public','auth') or n.nspname like 'fmz6e11%') and n.nspname<>all($1::text[])),
+ 'constraints',"""+CONSTRAINTS+", 'm44',"+TARGET+") value"
 
 MIGRATIONS="""select version,name,encode(sha256(convert_to(array_to_string(statements,E'\\n'),'UTF8')),'hex') sql_sha
  from supabase_migrations.schema_migrations order by version"""
@@ -53,8 +55,9 @@ def check_absence(value):
     if set(value)!=set(('temporary_schemas','sessions','refresh_tokens','windows','workspaces','participants')) or any(type(v) is not int or v!=0 for v in value.values()):
         raise ValueError('lifecycle_cleanup_incomplete')
 
-def check_migrations(rows,expected):
-    if len(rows)!=44 or rows[-1]['version']!='20261012185121' or any(not re.fullmatch('[a-f0-9]{64}',r['sql_sha']) for r in rows):
+def check_migrations(rows,expected,pending=False):
+    count,last=(43,'20261012104331') if pending else (44,'20261012185121')
+    if len(rows)!=count or rows[-1]['version']!=last or any(not re.fullmatch('[a-f0-9]{64}',r['sql_sha']) for r in rows):
         raise ValueError('lifecycle_migration_identity')
     if expected is not None and rows!=expected:raise ValueError('lifecycle_migration_drift')
 
@@ -88,4 +91,6 @@ def ci_preflight(gate):
     finally:
         if opened:query('ROLLBACK')
         connection.close()
-        gate.save('integral-preflight.json',{'commands':trace,'migrations':migrations,'hosted_calls':0})
+        value={'commands':trace,'migrations':migrations,'hosted_calls':0}
+        gate.save(getattr(gate,'cli_namespace','')+'integral-preflight.json',value)
+    return value

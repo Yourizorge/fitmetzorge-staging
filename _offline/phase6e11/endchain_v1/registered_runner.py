@@ -18,7 +18,8 @@ def execute(gate,composition,lifecycle,config):
                 raise RuntimeError('registered_worker_budget')
             request=json.loads(line);op=request['op']
             if op=='complete':
-                result=request['result'];composition.confirm_closure(gate,result);break
+                candidate=request['result'];composition.confirm_closure(gate,candidate)
+                result=candidate;break
             if op=='failed':raise RuntimeError('registered_worker_failed')
             if op=='before':composition.action={'kind':'auth','role':request['role'],'operation':request['operation']}
             if op in ('install','remove','workflow'):composition.action={'kind':'lifecycle','operation':op}

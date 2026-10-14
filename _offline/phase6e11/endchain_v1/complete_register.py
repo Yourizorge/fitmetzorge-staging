@@ -95,6 +95,7 @@ def classify(command,scenario):
     p=command['phase'];a=command.get('action') or {}
     if p in BOOTSTRAP:return 'ci_bootstrap'
     if p=='final_closure':return 'closure'
+    if p.startswith('gates_after_migration'):return 'migration'
     if p.startswith('stream_before_cleanup'):return 'measurements'
     if p.startswith(('stream_after_cleanup','gates_after_cleanup')):return 'final'
     if p.startswith(('stream_before','gates_before')):return 'baseline'
@@ -140,6 +141,9 @@ def build(folder):
     for label in ('before','after_cleanup'):
         gate=read('integral-gates-'+label+'.json')
         if gate['unchanged'] is not True or any(gate['absence'].values()):raise ValueError('register_lifecycle_missing')
+    migration_pair=read('integral-migration-pair.json')
+    if not all(migration_pair.get(k) is True for k in ('complete','controller_rows_unchanged','only_expected_ddl','protected_stream_baseline_preserved')):
+        raise ValueError('register_migration_pair_missing')
     for label in ('seed','activate','delete_window'):
         pair=read('lifecycle-'+label+'-pair.json')
         if pair['pair_complete'] is not True or pair['protected_equal'] is not True:raise ValueError('register_fixture_pair')
@@ -189,11 +193,10 @@ def build(folder):
         value=read('integral-stream-'+label+'.json')
         if not value['protected_equal'] or value['frames'][-1]['rows']!=0 or any(x['own_temp_written'] for x in value['profiles']):
             raise ValueError('register_stream_incomplete')
-        # 6 startup + 2 DECLARE + 17*(FETCH+numeric IO) + 2 CLOSE +
-        # closing witness + snapshot guard + ROLLBACK = 47 commands.
-        if value['protocol_commands']!=13+2*len(value['frames']) or len(value['frames'])>17:
+        # Tightened to 65536 rows: nine bounded pages including empty terminal.
+        if value['protocol_commands']!=13+2*len(value['frames']) or len(value['frames'])>9:
             raise ValueError('register_stream_shape')
-        extra=47-value['protocol_commands'];streams.append({'label':label,'actual':value['protocol_commands'],'capacity':47,'extra':extra})
+        extra=31-value['protocol_commands'];streams.append({'label':label,'actual':value['protocol_commands'],'capacity':31,'extra':extra})
         # Place the optional page slots before that stream's final rollback.
         at=next(i for i,r in enumerate(rows) if r['action']=='stream_'+label+'_rollback')
         old=rows[:];rows=[]
@@ -227,6 +230,10 @@ def build(folder):
     closing=[r for r in rows if r['phase']=='closure']
     if len(closing)!=1:raise ValueError('register_closure_missing')
     rows=[r for r in rows if r['phase']!='closure']+closing
+    migration=[r for r in rows if r['action']=='candidate_44_migration_aware_cli']
+    rows=[r for r in rows if r['action']!='candidate_44_migration_aware_cli']
+    at=next(i for i,r in enumerate(rows) if r['action']=='gates_after_migration_begin')
+    rows=rows[:at]+migration+rows[at:]
     # Managed SQL rows are charged before their HTTP action by the executor.
     # The conservative prefix model reserves them even if the next action fails.
     for i,row in enumerate(rows):row['id']='cmd_'+str(i+1).zfill(5)

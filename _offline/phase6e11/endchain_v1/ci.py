@@ -21,7 +21,8 @@ NAMES=['budget.mjs','budget.test.mjs','database_checks.py','ci.py','scoped_cycle
  'closure.py','test_closure.py','execution_context.mjs','execution_context.test.mjs',
  'native_runtime.py','test_native_runtime.py','runtime_budget.py','test_runtime_budget.py','auth_evidence.py','test_auth_evidence.py',
  'registered_lifecycle.py','test_registered_lifecycle.py','metered_composition.py','test_metered_composition.py',
- 'registered_runner.py','test_registered_runner.py','cli_stat_reader.py','test_cli_stat_reader.py']
+ 'registered_runner.py','test_registered_runner.py','cli_stat_reader.py','test_cli_stat_reader.py',
+ 'migration_boundary.py','test_migration_boundary.py']
 EXTRA={'_offline/phase6e11/endchain_v1/'+n for n in NAMES}
 EXTRA|={'_offline/phase6e11/request_v4/'+n for n in ['transport.mjs','connection_options.mjs','config_shape.mjs']}
 EXTRA|={'_offline/phase6e11/resume_v1/read_only.mjs','_offline/phase6e11/transport_v1/contract.mjs',
@@ -30,6 +31,7 @@ EXTRA|=set(SOURCES)
 EXTRA|={'_offline/phase6e11/cursor_v1/transfer.py'}
 prior.EXTRA|=EXTRA;prior.old.EXTRA|=EXTRA
 class Gate(prior.Gate):
+    cli_namespace='clean44-'
     controller_node_count=198
     migration_count=44
     migration_last=M44
@@ -81,8 +83,6 @@ class Gate(prior.Gate):
         sys.path.insert(0,str(self.sources/'supabase/.temp/phase6e11-pg17-parser'))
         from metered_composition import MeteredComposition
         self.auth_composition=MeteredComposition()
-        self.auth_composition.admit_ci_prefix(json.loads((self.out/'integral-preflight.json').read_text()),
-            json.loads((self.out/'cli-protocol-0.json').read_text()))
         # Bind the real GoTrue and observer tests to the candidate renderer,
         # while preserving the original audit module on disk.
         sys.path.insert(0,str(self.sources/'_offline/phase6e11/auth_metadata_v1'))
@@ -111,6 +111,18 @@ class Gate(prior.Gate):
         self.result['hosted_admitted']=False
         self.result['full_chain_admission']=False
         self.result['scope']='CI component checks only; complete bound orchestration remains a separate gate.'
+    def prepare_registered_database(self):
+        import os
+        if os.environ.get('GITHUB_REPOSITORY')!='Yourizorge/fitmetzorge-staging':raise RuntimeError('ci_reset_only')
+        # A second disposable build begins at the actual hosted prerequisite.
+        # Initial clean44 receipts retain their own immutable namespace.
+        super().cli('db','reset','--local','--version','20261012104331','--no-seed',timeout=180)
+        self.cli_namespace='';self.cli_protocol=[]
+        self.save('registered-database-bootstrap.json',{'disposable_only':True,'version':'20261012104331','hosted_calls':0})
+    def apply_endchain_migration(self):
+        import cli_meter
+        cli_meter.run(self,('db','push','--local','--skip-vault','--yes'),45)
+        return self.cli_protocol[-1]
     def advisors(self):
         super().advisors()
         self.result['cli_protocol_complete']=bool(getattr(self,'cli_protocol',[])) and all(x['complete'] for x in self.cli_protocol)

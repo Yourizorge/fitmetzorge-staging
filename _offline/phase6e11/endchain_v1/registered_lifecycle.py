@@ -36,7 +36,15 @@ class RegisteredLifecycle:
             if self.installed or request.get('ids')!=self.ids:raise ValueError('registered_install_binding')
             self.installed=True
             c.fixture_context['temporary_schemas']=[self.guard.scope(self.run_id,self.ids),self.audit.scope(self.run_id,self.ids)]
-            c.preservation(self.gate,self.ids,'before')
+            if hasattr(self.gate,'apply_endchain_migration'):
+                from lifecycle_gates import ci_preflight
+                if c.native_runtime(self.gate).environment!='disposable_ci':raise ValueError('hosted_boundary_not_admitted')
+                c.admit_preflight(ci_preflight(self.gate))
+                c.fixture_context['migration_boundary']=True
+                c.preservation(self.gate,self.ids,'before')
+                c.apply_migration(self.gate)
+                c.preservation(self.gate,self.ids,'after_migration')
+            else:c.preservation(self.gate,self.ids,'before')
             c.current_phase='guard_install'
             self.install_attempted['guard']=True
             self.sql(self.guard.install(self.run_id,self.ids,180))

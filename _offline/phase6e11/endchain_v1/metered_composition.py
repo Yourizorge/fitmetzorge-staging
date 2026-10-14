@@ -8,12 +8,12 @@ from complete_register import classify,scenario_source,AUTH_CALLS
 from runtime_budget import RuntimeBudget
 from closure import RUN_ID,PURPOSE,BOOTSTRAP
 
-LIMITS=dict(preflight=4,migration=14,baseline=67,setup=33,guard=13,auth=318,controller=286,
-    route_a=191,route_b=286,restore=54,measurements=142,io=97,cleanup=633,final=69,closure=1)
+LIMITS=dict(preflight=4,migration=34,baseline=51,setup=33,guard=13,auth=318,controller=286,
+    route_a=191,route_b=286,restore=54,measurements=126,io=97,cleanup=633,final=53,closure=1)
 
 def capacity():
     return dict(complete_register=True,approved_limit=2226,fits=True,run_id=RUN_ID,purpose=PURPOSE,
-        phase_budgets=LIMITS,normal_capacity=2208,worst_including_safety=2226)
+        phase_budgets=LIMITS,normal_capacity=2180,worst_including_safety=2198)
 
 class MeteredComposition(Composition):
     def __init__(self,*args,**kwargs):
@@ -30,6 +30,19 @@ class MeteredComposition(Composition):
         for phase,n in [('preflight',4),('migration',14)]:
             ticket=self.meter.charge(phase,n,action='verified_disposable_ci_prefix',kind='cli_bound')
             self.meter.confirm(ticket)
+
+    def admit_preflight(self,preflight):
+        if len(preflight['commands'])!=4 or not all(x['confirmed'] for x in preflight['commands']):
+            raise ValueError('meter_preflight_missing')
+        ticket=self.meter.charge('preflight',4,action='verified_preflight',kind='cli_bound')
+        self.meter.confirm(ticket)
+
+    def apply_migration(self,gate):
+        ticket=self.meter.charge('migration',14,action='candidate_44_migration_aware_cli',kind='cli_bound',mutation=True)
+        receipt=gate.apply_endchain_migration()
+        if receipt.get('protocol_commands')!=14 or receipt.get('complete') is not True or receipt.get('numeric_protocol_coverage') is not True:
+            self.abort('migration_protocol_incomplete');raise ValueError('migration_protocol_incomplete')
+        self.meter.confirm(ticket,actual=14)
 
     def abort(self,reason):
         self.meter.stop(reason)

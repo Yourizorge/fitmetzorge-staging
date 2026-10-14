@@ -32,7 +32,7 @@ class Tests(unittest.TestCase):
         c.admit_ci_prefix({'commands':[{'confirmed':True}]*4},{'protocol_commands':14,'complete':True})
         self.assertEqual(c.meter.used,18)
     def test_final_receipt_cannot_exceed_registered_limit(self):
-        self.assertEqual(sum(capacity()['phase_budgets'].values()),2208)
-        self.assertEqual(capacity()['worst_including_safety'],2226)
+        self.assertEqual(sum(capacity()['phase_budgets'].values()),2180)
+        self.assertEqual(capacity()['worst_including_safety'],2198)
 
 if __name__=='__main__':unittest.main()

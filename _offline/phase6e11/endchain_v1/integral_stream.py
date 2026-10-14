@@ -6,7 +6,7 @@ replace or authorize the separately proven hosted native streaming adapter.
 import hashlib,json,pathlib,re
 from integral_io import SNAPSHOT,check_plan,delta
 
-ROWS=131072
+ROWS=65536
 PAGE=8192
 ALL_STATS=SNAPSHOT.replace("and queryid::text in(select jsonb_array_elements_text($1::jsonb))",'')
 INVENTORY="""select n.nspname schema,c.relname name,array_agg(a.attname order by a.attnum) columns
@@ -38,6 +38,8 @@ def predicates(row,ids,c):
     owned_runs=f"select run_id from fmz6e11_request_private.receipts where window_id={w}"
     new_runs=f"({owned_runs} union select unnest(array[{life}]::uuid[]))"
     if s=='cron' and t=='job_run_details':return 'false'
+    if s=='supabase_migrations' and t=='schema_migrations' and c.get('migration_boundary'):
+        return "version<>'20261012185121'"
     if s=='fmz_ci_auth_observer':return 'false'
     if s=='auth':
         if t=='users':return 'id not in('+users+')'

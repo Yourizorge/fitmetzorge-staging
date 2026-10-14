@@ -18,11 +18,7 @@ def run(gate):
         prefix='fault-'+fault+'-'
         gate.save=lambda name,value,prefix=prefix:original_save(prefix+name,value)
         composition=MeteredComposition(fault)
-        composition.admit_ci_prefix(json.loads((gate.out/'integral-preflight.json').read_text()),
-            json.loads((gate.out/'cli-protocol-0.json').read_text()))
         try:
-            gate.cli('db','reset','--local','--no-seed',timeout=180)
-            configure_local_tls(gate)
             audit.arm=auth_arm.render
             try:real.run(gate,composition)
             except RuntimeError as error:

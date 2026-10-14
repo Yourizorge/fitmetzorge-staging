@@ -15,6 +15,7 @@ ROLES=guard.ROLES
 def run(gate, composition=None):
     if os.environ.get('GITHUB_REPOSITORY')!='Yourizorge/fitmetzorge-staging' or os.environ.get('GITHUB_REF')!='refs/heads/main':
         raise RuntimeError('ci_only')
+    if hasattr(gate,'prepare_registered_database'):gate.prepare_registered_database()
     phase='initialization';command_evidence=[];contracts={};scoped_auth_evidence=None;registered=None;native_lock=None
     def private(args,**kwargs):
         p=subprocess.run(args,capture_output=True,text=True,timeout=kwargs.pop('timeout',30),**kwargs)

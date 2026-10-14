@@ -34,6 +34,7 @@ def parse(raw,prefix=PREFIX,applications=(TAG,)):
 
 def run(gate,args,timeout):
     if os.environ.get('GITHUB_REPOSITORY')!='Yourizorge/fitmetzorge-staging':raise RuntimeError('ci_only')
+    def save(name,value):gate.save(getattr(gate,'cli_namespace','')+name,value)
     admin=['docker','exec','-i',gate.container,'psql','-X','-U','supabase_admin','-d','postgres','-qAt','-v','ON_ERROR_STOP=1']
     # A unique server prefix delimits each invocation, including file logs.
     # The pinned CLI sets @effect/sql-pg itself; it ignores PGAPPNAME.
@@ -49,7 +50,7 @@ def run(gate,args,timeout):
     import json,posixpath
     if meta.returncode:raise RuntimeError('ci_log_metadata')
     location=json.loads(meta.stdout)
-    gate.save('cli-log-location-'+str(len(getattr(gate,'cli_protocol',[])))+'.json',location)
+    save('cli-log-location-'+str(len(getattr(gate,'cli_protocol',[])))+'.json',location)
     at=datetime.datetime.now(datetime.timezone.utc).isoformat()
     environment={k:v for k,v in os.environ.items() if k not in
         ('GH_READ_TOKEN','GITHUB_TOKEN','SUPABASE_ACCESS_TOKEN','SUPABASE_DB_PASSWORD')}
@@ -80,10 +81,10 @@ def run(gate,args,timeout):
         unexpected_applications=[a for a in apps if a not in (TAG,'@effect/sql-pg')])
     numeric_after=gate.rows(SQL)[0]['value']
     numeric=compare(numeric_before,numeric_after,len(commands))
-    gate.save('cli-numeric-coverage-'+str(len(getattr(gate,'cli_protocol',[])))+'.json',numeric)
+    save('cli-numeric-coverage-'+str(len(getattr(gate,'cli_protocol',[])))+'.json',numeric)
     result['numeric_protocol_coverage']=numeric['all_protocol_visible']
     if result['unexpected_applications']:result.update(complete=False,error='ci_cli_unattributed_connection')
-    gate.save('cli-protocol-'+str(len(getattr(gate,'cli_protocol',[])))+'.json',result)
+    save('cli-protocol-'+str(len(getattr(gate,'cli_protocol',[])))+'.json',result)
     if not hasattr(gate,'cli_protocol'):gate.cli_protocol=[]
     gate.cli_protocol.append(result)
     if process.returncode:raise RuntimeError('ci_metered_cli_failed')

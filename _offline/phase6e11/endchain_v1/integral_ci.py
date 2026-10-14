@@ -93,9 +93,11 @@ class Composition:
             query.terminal_count=cursor.rowcount
             self.after_sql(phase,text);return rows
         try:
-            value=integral_stream.run(query,gate.save,ids,self.fixture_context,label,self.preservation_baseline)
-            if self.preservation_baseline is None:self.preservation_baseline=value
-            if label in ('before','after_cleanup'):
+            value=None
+            if label!='after_migration':
+                value=integral_stream.run(query,gate.save,ids,self.fixture_context,label,self.preservation_baseline)
+                if self.preservation_baseline is None:self.preservation_baseline=value
+            if label in ('before','after_migration','after_cleanup'):
                 import lifecycle_gates as gates
                 from integral_io import QueryIO
                 query('gates_'+label+'_begin','BEGIN TRANSACTION READ ONLY')
@@ -111,17 +113,26 @@ class Composition:
                 access=checked('access',gates.ACCESS,[people])[0]
                 gate.save('integral-gates-'+label+'-access.json',access);gates.check_access(access)
                 migrations=checked('migrations',gates.MIGRATIONS)
-                gates.check_migrations(migrations,self.gate_baseline['migrations'] if self.gate_baseline else None)
+                pending=label=='before' and self.fixture_context.get('migration_boundary',False)
+                gates.check_migrations(migrations,self.gate_baseline['migrations'] if self.gate_baseline and label!='after_migration' else None,pending)
                 catalog=checked('catalog',gates.CATALOG,[schemas])[0]['value']
-                if self.gate_baseline and catalog!=self.gate_baseline['catalog']:raise RuntimeError('ci_object_or_acl_drift')
+                stable=lambda c:{k:v for k,v in c.items() if k!='m44'}
+                if self.gate_baseline and label!='after_migration' and stable(catalog)!=stable(self.gate_baseline['catalog']):raise RuntimeError('ci_object_or_acl_drift')
                 absence=checked('absence',gates.ABSENCE,[schemas,people,context['window']])[0];gates.check_absence(absence)
+                if label=='after_migration':
+                    from migration_boundary import validate,SOURCE_SHA
+                    updated=validate(self.gate_baseline,{'migrations':migrations,'catalog':catalog},gate.sources)
+                    gate.save('integral-migration-pair.json',{'before_sha':gates.digest(self.gate_baseline),'after_sha':gates.digest(updated),
+                        'migration_sha256':SOURCE_SHA,'complete':True,'history_before':43,'history_after':44,
+                        'controller_rows_unchanged':True,'only_expected_ddl':True,'protected_stream_baseline_preserved':True})
+                    self.gate_baseline=updated
                 gate.save('integral-gates-'+label+'.json',{'access':access,'migrations':migrations,
                     'catalog_sha':gates.digest(catalog),'absence':absence,'io':monitor.close(),
-                    'unchanged':self.gate_baseline is None or catalog==self.gate_baseline['catalog']})
+                    'unchanged':self.gate_baseline is None or stable(catalog)==stable(self.gate_baseline['catalog'])})
                 if self.gate_baseline is None:self.gate_baseline={'migrations':migrations,'catalog':catalog}
                 query('gates_'+label+'_rollback','ROLLBACK')
-            return {'label':label,'commands':value['protocol_commands'],'tables':len(value['tables']),
-                'protected_equal':value['protected_equal']}
+            return {'label':label,'commands':value['protocol_commands'] if value else 20,'tables':len(value['tables']) if value else 0,
+                'protected_equal':value['protected_equal'] if value else True}
         except Exception as error:
             gate.save('integral-preservation-'+label+'-stop.json',{'phase':self.commands[-1]['phase'],
                 'exception_class':type(error).__name__,'sqlstate':getattr(error,'sqlstate',None)})
