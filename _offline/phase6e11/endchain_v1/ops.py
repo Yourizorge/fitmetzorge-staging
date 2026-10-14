@@ -2,6 +2,7 @@
 import base64,hashlib,importlib.util,json,os,pathlib,re,sys,uuid
 HERE=pathlib.Path(__file__).resolve().parent
 import ci
+from source_scan import check as check_source
 spec=importlib.util.spec_from_file_location('endchain_github',HERE.parent/'ci41/ops.py')
 g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
 ROOT=g.ROOT
@@ -17,7 +18,7 @@ def main():
         files={}
         for name in sorted(paths):
             raw=disk(ROOT/name).read_bytes()
-            if re.search(rb'(sbp_|sb_secret_|gh[pousr]_)[A-Za-z0-9_-]{16,}',raw):raise RuntimeError('secret_pattern')
+            check_source(name,raw)
             files[name]=base64.b64encode(raw).decode()
         digest=g.write(disk(folder/'candidate.json'),{'format':1,'files':files})
         g.write(disk(folder/'before.json'),{'head':g.git('rev-parse','HEAD'),'branch':'main','hosted_calls':0})

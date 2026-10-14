@@ -22,7 +22,7 @@ NAMES=['budget.mjs','budget.test.mjs','database_checks.py','ci.py','scoped_cycle
  'native_runtime.py','test_native_runtime.py','runtime_budget.py','test_runtime_budget.py','auth_evidence.py','test_auth_evidence.py',
  'registered_lifecycle.py','test_registered_lifecycle.py','metered_composition.py','test_metered_composition.py',
  'registered_runner.py','test_registered_runner.py','cli_stat_reader.py','test_cli_stat_reader.py',
- 'migration_boundary.py','test_migration_boundary.py','hosted_gate.py','test_hosted_gate.py']
+ 'migration_boundary.py','test_migration_boundary.py','hosted_gate.py','test_hosted_gate.py','source_scan.py','test_source_scan.py']
 EXTRA={'_offline/phase6e11/endchain_v1/'+n for n in NAMES}
 EXTRA|={'_offline/phase6e11/request_v4/'+n for n in ['transport.mjs','connection_options.mjs','config_shape.mjs']}
 EXTRA|={'_offline/phase6e11/resume_v1/read_only.mjs','_offline/phase6e11/transport_v1/contract.mjs',

@@ -16,7 +16,8 @@ def main():
         files={}
         for name in sorted(paths):
             raw=disk(ROOT/name).read_bytes()
-            if re.search(rb'(sbp_|sb_secret_|gh[pousr]_)[A-Za-z0-9_-]{16,}',raw):raise RuntimeError('secret_pattern')
+            from source_scan import check
+            check(name,raw)
             files[name]=base64.b64encode(raw).decode()
         digest=g.write(disk(folder/'candidate.json'),{'format':1,'files':files})
         g.write(disk(folder/'before.json'),{'head':g.git('rev-parse','HEAD'),'branch':'main','hosted_calls':0})
