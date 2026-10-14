@@ -15,23 +15,25 @@ def run(dsn,auth,tokens,claims,admin,auth_kind,inspect=None):
             if not isinstance(e,Denied) and getattr(e,'sqlstate',None) not in ('42501','23505'):raise
             results.append(name);return
         raise AssertionError(name)
-    fixture=str(uuid.uuid4());workspaces={r:str(uuid.uuid4()) for r in ('A','B','control')}
+    fixture=str(uuid.uuid4());workspaces={r:str(uuid.uuid4()) for r in ('A','B','control','uiA','uiB')}
     for value in claims.values():
         admin.execute('insert into '+SCHEMA+'.subjects values(%s,true,true,now()+interval \'20 minutes\')',[value['sub']])
     def bind(role):
         admin.execute("select set_config('fmz6e.verified_session',%s,false)",[claims[role]['session_id']])
         admin.execute("select set_config('request.jwt.claims',%s,false),set_config('fmz6e.request_id',%s,false)",
             [json.dumps(claims[role]),str(uuid.uuid4())])
-    for route,member,trainer,owner in [('A','a','trainer','owner'),('B','b',None,'owner'),('control','outsider',None,'outsider')]:
-        bind(member);state=domain('initial',route='A' if route=='A' else 'B');raw=json.dumps(state,separators=(',',':'))
+    fixtures=[('A','A','a','trainer','owner'),('B','B','b',None,'owner'),('control','B','outsider',None,'outsider')]
+    if inspect:fixtures += [('uiA','A','a','trainer','owner'),('uiB','B','b',None,'owner')]
+    for key,route,member,trainer,owner in fixtures:
+        bind(member);state=domain('initial',route=route);raw=json.dumps(state,separators=(',',':'))
         admin.execute('insert into '+SCHEMA+'.workspaces(id,fixture_run,member_id,trainer_id,owner_id,route,expires_at,state_text,state_sha) values(%s,%s,%s,%s,%s,%s,now()+interval \'15 minutes\',%s,%s)',
-            [workspaces[route],fixture if route!='control' else str(uuid.uuid4()),claims[member]['sub'],
-             claims[trainer]['sub'] if trainer else None,claims[owner]['sub'],'A' if route=='A' else 'B',raw,digest(raw)])
+            [workspaces[key],fixture if key!='control' else str(uuid.uuid4()),claims[member]['sub'],
+             claims[trainer]['sub'] if trainer else None,claims[owner]['sub'],route,raw,digest(raw)])
         admin.execute('insert into '+SCHEMA+'.revisions(workspace_id,version,state_text,state_sha) values(%s,0,%s,%s)',
-            [workspaces[route],raw,digest(raw)])
+            [workspaces[key],raw,digest(raw)])
     baseline=admin.execute('select state_sha from '+SCHEMA+'.workspaces where id=%s',[workspaces['control']]).fetchone()['state_sha']
     store=Store(dsn,auth,enabled=True)
-    if inspect:inspect(store,workspaces)
+    if inspect:inspect(store,{'A':workspaces['uiA'],'B':workspaces['uiB']})
     def read(route,role=None):return store.read(workspaces[route],tokens[role or route.lower()])
     def act(route,action,data=None,role=None,fault=None,key=None,version=None):
         role=role or route.lower();snapshot=read(route,role)
@@ -117,8 +119,8 @@ def run(dsn,auth,tokens,claims,admin,auth_kind,inspect=None):
             if getattr(e,'sqlstate',None)!='42501':raise
             results.append('private_denied_'+role)
         else:raise AssertionError('private_schema_exposed')
-    before_cleanup={w:admin.execute('select state_sha from '+SCHEMA+'.workspaces where id=%s',[w]).fetchone()['state_sha']
-                    for w in (workspaces['A'],workspaces['B'])}
+    owned=[workspaces[k] for k,_,_,_,_ in fixtures if k!='control']
+    before_cleanup={w:admin.execute('select state_sha from '+SCHEMA+'.workspaces where id=%s',[w]).fetchone()['state_sha'] for w in owned}
     bind('trainer');delete_request=str(uuid.uuid4())
     admin.execute("select set_config('fmz6e.request_id',%s,false)",[delete_request])
     counts={}
@@ -126,11 +128,11 @@ def run(dsn,auth,tokens,claims,admin,auth_kind,inspect=None):
         for table in ('requests','revisions','workspaces'):
             column='id' if table=='workspaces' else 'workspace_id'
             deleted=admin.execute('delete from '+SCHEMA+'.'+table+' where '+column+'=any(%s::uuid[]) returning '+column,
-                [[workspaces['A'],workspaces['B']]]).fetchall()
+                [owned]).fetchall()
             counts[SCHEMA+'.'+table]=len(deleted)
     observed=admin.execute('select table_name,count(*) n,count(distinct xid) tx from '+SCHEMA+".audit where request_id=%s and operation='DELETE' group by table_name",[delete_request]).fetchall()
     ok('delete_audit_exact',{x['table_name']:x['n'] for x in observed}==counts and all(x['tx']==1 for x in observed))
-    ok('own_workspaces_absent',admin.execute('select count(*) n from '+SCHEMA+'.workspaces where id=any(%s::uuid[])',[[workspaces['A'],workspaces['B']]]).fetchone()['n']==0)
+    ok('own_workspaces_absent',admin.execute('select count(*) n from '+SCHEMA+'.workspaces where id=any(%s::uuid[])',[owned]).fetchone()['n']==0)
     ok('control_preserved',admin.execute('select state_sha from '+SCHEMA+'.workspaces where id=%s',[workspaces['control']]).fetchone()['state_sha']==baseline)
     return {'status':'LOCAL_DATABASE_PASS','tests':len(results),'cases':results,'auth':auth_kind,
             'before_cleanup':before_cleanup,'deletes':counts,'protected_control_sha':baseline,
