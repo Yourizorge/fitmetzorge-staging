@@ -33,7 +33,7 @@ def run(dsn,auth,tokens,claims,admin,auth_kind,inspect=None):
         admin.execute('insert into '+SCHEMA+'.revisions(workspace_id,version,state_text,state_sha) values(%s,0,%s,%s)',
             [workspaces[key],raw,digest(raw)])
     baseline=admin.execute('select state_sha from '+SCHEMA+'.workspaces where id=%s',[workspaces['control']]).fetchone()['state_sha']
-    store=Store(dsn,auth,enabled=True,observer=protocol.append)
+    store=Store(dsn,auth,enabled=True,observer=protocol.append,full_day21=True)
     if inspect:inspect(store,{'A':workspaces['uiA'],'B':workspaces['uiB']})
     def read(route,role=None):return store.read(workspaces[route],tokens[role or route.lower()])
     def act(route,action,data=None,role=None,fault=None,key=None,version=None):
@@ -50,7 +50,7 @@ def run(dsn,auth,tokens,claims,admin,auth_kind,inspect=None):
             denied('A_member_cannot_approve',lambda:act(route,'approve'))
             act(route,'approve',role='trainer')
         else:denied('B_has_no_trainer_step',lambda:act(route,'approve'))
-        for fault in ('after_head','after_revision','after_receipt'):
+        for fault in ('after_head','after_revision','after_receipt','after_outbox'):
             snapshot=read(route)
             denied(route+'_'+fault,lambda:act(route,'apply',fault=fault))
             ok(route+'_rollback_'+fault,read(route)==snapshot)
@@ -65,7 +65,7 @@ def run(dsn,auth,tokens,claims,admin,auth_kind,inspect=None):
         if route=='A':act(route,'approve',role='trainer')
         act(route,'apply')
         ok(route+'_restore_new_version',read(route)['state']['active']['version']==4)
-        restarted=Store(dsn,auth,enabled=True,observer=protocol.append)
+        restarted=Store(dsn,auth,enabled=True,observer=protocol.append,full_day21=True)
         ok(route+'_new_connection_persistence',restarted.read(workspaces[route],tokens[route.lower()])==read(route))
     denied('cross_member',lambda:read('A','b'))
     denied('trainer_cannot_read_B',lambda:read('B','trainer'))
@@ -73,6 +73,23 @@ def run(dsn,auth,tokens,claims,admin,auth_kind,inspect=None):
     ok('owner_read',read('A','owner')['role']=='owner')
     ok('trainer_minimal_view',not ({'recovery','pair','records','health','initialSource'} & set(read('A','trainer')['state'])))
     denied('owner_cannot_approve',lambda:act('A','approve',role='owner'))
+    default=Store(dsn,auth,enabled=True,observer=protocol.append)
+    denied('21_default_off',lambda:default.execute(workspaces['B'],tokens['b'],str(uuid.uuid4()),read('B')['version'],{'action':'record','data':{}}))
+    bundle=read('B')['state']['comparisonExample'];act('B','compare_window',{'bundle':bundle})
+    ok('comparison_persisted',len(read('B')['state']['comparison']['facts'])==4)
+    before=read('B');act('B','compare_window',{'bundle':bundle})
+    ok('comparison_deduplicated',read('B')==before)
+    bad=json.loads(json.dumps(bundle));bad['rows'].pop()
+    denied('incomplete_comparison',lambda:act('B','compare_window',{'bundle':bad}))
+    ok('planning_explicit_source',read('B')['planning']['occurrence']['zone']=='UTC' and not read('B')['planning']['background_delivery'])
+    out=read('A')['notices'];ok('outbox_durable_history',bool(out) and any(e['status']=='applied' for e in out))
+    ok('trainer_no_notice_details',read('A','trainer')['notices']==[])
+    act('A','edit',{'domain':'time','value':'20:00'})
+    pending=next(e for e in read('A')['notices'] if e['status']=='pending')
+    act('A','notice_seen',{'id':pending['id']})
+    ok('outbox_seen',next(e for e in read('A')['notices'] if e['id']==pending['id'])['status']=='seen')
+    act('A','reject')
+    ok('outbox_declined',next(e for e in read('A')['notices'] if e['id']==pending['id'])['status']=='declined')
     for table,key,column,value in [('subjects','user_id','enabled',False),
                                    ('subjects','user_id','expires_at','2000-01-01'),
                                    ('workspaces','id','expires_at','2000-01-01')]:
@@ -126,7 +143,7 @@ def run(dsn,auth,tokens,claims,admin,auth_kind,inspect=None):
     admin.execute("select set_config('fmz6e.request_id',%s,false)",[delete_request])
     counts={}
     with admin.transaction():
-        for table in ('requests','revisions','workspaces'):
+        for table in ('outbox','requests','revisions','workspaces'):
             column='id' if table=='workspaces' else 'workspace_id'
             deleted=admin.execute('delete from '+SCHEMA+'.'+table+' where '+column+'=any(%s::uuid[]) returning '+column,
                 [owned]).fetchall()

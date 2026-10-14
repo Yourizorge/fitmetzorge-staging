@@ -5,6 +5,7 @@ const T=require('../../training-rules-demo/model.js');
 const N=require('../../nutrition-rules-demo/model.js');
 const P=require('../../combined-plan-demo/model.js');
 const R=require('../../recovery-checkin-demo/model.js');
+const W=require('./windows.cjs');
 const clone=structuredClone;
 const fail=code=>{throw new Error(code);};
 const exact=(x,keys)=>x&&typeof x==='object'&&!Array.isArray(x)&&
@@ -16,16 +17,17 @@ const hash=x=>crypto.createHash('sha256').update(canonical(x)).digest('hex');
 const equal=(a,b)=>hash(a)===hash(b);
 const physical=p=>({training:p.training,nutrition:p.nutrition});
 const allowed=new Set(['intake','build','record','finish_workout','finish_day','recovery',
- 'complete','edit','confirm','approve','apply','reject','block','restore','health','revoke']);
+ 'complete','edit','confirm','approve','apply','reject','block','restore','health','revoke','compare_window']);
 
 function initial(route){
  const source=C.base(route),s=C.create(source).view();
  return {...s,revision:0,initialSource:source,sourceHash:hash(source),
   intakeHistory:[clone(source.pair)],healthLatch:false,review:null,
-  consentExpires:null,server_candidate:true,synthetic_only:true};
+  consentExpires:null,comparison:null,comparisonHistory:[],server_candidate:true,synthetic_only:true};
 }
 function invalidate(s,external=true){
  s.sourceRevision++;s.review=null;s.proposal=null;s.member=false;s.trainer=false;
+ s.comparison=null;
  if(external)s.sourceGeneration++;
  for(const n of s.notices)if(n.status==='current')n.status='superseded';
  s.sourceHash=hash({pair:s.pair,recovery:s.recovery,records:s.records,health:s.healthLatch});
@@ -85,10 +87,19 @@ function transition(input,request,role){
   typeof request.data!=='object'||Array.isArray(request.data))fail('payload');
  const {action,data}=request,s=clone(input),trainer=['approve','block'].includes(action);
  if(role!==(trainer?'trainer':'member')||trainer&&s.route!=='A')fail('actor');
- if(!['intake','record','finish_workout','recovery','edit','restore','health'].includes(action)&&!exact(data,[]))fail('payload');
+ if(!['intake','record','finish_workout','recovery','edit','restore','health','compare_window'].includes(action)&&!exact(data,[]))fail('payload');
  access(s);
  if(s.revision>=250)fail('synthetic_capacity');
- if(action==='revoke'){s.consent=false;invalidate(s);s.status='blocked';s.reason='consent';}
+ if(action==='compare_window'){
+  if(!exact(data,['bundle']))fail('payload');
+  const compared=W.compare(s,data.bundle);
+  if(s.comparison?.bundleHash===compared.bundleHash)return clone(input);
+  if(s.comparisonHistory.length&&compared.revision<=s.comparisonHistory.at(-1).revision)fail('comparison_version');
+  invalidate(s);s.comparison=compared;s.comparisonHistory.push(clone(compared));
+  s.status='facts';s.reason='comparison';s.facts=compared.facts;
+  const id=hash({window:compared.bundleHash});
+  if(!s.notices.some(n=>n.id===id))s.notices.push({id,status:'current',kind:'record_review',sourceRevision:s.sourceRevision,text_key:'records_changed'});
+ }else if(action==='revoke'){s.consent=false;invalidate(s);s.status='blocked';s.reason='consent';}
  else if(action==='health'){
   if(!exact(data,['value'])||!['current','reported_resolved','none'].includes(data.value))fail('payload');
   s.healthLatch=s.healthLatch||data.value!=='none';s.health=s.healthLatch;
@@ -238,9 +249,9 @@ function transition(input,request,role){
  return s;
 }
 function view(s){
- return {...clone(s),foodSummary:C.foodSummary(s.records,s.active.nutrition),
+ return {...clone(s),comparisonExample:W.example(s),foodSummary:C.foodSummary(s.records,s.active.nutrition),
   reflections:[...new Set(s.records.filter(x=>x.kind==='training').map(x=>x.workout))].map(w=>C.workoutSummary(s.records,w)),
-  unresolvedComparisons:[{metric:'training',reason:'complete_comparable_multi_day_window_missing'},
+  unresolvedComparisons:s.comparison?[]:[{metric:'training',reason:'complete_comparable_multi_day_window_missing'},
                         {metric:'nutrition',reason:'complete_comparable_multi_day_window_missing'}],
   records:s.records.map(row=>({...clone(row),source:hash({planned:row.planned,planVersion:row.planVersion,unit:row.unit})}))};
 }

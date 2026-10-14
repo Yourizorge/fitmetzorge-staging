@@ -4,6 +4,8 @@ import psycopg
 from psycopg.rows import dict_row
 from psycopg.conninfo import conninfo_to_dict
 from protocol import transaction
+import outbox
+import planning
 
 HERE=pathlib.Path(__file__).resolve().parent
 SCHEMA='fmz6e_integration_private'
@@ -61,13 +63,13 @@ class LocalAuth:
 
 
 class Store:
-    def __init__(self,dsn,auth,enabled=False,observer=None):
+    def __init__(self,dsn,auth,enabled=False,observer=None,full_day21=False):
         if enabled is not True:raise Denied('feature_disabled')
         settings=conninfo_to_dict(dsn)
         if settings.get('host') not in ('127.0.0.1','localhost') or settings.get('sslmode')!='verify-full':
             raise Denied('local_database_boundary')
         if not pathlib.Path(settings.get('sslrootcert','')).is_file():raise Denied('local_ca_missing')
-        self.dsn=dsn;self.auth=auth;self.observer=observer
+        self.dsn=dsn;self.auth=auth;self.observer=observer;self.full_day21=full_day21 is True
     def connect(self):
         return psycopg.connect(self.dsn,autocommit=True,row_factory=dict_row,
             prepare_threshold=None,connect_timeout=5,
@@ -85,7 +87,7 @@ class Store:
         with transaction(self.connect,self.observer,'read') as db:
             db.execute('set transaction read only')
             self.bind(db,claims,str(uuid.uuid4()))
-            row=db.execute('select * from '+SCHEMA+'.workspaces where id=%s',[workspace]).fetchone()
+            row=db.execute('select *,clock_timestamp() server_now from '+SCHEMA+'.workspaces where id=%s',[workspace]).fetchone()
             if not row:raise Denied('workspace_denied')
             state=json.loads(row['state_text'])
             if digest(row['state_text'])!=row['state_sha']:raise Denied('state_integrity')
@@ -99,9 +101,15 @@ class Store:
                     'target':{'training':state['review']['target']['training'],
                               'cadence':state['review']['target']['cadence']}},
                 'status':state['status'],'reason':'review_available' if state['review'] else 'no_review'}
+            events=db.execute('select * from '+SCHEMA+'.outbox where workspace_id=%s order by created_at,event_key',[workspace]).fetchall() if role=='member' else []
             return {'workspace':workspace,'version':row['version'],'role':role,
-                    'state':visible,'durable':True,'hosted':False}
+                    'state':visible,'durable':True,'hosted':False,
+                    'capabilities':{'full_day21':self.full_day21},
+                    'notices':[outbox.visible(e,row['server_now']) for e in events],
+                    'planning':planning.from_state(state) if role=='member' else None}
     def execute(self,workspace,token,request_id,expected,request,fault=None):
+        if not self.full_day21 and isinstance(request,dict) and request.get('action') in ('record','finish_workout','finish_day'):
+            raise Denied('full_day21_disabled')
         identifier(workspace);identifier(request_id);claims=self.auth.verify(token)
         if type(expected) is not int or expected<0:raise Denied('expected_version')
         raw=json.dumps({'expected':expected,'request':request},sort_keys=True,separators=(',',':'))
@@ -109,7 +117,7 @@ class Store:
         payload_sha=digest(raw)
         with transaction(self.connect,self.observer,'execute') as db:
             self.bind(db,claims,request_id)
-            row=db.execute('select * from '+SCHEMA+'.workspaces where id=%s for update',[workspace]).fetchone()
+            row=db.execute('select *,clock_timestamp() server_now from '+SCHEMA+'.workspaces where id=%s for update',[workspace]).fetchone()
             if not row:raise Denied('workspace_denied')
             role='member' if str(row['member_id'])==claims['sub'] else 'trainer' if str(row['trainer_id'])==claims['sub'] else 'owner'
             if role=='owner':raise Denied('owner_read_only')
@@ -121,7 +129,11 @@ class Store:
             if row['version']!=expected:raise Denied('version_conflict')
             if digest(row['state_text'])!=row['state_sha']:raise Denied('state_integrity')
             before=json.loads(row['state_text'])
-            after=domain('transition',state=before,request=request,role=role)
+            notice=request.get('action')=='notice_seen'
+            if notice:
+                if role!='member' or set(request)!={'action','data'} or set(request['data'])!={'id'} or not re.fullmatch('[a-f0-9]{64}',str(request['data']['id'])):raise Denied('notice_payload')
+                after=before
+            else:after=domain('transition',state=before,request=request,role=role)
             if after['revision'] not in (expected,expected+1):raise Denied('domain_version')
             text=json.dumps(after,separators=(',',':'),ensure_ascii=True)
             version=after['revision'];changed=version!=expected
@@ -139,15 +151,29 @@ class Store:
             db.execute('insert into '+SCHEMA+'.requests(workspace_id,request_id,actor_id,payload_sha,version) values(%s,%s,%s,%s,%s)',
                 [workspace,request_id,claims['sub'],payload_sha,version])
             if fault=='after_receipt':raise Denied('injected_failure')
+            events=db.execute('select * from '+SCHEMA+'.outbox where workspace_id=%s order by event_key for update',[workspace]).fetchall()
+            try:updates=outbox.changes(events,after,request['action'],row['server_now'],row['expires_at'],request_id,
+                                      request['data']['id'] if notice else None)
+            except ValueError as e:raise Denied(str(e)) from None
+            for event in updates:
+                if event['operation']=='INSERT':
+                    db.execute('insert into '+SCHEMA+'.outbox(workspace_id,event_key,source_sha,kind,status,expires_at,history) values(%s,%s,%s,%s,%s,%s,%s::jsonb)',
+                        [workspace,event['event_key'],event['source_sha'],event['kind'],event['status'],event['expires_at'],json.dumps(event['history'])])
+                else:
+                    db.execute('update '+SCHEMA+'.outbox set status=%s,history=%s::jsonb where workspace_id=%s and event_key=%s',
+                        [event['status'],json.dumps(event['history']),workspace,event['event_key']])
+            if fault=='after_outbox':raise Denied('injected_failure')
             writes=db.execute('select table_name,operation,key_sha,xid,actor_sha from '+SCHEMA+'.audit where workspace_id=%s and request_id=%s order by id',
                 [workspace,request_id]).fetchall()
             expected_writes=[(SCHEMA+'.workspaces','UPDATE'),(SCHEMA+'.revisions','INSERT')] if changed else []
             expected_writes.append((SCHEMA+'.requests','INSERT'))
+            expected_writes.extend((SCHEMA+'.outbox',e['operation']) for e in updates)
             if [(x['table_name'],x['operation']) for x in writes]!=expected_writes or len({x['xid'] for x in writes})!=1:
                 raise Denied('writeset_mismatch')
             if any(x['actor_sha']!=digest(claims['sub']) for x in writes):raise Denied('audit_actor')
             keys=([digest(json.dumps([workspace])),digest(json.dumps([workspace,version]))] if changed else [])
             keys.append(digest(json.dumps([workspace,request_id])))
+            keys.extend(digest(json.dumps([workspace,e['event_key']])) for e in updates)
             if [x['key_sha'] for x in writes]!=keys:raise Denied('audit_key')
             return {'version':version,'idempotent':False,'writes':writes,
                     'before_sha':row['state_sha'],'after_sha':digest(text)}

@@ -108,7 +108,8 @@ if __name__=='__main__':
         # Only a private local operator supplies this configuration. Never serve it.
         config=json.loads(path.read_text())
         if set(config)!= {'dsn','auth_url','workspaces'}:raise Denied('configuration')
-        store=Store(config['dsn'],LocalAuth(config['auth_url']),enabled=True)
+        store=Store(config['dsn'],LocalAuth(config['auth_url']),enabled=True,
+                    full_day21=os.environ.get('FMZ_LOCAL_FULL_DAY21_ENABLED')=='1')
         app=Application(store,config['workspaces'],enabled=True)
         http=serve(app)
         print('LOCAL SYNTHETIC ONLY: http://127.0.0.1:8766',flush=True)

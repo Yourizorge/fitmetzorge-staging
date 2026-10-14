@@ -4,6 +4,18 @@ from sql_protocol import statements
 
 ID=lambda n:'78000000-0000-4000-8000-'+str(n).zfill(12)
 class StreamTests(unittest.TestCase):
+    def test_primary_failure_survives_failed_stop_storage_and_rollback(self):
+        calls=[]
+        def query(phase,sql,args=()):
+            calls.append(phase)
+            if sql==GUARD:raise ValueError('primary_guard_failure')
+            if sql=='ROLLBACK':raise OSError('secondary_terminal_failure')
+            return []
+        def save(name,value):raise OSError('secondary_disk_failure')
+        with self.assertRaisesRegex(ValueError,'primary_guard_failure') as result:
+            run(query,save,{}, {},'fail')
+        self.assertEqual(result.exception.__notes__,['stop_storage_failed:OSError','rollback_failed:OSError'])
+        self.assertEqual(calls[-1],'stream_fail_rollback')
     def test_terminal_duplicate_and_null_hash_frames(self):
         rows=[{'i':'0','h':'a'*64,'keep':'1'}]*2
         frame(rows,2)

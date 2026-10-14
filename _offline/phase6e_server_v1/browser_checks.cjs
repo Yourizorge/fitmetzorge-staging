@@ -36,6 +36,11 @@ await logout();await login('trainer');check(await page.locator('#tabs button').c
 stage='A_separate_roles';await logout();await login('a');await page.locator('[data-tab=recovery]').click();const recovery=page.locator('form[data-recovery]').last();await recovery.locator('[name=value]').fill('6');await saved(recovery.locator('button'));await page.locator('[data-tab=review]').click();await saved(page.locator('[data-action=confirm]'));
 check((await snapshot()).status==='trainer_pending','A_requires_trainer');await logout();await login('trainer');await page.locator('[data-tab=review]').click();await saved(page.locator('[data-action=approve]'));
 check((await snapshot()).active.version===1,'A_approval_not_apply');await logout();await login('a');await page.locator('[data-tab=review]').click();await saved(page.locator('[data-action=apply]'));check((await snapshot()).active.version===2,'A_separate_application');
+stage='comparison_outbox';await page.locator('[data-tab=today]').click();await saved(page.locator('[data-compare]'));
+check((await snapshot()).comparison.facts.length===4,'complete_comparison');await saved(page.locator('[data-notice]').first());
+await page.reload();await page.locator('#app').waitFor({state:'visible'});
+check(await page.evaluate(()=>fetch('/api/today').then(r=>r.json()).then(j=>j.views[0].notices.some(n=>n.status==='seen'))),'notice_seen_survives_reload');
+await page.locator('#content details').first().locator('summary').click();await page.locator('[data-guide="1"]').click();await page.locator('#content details').first().locator('summary').click();check(await page.locator('#content').innerText().then(x=>x.includes('herstelregistratie')),'guided_expectation');
 await logout();await page.locator('#login').waitFor({state:'visible'});const noLogin=await page.evaluate(()=>fetch('/api/today').then(r=>r.status));check(noLogin===403,'signed_out_denied');check(errors.length===0,'browser_errors');
 await context.close();console.log(JSON.stringify({status:'PASS',checks,viewports:[320,390,768,1280],languages:['NL','EN','DE'],themes:['light','dark'],screenshots,physical_phone_test:false,hosted_calls:0}));
 }catch(e){console.log(JSON.stringify({status:'NO_GO',stage,checks,error:e.message.slice(0,150),http,errors}));process.exitCode=2;}finally{await browser.close();}})();

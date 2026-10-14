@@ -85,7 +85,7 @@ def frame(rows,terminal):
     if sum(len(r['i'])+len(r['h'])+len(r['keep'])+19 for r in rows)>1024*1024:raise ValueError('stream_frame_bytes')
 
 def run(query,save,ids,context,label,expected=None):
-    count=0;frames=[];profiles=[];buffer={};opened=False;active_phase='not_started'
+    count=0;frames=[];profiles=[];buffer={};opened=False;active_phase='not_started';original_error=None
     def q(phase,sql,args=()):
         nonlocal count,active_phase
         active_phase=phase
@@ -156,9 +156,16 @@ def run(query,save,ids,context,label,expected=None):
             'protocol_commands':count+1,'hosted_admitted':False}
         save('integral-stream-'+label+'.json',value);return value
     except Exception as error:
-        save('integral-stream-'+label+'-stop.json',{'failed_phase':active_phase,'command':count,
-            'exception_class':type(error).__name__,'sqlstate':getattr(error,'sqlstate',None),
-            'completed_frames':len(frames),'completed_profiles':len(profiles),'automatic_retry':False})
+        original_error=error
+        try:
+            save('integral-stream-'+label+'-stop.json',{'failed_phase':active_phase,'command':count,
+                'exception_class':type(error).__name__,'sqlstate':getattr(error,'sqlstate',None),
+                'completed_frames':len(frames),'completed_profiles':len(profiles),'automatic_retry':False})
+        except Exception as storage_error:error.add_note('stop_storage_failed:'+type(storage_error).__name__)
         raise
     finally:
-        if opened:q('rollback','ROLLBACK')
+        if opened:
+            try:q('rollback','ROLLBACK')
+            except Exception as rollback_error:
+                if original_error is None:raise
+                original_error.add_note('rollback_failed:'+type(rollback_error).__name__)

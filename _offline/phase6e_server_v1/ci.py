@@ -6,12 +6,15 @@ spec=importlib.util.spec_from_file_location('integration_prior_ci',HERE.parent/'
 previous=importlib.util.module_from_spec(spec);spec.loader.exec_module(previous)
 base=previous.prior.old.old
 M45='20261014105919_phase6e_synthetic_server_candidate.sql'
-NEW=['domain.cjs','domain.test.cjs','worker.cjs','store.py','database_tests.py','ci.py','ci_auth.py',
+M46='20261014160019_phase6e_local_outbox.sql'
+NEW=['domain.cjs','domain.test.cjs','windows.cjs','windows.test.cjs','worker.cjs','store.py','database_tests.py','ci.py','ci_auth.py',
      'server.py','ui.html','ui.js','ui.css','browser_checks.cjs','protocol.py','test_protocol.py',
-     'release_packet.py','test_release_packet.py','supabase/migrations/'+M45]
+     'release_packet.py','test_release_packet.py','outbox.py','test_outbox.py','planning.py','test_planning.py',
+     'registration12.cjs','registration12.test.cjs','registration_store.py','registration_database.py',
+     'supabase/migrations/'+M45,'supabase/migrations/'+M46]
 EXTRA={'_offline/phase6e_server_v1/'+p for p in NEW}
 EXTRA.add('assets/fit-met-zorge-logo-cropped.png')
-pending=[HERE/'domain.cjs'];seen=set()
+pending=[HERE/'domain.cjs',HERE/'registration12.cjs'];seen=set()
 while pending:
     path=pending.pop().resolve()
     if path in seen:continue
@@ -46,17 +49,36 @@ class Gate(previous.Gate):
         shutil.copyfile(path,self.work/'supabase/migrations'/M45)
         self.result['phase']='local_candidate_45'
         self.cli('migration','up','--local')
+        folder=self.sources/'_offline/phase6e_server_v1';sys.path.insert(0,str(folder))
+        import ci_auth,registration_database
+        self.save('registration12-minimal-history.json',{'history':self.rows('select version from supabase_migrations.schema_migrations order by version'),
+            'migration_sha256':hashlib.sha256(path.read_bytes()).hexdigest(),'hosted_applied':False})
+        # Capture the complete minimal slice independently before optional M46.
+        old_save=self.save
+        self.save=lambda name,value:old_save('registration12-'+name,value)
+        try:
+            with ci_auth.environment(self) as ctx:
+                result=registration_database.run(ctx)
+                self.save('database.json',result)
+                self.result['registration12_tests']=result['count']
+                self.save('auth.json',ci_auth.auth_checks(ctx))
+        finally:self.save=old_save
+        shutil.copyfile(self.sources/'_offline/phase6e_server_v1/supabase/migrations'/M46,self.work/'supabase/migrations'/M46)
+        self.cli('migration','up','--local')
         history=self.rows('select version from supabase_migrations.schema_migrations order by version')
-        if len(history)!=45 or history[-1]['version']!=M45.split('_')[0]:raise RuntimeError('candidate_history')
-        self.save('candidate-45-history.json',{'history':history,'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),'hosted_applied':False})
-        self.result['clean_rebuild']='45/45_PASS_LOCAL_CANDIDATE';self.result['migrations_applied']=45
+        if len(history)!=46 or history[-1]['version']!=M46.split('_')[0]:raise RuntimeError('candidate_history')
+        self.save('candidate-46-history.json',{'history':history,'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),
+            'outbox_sha256':hashlib.sha256((self.sources/'_offline/phase6e_server_v1/supabase/migrations'/M46).read_bytes()).hexdigest(),'hosted_applied':False})
+        self.result['clean_rebuild']='46/46_PASS_LOCAL_CANDIDATE';self.result['migrations_applied']=46
     def regressions(self):
         # Existing SQL/audit regressions remain mandatory; no second 6E-11 run.
         base.Gate.regressions(self)
         folder=self.sources/'_offline/phase6e_server_v1';sys.path.insert(0,str(folder))
         self.command('integration-protocol',[sys.executable,'-B',str(folder/'test_protocol.py')])
         self.command('integration-release-packet',[sys.executable,'-B',str(folder/'test_release_packet.py')])
-        output=self.command('integration-domain',['node','--test',str(folder/'domain.test.cjs')])
+        self.command('integration-outbox',[sys.executable,'-B',str(folder/'test_outbox.py')])
+        self.command('integration-planning',[sys.executable,'-B',str(folder/'test_planning.py')])
+        output=self.command('integration-domain',['node','--test',str(folder/'domain.test.cjs'),str(folder/'windows.test.cjs'),str(folder/'registration12.test.cjs')])
         count=re.search(r'# tests (\d+)',output.stdout)
         if not count:raise RuntimeError('domain_count')
         self.result['integration_domain_tests']=int(count[1])
@@ -88,7 +110,7 @@ class Gate(previous.Gate):
     def advisors(self):
         base.Gate.advisors(self)
         funcs=self.rows("select proname,prosecdef,proconfig from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='fmz6e_integration_private'")
-        if len(funcs)!=2 or any(f['prosecdef'] or f['proconfig']!=['search_path=pg_catalog, pg_temp'] for f in funcs):raise RuntimeError('candidate_functions')
+        if len(funcs)!=3 or any(f['prosecdef'] or f['proconfig']!=['search_path=pg_catalog, pg_temp'] for f in funcs):raise RuntimeError('candidate_functions')
         roles=self.rows("select rolcanlogin,rolsuper,rolbypassrls from pg_roles where rolname='fmz6e_integration_server'")
         if roles!=[{'rolcanlogin':False,'rolsuper':False,'rolbypassrls':False}]:raise RuntimeError('candidate_role')
         memberships=self.rows("select member::regrole::text member,grantor::regrole::text grantor,admin_option,inherit_option,set_option from pg_auth_members where roleid='fmz6e_integration_server'::regrole")
