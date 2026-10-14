@@ -1,0 +1,48 @@
+import json,pathlib,unittest
+from runtime_budget import RuntimeBudget,BudgetStop
+from closure import RUN_ID,PURPOSE
+
+def register():
+    limits=dict(preflight=4,migration=14,baseline=67,setup=33,guard=13,auth=318,controller=286,
+      route_a=191,route_b=286,restore=54,measurements=142,io=97,cleanup=633,final=69,closure=1)
+    return dict(complete_register=True,approved_limit=2226,fits=True,run_id=RUN_ID,purpose=PURPOSE,
+      phase_budgets=limits,normal_capacity=2208,worst_including_safety=2226)
+
+class RuntimeBudgetTests(unittest.TestCase):
+    def meter(self,**kw):return RuntimeBudget(register(),run_id=RUN_ID,purpose=PURPOSE,**kw)
+    def test_every_command_including_protocol_is_counted(self):
+        m=self.meter()
+        for action in ['BEGIN','metadata','history','ROLLBACK']:
+            n=m.charge('preflight',1,action=action);m.confirm(n)
+        self.assertEqual(m.used,4)
+        with self.assertRaisesRegex(BudgetStop,'phase_exhausted'):m.charge('preflight',1,action='extra')
+    def test_full_normal_capacity_and_safety_reserve(self):
+        m=self.meter()
+        for phase,cost in register()['phase_budgets'].items():
+            n=m.charge(phase,cost,action=phase,mutation=phase in ('guard','setup','route_a','route_b','restore'))
+            m.confirm(n)
+        self.assertEqual(m.used,2208);self.assertTrue(m.close()['complete'])
+    def test_pending_statement_prevents_next_mutation(self):
+        m=self.meter();m.charge('setup',1,action='prepare',mutation=True)
+        with self.assertRaisesRegex(BudgetStop,'unconfirmed'):m.charge('setup',1,action='next',mutation=True)
+        m.stop('transport_timeout')
+        with self.assertRaisesRegex(BudgetStop,'stopped'):m.charge('setup',1,action='retry')
+        n=m.safety('rollback_writer',1);m.confirm_safety(n)
+        with self.assertRaises(BudgetStop):m.safety('rollback_writer',1)
+        self.assertFalse(m.close()['complete'])
+    def test_auth_drift_never_refunds_or_hides_commands(self):
+        m=self.meter();n=m.charge('auth',21,action='verify',kind='managed_auth',mutation=True)
+        with self.assertRaisesRegex(BudgetStop,'count_mismatch'):m.confirm(n,actual=22)
+        self.assertEqual(m.used,22);self.assertTrue(m.stopped)
+    def test_only_registered_run_has_allowance(self):
+        with self.assertRaises(BudgetStop):RuntimeBudget(register(),run_id='other',purpose=PURPOSE)
+        r=register();r['phase_budgets']['cleanup']=192
+        with self.assertRaisesRegex(BudgetStop,'complete_capacity'):RuntimeBudget(r,run_id=RUN_ID,purpose=PURPOSE)
+    def test_deadline_is_not_extended_for_slow_commands(self):
+        now=[0];m=self.meter(clock=lambda:now[0]);now[0]=600
+        with self.assertRaisesRegex(BudgetStop,'deadline'):m.charge('auth',1,action='issue')
+    def test_safety_is_not_permission_for_blind_cleanup(self):
+        m=self.meter();m.stop('pair_missing')
+        with self.assertRaises(BudgetStop):m.safety('delete_all_fixtures',1)
+
+if __name__=='__main__':unittest.main()

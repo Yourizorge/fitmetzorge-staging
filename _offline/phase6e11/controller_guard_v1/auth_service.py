@@ -232,6 +232,13 @@ end loop;end$$;""",'supabase_auth_admin')
                 else:raise RuntimeError('ci_ipc_denied')
                 reply={'value':value}
             except Exception as error:
+                if composition is not None:
+                    import traceback
+                    gate.save('integral-action-stop-%03d.json'%commands,{'operation':op,
+                        'exception_class':type(error).__name__,'sqlstate':getattr(error,'sqlstate',None),
+                        'source_frames':[{'file':pathlib.Path(x.filename).name,'line':x.lineno,'function':x.name}
+                            for x in traceback.extract_tb(error.__traceback__)],
+                        'error_values_exported':False})
                 code=str(error) if re.fullmatch('[a-zA-Z0-9_]+',str(error)) else 'ci_action_failed'
                 reply={'error':code}
             process.stdin.write(json.dumps(reply)+'\n');process.stdin.flush()

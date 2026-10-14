@@ -6,6 +6,8 @@ caller owns admission, command accounting, expiry and exact cleanup.
 import json,pathlib,re,subprocess
 
 PROJECT='mokxyyullfhkfalopbzd'
+ALIASES={'a_member':'zorgeyouri+6e9-a-lid@gmail.com','a_trainer':'zorgeyouri+6e9-a-trainer@gmail.com',
+    'b_member':'zorgeyouri+6e9-b-lid@gmail.com'}
 
 class NativeRuntime:
     def __init__(self,parameters,auth_base,*,environment):
@@ -57,7 +59,9 @@ class NativeRuntime:
         parameters=parameter_validator(connect,token,ca)
         return cls(parameters,'https://'+PROJECT+'.supabase.co/auth/v1',environment='staging')
 
-    def context(self,ids,aliases):
+    def context(self,ids,aliases=None):
+        aliases=ALIASES if aliases is None else aliases
+        if aliases!=ALIASES or set(ids)!=set(ALIASES):raise ValueError('native_identity_roles')
         return {'mode':'registered_synthetic','environment':self.environment,'authBase':self.auth_base,
             'registeredIds':ids,'identityBinding':{'project':PROJECT,'preexisting':True,
             'identities':{r:{'id':ids[r],'email':aliases[r],'registered':True} for r in ids}}}

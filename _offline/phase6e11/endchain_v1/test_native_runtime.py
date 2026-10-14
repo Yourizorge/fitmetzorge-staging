@@ -1,6 +1,6 @@
 import pathlib,sys,tempfile,types,unittest
 from unittest.mock import patch
-from native_runtime import NativeRuntime
+from native_runtime import NativeRuntime,ALIASES
 
 class NativeRuntimeTests(unittest.TestCase):
     def setUp(self):
@@ -16,7 +16,7 @@ class NativeRuntimeTests(unittest.TestCase):
           'options':'-c statement_timeout=5000 -c lock_timeout=1000'}
     def test_private_parameters_never_enter_child_context(self):
         r=NativeRuntime(self.parameters(),'http://127.0.0.1:59999',environment='disposable_ci')
-        c=r.context({'a_member':'synthetic-id'},{'a_member':'synthetic@example.invalid'})
+        c=r.context({k:'synthetic-'+k for k in ALIASES})
         self.assertNotIn('password',str(c));self.assertNotIn('synthetic-only',repr(r))
         r.connect();self.assertEqual(len(self.calls),1)
         self.assertEqual(self.calls[0]['sslmode'],'verify-full')

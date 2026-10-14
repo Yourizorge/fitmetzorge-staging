@@ -265,8 +265,7 @@ class Composition:
                 'select public.fmz6e11_call($1::jsonb) value',[activation],claims,headers)[0]['value']
             if active.get('revision')!=2 or active.get('http_status',200)!=200:raise RuntimeError('ci_activation_denied')
             end_reader('fixture_setup')
-            from auth_service import guard as identity_guard
-            payload={**runtime.context(ids,identity_guard.ALIASES),'tokens':request['tokens'],
+            payload={**runtime.context(ids),'tokens':request['tokens'],
                 'key':request['anon'],'proof':'synthetic-only-local-proof','ids':roles,'window':window,
                 'a':by_route['A'],'b':by_route['B'],'initialRevision':active['revision'],
                 'scenario':capture()['workflow_actions'],'sourceSha':gate.result['head'] if 'head' in gate.result else os.environ['GITHUB_SHA'],
