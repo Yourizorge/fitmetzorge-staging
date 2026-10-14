@@ -2,9 +2,10 @@
 const fs=require('node:fs'),path=require('node:path');
 (async()=>{let raw='';for await(const chunk of process.stdin)raw+=chunk;const c=JSON.parse(raw);
 if(!/^http:\/\/127\.0\.0\.1:\d+$/.test(c.url))throw Error('loopback');
-const {chromium}=require(c.playwright),browser=await chromium.launch({headless:true});let checks=0,stage='login';const screenshots=[];
+const {chromium}=require(c.playwright),browser=await chromium.launch({headless:true});let checks=0,stage='login';const screenshots=[],http=[],errors=[];
 const check=(v,m)=>{if(!v)throw Error(m);checks++;};
-try{const context=await browser.newContext(),page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.name));
+try{const context=await browser.newContext(),page=await context.newPage();page.on('pageerror',e=>errors.push(e.name));
+page.on('response',async r=>{const p=new URL(r.url()).pathname;if(p.startsWith('/api/')){let code=null;try{const v=await r.json();if(typeof v.code==='string'&&/^[a-z_]+$/.test(v.code))code=v.code;}catch{}http.push({path:p,status:r.status(),code});}});
 await context.route('**/*',route=>{if(new URL(route.request().url()).origin!==c.url)return route.abort();return route.continue();});
 async function login(role){await page.goto(c.url);await page.locator('#login').waitFor({state:'visible'});await page.locator('[name=email]').fill(c.accounts[role].email);await page.locator('[name=password]').fill(c.accounts[role].password);await page.locator('#login button').click();await page.locator('#app').waitFor({state:'visible'});}
 await login('b');check(await page.locator('#status').innerText().then(x=>x.includes('member')),'member_role');
@@ -21,4 +22,4 @@ stage='server_boundaries';const boundaries=await page.evaluate(async()=>{const t
 await page.locator('#logout').click();await login('trainer');check(await page.locator('#tabs button').count()===2,'trainer_minimal_tabs');check(!(await page.locator('#content').innerText()).includes('Rijst'),'trainer_no_food_log');
 await page.locator('#logout').click();await page.locator('#login').waitFor({state:'visible'});const noLogin=await page.evaluate(()=>fetch('/api/today').then(r=>r.status));check(noLogin===403,'signed_out_denied');check(errors.length===0,'browser_errors');
 await context.close();console.log(JSON.stringify({status:'PASS',checks,viewports:[320,390,768,1280],languages:['NL','EN','DE'],themes:['light','dark'],screenshots,physical_phone_test:false,hosted_calls:0}));
-}catch(e){console.log(JSON.stringify({status:'NO_GO',stage,checks,error:e.message.slice(0,150)}));process.exitCode=2;}finally{await browser.close();}})();
+}catch(e){console.log(JSON.stringify({status:'NO_GO',stage,checks,error:e.message.slice(0,150),http,errors}));process.exitCode=2;}finally{await browser.close();}})();

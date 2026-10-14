@@ -72,6 +72,10 @@ class Store:
             prepare_threshold=None,connect_timeout=5,
             options='-c statement_timeout=5000 -c lock_timeout=1000')
     def bind(self,db,claims,request):
+        live=db.execute('select exists(select 1 from auth.sessions where id=%s and user_id=%s and coalesce(not_after,\'infinity\'::timestamptz)>now()) live',
+                        [claims['session_id'],claims['sub']]).fetchone()
+        if not live or live['live'] is not True:raise Denied('session_expired_or_revoked')
+        db.execute("select set_config('fmz6e.verified_session',%s,true)",[claims['session_id']])
         db.execute('set local role fmz6e_integration_server')
         db.execute("select set_config('request.jwt.claims',%s,true),set_config('fmz6e.request_id',%s,true)",
             [json.dumps(claims),request])

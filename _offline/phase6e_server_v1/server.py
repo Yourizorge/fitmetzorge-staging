@@ -49,7 +49,8 @@ def serve(app,port=8766):
                 if not views:raise Denied('workspace_denied')
                 self.send(200,{'views':views,'csrf':session['csrf']})
             except Denied as e:self.send(403,{'code':str(e)})
-            except Exception:self.send(503,{'code':'server_unavailable'})
+            except Exception as e:
+                self.send(503,{'code':'server_unavailable','class':type(e).__name__})
         def do_POST(self):
             try:
                 self.valid_host()
@@ -81,10 +82,30 @@ def serve(app,port=8766):
                 self.send(200,result)
             except Denied as e:self.send(403,{'code':str(e)})
             except (ValueError,KeyError,TypeError):self.send(400,{'code':'payload'})
-            except Exception:self.send(503,{'code':'server_unavailable'})
+            except Exception as e:
+                self.send(503,{'code':'server_unavailable','class':type(e).__name__})
     def allowed(workspace,token):
         try:app.store.read(workspace,token);return True
         except Denied:return False
     server=http.server.ThreadingHTTPServer(('127.0.0.1',port),Handler)
     server.daemon_threads=True
     return server
+
+if __name__=='__main__':
+    import os,sys
+    try:
+        if os.environ.get('FMZ_LOCAL_INTEGRATION_ENABLED')!='1':raise Denied('feature_disabled')
+        from store import Store,LocalAuth
+        path=pathlib.Path(os.environ['FMZ_LOCAL_INTEGRATION_CONFIG']).resolve()
+        # Only a private local operator supplies this configuration. Never serve it.
+        config=json.loads(path.read_text())
+        if set(config)!= {'dsn','auth_url','workspaces'}:raise Denied('configuration')
+        store=Store(config['dsn'],LocalAuth(config['auth_url']),enabled=True)
+        app=Application(store,config['workspaces'],enabled=True)
+        http=serve(app)
+        print('LOCAL SYNTHETIC ONLY: http://127.0.0.1:8766',flush=True)
+        try:http.serve_forever()
+        finally:http.server_close()
+    except (Denied,KeyError,ValueError,OSError):
+        print('Local integration unavailable; check the private local configuration.',file=sys.stderr)
+        sys.exit(2)

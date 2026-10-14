@@ -50,6 +50,9 @@ class Gate(previous.Gate):
         self.result['integration_domain_tests']=int(count[1])
         import ci_auth,database_tests,server,subprocess,threading
         with ci_auth.environment(self) as ctx:
+            row=ctx['admin'].execute("select relrowsecurity,relforcerowsecurity from pg_class where oid='auth.sessions'::regclass").fetchone()
+            self.save('integration-auth-table-security.json',{'auth_sessions':row,'auth_objects_changed':False,
+                'session_check':'server verifies exact token sub/session before restricted app role; no new Auth grant or policy'})
             def browser(store,workspaces):
                 deps=self.work/'browser-deps'
                 self.command('integration-playwright',['npm','install','--prefix',str(deps),'--no-audit','--no-fund','playwright@1.56.1'],timeout=120)

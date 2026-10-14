@@ -19,6 +19,7 @@ def run(dsn,auth,tokens,claims,admin,auth_kind,inspect=None):
     for value in claims.values():
         admin.execute('insert into '+SCHEMA+'.subjects values(%s,true,true,now()+interval \'20 minutes\')',[value['sub']])
     def bind(role):
+        admin.execute("select set_config('fmz6e.verified_session',%s,false)",[claims[role]['session_id']])
         admin.execute("select set_config('request.jwt.claims',%s,false),set_config('fmz6e.request_id',%s,false)",
             [json.dumps(claims[role]),str(uuid.uuid4())])
     for route,member,trainer,owner in [('A','a','trainer','owner'),('B','b',None,'owner'),('control','outsider',None,'outsider')]:

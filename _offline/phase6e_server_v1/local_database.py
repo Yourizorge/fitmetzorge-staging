@@ -46,6 +46,7 @@ def main():
             db.execute('create role anon;create role authenticated;create role service_role;create schema auth;'
                        'create table auth.users(id uuid primary key);'
                        'create table auth.sessions(id uuid primary key,user_id uuid,not_after timestamptz)')
+            if os.environ.get('FMZ_TEST_AUTH_RLS')=='1':db.execute('alter table auth.sessions enable row level security')
             migration=next((HERE/'supabase/migrations').glob('*.sql'))
             db.execute(migration.read_text())
             claims={role:{'sub':str(uuid.uuid4()),'session_id':str(uuid.uuid4())}

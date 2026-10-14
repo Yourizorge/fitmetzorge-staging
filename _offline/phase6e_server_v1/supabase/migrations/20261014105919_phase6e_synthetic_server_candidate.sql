@@ -5,8 +5,7 @@ set local statement_timeout='5s';
 create schema fmz6e_integration_private;
 revoke all on schema fmz6e_integration_private from public,anon,authenticated,service_role;
 create role fmz6e_integration_server nologin nosuperuser nocreatedb nocreaterole noinherit nobypassrls;
-grant usage on schema fmz6e_integration_private,auth to fmz6e_integration_server;
-grant select(id,user_id,not_after) on auth.sessions to fmz6e_integration_server;
+grant usage on schema fmz6e_integration_private to fmz6e_integration_server;
 
 create table fmz6e_integration_private.subjects(
  user_id uuid primary key references auth.users(id),
@@ -61,11 +60,10 @@ create index integration_audit_workspace on fmz6e_integration_private.audit(work
 
 create function fmz6e_integration_private.actor() returns uuid
 language sql stable security invoker set search_path=pg_catalog,pg_temp as $f$
- select s.user_id from auth.sessions s
- join fmz6e_integration_private.subjects p on p.user_id=s.user_id
- where s.id=(nullif(current_setting('request.jwt.claims',true),'')::jsonb->>'session_id')::uuid
- and s.user_id=(nullif(current_setting('request.jwt.claims',true),'')::jsonb->>'sub')::uuid
- and coalesce(s.not_after,'infinity'::timestamptz)>now()
+ select p.user_id from fmz6e_integration_private.subjects p
+ where p.user_id=(nullif(current_setting('request.jwt.claims',true),'')::jsonb->>'sub')::uuid
+ and nullif(current_setting('fmz6e.verified_session',true),'')::uuid=
+     (nullif(current_setting('request.jwt.claims',true),'')::jsonb->>'session_id')::uuid
  and p.synthetic and p.enabled and p.expires_at>now()
 $f$;
 create function fmz6e_integration_private.observe() returns trigger
