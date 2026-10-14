@@ -34,6 +34,16 @@ class RuntimeBudgetTests(unittest.TestCase):
         m=self.meter();n=m.charge('auth',21,action='verify',kind='managed_auth',mutation=True)
         with self.assertRaisesRegex(BudgetStop,'count_mismatch'):m.confirm(n,actual=22)
         self.assertEqual(m.used,22);self.assertTrue(m.stopped)
+    def test_managed_escrow_allows_metered_after_evidence_not_invisible_sql(self):
+        m=self.meter();a=m.charge('auth',11,action='issue',kind='managed_auth')
+        n=m.charge('auth',1,action='after_stats');m.confirm(n)
+        self.assertEqual(m.used,12)
+        with self.assertRaisesRegex(BudgetStop,'unconfirmed'):m.close()
+        m.confirm(a,actual=11);self.assertTrue(m.close()['complete'])
+    def test_failed_managed_action_keeps_reserved_cost_and_failure(self):
+        m=self.meter();m.charge('auth',21,action='verify',kind='managed_auth')
+        m.stop('http_deadline')
+        self.assertEqual(m.close()['used'],21);self.assertFalse(m.close()['complete'])
     def test_only_registered_run_has_allowance(self):
         with self.assertRaises(BudgetStop):RuntimeBudget(register(),run_id='other',purpose=PURPOSE)
         r=register();r['phase_budgets']['cleanup']=192

@@ -7,7 +7,8 @@ import importlib.util,json,os,pathlib
 
 def run(gate):
     if os.environ.get('GITHUB_REPOSITORY')!='Yourizorge/fitmetzorge-staging':raise RuntimeError('ci_only')
-    from integral_ci import Composition,configure_local_tls
+    from integral_ci import configure_local_tls
+    from metered_composition import MeteredComposition
     import audit,auth_arm
     path=pathlib.Path(__file__).resolve().parent.parent/'controller_guard_v1/auth_service.py'
     spec=importlib.util.spec_from_file_location('failure_actual_gotrue',path)
@@ -16,7 +17,9 @@ def run(gate):
     for fault,receipts,sealed in [('before_call',0,0),('after_commit',1,0),('after_snapshot',1,1)]:
         prefix='fault-'+fault+'-'
         gate.save=lambda name,value,prefix=prefix:original_save(prefix+name,value)
-        composition=Composition(fault)
+        composition=MeteredComposition(fault)
+        composition.admit_ci_prefix(json.loads((gate.out/'integral-preflight.json').read_text()),
+            json.loads((gate.out/'cli-protocol-0.json').read_text()))
         try:
             gate.cli('db','reset','--local','--no-seed',timeout=180)
             configure_local_tls(gate)
@@ -42,6 +45,9 @@ def run(gate):
             evidence={'case':fault,'expected':expected,'actual':row,'hosted_calls':0,
                 'diagnostic_sql_commands':1,'mutation_retried':False,'incomplete_pair_preserved':True,
                 'normal_receipt_reused_as_pass':False,'commands':len(composition.commands)}
+            evidence['runtime_meter']=composition.meter.close()
+            if not evidence['runtime_meter']['stopped'] or evidence['runtime_meter']['used']>2226:
+                raise RuntimeError('ci_failure_meter_not_stopped')
             gate.save('validated.json',evidence);reports.append(evidence)
         finally:
             gate.save=original_save;audit.arm=original_arm

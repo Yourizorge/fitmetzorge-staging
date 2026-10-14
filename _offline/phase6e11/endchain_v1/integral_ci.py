@@ -201,6 +201,7 @@ class Composition:
                     self.injected=True;raise RuntimeError('ci_injected_after_commit')
                 return rows
             except psycopg.Error as e:
+                if hasattr(self,'abort'):self.abort('workflow_database_command_failed')
                 raise RuntimeError('ci_sql_'+(e.sqlstate or 'unknown')) from None
         def query(channel,phase,text,values=()):
             track=monitor is not None and re.match(r'\s*(?:/\*.*?\*/\s*)?(select|with|insert|update|delete)\b',text,re.I|re.S)
@@ -344,8 +345,11 @@ class Composition:
             if process and process.poll() is None:process.kill();process.communicate(timeout=5)
             for channel,connection in connections.items():
                 if connection.info.transaction_status!=0:
-                    try:query(channel,'safety_rollback','ROLLBACK')
+                    try:
+                        self.safety_label='rollback_'+channel
+                        query(channel,'safety_rollback','ROLLBACK')
                     except Exception:pass
+                    finally:self.safety_label=None
             if enabled is not None and restored!=controls:
                 try:
                     before=raw_query('setup','safety_control_before',control_sql)[0]['value']

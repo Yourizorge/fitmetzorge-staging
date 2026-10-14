@@ -20,7 +20,7 @@ NAMES=['budget.mjs','budget.test.mjs','database_checks.py','ci.py','scoped_cycle
  'lifecycle_gates.py','test_lifecycle_gates.py','complete_register.py','test_complete_register.py','integral_failures.py',
  'closure.py','test_closure.py','execution_context.mjs','execution_context.test.mjs',
  'native_runtime.py','test_native_runtime.py','runtime_budget.py','test_runtime_budget.py','auth_evidence.py','test_auth_evidence.py',
- 'registered_lifecycle.py','test_registered_lifecycle.py']
+ 'registered_lifecycle.py','test_registered_lifecycle.py','metered_composition.py','test_metered_composition.py']
 EXTRA={'_offline/phase6e11/endchain_v1/'+n for n in NAMES}
 EXTRA|={'_offline/phase6e11/request_v4/'+n for n in ['transport.mjs','connection_options.mjs','config_shape.mjs']}
 EXTRA|={'_offline/phase6e11/resume_v1/read_only.mjs','_offline/phase6e11/transport_v1/contract.mjs',
@@ -78,8 +78,10 @@ class Gate(prior.Gate):
         # Disposable runner dependency only. PostgreSQL-17 parser, fixed release.
         sys.path.insert(0,str(folder))
         sys.path.insert(0,str(self.sources/'supabase/.temp/phase6e11-pg17-parser'))
-        import integral_ci
-        self.auth_composition=integral_ci.Composition()
+        from metered_composition import MeteredComposition
+        self.auth_composition=MeteredComposition()
+        self.auth_composition.admit_ci_prefix(json.loads((self.out/'integral-preflight.json').read_text()),
+            json.loads((self.out/'cli-protocol-0.json').read_text()))
         # Bind the real GoTrue and observer tests to the candidate renderer,
         # while preserving the original audit module on disk.
         sys.path.insert(0,str(self.sources/'_offline/phase6e11/auth_metadata_v1'))
@@ -114,6 +116,8 @@ class Gate(prior.Gate):
         if not self.result['cli_protocol_complete']:raise RuntimeError('integral_cli_accounting_not_admitted')
         from complete_register import build
         register=build(self.out)
+        from metered_composition import LIMITS
+        if register['phase_budgets']!=LIMITS:raise RuntimeError('runtime_phase_register_changed')
         paths={}
         for prefix in register['prefixes']:
             import hashlib

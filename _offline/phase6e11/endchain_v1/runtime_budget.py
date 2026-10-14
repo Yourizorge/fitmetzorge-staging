@@ -24,6 +24,7 @@ class RuntimeBudget:
         self.used=0;self.phases=collections.Counter();self.events=[];self.stopped=False;self.closed=False
         self.state={'guard':False,'observer':False,'controls':False,'claimed':False}
         self.safety_spent=collections.Counter();self.pending=None;self.stop_reason=None
+        self.managed_pending={}
 
     def _reserve(self,phases,state):
         normal=sum(max(0,self.limits[p]-phases[p]) for p in ('cleanup','final','closure'))
@@ -53,19 +54,24 @@ class RuntimeBudget:
         event={'number':len(self.events)+1,'first_command':self.used+1,'commands':count,
             'phase':phase,'action':action,'kind':kind,'mutation':mutation,'reserved_cleanup':reserve,
             'confirmed':False,'elapsed_ms':round(elapsed*1000)}
-        self.used+=count;self.phases=projected;self.state=state;self.events.append(event);self.pending=event
+        self.used+=count;self.phases=projected;self.state=state;self.events.append(event)
+        if kind=='managed_auth':self.managed_pending[event['number']]=event
+        else:self.pending=event
         return event['number']
 
     def confirm(self,number,*,actual=None):
-        if self.pending is None or self.pending['number']!=number:raise BudgetStop('runtime_confirmation_binding')
-        event=self.pending
+        managed=number in self.managed_pending
+        event=self.managed_pending[number] if managed else self.pending
+        if event is None or event['number']!=number:raise BudgetStop('runtime_confirmation_binding')
         if actual is not None and (type(actual) is not int or actual!=event['commands']):
             if type(actual) is int and actual>=0:
                 event['actual_commands']=actual
                 extra=max(0,actual-event['commands'])
                 self.used+=extra;self.phases[event['phase']]+=extra
             self.stop('managed_command_count_mismatch');raise BudgetStop('managed_command_count_mismatch')
-        event['confirmed']=True;self.pending=None
+        event['confirmed']=True
+        if managed:del self.managed_pending[number]
+        else:self.pending=None
 
     def stop(self,reason):
         self.stopped=True
@@ -90,7 +96,8 @@ class RuntimeBudget:
         event['confirmed']=True
 
     def close(self):
-        if self.pending is not None:raise BudgetStop('runtime_final_unconfirmed')
+        if self.pending is not None or (self.managed_pending and not self.stopped):
+            raise BudgetStop('runtime_final_unconfirmed')
         self.closed=True
         return {'used':self.used,'limit':self.limit,'phases':dict(self.phases),
             'safety':dict(self.safety_spent),'stopped':self.stopped,'stop_reason':self.stop_reason,
