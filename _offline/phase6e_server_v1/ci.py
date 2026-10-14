@@ -12,6 +12,7 @@ NEW=['domain.cjs','domain.test.cjs','windows.cjs','windows.test.cjs','worker.cjs
      'release_packet.py','test_release_packet.py','outbox.py','test_outbox.py','planning.py','test_planning.py',
      'registration12.cjs','registration12.test.cjs','registration_store.py','registration_database.py','registration_browser.cjs',
      'registration_release.py','test_registration_release.py',
+     'application_io.py','test_application_io.py',
      'supabase/migrations/'+M45,'supabase/migrations/'+M46]
 EXTRA={'_offline/phase6e_server_v1/'+p for p in NEW}
 EXTRA.add('assets/fit-met-zorge-logo-cropped.png')
@@ -102,6 +103,7 @@ class Gate(previous.Gate):
         self.command('registration-release-packet',[sys.executable,'-B',str(folder/'test_registration_release.py')])
         self.command('integration-outbox',[sys.executable,'-B',str(folder/'test_outbox.py')])
         self.command('integration-planning',[sys.executable,'-B',str(folder/'test_planning.py')])
+        self.command('integration-application-io',[sys.executable,'-B',str(folder/'test_application_io.py')])
         output=self.command('integration-domain',['node','--test',str(folder/'domain.test.cjs'),str(folder/'windows.test.cjs'),str(folder/'registration12.test.cjs')])
         count=re.search(r'# tests (\d+)',output.stdout)
         if not count:raise RuntimeError('domain_count')

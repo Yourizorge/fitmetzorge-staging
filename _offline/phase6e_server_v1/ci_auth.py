@@ -1,5 +1,5 @@
 """Real GoTrue + verified local TLS. Ephemeral credentials never enter artifacts."""
-import base64,contextlib,hashlib,hmac,json,os,re,secrets,subprocess,time,urllib.request,uuid
+import base64,contextlib,hashlib,hmac,json,os,re,secrets,subprocess,sys,time,urllib.request,uuid
 import psycopg
 from psycopg.rows import dict_row
 from psycopg.conninfo import make_conninfo
@@ -57,6 +57,7 @@ def environment(gate):
             before=admin.execute('select '+STATS+' value').fetchone()['value']
             measured_roles=('postgres','fmz6e_integration_server')
             app_before={role:admin.execute('select '+STATS.replace("rolname='supabase_auth_admin'","rolname='"+role+"'")+' value').fetchone()['value'] for role in measured_roles}
+            for role in measured_roles:gate.save('integration-io-'+role+'-before.json',app_before[role])
             for role in ('a','trainer','b','owner','outsider'):
                 email='fmz-'+uuid.uuid4().hex+'@example.invalid';pw=secrets.token_urlsafe(32)
                 user=auth.call('/admin/users',admin_token,{'email':email,'password':pw,'email_confirm':True})
@@ -66,18 +67,27 @@ def environment(gate):
             ctx={'dsn':dsn,'auth':auth,'tokens':tokens,'claims':claims,'admin':admin,'accounts':accounts,'image':IMAGE,'digests':digests}
             try:yield ctx
             finally:
-                after=admin.execute('select '+STATS+' value').fetchone()['value']
-                load=difference(before,after)
-                app_after={role:admin.execute('select '+STATS.replace("rolname='supabase_auth_admin'","rolname='"+role+"'")+' value').fetchone()['value'] for role in measured_roles}
-                app_load={role:difference(app_before[role],app_after[role]) for role in measured_roles}
-                for value in app_load.values():value['scope']='isolated local CI role; no hosted attribution'
-                gate.save('integration-application-io.json',{'before':app_before,'after':app_after,'deltas':app_load,'query_text_read':False})
-                complete=[e for e in events if e['phase']=='completed']
-                gate.save('integration-native-admin-protocol.json',{'commands':len(complete),
-                    'failed_commands':sum(not e['confirmed'] for e in complete),
-                    'scope':'disposable fixture/admin, including explicit BEGIN/COMMIT/ROLLBACK; no row values',
-                    'templates':sorted({e['template_sha256'] for e in complete})})
-                gate.save('integration-managed-auth-protocol.json',load)
+                primary=sys.exception()
+                try:
+                    after=admin.execute('select '+STATS+' value').fetchone()['value']
+                    load=difference(before,after)
+                    app_after={role:admin.execute('select '+STATS.replace("rolname='supabase_auth_admin'","rolname='"+role+"'")+' value').fetchone()['value'] for role in measured_roles}
+                    for role in measured_roles:gate.save('integration-io-'+role+'-after.json',app_after[role])
+                    from application_io import active_pair
+                    app_load={role:difference(*active_pair(app_before[role],app_after[role])) for role in measured_roles}
+                    for value in app_load.values():value['scope']='isolated local CI role; no hosted attribution'
+                    gate.save('integration-application-io.json',{'deltas':app_load,'query_text_read':False,'raw_samples_retained':True})
+                    complete=[e for e in events if e['phase']=='completed']
+                    gate.save('integration-native-admin-protocol.json',{'commands':len(complete),
+                        'failed_commands':sum(not e['confirmed'] for e in complete),
+                        'scope':'disposable fixture/admin, including explicit BEGIN/COMMIT/ROLLBACK; no row values',
+                        'templates':sorted({e['template_sha256'] for e in complete})})
+                    gate.save('integration-managed-auth-protocol.json',load)
+                except Exception as error:
+                    gate.save('integration-io-stop.json',{'class':type(error).__name__,'phase':'numeric_delta_or_storage',
+                        'primary_class':type(primary).__name__ if primary else None,'hosted':False})
+                    if primary is None:raise
+                    primary.add_note('secondary_io_failure:'+type(error).__name__)
     finally:
         env.clear()
         if started:private(['docker','rm','-f',NAME])
