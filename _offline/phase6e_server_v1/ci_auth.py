@@ -5,7 +5,7 @@ from psycopg.rows import dict_row
 from psycopg.conninfo import make_conninfo
 from store import LocalAuth,Denied
 
-IMAGE='supabase/gotrue:v2.196.0'
+IMAGE='supabase/gotrue:v2.197.0'
 NAME='fmz-integration-auth-ci'
 
 @contextlib.contextmanager

@@ -8,14 +8,14 @@ import guard
 import audit
 import auth_contract
 
-IMAGE='supabase/gotrue:v2.196.0'
+IMAGE='supabase/gotrue:v2.197.0'
 NAME='fmz-guard-auth-ci'
 ROLES=guard.ROLES
 
 def run(gate, composition=None):
     if os.environ.get('GITHUB_REPOSITORY')!='Yourizorge/fitmetzorge-staging' or os.environ.get('GITHUB_REF')!='refs/heads/main':
         raise RuntimeError('ci_only')
-    phase='initialization';command_evidence=[];contracts={}
+    phase='initialization';command_evidence=[];contracts={};scoped_auth_evidence=None
     def private(args,**kwargs):
         p=subprocess.run(args,capture_output=True,text=True,timeout=kwargs.pop('timeout',30),**kwargs)
         state=re.search(r'ERROR:\s+([0-9A-Z]{5})\b',p.stderr)
@@ -151,6 +151,10 @@ end loop;end$$;""",'supabase_auth_admin')
                 if op=='install':
                     ids=request['ids'];guard.scope(run_id,ids)
                     contracts={r:auth_contract.Contract(hashlib.sha256(ids[r].encode()).hexdigest()) for r in ids}
+                    if composition is not None:
+                        from auth_evidence import AuthEvidence
+                        scoped_auth_evidence=AuthEvidence(run_id=run_id,ids=ids,audit=audit,
+                            contract_type=auth_contract.Contract,sql=sql,save=gate.save,independent_ci=True)
                     for role in ('a_trainer','a_member','b_member'):
                         phase='profile_seed_'+role;uid=ids[role]
                         trainer=guard.literal(ids['a_trainer'])+'::uuid' if role=='a_member' else 'null'
@@ -176,6 +180,12 @@ end loop;end$$;""",'supabase_auth_admin')
                     value=composition.finalize(gate,request)
                 elif op=='evidence_query' and composition is not None:
                     value=composition.evidence_query(request,sql)
+                elif op=='before' and composition is not None:
+                    value=scoped_auth_evidence.before(request['role'],request['operation'],request['action'])
+                elif op=='after' and composition is not None:
+                    value=scoped_auth_evidence.after(request['role'],request['operation'],request['before'],request['result'])
+                    captures.append({'role':request['role'],'operation':request['operation'],
+                        'events':value['events'],'scoped_audit':value['events'],'pair_complete':True})
                 elif op=='before':
                     action=request.get('action') if composition is not None else str(uuid.uuid4())
                     if str(uuid.UUID(action))!=action:raise RuntimeError('ci_action_binding')
