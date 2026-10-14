@@ -5,11 +5,12 @@ SETTING="select current_setting('cron.launch_active_jobs') setting"
 ACTIVE="select count(*) n from pg_stat_activity where application_name='pg_cron' and state='active'"
 
 def measured(gate,args,timeout,meter):
-    if os.environ.get('GITHUB_REPOSITORY')!='Yourizorge/fitmetzorge-staging':raise RuntimeError('ci_only')
+    if os.environ.get('GITHUB_REPOSITORY')!='Yourizorge/fitmetzorge-staging' or gate.container!='supabase_db_fmz-db41-ci':raise RuntimeError('ci_only')
     trace=[];original=None;changed=False;restored=False;index=len(getattr(gate,'cli_protocol',[]))
     def sql(text,rows=False):
         item={'statement':text,'confirmed':False};trace.append(item)
-        result=gate.rows(text) if rows else gate.sql(text)
+        result=gate.rows(text) if rows else gate.command('ci-cron-isolation',
+            ['docker','exec','-i',gate.container,'psql','-X','-U','supabase_admin','-d','postgres','-qAt','-v','ON_ERROR_STOP=1'],sql=text)
         item['confirmed']=True
         return result
     try:
