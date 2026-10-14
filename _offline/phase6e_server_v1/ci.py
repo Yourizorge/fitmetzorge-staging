@@ -12,7 +12,7 @@ NEW=['domain.cjs','domain.test.cjs','windows.cjs','windows.test.cjs','worker.cjs
      'release_packet.py','test_release_packet.py','outbox.py','test_outbox.py','planning.py','test_planning.py',
      'registration12.cjs','registration12.test.cjs','registration_store.py','registration_database.py','registration_browser.cjs',
      'registration_release.py','test_registration_release.py',
-     'application_io.py','test_application_io.py',
+     'application_io.py','test_application_io.py','cli_isolation.py','test_cli_isolation.py',
      'supabase/migrations/'+M45,'supabase/migrations/'+M46]
 EXTRA={'_offline/phase6e_server_v1/'+p for p in NEW}
 EXTRA.add('assets/fit-met-zorge-logo-cropped.png')
@@ -49,7 +49,8 @@ class Gate(previous.Gate):
         if candidate or dry:
             import cli_meter
             actual=('db','push','--local','--skip-vault','--yes') if candidate else args
-            return cli_meter.run(self,actual,timeout)
+            from cli_isolation import measured
+            return measured(self,actual,timeout,cli_meter.run)
         return base.Gate.cli(self,*args,timeout=timeout)
     def rebuild(self,migrations):
         super().rebuild(migrations)
@@ -104,6 +105,7 @@ class Gate(previous.Gate):
         self.command('integration-outbox',[sys.executable,'-B',str(folder/'test_outbox.py')])
         self.command('integration-planning',[sys.executable,'-B',str(folder/'test_planning.py')])
         self.command('integration-application-io',[sys.executable,'-B',str(folder/'test_application_io.py')])
+        self.command('integration-cli-isolation',[sys.executable,'-B',str(folder/'test_cli_isolation.py')])
         output=self.command('integration-domain',['node','--test',str(folder/'domain.test.cjs'),str(folder/'windows.test.cjs'),str(folder/'registration12.test.cjs')])
         count=re.search(r'# tests (\d+)',output.stdout)
         if not count:raise RuntimeError('domain_count')

@@ -15,6 +15,7 @@ class Tests(unittest.TestCase):
         for i in (0,1):
             values[f'cli-protocol-{i}.json']={'complete':True,'protocol_commands':10,'observer_commands':[{}]*8}
             values[f'cli-numeric-coverage-{i}.json']={'all_protocol_visible':True,'temp_written':0}
+            values[f'cli-isolation-{i}.json']={'commands':8,'restored':True,'protocol':[{'confirmed':True}]*8}
         return values
     def run_build(self,values):
         with tempfile.TemporaryDirectory(prefix='fmz-registration-release-unit-') as folder:
@@ -23,7 +24,7 @@ class Tests(unittest.TestCase):
             for name,value in values.items():(p/name).write_text(json.dumps(value))
             return build(p)
     def test_no_implicit_hosted_budget(self):
-        value=self.run_build(self.fixture());self.assertEqual(value['observed_sql_total'],779)
+        value=self.run_build(self.fixture());self.assertEqual(value['observed_sql_total'],795)
         self.assertFalse(value['budgets']['hosted_authorized']);self.assertFalse(value['owner_accepted'])
     def test_incomplete_or_temp_writing_evidence_denied(self):
         for file,key,value in [('result.json','status','NO_GO'),('registration12-browser.json','status','NO_GO'),

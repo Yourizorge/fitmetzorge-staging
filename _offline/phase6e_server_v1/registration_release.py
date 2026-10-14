@@ -12,12 +12,15 @@ def build(folder):
     db=read('registration12-database.json');admin=read('registration12-integration-native-admin-protocol.json');auth=read('registration12-integration-managed-auth-protocol.json')
     cli=[read('cli-protocol-'+str(i)+'.json') for i in (0,1)]
     coverage=[read('cli-numeric-coverage-'+str(i)+'.json') for i in (0,1)]
+    isolation=[read('cli-isolation-'+str(i)+'.json') for i in (0,1)]
+    if not all(x['restored'] and all(p['confirmed'] for p in x['protocol']) for x in isolation):raise ValueError('cli_isolation')
     if not all(x['complete'] for x in cli) or not all(x['all_protocol_visible'] and x['temp_written']==0 for x in coverage):raise ValueError('cli_evidence')
     if any(s['temp_written'] for s in auth['statements']):raise ValueError('auth_io')
     io=read('registration12-integration-application-io.json')
     if set(io['deltas'])!={'postgres','fmz6e_integration_server'} or any(v['temp_written'] for v in io['deltas'].values()):raise ValueError('application_io')
     if read('registration12-browser.json')['status']!='PASS':raise ValueError('browser_required')
     phases=[{'phase':'minimal_migration','commands':cli[0]['protocol_commands'],'evidence':'cli-protocol-0.json'},
+            {'phase':'disposable_cli_isolation_and_restore','commands':sum(x['commands'] for x in isolation),'evidence':'cli-isolation-0/1.json'},
             {'phase':'empty_dryrun','commands':cli[1]['protocol_commands'],'evidence':'cli-protocol-1.json'},
             {'phase':'migration_numeric_observers','commands':sum(len(x['observer_commands']) for x in cli),'evidence':'cli-protocol-0/1.json'},
             {'phase':'fixture_setup_clock_denials_cleanup_and_auth_observers','commands':admin['commands'],'evidence':'registration12-integration-native-admin-protocol.json'},
