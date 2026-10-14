@@ -28,7 +28,7 @@ CONSTRAINTS="""(select coalesce(jsonb_object_agg(p.oid::text,jsonb_build_object(
 def ast(text):
     from pglast.parser import parse_sql_json
     def clean(v):
-        if isinstance(v,dict):return {k:clean(x) for k,x in v.items() if k not in ('location','stmt_location','stmt_len')}
+        if isinstance(v,dict):return {k:clean(x) for k,x in v.items() if k not in ('location','arg_location','stmt_location','stmt_len')}
         if isinstance(v,list):return [clean(x) for x in v]
         return v
     return clean(json.loads(parse_sql_json(text.replace('\r\n','\n'))))['stmts']
@@ -54,7 +54,7 @@ def validate(before,after,root):
     expected={'body_sha':hashlib.sha256(body.encode()).hexdigest(),'owner':'postgres','definer':False,
         'path':['search_path=pg_catalog, pg_temp'],'public_execute':False,'forbidden_execute':False}
     if at['function']!=expected:raise ValueError('migration_function_boundary')
-    if at['trigger']!={'type':27,'enabled':'O','function_matches':True,'no_filter':True,'no_arguments':True,'constraint':0}:
+    if at['trigger']!={'type':27,'enabled':'O','function_matches':True,'no_filter':True,'no_arguments':True,'constraint':'0'}:
         raise ValueError('migration_trigger_boundary')
     old=bt['constraint'];new=at['constraint']
     if not old or not new or any(c['type']!='c' or not c['validated'] for c in (old,new)):
