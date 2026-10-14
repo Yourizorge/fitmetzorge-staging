@@ -80,8 +80,14 @@ class Gate(previous.Gate):
         if len(funcs)!=2 or any(f['prosecdef'] or f['proconfig']!=['search_path=pg_catalog, pg_temp'] for f in funcs):raise RuntimeError('candidate_functions')
         roles=self.rows("select rolcanlogin,rolsuper,rolbypassrls from pg_roles where rolname='fmz6e_integration_server'")
         if roles!=[{'rolcanlogin':False,'rolsuper':False,'rolbypassrls':False}]:raise RuntimeError('candidate_role')
-        memberships=self.rows("select member::regrole::text member,admin_option,inherit_option,set_option from pg_auth_members where roleid='fmz6e_integration_server'::regrole")
-        if memberships!=[{'member':'postgres','admin_option':False,'inherit_option':False,'set_option':True}]:raise RuntimeError('candidate_membership')
+        memberships=self.rows("select member::regrole::text member,grantor::regrole::text grantor,admin_option,inherit_option,set_option from pg_auth_members where roleid='fmz6e_integration_server'::regrole")
+        self.save('integration-role-memberships.json',memberships)
+        # PG17 retains the creator's ADMIN-only grant from supabase_admin.
+        # It is separate from the explicit SET-only local server membership.
+        expected={('postgres','postgres',False,False,True),
+                  ('postgres','supabase_admin',True,False,False)}
+        actual={(x['member'],x['grantor'],x['admin_option'],x['inherit_option'],x['set_option']) for x in memberships}
+        if actual!=expected or len(memberships)!=2:raise RuntimeError('candidate_membership')
         self.save('integration-security.json',{'functions':funcs,'roles':roles,'memberships':memberships,'Data_API_exposed':False})
 
 if __name__=='__main__':sys.exit(Gate().run())
