@@ -5,10 +5,12 @@ replace or authorize the separately proven hosted native streaming adapter.
 """
 import hashlib,json,pathlib,re
 from integral_io import SNAPSHOT,check_plan,delta
-from closure import RUN_ID
+from closure import AUTHORIZATION,RUN_ID
 
-ROWS=65536
+ROWS=AUTHORIZATION['maximum_rows_per_cycle']
 PAGE=8192
+PAGES=(ROWS+PAGE-1)//PAGE
+PROTOCOL_CAPACITY=15+2*PAGES
 ALL_STATS=SNAPSHOT.replace("and queryid::text in(select jsonb_array_elements_text($1::jsonb))",'')
 INVENTORY="""select n.nspname schema,c.relname name,array_agg(a.attname order by a.attnum) columns
  from pg_class c join pg_namespace n on n.oid=c.relnamespace

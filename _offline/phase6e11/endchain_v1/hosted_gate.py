@@ -5,9 +5,9 @@ It uses only the already approved owner JIT and registered synthetic identities.
 """
 import hashlib,importlib.util,json,os,pathlib,re,subprocess,sys,time,uuid
 from native_runtime import NativeRuntime,PROJECT
-from metered_composition import MeteredComposition
+from metered_composition import MeteredComposition,capacity
 from migration_boundary import FILE,SOURCE_SHA
-from closure import RUN_ID,PURPOSE
+from closure import AUTHORIZATION,RUN_ID,PURPOSE,allowance
 from cli_stat_reader import snapshot,compare
 
 HERE=pathlib.Path(__file__).resolve().parent;ROOT=HERE.parents[2]
@@ -47,12 +47,23 @@ def admission(folder,root=ROOT):
         path=(root/name).resolve()
         if not path.is_relative_to(root.resolve()) or hashlib.sha256(disk(path).read_bytes()).hexdigest()!=h:
             raise ValueError('hosted_composition_changed')
-    if '_offline/phase6e11/endchain_v1/hosted_gate.py' not in sources:raise ValueError('hosted_entry_not_source_bound')
+    required={'_offline/phase6e11/endchain_v1/'+n for n in
+              ('hosted_gate.py','authorization.json','budget.mjs','closure.py','metered_composition.py',
+               'complete_register.py','runtime_budget.py','integral_stream.py','migration_boundary.py')}
+    numeric=AUTHORIZATION['numeric_evidence']['result']
+    required|={'supabase/migrations/'+FILE,numeric,str(pathlib.PurePosixPath(numeric).with_name('MANIFEST.json'))}
+    if not required<=sources.keys():raise ValueError('hosted_entry_not_source_bound')
     pair=read('integral-migration-pair.json');meter=read('runtime-command-meter.json');register=read('complete-command-register.json')
     if not pair.get('complete') or pair.get('migration_sha256')!=SOURCE_SHA or not meter.get('complete') or meter.get('stopped'):
         raise ValueError('hosted_migration_or_meter_incomplete')
-    if register.get('run_id')!=RUN_ID or register.get('purpose')!=PURPOSE or not register.get('fits') or register.get('worst_including_safety',9999)>2226:
+    if any(register.get(k)!=v for k,v in capacity().items()) or meter.get('limit')!=allowance(RUN_ID,PURPOSE):
         raise ValueError('hosted_budget_not_admitted')
+    expected_limits={'rows_per_stream':AUTHORIZATION['maximum_rows_per_cycle'],
+        'numeric_capacity_sentinel':AUTHORIZATION['maximum_rows_per_cycle']+1,'capacity_counted_in_protocol':True,
+        'page_rows':8192,'cycles':3,'collectors':1,'query_ms':5000,
+        'worker_ms':120000,'guard_ms':180000,'full_retry':0,'own_temp_writes':0}
+    if any(register.get('data_limits',{}).get(k)!=v for k,v in expected_limits.items()):
+        raise ValueError('hosted_stream_budget_not_admitted')
     return {'head':result['commit'],'ci_run':str(result['run_id']),'archive_sha256':collection['archive_sha256'],
         'candidate_sha256':result['candidate_sha256'],'sources':sources,'register':register}
 
@@ -140,7 +151,10 @@ def main(ci_folder):
     out=ROOT/'supabase/.temp'/('phase6e11-reserved-hosted-'+RUN_ID)
     out.mkdir(exist_ok=False)
     save(out,'preregistration.json',{**admitted,'run_id':RUN_ID,'purpose':PURPOSE,'guard_run':guard_run,
-        'maximum_sql':2226,'maximum_seconds':600,'jit_seconds':300,'guard_seconds':180,'automatic_retries':0})
+        'maximum_sql':allowance(RUN_ID,PURPOSE),'maximum_rows_per_cycle':AUTHORIZATION['maximum_rows_per_cycle'],
+        'maximum_cycles':3,'collectors':1,'authorization_sha256':admitted['sources']['_offline/phase6e11/endchain_v1/authorization.json'],
+        'numeric_evidence':AUTHORIZATION['numeric_evidence'],'migration_sha256':SOURCE_SHA,
+        'maximum_seconds':600,'jit_seconds':300,'guard_seconds':180,'automatic_retries':0})
     token=journal=runtime=gate=lifecycle=identity=c=None;granted=False;result={'status':'NO_GO','phase':'management'}
     try:
         token=j.jit.sb.credential();journal=j.Journal(token,out);journal.inspect()

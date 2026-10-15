@@ -1,15 +1,16 @@
 // One owner-authorized end-run. Every other run retains the 128-command cap.
-export const ENDCHAIN_RUN_ID='debe3298-9772-40b1-a9f4-8e3d99c8fd20';
-export const PURPOSE='6e11_filtered_endchain_20261015';
+export const ENDCHAIN_RUN_ID='1c3bf7e7-bc78-40c5-9ac1-5ba3512ec66d';
+export const PURPOSE='6e11_capacity_endchain_20261015';
 // The complete register additionally reserves the exact safety suffix before
 // every mutation. These phase ceilings alone never grant hosted admission.
-export const LIMITS=Object.freeze({preflight:4,migration:14,baseline:67,setup:33,guard:13,
- auth:318,controller:286,route_a:191,route_b:286,restore:54,measurements:142,io:97,
- cleanup:633,final:69,closure:1});
+export const LIMITS=Object.freeze({preflight:4,migration:42,baseline:61,setup:33,guard:13,
+ auth:318,controller:286,route_a:191,route_b:286,restore:54,measurements:136,io:97,
+ cleanup:633,final:71,closure:1});
+const NORMAL=Object.values(LIMITS).reduce((a,b)=>a+b,0);
 const RESERVE=Object.freeze({cleanup:18,final:18,closure:18});
 const SAFETY=new Set(['guard_remove','observer_remove','jit_revoke','proven_fixture_delete','safety_check','record_stop']);
 const LABEL=/^[a-z][a-z0-9_]{1,63}$/;
-export const limitFor=g=>g?.id===ENDCHAIN_RUN_ID&&g?.budget_ref===PURPOSE?2226:128;
+export const limitFor=g=>g?.id===ENDCHAIN_RUN_ID&&g?.budget_ref===PURPOSE?2237:128;
 export class BudgetStop extends Error{
  constructor(phase,attempt,code){super(code);this.phase=phase;this.command=attempt;this.code=code;}
 }
@@ -30,7 +31,7 @@ export class SqlBudget{
   if(elapsed<0||elapsed>=(safety?600000:540000))return this.stop(phase,'run_deadline');
   if(this.stopped&&!safety)throw new BudgetStop(phase,this.total+1,'run_stopped');
   const approved=limitFor({id:this.runId,budget_ref:PURPOSE});
-  if(this.total>=approved||!safety&&this.total>=2208)return this.stop(phase,'global_query_budget');
+  if(this.total>=approved||!safety&&this.total>=NORMAL)return this.stop(phase,'global_query_budget');
   if(!safety&&this.used[phase]>=LIMITS[phase])return this.stop(phase,'phase_query_budget');
   this.total++;this.used[phase]++;this.busy=true;
   const entry={command:this.total,phase,signature,safety,started_ms:elapsed};

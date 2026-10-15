@@ -1,12 +1,10 @@
 import json,pathlib,unittest
 from runtime_budget import RuntimeBudget,BudgetStop
 from closure import RUN_ID,PURPOSE
+from metered_composition import capacity
 
 def register():
-    limits=dict(preflight=4,migration=14,baseline=67,setup=33,guard=13,auth=318,controller=286,
-      route_a=191,route_b=286,restore=54,measurements=142,io=97,cleanup=633,final=69,closure=1)
-    return dict(complete_register=True,approved_limit=2226,fits=True,run_id=RUN_ID,purpose=PURPOSE,
-      phase_budgets=limits,normal_capacity=2208,worst_including_safety=2226)
+    return capacity()
 
 class RuntimeBudgetTests(unittest.TestCase):
     def meter(self,**kw):return RuntimeBudget(register(),run_id=RUN_ID,purpose=PURPOSE,**kw)
@@ -21,7 +19,7 @@ class RuntimeBudgetTests(unittest.TestCase):
         for phase,cost in register()['phase_budgets'].items():
             n=m.charge(phase,cost,action=phase,mutation=phase in ('guard','setup','route_a','route_b','restore'))
             m.confirm(n)
-        self.assertEqual(m.used,2208);self.assertTrue(m.close()['complete'])
+        self.assertEqual(m.used,2226);self.assertTrue(m.close()['complete'])
     def test_pending_statement_prevents_next_mutation(self):
         m=self.meter();m.charge('setup',1,action='prepare',mutation=True)
         with self.assertRaisesRegex(BudgetStop,'unconfirmed'):m.charge('setup',1,action='next',mutation=True)

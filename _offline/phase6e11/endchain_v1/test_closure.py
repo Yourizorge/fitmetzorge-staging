@@ -40,7 +40,9 @@ class ClosureTests(unittest.TestCase):
         self.cli[0]['observer_commands']=[]
         with self.assertRaisesRegex(ValueError,'observer_count'):self.close()
     def test_over_budget_cannot_close(self):
-        self.trace += [{'command':i+1,'phase':'evidence_query','confirmed':True} for i in range(1518,2226)]
+        self.trace += [{'command':i+1,'phase':'evidence_query','confirmed':True} for i in range(1518,1606)]
+        self.assertEqual(self.close()['global_commands'],2237)
+        self.trace.append({'command':1607,'phase':'evidence_query','confirmed':True})
         with self.assertRaisesRegex(ValueError,'closure_budget'):self.close()
 
 

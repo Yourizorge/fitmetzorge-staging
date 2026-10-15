@@ -15,6 +15,7 @@ scenario_source=bound_module('register_bound_scenario',HERE/'scenario.py')
 auth_source=bound_module('register_bound_auth',HERE.parent/'auth_metadata_v1/auth_contract.py')
 
 from closure import RUN_ID,PURPOSE,allowance
+from integral_stream import ROWS,PAGE,PAGES,PROTOCOL_CAPACITY
 APPROVED=allowance(RUN_ID,PURPOSE)
 PHASES=('preflight','migration','baseline','setup','guard','auth','controller','route_a',
         'route_b','restore','measurements','io','cleanup','final','closure')
@@ -195,9 +196,9 @@ def build(folder):
         if not value['protected_equal'] or not value['complete_by_same_snapshot_capacity'] or value['rows']!=value['protected_rows_bounded'] or any(x['own_temp_written'] for x in value['profiles']):
             raise ValueError('register_stream_incomplete')
         # One bounded numeric sentinel replaces the former empty FETCH round.
-        if value['protocol_commands']!=15+2*len(value['frames']) or len(value['frames'])>8:
+        if value['protocol_commands']!=15+2*len(value['frames']) or len(value['frames'])>PAGES or value['rows']>ROWS:
             raise ValueError('register_stream_shape')
-        extra=31-value['protocol_commands'];streams.append({'label':label,'actual':value['protocol_commands'],'capacity':31,'extra':extra})
+        extra=PROTOCOL_CAPACITY-value['protocol_commands'];streams.append({'label':label,'actual':value['protocol_commands'],'capacity':PROTOCOL_CAPACITY,'extra':extra})
         # Place the optional page slots before that stream's final rollback.
         at=next(i for i,r in enumerate(rows) if r['action']=='stream_'+label+'_rollback')
         old=rows[:];rows=[]
@@ -253,9 +254,9 @@ def build(folder):
              'OIDC_allowlist_admission','Auth_version_binding','native_TLS_connection_and_close',
              'request_deadlines_and_secret_redaction','durable_local_manifest','runtime_frozen_and_Pages_checks']],
         'stop_path':'Rollback once, preserve incomplete evidence/fixtures, close exact own temporary access. No blind fixture deletion.',
-        'data_limits':{'rows_per_stream':65536,'row_limit_scope':'transported protected row hashes per cycle; duplicates count separately',
-                       'numeric_capacity_sentinel':65537,'capacity_counted_in_protocol':True,
-                       'page_rows':8192,'cycles':3,'collectors':1,'query_ms':5000,
+        'data_limits':{'rows_per_stream':ROWS,'row_limit_scope':'transported protected row hashes per cycle; duplicates count separately',
+                       'numeric_capacity_sentinel':ROWS+1,'capacity_counted_in_protocol':True,
+                       'page_rows':PAGE,'cycles':3,'collectors':1,'query_ms':5000,
                        'worker_ms':120000,'guard_ms':180000,'full_retry':0,'own_temp_writes':0},
         'scope':'Offline integral capacity; not a universal minimum or permission to exceed the current limit.'}
 

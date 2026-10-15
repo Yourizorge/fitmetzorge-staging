@@ -4,6 +4,7 @@ Never a hosted retry. The normal receipt remains untouched. Each case resets
 only its disposable CI database and writes a separate evidence namespace.
 """
 import importlib.util,json,os,pathlib
+from closure import RUN_ID,PURPOSE,allowance
 
 def run(gate):
     if os.environ.get('GITHUB_REPOSITORY')!='Yourizorge/fitmetzorge-staging':raise RuntimeError('ci_only')
@@ -42,7 +43,7 @@ def run(gate):
                 'diagnostic_sql_commands':1,'mutation_retried':False,'incomplete_pair_preserved':True,
                 'normal_receipt_reused_as_pass':False,'commands':len(composition.commands)}
             evidence['runtime_meter']=composition.meter.close()
-            if not evidence['runtime_meter']['stopped'] or evidence['runtime_meter']['used']>2226:
+            if not evidence['runtime_meter']['stopped'] or evidence['runtime_meter']['used']>allowance(RUN_ID,PURPOSE):
                 raise RuntimeError('ci_failure_meter_not_stopped')
             gate.save('validated.json',evidence);reports.append(evidence)
         finally:

@@ -40,6 +40,9 @@ EXTRA|={'_offline/phase6e11/'+name for name in (
  'textfree_tx_v2/connection.py','textfree_tx_v2/hosted.py','textfree_tx_v2/session.py','textfree_v1/monitor.py','textfree_v1/native.py')}
 EXTRA.add('supabase/tests/phase6d0-staging-query.py')
 EXTRA|={'_offline/phase6e_server_v1/cli_isolation.py','_offline/phase6e_server_v1/test_cli_isolation.py'}
+from closure import AUTHORIZATION
+NUMERIC=pathlib.PurePosixPath(AUTHORIZATION['numeric_evidence']['result'])
+EXTRA|={str(NUMERIC),str(NUMERIC.with_name('MANIFEST.json'))}
 prior.EXTRA|=EXTRA;prior.old.EXTRA|=EXTRA
 class Gate(prior.Gate):
     cli_namespace='clean44-'
@@ -158,8 +161,8 @@ class Gate(prior.Gate):
         if not self.result['cli_protocol_complete']:raise RuntimeError('integral_cli_accounting_not_admitted')
         from complete_register import build
         register=build(self.out)
-        from metered_composition import LIMITS
-        if register['phase_budgets']!=LIMITS:raise RuntimeError('runtime_phase_register_changed')
+        from metered_composition import capacity
+        if any(register.get(k)!=v for k,v in capacity().items()):raise RuntimeError('runtime_phase_register_changed')
         paths={}
         for prefix in register['prefixes']:
             import hashlib

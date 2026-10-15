@@ -1,5 +1,5 @@
 import unittest
-from integral_stream import predicates,frame,statement,ALL_STATS,CONFIG,GUARD,run,INVENTORY
+from integral_stream import predicates,frame,statement,ALL_STATS,CONFIG,GUARD,run,INVENTORY,ROWS,PAGE,PAGES,PROTOCOL_CAPACITY
 from sql_protocol import statements
 
 ID=lambda n:'78000000-0000-4000-8000-'+str(n).zfill(12)
@@ -116,11 +116,19 @@ class StreamTests(unittest.TestCase):
             self.assertEqual(result['tables']['public.synthetic_0']['rows'],size)
 
     def test_real_limit_no_overshoot_or_extra_hash_fetch(self):
-        for size in (65535,65536,65537):
-            result,error,saved,calls,received=self.capacity_run(size,65536,8192)
-            self.assertLessEqual(sum(received),65536)
-            if size>65536:self.assertEqual(str(error),'stream_row_ceiling');self.assertEqual(received,[])
-            else:self.assertIsNone(error);self.assertEqual(sum(received),size)
+        self.assertEqual((ROWS,PAGE,PAGES,PROTOCOL_CAPACITY),(106496,8192,13,41))
+        for size in (65536,100843,ROWS-1,ROWS,ROWS+1):
+            result,error,saved,calls,received=self.capacity_run(size,ROWS,PAGE)
+            self.assertLessEqual(sum(received),ROWS)
+            if size>ROWS:
+                self.assertEqual(str(error),'stream_row_ceiling');self.assertEqual(received,[])
+                self.assertFalse(any(q.startswith(('DECLARE','FETCH')) for q in calls))
+                self.assertEqual(saved['integral-stream-capacity-stop.json']['failed_phase'],'row_capacity')
+            else:
+                self.assertIsNone(error);self.assertEqual(sum(received),size)
+                self.assertLessEqual(result['protocol_commands'],PROTOCOL_CAPACITY)
+                self.assertEqual(result['protocol_commands'],len(calls))
+                self.assertLessEqual(len(received),PAGES)
 
     def test_truncation_and_interruption_do_not_produce_success(self):
         for kwargs in ({'short':True},{'interrupt':True}):
@@ -132,7 +140,7 @@ class StreamTests(unittest.TestCase):
         from integral_stream import capacity_statement
         plans=[{'name':'public.synthetic','predicate':'allowed is true'}, {'name':'cron.job_run_details','predicate':'false'}]
         sql=capacity_statement(plans)
-        self.assertIn('limit 65537',sql)
+        self.assertIn('limit 106497',sql)
         for p in plans:self.assertIn('where ('+p['predicate']+')',sql)
         for forbidden in ('sha256','to_jsonb','order by','distinct'):
             self.assertNotIn(forbidden,sql.lower())

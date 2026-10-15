@@ -1,19 +1,19 @@
 """The shared executor, with pre-execution phase and emergency accounting.
 
-The fixed capacity comes from CI 38568971121. Each new CI recomputes the entire
-register and must agree; this file does not grant hosted admission.
+Capacity extends the complete 2196-command register by five FETCH/IO pairs in
+each of three cycles. Fresh CI must recompute every prefix and agree.
 """
 from integral_ci import Composition
 from complete_register import classify,scenario_source,AUTH_CALLS
 from runtime_budget import RuntimeBudget
-from closure import RUN_ID,PURPOSE,BOOTSTRAP
+from closure import RUN_ID,PURPOSE,BOOTSTRAP,allowance
 
-LIMITS=dict(preflight=4,migration=42,baseline=51,setup=33,guard=13,auth=318,controller=286,
-    route_a=191,route_b=286,restore=54,measurements=126,io=97,cleanup=633,final=61,closure=1)
+LIMITS=dict(preflight=4,migration=42,baseline=61,setup=33,guard=13,auth=318,controller=286,
+    route_a=191,route_b=286,restore=54,measurements=136,io=97,cleanup=633,final=71,closure=1)
 
 def capacity():
-    return dict(complete_register=True,approved_limit=2226,fits=True,run_id=RUN_ID,purpose=PURPOSE,
-        phase_budgets=LIMITS,normal_capacity=2196,worst_including_safety=2214)
+    return dict(complete_register=True,approved_limit=allowance(RUN_ID,PURPOSE),fits=True,run_id=RUN_ID,purpose=PURPOSE,
+        phase_budgets=dict(LIMITS),normal_capacity=2226,worst_including_safety=2237)
 
 class MeteredComposition(Composition):
     def __init__(self,*args,**kwargs):

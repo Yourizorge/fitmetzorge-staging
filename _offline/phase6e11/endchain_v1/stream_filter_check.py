@@ -7,13 +7,13 @@ def boundaries(gate):
     runtime=NativeRuntime.disposable(gate);receipts=[]
     connection=runtime.connect()
     try:
-        for size in (0,8192,8193,65535,65536,65537):
+        for size in (0,PAGE,PAGE+1,ROWS-1,ROWS,ROWS+1):
             connection.execute('BEGIN')
             try:
                 connection.execute('create temporary table stream_boundary on commit drop as '
                     'select case when mod(g,2)=0 then null else 0 end quantity, '
                     'case when g<=%s then true when g=%s then null else false end allowed '
-                    'from generate_series(1,73728) g',(size,size+1))
+                    'from generate_series(1,%s) g',(size,size+1,ROWS+PAGE))
                 plans=[{'name':'pg_temp.stream_boundary','predicate':'allowed'}]
                 count_sql=capacity_statement(plans)
                 analyzed=connection.execute('EXPLAIN (ANALYZE,BUFFERS,COSTS FALSE,FORMAT JSON) '+count_sql).fetchone()['QUERY PLAN'][0]
@@ -76,5 +76,5 @@ def run(gate):
     if rows!=[expected]:raise ValueError('stream_filter_pg17_equivalence')
     gate.save('stream-filter-pg17.json',{'status':'PASS','checks':expected,'disposable_only':True,
         'hosted_rows_attribution':'UNKNOWN; no table counts reconstructed from incomplete receipt',
-        'row_limit_unchanged':65536,'page_limit_unchanged':8192,'hosted_admitted':False})
+        'row_limit':ROWS,'page_limit_unchanged':PAGE,'hosted_admitted':False})
     return 6+boundaries(gate)

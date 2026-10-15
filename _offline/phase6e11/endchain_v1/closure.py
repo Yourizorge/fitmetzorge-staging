@@ -8,7 +8,7 @@ BOOTSTRAP = {'local_fixture_cleanup', 'local_observer_schema', 'local_observer_t
 
 
 def allowance(run_id, purpose):
-    return 2226 if (run_id, purpose) == (RUN_ID, PURPOSE) else 128
+    return AUTHORIZATION['maximum_sql'] if (run_id, purpose) == (RUN_ID, PURPOSE) else 128
 
 
 def counted_close(trace, preflight, cli, auth, workflow, run_id, purpose):
