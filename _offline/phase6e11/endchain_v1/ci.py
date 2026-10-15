@@ -6,7 +6,7 @@ from database_checks import M44,run as check_budget
 from sequence import SOURCES
 spec=importlib.util.spec_from_file_location('endchain_prior_guard_ci',HERE.parent/'controller_guard_v1/ci.py')
 prior=importlib.util.module_from_spec(spec);spec.loader.exec_module(prior)
-NAMES=['budget.mjs','budget.test.mjs','database_checks.py','ci.py','scoped_cycle.mjs',
+NAMES=['authorization.json','test_authorization.py','budget.mjs','budget.test.mjs','database_checks.py','ci.py','scoped_cycle.mjs',
  'scoped_cycle.test.mjs','request_transport.mjs','request_transport.test.mjs','auth_arm.py',
  'test_auth_arm.py','scenario.py','sequence.py','command_ledger.py','test_command_ledger.py',
  'component_trace.mjs','admission.py','test_admission.py','test_sequence.py','artifact.py','test_artifact.py',

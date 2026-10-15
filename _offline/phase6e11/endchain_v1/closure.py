@@ -1,6 +1,8 @@
 """Final counted receipt. No SQL execution or hosted admission."""
-RUN_ID = '32321f17-07f1-4f3d-aa4b-3218bc7368a4'
-PURPOSE = '6e11_single_endchain_20261012'
+import json,pathlib
+AUTHORIZATION = json.loads(pathlib.Path(__file__).with_name('authorization.json').read_text())
+RUN_ID = AUTHORIZATION['run_id']
+PURPOSE = AUTHORIZATION['purpose']
 BOOTSTRAP = {'local_fixture_cleanup', 'local_observer_schema', 'local_observer_triggers',
              'profile_seed_a_member', 'profile_seed_a_trainer', 'profile_seed_b_member', 'operator_seed'}
 

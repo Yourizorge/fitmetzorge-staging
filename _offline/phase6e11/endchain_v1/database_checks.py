@@ -1,6 +1,6 @@
 """One-run budget checks, reusable on disposable PG17 and clean Supabase CI."""
 import json
-RUN='32321f17-07f1-4f3d-aa4b-3218bc7368a4'
+from closure import RUN_ID as RUN,AUTHORIZATION
 OTHER='69000000-0000-4000-8000-000000000001'
 SCHEMA='fmz6e11_controller_private'
 M44='20261012185121_phase6e11_single_endchain_budget.sql'
@@ -23,6 +23,10 @@ def run(sql):
     for n in (-1,2227):case('exact_limit_'+str(n),insert(count=n),'runs_command_count_check')
     case('ordinary_128',insert(OTHER,128))
     case('ordinary_129',insert(OTHER,129),'runs_command_count_check')
+    old=AUTHORIZATION['previous_used_run']
+    case('old_used_run_no_new_allowance',insert(old,129),'runs_command_count_check')
+    case('old_used_run_retained',insert(old)+"delete from "+SCHEMA+".runs;",'single_endchain_receipt_retained')
+    case('old_used_run_cannot_reopen',insert(old,state='stopped')+"update "+SCHEMA+".runs set state='running';",'single_endchain_identity_immutable')
     for field,value in [('id',"'"+OTHER+"'"),('github_run','124'),('head_sha',"'"+'c'*40+"'"),
                         ('manifest_sha',"'"+'d'*64+"'"),('created_at',"created_at-interval '1 second'"),
                         ('expires_at',"expires_at+interval '1 second'")]:

@@ -14,7 +14,7 @@ def plan():
       state_order=[*PHASES,'next_step_allowed'],automatic_retries=0,collectors=1,
       max_seconds=MAX_SECONDS,canary_sql_limit_unchanged=128,
       approved_full_chain_sql_limit=allowance(RUN_ID,PURPOSE),approval_scope='one_run_only',
-      reserved_run_id='32321f17-07f1-4f3d-aa4b-3218bc7368a4',hosted_admitted=False,
+      reserved_run_id=RUN_ID,hosted_admitted=False,
       setup_and_cleanup_actions='must_be_compiled_and_source_bound_before_admission',
       safety_removal='exact_owned_guard_audit_and_JIT_even_after_NO_GO',
       incomplete_pair='no_dependent_mutation_or_unproven_fixture_cleanup',

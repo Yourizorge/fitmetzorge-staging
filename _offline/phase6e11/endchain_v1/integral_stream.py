@@ -5,6 +5,7 @@ replace or authorize the separately proven hosted native streaming adapter.
 """
 import hashlib,json,pathlib,re
 from integral_io import SNAPSHOT,check_plan,delta
+from closure import RUN_ID
 
 ROWS=65536
 PAGE=8192
@@ -34,7 +35,7 @@ def literal(x):
 
 def predicates(row,ids,c):
     s,t,columns=row['schema'],row['name'],row['columns'];w=literal(c['window']);a=literal(c['a']);b=literal(c['b'])
-    users=','.join(literal(x) for x in ids.values());run=literal('32321f17-07f1-4f3d-aa4b-3218bc7368a4')
+    users=','.join(literal(x) for x in ids.values());run=literal(RUN_ID)
     life=','.join(literal(x) for x in c['runs'].values())
     owned_runs=f"select run_id from fmz6e11_request_private.receipts where window_id={w}"
     new_runs=f"({owned_runs} union select unnest(array[{life}]::uuid[]))"
