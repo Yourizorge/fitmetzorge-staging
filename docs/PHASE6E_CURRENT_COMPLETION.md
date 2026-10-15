@@ -28,6 +28,12 @@ missing samples remain unchanged. The new attempt is now USED, not available.
   Original1376-file preservation PASS;152 Pages assets unchanged and19 legacy
   private paths404 in checks surrounding the admission-source publication.
 
+Fresh independent CI is now complete: endchain38710056451 (clean44, corrected
+filter, same capacity) and integration38710983711 (clean46,87 DB checks,
+224 browser assertions,8 local Auth checks,15 new candidate unit tests).
+See the dated reports for exact source/candidate/archive hashes and limitations.
+No hosted or phone-window admission follows from either local CI result.
+
 See [current run/evidence report](PHASE6E11_RESERVED_RUN_20261015.md) and
 [selected12 boundary](PHASE6E12_SELECTED_RELEASE_BOUNDARY.md). Historical112
 complete pairs, incomplete113, earlier fixtures and dirty runtime remain intact.

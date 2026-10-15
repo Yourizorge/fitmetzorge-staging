@@ -1,0 +1,16 @@
+{
+  "checks": {
+    "distinct_hashes": 2,
+    "filtered_transport_rows": 4,
+    "legacy_transport_rows": 73728,
+    "multiset_equal": true,
+    "null_rows": 2,
+    "source_rows": 73728
+  },
+  "disposable_only": true,
+  "hosted_admitted": false,
+  "hosted_rows_attribution": "UNKNOWN; no table counts reconstructed from incomplete receipt",
+  "page_limit_unchanged": 8192,
+  "row_limit_unchanged": 65536,
+  "status": "PASS"
+}

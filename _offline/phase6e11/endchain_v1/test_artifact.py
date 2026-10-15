@@ -19,7 +19,7 @@ class Artifact(unittest.TestCase):
             if fault=='path':z.writestr('../escape.json','{}')
             if fault=='extra':z.writestr('extra.json','{}')
             if fault=='count':
-                for i in range(1400):z.writestr('bounded'+str(i)+'.json','{}')
+                for i in range(ops.MAX_FILES):z.writestr('bounded'+str(i)+'.json','{}')
         raw=buff.getvalue()
         artifact={'id':1,'name':'phase6e11-endchain-123-1','expired':fault=='expired',
                   'size_in_bytes':len(raw),'digest':'sha256:'+hashlib.sha256(raw).hexdigest()}

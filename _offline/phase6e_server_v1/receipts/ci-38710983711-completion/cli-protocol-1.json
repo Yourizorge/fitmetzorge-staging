@@ -1,0 +1,86 @@
+{
+  "application_names": [
+    "@effect/sql-pg"
+  ],
+  "arguments": [
+    "db",
+    "push",
+    "--local",
+    "--dry-run",
+    "--skip-vault"
+  ],
+  "cli_sha256": "40efbaffd04e4cbf501b4f29a52c88ca23f81c636ef211e3b255c4e7b81eeb01",
+  "commands": [
+    {
+      "kind": "SelectStmt",
+      "protocol_commands": 1,
+      "sha256": "e004ebd5b5532a4b85984a62f8ad48a81aa3460c1ca07701f386135d72cdecf5"
+    },
+    {
+      "kind": "SelectStmt",
+      "protocol_commands": 1,
+      "sha256": "a399b6fe975faca1ecc7b5049577f7c16879fb533dd25a156216e9c0822f2cd6"
+    }
+  ],
+  "complete": true,
+  "error": null,
+  "exitcode": 0,
+  "hosted_calls": 0,
+  "invocation_prefix": "FMZSQL5dec3a17bcfe4dca8428f9f7f693c438|",
+  "numeric_protocol_coverage": true,
+  "observer_commands": [
+    {
+      "confirmed": true,
+      "kind": "numeric_observer",
+      "protocol_commands": 1,
+      "sha256": "3eb12e5bafe877f825399d2905523e26201831b46d6ebc54e734cdb0961a8fd5"
+    },
+    {
+      "confirmed": true,
+      "kind": "numeric_observer",
+      "protocol_commands": 1,
+      "sha256": "654b3989d19937e3700b1ef5374ce0b4c77f8460eb8318dd1f40d31c27c21b68"
+    },
+    {
+      "confirmed": true,
+      "kind": "numeric_observer",
+      "protocol_commands": 1,
+      "sha256": "4c37732613791f84484c38265c0be027569ee1b7e1d55d69de16b4f9668159ce"
+    },
+    {
+      "confirmed": true,
+      "kind": "numeric_observer",
+      "protocol_commands": 1,
+      "sha256": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710"
+    },
+    {
+      "confirmed": true,
+      "kind": "numeric_observer",
+      "protocol_commands": 1,
+      "sha256": "3eb12e5bafe877f825399d2905523e26201831b46d6ebc54e734cdb0961a8fd5"
+    },
+    {
+      "confirmed": true,
+      "kind": "numeric_observer",
+      "protocol_commands": 1,
+      "sha256": "654b3989d19937e3700b1ef5374ce0b4c77f8460eb8318dd1f40d31c27c21b68"
+    },
+    {
+      "confirmed": true,
+      "kind": "numeric_observer",
+      "protocol_commands": 1,
+      "sha256": "4c37732613791f84484c38265c0be027569ee1b7e1d55d69de16b4f9668159ce"
+    },
+    {
+      "confirmed": true,
+      "kind": "numeric_observer",
+      "protocol_commands": 1,
+      "sha256": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710"
+    }
+  ],
+  "protocol_commands": 2,
+  "scope": "disposable CI session SQL only; not hosted CLI accounting",
+  "sql_text_exported": false,
+  "total_commands": 10,
+  "unexpected_applications": []
+}

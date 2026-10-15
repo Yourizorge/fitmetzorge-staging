@@ -1,5 +1,5 @@
 """Verify candidate isolation on staging Pages; never accesses Supabase."""
-import importlib.util,json,pathlib,sys,urllib.error,urllib.request,uuid
+import importlib.util,json,pathlib,re,sys,urllib.error,urllib.request,uuid
 HERE=pathlib.Path(__file__).resolve().parent
 spec=importlib.util.spec_from_file_location('local_candidate_github',HERE/'ops.py')
 ops=importlib.util.module_from_spec(spec);spec.loader.exec_module(ops)
@@ -12,7 +12,15 @@ def main():
     if head!=remote or ops.g.git('branch','--show-current')!='main':raise RuntimeError('git_binding')
     names=ops.g.git('ls-files','--','_offline/phase6e_server_v1').splitlines()
     names+=['.github/workflows/phase6e-server-local-ci.yml']
-    if not names or any(not n.startswith(('_offline/phase6e_server_v1/','.github/')) for n in names):raise RuntimeError('path_binding')
+    if len(sys.argv)>2:
+        base=sys.argv[2]
+        if not re.fullmatch('[0-9a-f]{40}',base):raise RuntimeError('base_binding')
+        ops.g.git('merge-base','--is-ancestor',base,'HEAD')
+        names += [n for n in ops.g.git('diff','--name-only','--diff-filter=AM',base,'HEAD').splitlines()
+                  if n.startswith(('_offline/','supabase/','.github/'))]
+    names=sorted(set(names))
+    if not names or any(not n.startswith(('_offline/','supabase/','.github/')) or '..' in n.split('/')
+                        or not re.fullmatch(r'[A-Za-z0-9_./-]+',n) for n in names):raise RuntimeError('path_binding')
     result={'head':head,'remote_head':remote,'status':'INCOMPLETE','private':[],'supabase_calls':0}
     try:
         opener=urllib.request.build_opener(NoRedirect())

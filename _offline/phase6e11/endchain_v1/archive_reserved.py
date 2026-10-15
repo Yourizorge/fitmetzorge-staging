@@ -21,7 +21,7 @@ def export(source,kind):
         names=sorted(p.name for p in disk(source).glob('*.json'))
         label='reserved-'+RUN_ID
     elif kind=='ci':
-        if not re.fullmatch(r'artifact-run-[0-9]+',source.name):raise ValueError('receipt_ci_binding')
+        if not re.fullmatch(r'artifact-run-[0-9]+(?:-recovered)?',source.name):raise ValueError('receipt_ci_binding')
         names=['result.json','collection.json','artifact-manifest.json','endchain-sources.json',
                'complete-command-register.json','runtime-command-meter.json','integral-real-failure-matrix.json',
                'integral-closure.json','integral-migration-pair.json','integral-workflow.json',
@@ -31,7 +31,7 @@ def export(source,kind):
         names=[n for n in names if disk(source/n).is_file()]
         names+=sorted(p.name for p in disk(source).glob('*cli-isolation-*.json'))
         names+=sorted(p.name for p in disk(source).glob('*stop*.json'))
-        label='reserved-ci-'+source.name.removeprefix('artifact-run-')
+        label='reserved-ci-'+source.name.removeprefix('artifact-run-').removesuffix('-recovered')
     else:raise ValueError('receipt_kind')
     if not names or len(names)>1500 or len(names)!=len(set(names)):raise ValueError('receipt_set')
     values={}

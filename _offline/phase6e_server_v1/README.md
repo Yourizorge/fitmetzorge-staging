@@ -53,11 +53,18 @@ exactly `dsn`, `auth_url`, `bindings`; for the combined entry it has `dsn`,
 Both entries reject non-loopback database/Auth endpoints. A hosted transport,
 full hosted lifecycle/budget and release decision remain separate gates.
 
-Current source-bound evidence: CI38603611445, completion receipt in
-`receipts/ci-38603611445-completion/`. The selected12 register has970 observed
+Current source-bound evidence: CI38710983711, completion receipt in
+`receipts/ci-38710983711-completion/`; the older receipt remains unchanged.
+The selected12 register has970 observed
 local commands, including meter setup/closure. It is not a hosted allowance.
 See `docs/PHASE6E_CURRENT_COMPLETION.md` and the dated completion report for
 current status; older release packets retain their historical meaning.
+
+`registration_transport.py` and `registration_scope.py` are private offline
+candidates without a listener or activation flag. Their15 synthetic unit tests
+are distinct from real local Auth/storage integration. They require completed11,
+physical review, a selected12 decision and exact source/register admission.
+They do not enable hosted operation of either existing local entry.
 
 M46 adds a transactional in-app outbox to the broader local candidate only.
 No push/mail/background delivery is implemented. Expired pending entries are

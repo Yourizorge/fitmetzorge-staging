@@ -140,3 +140,19 @@ a precise sanitized phase/reason for attribution or row-capacity stops.
 Synthetic PG17 equivalence and fresh source-bound CI are required for the changed
 adapter. Even a PASS does not authorize another hosted attempt. Any later attempt
 needs a separate owner allowance and new identity/admission; this run cannot reopen.
+
+CI38710056451 passes at037f819e8248485f88e702217974a8b8b55be7f5,
+candidate477235001cf0ae9ea62e11411283e365fb5ef5265132acbcec0d5fc15006090a,
+archive0fb949ba9d392b45dc1a11a1e718c45eb69b054706fad1d00a96811ff7d9168c.
+It proves clean44,169 Python/131 JS tests, six PG17 filter assertions and the full
+integral/failure chain. A73728-row synthetic fixture becomes exactly4 protected
+rows with2 distinct hashes and2 NULL rows; duplicate-preserving equality holds.
+Actual2154 SQL; capacity2196/worst2207 remain unchanged. No hosted retry followed.
+
+The collector initially rejected1406 archive entries against its old1400-file
+cap. Local ZIP inspection proved no duplicate/unsafe path,43295721 unpacked bytes
+and largest file1339637 bytes. The bounded collector now allows1410 entries;
+30MB compressed/48MB unpacked/2MB per-file and all hash/path checks stay intact.
+Eleven collector tests pass. Recovery preserved the original ZIP and verified
+all1405 manifest files into a separate recovered folder. This postprocessing
+correction is not a new CI execution or expanded hosted SQL/time allowance.

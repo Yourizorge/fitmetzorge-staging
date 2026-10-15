@@ -67,3 +67,17 @@ then stopped because its separate transport-test process lacked the isolated
 pinned psycopg dependency path. That failure is retained; no hosted call occurred.
 The CI correction passes the existing dependency path explicitly to that process.
 It installs no new package or privilege and does not change application behavior.
+
+CI38710983711 now passes at3288eb046abf08ddc4d44eb0752645e0ca15f599,
+candidatece8c729e322c05e1281a773a732d686c64556f086461f2122de90017629e0342,
+archive0076c471780cb5b6f83d9efa885c7cc88804f7a7b2a6edee24871a27d3a3b8fa.
+Clean46,25 selected12 database checks,15 selected12 browser checks,4 selected12
+Auth checks,62 combined database checks,209 combined browser checks,4 combined
+Auth checks,29 domain tests,12 SQL regressions,33 M44 checks,15 new scope/transport
+unit tests and6 PG17 filter-equivalence assertions pass. NL/EN/DE, light/dark,
+mobile390 and desktop1280 are browser-emulated, not physical owner tests.
+The source-bound registration release dossier and78 receipts are in
+`_offline/phase6e_server_v1/receipts/ci-38710983711-completion/`.
+The new private transport's Auth verifier uses synthetic unit responses; the
+real local Auth integration uses the existing loopback adapter. Do not conflate
+those proofs or claim a real hosted request through the unpublished transport.
