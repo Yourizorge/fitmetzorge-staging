@@ -1,22 +1,288 @@
 {
   "scope": "local_synthetic_candidate",
   "hosted11": "NO_GO_CAPACITY_DECISION_PENDING",
+  "current_source_evidence": "CI38742498080 at 4712f7a: clean46, all prior integration groups plus synthetic106496-row PG17 PASS; not hosted admission",
   "full_day21": false,
   "functions": [
-    {"id":"auth","behavior":"One actual local GoTrue login; live session, exact actor/workspace and RLS checks","sources":["store.py","server.py","composed_store.py"],"tests":["database_tests.py","composed_browser.cjs"],"depends":[],"state":"ci_pending","remaining":"Hosted11 auth/controller chain","gate":"hosted11"},
-    {"id":"plans","behavior":"A trainer-bound and B catalogue-bound plans, eligible exercises, days, foods and portions","sources":["domain.cjs","presentation.cjs","panels.js"],"tests":["domain.test.cjs","presentation.test.cjs","composed_browser.cjs"],"depends":["auth"],"state":"ci_pending","remaining":"Individual hosted plan slice and preservation budget","gate":"selected_release"},
-    {"id":"intake","behavior":"Days, frequency, time, equipment, likes/exclusions, independent RIR/RPE and explicit allergy completeness","sources":["domain.cjs","panels.js"],"tests":["presentation.test.cjs","composed_browser.cjs"],"depends":["plans"],"state":"ci_pending","remaining":"Hosted versioned intake storage under existing rules","gate":"selected_release"},
-    {"id":"registration12","behavior":"Historical snapshot registration in same login, immutable source and record versions","sources":["registration12.cjs","registration_store.py","composed_store.py"],"tests":["registration_database.py","registration_browser.cjs","composed_browser.cjs"],"depends":["auth"],"state":"ci_pending","remaining":"Minimal hosted12 only after complete11 and physical review","gate":"owner11_and_release12"},
-    {"id":"workout12","behavior":"Explicit historical workout start, partial/complete registration, explicit finish and facts","sources":["workout12.cjs","ui.js"],"tests":["workout12.test.cjs","composed_browser.cjs"],"depends":["registration12"],"state":"ci_pending","remaining":"Separate additive server release; not silently part of minimal12","gate":"selected_release"},
-    {"id":"review","behavior":"A member then trainer approval, B member only; separate atomic application and restore as new version","sources":["domain.cjs","store.py"],"tests":["database_tests.py","browser_checks.cjs"],"depends":["plans"],"state":"existing_ci_with_regression_pending","remaining":"Hosted request/audit proof and owner review","gate":"hosted11"},
-    {"id":"recovery","behavior":"Exact sleep/recovery registration, complete comparable source windows, approved check-in option","sources":["domain.cjs","windows.cjs","planning.py"],"tests":["windows.test.cjs","test_planning.py","database_tests.py"],"depends":["auth"],"state":"existing_ci_with_regression_pending","remaining":"Server clock and scheduler release, expert content review","gate":"selected_release"},
-    {"id":"today_progress","behavior":"Plans versus records, missing comparisons, version history, deduplicated durable in-app outbox","sources":["presentation.cjs","outbox.py","ui.js"],"tests":["test_outbox.py","composed_browser.cjs"],"depends":["plans","recovery"],"state":"ci_pending","remaining":"No real background push or AI chat","gate":"selected_release"},
-    {"id":"preferences","behavior":"Persisted NL/EN/DE and light/dark, unit preference without source conversion","sources":["presentation.cjs","domain.cjs","ui.js"],"tests":["presentation.test.cjs","composed_browser.cjs"],"depends":["auth"],"state":"ci_pending","remaining":"Unit display integration, not implicit plan/load conversion","gate":"selected_release"},
-    {"id":"save_recovery","behavior":"Lost response: explicit same-request reconciliation; no second application","sources":["ui.js","store.py"],"tests":["composed_browser.cjs","database_tests.py"],"depends":["auth"],"state":"ci_pending","remaining":"Durable browser draft storage and full offline shell not implemented","gate":"selected_release"},
-    {"id":"offline_sync","behavior":"Account/workspace/source/version-bound draft, stable request, explicit conflict and consent gate","sources":["sync_contract.cjs"],"tests":["prepared_contracts.test.cjs"],"depends":["registration12"],"state":"local_contract_only","remaining":"Browser persistence, offline shell, UI conflict resolution, end-to-end real Auth sync","gate":"local_integration"},
-    {"id":"tiers","behavior":"Read-only 30-day AI trial/fallback policy with existing valid package and retained history","sources":["access_policy.cjs"],"tests":["prepared_contracts.test.cjs"],"depends":["auth"],"state":"local_contract_only","remaining":"Phase7 authoritative issuance/abuse protection; final-day timezone/delivery rule; no payments","gate":"phase7_policy"},
-    {"id":"size","behavior":"One exact numeric count with unchanged historical filters, no row hashes or personal output","sources":["size_diagnosis.py","size_pg17.py"],"tests":["test_size_diagnosis.py"],"depends":[],"state":"ci_pending","remaining":"One authorized read-only diagnosis after source-bound CI; combined capacity decision afterward","gate":"numeric_only_authorization"},
-    {"id":"full_day21","behavior":"All planned workouts/meals recorded and explicitly completed","sources":["domain.cjs"],"tests":["domain.test.cjs","database_tests.py"],"depends":["plans"],"state":"owner_unaccepted_default_off","remaining":"Physical owner acceptance before activation","gate":"owner21"},
-    {"id":"later_interfaces","behavior":"Running, wearables, media and personal badges remain separate source/consent scopes","sources":["work_register.json"],"tests":["check_work_register.py"],"depends":["auth"],"state":"not_implemented","remaining":"Provider/source contracts, precise badge/streak rules, media quality/privacy/expert review; no fake integrations","gate":"future_scope"}
-  ]
+    {
+      "id": "auth",
+      "behavior": "One actual local GoTrue login; live session, exact actor/workspace and RLS checks",
+      "sources": [
+        "store.py",
+        "server.py",
+        "composed_store.py"
+      ],
+      "tests": [
+        "database_tests.py",
+        "composed_browser.cjs"
+      ],
+      "depends": [],
+      "state": "real_local_ci_pass",
+      "remaining": "Hosted11 auth/controller chain",
+      "gate": "hosted11",
+      "evidence": "CI38739029524 at c0624a2; not hosted"
+    },
+    {
+      "id": "plans",
+      "behavior": "A trainer-bound and B catalogue-bound plans, eligible exercises, days, foods and portions",
+      "sources": [
+        "domain.cjs",
+        "presentation.cjs",
+        "panels.js"
+      ],
+      "tests": [
+        "domain.test.cjs",
+        "presentation.test.cjs",
+        "composed_browser.cjs"
+      ],
+      "depends": [
+        "auth"
+      ],
+      "state": "real_local_ci_pass",
+      "remaining": "Individual hosted plan slice and preservation budget",
+      "gate": "selected_release",
+      "evidence": "CI38739029524 at c0624a2; not hosted"
+    },
+    {
+      "id": "intake",
+      "behavior": "Days, frequency, time, equipment, likes/exclusions, independent RIR/RPE and explicit allergy completeness",
+      "sources": [
+        "domain.cjs",
+        "panels.js"
+      ],
+      "tests": [
+        "presentation.test.cjs",
+        "composed_browser.cjs"
+      ],
+      "depends": [
+        "plans"
+      ],
+      "state": "real_local_ci_pass",
+      "remaining": "Hosted versioned intake storage under existing rules",
+      "gate": "selected_release",
+      "evidence": "CI38739029524 at c0624a2; not hosted"
+    },
+    {
+      "id": "registration12",
+      "behavior": "Historical snapshot registration in same login, immutable source and record versions",
+      "sources": [
+        "registration12.cjs",
+        "registration_store.py",
+        "composed_store.py"
+      ],
+      "tests": [
+        "registration_database.py",
+        "registration_browser.cjs",
+        "composed_browser.cjs"
+      ],
+      "depends": [
+        "auth"
+      ],
+      "state": "real_local_ci_pass",
+      "remaining": "Minimal hosted12 only after complete11 and physical review",
+      "gate": "owner11_and_release12",
+      "evidence": "CI38739029524 at c0624a2; not hosted"
+    },
+    {
+      "id": "workout12",
+      "behavior": "Explicit historical workout start, partial/complete registration, explicit finish and facts",
+      "sources": [
+        "workout12.cjs",
+        "ui.js"
+      ],
+      "tests": [
+        "workout12.test.cjs",
+        "composed_browser.cjs"
+      ],
+      "depends": [
+        "registration12"
+      ],
+      "state": "real_local_ci_pass",
+      "remaining": "Separate additive server release; not silently part of minimal12",
+      "gate": "selected_release",
+      "evidence": "CI38739029524 at c0624a2; not hosted"
+    },
+    {
+      "id": "review",
+      "behavior": "A member then trainer approval, B member only; separate atomic application and restore as new version",
+      "sources": [
+        "domain.cjs",
+        "store.py"
+      ],
+      "tests": [
+        "database_tests.py",
+        "browser_checks.cjs"
+      ],
+      "depends": [
+        "plans"
+      ],
+      "state": "real_local_ci_pass",
+      "remaining": "Hosted request/audit proof and owner review",
+      "gate": "hosted11",
+      "evidence": "CI38739029524 at c0624a2; not hosted"
+    },
+    {
+      "id": "recovery",
+      "behavior": "Exact sleep/recovery registration, complete comparable source windows, approved check-in option",
+      "sources": [
+        "domain.cjs",
+        "windows.cjs",
+        "planning.py"
+      ],
+      "tests": [
+        "windows.test.cjs",
+        "test_planning.py",
+        "database_tests.py"
+      ],
+      "depends": [
+        "auth"
+      ],
+      "state": "real_local_ci_pass",
+      "remaining": "Server clock and scheduler release, expert content review",
+      "gate": "selected_release",
+      "evidence": "CI38739029524 at c0624a2; not hosted"
+    },
+    {
+      "id": "today_progress",
+      "behavior": "Plans versus records, missing comparisons, version history, deduplicated durable in-app outbox",
+      "sources": [
+        "presentation.cjs",
+        "outbox.py",
+        "ui.js"
+      ],
+      "tests": [
+        "test_outbox.py",
+        "composed_browser.cjs"
+      ],
+      "depends": [
+        "plans",
+        "recovery"
+      ],
+      "state": "real_local_ci_pass",
+      "remaining": "No real background push or AI chat",
+      "gate": "selected_release",
+      "evidence": "CI38739029524 at c0624a2; not hosted"
+    },
+    {
+      "id": "preferences",
+      "behavior": "Persisted NL/EN/DE/light/dark/unit preference; approximate display conversion with original value/unit",
+      "sources": [
+        "presentation.cjs",
+        "domain.cjs",
+        "ui.js"
+      ],
+      "tests": [
+        "presentation.test.cjs",
+        "composed_browser.cjs"
+      ],
+      "depends": [
+        "auth"
+      ],
+      "state": "real_local_ci_pass",
+      "remaining": "Hosted storage remains gated; display conversion never changes source/input/prescription",
+      "gate": "selected_release",
+      "evidence": "CI38739029524 at c0624a2; not hosted"
+    },
+    {
+      "id": "save_recovery",
+      "behavior": "Lost response: explicit same-request reconciliation; no second application",
+      "sources": [
+        "ui.js",
+        "store.py"
+      ],
+      "tests": [
+        "composed_browser.cjs",
+        "database_tests.py"
+      ],
+      "depends": [
+        "auth"
+      ],
+      "state": "real_local_ci_pass",
+      "remaining": "Durable browser draft storage and full offline shell not implemented",
+      "gate": "selected_release",
+      "evidence": "CI38739029524 at c0624a2; not hosted"
+    },
+    {
+      "id": "offline_sync",
+      "behavior": "Account/workspace/source/version-bound draft, stable request, explicit conflict and consent gate",
+      "sources": [
+        "sync_contract.cjs"
+      ],
+      "tests": [
+        "prepared_contracts.test.cjs"
+      ],
+      "depends": [
+        "registration12"
+      ],
+      "state": "local_contract_only",
+      "remaining": "Browser persistence, offline shell, UI conflict resolution, end-to-end real Auth sync",
+      "gate": "local_integration"
+    },
+    {
+      "id": "tiers",
+      "behavior": "Read-only 30-day AI trial/fallback policy with existing valid package and retained history",
+      "sources": [
+        "access_policy.cjs"
+      ],
+      "tests": [
+        "prepared_contracts.test.cjs"
+      ],
+      "depends": [
+        "auth"
+      ],
+      "state": "local_contract_only",
+      "remaining": "Phase7 authoritative issuance/abuse protection; final-day timezone/delivery rule; no payments",
+      "gate": "phase7_policy"
+    },
+    {
+      "id": "size",
+      "behavior": "One exact numeric count with unchanged historical filters, no row hashes or personal output",
+      "sources": [
+        "size_diagnosis.py",
+        "size_pg17.py"
+      ],
+      "tests": [
+        "test_size_diagnosis.py"
+      ],
+      "depends": [],
+      "state": "numeric_hosted_pass_not_workflow_pass",
+      "remaining": "PG17 capacity PASS; new exact run binding, fresh integral endchain admission and combined owner capacity decision remain",
+      "gate": "numeric_only_authorization",
+      "evidence": "91ba398d-8888-4026-9f0b-3aafd988e5b3: 100843 rows, 13 SQL, zero own temp, JIT revoked"
+    },
+    {
+      "id": "full_day21",
+      "behavior": "All planned workouts/meals recorded and explicitly completed",
+      "sources": [
+        "domain.cjs"
+      ],
+      "tests": [
+        "domain.test.cjs",
+        "database_tests.py"
+      ],
+      "depends": [
+        "plans"
+      ],
+      "state": "owner_unaccepted_default_off",
+      "remaining": "Physical owner acceptance before activation",
+      "gate": "owner21"
+    },
+    {
+      "id": "later_interfaces",
+      "behavior": "Running, wearables, media and personal badges remain separate source/consent scopes",
+      "sources": [
+        "work_register.json"
+      ],
+      "tests": [
+        "check_work_register.py"
+      ],
+      "depends": [
+        "auth"
+      ],
+      "state": "not_implemented",
+      "remaining": "Provider/source contracts, precise badge/streak rules, media quality/privacy/expert review; no fake integrations",
+      "gate": "future_scope"
+    }
+  ],
+  "evidence_note": "This is a work register, not a completion percentage or new product acceptance."
 }

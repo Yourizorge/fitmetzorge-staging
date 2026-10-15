@@ -1,6 +1,17 @@
 # FitMetZorge Master Build Plan
 
-## Current: 6E-11 M42 Installed / Hosted Edge Configuration Blocked
+## Current Integration Checkpoint - 15 October 2026
+
+The owner-authorized larger work package is tracked in
+[the executable work register](../_offline/phase6e_server_v1/work_register.json)
+and [combined result](PHASE6E_WORKDAY_RESULT_20261015.md). Accepted12-20 modules
+now have a composed real local PG17/GoTrue candidate; no bulk hosted activation.
+21 remains unaccepted/default-off. Hosted11 is blocked on a new exact capacity/run
+decision, not on the old Edge connection diagnosis. Numeric size100843 is proven;
+full protected-data equality and endchain completion are not. Below sections retain
+their historical status and do not supersede later accepted owner decisions.
+
+## Historical: 6E-11 M42 Installed / Hosted Edge Configuration Blocked
 
 Clean 1..42 CI PASS, hosted/local 42/42, SQL partition verified and dry-run EMPTY.
 153 protected table hashes unchanged. No complete hosted workflow or owner GO.

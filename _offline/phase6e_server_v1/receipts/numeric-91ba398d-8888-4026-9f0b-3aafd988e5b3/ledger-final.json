@@ -1,0 +1,827 @@
+{
+  "commands": [
+    {
+      "confirmed": true,
+      "duration_ms": 78,
+      "elapsed_ms": 12125,
+      "kind": "TransactionStmt",
+      "number": 1,
+      "phase": "begin",
+      "sent": true,
+      "sql_sha256": "39a735c5dae2019f7ec2a41de9b4b8f37d979b14d999d9abd06b7f5d1bb9c95a",
+      "transaction": null
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 63,
+      "elapsed_ms": 12203,
+      "kind": "SelectStmt",
+      "number": 2,
+      "phase": "guard",
+      "sent": true,
+      "sql_sha256": "810cd66d8d73d499bc7d3996e01570ee70418a29d9176388b8d3c57b60347c55",
+      "transaction": null
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 47,
+      "elapsed_ms": 12281,
+      "kind": "SelectStmt",
+      "number": 3,
+      "phase": "canonical",
+      "sent": true,
+      "sql_sha256": "7d10b9ef765a9886d89e423ac8a6def20e8589493a8958af253431c52c1d2183",
+      "transaction": 1368025
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 63,
+      "elapsed_ms": 12328,
+      "kind": "SelectStmt",
+      "number": 4,
+      "phase": "settings",
+      "sent": true,
+      "sql_sha256": "b228f4e745f10f2b79f5ab9278654652e10547bae9534728ce358c940a89cdb2",
+      "transaction": 1368025
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 219,
+      "elapsed_ms": 12422,
+      "kind": "SelectStmt",
+      "number": 5,
+      "phase": "inventory",
+      "sent": true,
+      "sql_sha256": "6918384197bebf43afd6b0416425ee07f1ffb2b807f1dd7928925ad4c845540b",
+      "transaction": 1368025
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 78,
+      "elapsed_ms": 12656,
+      "kind": "ExplainStmt",
+      "number": 6,
+      "phase": "reader_bind",
+      "sent": true,
+      "sql_sha256": "0216fdc5f79878fc4ea70b0b724f14472b8f4f028c6e6dcfe9c0c1b6137cc6d5",
+      "transaction": 1368025
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 1125,
+      "elapsed_ms": 12734,
+      "kind": "ExplainStmt",
+      "number": 7,
+      "phase": "size_bind",
+      "sent": true,
+      "sql_sha256": "21ef08ee18adb7e575688747e73f8ffa2c2e7a135879e7e313c64f0ba4fdeaaa",
+      "transaction": 1368025
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 157,
+      "elapsed_ms": 13859,
+      "kind": "SelectStmt",
+      "number": 8,
+      "phase": "sample_before",
+      "sent": true,
+      "sql_sha256": "345817700e6ab22ac07149573a908f3971c6a631c32b1b5df4ff167233bdb824",
+      "transaction": 1368025
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 750,
+      "elapsed_ms": 14109,
+      "kind": "SelectStmt",
+      "number": 9,
+      "phase": "exact_numeric_count",
+      "sent": true,
+      "sql_sha256": "0be7a8a1248a0c64c8e91af9d78f40532cfff21cbb89bad37d8d23d24815f4c2",
+      "transaction": 1368025
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 172,
+      "elapsed_ms": 14875,
+      "kind": "SelectStmt",
+      "number": 10,
+      "phase": "sample_after",
+      "sent": true,
+      "sql_sha256": "345817700e6ab22ac07149573a908f3971c6a631c32b1b5df4ff167233bdb824",
+      "transaction": 1368025
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 94,
+      "elapsed_ms": 15156,
+      "kind": "ExplainStmt",
+      "number": 11,
+      "phase": "reader_witness",
+      "sent": true,
+      "sql_sha256": "3a7a3d78d675bbe1ef751e37b6f7fb72f83cf12ca40264701e4cba35bde3d8fa",
+      "transaction": 1368025
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 47,
+      "elapsed_ms": 15250,
+      "kind": "SelectStmt",
+      "number": 12,
+      "phase": "final_guard",
+      "sent": true,
+      "sql_sha256": "810cd66d8d73d499bc7d3996e01570ee70418a29d9176388b8d3c57b60347c55",
+      "transaction": 1368025
+    },
+    {
+      "confirmed": true,
+      "duration_ms": 47,
+      "elapsed_ms": 15297,
+      "kind": "TransactionStmt",
+      "number": 13,
+      "phase": "rollback",
+      "sent": true,
+      "sql_sha256": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710",
+      "transaction": 1368025
+    }
+  ],
+  "result": {
+    "application_writes": 0,
+    "auth_calls": 0,
+    "capacity": {
+      "full_cycle_fetch_and_sample_commands": 26,
+      "hash_rows_transported": 0,
+      "new_mutation_capacity_admitted": false,
+      "not_a_preservation_comparison": true,
+      "numeric_tables": 158,
+      "pages_at_8192": 13,
+      "planned_hash_payload_bytes": 6453952,
+      "planned_json_frame_bytes": 9478656,
+      "protected_rows": 100843,
+      "table_counts": [
+        {
+          "rows": 5,
+          "table": "ai_private.action_policies"
+        },
+        {
+          "rows": 11,
+          "table": "ai_private.analysis_jobs"
+        },
+        {
+          "rows": 2,
+          "table": "ai_private.analysis_safety_recoveries"
+        },
+        {
+          "rows": 56,
+          "table": "ai_private.audit_events"
+        },
+        {
+          "rows": 1,
+          "table": "ai_private.budget_accounts"
+        },
+        {
+          "rows": 1,
+          "table": "ai_private.budget_policies"
+        },
+        {
+          "rows": 12,
+          "table": "ai_private.consent_documents"
+        },
+        {
+          "rows": 3,
+          "table": "ai_private.feature_flags"
+        },
+        {
+          "rows": 1,
+          "table": "ai_private.phase6c_runtime_config"
+        },
+        {
+          "rows": 1,
+          "table": "ai_private.phase6d_runtime_config"
+        },
+        {
+          "rows": 1,
+          "table": "ai_private.provider_configurations"
+        },
+        {
+          "rows": 2,
+          "table": "ai_private.provider_models"
+        },
+        {
+          "rows": 9,
+          "table": "ai_private.provider_payload_fields"
+        },
+        {
+          "rows": 1,
+          "table": "ai_private.provider_test_budget"
+        },
+        {
+          "rows": 4,
+          "table": "ai_private.provider_test_runs"
+        },
+        {
+          "rows": 19,
+          "table": "ai_private.rate_buckets"
+        },
+        {
+          "rows": 4,
+          "table": "ai_private.rate_policies"
+        },
+        {
+          "rows": 27,
+          "table": "ai_private.runs"
+        },
+        {
+          "rows": 3,
+          "table": "ai_private.safety_events"
+        },
+        {
+          "rows": 2,
+          "table": "ai_private.structured_schemas"
+        },
+        {
+          "rows": 54,
+          "table": "ai_private.usage_ledger"
+        },
+        {
+          "rows": 0,
+          "table": "auth.audit_log_entries"
+        },
+        {
+          "rows": 0,
+          "table": "auth.custom_oauth_providers"
+        },
+        {
+          "rows": 0,
+          "table": "auth.flow_state"
+        },
+        {
+          "rows": 12,
+          "table": "auth.identities"
+        },
+        {
+          "rows": 0,
+          "table": "auth.instances"
+        },
+        {
+          "rows": 2,
+          "table": "auth.mfa_amr_claims"
+        },
+        {
+          "rows": 0,
+          "table": "auth.mfa_challenges"
+        },
+        {
+          "rows": 0,
+          "table": "auth.mfa_factors"
+        },
+        {
+          "rows": 0,
+          "table": "auth.mfa_recovery_code_sets"
+        },
+        {
+          "rows": 0,
+          "table": "auth.mfa_recovery_codes"
+        },
+        {
+          "rows": 0,
+          "table": "auth.oauth_authorizations"
+        },
+        {
+          "rows": 0,
+          "table": "auth.oauth_client_states"
+        },
+        {
+          "rows": 0,
+          "table": "auth.oauth_clients"
+        },
+        {
+          "rows": 0,
+          "table": "auth.oauth_consents"
+        },
+        {
+          "rows": 2,
+          "table": "auth.one_time_tokens"
+        },
+        {
+          "rows": 29,
+          "table": "auth.refresh_tokens"
+        },
+        {
+          "rows": 0,
+          "table": "auth.saml_providers"
+        },
+        {
+          "rows": 0,
+          "table": "auth.saml_relay_states"
+        },
+        {
+          "rows": 82,
+          "table": "auth.schema_migrations"
+        },
+        {
+          "rows": 0,
+          "table": "auth.scim_tokens"
+        },
+        {
+          "rows": 0,
+          "table": "auth.scim_users"
+        },
+        {
+          "rows": 2,
+          "table": "auth.sessions"
+        },
+        {
+          "rows": 0,
+          "table": "auth.sso_domains"
+        },
+        {
+          "rows": 0,
+          "table": "auth.sso_providers"
+        },
+        {
+          "rows": 12,
+          "table": "auth.users"
+        },
+        {
+          "rows": 0,
+          "table": "auth.webauthn_challenges"
+        },
+        {
+          "rows": 0,
+          "table": "auth.webauthn_credentials"
+        },
+        {
+          "rows": 3,
+          "table": "cron.job"
+        },
+        {
+          "rows": 0,
+          "table": "cron.job_run_details"
+        },
+        {
+          "rows": 14,
+          "table": "fmz6e10_private.audit"
+        },
+        {
+          "rows": 1,
+          "table": "fmz6e10_private.config"
+        },
+        {
+          "rows": 3,
+          "table": "fmz6e10_private.identities"
+        },
+        {
+          "rows": 1,
+          "table": "fmz6e10_private.operators"
+        },
+        {
+          "rows": 0,
+          "table": "fmz6e10_private.participants"
+        },
+        {
+          "rows": 0,
+          "table": "fmz6e10_private.plans"
+        },
+        {
+          "rows": 0,
+          "table": "fmz6e10_private.proposals"
+        },
+        {
+          "rows": 14,
+          "table": "fmz6e10_private.requests"
+        },
+        {
+          "rows": 0,
+          "table": "fmz6e10_private.source_heads"
+        },
+        {
+          "rows": 0,
+          "table": "fmz6e10_private.source_versions"
+        },
+        {
+          "rows": 12,
+          "table": "fmz6e10_private.windows"
+        },
+        {
+          "rows": 0,
+          "table": "fmz6e10_private.workspaces"
+        },
+        {
+          "rows": 2,
+          "table": "fmz6e11_audit_private.actions"
+        },
+        {
+          "rows": 2,
+          "table": "fmz6e11_audit_private.actors"
+        },
+        {
+          "rows": 2,
+          "table": "fmz6e11_audit_private.bindings"
+        },
+        {
+          "rows": 0,
+          "table": "fmz6e11_audit_private.fixture"
+        },
+        {
+          "rows": 0,
+          "table": "fmz6e11_audit_private.forbidden_fixture"
+        },
+        {
+          "rows": 64,
+          "table": "fmz6e11_audit_private.relations"
+        },
+        {
+          "rows": 2,
+          "table": "fmz6e11_audit_private.runs"
+        },
+        {
+          "rows": 6,
+          "table": "fmz6e11_audit_private.writes"
+        },
+        {
+          "rows": 0,
+          "table": "fmz6e11_controller_private.evidence"
+        },
+        {
+          "rows": 0,
+          "table": "fmz6e11_controller_private.runs"
+        },
+        {
+          "rows": 0,
+          "table": "fmz6e11_controller_private.steps"
+        },
+        {
+          "rows": 9,
+          "table": "fmz6e11_private.audit"
+        },
+        {
+          "rows": 0,
+          "table": "fmz6e11_private.b_states"
+        },
+        {
+          "rows": 0,
+          "table": "fmz6e11_private.b_versions"
+        },
+        {
+          "rows": 0,
+          "table": "fmz6e11_private.config"
+        },
+        {
+          "rows": 0,
+          "table": "fmz6e11_private.events"
+        },
+        {
+          "rows": 3,
+          "table": "fmz6e11_private.identities"
+        },
+        {
+          "rows": 0,
+          "table": "fmz6e11_private.inbox_state"
+        },
+        {
+          "rows": 1,
+          "table": "fmz6e11_private.operators"
+        },
+        {
+          "rows": 0,
+          "table": "fmz6e11_private.participants"
+        },
+        {
+          "rows": 0,
+          "table": "fmz6e11_private.plans"
+        },
+        {
+          "rows": 0,
+          "table": "fmz6e11_private.proposals"
+        },
+        {
+          "rows": 9,
+          "table": "fmz6e11_private.requests"
+        },
+        {
+          "rows": 0,
+          "table": "fmz6e11_private.source_heads"
+        },
+        {
+          "rows": 0,
+          "table": "fmz6e11_private.source_versions"
+        },
+        {
+          "rows": 9,
+          "table": "fmz6e11_private.windows"
+        },
+        {
+          "rows": 0,
+          "table": "fmz6e11_private.workspaces"
+        },
+        {
+          "rows": 0,
+          "table": "fmz6e11_request_private.control"
+        },
+        {
+          "rows": 0,
+          "table": "fmz6e11_request_private.receipts"
+        },
+        {
+          "rows": 1,
+          "table": "fmz6e11_workflow_audit.control"
+        },
+        {
+          "rows": 0,
+          "table": "fmz6e11_workflow_audit.intents"
+        },
+        {
+          "rows": 1,
+          "table": "fmz6e9_private.config"
+        },
+        {
+          "rows": 0,
+          "table": "fmz6e9_private.requests"
+        },
+        {
+          "rows": 0,
+          "table": "fmz6e9_private.safety"
+        },
+        {
+          "rows": 0,
+          "table": "fmz6e9_private.subjects"
+        },
+        {
+          "rows": 0,
+          "table": "fmz6e9_private.versions"
+        },
+        {
+          "rows": 0,
+          "table": "legacy_auth_private.client_invitations"
+        },
+        {
+          "rows": 0,
+          "table": "public.ai_action_decisions"
+        },
+        {
+          "rows": 0,
+          "table": "public.ai_action_proposals"
+        },
+        {
+          "rows": 3,
+          "table": "public.ai_analysis_lifecycle_requests"
+        },
+        {
+          "rows": 0,
+          "table": "public.ai_analysis_preferences"
+        },
+        {
+          "rows": 12,
+          "table": "public.ai_analysis_results"
+        },
+        {
+          "rows": 3,
+          "table": "public.ai_consent_events"
+        },
+        {
+          "rows": 12,
+          "table": "public.ai_context_manifests"
+        },
+        {
+          "rows": 4,
+          "table": "public.ai_data_lifecycle_requests"
+        },
+        {
+          "rows": 1,
+          "table": "public.ai_member_safety_state"
+        },
+        {
+          "rows": 30,
+          "table": "public.ai_messages"
+        },
+        {
+          "rows": 10,
+          "table": "public.ai_threads"
+        },
+        {
+          "rows": 1,
+          "table": "public.body_measurements"
+        },
+        {
+          "rows": 2,
+          "table": "public.coach_workspaces"
+        },
+        {
+          "rows": 4,
+          "table": "public.entitlements"
+        },
+        {
+          "rows": 898,
+          "table": "public.exercises"
+        },
+        {
+          "rows": 0,
+          "table": "public.fmz6e9_audit"
+        },
+        {
+          "rows": 0,
+          "table": "public.fmz6e9_notices"
+        },
+        {
+          "rows": 197,
+          "table": "public.food_aliases"
+        },
+        {
+          "rows": 22,
+          "table": "public.food_log_items"
+        },
+        {
+          "rows": 5,
+          "table": "public.food_logs"
+        },
+        {
+          "rows": 0,
+          "table": "public.food_portions"
+        },
+        {
+          "rows": 65,
+          "table": "public.foods"
+        },
+        {
+          "rows": 1,
+          "table": "public.member_app_preferences"
+        },
+        {
+          "rows": 12,
+          "table": "public.member_notifications"
+        },
+        {
+          "rows": 1,
+          "table": "public.nutrition_food_ingestions"
+        },
+        {
+          "rows": 1,
+          "table": "public.nutrition_off_catalog_releases"
+        },
+        {
+          "rows": 74184,
+          "table": "public.nutrition_off_product_names"
+        },
+        {
+          "rows": 24458,
+          "table": "public.nutrition_off_products"
+        },
+        {
+          "rows": 2,
+          "table": "public.nutrition_preferences"
+        },
+        {
+          "rows": 15,
+          "table": "public.nutrition_provider_food_cache"
+        },
+        {
+          "rows": 17,
+          "table": "public.nutrition_provider_query_cache"
+        },
+        {
+          "rows": 68,
+          "table": "public.nutrition_provider_rate_buckets"
+        },
+        {
+          "rows": 2,
+          "table": "public.nutrition_provider_runtime_state"
+        },
+        {
+          "rows": 3,
+          "table": "public.nutrition_targets"
+        },
+        {
+          "rows": 13,
+          "table": "public.profiles"
+        },
+        {
+          "rows": 1,
+          "table": "public.progress_goals"
+        },
+        {
+          "rows": 2,
+          "table": "public.progress_preferences"
+        },
+        {
+          "rows": 1,
+          "table": "public.recovery_logs"
+        },
+        {
+          "rows": 7,
+          "table": "public.training_plan_days"
+        },
+        {
+          "rows": 14,
+          "table": "public.training_plan_exercises"
+        },
+        {
+          "rows": 7,
+          "table": "public.training_plans"
+        },
+        {
+          "rows": 3,
+          "table": "public.user_onboarding"
+        },
+        {
+          "rows": 3,
+          "table": "public.user_settings"
+        },
+        {
+          "rows": 2,
+          "table": "public.weight_logs"
+        },
+        {
+          "rows": 21,
+          "table": "public.workout_sessions"
+        },
+        {
+          "rows": 15,
+          "table": "public.workout_set_logs"
+        },
+        {
+          "rows": 0,
+          "table": "realtime.messages"
+        },
+        {
+          "rows": 86,
+          "table": "realtime.schema_migrations"
+        },
+        {
+          "rows": 0,
+          "table": "realtime.subscription"
+        },
+        {
+          "rows": 0,
+          "table": "storage.buckets"
+        },
+        {
+          "rows": 0,
+          "table": "storage.buckets_analytics"
+        },
+        {
+          "rows": 0,
+          "table": "storage.buckets_vectors"
+        },
+        {
+          "rows": 73,
+          "table": "storage.migrations"
+        },
+        {
+          "rows": 0,
+          "table": "storage.objects"
+        },
+        {
+          "rows": 0,
+          "table": "storage.s3_multipart_uploads"
+        },
+        {
+          "rows": 0,
+          "table": "storage.s3_multipart_uploads_parts"
+        },
+        {
+          "rows": 0,
+          "table": "storage.vector_indexes"
+        },
+        {
+          "rows": 43,
+          "table": "supabase_migrations.schema_migrations"
+        },
+        {
+          "rows": 0,
+          "table": "vault.secrets"
+        }
+      ]
+    },
+    "commands": 13,
+    "elapsed_ms": 15344,
+    "error": null,
+    "hash_rows_transported": 0,
+    "io": {
+      "background_attributed_to_collector": false,
+      "background_temp_bytes": 0,
+      "own_temp_written": 0,
+      "own_wal_bytes": 0,
+      "queries": [
+        {
+          "calls": 1,
+          "exec_ms": 48.706578000000036,
+          "queryid": "3173023848606027568",
+          "temp_read": 0,
+          "temp_written": 0,
+          "wal": 0
+        },
+        {
+          "calls": 1,
+          "exec_ms": 679.258195,
+          "queryid": "-8282918250781641446",
+          "temp_read": 0,
+          "temp_written": 0,
+          "wal": 0
+        }
+      ]
+    },
+    "rollback_confirmed": true,
+    "run_id": "91ba398d-8888-4026-9f0b-3aafd988e5b3",
+    "status": "NUMERIC_DIAGNOSIS_PASS_NOT_WORKFLOW_PASS"
+  }
+}

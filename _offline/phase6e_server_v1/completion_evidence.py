@@ -17,7 +17,7 @@ def main():
         'integration-native-admin-protocol.json','integration-managed-auth-protocol.json']
     if 'stream-filter-pg17.json' in manifest:names.append('stream-filter-pg17.json')
     if 'stream-capacity-pg17.json' in manifest:names.append('stream-capacity-pg17.json')
-    for name in ('composed-browser.json','numeric-size-pg17.json'):
+    for name in ('composed-browser.json','numeric-size-pg17.json','proposed-size-pg17.json'):
         if name in manifest:names.append(name)
     names += [n for n in manifest if n.startswith('registration12-transport-') and n.endswith('.json')]
     names += [n for n in manifest if n.startswith(('cli-protocol-','cli-numeric-coverage-','cli-isolation-')) or n.endswith('.png')]

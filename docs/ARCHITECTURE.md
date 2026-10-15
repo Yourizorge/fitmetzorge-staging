@@ -1,6 +1,19 @@
 # FitMetZorge Architecture
 
-## 6E-11 Current Request Binding (28 September 2026)
+## Current Local Integration - 15 October 2026
+
+The default-off candidate in `_offline/phase6e_server_v1` composes accepted
+catalogue plans with separately mounted historical registration12 beneath one
+real local Auth login. Every workspace remains server-authorized; CAS, live
+session validation, immutable revisions, request idempotency and private RLS
+remain in the database adapter. Current plans never replace historical snapshots.
+Optional local workout lifecycle is not enabled in the minimal12 transport.
+Language/theme/unit display are presentation state, never prescription authority.
+See [the combined result and limitations](PHASE6E_WORKDAY_RESULT_20261015.md).
+Hosted remains last-proven43, local candidate46 is not a hosted migration count;
+21 stays disabled. Older connection/migration sections below remain historical.
+
+## 6E-11 Historical Request Binding (28 September 2026)
 
 M42 is installed, private and default-off. Auth events are separate from the
 application transaction. Verified session claims and one strict request ID bind

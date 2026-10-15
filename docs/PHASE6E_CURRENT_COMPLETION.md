@@ -1,6 +1,20 @@
 # Current Integration Completion
 
-## Current Status: Filtered Attempt, 15 October 2026
+## Current: Workday Integration And Numeric Size, 15 October 2026
+
+See [the combined workday report](PHASE6E_WORKDAY_RESULT_20261015.md) and
+[executable work register](../_offline/phase6e_server_v1/work_register.json).
+Real local PG17/GoTrue integration PASS at c0624a2 (CI38739029524), including
+108 composed browser checks, while21 stays server-disabled. Same-login historical
+registration is distinct from current catalogue plans. Numeric hosted diagnosis
+passed:100843 protected rows across158 tables,13 SQL,own temp/WAL0,JIT revoked.
+Full hosted11 remains NO-GO; proposed capacity106496 and SQL2237 are not admitted.
+CI38742498080 at4712f7a repeats the full local composition PASS and measures the
+proposed106496-row synthetic PG17 stream at253.565ms with zero temp blocks.
+No new hosted mutation, fixture cleanup, M44 application or owner window.
+Older snapshots below remain historical, not current attempt availability.
+
+## Earlier Snapshot: Filtered Attempt, 15 October 2026
 
 This section supersedes the earlier snapshots below without changing their
 receipts. New authorized run `debe3298-9772-40b1-a9f4-8e3d99c8fd20` is USED / NO-GO.

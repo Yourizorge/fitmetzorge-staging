@@ -1,6 +1,17 @@
 # FitMetZorge Test Matrix
 
-## 6E-11 Current Request/M42 Evidence
+## Current Integrated Candidate - 15 October 2026
+
+Source-bound CI38739029524: clean46 local;25 minimal12/46 private-transport/62
+combined database checks;15 minimal12/209 existing/108 composed browser checks;
+three real local Auth/session groups of4;22 private-transport meetpairs;39 domain,
+4 prepared-contract,2 unit-display tests;12 SQL,36 M44,36 PG17-filter and4 numeric
+PG17 cases. See [exact report and retained failures](PHASE6E_WORKDAY_RESULT_20261015.md).
+Hosted numeric-only run:13 SQL,100843 rows,0 hashes,own temp/WAL0,rollback and JIT
+closure confirmed. This is not protected-data equality or a hosted workflow PASS.
+Mobile checks are emulation, not new physical owner acceptance.21 stays default-off.
+
+## 6E-11 Historical Request/M42 Evidence
 
 Clean CI42 and 12 SQL regressions PASS; hosted 42/42 and fresh dry-run EMPTY.
 45 real-driver local A/B pairs, 33 security checks, 39 baseline plus 6 new request

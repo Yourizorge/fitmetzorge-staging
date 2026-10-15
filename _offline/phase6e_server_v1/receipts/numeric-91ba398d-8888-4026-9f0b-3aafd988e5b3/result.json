@@ -1,0 +1,681 @@
+{
+  "application_writes": 0,
+  "auth_calls": 0,
+  "capacity": {
+    "full_cycle_fetch_and_sample_commands": 26,
+    "hash_rows_transported": 0,
+    "new_mutation_capacity_admitted": false,
+    "not_a_preservation_comparison": true,
+    "numeric_tables": 158,
+    "pages_at_8192": 13,
+    "planned_hash_payload_bytes": 6453952,
+    "planned_json_frame_bytes": 9478656,
+    "protected_rows": 100843,
+    "table_counts": [
+      {
+        "rows": 5,
+        "table": "ai_private.action_policies"
+      },
+      {
+        "rows": 11,
+        "table": "ai_private.analysis_jobs"
+      },
+      {
+        "rows": 2,
+        "table": "ai_private.analysis_safety_recoveries"
+      },
+      {
+        "rows": 56,
+        "table": "ai_private.audit_events"
+      },
+      {
+        "rows": 1,
+        "table": "ai_private.budget_accounts"
+      },
+      {
+        "rows": 1,
+        "table": "ai_private.budget_policies"
+      },
+      {
+        "rows": 12,
+        "table": "ai_private.consent_documents"
+      },
+      {
+        "rows": 3,
+        "table": "ai_private.feature_flags"
+      },
+      {
+        "rows": 1,
+        "table": "ai_private.phase6c_runtime_config"
+      },
+      {
+        "rows": 1,
+        "table": "ai_private.phase6d_runtime_config"
+      },
+      {
+        "rows": 1,
+        "table": "ai_private.provider_configurations"
+      },
+      {
+        "rows": 2,
+        "table": "ai_private.provider_models"
+      },
+      {
+        "rows": 9,
+        "table": "ai_private.provider_payload_fields"
+      },
+      {
+        "rows": 1,
+        "table": "ai_private.provider_test_budget"
+      },
+      {
+        "rows": 4,
+        "table": "ai_private.provider_test_runs"
+      },
+      {
+        "rows": 19,
+        "table": "ai_private.rate_buckets"
+      },
+      {
+        "rows": 4,
+        "table": "ai_private.rate_policies"
+      },
+      {
+        "rows": 27,
+        "table": "ai_private.runs"
+      },
+      {
+        "rows": 3,
+        "table": "ai_private.safety_events"
+      },
+      {
+        "rows": 2,
+        "table": "ai_private.structured_schemas"
+      },
+      {
+        "rows": 54,
+        "table": "ai_private.usage_ledger"
+      },
+      {
+        "rows": 0,
+        "table": "auth.audit_log_entries"
+      },
+      {
+        "rows": 0,
+        "table": "auth.custom_oauth_providers"
+      },
+      {
+        "rows": 0,
+        "table": "auth.flow_state"
+      },
+      {
+        "rows": 12,
+        "table": "auth.identities"
+      },
+      {
+        "rows": 0,
+        "table": "auth.instances"
+      },
+      {
+        "rows": 2,
+        "table": "auth.mfa_amr_claims"
+      },
+      {
+        "rows": 0,
+        "table": "auth.mfa_challenges"
+      },
+      {
+        "rows": 0,
+        "table": "auth.mfa_factors"
+      },
+      {
+        "rows": 0,
+        "table": "auth.mfa_recovery_code_sets"
+      },
+      {
+        "rows": 0,
+        "table": "auth.mfa_recovery_codes"
+      },
+      {
+        "rows": 0,
+        "table": "auth.oauth_authorizations"
+      },
+      {
+        "rows": 0,
+        "table": "auth.oauth_client_states"
+      },
+      {
+        "rows": 0,
+        "table": "auth.oauth_clients"
+      },
+      {
+        "rows": 0,
+        "table": "auth.oauth_consents"
+      },
+      {
+        "rows": 2,
+        "table": "auth.one_time_tokens"
+      },
+      {
+        "rows": 29,
+        "table": "auth.refresh_tokens"
+      },
+      {
+        "rows": 0,
+        "table": "auth.saml_providers"
+      },
+      {
+        "rows": 0,
+        "table": "auth.saml_relay_states"
+      },
+      {
+        "rows": 82,
+        "table": "auth.schema_migrations"
+      },
+      {
+        "rows": 0,
+        "table": "auth.scim_tokens"
+      },
+      {
+        "rows": 0,
+        "table": "auth.scim_users"
+      },
+      {
+        "rows": 2,
+        "table": "auth.sessions"
+      },
+      {
+        "rows": 0,
+        "table": "auth.sso_domains"
+      },
+      {
+        "rows": 0,
+        "table": "auth.sso_providers"
+      },
+      {
+        "rows": 12,
+        "table": "auth.users"
+      },
+      {
+        "rows": 0,
+        "table": "auth.webauthn_challenges"
+      },
+      {
+        "rows": 0,
+        "table": "auth.webauthn_credentials"
+      },
+      {
+        "rows": 3,
+        "table": "cron.job"
+      },
+      {
+        "rows": 0,
+        "table": "cron.job_run_details"
+      },
+      {
+        "rows": 14,
+        "table": "fmz6e10_private.audit"
+      },
+      {
+        "rows": 1,
+        "table": "fmz6e10_private.config"
+      },
+      {
+        "rows": 3,
+        "table": "fmz6e10_private.identities"
+      },
+      {
+        "rows": 1,
+        "table": "fmz6e10_private.operators"
+      },
+      {
+        "rows": 0,
+        "table": "fmz6e10_private.participants"
+      },
+      {
+        "rows": 0,
+        "table": "fmz6e10_private.plans"
+      },
+      {
+        "rows": 0,
+        "table": "fmz6e10_private.proposals"
+      },
+      {
+        "rows": 14,
+        "table": "fmz6e10_private.requests"
+      },
+      {
+        "rows": 0,
+        "table": "fmz6e10_private.source_heads"
+      },
+      {
+        "rows": 0,
+        "table": "fmz6e10_private.source_versions"
+      },
+      {
+        "rows": 12,
+        "table": "fmz6e10_private.windows"
+      },
+      {
+        "rows": 0,
+        "table": "fmz6e10_private.workspaces"
+      },
+      {
+        "rows": 2,
+        "table": "fmz6e11_audit_private.actions"
+      },
+      {
+        "rows": 2,
+        "table": "fmz6e11_audit_private.actors"
+      },
+      {
+        "rows": 2,
+        "table": "fmz6e11_audit_private.bindings"
+      },
+      {
+        "rows": 0,
+        "table": "fmz6e11_audit_private.fixture"
+      },
+      {
+        "rows": 0,
+        "table": "fmz6e11_audit_private.forbidden_fixture"
+      },
+      {
+        "rows": 64,
+        "table": "fmz6e11_audit_private.relations"
+      },
+      {
+        "rows": 2,
+        "table": "fmz6e11_audit_private.runs"
+      },
+      {
+        "rows": 6,
+        "table": "fmz6e11_audit_private.writes"
+      },
+      {
+        "rows": 0,
+        "table": "fmz6e11_controller_private.evidence"
+      },
+      {
+        "rows": 0,
+        "table": "fmz6e11_controller_private.runs"
+      },
+      {
+        "rows": 0,
+        "table": "fmz6e11_controller_private.steps"
+      },
+      {
+        "rows": 9,
+        "table": "fmz6e11_private.audit"
+      },
+      {
+        "rows": 0,
+        "table": "fmz6e11_private.b_states"
+      },
+      {
+        "rows": 0,
+        "table": "fmz6e11_private.b_versions"
+      },
+      {
+        "rows": 0,
+        "table": "fmz6e11_private.config"
+      },
+      {
+        "rows": 0,
+        "table": "fmz6e11_private.events"
+      },
+      {
+        "rows": 3,
+        "table": "fmz6e11_private.identities"
+      },
+      {
+        "rows": 0,
+        "table": "fmz6e11_private.inbox_state"
+      },
+      {
+        "rows": 1,
+        "table": "fmz6e11_private.operators"
+      },
+      {
+        "rows": 0,
+        "table": "fmz6e11_private.participants"
+      },
+      {
+        "rows": 0,
+        "table": "fmz6e11_private.plans"
+      },
+      {
+        "rows": 0,
+        "table": "fmz6e11_private.proposals"
+      },
+      {
+        "rows": 9,
+        "table": "fmz6e11_private.requests"
+      },
+      {
+        "rows": 0,
+        "table": "fmz6e11_private.source_heads"
+      },
+      {
+        "rows": 0,
+        "table": "fmz6e11_private.source_versions"
+      },
+      {
+        "rows": 9,
+        "table": "fmz6e11_private.windows"
+      },
+      {
+        "rows": 0,
+        "table": "fmz6e11_private.workspaces"
+      },
+      {
+        "rows": 0,
+        "table": "fmz6e11_request_private.control"
+      },
+      {
+        "rows": 0,
+        "table": "fmz6e11_request_private.receipts"
+      },
+      {
+        "rows": 1,
+        "table": "fmz6e11_workflow_audit.control"
+      },
+      {
+        "rows": 0,
+        "table": "fmz6e11_workflow_audit.intents"
+      },
+      {
+        "rows": 1,
+        "table": "fmz6e9_private.config"
+      },
+      {
+        "rows": 0,
+        "table": "fmz6e9_private.requests"
+      },
+      {
+        "rows": 0,
+        "table": "fmz6e9_private.safety"
+      },
+      {
+        "rows": 0,
+        "table": "fmz6e9_private.subjects"
+      },
+      {
+        "rows": 0,
+        "table": "fmz6e9_private.versions"
+      },
+      {
+        "rows": 0,
+        "table": "legacy_auth_private.client_invitations"
+      },
+      {
+        "rows": 0,
+        "table": "public.ai_action_decisions"
+      },
+      {
+        "rows": 0,
+        "table": "public.ai_action_proposals"
+      },
+      {
+        "rows": 3,
+        "table": "public.ai_analysis_lifecycle_requests"
+      },
+      {
+        "rows": 0,
+        "table": "public.ai_analysis_preferences"
+      },
+      {
+        "rows": 12,
+        "table": "public.ai_analysis_results"
+      },
+      {
+        "rows": 3,
+        "table": "public.ai_consent_events"
+      },
+      {
+        "rows": 12,
+        "table": "public.ai_context_manifests"
+      },
+      {
+        "rows": 4,
+        "table": "public.ai_data_lifecycle_requests"
+      },
+      {
+        "rows": 1,
+        "table": "public.ai_member_safety_state"
+      },
+      {
+        "rows": 30,
+        "table": "public.ai_messages"
+      },
+      {
+        "rows": 10,
+        "table": "public.ai_threads"
+      },
+      {
+        "rows": 1,
+        "table": "public.body_measurements"
+      },
+      {
+        "rows": 2,
+        "table": "public.coach_workspaces"
+      },
+      {
+        "rows": 4,
+        "table": "public.entitlements"
+      },
+      {
+        "rows": 898,
+        "table": "public.exercises"
+      },
+      {
+        "rows": 0,
+        "table": "public.fmz6e9_audit"
+      },
+      {
+        "rows": 0,
+        "table": "public.fmz6e9_notices"
+      },
+      {
+        "rows": 197,
+        "table": "public.food_aliases"
+      },
+      {
+        "rows": 22,
+        "table": "public.food_log_items"
+      },
+      {
+        "rows": 5,
+        "table": "public.food_logs"
+      },
+      {
+        "rows": 0,
+        "table": "public.food_portions"
+      },
+      {
+        "rows": 65,
+        "table": "public.foods"
+      },
+      {
+        "rows": 1,
+        "table": "public.member_app_preferences"
+      },
+      {
+        "rows": 12,
+        "table": "public.member_notifications"
+      },
+      {
+        "rows": 1,
+        "table": "public.nutrition_food_ingestions"
+      },
+      {
+        "rows": 1,
+        "table": "public.nutrition_off_catalog_releases"
+      },
+      {
+        "rows": 74184,
+        "table": "public.nutrition_off_product_names"
+      },
+      {
+        "rows": 24458,
+        "table": "public.nutrition_off_products"
+      },
+      {
+        "rows": 2,
+        "table": "public.nutrition_preferences"
+      },
+      {
+        "rows": 15,
+        "table": "public.nutrition_provider_food_cache"
+      },
+      {
+        "rows": 17,
+        "table": "public.nutrition_provider_query_cache"
+      },
+      {
+        "rows": 68,
+        "table": "public.nutrition_provider_rate_buckets"
+      },
+      {
+        "rows": 2,
+        "table": "public.nutrition_provider_runtime_state"
+      },
+      {
+        "rows": 3,
+        "table": "public.nutrition_targets"
+      },
+      {
+        "rows": 13,
+        "table": "public.profiles"
+      },
+      {
+        "rows": 1,
+        "table": "public.progress_goals"
+      },
+      {
+        "rows": 2,
+        "table": "public.progress_preferences"
+      },
+      {
+        "rows": 1,
+        "table": "public.recovery_logs"
+      },
+      {
+        "rows": 7,
+        "table": "public.training_plan_days"
+      },
+      {
+        "rows": 14,
+        "table": "public.training_plan_exercises"
+      },
+      {
+        "rows": 7,
+        "table": "public.training_plans"
+      },
+      {
+        "rows": 3,
+        "table": "public.user_onboarding"
+      },
+      {
+        "rows": 3,
+        "table": "public.user_settings"
+      },
+      {
+        "rows": 2,
+        "table": "public.weight_logs"
+      },
+      {
+        "rows": 21,
+        "table": "public.workout_sessions"
+      },
+      {
+        "rows": 15,
+        "table": "public.workout_set_logs"
+      },
+      {
+        "rows": 0,
+        "table": "realtime.messages"
+      },
+      {
+        "rows": 86,
+        "table": "realtime.schema_migrations"
+      },
+      {
+        "rows": 0,
+        "table": "realtime.subscription"
+      },
+      {
+        "rows": 0,
+        "table": "storage.buckets"
+      },
+      {
+        "rows": 0,
+        "table": "storage.buckets_analytics"
+      },
+      {
+        "rows": 0,
+        "table": "storage.buckets_vectors"
+      },
+      {
+        "rows": 73,
+        "table": "storage.migrations"
+      },
+      {
+        "rows": 0,
+        "table": "storage.objects"
+      },
+      {
+        "rows": 0,
+        "table": "storage.s3_multipart_uploads"
+      },
+      {
+        "rows": 0,
+        "table": "storage.s3_multipart_uploads_parts"
+      },
+      {
+        "rows": 0,
+        "table": "storage.vector_indexes"
+      },
+      {
+        "rows": 43,
+        "table": "supabase_migrations.schema_migrations"
+      },
+      {
+        "rows": 0,
+        "table": "vault.secrets"
+      }
+    ]
+  },
+  "commands": 13,
+  "elapsed_ms": 15344,
+  "error": null,
+  "hash_rows_transported": 0,
+  "io": {
+    "background_attributed_to_collector": false,
+    "background_temp_bytes": 0,
+    "own_temp_written": 0,
+    "own_wal_bytes": 0,
+    "queries": [
+      {
+        "calls": 1,
+        "exec_ms": 48.706578000000036,
+        "queryid": "3173023848606027568",
+        "temp_read": 0,
+        "temp_written": 0,
+        "wal": 0
+      },
+      {
+        "calls": 1,
+        "exec_ms": 679.258195,
+        "queryid": "-8282918250781641446",
+        "temp_read": 0,
+        "temp_written": 0,
+        "wal": 0
+      }
+    ]
+  },
+  "jit_revoked": true,
+  "rollback_confirmed": true,
+  "run_id": "91ba398d-8888-4026-9f0b-3aafd988e5b3",
+  "status": "NUMERIC_DIAGNOSIS_PASS_NOT_WORKFLOW_PASS"
+}
