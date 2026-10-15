@@ -1,5 +1,19 @@
 # FitMetZorge Architecture
 
+## Recovery Boundaries - 15 October 2026
+
+The selected-release matrix now exercises all8 local slices through actual
+HTTP/Auth/PostgreSQL, with per-slice default-off and neighbor-action denials.
+Shared schema/Auth setup costs are kept separate from per-slice protocols;
+this does not activate hosted releases or change any accepted source rule.
+Root text-size reflow and keyboard/slow-save tests use the same private app.
+
+Hosted M44 SQL/objects and canonical44/44 are independently verified by a
+closed read-only diagnosis. Numeric database-wide residuals remain UNKNOWN,
+not invented CLI/session attribution. The consumed M44 run identity remains
+immutable; no new-run quota or full endchain admission is implied.
+See [latest recovery result](PHASE6E_RECOVERY_RESULT_20261015.md).
+
 ## Completion Boundaries - 15 October 2026
 
 The same private local app now provides a generic offline shell. Its service

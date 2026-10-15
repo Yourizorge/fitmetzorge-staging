@@ -1,5 +1,23 @@
 # Gecontroleerde releasevolgorde
 
+## Actueel: acht lokale selecties bewezen
+
+De [recoveryrapportage](PHASE6E_RECOVERY_RESULT_20261015.md) is nu leidend.
+CI38777789327 bewijst alle8 geselecteerde releases op echte lokale PG17/GoTrue
+met359 HTTP-controles,533 browsercontroles over vier groepen en25/46/64
+databasecontroles. Per slice zijn runtime-, admin-/cleanup- en Auth-protocollen
+gemeten;157 gedeelde installatiecommando's worden eenmalig gerekend. Volledige
+kosten, bronhashes en behouden deletebewijzen staan in het nieuwe rapport en
+`receipts/ci-38777789327-completion/selected-measured-costs.json`.
+
+Een afzonderlijke read-only hosted controle bewijst44/44 en een lege dry-run.
+De nieuwe11-run is ongebruikt, maar nog niet toegelaten: de databasebudgetbinding
+voor de nieuwe UUID en nieuwe integrale CI ontbreken. Het conservatieve model
+met onbekende CLI-reserves overschrijdt2237; er is geen verhoging toegepast.
+De acht private releases blijven default-off voor hosted.21 blijft ongeaccepteerd.
+Alle onderstaande eerdere checkpointteksten behouden hun historische betekenis;
+uitspraken over alleen preferences en onbevestigde M44 zijn niet meer actueel.
+
 Dit register beschrijft de vervolgintegratie, niet een bulkpublicatie of nieuwe
 toestemming. De concrete lokale kandidaat staat in `_offline/phase6e_server_v1`.
 Historisch bewijs staat in [het werkdagrapport](PHASE6E_WORKDAY_RESULT_20261015.md).

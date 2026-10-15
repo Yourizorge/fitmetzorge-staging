@@ -48,7 +48,7 @@ try{
  await page.locator('[data-preferences] button').dblclick();ok((await slowResult).status()===200,'slow_save');await page.waitForFunction(()=>!busy);
  ok(slowRequests===1,'slow_double_click_single_request');await page.unroute('**/api/action');
  ok((await state()).find(v=>v.workspace===main.workspace).version===slowBefore+1,'slow_single_durable_version');
- stage='historical';await page.locator('[data-workspace]').click();ok(await page.locator('[data-registration12]').count()===1,'same_login_registration12');
+ stage='historical';await page.locator('#workspace').selectOption(historical.workspace);ok(await page.locator('[data-registration12]').count()===1,'same_login_registration12');
  ok((await page.locator('[data-weight-display]').first().innerText()).includes('lb'),'imperial_display_visible');
  ok((await page.locator('[data-weight-display]').first().innerText()).includes('kg)'),'original_unit_preserved');
  const snapshot=JSON.stringify((await state()).find(v=>v.workspace===historical.workspace).state.snapshot);
@@ -81,8 +81,9 @@ try{
  ok((await state()).find(v=>v.workspace===historical.workspace).state.registrations.at(-1).sets[0].rir===4,'correction_not_overwritten');
  await page.locator('[data-queue-discard]').click();await page.waitForFunction(()=>!busy);ok(await page.locator('#queued').isHidden(),'only_local_draft_discarded');
  stage='uncertain_commit';await page.locator('#workspace').selectOption(main.workspace);await page.locator('[data-tab=settings]').click();
- const before=(await state()).find(v=>v.workspace===main.workspace).version;
- await page.locator('[name=language]').selectOption('en');
+ const beforeView=(await state()).find(v=>v.workspace===main.workspace),before=beforeView.version;
+ const changedLanguage=beforeView.state.preferences.language==='en'?'nl':'en';
+ await page.locator('[name=language]').selectOption(changedLanguage);
  await page.route('**/api/action',async route=>{await route.fetch();await route.abort();});
  await page.locator('[data-preferences] button').click();await page.waitForFunction(()=>!busy&&pendingRequest!==null);
  ok((await state()).find(v=>v.workspace===main.workspace).version===before+1,'commit_before_lost_response');

@@ -1,0 +1,43 @@
+{
+  "binding": {
+    "action_id": "4a9ce89e-5363-49ce-bbeb-1532eef4e402",
+    "actor_sha256": "429dc9c184a05660733a621b6c9a3cf74a3c7f3f238aa08c72dfcd6d088c79f2",
+    "expected_version": 1,
+    "payload_sha256": "430224c6f9ae423fc38d7f718f5745fa41f93627bdd87ed885e2fe23402b8312",
+    "request_id": "096f1294-d103-43a4-8bac-ba2fbddfecbb",
+    "workspace": "103b4587-8bc5-4ab6-9266-8e1e07cb2a25"
+  },
+  "error_class": null,
+  "sample": {
+    "requests": 2,
+    "revisions": 3,
+    "state_sha": "4640b500bac90b579da6f1dd27abe71ea85a62c802e63b142196bf4c4a5e7dcf",
+    "version": 2,
+    "writes": [
+      {
+        "actor_sha": "429dc9c184a05660733a621b6c9a3cf74a3c7f3f238aa08c72dfcd6d088c79f2",
+        "id": 71,
+        "key_sha": "3440fb2c48ca5d12df3a0d59ccac024aa74538ef4a005341878271bdebecac50",
+        "operation": "UPDATE",
+        "table": "fmz6e_integration_private.workspaces",
+        "xid": "1418"
+      },
+      {
+        "actor_sha": "429dc9c184a05660733a621b6c9a3cf74a3c7f3f238aa08c72dfcd6d088c79f2",
+        "id": 72,
+        "key_sha": "3ce70d2258d65874be88f6a5cde84d1e326a72c18bf2a39f2b6d7294394cf961",
+        "operation": "INSERT",
+        "table": "fmz6e_integration_private.revisions",
+        "xid": "1418"
+      },
+      {
+        "actor_sha": "429dc9c184a05660733a621b6c9a3cf74a3c7f3f238aa08c72dfcd6d088c79f2",
+        "id": 73,
+        "key_sha": "76dd174f3cc27ac5274f18fe2f238131078a8b6e646939eb4935d1cd155b16fb",
+        "operation": "INSERT",
+        "table": "fmz6e_integration_private.requests",
+        "xid": "1418"
+      }
+    ]
+  }
+}

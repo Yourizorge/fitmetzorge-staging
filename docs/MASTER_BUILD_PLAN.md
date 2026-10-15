@@ -1,5 +1,22 @@
 # FitMetZorge Master Build Plan
 
+## Recovery Checkpoint - 15 October 2026
+
+[Latest recovery report](PHASE6E_RECOVERY_RESULT_20261015.md) supersedes the
+earlier migration uncertainty below. A separate authorized read-only check
+confirms hosted/local canonical44/44, exact M44 identity and empty dry-run.
+JIT is closed with zero mappings. No application/Auth/fixture writes occurred.
+The new full-run UUID remains unused: its database cap is still128, and the
+conservative CLI-reservation model needs2349 versus the current2237 ceiling.
+This model is not a new integral CI admission or permission to raise the limit.
+
+All8 selected local releases now have actual HTTP/GoTrue/PG regression paths,
+measured native/admin/Auth protocols and audited fixture deletes. Whole-suite
+results and exact source binding are in the latest report. Hosted11 and its
+owner window remain NO-GO. Private app candidates45/46 are not deployed.
+21 stays unaccepted/default-off. Older paragraphs below retain their original
+checkpoint scope; they are not current hosted admission.
+
 ## Completion Checkpoint - 15 October 2026
 
 The larger package is recorded in [the current combined report](PHASE6E_COMPLETION_RESULT_20261015.md).

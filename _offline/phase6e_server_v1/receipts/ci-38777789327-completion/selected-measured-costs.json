@@ -1,0 +1,235 @@
+{
+  "archive_sha256": "7a2cfbea61bb4662c1231271509b6c6b2c6d4a1358f9ec372f42e74d40c9e967",
+  "candidate_sha256": "792d3c8e0aa1890c3bf9640c4338d6cc58d91645dcab74ec280b71ecee833549",
+  "ci": "38777789327",
+  "head": "ca3d6c0d529be03ccf559f70b256314547af3e2e",
+  "hosted_admission": false,
+  "measured_commands": 7623,
+  "measured_scope": "Eight selected A/B HTTP tests, their fixtures/cleanup/Auth and shared private45/46 installation. Not canonical44 bootstrap, browser suites, hosted allowance or physical review.",
+  "shared": {
+    "admin": 12,
+    "cli_meter_controls": 20,
+    "installation": 157,
+    "installation_detail": [
+      {
+        "cli": 47,
+        "invocation": 0,
+        "isolation": 8,
+        "observer": 8
+      },
+      {
+        "cli": 2,
+        "invocation": 1,
+        "isolation": 8,
+        "observer": 8
+      },
+      {
+        "cli": 22,
+        "invocation": 2,
+        "isolation": 8,
+        "observer": 8
+      },
+      {
+        "cli": 2,
+        "invocation": 3,
+        "isolation": 8,
+        "observer": 8
+      }
+    ],
+    "managed_auth": 170
+  },
+  "slices": [
+    {
+      "admin": 18,
+      "admin_by_operation": {
+        "registration12_auth_observer": 1,
+        "registration12_cleanup": 11,
+        "registration12_fixture": 6
+      },
+      "checks": 48,
+      "id": "registration12",
+      "managed_auth": 410,
+      "measured_commands": 914,
+      "retained_delete_records": 16,
+      "runtime": 486,
+      "runtime_by_operation": {
+        "registration12_read": 368,
+        "registration12_write": 118
+      }
+    },
+    {
+      "admin": 18,
+      "admin_by_operation": {
+        "signals13_14_auth_observer": 1,
+        "signals13_14_cleanup": 11,
+        "signals13_14_fixture": 6
+      },
+      "checks": 42,
+      "id": "signals13_14",
+      "managed_auth": 380,
+      "measured_commands": 884,
+      "retained_delete_records": 16,
+      "runtime": 486,
+      "runtime_by_operation": {
+        "execute": 108,
+        "read": 378
+      }
+    },
+    {
+      "admin": 18,
+      "admin_by_operation": {
+        "intake15_auth_observer": 1,
+        "intake15_cleanup": 11,
+        "intake15_fixture": 6
+      },
+      "checks": 33,
+      "id": "intake15",
+      "managed_auth": 250,
+      "measured_commands": 568,
+      "retained_delete_records": 11,
+      "runtime": 300,
+      "runtime_by_operation": {
+        "execute": 48,
+        "read": 252
+      }
+    },
+    {
+      "admin": 18,
+      "admin_by_operation": {
+        "plans16_17_auth_observer": 1,
+        "plans16_17_cleanup": 11,
+        "plans16_17_fixture": 6
+      },
+      "checks": 32,
+      "id": "plans16_17",
+      "managed_auth": 230,
+      "measured_commands": 510,
+      "retained_delete_records": 9,
+      "runtime": 262,
+      "runtime_by_operation": {
+        "execute": 28,
+        "read": 234
+      }
+    },
+    {
+      "admin": 18,
+      "admin_by_operation": {
+        "review18_auth_observer": 1,
+        "review18_cleanup": 11,
+        "review18_fixture": 6
+      },
+      "checks": 66,
+      "id": "review18",
+      "managed_auth": 680,
+      "measured_commands": 1646,
+      "retained_delete_records": 36,
+      "runtime": 948,
+      "runtime_by_operation": {
+        "execute": 288,
+        "read": 660
+      }
+    },
+    {
+      "admin": 18,
+      "admin_by_operation": {
+        "recovery19_today20_auth_observer": 1,
+        "recovery19_today20_cleanup": 11,
+        "recovery19_today20_fixture": 6
+      },
+      "checks": 42,
+      "id": "recovery19_today20",
+      "managed_auth": 360,
+      "measured_commands": 836,
+      "retained_delete_records": 18,
+      "runtime": 458,
+      "runtime_by_operation": {
+        "execute": 98,
+        "read": 360
+      }
+    },
+    {
+      "admin": 18,
+      "admin_by_operation": {
+        "workout12_auth_observer": 1,
+        "workout12_cleanup": 11,
+        "workout12_fixture": 6
+      },
+      "checks": 58,
+      "id": "workout12",
+      "managed_auth": 520,
+      "measured_commands": 1216,
+      "retained_delete_records": 24,
+      "runtime": 678,
+      "runtime_by_operation": {
+        "registration12_read": 480,
+        "registration12_write": 198
+      }
+    },
+    {
+      "admin": 18,
+      "admin_by_operation": {
+        "preferences_auth_observer": 1,
+        "preferences_cleanup": 11,
+        "preferences_fixture": 6
+      },
+      "checks": 38,
+      "id": "preferences",
+      "managed_auth": 320,
+      "measured_commands": 710,
+      "retained_delete_records": 12,
+      "runtime": 372,
+      "runtime_by_operation": {
+        "execute": 66,
+        "read": 306
+      }
+    }
+  ],
+  "source_evidence": {
+    "074-ci-meter-prefix.json": "9975f31c34cbef360da506b3389821db5eae0818b925739dc9957ffdea8c6512",
+    "075-ci-meter-role-logging.json": "ed983c795e33b243e12fd7ca55b96e276e98a891944754c7c27340cb3e651a51",
+    "076-ci-meter-reload.json": "e508772d9e2d35ec15309f6eb598d516f0c0ab59cb5c9ed5c19d4bdcf59fc88f",
+    "077-ci-meter-role-restore.json": "6c0664d11f4cbd3169ad3291b395b0c089c2278d56e72fa10cbd0f0ecfecf265",
+    "087-ci-meter-prefix.json": "ed983c795e33b243e12fd7ca55b96e276e98a891944754c7c27340cb3e651a51",
+    "088-ci-meter-role-logging.json": "6c0664d11f4cbd3169ad3291b395b0c089c2278d56e72fa10cbd0f0ecfecf265",
+    "089-ci-meter-reload.json": "d98db5438d6915cb7274679f460ae5c3123fdce63e492e398489e9d1b9dce96b",
+    "090-ci-meter-role-restore.json": "fc0a205c6ad34c6d068332644bf55b790a95563552a79c5852dfa0aa79957adf",
+    "103-ci-meter-prefix.json": "6c0664d11f4cbd3169ad3291b395b0c089c2278d56e72fa10cbd0f0ecfecf265",
+    "104-ci-meter-role-logging.json": "ed983c795e33b243e12fd7ca55b96e276e98a891944754c7c27340cb3e651a51",
+    "105-ci-meter-reload.json": "16db8ab47283cf1e19a0bdd3e2f1247a5c95c941b33829bc98c259b896bc983c",
+    "106-ci-meter-role-restore.json": "118daf7550a20cc8dc48f46aebac4bbad877681f420911d995b8617aab0d43b1",
+    "367-ci-meter-prefix.json": "4395d8194f9f7059ea5168eee4661a390faf0186529fc67802e52dc6e35e48c0",
+    "368-ci-meter-role-logging.json": "4395d8194f9f7059ea5168eee4661a390faf0186529fc67802e52dc6e35e48c0",
+    "369-ci-meter-reload.json": "d96c3d56c8165a7374a8c5435b1cfa2b66ed74421d1db35c458ad50682817474",
+    "370-ci-meter-role-restore.json": "4395d8194f9f7059ea5168eee4661a390faf0186529fc67802e52dc6e35e48c0",
+    "cli-isolation-0.json": "7d30a3306c9d32d7adaf80e8816b2c1792e2dc0691aefb4883bb11571c9ec349",
+    "cli-isolation-1.json": "7d30a3306c9d32d7adaf80e8816b2c1792e2dc0691aefb4883bb11571c9ec349",
+    "cli-isolation-2.json": "7d30a3306c9d32d7adaf80e8816b2c1792e2dc0691aefb4883bb11571c9ec349",
+    "cli-isolation-3.json": "7d30a3306c9d32d7adaf80e8816b2c1792e2dc0691aefb4883bb11571c9ec349",
+    "cli-log-location-0.json": "adc0a6a283eedb9e51cdf626ea511864ee2a99c8b1af5dda4d7e6b23b7d89309",
+    "cli-log-location-1.json": "adc0a6a283eedb9e51cdf626ea511864ee2a99c8b1af5dda4d7e6b23b7d89309",
+    "cli-log-location-2.json": "adc0a6a283eedb9e51cdf626ea511864ee2a99c8b1af5dda4d7e6b23b7d89309",
+    "cli-log-location-3.json": "adc0a6a283eedb9e51cdf626ea511864ee2a99c8b1af5dda4d7e6b23b7d89309",
+    "cli-numeric-coverage-0.json": "18360716f872b2508ed55e1896265be514a55aa0962512096406d92267f3b4db",
+    "cli-numeric-coverage-1.json": "59a8e87c8d9bbe5b7cf452ee13e1a70d4d206dcdd2c524437d97e8d47d51a417",
+    "cli-numeric-coverage-2.json": "8a8bb82088bd7a7a781c3e6115c8eca6363ed86cacbe8c63a82dd3b21ad2868f",
+    "cli-numeric-coverage-3.json": "59a8e87c8d9bbe5b7cf452ee13e1a70d4d206dcdd2c524437d97e8d47d51a417",
+    "cli-protocol-0.json": "a8ee9a66e0a94023c296d485fced47d11cdec089fc093633fe1e878d2b927cbc",
+    "cli-protocol-1.json": "463ff9ca96a9132841d7cf77054e904642c2af79b2fe984713c37b4a82e6682b",
+    "cli-protocol-2.json": "6eb083dda1afa17b508348161c7a2713a9935feb8c6d0fc103e241624c81a9b8",
+    "cli-protocol-3.json": "9cca2cd2c0e76d63a864a9796a8ee251e84fcb364f72d04c9cb23b732e8e7ed0",
+    "collection.json": "439077808f7daca6c7aad92aca00a5c88935318c0a2555e566c59434132e25a0",
+    "result.json": "baa6580faa7f3b27f4433c8f09f1478d1485900b4801f3221b1bc856b99f6f65",
+    "selected-integration-managed-auth-protocol.json": "79ff2958bf778fa2c76e755bae12f39367921d42fab786608bfc69a7335806ce",
+    "selected-integration-native-admin-protocol.json": "5adeb873e9509531c525afd3dc3310cc9040b40a5cd62889f8de442c1e1410e8",
+    "selected-release-matrix-intake15.json": "da8c8887e8dbd1f92304f002d628baff7e67c7072b3c3e48d61b77823a6dbd20",
+    "selected-release-matrix-plans16_17.json": "ec024fc811e26cdb41452565b3bd951961715b902ab0a3a8a6784f32f46222d3",
+    "selected-release-matrix-preferences.json": "5a24ef980a0b89c251bc274769f30de034cf4928be215b0bc1bb14486927279e",
+    "selected-release-matrix-recovery19_today20.json": "edb5ec4878db0eed42447f93ae156be26459e0b82cec254b2f194c35bef33fa3",
+    "selected-release-matrix-registration12.json": "d6b7259359510708df59c71bd51a6cff4c992ad7e80202f584c549406d209a47",
+    "selected-release-matrix-review18.json": "698593f871c75d939e7cfe07d53ee4334fe6627db305d242e7eee7ad5db10348",
+    "selected-release-matrix-signals13_14.json": "82792ea46193221415d0043bfdd6d1f3b04595a438c53f60c1ce4bdb9fc9bc18",
+    "selected-release-matrix-workout12.json": "d1372ba00dd950bf76f710e5b1daa136b309cd8ce29c095c5e8fb99a74f23aba",
+    "selected-release-matrix.json": "48c62084be9d2f1fabfa8e34f0b485c2fbb13a3e5fb0a6bbd1391d3c8b221c4b"
+  },
+  "status": "MEASURED_LOCAL_SELECTIONS_ONLY"
+}

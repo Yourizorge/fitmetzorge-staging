@@ -1,5 +1,27 @@
 # FitMetZorge Test Matrix
 
+## Recovery Verification - 15 October 2026
+
+Read-only run3fe3b428 independently verifies44/44, stored M44 SQL/object
+identity and empty dry-run. Sixteen native commands confirmed; five residual
+numeric observations are UNKNOWN;64 reserved CLI slots are not64 measured
+commands. Metadata pair complete, zero numeric temp writes, JIT mappings0.
+No hosted workflow, cleanup or new protected-row fingerprint PASS is claimed.
+
+Recovery unit suite:19 PASS, including both migration-state branches, safe
+rollback, historical8-digit versions, missing/reset statistics, immutable
+archives and complete conservative capacity-prefix arithmetic. These are not
+new complete Auth/controller/A/B CI admission. Actual8-slice matrix and current
+whole-suite browser/database results are recorded in
+[the latest recovery report](PHASE6E_RECOVERY_RESULT_20261015.md).
+Two incomplete local CI runs38774761907 and38776457906 remain preserved.
+
+Current complete local CI38777789327 is PASS on exact candidate792d3c8:
+clean46 local only;359 checks for all8 selected releases;25/46/64 database
+checks;209/172/79/73 browser checks (533); existing preferences27. Five new
+receipt-arithmetic tests pass separately locally. The current work-register
+update is metadata only; all384 other candidate files still match tested bytes.
+
 ## Completion Verification - 15 October 2026
 
 New targeted local results:93 queue/session/account/presentation/display cases,
