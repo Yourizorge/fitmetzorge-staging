@@ -192,7 +192,8 @@ and only `work_register.json` changed to record these outcomes. The new
 receipt-accounting helper is locally unit-tested post-verification tooling, not
 an untested change to the CI application or a new hosted executor.
 
-Commits/publication are recorded by the subsequent publication receipt. No
+Commits/publication are recorded in
+[the publication receipt](PHASE6E_RECOVERY_PUBLICATION_20261015.md). No
 physical owner review, hosted integration or active phone-test URL is implied.
 
 External AI calls/cost: 0 / EUR 0.00.

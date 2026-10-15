@@ -1,0 +1,44 @@
+{
+  "artifact": {
+    "all_private_roots_absent": true,
+    "entries": 781,
+    "runtime_assets": 152
+  },
+  "artifact_id": 11995671456,
+  "artifact_sha256": "c7c73f373876ed3e845dc328bdf97815ed4c7eac4d04c2da544028be33379bdd",
+  "head": "d74d133490458ae6e21f568a7ab622c54ed987f4",
+  "pages_run": 38780339090,
+  "previous_http_503_remains_incomplete": true,
+  "private_probes": [
+    {
+      "path": "_offline/phase6e_server_v1/ui.js",
+      "status": 404
+    },
+    {
+      "path": "_offline/phase6e_server_v1/store.py",
+      "status": 404
+    },
+    {
+      "path": "_offline/phase6e_server_v1/draft_queue.js",
+      "status": 404
+    },
+    {
+      "path": "_offline/phase6e_server_v1/queue_ui.js",
+      "status": 404
+    },
+    {
+      "path": "_offline/phase6e_server_v1/receipts/ci-38739029524-completion/registration12-transport-pair-0091df8d-0a8a-41fd-8604-a1c20fd7254c-validated.json",
+      "status": 404
+    },
+    {
+      "path": "supabase/migrations/20261012185121_phase6e11_single_endchain_budget.sql",
+      "status": 404
+    },
+    {
+      "path": ".github/workflows/phase6e-server-local-ci.yml",
+      "status": 404
+    }
+  ],
+  "status": "PAGES_ARTIFACT_AND_PROBES_PASS",
+  "supabase_calls": 0
+}
