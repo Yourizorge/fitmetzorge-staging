@@ -15,6 +15,7 @@ def main():
         'registration12-integration-application-io.json','integration-application-io.json',
         'integration-auth.json','integration-auth-table-security.json','integration-database.json','integration-browser.json','integration-security.json','integration-role-memberships.json',
         'integration-native-admin-protocol.json','integration-managed-auth-protocol.json']
+    if 'stream-filter-pg17.json' in manifest:names.append('stream-filter-pg17.json')
     names += [n for n in manifest if n.startswith(('cli-protocol-','cli-numeric-coverage-','cli-isolation-')) or n.endswith('.png')]
     names += [n for n in manifest if n.startswith(('integration-io-','registration12-integration-io-')) and n.endswith('.json')]
     sys.path.insert(0,str(ROOT/'_offline/phase6e11/endchain_v1'));from source_scan import check

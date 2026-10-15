@@ -104,7 +104,10 @@ class Gate(previous.Gate):
         self.command('integration-release-packet',[sys.executable,'-B',str(folder/'test_release_packet.py')])
         self.command('registration-release-packet',[sys.executable,'-B',str(folder/'test_registration_release.py')])
         self.command('registration-scope',[sys.executable,'-B',str(folder/'test_registration_scope.py')])
-        self.command('registration-transport',[sys.executable,'-B',str(folder/'test_registration_transport.py')])
+        # The pinned driver is installed into the isolated dependency directory,
+        # not global site-packages; the fresh test process needs that same path.
+        self.command('registration-transport',['env','PYTHONPATH='+str(self.sources/'supabase/.temp/phase6e11-pg17-parser'),
+            sys.executable,'-B',str(folder/'test_registration_transport.py')])
         self.result['registration_candidate_unit_tests']=15
         self.result['registration_candidate_hosted_admitted']=False
         self.command('integration-outbox',[sys.executable,'-B',str(folder/'test_outbox.py')])

@@ -61,3 +61,9 @@ Rollback disables only the new entry and exact synthetic subjects; retain all
 registration revisions and audit. Do not rewind migrations or erase history.
 Fixture deletion requires complete scoped before/after and durable delete proof.
 All other packages and the application runtime remain preserved;21 pending.
+
+New CI38710026337 at037f819 rebuilt46 and passed25 minimal registration checks,
+then stopped because its separate transport-test process lacked the isolated
+pinned psycopg dependency path. That failure is retained; no hosted call occurred.
+The CI correction passes the existing dependency path explicitly to that process.
+It installs no new package or privilege and does not change application behavior.
