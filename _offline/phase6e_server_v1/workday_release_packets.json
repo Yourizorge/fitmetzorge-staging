@@ -689,6 +689,7 @@
         "_offline/phase6e_server_v1/panels.js",
         "_offline/phase6e_server_v1/queue_ui.js",
         "_offline/phase6e_server_v1/receipt_accounting.py",
+        "_offline/phase6e_server_v1/registration_browser.cjs",
         "_offline/phase6e_server_v1/release_selection.py",
         "_offline/phase6e_server_v1/release_selection_http.py",
         "_offline/phase6e_server_v1/server.py",
@@ -761,7 +762,7 @@
         "A",
         "B"
       ],
-      "source_bundle_sha256": "efddaa6607af28c51c75ed95a9912ae06190bf969eff0a86e05be6e6b92619fc",
+      "source_bundle_sha256": "a44c22b8dc6b5ec9f15aa2a82462254faaabbdb6d2eda59daf6782ed4a06bdcb",
       "source_hashes": {
         "_offline/phase6e0/context-hints.json": "6cf3803a3cca86bbcb472630cbdccb62e9e4f9108b4505cbaf4205be1f393a08",
         "_offline/phase6e0/copy.json": "535df3811aecc0a648c65c922f7faf9186586537e52e9517e2491add18f489f8",
@@ -827,7 +828,7 @@
         "_offline/phase6e_server_v1/registration12.cjs": "c6276c18a53b1066d5e9a970ceb90a1ff2f3d81cae02f3ba265d3dcb4a7f4233",
         "_offline/phase6e_server_v1/registration12.test.cjs": "a843e0aca04a2ff954d918ef332c69083b3aef3c1a9fcc6119a081972dc3645c",
         "_offline/phase6e_server_v1/registration_accounting.py": "bdcff4c6c9216720727dced9b827386b57f275bf09c65ff45190c46afa2ceb31",
-        "_offline/phase6e_server_v1/registration_browser.cjs": "6a5dcf082253b5b6c5da50bca4203c51cae52cf683d316afa8ecf69f6c2cbc9e",
+        "_offline/phase6e_server_v1/registration_browser.cjs": "51d28d0933f19ca5fa2dcb1b7e4ea3eba35ae9c0bfa9b42b2f776ea697bda659",
         "_offline/phase6e_server_v1/registration_database.py": "ce48b88dea583596f7b3f088a5b9fab61a84ed5a20511f4e2a494f1db62e1317",
         "_offline/phase6e_server_v1/registration_proof.py": "a173ffe671441d1b17ff37e192127a0718699dfe4f26a6760b404d80ea3759ff",
         "_offline/phase6e_server_v1/registration_release.py": "b78cb8be63930bd54c075e55475eb0d1b977f19f6cbd549fad3873e49f927849",
@@ -1283,7 +1284,7 @@
         "A",
         "B"
       ],
-      "source_bundle_sha256": "37fdb9995acfbb0d9acbb333f648835d3f0dde77fc84e4efaa3a2f3f958621c0",
+      "source_bundle_sha256": "4f5c648a183db6c6a678853a135183f794ef4d9e2b62322d14c2126d388193ac",
       "source_hashes": {
         "_offline/phase6e0/context-hints.json": "6cf3803a3cca86bbcb472630cbdccb62e9e4f9108b4505cbaf4205be1f393a08",
         "_offline/phase6e0/copy.json": "535df3811aecc0a648c65c922f7faf9186586537e52e9517e2491add18f489f8",
@@ -1331,7 +1332,7 @@
         "_offline/phase6e_server_v1/access_policy.cjs": "a8c044807b50cceff32a94fa7e7527b471749fe5dc938b014c146ff680b6f20b",
         "_offline/phase6e_server_v1/account_center.cjs": "ba2ff60216524db1d0da4d38f3212bb797265e2826e01ebd64823c59e91971bf",
         "_offline/phase6e_server_v1/account_center.js": "2914d6b41451a9a66346ae9cef091033582ea8f457f9833320a106505cb00b79",
-        "_offline/phase6e_server_v1/browser_checks.cjs": "b011d0424f27520a39414c1e010e6a51669067b780af9d28e71fc8364b10ce98",
+        "_offline/phase6e_server_v1/browser_checks.cjs": "95a910c584db4c92dd87c5d70fb39c630ebc76c222a74ae489062004227d56b8",
         "_offline/phase6e_server_v1/composed_store.py": "a2a61654d6305d7a3d3a8bcf74ed7d199656803e0739ce7bc2c6164201732d88",
         "_offline/phase6e_server_v1/database_tests.py": "ed7577a3772d86ae1c507c60dc3f019b569766ccfcbdac20c20013fd1e0deeb3",
         "_offline/phase6e_server_v1/display.js": "2f5e56226e395bf8047f7ae4ffb9aea8efb700d9ca84738503b1e8070624d466",
@@ -1700,6 +1701,7 @@
       "historical_ci_byte_mismatches": [
         "_offline/phase6e_server_v1/account_center.cjs",
         "_offline/phase6e_server_v1/account_center.js",
+        "_offline/phase6e_server_v1/composed_browser.cjs",
         "_offline/phase6e_server_v1/database_tests.py",
         "_offline/phase6e_server_v1/draft_queue.js",
         "_offline/phase6e_server_v1/offline_shell.css",
@@ -1783,7 +1785,7 @@
       "routes": [
         "B"
       ],
-      "source_bundle_sha256": "8350d6a883407aaf89ae64536c55a539760c7bad692a94730695589bade5561e",
+      "source_bundle_sha256": "6aa54706539aebba27807ee944fc486664f6450543b8837d2b0a90fa2d953f54",
       "source_hashes": {
         "_offline/phase6e0/context-hints.json": "6cf3803a3cca86bbcb472630cbdccb62e9e4f9108b4505cbaf4205be1f393a08",
         "_offline/phase6e0/copy.json": "535df3811aecc0a648c65c922f7faf9186586537e52e9517e2491add18f489f8",
@@ -1831,7 +1833,7 @@
         "_offline/phase6e_server_v1/access_policy.cjs": "a8c044807b50cceff32a94fa7e7527b471749fe5dc938b014c146ff680b6f20b",
         "_offline/phase6e_server_v1/account_center.cjs": "ba2ff60216524db1d0da4d38f3212bb797265e2826e01ebd64823c59e91971bf",
         "_offline/phase6e_server_v1/account_center.js": "2914d6b41451a9a66346ae9cef091033582ea8f457f9833320a106505cb00b79",
-        "_offline/phase6e_server_v1/composed_browser.cjs": "9a122d3c90331cb797a7a785db23e72a2fcd004d01869ba178e8ca8ca5aa5961",
+        "_offline/phase6e_server_v1/composed_browser.cjs": "57a731d22a875b4ed2a479093cc2addfdcdb0d9c0660ae6f24fd1d40b4ba5ff9",
         "_offline/phase6e_server_v1/composed_store.py": "a2a61654d6305d7a3d3a8bcf74ed7d199656803e0739ce7bc2c6164201732d88",
         "_offline/phase6e_server_v1/database_tests.py": "ed7577a3772d86ae1c507c60dc3f019b569766ccfcbdac20c20013fd1e0deeb3",
         "_offline/phase6e_server_v1/display.js": "2f5e56226e395bf8047f7ae4ffb9aea8efb700d9ca84738503b1e8070624d466",
@@ -2204,6 +2206,7 @@
       "historical_ci_byte_mismatches": [
         "_offline/phase6e_server_v1/account_center.cjs",
         "_offline/phase6e_server_v1/account_center.js",
+        "_offline/phase6e_server_v1/composed_browser.cjs",
         "_offline/phase6e_server_v1/database_tests.py",
         "_offline/phase6e_server_v1/draft_queue.js",
         "_offline/phase6e_server_v1/offline_shell.css",
@@ -2288,7 +2291,7 @@
       "routes": [
         "B"
       ],
-      "source_bundle_sha256": "8350d6a883407aaf89ae64536c55a539760c7bad692a94730695589bade5561e",
+      "source_bundle_sha256": "6aa54706539aebba27807ee944fc486664f6450543b8837d2b0a90fa2d953f54",
       "source_hashes": {
         "_offline/phase6e0/context-hints.json": "6cf3803a3cca86bbcb472630cbdccb62e9e4f9108b4505cbaf4205be1f393a08",
         "_offline/phase6e0/copy.json": "535df3811aecc0a648c65c922f7faf9186586537e52e9517e2491add18f489f8",
@@ -2336,7 +2339,7 @@
         "_offline/phase6e_server_v1/access_policy.cjs": "a8c044807b50cceff32a94fa7e7527b471749fe5dc938b014c146ff680b6f20b",
         "_offline/phase6e_server_v1/account_center.cjs": "ba2ff60216524db1d0da4d38f3212bb797265e2826e01ebd64823c59e91971bf",
         "_offline/phase6e_server_v1/account_center.js": "2914d6b41451a9a66346ae9cef091033582ea8f457f9833320a106505cb00b79",
-        "_offline/phase6e_server_v1/composed_browser.cjs": "9a122d3c90331cb797a7a785db23e72a2fcd004d01869ba178e8ca8ca5aa5961",
+        "_offline/phase6e_server_v1/composed_browser.cjs": "57a731d22a875b4ed2a479093cc2addfdcdb0d9c0660ae6f24fd1d40b4ba5ff9",
         "_offline/phase6e_server_v1/composed_store.py": "a2a61654d6305d7a3d3a8bcf74ed7d199656803e0739ce7bc2c6164201732d88",
         "_offline/phase6e_server_v1/database_tests.py": "ed7577a3772d86ae1c507c60dc3f019b569766ccfcbdac20c20013fd1e0deeb3",
         "_offline/phase6e_server_v1/display.js": "2f5e56226e395bf8047f7ae4ffb9aea8efb700d9ca84738503b1e8070624d466",
@@ -2706,6 +2709,7 @@
         "_offline/phase6e_server_v1/account_center.cjs",
         "_offline/phase6e_server_v1/account_center.js",
         "_offline/phase6e_server_v1/browser_checks.cjs",
+        "_offline/phase6e_server_v1/composed_browser.cjs",
         "_offline/phase6e_server_v1/database_tests.py",
         "_offline/phase6e_server_v1/draft_queue.js",
         "_offline/phase6e_server_v1/offline_shell.css",
@@ -2791,7 +2795,7 @@
         "A",
         "B"
       ],
-      "source_bundle_sha256": "08fdf1f479a83185c9142c973ebcc43bc55be395b2bcd69bad7bd2b490a1db50",
+      "source_bundle_sha256": "a938d82974d855f02955e247be03bad0da52224bcfc174cba66dc9bb6ad624d4",
       "source_hashes": {
         "_offline/phase6e0/context-hints.json": "6cf3803a3cca86bbcb472630cbdccb62e9e4f9108b4505cbaf4205be1f393a08",
         "_offline/phase6e0/copy.json": "535df3811aecc0a648c65c922f7faf9186586537e52e9517e2491add18f489f8",
@@ -2839,8 +2843,8 @@
         "_offline/phase6e_server_v1/access_policy.cjs": "a8c044807b50cceff32a94fa7e7527b471749fe5dc938b014c146ff680b6f20b",
         "_offline/phase6e_server_v1/account_center.cjs": "ba2ff60216524db1d0da4d38f3212bb797265e2826e01ebd64823c59e91971bf",
         "_offline/phase6e_server_v1/account_center.js": "2914d6b41451a9a66346ae9cef091033582ea8f457f9833320a106505cb00b79",
-        "_offline/phase6e_server_v1/browser_checks.cjs": "b011d0424f27520a39414c1e010e6a51669067b780af9d28e71fc8364b10ce98",
-        "_offline/phase6e_server_v1/composed_browser.cjs": "9a122d3c90331cb797a7a785db23e72a2fcd004d01869ba178e8ca8ca5aa5961",
+        "_offline/phase6e_server_v1/browser_checks.cjs": "95a910c584db4c92dd87c5d70fb39c630ebc76c222a74ae489062004227d56b8",
+        "_offline/phase6e_server_v1/composed_browser.cjs": "57a731d22a875b4ed2a479093cc2addfdcdb0d9c0660ae6f24fd1d40b4ba5ff9",
         "_offline/phase6e_server_v1/composed_store.py": "a2a61654d6305d7a3d3a8bcf74ed7d199656803e0739ce7bc2c6164201732d88",
         "_offline/phase6e_server_v1/database_tests.py": "ed7577a3772d86ae1c507c60dc3f019b569766ccfcbdac20c20013fd1e0deeb3",
         "_offline/phase6e_server_v1/display.js": "2f5e56226e395bf8047f7ae4ffb9aea8efb700d9ca84738503b1e8070624d466",
@@ -3229,6 +3233,7 @@
       "historical_ci_byte_mismatches": [
         "_offline/phase6e_server_v1/account_center.cjs",
         "_offline/phase6e_server_v1/account_center.js",
+        "_offline/phase6e_server_v1/composed_browser.cjs",
         "_offline/phase6e_server_v1/database_tests.py",
         "_offline/phase6e_server_v1/draft_queue.js",
         "_offline/phase6e_server_v1/offline_shell.css",
@@ -3314,7 +3319,7 @@
         "A",
         "B"
       ],
-      "source_bundle_sha256": "8ca8a316e0826695b15d9634ab091dfe8aa4eac867018a235d4501022d61f999",
+      "source_bundle_sha256": "e0b5ab52ad1be4c80cd3b5cf80b6bdd3e018a2da27ba5dcec831d1610350a276",
       "source_hashes": {
         "_offline/phase6e0/context-hints.json": "6cf3803a3cca86bbcb472630cbdccb62e9e4f9108b4505cbaf4205be1f393a08",
         "_offline/phase6e0/copy.json": "535df3811aecc0a648c65c922f7faf9186586537e52e9517e2491add18f489f8",
@@ -3362,7 +3367,7 @@
         "_offline/phase6e_server_v1/access_policy.cjs": "a8c044807b50cceff32a94fa7e7527b471749fe5dc938b014c146ff680b6f20b",
         "_offline/phase6e_server_v1/account_center.cjs": "ba2ff60216524db1d0da4d38f3212bb797265e2826e01ebd64823c59e91971bf",
         "_offline/phase6e_server_v1/account_center.js": "2914d6b41451a9a66346ae9cef091033582ea8f457f9833320a106505cb00b79",
-        "_offline/phase6e_server_v1/composed_browser.cjs": "9a122d3c90331cb797a7a785db23e72a2fcd004d01869ba178e8ca8ca5aa5961",
+        "_offline/phase6e_server_v1/composed_browser.cjs": "57a731d22a875b4ed2a479093cc2addfdcdb0d9c0660ae6f24fd1d40b4ba5ff9",
         "_offline/phase6e_server_v1/composed_store.py": "a2a61654d6305d7a3d3a8bcf74ed7d199656803e0739ce7bc2c6164201732d88",
         "_offline/phase6e_server_v1/database_tests.py": "ed7577a3772d86ae1c507c60dc3f019b569766ccfcbdac20c20013fd1e0deeb3",
         "_offline/phase6e_server_v1/display.js": "2f5e56226e395bf8047f7ae4ffb9aea8efb700d9ca84738503b1e8070624d466",
@@ -3745,6 +3750,7 @@
       "historical_ci_byte_mismatches": [
         "_offline/phase6e_server_v1/account_center.cjs",
         "_offline/phase6e_server_v1/account_center.js",
+        "_offline/phase6e_server_v1/composed_browser.cjs",
         "_offline/phase6e_server_v1/database_tests.py",
         "_offline/phase6e_server_v1/draft_queue.js",
         "_offline/phase6e_server_v1/offline_shell.css",
@@ -3830,7 +3836,7 @@
         "A",
         "B"
       ],
-      "source_bundle_sha256": "cefd5d475da06fdade1145a2ba9d825c586410dd9910c683032bd507e31617be",
+      "source_bundle_sha256": "d0897c7e1619a85e6c376438e72d6d9b871dd43bcd44d948efaefd702c1d23c0",
       "source_hashes": {
         "_offline/phase6e0/context-hints.json": "6cf3803a3cca86bbcb472630cbdccb62e9e4f9108b4505cbaf4205be1f393a08",
         "_offline/phase6e0/copy.json": "535df3811aecc0a648c65c922f7faf9186586537e52e9517e2491add18f489f8",
@@ -3878,7 +3884,7 @@
         "_offline/phase6e_server_v1/access_policy.cjs": "a8c044807b50cceff32a94fa7e7527b471749fe5dc938b014c146ff680b6f20b",
         "_offline/phase6e_server_v1/account_center.cjs": "ba2ff60216524db1d0da4d38f3212bb797265e2826e01ebd64823c59e91971bf",
         "_offline/phase6e_server_v1/account_center.js": "2914d6b41451a9a66346ae9cef091033582ea8f457f9833320a106505cb00b79",
-        "_offline/phase6e_server_v1/composed_browser.cjs": "9a122d3c90331cb797a7a785db23e72a2fcd004d01869ba178e8ca8ca5aa5961",
+        "_offline/phase6e_server_v1/composed_browser.cjs": "57a731d22a875b4ed2a479093cc2addfdcdb0d9c0660ae6f24fd1d40b4ba5ff9",
         "_offline/phase6e_server_v1/composed_store.py": "a2a61654d6305d7a3d3a8bcf74ed7d199656803e0739ce7bc2c6164201732d88",
         "_offline/phase6e_server_v1/database_tests.py": "ed7577a3772d86ae1c507c60dc3f019b569766ccfcbdac20c20013fd1e0deeb3",
         "_offline/phase6e_server_v1/display.js": "2f5e56226e395bf8047f7ae4ffb9aea8efb700d9ca84738503b1e8070624d466",
@@ -4230,6 +4236,7 @@
       "historical_ci_byte_mismatches": [
         "_offline/phase6e_server_v1/account_center.cjs",
         "_offline/phase6e_server_v1/account_center.js",
+        "_offline/phase6e_server_v1/composed_browser.cjs",
         "_offline/phase6e_server_v1/database_tests.py",
         "_offline/phase6e_server_v1/draft_queue.js",
         "_offline/phase6e_server_v1/offline_shell.css",
@@ -4314,7 +4321,7 @@
         "A",
         "B"
       ],
-      "source_bundle_sha256": "70edf645813e6ea8c5854cc84354fd993b886fe68611a79d6461dae96599a139",
+      "source_bundle_sha256": "76f236d1f8a1b9185b4ca7443d128910e5aaabd80dc91edc2de69fcc9a4ebc18",
       "source_hashes": {
         "_offline/phase6e0/context-hints.json": "6cf3803a3cca86bbcb472630cbdccb62e9e4f9108b4505cbaf4205be1f393a08",
         "_offline/phase6e0/copy.json": "535df3811aecc0a648c65c922f7faf9186586537e52e9517e2491add18f489f8",
@@ -4362,7 +4369,7 @@
         "_offline/phase6e_server_v1/access_policy.cjs": "a8c044807b50cceff32a94fa7e7527b471749fe5dc938b014c146ff680b6f20b",
         "_offline/phase6e_server_v1/account_center.cjs": "ba2ff60216524db1d0da4d38f3212bb797265e2826e01ebd64823c59e91971bf",
         "_offline/phase6e_server_v1/account_center.js": "2914d6b41451a9a66346ae9cef091033582ea8f457f9833320a106505cb00b79",
-        "_offline/phase6e_server_v1/composed_browser.cjs": "9a122d3c90331cb797a7a785db23e72a2fcd004d01869ba178e8ca8ca5aa5961",
+        "_offline/phase6e_server_v1/composed_browser.cjs": "57a731d22a875b4ed2a479093cc2addfdcdb0d9c0660ae6f24fd1d40b4ba5ff9",
         "_offline/phase6e_server_v1/composed_store.py": "a2a61654d6305d7a3d3a8bcf74ed7d199656803e0739ce7bc2c6164201732d88",
         "_offline/phase6e_server_v1/database_tests.py": "ed7577a3772d86ae1c507c60dc3f019b569766ccfcbdac20c20013fd1e0deeb3",
         "_offline/phase6e_server_v1/display.js": "2f5e56226e395bf8047f7ae4ffb9aea8efb700d9ca84738503b1e8070624d466",

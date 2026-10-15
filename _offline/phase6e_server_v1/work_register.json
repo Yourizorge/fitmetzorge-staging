@@ -1,7 +1,8 @@
 {
   "scope": "local_synthetic_candidate",
   "hosted11": "NO_GO_CONSUMED_M44_CLI_EVIDENCE_16_VS_14",
-  "current_source_evidence": "CI38746007554 at ec97596: clean46, 124 composed browser checks including durable offline drafts, prior integration groups and synthetic106496-row PG17 PASS; not hosted admission",
+  "current_source_evidence": "Fresh integral CI pending after confirmed browser logout synchronization; CI38758448891 and38759936078 remain incomplete local attempts",
+  "historical_source_evidence": "CI38746007554 at ec97596: clean46, 124 composed browser checks including durable offline drafts, prior integration groups and synthetic106496-row PG17 PASS; not current-source or hosted admission",
   "full_day21": false,
   "functions": [
     {
@@ -573,13 +574,18 @@
   ],
   "hosted11_latest": {
     "status": "NO_GO_CONSUMED",
-    "reported_by": "parent via user",
-    "recorded_commands": 87,
+    "reported_by": "immutable reserved-1c3bf7e7-bc78-40c5-9ac1-5ba3512ec66d receipts",
+    "meter_reserved_commands": 87,
+    "explicitly_confirmed_commands": 73,
+    "actual_total_commands": null,
+    "baseline_rows": 100843,
+    "baseline_status": "COMPLETE_READONLY_SNAPSHOT",
+    "protected_preservation": "NOT_PROVEN_NO_FINAL_COMPARISON",
     "phase": "M44 CLI evidence comparison",
     "numeric_commands": 16,
     "expected_commands": 14,
     "cli_exitcode": 0,
-    "migration_identity": "exact M44 as reported; not full endchain proof",
+    "migration_identity": "CLI reports M44 applied; independent hosted44/44, stored SQL identity and final empty dry-run NOT_CONFIRMED",
     "jit_closed": true,
     "auth_workflow_fixtures": false,
     "source_admission": "Preserve exact admitted sources and original receipts; no rebind, reopen or automatic retry"

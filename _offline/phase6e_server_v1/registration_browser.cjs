@@ -17,7 +17,9 @@ const [saved]=await Promise.all([page.waitForResponse(r=>new URL(r.url()).pathna
 if(saved.status()!==200)throw Error('registration_save');checks++;
 await page.waitForFunction(()=>!busy);await page.reload();await page.locator('[data-registration12]').waitFor();
 if(await page.locator('[name=rir0]').inputValue()!=='0'||await page.locator('[name=rpe0]').inputValue()!=='')throw Error('null_zero_reload');checks++;
-await page.locator('#logout').click();await page.locator('#login').waitFor({state:'visible'});
+const [signedOut]=await Promise.all([page.waitForResponse(r=>new URL(r.url()).pathname==='/api/logout'&&r.request().method()==='POST'),page.locator('#logout').click()]);
+if(signedOut.status()!==200)throw Error('logout_unconfirmed');
+await page.waitForFunction(()=>!authInFlight&&!busy);await page.locator('#login').waitFor({state:'visible'});
 if(errors.length)throw Error('browser_error');checks++;
 console.log(JSON.stringify({status:'PASS',checks,languages:['NL','EN','DE'],viewports:[390,1280],themes:['light','dark'],physical_phone:false}));
 }catch(e){console.log(JSON.stringify({status:'NO_GO',checks,error:e.message}));process.exitCode=2;}finally{await browser.close();}})();

@@ -10,7 +10,7 @@ try{
  async function login(role='b'){await page.goto(c.url);await page.locator('#login').waitFor({state:'visible'});await page.locator('[name=email]').fill(c.accounts[role].email);await page.locator('[name=password]').fill(c.accounts[role].password);await page.locator('#login button').click();await page.locator('#app').waitFor({state:'visible'});}
  async function state(){return page.evaluate(()=>fetch('/api/today').then(r=>r.json()).then(j=>j.views));}
  async function click(locator){const [r]=await Promise.all([page.waitForResponse(r=>new URL(r.url()).pathname==='/api/action'),locator.click()]);ok(r.status()===200,'saved_'+stage);await page.waitForFunction(()=>!busy);}
- async function logout(){await page.locator('#logout').click();await page.locator('#login').waitFor({state:'visible'});}
+ async function logout(){const [r]=await Promise.all([page.waitForResponse(r=>new URL(r.url()).pathname==='/api/logout'&&r.request().method()==='POST'),page.locator('#logout').click()]);ok(r.status()===200,'logout_confirmed');await page.waitForFunction(()=>!authInFlight&&!busy);await page.locator('#login').waitFor({state:'visible'});}
  await login();let all=await state();ok(all.length===2,'one_login_two_explicit_sources');
  const main=all.find(v=>!v.capabilities.registration12),historical=all.find(v=>v.capabilities.registration12);
  ok(main.capabilities.full_day21===false&&historical.capabilities.full_day21===false,'21_off_both');

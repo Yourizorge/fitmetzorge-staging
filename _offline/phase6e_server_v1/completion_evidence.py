@@ -7,8 +7,24 @@ def main():
     if not folder.is_relative_to(ROOT/'supabase/.temp') or not folder.name.startswith('verified-'):raise ValueError('scope')
     read=lambda n:json.loads(disk(folder/n).read_bytes())
     result,collection,manifest=read('result.json'),read('collection.json'),read('artifact-manifest.json')
-    if result['status']!='CLEAN_CI_PASS' or not collection['verified'] or str(collection['run'])!=result['run_id'] or collection['head']!=result['commit']:raise ValueError('ci_required')
+    if result['status'] not in ('CLEAN_CI_PASS','NO_GO') or not collection['verified'] or str(collection['run'])!=result['run_id'] or collection['head']!=result['commit']:raise ValueError('ci_required')
     if read('candidate.json')['sha256']!=result['candidate_sha256']:raise ValueError('candidate_binding')
+    if result['status']=='NO_GO':
+        sys.path.insert(0,str(ROOT/'_offline/phase6e11/endchain_v1'));from source_scan import check
+        target=disk(HERE/'receipts'/('ci-'+result['run_id']+'-incomplete'));target.mkdir(parents=True,exist_ok=False);saved={}
+        names=['result.json','collection.json','candidate-46-history.json','release-selection-http.json',
+               'account-center-browser.json','integration-browser.json','composed-browser.json','offline-shell-browser.json']
+        for name in names:
+            if name!='collection.json' and name not in manifest:continue
+            raw=disk(folder/name).read_bytes();sha=hashlib.sha256(raw).hexdigest()
+            if name!='collection.json' and manifest[name]!=sha:raise ValueError('artifact_hash')
+            check(name,raw)
+            with (target/name).open('xb') as f:f.write(raw)
+            saved[name]=sha
+        with (target/'MANIFEST.json').open('x') as f:json.dump({'status':'INCOMPLETE_RETAINED_NOT_PASS',
+            'files':saved,'head':result['commit'],'candidate_sha256':result['candidate_sha256'],
+            'archive_sha256':collection['archive_sha256'],'hosted':False,'owner_acceptance':False},f,indent=2,sort_keys=True)
+        print(json.dumps({'files':len(saved),'directory':str(target),'scope':'incomplete_local_CI_only'}));return
     names=['result.json','collection.json','candidate-46-history.json','registration12-minimal-history.json',
         'registration12-dry-run.json','registration12-database.json','registration12-browser.json',
         'registration12-auth.json','registration12-integration-native-admin-protocol.json','registration12-integration-managed-auth-protocol.json',
@@ -17,7 +33,7 @@ def main():
         'integration-native-admin-protocol.json','integration-managed-auth-protocol.json']
     if 'stream-filter-pg17.json' in manifest:names.append('stream-filter-pg17.json')
     if 'stream-capacity-pg17.json' in manifest:names.append('stream-capacity-pg17.json')
-    for name in ('composed-browser.json','account-center-browser.json','offline-shell-browser.json','release-selection-http.json','workday-release-packets.json','numeric-size-pg17.json','proposed-size-pg17.json'):
+    for name in ('composed-browser.json','account-center-browser.json','account-browser-delayed-logout.json','offline-shell-browser.json','release-selection-http.json','workday-release-packets.json','numeric-size-pg17.json','proposed-size-pg17.json'):
         if name in manifest:names.append(name)
     names += [n for n in manifest if n.startswith('registration12-transport-') and n.endswith('.json')]
     names += [n for n in manifest if n.startswith(('cli-protocol-','cli-numeric-coverage-','cli-isolation-')) or n.endswith('.png')]

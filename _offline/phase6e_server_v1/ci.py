@@ -12,7 +12,7 @@ NEW=['domain.cjs','domain.test.cjs','presentation.cjs','presentation.test.cjs','
      'size_diagnosis.py','size_pg17.py','test_size_diagnosis.py',
      'display.js','display.test.cjs',
      'draft_queue.js','draft_queue.test.cjs','queue_ui.js','ui_session.test.cjs',
-     'account_center.cjs','account_center.js','account_center.test.cjs','account_center_browser.cjs',
+     'account_center.cjs','account_center.js','account_center.test.cjs','account_center_browser.cjs','account_center_fixture_browser.cjs',
      'offline_shell.html','offline_shell.css','offline_shell.js','offline_sw.js','offline_queue_ui.test.cjs',
      'offline_shell_browser.cjs','offline_shell_local.cjs','offline_shell_INTEGRATION.md',
      'stream_size_fixture.json','stream_size_pg17.py','capacity_proposal.py','test_capacity_proposal.py',
@@ -190,6 +190,8 @@ class Gate(previous.Gate):
                 self.save('release-selection-http.json',selected)
                 self.result['release_selection_http_checks']=selected['checks']
                 playwright=self.browser_dependencies()
+                delayed=self.command('account-browser-delayed-logout',['node',str(folder/'account_center_fixture_browser.cjs'),playwright,'--mapped-ab','--no-screenshots'],timeout=120)
+                self.save('account-browser-delayed-logout.json',json.loads(delayed.stdout))
                 app=server.Application(store,[workspaces['A'],workspaces['B']],enabled=True)
                 http=server.serve(app,0);thread=threading.Thread(target=http.serve_forever,daemon=True);thread.start()
                 try:

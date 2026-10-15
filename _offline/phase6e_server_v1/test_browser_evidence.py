@@ -9,6 +9,10 @@ class Tests(unittest.TestCase):
         p=types.SimpleNamespace(stdout='',stderr=json.dumps({'status':'FAIL','error':'ordinary_missing_source: keyboard_enters_panel'}),returncode=1)
         self.assertEqual(result(p)['stage'],'ordinary_missing_source')
         self.assertEqual(result(p)['error'],'keyboard_enters_panel')
+    def test_structured_no_go_is_not_lost(self):
+        p=types.SimpleNamespace(stdout='{"status":"NO_GO","stage":"real_auth","checks":62,"error":"logout_unconfirmed"}',stderr='',returncode=2)
+        self.assertEqual(result(p)['stage'],'real_auth')
+        self.assertEqual(result(p)['status'],'NO_GO')
     def test_timeout_without_log(self):
         p=types.SimpleNamespace(stdout='',stderr=json.dumps({'error':'member_settings: locator.waitFor: Timeout 30000ms exceeded.\nprivate call log'}),returncode=1)
         self.assertEqual(result(p)['error'],'browser_timeout')

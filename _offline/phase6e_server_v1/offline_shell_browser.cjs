@@ -99,10 +99,12 @@ async function authChecks(browser,c,ok){
   ok(await page.locator('#queued').isHidden(),'expired_session_cannot_recover_drafts');
   await page.locator('[name=email]').fill(c.accounts.b.email);await page.locator('[name=password]').fill(c.accounts.b.password);await page.locator('#login button').click();await page.locator('#app').waitFor();
   await page.locator('#workspace').selectOption(revoked.workspace);await page.locator('[data-queue-submit]').waitFor();
-  await page.locator('#logout').click();await page.locator('#login').waitFor();
+  const [signedOut]=await Promise.all([page.waitForResponse(r=>new URL(r.url()).pathname==='/api/logout'&&r.request().method()==='POST'),page.locator('#logout').click()]);
+  ok(signedOut.status()===200,'logout_confirmed');await page.waitForFunction(()=>!authInFlight&&!busy);await page.locator('#login').waitFor();
   ok(await page.locator('#queued').isHidden()&&await page.locator('#content').innerText()==='','logout_clears_account_and_draft_ui');
   await page.locator('[name=email]').fill(c.accounts.trainer.email);await page.locator('[name=password]').fill(c.accounts.trainer.password);await page.locator('#login button').click();
   await page.waitForFunction(()=>document.querySelector('#message').textContent.length>0);
+  await page.waitForFunction(()=>!authInFlight&&!busy);
   ok(await page.locator('#app').isHidden()&&await page.locator('#queued').isHidden(),'unmapped_account_cannot_recover_drafts');
   await page.locator('[name=email]').fill(c.accounts.b.email);await page.locator('[name=password]').fill(c.accounts.b.password);await page.locator('#login button').click();await page.locator('#app').waitFor();
   await page.locator('#workspace').selectOption(revoked.workspace);await page.locator('[data-queue-submit]').waitFor();
@@ -111,7 +113,8 @@ async function authChecks(browser,c,ok){
   const after=await page.evaluate(()=>fetch('/api/today').then(r=>r.json()));
   ok(state.views.every(v=>after.views.find(x=>x.workspace===v.workspace)?.version===v.version),'no_server_version_changes');
   ok(actions===0,'revoked_recovery_no_action_posts');
-  await page.locator('#logout').click();await page.locator('#login').waitFor();
+  const [closed]=await Promise.all([page.waitForResponse(r=>new URL(r.url()).pathname==='/api/logout'&&r.request().method()==='POST'),page.locator('#logout').click()]);
+  ok(closed.status()===200,'final_logout_confirmed');await page.waitForFunction(()=>!authInFlight&&!busy);await page.locator('#login').waitFor();
  }finally{await context.close();}
 }
 async function main(){

@@ -21,7 +21,16 @@ async function run(c) {
       await page.locator('#login button').click();await page.locator('#app').waitFor({state:'visible'});
     }
     async function views(){return page.evaluate(()=>fetch('/api/today').then(r=>r.json()).then(j=>j.views));}
-    async function logout(){await page.locator('#logout').click();await page.locator('#login').waitFor({state:'visible'});check(await page.locator('#content').innerText()==='','logout_clears_account_dom');}
+    async function logout(){
+      const [response]=await Promise.all([
+        page.waitForResponse(r=>r.url()===c.url+'/api/logout'&&r.request().method()==='POST'),
+        page.locator('#logout').click()
+      ]);
+      check(response.status()===200,'logout_confirmed');
+      await page.waitForFunction(()=>!authInFlight&&!busy);
+      await page.locator('#login').waitFor({state:'visible'});
+      check(await page.locator('#content').innerText()==='','logout_clears_account_dom');
+    }
     async function keyboard() {
       const tabs=page.locator('#tabs [role=tab]');await tabs.first().focus();await page.keyboard.press('Home');
       check(await tabs.first().getAttribute('aria-selected')==='true','keyboard_home');

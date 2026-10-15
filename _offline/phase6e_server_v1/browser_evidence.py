@@ -4,7 +4,7 @@ import json,re
 def result(process):
     try:
         value=json.loads(process.stdout)
-        if isinstance(value,dict) and value.get('status') in ('PASS','FAIL'):
+        if isinstance(value,dict) and value.get('status') in ('PASS','FAIL','NO_GO'):
             return value
     except (ValueError,TypeError):pass
     failure={'status':'FAIL','exit_code':process.returncode,
