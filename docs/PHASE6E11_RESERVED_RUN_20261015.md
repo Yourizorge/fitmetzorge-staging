@@ -66,3 +66,10 @@ helper. It restores the original setting in finally and retains its own8-command
 setup/closure receipt per invocation, separate from the hosted protocol. No hosted
 cron change or excluded hosted command is introduced. Full admission is set only
 after all real failure cases pass, not before. No hosted attempt has been consumed.
+
+The final local review also found that the Python meter stopped ordinary work
+at600s although the declared contract reserves the final60s for closure. This is
+tightened to540s for ordinary commands and600s for safety SQL, with a boundary
+test. No timeout is increased. The register now states the actual65536-row
+stream limit rather than its obsolete larger descriptive value. These changed
+execution bytes require fresh joint admission before the hosted attempt.

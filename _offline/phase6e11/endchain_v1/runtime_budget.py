@@ -43,7 +43,7 @@ class RuntimeBudget:
             raise BudgetStop('runtime_command_shape')
         if type(action) is not str or not action or len(action)>120:raise BudgetStop('runtime_action_shape')
         elapsed=self.clock()-self.started
-        if elapsed<0 or elapsed>=600:raise BudgetStop('runtime_total_deadline')
+        if elapsed<0 or elapsed>=540:raise BudgetStop('runtime_ordinary_deadline')
         projected=self.phases.copy();projected[phase]+=count
         state={**self.state,**(state_after or {})}
         if set(state)!=set(self.state) or any(type(v) is not bool for v in state.values()):raise BudgetStop('runtime_state_shape')
@@ -80,6 +80,8 @@ class RuntimeBudget:
 
     def safety(self,action,count):
         if self.closed or not self.stopped:raise BudgetStop('runtime_safety_state')
+        elapsed=self.clock()-self.started
+        if elapsed<0 or elapsed>=600:raise BudgetStop('runtime_safety_deadline')
         allowed={x['action']:x['sql'] for x in safety_path(**self.state)}
         if type(count) is not int or count<1 or action not in allowed or self.safety_spent[action]+count>allowed[action]:
             raise BudgetStop('runtime_safety_action')

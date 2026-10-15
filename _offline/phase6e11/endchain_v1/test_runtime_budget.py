@@ -54,5 +54,11 @@ class RuntimeBudgetTests(unittest.TestCase):
     def test_safety_is_not_permission_for_blind_cleanup(self):
         m=self.meter();m.stop('pair_missing')
         with self.assertRaises(BudgetStop):m.safety('delete_all_fixtures',1)
+    def test_last_minute_is_reserved_for_safety_not_ordinary_work(self):
+        now=[0];m=self.meter(clock=lambda:now[0]);now[0]=540
+        with self.assertRaisesRegex(BudgetStop,'ordinary_deadline'):m.charge('auth',1,action='issue')
+        n=m.safety('rollback_writer',1);m.confirm_safety(n)
+        now[0]=600
+        with self.assertRaisesRegex(BudgetStop,'safety_deadline'):m.safety('rollback_reader',1)
 
 if __name__=='__main__':unittest.main()

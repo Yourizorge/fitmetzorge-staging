@@ -253,7 +253,7 @@ def build(folder):
              'OIDC_allowlist_admission','Auth_version_binding','native_TLS_connection_and_close',
              'request_deadlines_and_secret_redaction','durable_local_manifest','runtime_frozen_and_Pages_checks']],
         'stop_path':'Rollback once, preserve incomplete evidence/fixtures, close exact own temporary access. No blind fixture deletion.',
-        'data_limits':{'rows_per_stream':131072,'page_rows':8192,'cycles':3,'collectors':1,'query_ms':5000,
+        'data_limits':{'rows_per_stream':65536,'page_rows':8192,'cycles':3,'collectors':1,'query_ms':5000,
                        'worker_ms':120000,'guard_ms':180000,'full_retry':0,'own_temp_writes':0},
         'scope':'Offline integral capacity; not a universal minimum or permission to exceed the current limit.'}
 
