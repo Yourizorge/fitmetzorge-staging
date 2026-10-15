@@ -25,7 +25,7 @@ NEW=['domain.cjs','domain.test.cjs','presentation.cjs','presentation.test.cjs','
      'registration_scope.py','test_registration_scope.py','registration_transport.py','test_registration_transport.py',
      'registration_proof.py','test_registration_proof.py','registration_accounting.py','test_registration_accounting.py',
      'application_io.py','test_application_io.py','cli_isolation.py','test_cli_isolation.py',
-     'cli_url_probe.py','test_cli_url_probe.py',
+     'cli_url_probe.py','test_cli_url_probe.py','browser_evidence.py','test_browser_evidence.py',
      'supabase/migrations/'+M45,'supabase/migrations/'+M46]
 EXTRA={'_offline/phase6e_server_v1/'+p for p in NEW}
 EXTRA.add('assets/fit-met-zorge-logo-cropped.png')
@@ -151,6 +151,7 @@ class Gate(previous.Gate):
         self.command('integration-planning',[sys.executable,'-B',str(folder/'test_planning.py')])
         self.command('integration-application-io',[sys.executable,'-B',str(folder/'test_application_io.py')])
         self.command('integration-cli-isolation',[sys.executable,'-B',str(folder/'test_cli_isolation.py')])
+        self.command('browser-evidence',[sys.executable,'-B',str(folder/'test_browser_evidence.py')])
         self.command('cli-url-evidence-replay',['env','PYTHONPATH='+str(self.sources/'supabase/.temp/phase6e11-pg17-parser'),sys.executable,'-B',str(folder/'test_cli_url_probe.py')])
         output=self.command('integration-domain',['node','--test',str(folder/'domain.test.cjs'),str(folder/'windows.test.cjs'),str(folder/'registration12.test.cjs'),str(folder/'presentation.test.cjs'),str(folder/'workout12.test.cjs')])
         count=re.search(r'# tests (\d+)',output.stdout)
@@ -178,7 +179,7 @@ class Gate(previous.Gate):
         self.result['proposed_capacity_pg17']=stream_size_pg17.run(self)['status']
         self.command('capacity-proposal',['env','PYTHONPATH='+str(self.sources/'supabase/.temp/phase6e11-pg17-parser'),sys.executable,'-B',str(folder/'test_capacity_proposal.py')])
         self.command('numeric-size-unit',['env','PYTHONPATH='+str(self.sources/'supabase/.temp/phase6e11-pg17-parser'),sys.executable,'-B',str(folder/'test_size_diagnosis.py')])
-        import ci_auth,database_tests,server,subprocess,threading
+        import ci_auth,database_tests,server,subprocess,threading,browser_evidence
         with ci_auth.environment(self) as ctx:
             row=ctx['admin'].execute("select relrowsecurity,relforcerowsecurity from pg_class where oid='auth.sessions'::regclass").fetchone()
             self.save('integration-auth-table-security.json',{'auth_sessions':row,'auth_objects_changed':False,
@@ -195,11 +196,11 @@ class Gate(previous.Gate):
                     data={'url':'http://127.0.0.1:'+str(http.server_port),'accounts':ctx['accounts'],
                           'playwright':playwright,'screenshots':str(self.out)}
                     p=subprocess.run(['node',str(folder/'account_center_browser.cjs')],input=json.dumps(data),text=True,capture_output=True,timeout=120)
-                    result=json.loads(p.stdout);self.save('account-center-browser.json',result)
+                    result=browser_evidence.result(p);self.save('account-center-browser.json',result)
                     if p.returncode or result['status']!='PASS':raise RuntimeError('account_center_browser')
                     self.result['account_center_browser_checks']=result['checks']
                     p=subprocess.run(['node',str(folder/'browser_checks.cjs')],input=json.dumps(data),text=True,capture_output=True,timeout=120)
-                    result=json.loads(p.stdout)
+                    result=browser_evidence.result(p)
                     self.save('integration-browser.json',result)
                     if p.returncode or result['status']!='PASS':raise RuntimeError('integration_browser')
                     self.result['integration_browser_checks']=result['checks']
@@ -216,11 +217,11 @@ class Gate(previous.Gate):
                     data={'url':'http://127.0.0.1:'+str(http.server_port),'accounts':ctx['accounts'],
                           'playwright':playwright,'screenshots':str(self.out)}
                     p=subprocess.run(['node',str(folder/'composed_browser.cjs')],input=json.dumps(data),text=True,capture_output=True,timeout=180)
-                    result=json.loads(p.stdout);self.save('composed-browser.json',result)
+                    result=browser_evidence.result(p);self.save('composed-browser.json',result)
                     if p.returncode or result['status']!='PASS':raise RuntimeError('composed_browser')
                     self.result['composed_browser_checks']=result['checks']
                     p=subprocess.run(['node',str(folder/'offline_shell_browser.cjs')],input=json.dumps(data),text=True,capture_output=True,timeout=180)
-                    result=json.loads(p.stdout);self.save('offline-shell-browser.json',result)
+                    result=browser_evidence.result(p);self.save('offline-shell-browser.json',result)
                     if p.returncode or result['status']!='PASS':raise RuntimeError('offline_shell_browser')
                     self.result['offline_shell_browser_checks']=result['checks']
                 finally:http.shutdown();http.server_close();thread.join(timeout=5)
