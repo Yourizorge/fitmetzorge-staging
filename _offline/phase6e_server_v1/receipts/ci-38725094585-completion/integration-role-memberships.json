@@ -1,0 +1,16 @@
+[
+  {
+    "admin_option": true,
+    "grantor": "supabase_admin",
+    "inherit_option": false,
+    "member": "postgres",
+    "set_option": false
+  },
+  {
+    "admin_option": false,
+    "grantor": "postgres",
+    "inherit_option": false,
+    "member": "postgres",
+    "set_option": true
+  }
+]

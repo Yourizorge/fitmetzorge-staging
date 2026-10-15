@@ -4,7 +4,66 @@
 The accepted frozen12 registration/facts model is the first slice. No bulk12-21,
 outbox activation, physical recommendations or automatic plan application.
 
-## Existing Proven Composition
+## Current Local Transport Evidence
+
+CI38725094585 is PASS atcd2ca05f4e7c0044f48cba0de75ca10029d526e0.
+Candidate4af7d3f2af7cda8e020f361437f54bd46438e1fe4d0a443ceb092378fc0bc220;
+archive4b0821791a32af95c008a65870834202c3925dea78551d254800e60f01e6e67f.
+The fresh composition includes all new transport/measurement sources. Earlier
+CI38722727718 stopped at candidate_path_denied before any database construction:
+the committed runner allowlist did not yet contain the four new proof/accounting
+files. That result is retained; committing the complete source set corrected
+candidate admission, without weakening its allowlist or relabelling the failure.
+
+The actual private Candidate now executes against verified local PostgreSQL TLS
+and real disposable GoTrue, separately for A-member and B-member. Exactly three
+synthetic roles exist in this composition; the trainer has no registration write
+binding. CI-only construction requires the exact repository/environment and
+loopback Auth endpoint; it cannot substitute a staging endpoint or bypass hosted
+admission. There is no new listener or public activation route.
+
+46 transport database checks and4 real Auth/session checks pass.22 scoped pairs
+are stored separately before/after/validated:6 committed requests with exactly
+3 writes each,16 replay/denial/rollback cases with0 new writes. Actor, request,
+transaction, row-key hashes and immutable old audit entries are checked. Missing
+or extra audit, wrong actor/transaction/key and absent after-samples fail closed.
+Both routes retain old snapshots, zero versus NULL, corrections and history
+after restart/relogin. Each route records8 exact cleanup deletes in one
+transaction and retains the hashed DELETE evidence. All temporary fixture work
+here is in disposable CI, never in the hosted project.
+
+The executed new transport register has1433 SQL commands:863 native/protocol
+and570 managed Auth. Its measured suffix includes18 cleanup and4 closure SQL;
+all BEGIN/COMMIT/ROLLBACK and scoped measurement calls are included. Numeric
+local query deltas show0 temporary writes. This is an observed local composition,
+not a maximum or a future hosted guard budget. The register SHA256 is
+ad131a50314723d494520c42b5a825626b0c6b1ddef9cc3fcd8c61f6bed969c5.
+
+The independent original selected12 path still passes25 database/15 browser/4
+Auth checks atM45, beforeM46. Its separate970-command observation is unchanged;
+do not add it to1433 and call the sum a hosted allowance. The broader combined
+candidate passes62 database/209 browser/4 Auth checks at46. NL/EN/DE, light/dark,
+mobile390 and desktop1280 remain emulated, not a new physical owner test.
+
+Receipt bundle: `_offline/phase6e_server_v1/receipts/ci-38725094585-completion/`.
+17 scope/transport unit tests,5 pair tests and2 accounting tests supplement the
+actual database proof. All51 local server helper tests pass. Historical sections
+below retain their original meaning; they are superseded for current transport
+coverage, never promoted to proof of this new code.
+
+### Remaining Release Dependency
+
+Hosted11 remains NO-GO after the new bounded capacity stop. Until complete11,
+physical review and the selected12 release decision exist, no release12 hosted
+identities/guard lease, migration application, protected baseline or final
+hosted lifecycle register is admitted. The executable scope compiler rejects
+missing phases, unbound commands, missing writesets/pairs, closure reserves,
+changed identities/sources and insufficient approved budget. Its gates remain
+closed, not filled with fabricated successful proof. A later concrete selected
+composition must include hosted guard/Auth costs and tested safety-prefix
+reserves;1433,970 and4135 do not substitute for that admission.
+
+## Historical Proven Composition
 
 Local CI38603611445 is preserved at its exact sources. It proves minimalM45
 registration before optionalM46:25 database checks,15 browser assertions,

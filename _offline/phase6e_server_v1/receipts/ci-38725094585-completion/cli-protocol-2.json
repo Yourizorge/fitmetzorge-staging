@@ -1,0 +1,186 @@
+{
+  "application_names": [
+    "@effect/sql-pg"
+  ],
+  "arguments": [
+    "db",
+    "push",
+    "--local",
+    "--skip-vault",
+    "--yes"
+  ],
+  "cli_sha256": "40efbaffd04e4cbf501b4f29a52c88ca23f81c636ef211e3b255c4e7b81eeb01",
+  "commands": [
+    {
+      "kind": "SelectStmt",
+      "protocol_commands": 1,
+      "sha256": "e004ebd5b5532a4b85984a62f8ad48a81aa3460c1ca07701f386135d72cdecf5"
+    },
+    {
+      "kind": "SelectStmt",
+      "protocol_commands": 1,
+      "sha256": "a399b6fe975faca1ecc7b5049577f7c16879fb533dd25a156216e9c0822f2cd6"
+    },
+    {
+      "kind": "SelectStmt",
+      "protocol_commands": 1,
+      "sha256": "1c621461b67c084010ce6ffd46ac5ada42ab394a41d5bb1ffadbdc8ed6ee961d"
+    },
+    {
+      "kind": "VariableSetStmt",
+      "protocol_commands": 1,
+      "sha256": "7e59df0d742057544fee83804a576779c39e088d2561bb3b6ff9e61337b60db7"
+    },
+    {
+      "kind": "TransactionStmt",
+      "protocol_commands": 1,
+      "sha256": "b9dec770ed04f46819c5b7f793d6e0ca5371e0a4384cd8802a3a51ffe8fae5ec"
+    },
+    {
+      "kind": "VariableSetStmt",
+      "protocol_commands": 1,
+      "sha256": "d431b4dfd9187ef03efe706f38505a49143437fa1d0fee70a4df24631245393d"
+    },
+    {
+      "kind": "VariableSetStmt",
+      "protocol_commands": 1,
+      "sha256": "6091def186955d5ae9a547678b503a8e2fde6460de0e1cf194641a480117ab33"
+    },
+    {
+      "kind": "CreateStmt",
+      "protocol_commands": 1,
+      "sha256": "8afd88925d91a94b47217fe11033641923502f2862e8cc063c592bc5c0177104"
+    },
+    {
+      "kind": "AlterTableStmt",
+      "protocol_commands": 1,
+      "sha256": "3f9cfd2ec4c2e1bc4cee48fb9119c0254e9cc6f8bb72ee7a2c4bf7154a5ae141"
+    },
+    {
+      "kind": "CreatePolicyStmt",
+      "protocol_commands": 1,
+      "sha256": "848d7740cacb914fe60aa1d671c0d5a1fc398806a594be090c562d795257e831"
+    },
+    {
+      "kind": "CreatePolicyStmt",
+      "protocol_commands": 1,
+      "sha256": "4cffaccf10363777c686a38a398f94d4e67d4abc02074a894c7f00a753e27896"
+    },
+    {
+      "kind": "CreatePolicyStmt",
+      "protocol_commands": 1,
+      "sha256": "79aa67d4486b750d1964df874cd5730bd9536740fcc4743ce49831266b504be0"
+    },
+    {
+      "kind": "GrantStmt",
+      "protocol_commands": 1,
+      "sha256": "3f21bf9bb00086f912b29de817b25e2fbc04c5cd95552206f1124093fc9c8c01"
+    },
+    {
+      "kind": "GrantStmt",
+      "protocol_commands": 1,
+      "sha256": "393b1d11d5030e1c952664f63c8ba7d00dcf638edee9fa22e9ec8b55e3346ff2"
+    },
+    {
+      "kind": "CreateFunctionStmt",
+      "protocol_commands": 1,
+      "sha256": "99d77803154f99d93c67ba37be4160fb664d5dd2f64913480ea42b277804bd18"
+    },
+    {
+      "kind": "GrantStmt",
+      "protocol_commands": 1,
+      "sha256": "4edb1bace672c0ddd7a0968b1a802ca15a7ee501de44f9d2e906b64cc61c7105"
+    },
+    {
+      "kind": "GrantStmt",
+      "protocol_commands": 1,
+      "sha256": "8ec305be6afb850c97d2878184e89b9902192960e75f3eb6c39bf63d3fba8f6b"
+    },
+    {
+      "kind": "CreateTrigStmt",
+      "protocol_commands": 1,
+      "sha256": "fc378f7344aad6cc2fd88f1b8a14f382c249b0579cce0dee1a7242659b6f74c2"
+    },
+    {
+      "kind": "CreateFunctionStmt",
+      "protocol_commands": 1,
+      "sha256": "03ffd5419a8ad4e7ad39326978cd249697bb6bf09ba024b8b3c2075996bcd795"
+    },
+    {
+      "kind": "CreateTrigStmt",
+      "protocol_commands": 1,
+      "sha256": "7c62c8a0e83ef29ad4b7942595f3167c9c3b175df552d961f4ace8b6ebc185db"
+    },
+    {
+      "kind": "TransactionStmt",
+      "protocol_commands": 1,
+      "sha256": "9505cacb7c710ed17125fcc6cb3669e8ddca6c8cd8af6a31f6b3cd64604c3098"
+    },
+    {
+      "kind": "InsertStmt",
+      "protocol_commands": 1,
+      "sha256": "8c216484b2f937e0549563258eb008a492b01b61f30277ec08eacaeed37be123"
+    }
+  ],
+  "complete": true,
+  "error": null,
+  "exitcode": 0,
+  "hosted_calls": 0,
+  "invocation_prefix": "FMZSQL779538951a3c442c9f806205133b697b|",
+  "numeric_protocol_coverage": true,
+  "observer_commands": [
+    {
+      "confirmed": true,
+      "kind": "numeric_observer",
+      "protocol_commands": 1,
+      "sha256": "3eb12e5bafe877f825399d2905523e26201831b46d6ebc54e734cdb0961a8fd5"
+    },
+    {
+      "confirmed": true,
+      "kind": "numeric_observer",
+      "protocol_commands": 1,
+      "sha256": "654b3989d19937e3700b1ef5374ce0b4c77f8460eb8318dd1f40d31c27c21b68"
+    },
+    {
+      "confirmed": true,
+      "kind": "numeric_observer",
+      "protocol_commands": 1,
+      "sha256": "4c37732613791f84484c38265c0be027569ee1b7e1d55d69de16b4f9668159ce"
+    },
+    {
+      "confirmed": true,
+      "kind": "numeric_observer",
+      "protocol_commands": 1,
+      "sha256": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710"
+    },
+    {
+      "confirmed": true,
+      "kind": "numeric_observer",
+      "protocol_commands": 1,
+      "sha256": "3eb12e5bafe877f825399d2905523e26201831b46d6ebc54e734cdb0961a8fd5"
+    },
+    {
+      "confirmed": true,
+      "kind": "numeric_observer",
+      "protocol_commands": 1,
+      "sha256": "654b3989d19937e3700b1ef5374ce0b4c77f8460eb8318dd1f40d31c27c21b68"
+    },
+    {
+      "confirmed": true,
+      "kind": "numeric_observer",
+      "protocol_commands": 1,
+      "sha256": "4c37732613791f84484c38265c0be027569ee1b7e1d55d69de16b4f9668159ce"
+    },
+    {
+      "confirmed": true,
+      "kind": "numeric_observer",
+      "protocol_commands": 1,
+      "sha256": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710"
+    }
+  ],
+  "protocol_commands": 22,
+  "scope": "disposable CI session SQL only; not hosted CLI accounting",
+  "sql_text_exported": false,
+  "total_commands": 30,
+  "unexpected_applications": []
+}

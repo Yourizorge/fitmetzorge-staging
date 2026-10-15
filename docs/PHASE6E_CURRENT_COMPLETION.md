@@ -1,6 +1,39 @@
 # Current Integration Completion
 
-## Current Status: 15 October 2026
+## Current Status: Filtered Attempt, 15 October 2026
+
+This section supersedes the earlier snapshots below without changing their
+receipts. New authorized run `debe3298-9772-40b1-a9f4-8e3d99c8fd20` is USED / NO-GO.
+The same protected filters were applied before a bounded numeric count. It found
+at least65537 protected rows, above the unchanged65536 hash-transport limit.
+No hash cursor opened, no hash rows were transported, no application/Auth write
+or migration was started.13/2226 confirmed SQL including final ROLLBACK; own
+temporary writes0, sampled background temp delta0, own WAL1564 bytes. JIT revoked
+and disabled with0 mappings. Full protected-data comparison remains INCOMPLETE.
+
+Fresh source-bound full-chain CI38722956194 at3db50cb passed: clean44,36 migration
+checks,175 Python/131 JS,36 PG17 filter/capacity assertions,18 real local Auth
+contracts,71 workflow/cleanup pairs and three failure paths. Normal capacity2196,
+worst prefix/safety2207, owner maximum2226. The exact source and archived receipts
+are linked in [the filtered-run report](PHASE6E11_FILTERED_RUN_20261015.md).
+
+Hosted remains43; M44 pending, no fresh hosted dry-run reached. No new owner
+window, owner acceptance, freeze or registration12 hosted activation. A separately
+authorized capacity decision/attempt is needed;65537 is a lower bound, not an
+exact full count. No automatic retry or arbitrary limit increase is permitted.
+
+Independent registration12 now includes real local GoTrue/native transport for
+both registered member routes, a scoped before/after audit wrapper and executed
+protocol accounting. CI38725094585 atcd2ca05 passes: clean46,25 minimal database
+checks plus46 private-transport and62 combined checks;224 browser assertions;
+12 local Auth/session checks across three compositions. The new transport has
+22 complete pairs and1433 observed local SQL, not a hosted allowance. The old970
+and4135 counts are not hosted limits. See the
+[combined closeout](PHASE6E_FILTERED_COMPLETION_20261015.md) for exact bindings.
+All old fixtures,112 complete pairs,incomplete113 and older dirty work remain.
+6E-21 remains unaccepted. Production and real-member AI remain untouched.
+
+## Earlier Snapshot: 15 October 2026 (Before The Filtered Attempt)
 
 This section supersedes the explicitly historical14 October snapshot below.
 The owner accepts the old unresolved utility cause as UNKNOWN; its NO-GO and

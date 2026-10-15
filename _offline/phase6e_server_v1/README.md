@@ -53,7 +53,7 @@ exactly `dsn`, `auth_url`, `bindings`; for the combined entry it has `dsn`,
 Both entries reject non-loopback database/Auth endpoints. A hosted transport,
 full hosted lifecycle/budget and release decision remain separate gates.
 
-Current source-bound evidence: CI38710983711, completion receipt in
+Historical source-bound evidence: CI38710983711, completion receipt in
 `receipts/ci-38710983711-completion/`; the older receipt remains unchanged.
 The selected12 register has970 observed
 local commands, including meter setup/closure. It is not a hosted allowance.
@@ -65,6 +65,17 @@ candidates without a listener or activation flag. Their15 synthetic unit tests
 are distinct from real local Auth/storage integration. They require completed11,
 physical review, a selected12 decision and exact source/register admission.
 They do not enable hosted operation of either existing local entry.
+
+Current CI38725094585 adds actual private transport execution against disposable
+GoTrue and verified local TLS for both member routes:46 DB checks,4 Auth checks,
+22 complete scoped pairs,1433 observed local commands. `registration_proof.py`
+checks exact request/actor/transaction/key and zero writes on denied/replayed
+operations. `registration_accounting.py` exports the executed protocol register;
+it does not grant a hosted budget. Seventeen scope/transport plus seven pair/
+accounting tests supplement the real database proof. See
+`receipts/ci-38725094585-completion/` and the current selected-release boundary.
+The separate original25 DB/15 browser/4 Auth proof and combined62 DB/209 browser/
+4 Auth proof also pass. Hosted11 and selected12 gates remain closed.
 
 M46 adds a transactional in-app outbox to the broader local candidate only.
 No push/mail/background delivery is implemented. Expired pending entries are
