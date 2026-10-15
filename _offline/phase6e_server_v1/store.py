@@ -102,7 +102,7 @@ class Store:
                               'cadence':state['review']['target']['cadence']}},
                 'status':state['status'],'reason':'review_available' if state['review'] else 'no_review'}
             events=db.execute('select * from '+SCHEMA+'.outbox where workspace_id=%s order by created_at,event_key',[workspace]).fetchall() if role=='member' else []
-            return {'workspace':workspace,'version':row['version'],'role':role,
+            return {'workspace':workspace,'version':row['version'],'role':role,'actor':claims['sub'],
                     'state':visible,'durable':True,'hosted':False,
                     'capabilities':{'full_day21':self.full_day21},
                     'notices':[outbox.visible(e,row['server_now']) for e in events],

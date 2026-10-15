@@ -30,7 +30,7 @@ class RegistrationStore(Store):
         with transaction(self.connect,self.observer,'registration12_read') as db:
             db.execute('set transaction read only');self.bind(db,claims,str(uuid.uuid4()))
             row,state=self.row(db,workspace,claims)
-            return {'workspace':workspace,'version':row['version'],'role':'member','durable':True,'hosted':False,
+            return {'workspace':workspace,'version':row['version'],'role':'member','actor':claims['sub'],'durable':True,'hosted':False,
                     'state':domain('workout12_view' if self.journey else 'registration_view',state=state),'capabilities':{'registration12':True,'journey12':self.journey,'full_day21':False}}
     def execute(self,workspace,token,request_id,expected,request,fault=None):
         identifier(request_id);claims=self.authorize(workspace,token)

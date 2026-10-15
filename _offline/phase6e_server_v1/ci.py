@@ -11,6 +11,7 @@ NEW=['domain.cjs','domain.test.cjs','presentation.cjs','presentation.test.cjs','
      'server.py','ui.html','ui.js','ui.css','browser_checks.cjs','composed_browser.cjs','protocol.py','test_protocol.py',
      'size_diagnosis.py','size_pg17.py','test_size_diagnosis.py',
      'display.js','display.test.cjs',
+     'draft_queue.js','draft_queue.test.cjs','queue_ui.js',
      'stream_size_fixture.json','stream_size_pg17.py','capacity_proposal.py','test_capacity_proposal.py',
      'sync_contract.cjs','access_policy.cjs','prepared_contracts.test.cjs','work_register.json','check_work_register.py',
      'release_packet.py','test_release_packet.py','outbox.py','test_outbox.py','planning.py','test_planning.py',
@@ -151,6 +152,7 @@ class Gate(previous.Gate):
         prepared=self.command('prepared-contracts',['node','--test','--test-reporter=tap',str(folder/'prepared_contracts.test.cjs')])
         self.result['prepared_contract_tests']=int(re.search(r'# tests (\d+)',prepared.stdout)[1])
         self.command('display-regression',['node','--test',str(folder/'display.test.cjs')])
+        self.command('draft-queue-regression',['node','--test',str(folder/'draft_queue.test.cjs')])
         self.command('work-register',[sys.executable,'-B',str(folder/'check_work_register.py')])
         from stream_filter_check import run as stream_filter_check
         self.result['stream_filter_pg17_checks']=stream_filter_check(self)

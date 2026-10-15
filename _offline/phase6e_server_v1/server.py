@@ -41,7 +41,7 @@ def serve(app,port=8766):
         def do_GET(self):
             try:
                 self.valid_host()
-                static={'/':'ui.html','/ui.js':'ui.js','/ui.css':'ui.css','/panels.js':'panels.js','/display.js':'display.js'}
+                static={'/':'ui.html','/ui.js':'ui.js','/ui.css':'ui.css','/panels.js':'panels.js','/display.js':'display.js','/draft_queue.js':'draft_queue.js','/queue_ui.js':'queue_ui.js'}
                 if self.path=='/workout-model.js':
                     return self.send(200,(HERE.parents[1]/'assets/training-workout-model.js').read_bytes(),mime='text/javascript')
                 if self.path=='/brand.png':
