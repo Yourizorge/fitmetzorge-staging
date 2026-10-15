@@ -1,6 +1,6 @@
 """Verify the exact endchain CI artifact; preserve already collected logs."""
 import hashlib,io,json,os,pathlib,re,zipfile
-MAX_FILES=1410
+MAX_FILES=1420
 def disk(p):return pathlib.Path('\\\\?\\'+str(p.resolve())) if os.name=='nt' else p
 def collect(folder,run,api,recover=False):
     meta=api('/actions/runs/'+str(run));blob=json.loads((folder/'blob.json').read_text())
@@ -25,8 +25,8 @@ def collect(folder,run,api,recover=False):
         names=archive.namelist()
         # Separate Auth before/after/pair receipts add bounded files; byte and
         # per-file limits remain unchanged. This does not expand SQL budgets.
-        # The verified filter-check archive has1406 entries, including six new
-        # per-stream bindings. SQL, byte, per-file and timeout caps are unchanged.
+        # The capacity-bound archive has1416 entries, including numeric capacity
+        # receipts. SQL, byte, per-file and timeout caps are unchanged.
         if len(names)>MAX_FILES or len(names)!=len(set(names)) or any(not re.fullmatch('[a-zA-Z0-9_.-]+\\.(json|txt)',n) for n in names):
             raise RuntimeError('artifact_paths')
         # Immutable numeric before/after samples raise the measured 1,341-file

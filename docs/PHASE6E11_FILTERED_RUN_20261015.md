@@ -72,3 +72,11 @@ The new disposable boundary test then failed before execution because psycopg
 interpreted the modulo percent sign in parameterized SQL as a placeholder.
 Use mod(g,2) in that synthetic generator; no hosted access or attempt was used.
 Verified artifact SHA25609e245ae1ccd7e268388796fdf1ceb4d34d3a1b09666431eb3531571e954a7d9.
+
+CI38722021646 atc12d92e45a113faaa1d32ca635ae2fda77b916af passed the complete
+chain,36 PG17 filter/capacity assertions and all three failure paths. Capacity
+remains2196/worst2207. Its1416-file archive exceeds the old1410 collector count,
+not the byte limits:43318393 uncompressed,largest1339728,no unsafe/duplicate paths.
+Collector allowance becomes1420 files;30MB compressed/48MB total/2MB per file,
+hash/path checks and all hosted limits remain unchanged. Fresh joint CI includes
+this postprocessing correction. The original partial archive is retained.
