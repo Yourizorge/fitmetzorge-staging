@@ -14,6 +14,15 @@ HERE=pathlib.Path(__file__).resolve().parent;ROOT=HERE.parents[2]
 
 def disk(p):return pathlib.Path('\\\\?\\'+str(p.resolve())) if os.name=='nt' else p
 
+def assert_unused(root=ROOT,run_id=RUN_ID):
+    if not re.fullmatch(r'[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}',run_id):
+        raise ValueError('hosted_run_identity')
+    paths=[root/'supabase/.temp'/('phase6e11-reserved-hosted-'+run_id),
+           root/'_offline/phase6e11/endchain_v1/receipts'/('reserved-'+run_id)]
+    # The committed receipt also prevents a fresh checkout from reopening a
+    # consumed run whose local temporary folder is absent.
+    if any(disk(p).exists() for p in paths):raise ValueError('hosted_attempt_consumed')
+
 def save(folder,name,value):
     if not re.fullmatch(r'[a-zA-Z0-9_.-]+\.json',name):raise ValueError('hosted_evidence_path')
     raw=(json.dumps(value,sort_keys=True,indent=2,default=str)+'\n').encode()
@@ -109,6 +118,7 @@ class Gate:
         self.scalar.close()
 
 def main(ci_folder):
+    assert_unused()
     admitted=admission(ci_folder)
     def git(*args):
         p=subprocess.run([os.environ.get('FMZ_GIT','git'),*args],cwd=ROOT,capture_output=True,text=True,timeout=15)

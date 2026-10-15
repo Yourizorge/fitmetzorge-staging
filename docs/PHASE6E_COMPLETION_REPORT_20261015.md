@@ -147,6 +147,9 @@ Er is geen ownertelefoontestlink of vervaltijd: het venster is niet geopend.
 Volgende hosted stap vereist een afzonderlijk vrijgegeven nieuwe poging, nieuwe
 runidentiteit en actuele brongebonden toelating. De gebruikte poging wordt niet
 heropend. Geen automatische freeze, owneracceptatie of bulk12-21-activatie.
+Een aanvullende lokale startguard weigert de gebruikte run ook in een verse
+checkout op basis van het gecommitteerde bewijs, nog voor netwerk/toegang.
+Zeven gerichte gate-tests PASS; deze extra blokkade is geen nieuwe hosted toelating.
 6E-21 blijft pending. Medische, voedings-, taal-, privacy- en juridische reviews
 worden niet vervangen door technische tests.
 

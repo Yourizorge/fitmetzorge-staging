@@ -1,5 +1,5 @@
 import json,pathlib,tempfile,types,unittest
-from hosted_gate import ScalarSession,Gate,save,admission
+from hosted_gate import ScalarSession,Gate,save,admission,assert_unused,RUN_ID
 
 class Cursor:
     def __init__(self,sets):self.sets=list(sets);self.index=0
@@ -11,6 +11,16 @@ class Cursor:
         return self.index<len(self.sets)
 
 class Tests(unittest.TestCase):
+    def test_used_receipt_blocks_even_without_temporary_folder(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=pathlib.Path(tmp);assert_unused(root)
+            (root/'_offline/phase6e11/endchain_v1/receipts'/('reserved-'+RUN_ID)).mkdir(parents=True)
+            with self.assertRaisesRegex(ValueError,'attempt_consumed'):assert_unused(root)
+    def test_partial_local_attempt_also_blocks_reopening(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=pathlib.Path(tmp)
+            (root/'supabase/.temp'/('phase6e11-reserved-hosted-'+RUN_ID)).mkdir(parents=True)
+            with self.assertRaisesRegex(ValueError,'attempt_consumed'):assert_unused(root)
     def scalar(self,sets):
         self.events=[]
         conn=types.SimpleNamespace(info=types.SimpleNamespace(transaction_status=0),
