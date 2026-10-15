@@ -1,0 +1,112 @@
+{
+  "application_writes": 0,
+  "auth_writes": 0,
+  "automatic_retries": 0,
+  "cli_accounting": {
+    "background_confirmed_commands": null,
+    "cli_capacity_reserved": 64,
+    "cli_confirmed_commands": null,
+    "conservative_budget_charge": 64,
+    "database_wide_not_session_bound": true,
+    "observed_noncollector_calls": 5,
+    "query_text_read": false,
+    "statement_deltas": [
+      {
+        "calls": 1,
+        "queryid": "2800308901962295548",
+        "temp_written": 0,
+        "wal": 0
+      },
+      {
+        "calls": 1,
+        "queryid": "-5396288198015899877",
+        "temp_written": 0,
+        "wal": 0
+      },
+      {
+        "calls": 1,
+        "queryid": "-5892797294501800374",
+        "temp_written": 0,
+        "wal": 0
+      },
+      {
+        "calls": 2,
+        "queryid": "-2073166519428774482",
+        "temp_written": 0,
+        "wal": 0
+      },
+      {
+        "calls": 1,
+        "queryid": "3989148175377973377",
+        "temp_written": 0,
+        "wal": 0
+      },
+      {
+        "calls": 1,
+        "queryid": "2869606018209600839",
+        "temp_written": 0,
+        "wal": 0
+      },
+      {
+        "calls": 1,
+        "queryid": "8429793790768420784",
+        "temp_written": 0,
+        "wal": 0
+      },
+      {
+        "calls": 1,
+        "queryid": "-932109739114202951",
+        "temp_written": 0,
+        "wal": 0
+      },
+      {
+        "calls": 1,
+        "queryid": "-4458852866096538878",
+        "temp_written": 0,
+        "wal": 0
+      },
+      {
+        "calls": 1,
+        "queryid": "8194329956909457588",
+        "temp_written": 0,
+        "wal": 0
+      },
+      {
+        "calls": 1,
+        "queryid": "3020367203577857678",
+        "temp_written": 0,
+        "wal": 0
+      },
+      {
+        "calls": 1,
+        "queryid": "-2646723144215712964",
+        "temp_written": 0,
+        "wal": 0
+      }
+    ],
+    "temp_blocks_delta": 0,
+    "unattributed_calls": 5
+  },
+  "databehoud_scope": "read-only metadata; no full data fingerprint",
+  "external_ai_calls": 0,
+  "identity": "REGISTERED_SQL_AND_OBJECTS_MATCH",
+  "jit_revoked": true,
+  "metadata_after_sha256": "c5d518b0cee88b8ff37fa36c2067778f83aeb7d081010c0cfb4164807677e661",
+  "metadata_before_sha256": "c5d518b0cee88b8ff37fa36c2067778f83aeb7d081010c0cfb4164807677e661",
+  "migration_apply": false,
+  "migrations": 44,
+  "native_confirmed": 16,
+  "native_protocol": {
+    "attempted": 16,
+    "closed": true,
+    "confirmed": 16
+  },
+  "new_run_budget_supported": false,
+  "pending": [],
+  "phase": "closure",
+  "production_touched": false,
+  "real_member_ai": false,
+  "reserved_sql": 80,
+  "selected_local": 44,
+  "status": "READ_ONLY_MIGRATION_TECHNICAL_PASS"
+}

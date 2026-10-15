@@ -1,0 +1,101 @@
+{
+  "commands": [
+    {
+      "confirmed": true,
+      "ordinal": 1,
+      "phase": "before_begin",
+      "sql_sha256": "3eb12e5bafe877f825399d2905523e26201831b46d6ebc54e734cdb0961a8fd5"
+    },
+    {
+      "confirmed": true,
+      "ordinal": 2,
+      "phase": "before_identity",
+      "sql_sha256": "810cd66d8d73d499bc7d3996e01570ee70418a29d9176388b8d3c57b60347c55"
+    },
+    {
+      "confirmed": true,
+      "ordinal": 3,
+      "phase": "before_transaction",
+      "sql_sha256": "e02a9e42e175a9d23baa3dfc8ced2cfbf9a82e58c661b41437b87f7deb89d737"
+    },
+    {
+      "confirmed": true,
+      "ordinal": 4,
+      "phase": "before_history",
+      "sql_sha256": "c1b191e76b2023233a8ef5feef5da7cc838116790669bb55e5db23cce0b36ffd"
+    },
+    {
+      "confirmed": true,
+      "ordinal": 5,
+      "phase": "before_objects",
+      "sql_sha256": "2e9c9cf689fab544d862e42f4e918ceace1ff0da9441c1e1cecdf6d98efe41f9"
+    },
+    {
+      "confirmed": true,
+      "ordinal": 6,
+      "phase": "before_health",
+      "sql_sha256": "85dbd38afe0bd1def869b5c40c6f25cc4f3a1a26aa25bd330db7454fb63a59eb"
+    },
+    {
+      "confirmed": true,
+      "ordinal": 7,
+      "phase": "before_numeric",
+      "sql_sha256": "4c37732613791f84484c38265c0be027569ee1b7e1d55d69de16b4f9668159ce"
+    },
+    {
+      "confirmed": true,
+      "ordinal": 8,
+      "phase": "before_rollback",
+      "sql_sha256": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710"
+    },
+    {
+      "confirmed": true,
+      "ordinal": 9,
+      "phase": "after_begin",
+      "sql_sha256": "3eb12e5bafe877f825399d2905523e26201831b46d6ebc54e734cdb0961a8fd5"
+    },
+    {
+      "confirmed": true,
+      "ordinal": 10,
+      "phase": "after_identity",
+      "sql_sha256": "810cd66d8d73d499bc7d3996e01570ee70418a29d9176388b8d3c57b60347c55"
+    },
+    {
+      "confirmed": true,
+      "ordinal": 11,
+      "phase": "after_transaction",
+      "sql_sha256": "e02a9e42e175a9d23baa3dfc8ced2cfbf9a82e58c661b41437b87f7deb89d737"
+    },
+    {
+      "confirmed": true,
+      "ordinal": 12,
+      "phase": "after_history",
+      "sql_sha256": "c1b191e76b2023233a8ef5feef5da7cc838116790669bb55e5db23cce0b36ffd"
+    },
+    {
+      "confirmed": true,
+      "ordinal": 13,
+      "phase": "after_objects",
+      "sql_sha256": "2e9c9cf689fab544d862e42f4e918ceace1ff0da9441c1e1cecdf6d98efe41f9"
+    },
+    {
+      "confirmed": true,
+      "ordinal": 14,
+      "phase": "after_health",
+      "sql_sha256": "85dbd38afe0bd1def869b5c40c6f25cc4f3a1a26aa25bd330db7454fb63a59eb"
+    },
+    {
+      "confirmed": true,
+      "ordinal": 15,
+      "phase": "after_numeric",
+      "sql_sha256": "4c37732613791f84484c38265c0be027569ee1b7e1d55d69de16b4f9668159ce"
+    },
+    {
+      "confirmed": true,
+      "ordinal": 16,
+      "phase": "after_rollback",
+      "sql_sha256": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710"
+    }
+  ],
+  "connection_closed": true
+}

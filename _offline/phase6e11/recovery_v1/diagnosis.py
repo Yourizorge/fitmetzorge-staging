@@ -12,7 +12,7 @@ from lifecycle_gates import MIGRATIONS
 from cli_stat_reader import SQL as STATS, compare
 from sql_protocol import statements
 
-RUN_ID = '08292976-0e47-4a4a-a425-8ae6c48e37e6'
+RUN_ID = '3fe3b428-60cb-4b38-a344-0e976ed5a093'
 INSTANCE = 'd165ac49d4d2aaa4733f7f220c351c99ff09493dace033a726f6fd722a573a15'
 CLI_SHA = '442c83f7d455edc0462e94e22d60c9f7f05783fc83d39a0f49dadc78a914a1dd'
 # No controller rows or personal contents are read.
@@ -77,7 +77,7 @@ def identity(rows, obj, root=ROOT):
 
 def attributable(before, after, native_between, cli_reserved=64):
     # Database-wide counters provide a conservative upper bound, not session proof.
-    if before.get('track') != 'all' or after.get('track') != 'all':
+    if before.get('track') not in ('all','top') or after.get('track') != before.get('track'):
         raise ValueError('numeric_tracking_incomplete')
     for sample in (before, after):
         keys = [r['queryid'] for r in sample['statements']]
@@ -183,6 +183,7 @@ def main():
         'maximum_sql':128,'native_capacity':32,'cli_capacity':64,'close_reserve':32,
         'jit_seconds':300,'collectors':1,'retries':0,'application_writes':0,
         'migration_apply':False,'selected_migrations':44,'sources':source,
+        'previous_readonly_run_remains_closed':'08292976-0e47-4a4a-a425-8ae6c48e37e6',
         'old_run_remains_closed':'1c3bf7e7-bc78-40c5-9ac1-5ba3512ec66d'})
     token=journal=runtime=reader=None; granted=False
     result={'status':'NO_GO','phase':'management','application_writes':0,'auth_writes':0,

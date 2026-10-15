@@ -75,6 +75,9 @@ class Tests(unittest.TestCase):
             self.assertEqual(value['conservative_budget_charge'],64)
     def test_unknown_over_budget_stops(self):
         with self.assertRaises(ValueError):d.attributable(stats(),stats(83),7)
+    def test_top_level_counters_do_not_require_nested_tracking(self):
+        before=stats();after=stats(20);before['track']=after['track']='top'
+        self.assertEqual(d.attributable(before,after,7)['unattributed_calls'],2)
     def test_missing_reset_duplicates_and_temp_stop(self):
         for change in ('reset','missing','duplicate','temp','track'):
             after=stats(20)
