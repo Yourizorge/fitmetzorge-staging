@@ -55,8 +55,43 @@ class StreamTests(unittest.TestCase):
         self.assertEqual(saved[prefix+'-after.json']['sample'],after)
         self.assertEqual(saved[prefix+'-attribution.json']['changed_query_calls'],{'2':1,'3':1})
         self.assertFalse(saved[prefix+'-attribution.json']['background_attributed_to_collector'])
-        self.assertEqual(saved['integral-stream-before-stop.json']['failed_phase'],'io')
+        self.assertEqual(saved['integral-stream-before-stop.json']['failed_phase'],'utility_attribution')
+        self.assertEqual(saved['integral-stream-before-stop.json']['reason_code'],'stream_utility_attribution')
         self.assertEqual(calls[-1],'stream_before_rollback')
         self.assertFalse(any('FETCH' in phase for phase in calls))
+
+    def test_exclusions_applied_before_transport_without_changing_predicates(self):
+        for predicate in ('false','true','user_id is null or user_id::text not in (\'synthetic\')'):
+            sql=statement([{'name':'public.synthetic','predicate':predicate}])
+            self.assertIn('where ('+predicate+')',sql)
+            self.assertIn("'1'::text keep",sql)
+            self.assertNotIn('case when',sql.lower())
+
+    def test_row_ceiling_preserves_precise_reason_and_rolls_back(self):
+        from unittest.mock import patch
+        import integral_stream
+        saved={};calls=[];stats={'1':0,'2':0,'3':0};pages=[4,1]
+        def query(phase,sql,args=()):
+            calls.append(sql);query.terminal_count=0
+            if sql==GUARD:return [{'ro':'on','isolation':'repeatable read','db':'postgres','role':'postgres','ssl':True}]
+            if sql==INVENTORY:return [{'schema':'public','name':'synthetic_'+str(i),'columns':['id']} for i in range(100)]
+            if sql.startswith('EXPLAIN'):return [{'QUERY PLAN':[{'Query Identifier':1}]}]
+            if sql==ALL_STATS:
+                stats['1']+=1
+                return [{'value':{'statements':[{'queryid':k,'calls':v} for k,v in stats.items()]}}]
+            if sql.startswith('DECLARE'):stats['2']+=1
+            if sql.startswith('FETCH'):
+                stats['3']+=1;n=pages.pop(0);query.terminal_count=n
+                return [{'i':'0','h':'a'*64,'keep':'1'} for _ in range(n)]
+            return []
+        context={'window':ID(4),'a':ID(5),'b':ID(6),'runs':{'seed':ID(7)}}
+        with patch.object(integral_stream,'ROWS',4),patch.object(integral_stream,'PAGE',4),patch.object(integral_stream,'delta',return_value={'queries':[]}):
+            with self.assertRaisesRegex(ValueError,'stream_row_ceiling'):
+                run(query,lambda n,v:saved.update({n:v}),{'member':ID(1)},context,'capacity')
+        stop=saved['integral-stream-capacity-stop.json']
+        self.assertEqual((stop['failed_phase'],stop['reason_code'],stop['received_rows'],stop['row_limit']),
+                         ('row_capacity','stream_row_ceiling',5,4))
+        self.assertEqual(calls[-1],'ROLLBACK')
+        self.assertNotIn('integral-stream-capacity.json',saved)
 
 if __name__=='__main__':unittest.main()

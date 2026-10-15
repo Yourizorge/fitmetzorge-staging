@@ -75,7 +75,7 @@ def plan(inventory,ids,c):
 
 def statement(plans):
     return ' union all '.join("select "+str(i)+"::text i,encode(sha256(convert_to(to_jsonb(t)::text,'UTF8')),'hex') h,"
-        "case when ("+p['predicate']+") then '1' else '0' end keep from "+'.'.join(ident(n) for n in p['name'].split('.'))+' t'
+        "'1'::text keep from "+'.'.join(ident(n) for n in p['name'].split('.'))+' t where ('+p['predicate']+')'
         for i,p in enumerate(plans))
 
 def frame(rows,terminal):
@@ -103,13 +103,17 @@ def run(query,save,ids,context,label,expected=None):
         plans=plan(q('inventory',INVENTORY),ids,context)
         if expected is not None and plans!=expected['plan']:raise ValueError('stream_inventory_changed')
         stream=statement(plans);reader=check_plan(q('reader_bind','EXPLAIN (VERBOSE,COSTS FALSE,FORMAT JSON) '+ALL_STATS)[0]['QUERY PLAN'])
+        save('integral-stream-'+label+'-binding.json',{'plan':plans,
+            'query_sha256':hashlib.sha256(stream.encode()).hexdigest(),
+            'source_sha256':hashlib.sha256(pathlib.Path(__file__).read_bytes()).hexdigest(),
+            'row_limit':ROWS,'page_limit':PAGE,'filter_before_transport':True})
         def sample():
             value=q('io',ALL_STATS)[0]['value']
             if len(value['statements'])>5000:raise ValueError('stream_numeric_metadata_budget')
             return value
         previous=sample();buffer={r['name']:[] for r in plans};total=0
         def utility(sql):
-            nonlocal previous
+            nonlocal previous,active_phase
             before=previous
             prefix='integral-stream-'+label+'-utility-%03d'%len(profiles)
             binding={'sql_sha256':hashlib.sha256(sql.encode()).hexdigest(),'reader_queryid':reader}
@@ -123,7 +127,9 @@ def run(query,save,ids,context,label,expected=None):
             save(prefix+'-attribution.json',{'binding':binding,'changed_query_calls':changed,
                 'unambiguous':len(changed)==1 and list(changed.values())==[1],
                 'background_attributed_to_collector':False,'query_text_read':False})
-            if len(changed)!=1 or list(changed.values())!=[1]:raise ValueError('stream_utility_attribution')
+            if len(changed)!=1 or list(changed.values())!=[1]:
+                active_phase='utility_attribution'
+                raise ValueError('stream_utility_attribution')
             profile=delta(before,after,{**changed,reader:1})
             save('integral-stream-'+label+'-io-%03d.json'%len(profiles),profile)
             # A read-only cursor may generate WAL for PostgreSQL hint bits.
@@ -134,7 +140,9 @@ def run(query,save,ids,context,label,expected=None):
         utility('DECLARE fmz_integral_hashes NO SCROLL CURSOR WITHOUT HOLD FOR '+stream)
         for page in range(ROWS//PAGE+1):
             rows,terminal=utility('FETCH FORWARD '+str(PAGE)+' FROM fmz_integral_hashes')
+            active_phase='frame_validation'
             frame(rows,terminal);total+=len(rows)
+            active_phase='row_capacity'
             if total>ROWS:raise ValueError('stream_row_ceiling')
             frames.append({'page':page,'rows':len(rows),'terminal_count':len(rows),
                 'sha256':hashlib.sha256(json.dumps(rows,separators=(',',':')).encode()).hexdigest()})
@@ -159,8 +167,12 @@ def run(query,save,ids,context,label,expected=None):
     except Exception as error:
         original_error=error
         try:
+            safe_reasons={'stream_row_ceiling','stream_utility_attribution','stream_terminal_count',
+                'stream_frame_content','stream_frame_bytes','stream_table_index','stream_empty_terminal_missing'}
             save('integral-stream-'+label+'-stop.json',{'failed_phase':active_phase,'command':count,
                 'exception_class':type(error).__name__,'sqlstate':getattr(error,'sqlstate',None),
+                'reason_code':str(error) if type(error) is ValueError and str(error) in safe_reasons else 'unclassified_sanitized_failure',
+                'received_rows':locals().get('total',0),'row_limit':ROWS,
                 'completed_frames':len(frames),'completed_profiles':len(profiles),'automatic_retry':False})
         except Exception as storage_error:error.add_note('stop_storage_failed:'+type(storage_error).__name__)
         raise

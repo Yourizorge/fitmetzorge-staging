@@ -12,6 +12,7 @@ NEW=['domain.cjs','domain.test.cjs','windows.cjs','windows.test.cjs','worker.cjs
      'release_packet.py','test_release_packet.py','outbox.py','test_outbox.py','planning.py','test_planning.py',
      'registration12.cjs','registration12.test.cjs','registration_store.py','registration_database.py','registration_browser.cjs',
      'registration_release.py','test_registration_release.py',
+     'registration_scope.py','test_registration_scope.py','registration_transport.py','test_registration_transport.py',
      'application_io.py','test_application_io.py','cli_isolation.py','test_cli_isolation.py',
      'supabase/migrations/'+M45,'supabase/migrations/'+M46]
 EXTRA={'_offline/phase6e_server_v1/'+p for p in NEW}
@@ -102,6 +103,10 @@ class Gate(previous.Gate):
         self.command('integration-protocol',[sys.executable,'-B',str(folder/'test_protocol.py')])
         self.command('integration-release-packet',[sys.executable,'-B',str(folder/'test_release_packet.py')])
         self.command('registration-release-packet',[sys.executable,'-B',str(folder/'test_registration_release.py')])
+        self.command('registration-scope',[sys.executable,'-B',str(folder/'test_registration_scope.py')])
+        self.command('registration-transport',[sys.executable,'-B',str(folder/'test_registration_transport.py')])
+        self.result['registration_candidate_unit_tests']=15
+        self.result['registration_candidate_hosted_admitted']=False
         self.command('integration-outbox',[sys.executable,'-B',str(folder/'test_outbox.py')])
         self.command('integration-planning',[sys.executable,'-B',str(folder/'test_planning.py')])
         self.command('integration-application-io',[sys.executable,'-B',str(folder/'test_application_io.py')])
@@ -110,6 +115,8 @@ class Gate(previous.Gate):
         count=re.search(r'# tests (\d+)',output.stdout)
         if not count:raise RuntimeError('domain_count')
         self.result['integration_domain_tests']=int(count[1])
+        from stream_filter_check import run as stream_filter_check
+        self.result['stream_filter_pg17_checks']=stream_filter_check(self)
         import ci_auth,database_tests,server,subprocess,threading
         with ci_auth.environment(self) as ctx:
             row=ctx['admin'].execute("select relrowsecurity,relforcerowsecurity from pg_class where oid='auth.sessions'::regclass").fetchone()

@@ -1,5 +1,40 @@
 # Current Integration Completion
 
+## Current Status: 15 October 2026
+
+This section supersedes the explicitly historical14 October snapshot below.
+The owner accepts the old unresolved utility cause as UNKNOWN; its NO-GO and
+missing samples remain unchanged. The new attempt is now USED, not available.
+
+- New run `acd473d0-5a81-4aca-928a-3907b2bda3a3`: NO-GO at row-capacity check.
+  Ninth FETCH reached73728 versus65536.31/2226 SQL commands, final ROLLBACK
+  confirmed, JIT disabled and0 mappings. No migration/Auth/fixture/workflow write.
+- Fresh hosted history43; candidate44 not applied. No new hosted dry-run or
+  complete before/after protected-data comparison was reached. No phone window.
+- Ten complete utility sample pairs: unambiguous attribution, own temp0,
+  background temp0 in those windows; own WAL1196543 bytes, not zero disk IO.
+- Source-bound integral CI38707409636 PASS at1ce8d3f: clean44,33 M44 checks,
+  18 local Auth checks,71 pairs,295 writes/123 deletes, three real failure cases.
+  Actual2154 SQL; normal capacity2196, worst2207, authorized2226.
+- Offline correction applies the same exclusion predicates before transport,
+  retains the65536 limit, and records exact sanitized failure phases. A new
+  hosted attempt is NOT authorized by local PASS. No retry occurred.
+- Independent12-20 durable local integration remains prepared. Registration12
+  now has private, unpublished transport and scope candidates with15 focused
+  tests; hosted entry remains off. New composition needs fresh CI, not a relabel
+  of old CI38603611445. Exact future Auth/guard/lifecycle/register admission is
+  still dependent on complete11, physical review and the selected12 decision.
+- Local46 and hosted43 remain distinct. No bulk12-21 activation;21 unaccepted.
+  Original1376-file preservation PASS;152 Pages assets unchanged and19 legacy
+  private paths404 in checks surrounding the admission-source publication.
+
+See [current run/evidence report](PHASE6E11_RESERVED_RUN_20261015.md) and
+[selected12 boundary](PHASE6E12_SELECTED_RELEASE_BOUNDARY.md). Historical112
+complete pairs, incomplete113, earlier fixtures and dirty runtime remain intact.
+Production touched:NO. Real-member AI enabled:NO. External AI:0 / EUR0.00.
+
+## Historical Snapshot: 14 October 2026 (Not Current Admission)
+
 14 October 2026. This current status supersedes stale status claims, not historical
 evidence. Starting local/remote main: `33f0be559429c2ece0ffb23a46ff45ef65826291`.
 The owner's request `1f3971da-1021-4208-835c-de31c29ac281` authorizes the work below.
