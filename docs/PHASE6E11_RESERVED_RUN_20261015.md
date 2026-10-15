@@ -53,3 +53,16 @@ and an exact selected-release decision. No bulk12-21 activation;21 is pending.
 
 Current state: new attempt UNUSED, admission in preparation. No hosted PASS,
 owner acceptance, freeze, new phone window or hosted registration12 is claimed.
+
+CI38705414112 built clean44 and the normal integral chain, but remains NO-GO:
+the third deliberate failure case stopped before its injection. Its migration
+meter saw14 CLI commands versus16 numeric calls, with additional empty/pg_cron
+application names in the disposable runner. Zero measured temp blocks; this
+does NOT explain the old hosted failure. Archive86ed2684363d24171814828ad6726b973fbbf13e5fb896aab5669182b3f14eef
+is retained. Normal capacity2196, worst safety prefix2207, limit2226.
+
+The next CI composition reuses the already tested disposable-only cron isolation
+helper. It restores the original setting in finally and retains its own8-command
+setup/closure receipt per invocation, separate from the hosted protocol. No hosted
+cron change or excluded hosted command is introduced. Full admission is set only
+after all real failure cases pass, not before. No hosted attempt has been consumed.

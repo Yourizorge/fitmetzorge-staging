@@ -38,12 +38,23 @@ EXTRA|={'_offline/phase6e11/'+name for name in (
  'm41_tx_v2/measure.py','m41_tx_v2/install.py','readiness_v1/targeted/query_load.py','readiness_v1/targeted/transport.py',
  'textfree_tx_v2/connection.py','textfree_tx_v2/hosted.py','textfree_tx_v2/session.py','textfree_v1/monitor.py','textfree_v1/native.py')}
 EXTRA.add('supabase/tests/phase6d0-staging-query.py')
+EXTRA|={'_offline/phase6e_server_v1/cli_isolation.py','_offline/phase6e_server_v1/test_cli_isolation.py'}
 prior.EXTRA|=EXTRA;prior.old.EXTRA|=EXTRA
 class Gate(prior.Gate):
     cli_namespace='clean44-'
     controller_node_count=198
     migration_count=44
     migration_last=M44
+    def isolated_cli(self,args,timeout):
+        import cli_meter
+        spec=importlib.util.spec_from_file_location('endchain_disposable_cli_isolation',
+            self.sources/'_offline/phase6e_server_v1/cli_isolation.py')
+        isolation=importlib.util.module_from_spec(spec);spec.loader.exec_module(isolation)
+        saved=self.save
+        # Keep initial clean-build and each fault-run receipts separate.
+        self.save=lambda name,value:saved((getattr(self,'cli_namespace','') if name.startswith('cli-isolation-') else '')+name,value)
+        try:return isolation.measured(self,args,timeout,cli_meter.run)
+        finally:self.save=saved
     def install(self):
         self.command('pg17-parser-install',['python3','-m','pip','install','--disable-pip-version-check',
             '--only-binary=:all:','--target',str(self.sources/'supabase/.temp/phase6e11-pg17-parser'),
@@ -63,7 +74,7 @@ class Gate(prior.Gate):
                 from lifecycle_gates import ci_preflight
                 ci_preflight(self)
             exact=('db','push','--local','--skip-vault','--yes') if migration else args
-            return cli_meter.run(self,exact,timeout)
+            return self.isolated_cli(exact,timeout)
         return super().cli(*args,timeout=timeout)
     def fetch(self):
         migrations=super().fetch()
@@ -136,7 +147,7 @@ class Gate(prior.Gate):
         self.save('registered-database-bootstrap.json',{'disposable_only':True,'version':'20261012104331','hosted_calls':0})
     def apply_endchain_migration(self):
         import cli_meter
-        cli_meter.run(self,('db','push','--local','--skip-vault','--yes'),45)
+        self.isolated_cli(('db','push','--local','--skip-vault','--yes'),45)
         return self.cli_protocol[-1]
     def advisors(self):
         super().advisors()
@@ -159,8 +170,8 @@ class Gate(prior.Gate):
         self.result['integral_capacity_register']={k:register[k] for k in
             ('complete_register','normal_capacity','worst_including_safety','phase_budgets','recommended_maximum','fits')}
         if register['fits'] is not True:raise RuntimeError('integral_budget_not_admitted')
-        self.result['full_chain_admission']=True
         self.result['scope']='Integral local GoTrue/controller/workflow/cleanup/IO and confirmed closure; hosted identity and source admission remain separate.'
         from integral_failures import run as failure_matrix
         self.result['integral_real_failure_cases']=len(failure_matrix(self))
+        self.result['full_chain_admission']=True
 if __name__=='__main__':sys.exit(Gate().run())
