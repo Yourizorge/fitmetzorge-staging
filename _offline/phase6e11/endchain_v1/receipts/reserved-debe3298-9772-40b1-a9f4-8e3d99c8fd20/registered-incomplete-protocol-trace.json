@@ -1,0 +1,248 @@
+{
+  "automatic_retry": false,
+  "commands": [
+    {
+      "action": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "at_ms": 5312,
+      "command": 1,
+      "confirmed": true,
+      "duration_ms": 32,
+      "phase": "stream_before_begin",
+      "sql_sha256": "39a735c5dae2019f7ec2a41de9b4b8f37d979b14d999d9abd06b7f5d1bb9c95a"
+    },
+    {
+      "action": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "at_ms": 5344,
+      "command": 2,
+      "confirmed": true,
+      "duration_ms": 31,
+      "phase": "stream_before_guard",
+      "sql_sha256": "810cd66d8d73d499bc7d3996e01570ee70418a29d9176388b8d3c57b60347c55"
+    },
+    {
+      "action": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "at_ms": 5375,
+      "command": 3,
+      "confirmed": true,
+      "duration_ms": 31,
+      "phase": "stream_before_canonical",
+      "sql_sha256": "7d10b9ef765a9886d89e423ac8a6def20e8589493a8958af253431c52c1d2183"
+    },
+    {
+      "action": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "at_ms": 5406,
+      "command": 4,
+      "confirmed": true,
+      "duration_ms": 188,
+      "phase": "stream_before_inventory",
+      "sql_sha256": "6918384197bebf43afd6b0416425ee07f1ffb2b807f1dd7928925ad4c845540b"
+    },
+    {
+      "action": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "at_ms": 5609,
+      "command": 5,
+      "confirmed": true,
+      "duration_ms": 78,
+      "phase": "stream_before_reader_bind",
+      "sql_sha256": "0216fdc5f79878fc4ea70b0b724f14472b8f4f028c6e6dcfe9c0c1b6137cc6d5"
+    },
+    {
+      "action": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "at_ms": 5687,
+      "command": 6,
+      "confirmed": true,
+      "duration_ms": 235,
+      "phase": "stream_before_io",
+      "sql_sha256": "345817700e6ab22ac07149573a908f3971c6a631c32b1b5df4ff167233bdb824"
+    },
+    {
+      "action": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "at_ms": 6094,
+      "command": 7,
+      "confirmed": true,
+      "duration_ms": 1406,
+      "phase": "stream_before_utility",
+      "sql_sha256": "6fc813cb6f234e623c9a7d43ef47da94bfd33fce309baee3b5ffffad7da51e3e"
+    },
+    {
+      "action": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "at_ms": 7500,
+      "command": 8,
+      "confirmed": true,
+      "duration_ms": 281,
+      "phase": "stream_before_io",
+      "sql_sha256": "345817700e6ab22ac07149573a908f3971c6a631c32b1b5df4ff167233bdb824"
+    },
+    {
+      "action": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "at_ms": 8031,
+      "command": 9,
+      "confirmed": true,
+      "duration_ms": 31,
+      "phase": "stream_before_rollback",
+      "sql_sha256": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710"
+    }
+  ],
+  "complete": false,
+  "runtime_meter": {
+    "complete": true,
+    "events": [
+      {
+        "action": "verified_preflight",
+        "commands": 4,
+        "confirmed": true,
+        "elapsed_ms": 5062,
+        "first_command": 1,
+        "kind": "cli_bound",
+        "mutation": false,
+        "number": 1,
+        "phase": "preflight",
+        "reserved_cleanup": 695
+      },
+      {
+        "action": "stream_before_begin",
+        "commands": 1,
+        "confirmed": true,
+        "elapsed_ms": 5312,
+        "first_command": 5,
+        "kind": "native",
+        "mutation": true,
+        "number": 2,
+        "phase": "baseline",
+        "reserved_cleanup": 695
+      },
+      {
+        "action": "stream_before_guard",
+        "commands": 1,
+        "confirmed": true,
+        "elapsed_ms": 5344,
+        "first_command": 6,
+        "kind": "native",
+        "mutation": true,
+        "number": 3,
+        "phase": "baseline",
+        "reserved_cleanup": 695
+      },
+      {
+        "action": "stream_before_canonical",
+        "commands": 1,
+        "confirmed": true,
+        "elapsed_ms": 5375,
+        "first_command": 7,
+        "kind": "native",
+        "mutation": true,
+        "number": 4,
+        "phase": "baseline",
+        "reserved_cleanup": 695
+      },
+      {
+        "action": "stream_before_inventory",
+        "commands": 1,
+        "confirmed": true,
+        "elapsed_ms": 5406,
+        "first_command": 8,
+        "kind": "native",
+        "mutation": true,
+        "number": 5,
+        "phase": "baseline",
+        "reserved_cleanup": 695
+      },
+      {
+        "action": "stream_before_reader_bind",
+        "commands": 1,
+        "confirmed": true,
+        "elapsed_ms": 5609,
+        "first_command": 9,
+        "kind": "native",
+        "mutation": true,
+        "number": 6,
+        "phase": "baseline",
+        "reserved_cleanup": 695
+      },
+      {
+        "action": "stream_before_io",
+        "commands": 1,
+        "confirmed": true,
+        "elapsed_ms": 5687,
+        "first_command": 10,
+        "kind": "native",
+        "mutation": true,
+        "number": 7,
+        "phase": "baseline",
+        "reserved_cleanup": 695
+      },
+      {
+        "action": "stream_before_utility",
+        "commands": 1,
+        "confirmed": true,
+        "elapsed_ms": 6062,
+        "first_command": 11,
+        "kind": "native",
+        "mutation": true,
+        "number": 8,
+        "phase": "baseline",
+        "reserved_cleanup": 695
+      },
+      {
+        "action": "stream_before_io",
+        "commands": 1,
+        "confirmed": true,
+        "elapsed_ms": 7500,
+        "first_command": 12,
+        "kind": "native",
+        "mutation": true,
+        "number": 9,
+        "phase": "baseline",
+        "reserved_cleanup": 695
+      },
+      {
+        "action": "stream_before_rollback",
+        "commands": 1,
+        "confirmed": true,
+        "elapsed_ms": 8031,
+        "first_command": 13,
+        "kind": "native",
+        "mutation": true,
+        "number": 10,
+        "phase": "baseline",
+        "reserved_cleanup": 695
+      }
+    ],
+    "limit": 2226,
+    "phases": {
+      "baseline": 9,
+      "preflight": 4
+    },
+    "safety": {},
+    "stop_reason": "registered_install_failure",
+    "stopped": true,
+    "used": 13
+  }
+}

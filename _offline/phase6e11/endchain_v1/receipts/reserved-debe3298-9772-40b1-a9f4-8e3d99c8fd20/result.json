@@ -1,0 +1,25 @@
+{
+  "commands": 13,
+  "error_class": "RuntimeError",
+  "external_ai_calls": 0,
+  "frames": [
+    {
+      "file": "hosted_gate.py",
+      "function": "main",
+      "line": 183
+    },
+    {
+      "file": "registered_runner.py",
+      "function": "execute",
+      "line": 23
+    }
+  ],
+  "jit_revoked": true,
+  "owner_acceptance": false,
+  "phase": "registered_chain",
+  "production_touched": false,
+  "real_member_ai": false,
+  "reason": "registered_worker_failed",
+  "sqlstate": null,
+  "status": "NO_GO"
+}

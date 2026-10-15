@@ -1,0 +1,342 @@
+{
+  "rows": [
+    {
+      "action": "guard_install",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00098",
+      "infrastructure_writeset": "guard_objects",
+      "ordinal_in_action": 0,
+      "phase": "guard",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "11393cdc46ffb102c0c54cfa3bf427c8a19a51278a252a59bcdd84db50ea3f40",
+      "sql": 1,
+      "state_after": {
+        "guard": true
+      },
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "1189f3389baf8df0dcf1f2d4e90b69cc896d8fa423241eba8951cb3aa81526ab",
+      "timeout_ms": 5000,
+      "trace_command": 74,
+      "writeset": []
+    },
+    {
+      "action": "guard_install",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00099",
+      "infrastructure_writeset": "guard_objects",
+      "ordinal_in_action": 0,
+      "phase": "guard",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "11393cdc46ffb102c0c54cfa3bf427c8a19a51278a252a59bcdd84db50ea3f40",
+      "sql": 1,
+      "state_after": {
+        "guard": true
+      },
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "2c9bede0f326dbda0f932d7daa9c4ae7c39e318a61a66f99d9b0ed68dec20529",
+      "timeout_ms": 5000,
+      "trace_command": 75,
+      "writeset": []
+    },
+    {
+      "action": "guard_install",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00100",
+      "infrastructure_writeset": "guard_objects",
+      "ordinal_in_action": 0,
+      "phase": "guard",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "11393cdc46ffb102c0c54cfa3bf427c8a19a51278a252a59bcdd84db50ea3f40",
+      "sql": 1,
+      "state_after": {
+        "guard": true
+      },
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "2f0ad9318d8daad4452e9726e67089ca3909981bbd333d0f80972dd3f8470f2c",
+      "timeout_ms": 5000,
+      "trace_command": 76,
+      "writeset": []
+    },
+    {
+      "action": "guard_install",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00101",
+      "infrastructure_writeset": "guard_objects",
+      "ordinal_in_action": 0,
+      "phase": "guard",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "11393cdc46ffb102c0c54cfa3bf427c8a19a51278a252a59bcdd84db50ea3f40",
+      "sql": 1,
+      "state_after": {
+        "guard": true
+      },
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "2efd90ada228d715b54e159d96a06a616970129e314d54e18017a759b3a3a21c",
+      "timeout_ms": 5000,
+      "trace_command": 77,
+      "writeset": []
+    },
+    {
+      "action": "guard_install",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00102",
+      "infrastructure_writeset": "guard_objects",
+      "ordinal_in_action": 0,
+      "phase": "guard",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "11393cdc46ffb102c0c54cfa3bf427c8a19a51278a252a59bcdd84db50ea3f40",
+      "sql": 1,
+      "state_after": {
+        "guard": true
+      },
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "129c3c2bcce58ef862d49b46bfd2a0f34eb7253b32006c8bd5e79fc8fe125d16",
+      "timeout_ms": 5000,
+      "trace_command": 78,
+      "writeset": []
+    },
+    {
+      "action": "guard_install",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00103",
+      "infrastructure_writeset": "guard_objects",
+      "ordinal_in_action": 0,
+      "phase": "guard",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "11393cdc46ffb102c0c54cfa3bf427c8a19a51278a252a59bcdd84db50ea3f40",
+      "sql": 1,
+      "state_after": {
+        "guard": true
+      },
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f",
+      "timeout_ms": 5000,
+      "trace_command": 79,
+      "writeset": []
+    },
+    {
+      "action": "guard_install",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00104",
+      "infrastructure_writeset": "guard_objects",
+      "ordinal_in_action": 0,
+      "phase": "guard",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "11393cdc46ffb102c0c54cfa3bf427c8a19a51278a252a59bcdd84db50ea3f40",
+      "sql": 1,
+      "state_after": {
+        "guard": true
+      },
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "f05f5e9e14bae91652561351d0e9fb2e3e5fcc9943ba2c8fccb7a56349c80aaa",
+      "timeout_ms": 5000,
+      "trace_command": 80,
+      "writeset": []
+    },
+    {
+      "action": "metadata_install",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00105",
+      "infrastructure_writeset": "guard_objects",
+      "ordinal_in_action": 0,
+      "phase": "guard",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "11393cdc46ffb102c0c54cfa3bf427c8a19a51278a252a59bcdd84db50ea3f40",
+      "sql": 1,
+      "state_after": {
+        "observer": true
+      },
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "53e11eba6dd7d795a3110a34417656ef9281ee9f7a6f35c190e8c64ab1a978b0",
+      "timeout_ms": 5000,
+      "trace_command": 81,
+      "writeset": []
+    },
+    {
+      "action": "metadata_install",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00106",
+      "infrastructure_writeset": "guard_objects",
+      "ordinal_in_action": 0,
+      "phase": "guard",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "11393cdc46ffb102c0c54cfa3bf427c8a19a51278a252a59bcdd84db50ea3f40",
+      "sql": 1,
+      "state_after": {
+        "observer": true
+      },
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "2c9bede0f326dbda0f932d7daa9c4ae7c39e318a61a66f99d9b0ed68dec20529",
+      "timeout_ms": 5000,
+      "trace_command": 82,
+      "writeset": []
+    },
+    {
+      "action": "metadata_install",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00107",
+      "infrastructure_writeset": "guard_objects",
+      "ordinal_in_action": 0,
+      "phase": "guard",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "11393cdc46ffb102c0c54cfa3bf427c8a19a51278a252a59bcdd84db50ea3f40",
+      "sql": 1,
+      "state_after": {
+        "observer": true
+      },
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "2f0ad9318d8daad4452e9726e67089ca3909981bbd333d0f80972dd3f8470f2c",
+      "timeout_ms": 5000,
+      "trace_command": 83,
+      "writeset": []
+    },
+    {
+      "action": "metadata_install",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00108",
+      "infrastructure_writeset": "guard_objects",
+      "ordinal_in_action": 0,
+      "phase": "guard",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "11393cdc46ffb102c0c54cfa3bf427c8a19a51278a252a59bcdd84db50ea3f40",
+      "sql": 1,
+      "state_after": {
+        "observer": true
+      },
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "07ddd98a753ed329c69c2ed1f95cbe474d09735bda93ce558e9fe53cf388fd84",
+      "timeout_ms": 5000,
+      "trace_command": 84,
+      "writeset": []
+    },
+    {
+      "action": "metadata_install",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00109",
+      "infrastructure_writeset": "guard_objects",
+      "ordinal_in_action": 0,
+      "phase": "guard",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "11393cdc46ffb102c0c54cfa3bf427c8a19a51278a252a59bcdd84db50ea3f40",
+      "sql": 1,
+      "state_after": {
+        "observer": true
+      },
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "79663c1d3b43ceaf9ee728e501c64b57ae2e4d6cb36ff5c65eddcda1de27342f",
+      "timeout_ms": 5000,
+      "trace_command": 85,
+      "writeset": []
+    },
+    {
+      "action": "metadata_install",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00110",
+      "infrastructure_writeset": "guard_objects",
+      "ordinal_in_action": 0,
+      "phase": "guard",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "11393cdc46ffb102c0c54cfa3bf427c8a19a51278a252a59bcdd84db50ea3f40",
+      "sql": 1,
+      "state_after": {
+        "observer": true
+      },
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "2aeb6cfe6f33c05178ac50fd7afd8a17c01afdab6fd8b56cc1765e57e861f1dd",
+      "timeout_ms": 5000,
+      "trace_command": 86,
+      "writeset": []
+    }
+  ]
+}

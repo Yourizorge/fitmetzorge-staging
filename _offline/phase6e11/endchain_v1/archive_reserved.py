@@ -25,12 +25,15 @@ def export(source,kind):
         names=['result.json','collection.json','artifact-manifest.json','endchain-sources.json',
                'complete-command-register.json','runtime-command-meter.json','integral-real-failure-matrix.json',
                'integral-closure.json','integral-migration-pair.json','integral-workflow.json',
-               'stream-filter-pg17.json',
+               'stream-filter-pg17.json','stream-capacity-pg17.json','register-prefix-reserves.json',
                'endchain-budget-database.json','integral-control-enable-pair.json','integral-control-restore-pair.json',
                'registered-worker-terminal.json']
         names=[n for n in names if disk(source/n).is_file()]
         names+=sorted(p.name for p in disk(source).glob('*cli-isolation-*.json'))
         names+=sorted(p.name for p in disk(source).glob('*stop*.json'))
+        names+=sorted(p.name for p in disk(source).glob('register-phase-*.json'))
+        names+=sorted(p.name for p in disk(source).glob('integral-stream-*-binding.json'))
+        names+=sorted(p.name for p in disk(source).glob('integral-stream-*-capacity.json'))
         label='reserved-ci-'+source.name.removeprefix('artifact-run-').removesuffix('-recovered')
     else:raise ValueError('receipt_kind')
     if not names or len(names)>1500 or len(names)!=len(set(names)):raise ValueError('receipt_set')

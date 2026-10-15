@@ -1,0 +1,134 @@
+{
+  "complete": true,
+  "events": [
+    {
+      "action": "verified_preflight",
+      "commands": 4,
+      "confirmed": true,
+      "elapsed_ms": 5062,
+      "first_command": 1,
+      "kind": "cli_bound",
+      "mutation": false,
+      "number": 1,
+      "phase": "preflight",
+      "reserved_cleanup": 695
+    },
+    {
+      "action": "stream_before_begin",
+      "commands": 1,
+      "confirmed": true,
+      "elapsed_ms": 5312,
+      "first_command": 5,
+      "kind": "native",
+      "mutation": true,
+      "number": 2,
+      "phase": "baseline",
+      "reserved_cleanup": 695
+    },
+    {
+      "action": "stream_before_guard",
+      "commands": 1,
+      "confirmed": true,
+      "elapsed_ms": 5344,
+      "first_command": 6,
+      "kind": "native",
+      "mutation": true,
+      "number": 3,
+      "phase": "baseline",
+      "reserved_cleanup": 695
+    },
+    {
+      "action": "stream_before_canonical",
+      "commands": 1,
+      "confirmed": true,
+      "elapsed_ms": 5375,
+      "first_command": 7,
+      "kind": "native",
+      "mutation": true,
+      "number": 4,
+      "phase": "baseline",
+      "reserved_cleanup": 695
+    },
+    {
+      "action": "stream_before_inventory",
+      "commands": 1,
+      "confirmed": true,
+      "elapsed_ms": 5406,
+      "first_command": 8,
+      "kind": "native",
+      "mutation": true,
+      "number": 5,
+      "phase": "baseline",
+      "reserved_cleanup": 695
+    },
+    {
+      "action": "stream_before_reader_bind",
+      "commands": 1,
+      "confirmed": true,
+      "elapsed_ms": 5609,
+      "first_command": 9,
+      "kind": "native",
+      "mutation": true,
+      "number": 6,
+      "phase": "baseline",
+      "reserved_cleanup": 695
+    },
+    {
+      "action": "stream_before_io",
+      "commands": 1,
+      "confirmed": true,
+      "elapsed_ms": 5687,
+      "first_command": 10,
+      "kind": "native",
+      "mutation": true,
+      "number": 7,
+      "phase": "baseline",
+      "reserved_cleanup": 695
+    },
+    {
+      "action": "stream_before_utility",
+      "commands": 1,
+      "confirmed": true,
+      "elapsed_ms": 6062,
+      "first_command": 11,
+      "kind": "native",
+      "mutation": true,
+      "number": 8,
+      "phase": "baseline",
+      "reserved_cleanup": 695
+    },
+    {
+      "action": "stream_before_io",
+      "commands": 1,
+      "confirmed": true,
+      "elapsed_ms": 7500,
+      "first_command": 12,
+      "kind": "native",
+      "mutation": true,
+      "number": 9,
+      "phase": "baseline",
+      "reserved_cleanup": 695
+    },
+    {
+      "action": "stream_before_rollback",
+      "commands": 1,
+      "confirmed": true,
+      "elapsed_ms": 8031,
+      "first_command": 13,
+      "kind": "native",
+      "mutation": true,
+      "number": 10,
+      "phase": "baseline",
+      "reserved_cleanup": 695
+    }
+  ],
+  "limit": 2226,
+  "phases": {
+    "baseline": 9,
+    "preflight": 4
+  },
+  "safety": {},
+  "stop_reason": "registered_install_failure",
+  "stopped": true,
+  "used": 13
+}

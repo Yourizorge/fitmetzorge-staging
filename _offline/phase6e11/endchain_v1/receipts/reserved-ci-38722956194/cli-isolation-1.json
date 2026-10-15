@@ -1,0 +1,41 @@
+{
+  "commands": 8,
+  "original": "on",
+  "primary_error_class": null,
+  "protocol": [
+    {
+      "confirmed": true,
+      "statement": "select current_setting('cron.launch_active_jobs') setting"
+    },
+    {
+      "confirmed": true,
+      "statement": "alter system set cron.launch_active_jobs='off'"
+    },
+    {
+      "confirmed": true,
+      "statement": "select pg_reload_conf()"
+    },
+    {
+      "confirmed": true,
+      "statement": "select current_setting('cron.launch_active_jobs') setting"
+    },
+    {
+      "confirmed": true,
+      "statement": "select count(*) n from pg_stat_activity where application_name='pg_cron' and state='active'"
+    },
+    {
+      "confirmed": true,
+      "statement": "alter system set cron.launch_active_jobs='on'"
+    },
+    {
+      "confirmed": true,
+      "statement": "select pg_reload_conf()"
+    },
+    {
+      "confirmed": true,
+      "statement": "select current_setting('cron.launch_active_jobs') setting"
+    }
+  ],
+  "restored": true,
+  "scope": "disposable CI only; no hosted config changes"
+}
