@@ -3,8 +3,9 @@ import concurrent.futures,collections,json,uuid
 from store import domain,digest,SCHEMA,Denied
 from registration_store import RegistrationStore
 
-def run(ctx,inspect=None):
+def run(ctx,inspect=None,transport_factory=None,member='a'):
     admin,claims,tokens=ctx['admin'],ctx['claims'],ctx['tokens'];events=[];checks=[]
+    if member not in ('a','b'):raise ValueError('registration_member')
     def ok(name,value):
         if not value:raise AssertionError(name)
         checks.append(name)
@@ -13,23 +14,28 @@ def run(ctx,inspect=None):
         except Denied:checks.append(name);return
         raise AssertionError(name)
     subjects=[claims[k]['sub'] for k in ('a','trainer','b')]
+    admin.operation='registration12_fixture_'+member
     for actor in subjects:admin.execute('insert into '+SCHEMA+'.subjects values(%s,true,true,now()+interval \'15 minutes\')',[actor])
     def bind():
         admin.execute("select set_config('fmz6e.verified_session',%s,false),set_config('request.jwt.claims',%s,false),set_config('fmz6e.request_id',%s,false)",
-            [claims['a']['session_id'],json.dumps(claims['a']),str(uuid.uuid4())])
+            [claims[member]['session_id'],json.dumps(claims[member]),str(uuid.uuid4())])
     bind();workspace=str(uuid.uuid4());state=domain('registration_initial');raw=json.dumps(state,separators=(',',':'))
-    admin.execute('insert into '+SCHEMA+'.workspaces(id,fixture_run,member_id,trainer_id,owner_id,route,expires_at,state_text,state_sha) values(%s,%s,%s,%s,%s,\'A\',now()+interval \'10 minutes\',%s,%s)',
-        [workspace,str(uuid.uuid4()),subjects[0],subjects[1],subjects[0],raw,digest(raw)])
+    actor=claims[member]['sub']
+    admin.execute('insert into '+SCHEMA+'.workspaces(id,fixture_run,member_id,trainer_id,owner_id,route,expires_at,state_text,state_sha) values(%s,%s,%s,%s,%s,%s,now()+interval \'10 minutes\',%s,%s)',
+        [workspace,str(uuid.uuid4()),actor,subjects[1] if member=='a' else None,actor,member.upper(),raw,digest(raw)])
     admin.execute('insert into '+SCHEMA+'.revisions(workspace_id,version,state_text,state_sha) values(%s,0,%s,%s)',[workspace,raw,digest(raw)])
-    bindings={workspace:subjects[0]}
-    store=RegistrationStore(ctx['dsn'],ctx['auth'],bindings,enabled=True,observer=events.append)
-    read=lambda:store.read(workspace,tokens['a'])
+    bindings={workspace:actor}
+    def make():
+        return transport_factory(bindings,events.append) if transport_factory else RegistrationStore(ctx['dsn'],ctx['auth'],bindings,enabled=True,observer=events.append)
+    store=make()
+    read=lambda:store.read(workspace,tokens[member])
     def act(key=None,expected=None,input=None,fault=None,action='register12'):
         current=read()
-        return store.execute(workspace,tokens['a'],key or str(uuid.uuid4()),current['version'] if expected is None else expected,
+        return store.execute(workspace,tokens[member],key or str(uuid.uuid4()),current['version'] if expected is None else expected,
             {'action':action,'data':{'input':input or current['state']['draft']} if action=='register12' else {}},fault)
     deny('default_off',lambda:RegistrationStore(ctx['dsn'],ctx['auth'],bindings))
-    for role in ('b','trainer','owner','outsider'):deny('exact_member_only_'+role,lambda:store.read(workspace,tokens[role]))
+    for role in tokens:
+        if role!=member:deny('exact_member_only_'+role,lambda:store.read(workspace,tokens[role]))
     initial=read();request=str(uuid.uuid4());draft=initial['state']['draft'];draft['sets'][0]['rir']=0;draft['sets'][0]['rpe']=None
     first=act(request,0,draft)
     ok('receipt_replay',act(request,0,draft)['idempotent'])
@@ -45,19 +51,21 @@ def run(ctx,inspect=None):
             try:f.result();passed+=1
             except Denied:denied+=1
     ok('concurrent_CAS',passed==1 and denied==1)
-    restarted=RegistrationStore(ctx['dsn'],ctx['auth'],bindings,enabled=True,observer=events.append)
-    ok('restart_history',restarted.read(workspace,tokens['a'])==read())
-    token=ctx['auth'].call('/token?grant_type=password',data=ctx['accounts']['a'])['access_token']
+    restarted=make()
+    ok('restart_history',restarted.read(workspace,tokens[member])==read())
+    token=ctx['auth'].call('/token?grant_type=password',data=ctx['accounts'][member])['access_token']
     ok('relogin_history',store.read(workspace,token)==read())
     state=read()['state'];ok('original_snapshot_retained',state['snapshot']==initial['state']['snapshot'])
     ok('independent_null_zero',state['registrations'][0]['sets'][0]['rir']==0 and state['registrations'][0]['sets'][0]['rpe'] is None)
     ok('three_exact_bound_writes',len(first['writes'])==3 and len({w['xid'] for w in first['writes']})==1)
+    admin.operation='registration12_expiry_'+member
     bind();old=admin.execute('select expires_at from '+SCHEMA+'.workspaces where id=%s',[workspace]).fetchone()['expires_at']
     admin.execute("update "+SCHEMA+".workspaces set expires_at=clock_timestamp()-interval '1 second' where id=%s",[workspace])
     deny('real_clock_expiry',read);admin.execute('update '+SCHEMA+'.workspaces set expires_at=%s where id=%s',[old,workspace])
     if inspect:inspect(store,workspace)
     length=len(read()['state']['registrations'])
     act(action='revoke');deny('consent_stops',act);ok('revocation_keeps_history',len(read()['state']['registrations'])==length)
+    admin.operation='registration12_cleanup_'+member
     bind();cleanup=str(uuid.uuid4());admin.execute("select set_config('fmz6e.request_id',%s,false)",[cleanup]);counts={}
     with admin.transaction():
         for table in ('requests','revisions','workspaces'):
@@ -71,6 +79,10 @@ def run(ctx,inspect=None):
     groups=collections.defaultdict(list)
     for e in completed:groups[e['call_id']].append(e)
     ok('all_protocol_terminals',all(v[-1]['confirmed'] and v[-1]['template_sha256'] in (digest('COMMIT'),digest('ROLLBACK')) for v in groups.values()))
+    if transport_factory:
+        store.close();restarted.close()
     return {'status':'PASS_LOCAL_REGISTRATION12','checks':checks,'count':len(checks),'commands':len(completed),
         'register':completed,'cleanup_counts':counts,'delete_proof':audit,'hosted':False,
+        'transport':'private_candidate_actual_local_GoTrue_and_verified_TLS' if transport_factory else 'existing_loopback',
+        'route':member.upper(),'registered_actor_sha256':digest(actor),'workspace':workspace,
         'scope':'M45 only; frozen12 registration/facts; no outbox/day21/plan application'}

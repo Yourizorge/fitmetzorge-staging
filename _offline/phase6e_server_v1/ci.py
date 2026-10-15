@@ -13,6 +13,7 @@ NEW=['domain.cjs','domain.test.cjs','windows.cjs','windows.test.cjs','worker.cjs
      'registration12.cjs','registration12.test.cjs','registration_store.py','registration_database.py','registration_browser.cjs',
      'registration_release.py','test_registration_release.py',
      'registration_scope.py','test_registration_scope.py','registration_transport.py','test_registration_transport.py',
+     'registration_proof.py','test_registration_proof.py','registration_accounting.py','test_registration_accounting.py',
      'application_io.py','test_application_io.py','cli_isolation.py','test_cli_isolation.py',
      'supabase/migrations/'+M45,'supabase/migrations/'+M46]
 EXTRA={'_offline/phase6e_server_v1/'+p for p in NEW}
@@ -89,6 +90,26 @@ class Gate(previous.Gate):
                 self.result['registration12_tests']=result['count']
                 self.save('auth.json',ci_auth.auth_checks(ctx))
         finally:self.save=old_save
+        # Exercise the new private transport against real local GoTrue/PG,
+        # not mocked /user replies and not a synthetic hosted admission.
+        self.save=lambda name,value:old_save('registration12-transport-'+name,value)
+        try:
+            from registration_transport import Candidate
+            from registration_proof import MeasuredRegistration
+            from native_runtime import NativeRuntime
+            with ci_auth.environment(self,roles=('a','trainer','b')) as ctx:
+                identities={role:ctx['claims'][role]['sub'] for role in ('a','trainer','b')}
+                def factory(bindings,observer):
+                    return MeasuredRegistration(Candidate.disposable(NativeRuntime.disposable(self),ctx['auth'],bindings,identities,observer),self.save)
+                proofs=[]
+                for member in ('a','b'):
+                    proof=registration_database.run(ctx,transport_factory=factory,member=member)
+                    self.save('database-'+member+'.json',proof);proofs.append(proof)
+                self.save('auth.json',ci_auth.auth_checks(ctx))
+                self.result['registration12_transport_database_tests']=sum(p['count'] for p in proofs)
+                self.result['registration12_transport_auth_tests']=4
+                self.result['registration12_transport_hosted']=False
+        finally:self.save=old_save
         shutil.copyfile(self.sources/'_offline/phase6e_server_v1/supabase/migrations'/M46,self.work/'supabase/migrations'/M46)
         self.cli('migration','up','--local')
         history=self.rows('select version from supabase_migrations.schema_migrations order by version')
@@ -108,8 +129,11 @@ class Gate(previous.Gate):
         # not global site-packages; the fresh test process needs that same path.
         self.command('registration-transport',['env','PYTHONPATH='+str(self.sources/'supabase/.temp/phase6e11-pg17-parser'),
             sys.executable,'-B',str(folder/'test_registration_transport.py')])
-        self.result['registration_candidate_unit_tests']=15
+        self.result['registration_candidate_unit_tests']=17
         self.result['registration_candidate_hosted_admitted']=False
+        self.command('registration-proof',['env','PYTHONPATH='+str(self.sources/'supabase/.temp/phase6e11-pg17-parser'),
+            sys.executable,'-B',str(folder/'test_registration_proof.py')])
+        self.command('registration-accounting',[sys.executable,'-B',str(folder/'test_registration_accounting.py')])
         self.command('integration-outbox',[sys.executable,'-B',str(folder/'test_outbox.py')])
         self.command('integration-planning',[sys.executable,'-B',str(folder/'test_planning.py')])
         self.command('integration-application-io',[sys.executable,'-B',str(folder/'test_application_io.py')])

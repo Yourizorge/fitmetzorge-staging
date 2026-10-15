@@ -10,7 +10,7 @@ IMAGE='supabase/gotrue:v2.197.0'
 NAME='fmz-integration-auth-ci'
 
 @contextlib.contextmanager
-def environment(gate):
+def environment(gate,roles=('a','trainer','b','owner','outsider')):
     if os.environ.get('GITHUB_REPOSITORY')!='Yourizorge/fitmetzorge-staging':raise RuntimeError('ci_only')
     def private(args,**kw):
         p=subprocess.run(args,capture_output=True,text=True,timeout=30,**kw)
@@ -58,7 +58,8 @@ def environment(gate):
             measured_roles=('postgres','fmz6e_integration_server')
             app_before={role:admin.execute('select '+STATS.replace("rolname='supabase_auth_admin'","rolname='"+role+"'")+' value').fetchone()['value'] for role in measured_roles}
             for role in measured_roles:gate.save('integration-io-'+role+'-before.json',app_before[role])
-            for role in ('a','trainer','b','owner','outsider'):
+            if roles not in (('a','trainer','b','owner','outsider'),('a','trainer','b')):raise RuntimeError('ci_auth_roles')
+            for role in roles:
                 email='fmz-'+uuid.uuid4().hex+'@example.invalid';pw=secrets.token_urlsafe(32)
                 user=auth.call('/admin/users',admin_token,{'email':email,'password':pw,'email_confirm':True})
                 issued=auth.call('/token?grant_type=password',data={'email':email,'password':pw})
@@ -69,6 +70,7 @@ def environment(gate):
             finally:
                 primary=sys.exception()
                 try:
+                    admin.operation='numeric_final_observers'
                     after=admin.execute('select '+STATS+' value').fetchone()['value']
                     load=difference(before,after)
                     app_after={role:admin.execute('select '+STATS.replace("rolname='supabase_auth_admin'","rolname='"+role+"'")+' value').fetchone()['value'] for role in measured_roles}
@@ -81,7 +83,8 @@ def environment(gate):
                     gate.save('integration-native-admin-protocol.json',{'commands':len(complete),
                         'failed_commands':sum(not e['confirmed'] for e in complete),
                         'scope':'disposable fixture/admin, including explicit BEGIN/COMMIT/ROLLBACK; no row values',
-                        'templates':sorted({e['template_sha256'] for e in complete})})
+                        'templates':sorted({e['template_sha256'] for e in complete}),'register':complete,
+                        'synthetic_roles':list(roles)})
                     gate.save('integration-managed-auth-protocol.json',load)
                 except Exception as error:
                     gate.save('integration-io-stop.json',{'class':type(error).__name__,'phase':'numeric_delta_or_storage',
@@ -101,6 +104,7 @@ def auth_checks(ctx):
     req=urllib.request.Request(auth.url+'/logout?scope=global',headers={'Authorization':'Bearer '+second},data=b'')
     with urllib.request.urlopen(req,timeout=5) as response:
         if response.status!=204:raise RuntimeError('logout_status')
+    ctx['admin'].operation='revocation_session_check'
     row=ctx['admin'].execute('select count(*) n from auth.sessions where user_id=%s',[subject]).fetchone()
     if row['n']!=0:raise RuntimeError('logout_sessions')
     checks.append('global_logout_deletes_sessions')

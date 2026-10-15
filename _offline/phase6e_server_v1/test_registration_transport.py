@@ -1,5 +1,5 @@
 import base64,json,time,unittest
-from registration_transport import VerifiedAuth,NoRedirect,AUTH
+from registration_transport import VerifiedAuth,NoRedirect,AUTH,Candidate
 from store import Denied
 
 ID=lambda n:'79000000-0000-4000-8000-'+str(n).zfill(12)
@@ -33,5 +33,19 @@ class Tests(unittest.TestCase):
         with self.assertRaisesRegex(Denied,'redirect'):NoRedirect().redirect_request(None,None,None,None,None,None)
     def test_secret_not_in_repr_and_close_clears_key(self):
         self.assertNotIn('synthetic-publishable',repr(self.auth));self.auth.close();self.assertIsNone(self.auth._key)
+    def test_disposable_factory_cannot_use_staging_runtime_or_endpoint(self):
+        import types
+        from unittest.mock import patch
+        with patch.dict('os.environ',{'GITHUB_REPOSITORY':'Yourizorge/fitmetzorge-staging'}):
+            with self.assertRaisesRegex(Denied,'disposable_transport_boundary'):
+                Candidate.disposable(types.SimpleNamespace(environment='staging',auth_base=AUTH),None,{}, {},lambda e:None)
+            with self.assertRaisesRegex(Denied,'disposable_auth_boundary'):
+                VerifiedAuth.disposable([],lambda:None,types.SimpleNamespace(url=AUTH))
+    def test_disposable_factory_denied_outside_exact_ci(self):
+        import types
+        from unittest.mock import patch
+        with patch.dict('os.environ',{'GITHUB_REPOSITORY':'elsewhere'}):
+            with self.assertRaises(Denied):Candidate.disposable(None,None,{}, {},None)
+            with self.assertRaises(Denied):VerifiedAuth.disposable([],lambda:None,types.SimpleNamespace(url='http://127.0.0.1:59999'))
 
 if __name__=='__main__':unittest.main()

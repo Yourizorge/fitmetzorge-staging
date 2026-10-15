@@ -16,6 +16,8 @@ def main():
         'integration-auth.json','integration-auth-table-security.json','integration-database.json','integration-browser.json','integration-security.json','integration-role-memberships.json',
         'integration-native-admin-protocol.json','integration-managed-auth-protocol.json']
     if 'stream-filter-pg17.json' in manifest:names.append('stream-filter-pg17.json')
+    if 'stream-capacity-pg17.json' in manifest:names.append('stream-capacity-pg17.json')
+    names += [n for n in manifest if n.startswith('registration12-transport-') and n.endswith('.json')]
     names += [n for n in manifest if n.startswith(('cli-protocol-','cli-numeric-coverage-','cli-isolation-')) or n.endswith('.png')]
     names += [n for n in manifest if n.startswith(('integration-io-','registration12-integration-io-')) and n.endswith('.json')]
     sys.path.insert(0,str(ROOT/'_offline/phase6e11/endchain_v1'));from source_scan import check
@@ -29,6 +31,9 @@ def main():
     all_controls=meter_controls(manifest,read,4)
     names += [x['file'] for x in all_controls['evidence']]
     extras={'registration12-release-dossier.json':dossier,'source-hashes.json':read('candidate.json')['sources']}
+    if 'registration12-transport-database-a.json' in manifest:
+        from registration_accounting import build as transport_register
+        extras['registration12-transport-register.json']=transport_register(read,manifest)
     target=disk(HERE/'receipts'/('ci-'+result['run_id']+'-completion'));target.mkdir(parents=True,exist_ok=False);saved={}
     for name in sorted(set(names)):
         raw=disk(folder/name).read_bytes();sha=hashlib.sha256(raw).hexdigest()
