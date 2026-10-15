@@ -16,7 +16,7 @@ def run(dsn,auth,tokens,claims,admin,auth_kind,inspect=None):
             if not isinstance(e,Denied) and getattr(e,'sqlstate',None) not in ('42501','23505'):raise
             results.append(name);return
         raise AssertionError(name)
-    fixture=str(uuid.uuid4());workspaces={r:str(uuid.uuid4()) for r in ('A','B','control','uiA','uiB')}
+    fixture=str(uuid.uuid4());workspaces={r:str(uuid.uuid4()) for r in ('A','B','control','uiA','uiB','joinedB','historical')}
     for value in claims.values():
         admin.execute('insert into '+SCHEMA+'.subjects values(%s,true,true,now()+interval \'20 minutes\')',[value['sub']])
     def bind(role):
@@ -24,9 +24,9 @@ def run(dsn,auth,tokens,claims,admin,auth_kind,inspect=None):
         admin.execute("select set_config('request.jwt.claims',%s,false),set_config('fmz6e.request_id',%s,false)",
             [json.dumps(claims[role]),str(uuid.uuid4())])
     fixtures=[('A','A','a','trainer','owner'),('B','B','b',None,'owner'),('control','B','outsider',None,'outsider')]
-    if inspect:fixtures += [('uiA','A','a','trainer','owner'),('uiB','B','b',None,'owner')]
+    if inspect:fixtures += [('uiA','A','a','trainer','owner'),('uiB','B','b',None,'owner'),('joinedB','B','b',None,'owner'),('historical','B','b',None,'owner')]
     for key,route,member,trainer,owner in fixtures:
-        bind(member);state=domain('initial',route=route);raw=json.dumps(state,separators=(',',':'))
+        bind(member);state=domain('registration_initial',scenario='no_trainer') if key=='historical' else domain('initial',route=route);raw=json.dumps(state,separators=(',',':'))
         admin.execute('insert into '+SCHEMA+'.workspaces(id,fixture_run,member_id,trainer_id,owner_id,route,expires_at,state_text,state_sha) values(%s,%s,%s,%s,%s,%s,now()+interval \'15 minutes\',%s,%s)',
             [workspaces[key],fixture if key!='control' else str(uuid.uuid4()),claims[member]['sub'],
              claims[trainer]['sub'] if trainer else None,claims[owner]['sub'],route,raw,digest(raw)])
@@ -34,7 +34,7 @@ def run(dsn,auth,tokens,claims,admin,auth_kind,inspect=None):
             [workspaces[key],raw,digest(raw)])
     baseline=admin.execute('select state_sha from '+SCHEMA+'.workspaces where id=%s',[workspaces['control']]).fetchone()['state_sha']
     store=Store(dsn,auth,enabled=True,observer=protocol.append,full_day21=True)
-    if inspect:inspect(store,{'A':workspaces['uiA'],'B':workspaces['uiB']})
+    if inspect:inspect(store,{'A':workspaces['uiA'],'B':workspaces['uiB'],'joinedB':workspaces['joinedB'],'historical':workspaces['historical']})
     def read(route,role=None):return store.read(workspaces[route],tokens[role or route.lower()])
     def act(route,action,data=None,role=None,fault=None,key=None,version=None):
         role=role or route.lower();snapshot=read(route,role)

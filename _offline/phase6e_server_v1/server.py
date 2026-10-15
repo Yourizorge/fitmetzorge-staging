@@ -41,7 +41,7 @@ def serve(app,port=8766):
         def do_GET(self):
             try:
                 self.valid_host()
-                static={'/':'ui.html','/ui.js':'ui.js','/ui.css':'ui.css'}
+                static={'/':'ui.html','/ui.js':'ui.js','/ui.css':'ui.css','/panels.js':'panels.js'}
                 if self.path=='/brand.png':
                     return self.send(200,(HERE.parents[1]/'assets/fit-met-zorge-logo-cropped.png').read_bytes(),mime='image/png')
                 if self.path in static:
@@ -115,10 +115,16 @@ if __name__=='__main__':
             store=RegistrationStore(config['dsn'],LocalAuth(config['auth_url']),config['bindings'],enabled=True)
             workspaces=list(config['bindings'])
         else:
-            if set(config)!= {'dsn','auth_url','workspaces'}:raise Denied('configuration')
+            if set(config) not in ({'dsn','auth_url','workspaces'},{'dsn','auth_url','workspaces','registration_bindings'}):raise Denied('configuration')
             store=Store(config['dsn'],LocalAuth(config['auth_url']),enabled=True,
                         full_day21=os.environ.get('FMZ_LOCAL_FULL_DAY21_ENABLED')=='1')
             workspaces=config['workspaces']
+            if 'registration_bindings' in config:
+                from composed_store import ComposedStore
+                from registration_store import RegistrationStore
+                registration_store=RegistrationStore(config['dsn'],store.auth,config['registration_bindings'],enabled=True)
+                store=ComposedStore(store,workspaces,registration_store)
+                workspaces=list(workspaces)+list(registration_store.bindings)
         app=Application(store,workspaces,enabled=True)
         http=serve(app)
         print('LOCAL SYNTHETIC ONLY: http://127.0.0.1:8766',flush=True)

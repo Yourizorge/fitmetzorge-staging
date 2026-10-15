@@ -7,8 +7,8 @@ previous=importlib.util.module_from_spec(spec);spec.loader.exec_module(previous)
 base=previous.prior.old.old
 M45='20261014105919_phase6e_synthetic_server_candidate.sql'
 M46='20261014160019_phase6e_local_outbox.sql'
-NEW=['domain.cjs','domain.test.cjs','windows.cjs','windows.test.cjs','worker.cjs','store.py','database_tests.py','ci.py','ci_auth.py',
-     'server.py','ui.html','ui.js','ui.css','browser_checks.cjs','protocol.py','test_protocol.py',
+NEW=['domain.cjs','domain.test.cjs','presentation.cjs','presentation.test.cjs','panels.js','composed_store.py','windows.cjs','windows.test.cjs','worker.cjs','store.py','database_tests.py','ci.py','ci_auth.py',
+     'server.py','ui.html','ui.js','ui.css','browser_checks.cjs','composed_browser.cjs','protocol.py','test_protocol.py',
      'release_packet.py','test_release_packet.py','outbox.py','test_outbox.py','planning.py','test_planning.py',
      'registration12.cjs','registration12.test.cjs','registration_store.py','registration_database.py','registration_browser.cjs',
      'registration_release.py','test_registration_release.py',
@@ -138,7 +138,7 @@ class Gate(previous.Gate):
         self.command('integration-planning',[sys.executable,'-B',str(folder/'test_planning.py')])
         self.command('integration-application-io',[sys.executable,'-B',str(folder/'test_application_io.py')])
         self.command('integration-cli-isolation',[sys.executable,'-B',str(folder/'test_cli_isolation.py')])
-        output=self.command('integration-domain',['node','--test',str(folder/'domain.test.cjs'),str(folder/'windows.test.cjs'),str(folder/'registration12.test.cjs')])
+        output=self.command('integration-domain',['node','--test',str(folder/'domain.test.cjs'),str(folder/'windows.test.cjs'),str(folder/'registration12.test.cjs'),str(folder/'presentation.test.cjs')])
         count=re.search(r'# tests (\d+)',output.stdout)
         if not count:raise RuntimeError('domain_count')
         self.result['integration_domain_tests']=int(count[1])
@@ -161,6 +161,22 @@ class Gate(previous.Gate):
                     self.save('integration-browser.json',result)
                     if p.returncode or result['status']!='PASS':raise RuntimeError('integration_browser')
                     self.result['integration_browser_checks']=result['checks']
+                finally:http.shutdown();http.server_close();thread.join(timeout=5)
+                from composed_store import ComposedStore
+                from registration_store import RegistrationStore
+                from store import Store
+                primary=Store(ctx['dsn'],ctx['auth'],enabled=True,full_day21=False)
+                historical=RegistrationStore(ctx['dsn'],ctx['auth'],{workspaces['historical']:ctx['claims']['b']['sub']},enabled=True)
+                joined=ComposedStore(primary,[workspaces['joinedB']],historical)
+                joined_app=server.Application(joined,[workspaces['joinedB'],workspaces['historical']],enabled=True)
+                http=server.serve(joined_app,0);thread=threading.Thread(target=http.serve_forever,daemon=True);thread.start()
+                try:
+                    data={'url':'http://127.0.0.1:'+str(http.server_port),'accounts':ctx['accounts'],
+                          'playwright':playwright,'screenshots':str(self.out)}
+                    p=subprocess.run(['node',str(folder/'composed_browser.cjs')],input=json.dumps(data),text=True,capture_output=True,timeout=180)
+                    result=json.loads(p.stdout);self.save('composed-browser.json',result)
+                    if p.returncode or result['status']!='PASS':raise RuntimeError('composed_browser')
+                    self.result['composed_browser_checks']=result['checks']
                 finally:http.shutdown();http.server_close();thread.join(timeout=5)
             result=database_tests.run(ctx['dsn'],ctx['auth'],ctx['tokens'],ctx['claims'],ctx['admin'],'real_local_GoTrue',browser)
             self.save('integration-database.json',result);self.result['integration_database_tests']=result['tests']
