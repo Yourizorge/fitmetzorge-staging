@@ -22,7 +22,10 @@ self.addEventListener('fetch',event=>{
  if(request.method!=='GET'||url.origin!==self.location.origin)return;
  if(request.mode==='navigate'&&url.pathname==='/'&&!url.search){
   event.respondWith((async()=>{
-   try{const response=await fetch(request,{cache:'no-store'});if(response.ok)return response;}catch(_){}
+   // Offline is a blocking signal, never permission to recover account HTML.
+   if(self.navigator.onLine!==false){
+    try{const response=await fetch(request,{cache:'no-store'});if(response.ok)return response;}catch(_){}
+   }
    return (await caches.open(CACHE)).match('/offline_shell.html').then(r=>r||Response.error());
   })());
  }else if(allowed(url)){

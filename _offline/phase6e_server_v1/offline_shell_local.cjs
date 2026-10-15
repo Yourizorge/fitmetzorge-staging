@@ -19,8 +19,8 @@ async function main(){
  try{
   const chromium=require(playwright).chromium,options={headless:true};if(!fs.existsSync(chromium.executablePath()))options.channel='msedge';browser=await chromium.launch(options);
   const screenshots=await shellChecks(browser,{url:'http://127.0.0.1:'+server.address().port,screenshots:out},(value,label)=>{if(!value)throw Error(label);checks++;});
-  const result={status:'PASS',checks,screenshots,real_local_auth:false,scope:'generic_shell_and_browser_storage_only',database_setup:false,hosted_calls:0};
+  const result={status:'PASS',checks,screenshots,browser_version:browser.version(),playwright_version:require(path.join(playwright,'package.json')).version,browser_channel:options.channel||'bundled-chromium',real_local_auth:false,scope:'generic_shell_and_browser_storage_only',database_setup:false,hosted_calls:0};
   fs.writeFileSync(path.join(out,'offline-shell-local.json'),JSON.stringify(result,null,2));console.log(JSON.stringify(result));
  }finally{if(browser)await browser.close();await new Promise(resolve=>server.close(resolve));}
 }
-main().catch(e=>{console.error(e.message);process.exitCode=2;});
+main().catch(e=>{console.error(JSON.stringify({status:'NO_GO',error:e.message.slice(0,160),...(e.cold_diagnostic?{cold_diagnostic:e.cold_diagnostic}:{})}));process.exitCode=2;});

@@ -3,6 +3,25 @@ const path=require('node:path'),R=require('./registration12.cjs');
 const allowed=['/offline_shell.css','/offline_shell.html','/offline_shell.js'];
 const actor='00000000-0000-4000-8000-000000000001',workspace='00000000-0000-4000-8000-000000000002';
 function fixture(){return {view:{actor,workspace,version:1,role:'member',state:{consent:true,snapshot:{synthetic:1}},capabilities:{registration12:true}},payload:{workspace,request_id:'00000000-0000-4000-8000-000000000003',version:1,request:{action:'register12',data:{input:R.view(R.initial()).draft}}}};}
+async function coldShell(page,response,phase){
+ // Only structural markers and allowlisted cache paths; never DOM/account text.
+ const diagnostic=await page.evaluate(async()=>{
+  const expected=['/offline_shell.css','/offline_shell.html','/offline_shell.js'];
+  const names=await caches.keys(),keys=[];
+  for(const name of names)if(name==='fmz-local-offline-shell-v1'){
+   const cache=await caches.open(name);
+   for(const req of await cache.keys()){
+    const url=new URL(req.url);keys.push(url.origin===location.origin&&!url.search&&expected.includes(url.pathname)?url.pathname:'other');
+   }
+  }
+  return {url_category:location.pathname==='/'&&!location.search?'root':'other',controller:Boolean(navigator.serviceWorker.controller),online:navigator.onLine,root_marker:document.querySelector('[data-offline-shell]')?'offline_shell':document.querySelector('#login')?'online_login':'other',cache_keys:keys.sort(),other_cache_count:names.filter(n=>n!=='fmz-local-offline-shell-v1').length};
+ });
+ diagnostic.phase=phase;diagnostic.from_service_worker=response?.fromServiceWorker()??false;diagnostic.status=response?.status()??null;
+ diagnostic.worker_online=await Promise.all(page.context().serviceWorkers().map(w=>w.evaluate(()=>navigator.onLine).catch(()=>null)));
+ try{await page.locator('[data-offline-shell]').waitFor();}
+ catch(e){e.cold_diagnostic=diagnostic;throw e;}
+ return diagnostic;
+}
 async function storageChecks(page,ok){
  const result=await page.evaluate(async({view,payload})=>{
   const Q=FMZDraftQueue,e=await Q.create(view,payload),results=[];
@@ -51,7 +70,7 @@ async function shellChecks(browser,c,ok){
   await page.locator('#lang').selectOption('2');await page.locator('#theme').selectOption('dark');
   await context.addInitScript(()=>{window.shellIDBReads=0;const open=indexedDB.open.bind(indexedDB);indexedDB.open=(...args)=>{window.shellIDBReads++;return open(...args);};});
   await context.setOffline(true);
-  const cold=await context.newPage();cold.on('pageerror',e=>errors.push(e.name));await cold.goto(c.url);await cold.locator('[data-offline-shell]').waitFor();
+  const cold=await context.newPage();cold.on('pageerror',e=>errors.push(e.name));await coldShell(cold,await cold.goto(c.url),'anonymous_cold_start');
   ok(await cold.locator('html').getAttribute('lang')==='de','offline_device_language');
   ok(await cold.locator('body').getAttribute('data-theme')==='dark','offline_device_theme');
   ok(await cold.locator('#login,#app,#queued,input').count()===0,'cold_has_no_login_or_account_controls');
@@ -65,7 +84,7 @@ async function shellChecks(browser,c,ok){
   }
   for(const url of ['/api/today','/ui.js','/account_center.js','/offline_shell.html?probe=1'])ok(await cold.evaluate(async url=>{try{await fetch(url);return false;}catch(_){return true;}},url),'network_only_'+url);
   ok(!(await cold.locator('body').innerText()).includes(actor),'cold_no_actor');
-  await cold.reload();await cold.locator('[data-offline-shell]').waitFor();ok(await cold.evaluate(()=>shellIDBReads)===0,'cold_reload_no_draft_read');
+  await coldShell(cold,await cold.reload(),'anonymous_cold_reload');ok(await cold.evaluate(()=>shellIDBReads)===0,'cold_reload_no_draft_read');
   await context.setOffline(false);await cold.waitForFunction(()=>navigator.onLine);
   ok(await cold.locator('[data-offline-shell]').count()===1,'reconnect_does_not_sign_in');
   await cold.locator('#shell-reconnect').focus();await cold.keyboard.press('Enter');await cold.locator('#login').waitFor();
@@ -93,7 +112,7 @@ async function authChecks(browser,c,ok){
   },revoked);
   await page.locator('[data-queue-submit]').waitFor();ok(await page.locator('[data-queue-submit]').isDisabled(),'verified_revocation_blocks_submit');
   await page.evaluate(()=>navigator.serviceWorker.ready.then(()=>true));await page.waitForFunction(()=>navigator.serviceWorker.controller!==null);
-  await context.setOffline(true);await page.reload();await page.locator('[data-offline-shell]').waitFor();
+  await context.setOffline(true);await coldShell(page,await page.reload(),'authenticated_cold_reload');
   ok(await page.locator('#app,#queued,input').count()===0,'authenticated_cold_start_hides_account');
   await context.setOffline(false);await context.clearCookies();await page.locator('#shell-reconnect').click();await page.locator('#login').waitFor();
   ok(await page.locator('#queued').isHidden(),'expired_session_cannot_recover_drafts');
@@ -123,8 +142,8 @@ async function main(){
  const browser=await require(c.playwright).chromium.launch({headless:true});let checks=0,stage='shell';
  const ok=(value,label)=>{if(!value)throw Error(label);checks++;};
  try{const screenshots=await shellChecks(browser,c,ok);stage='real_auth';await authChecks(browser,c,ok);console.log(JSON.stringify({status:'PASS',checks,screenshots,real_local_auth:true,database_writes:0,hosted_calls:0,physical_phone_test:false}));}
- catch(e){console.log(JSON.stringify({status:'NO_GO',stage,checks,error:e.message.slice(0,160)}));process.exitCode=2;}
+ catch(e){console.log(JSON.stringify({status:'NO_GO',stage,checks,error:e.message.slice(0,160),...(e.cold_diagnostic?{cold_diagnostic:e.cold_diagnostic}:{})}));process.exitCode=2;}
  finally{await browser.close();}
 }
-module.exports={shellChecks,storageChecks,authChecks};
+module.exports={shellChecks,storageChecks,authChecks,coldShell};
 if(require.main===module)main().catch(()=>{console.log(JSON.stringify({status:'NO_GO',stage:'setup'}));process.exitCode=2;});

@@ -166,3 +166,41 @@ hash; no stale completion sends a new action.
 No remaining issue was found in the reviewed cross-session completion paths.
 Parent CI must still verify the complete source with PostgreSQL/GoTrue; these
 local lifecycle/fixture results are not a replacement for that run.
+
+## Pinned Chromium cold-start correction
+
+The original exact-CI NO_GO at shell check 12 was reproduced locally with
+Playwright 1.56.1 / bundled Chromium 141.0.7390.37 (build 1194), not Edge.
+Both page and service worker reported `navigator.onLine === false`, but the
+worker's root fetch still succeeded: one actual root request reached the local
+server and the controlled cold page received the online-login root, HTTP 200.
+Playwright 1.56.1 gates worker network emulation behind an experimental flag;
+enabling that flag alone still allowed a later offline reload to fetch the root.
+No CSP, server-route or authenticated fixture change was required.
+
+The minimal `offline_sw.js` correction treats an explicit offline signal as
+blocking: exact root navigation uses only the existing generic cached shell.
+Online navigation remains network-first, including generic fallback on actual
+network failure. This never grants Auth or reads drafts. No API/HTML caching,
+synthetic response, routing bypass or experimental browser flag was added.
+
+With the correction, the original 62 shell checks pass in pinned Chromium with
+native `context.setOffline(true)`. Direct fetch counters in the worker and
+independent HTTP-server counters both remain zero throughout offline startup
+and reload. Twelve worker unit regressions cover this branch, missing cache,
+online/failing network behavior and excluded URLs/methods. The local helper now
+records exact browser/package versions and whether it used a browser channel.
+Cold-shell failures capture structural diagnostics before the locator wait:
+URL category, controller, root marker, online signals, status, worker response,
+and allowlisted cache paths. No DOM text, account values or cookies are logged.
+
+Parent integration is unchanged except adding `offline_shell.test.cjs` to the
+candidate source list and running:
+
+```text
+node --test _offline/phase6e_server_v1/offline_shell.test.cjs
+```
+
+No CI environment flag is needed. Keep the existing standalone stdin config
+and post-composed joinedB/historical fixture placement. Actual Auth checks
+remain the parent's endchain responsibility; these local checks use no DB.

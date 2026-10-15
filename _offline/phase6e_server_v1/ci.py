@@ -13,7 +13,7 @@ NEW=['domain.cjs','domain.test.cjs','presentation.cjs','presentation.test.cjs','
      'display.js','display.test.cjs',
      'draft_queue.js','draft_queue.test.cjs','queue_ui.js','ui_session.test.cjs',
      'account_center.cjs','account_center.js','account_center.test.cjs','account_center_browser.cjs','account_center_fixture_browser.cjs',
-     'offline_shell.html','offline_shell.css','offline_shell.js','offline_sw.js','offline_queue_ui.test.cjs',
+     'offline_shell.html','offline_shell.css','offline_shell.js','offline_sw.js','offline_queue_ui.test.cjs','offline_shell.test.cjs',
      'offline_shell_browser.cjs','offline_shell_local.cjs','offline_shell_INTEGRATION.md',
      'stream_size_fixture.json','stream_size_pg17.py','capacity_proposal.py','test_capacity_proposal.py',
      'sync_contract.cjs','access_policy.cjs','prepared_contracts.test.cjs','work_register.json','check_work_register.py',
@@ -163,6 +163,7 @@ class Gate(previous.Gate):
         self.command('draft-queue-regression',['node','--test',str(folder/'draft_queue.test.cjs')])
         self.command('account-center-regression',['node','--test',str(folder/'account_center.test.cjs')])
         self.command('offline-queue-ui-regression',['node','--test',str(folder/'offline_queue_ui.test.cjs')])
+        self.command('offline-shell-worker-regression',['node','--test',str(folder/'offline_shell.test.cjs')])
         self.command('ui-session-regression',['node','--test',str(folder/'ui_session.test.cjs')])
         self.command('work-register',[sys.executable,'-B',str(folder/'check_work_register.py')])
         self.command('workday-release-packets',[sys.executable,'-B',str(folder/'test_workday_release.py')])
