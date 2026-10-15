@@ -131,9 +131,13 @@ Zie [de concrete releasegrens](PHASE6E12_SELECTED_RELEASE_BOUNDARY.md).
 tracked werkboomwijzigingen en oude untracked bestanden zijn behouden. De
 werkboom wordt daarom niet als schoon gepresenteerd. Geen applicatieruntime,
 frozen AI-bron, productie-, APPFMZ-, website- of JARVIS-bestand gewijzigd.
-Voorpublicatie:152 runtime-assets byte-identiek en19 bestaande private paden404.
-Na de documentatie-/bewijscommit worden Pages en de uitgebreide private padset
-opnieuw gecontroleerd; de uitkomst wordt afzonderlijk vastgelegd.
+Voor en na publicatie:152 runtime-assets byte-identiek en19 vaste private
+paden404. Uitgebreide controle na commitb5ac2e06a6c81974cae5eec20f5d8861cc63f36f:
+717 offline/testpaden404; Pages-run38726370579 success. Alle157 gecommitteerde
+CI-receipts zijn opnieuw met hun manifest vergeleken:0 hashafwijkingen.
+Zie `PHASE6E_FILTERED_PUBLICATION_20261015.json` voor de bewijsbinding. Een laatste
+docs-only receiptcommit verandert geen private bron of runtime; de eindcontrole
+van remote HEAD en Pages daarvan wordt in het afsluitbericht vermeld.
 
 Implementatiecommits:36c0007 (capaciteit/filter),c12d92e (PG-testcorrectie),
 3db50cb (begrensde artifactcollector),34b7d5a (registratietransport/meetparen),

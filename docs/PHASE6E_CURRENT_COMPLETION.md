@@ -33,6 +33,11 @@ and4135 counts are not hosted limits. See the
 All old fixtures,112 complete pairs,incomplete113 and older dirty work remain.
 6E-21 remains unaccepted. Production and real-member AI remain untouched.
 
+Publication atb5ac2e06a6c81974cae5eec20f5d8861cc63f36f passes: Pages38726370579,
+152 byte-identical runtime assets,717 private paths404 plus19 fixed probes.
+157 committed CI receipts match their original manifest;1376 retained files
+unchanged. Six older tracked modifications remain deliberately uncommitted.
+
 ## Earlier Snapshot: 15 October 2026 (Before The Filtered Attempt)
 
 This section supersedes the explicitly historical14 October snapshot below.
