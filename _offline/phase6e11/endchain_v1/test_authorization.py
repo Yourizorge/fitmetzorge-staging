@@ -3,9 +3,12 @@ from closure import AUTHORIZATION as A,RUN_ID,PURPOSE,allowance
 from integral_stream import predicates
 
 class Tests(unittest.TestCase):
-    def test_one_existing_unused_attempt_not_historical_retry(self):
+    def test_one_new_separately_authorized_attempt_not_historical_retry(self):
         self.assertNotEqual(RUN_ID,A['previous_used_run'])
-        self.assertFalse(A['additional_attempt_granted'])
+        self.assertTrue(A['additional_attempt_granted'])
+        self.assertEqual(A['owner_instruction'],'cead148d-244b-4676-b6a3-907098ac55df')
+        for old in A['earlier_used_runs']:
+            self.assertEqual(allowance(old,PURPOSE),128)
         self.assertTrue(A['historical_no_go_unchanged'])
         self.assertEqual(A['reserved_attempt_count'],1)
         self.assertEqual(allowance(A['previous_used_run'],PURPOSE),128)

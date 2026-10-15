@@ -78,6 +78,12 @@ def statement(plans):
         "'1'::text keep from "+'.'.join(ident(n) for n in p['name'].split('.'))+' t where ('+p['predicate']+')'
         for i,p in enumerate(plans))
 
+def capacity_statement(plans):
+    # Numeric sentinel, no row contents/hash/sort; same predicates and snapshot.
+    rows=' union all '.join('select 1 from '+'.'.join(ident(n) for n in p['name'].split('.'))+
+        ' t where ('+p['predicate']+')' for p in plans)
+    return 'select count(*)::text protected_rows from ('+rows+' limit '+str(ROWS+1)+') bounded'
+
 def frame(rows,terminal):
     if terminal!=len(rows) or len(rows)>PAGE:raise ValueError('stream_terminal_count')
     for row in rows:
@@ -102,11 +108,17 @@ def run(query,save,ids,context,label,expected=None):
         q('canonical',CONFIG)
         plans=plan(q('inventory',INVENTORY),ids,context)
         if expected is not None and plans!=expected['plan']:raise ValueError('stream_inventory_changed')
-        stream=statement(plans);reader=check_plan(q('reader_bind','EXPLAIN (VERBOSE,COSTS FALSE,FORMAT JSON) '+ALL_STATS)[0]['QUERY PLAN'])
+        stream=statement(plans);capacity=capacity_statement(plans)
         save('integral-stream-'+label+'-binding.json',{'plan':plans,
             'query_sha256':hashlib.sha256(stream.encode()).hexdigest(),
+            'capacity_query_sha256':hashlib.sha256(capacity.encode()).hexdigest(),
+            'filter_sha256':hashlib.sha256(json.dumps(plans,sort_keys=True,separators=(',',':')).encode()).hexdigest(),
             'source_sha256':hashlib.sha256(pathlib.Path(__file__).read_bytes()).hexdigest(),
-            'row_limit':ROWS,'page_limit':PAGE,'filter_before_transport':True})
+            'row_limit':ROWS,'page_limit':PAGE,'filter_before_transport':True,
+            'limit_scope':'total transported protected row hashes per cycle; duplicate rows count separately',
+            'capacity_sentinel_limit':ROWS+1,
+            'canonicalization':'PG17 JSONB text UTF8 SHA256 / sorted duplicate-preserving multiset'})
+        reader=check_plan(q('reader_bind','EXPLAIN (VERBOSE,COSTS FALSE,FORMAT JSON) '+ALL_STATS)[0]['QUERY PLAN'])
         def sample():
             value=q('io',ALL_STATS)[0]['value']
             if len(value['statements'])>5000:raise ValueError('stream_numeric_metadata_budget')
@@ -137,20 +149,31 @@ def run(query,save,ids,context,label,expected=None):
             if any(x['exec_ms']>2500 for x in profile['queries']):raise ValueError('stream_own_load')
             profiles.append(profile);previous=after
             return rows,terminal
+        size,size_terminal=utility(capacity)
+        active_phase='row_capacity'
+        if size_terminal!=1 or len(size)!=1 or set(size[0])!={'protected_rows'} or not re.fullmatch('[0-9]+',str(size[0]['protected_rows'])):
+            raise ValueError('stream_capacity_frame')
+        required=int(size[0]['protected_rows'])
+        save('integral-stream-'+label+'-capacity.json',{'protected_rows_bounded':required,
+            'sentinel_limit':ROWS+1,'fits':required<=ROWS,'hash_rows_received':0,
+            'same_snapshot':True,'query_sha256':hashlib.sha256(capacity.encode()).hexdigest()})
+        if required>ROWS:raise ValueError('stream_row_ceiling')
         utility('DECLARE fmz_integral_hashes NO SCROLL CURSOR WITHOUT HOLD FOR '+stream)
-        for page in range(ROWS//PAGE+1):
-            rows,terminal=utility('FETCH FORWARD '+str(PAGE)+' FROM fmz_integral_hashes')
+        while total<required:
+            requested=min(PAGE,required-total,ROWS-total)
+            rows,terminal=utility('FETCH FORWARD '+str(requested)+' FROM fmz_integral_hashes')
             active_phase='frame_validation'
-            frame(rows,terminal);total+=len(rows)
+            frame(rows,terminal)
+            if len(rows)!=requested:raise ValueError('stream_capacity_mismatch')
+            total+=len(rows)
             active_phase='row_capacity'
             if total>ROWS:raise ValueError('stream_row_ceiling')
-            frames.append({'page':page,'rows':len(rows),'terminal_count':len(rows),
+            frames.append({'page':len(frames),'rows':len(rows),'requested_rows':requested,'terminal_count':terminal,
                 'sha256':hashlib.sha256(json.dumps(rows,separators=(',',':')).encode()).hexdigest()})
-            if not rows:break
             for r in rows:
                 if int(r['i'])>=len(plans):raise ValueError('stream_table_index')
-                if r['keep']=='1':buffer[plans[int(r['i'])]['name']].append(r['h'])
-        else:raise ValueError('stream_empty_terminal_missing')
+                if r['keep']!='1':raise ValueError('stream_unfiltered_row')
+                buffer[plans[int(r['i'])]['name']].append(r['h'])
         utility('CLOSE fmz_integral_hashes')
         terminal=q('io_terminal','EXPLAIN (ANALYZE,BUFFERS,WAL,VERBOSE,COSTS FALSE,FORMAT JSON) '+ALL_STATS)
         if check_plan(terminal[0]['QUERY PLAN'],True)!=reader:raise ValueError('stream_closing_binding')
@@ -158,6 +181,8 @@ def run(query,save,ids,context,label,expected=None):
         tables={name:{'rows':len(h),'sha256':hashlib.sha256(','.join(sorted(h)).encode()).hexdigest()} for name,h in buffer.items()}
         if expected is not None and expected['tables']!=tables:raise ValueError('stream_protected_drift')
         value={'label':label,'tables':tables,'rows':total,'plan':plans,'frames':frames,'profiles':profiles,
+            'protected_rows_bounded':required,'complete_by_same_snapshot_capacity':total==required,
+            'capacity_query_sha256':hashlib.sha256(capacity.encode()).hexdigest(),
             'query_sha256':hashlib.sha256(stream.encode()).hexdigest(),'snapshot_sha256':hashlib.sha256(json.dumps(identity,sort_keys=True).encode()).hexdigest(),
             'canonicalization':'PG17 JSONB text UTF8 SHA256 / sorted duplicate-preserving multiset',
             'algorithm':'fmz-legacy-sha256-multiset-pinned-v1','query_text_read':False,'protected_equal':expected is None or tables==expected['tables'],
@@ -168,7 +193,8 @@ def run(query,save,ids,context,label,expected=None):
         original_error=error
         try:
             safe_reasons={'stream_row_ceiling','stream_utility_attribution','stream_terminal_count',
-                'stream_frame_content','stream_frame_bytes','stream_table_index','stream_empty_terminal_missing'}
+                'stream_frame_content','stream_frame_bytes','stream_table_index','stream_empty_terminal_missing',
+                'stream_capacity_frame','stream_capacity_mismatch','stream_unfiltered_row'}
             save('integral-stream-'+label+'-stop.json',{'failed_phase':active_phase,'command':count,
                 'exception_class':type(error).__name__,'sqlstate':getattr(error,'sqlstate',None),
                 'reason_code':str(error) if type(error) is ValueError and str(error) in safe_reasons else 'unclassified_sanitized_failure',

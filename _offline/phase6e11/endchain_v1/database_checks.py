@@ -23,10 +23,10 @@ def run(sql):
     for n in (-1,2227):case('exact_limit_'+str(n),insert(count=n),'runs_command_count_check')
     case('ordinary_128',insert(OTHER,128))
     case('ordinary_129',insert(OTHER,129),'runs_command_count_check')
-    old=AUTHORIZATION['previous_used_run']
-    case('old_used_run_no_new_allowance',insert(old,129),'runs_command_count_check')
-    case('old_used_run_retained',insert(old)+"delete from "+SCHEMA+".runs;",'single_endchain_receipt_retained')
-    case('old_used_run_cannot_reopen',insert(old,state='stopped')+"update "+SCHEMA+".runs set state='running';",'single_endchain_identity_immutable')
+    for number,old in enumerate([AUTHORIZATION['previous_used_run']]+AUTHORIZATION['earlier_used_runs']):
+        case('old_used_run_no_new_allowance_'+str(number),insert(old,129),'runs_command_count_check')
+        case('old_used_run_retained_'+str(number),insert(old)+"delete from "+SCHEMA+".runs;",'single_endchain_receipt_retained')
+        case('old_used_run_cannot_reopen_'+str(number),insert(old,state='stopped')+"update "+SCHEMA+".runs set state='running';",'single_endchain_identity_immutable')
     for field,value in [('id',"'"+OTHER+"'"),('github_run','124'),('head_sha',"'"+'c'*40+"'"),
                         ('manifest_sha',"'"+'d'*64+"'"),('created_at',"created_at-interval '1 second'"),
                         ('expires_at',"expires_at+interval '1 second'")]:

@@ -1,6 +1,6 @@
 // One owner-authorized end-run. Every other run retains the 128-command cap.
-export const ENDCHAIN_RUN_ID='acd473d0-5a81-4aca-928a-3907b2bda3a3';
-export const PURPOSE='6e11_reserved_endchain_20261015';
+export const ENDCHAIN_RUN_ID='debe3298-9772-40b1-a9f4-8e3d99c8fd20';
+export const PURPOSE='6e11_filtered_endchain_20261015';
 // The complete register additionally reserves the exact safety suffix before
 // every mutation. These phase ceilings alone never grant hosted admission.
 export const LIMITS=Object.freeze({preflight:4,migration:14,baseline:67,setup:33,guard:13,

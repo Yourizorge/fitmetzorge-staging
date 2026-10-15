@@ -192,10 +192,10 @@ def build(folder):
     streams=[]
     for label,phase in [('before','baseline'),('before_cleanup','measurements'),('after_cleanup','final')]:
         value=read('integral-stream-'+label+'.json')
-        if not value['protected_equal'] or value['frames'][-1]['rows']!=0 or any(x['own_temp_written'] for x in value['profiles']):
+        if not value['protected_equal'] or not value['complete_by_same_snapshot_capacity'] or value['rows']!=value['protected_rows_bounded'] or any(x['own_temp_written'] for x in value['profiles']):
             raise ValueError('register_stream_incomplete')
-        # Tightened to 65536 rows: nine bounded pages including empty terminal.
-        if value['protocol_commands']!=13+2*len(value['frames']) or len(value['frames'])>9:
+        # One bounded numeric sentinel replaces the former empty FETCH round.
+        if value['protocol_commands']!=15+2*len(value['frames']) or len(value['frames'])>8:
             raise ValueError('register_stream_shape')
         extra=31-value['protocol_commands'];streams.append({'label':label,'actual':value['protocol_commands'],'capacity':31,'extra':extra})
         # Place the optional page slots before that stream's final rollback.
@@ -253,7 +253,9 @@ def build(folder):
              'OIDC_allowlist_admission','Auth_version_binding','native_TLS_connection_and_close',
              'request_deadlines_and_secret_redaction','durable_local_manifest','runtime_frozen_and_Pages_checks']],
         'stop_path':'Rollback once, preserve incomplete evidence/fixtures, close exact own temporary access. No blind fixture deletion.',
-        'data_limits':{'rows_per_stream':65536,'page_rows':8192,'cycles':3,'collectors':1,'query_ms':5000,
+        'data_limits':{'rows_per_stream':65536,'row_limit_scope':'transported protected row hashes per cycle; duplicates count separately',
+                       'numeric_capacity_sentinel':65537,'capacity_counted_in_protocol':True,
+                       'page_rows':8192,'cycles':3,'collectors':1,'query_ms':5000,
                        'worker_ms':120000,'guard_ms':180000,'full_retry':0,'own_temp_writes':0},
         'scope':'Offline integral capacity; not a universal minimum or permission to exceed the current limit.'}
 

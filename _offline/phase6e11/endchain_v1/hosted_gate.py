@@ -141,7 +141,7 @@ def main(ci_folder):
     out.mkdir(exist_ok=False)
     save(out,'preregistration.json',{**admitted,'run_id':RUN_ID,'purpose':PURPOSE,'guard_run':guard_run,
         'maximum_sql':2226,'maximum_seconds':600,'jit_seconds':300,'guard_seconds':180,'automatic_retries':0})
-    token=journal=runtime=gate=lifecycle=identity=None;granted=False;result={'status':'NO_GO','phase':'management'}
+    token=journal=runtime=gate=lifecycle=identity=c=None;granted=False;result={'status':'NO_GO','phase':'management'}
     try:
         token=j.jit.sb.credential();journal=j.Journal(token,out);journal.inspect()
         policy=auth_preflight.settings(journal.request('auth_policy',j.BASE+'/config/auth'))
@@ -196,6 +196,9 @@ def main(ci_folder):
             try:journal.close();result['jit_revoked']=True
             except Exception:result.update(status='NO_GO',jit_revoked=False)
         if runtime:runtime.clear()
+        if c is not None:
+            result['commands']=c.meter.used
+            save(out,'final-command-meter.json',c.meter.receipt())
         if journal:journal.token=None
         token=None
         if result['status']=='HOSTED_CHAIN_PASS_PENDING_ACCESS_CLOSURE' and result.get('jit_revoked'):

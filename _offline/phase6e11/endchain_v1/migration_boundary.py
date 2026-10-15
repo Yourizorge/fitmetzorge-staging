@@ -3,7 +3,7 @@ import copy,hashlib,json,pathlib,re
 
 VERSION='20261012185121'
 FILE=VERSION+'_phase6e11_single_endchain_budget.sql'
-SOURCE_SHA='0055a5edbe4280bf10387f16eb5aabdd31619e5837d39dbee27821d35c842bbc'
+SOURCE_SHA='2973c826dd2c177cdade43422013204bbbb2b354ef7bba67cd7b35af6ef823fd'
 TARGET="""jsonb_build_object(
  'function_oid',to_regprocedure('fmz6e11_controller_private.single_endchain_receipt()')::oid,
  'function',(select jsonb_build_object('body_sha',encode(sha256(convert_to(replace(p.prosrc,E'\\r\\n',E'\\n'),'UTF8')),'hex'),
