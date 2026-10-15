@@ -1,0 +1,38 @@
+{
+  "exception_class": "ValueError",
+  "frames": [
+    {
+      "file": "registered_runner.py",
+      "function": "execute",
+      "line": 27
+    },
+    {
+      "file": "registered_lifecycle.py",
+      "function": "dispatch",
+      "line": 27
+    },
+    {
+      "file": "registered_lifecycle.py",
+      "function": "_dispatch",
+      "line": 46
+    },
+    {
+      "file": "metered_composition.py",
+      "function": "apply_migration",
+      "line": 42
+    },
+    {
+      "file": "hosted_gate.py",
+      "function": "apply_endchain_migration",
+      "line": 124
+    },
+    {
+      "file": "hosted_gate.py",
+      "function": "metered_cli",
+      "line": 115
+    }
+  ],
+  "operation": "install",
+  "sqlstate": null,
+  "values_exported": false
+}

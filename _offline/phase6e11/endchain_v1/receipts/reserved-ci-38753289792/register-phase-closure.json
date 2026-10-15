@@ -1,0 +1,27 @@
+{
+  "rows": [
+    {
+      "action": "final_closure",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02226",
+      "infrastructure_writeset": "controller",
+      "ordinal_in_action": 0,
+      "phase": "closure",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "f1df470c88be4fc17492803100c7ff4d88d0d4d3f3d1aa03e379a1ec9f0685b8",
+      "timeout_ms": 5000,
+      "trace_command": 1540,
+      "writeset": []
+    }
+  ]
+}

@@ -1,0 +1,1446 @@
+{
+  "rows": [
+    {
+      "action": "stream_after_cleanup_begin",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02155",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "39a735c5dae2019f7ec2a41de9b4b8f37d979b14d999d9abd06b7f5d1bb9c95a",
+      "timeout_ms": 5000,
+      "trace_command": 1503,
+      "writeset": []
+    },
+    {
+      "action": "stream_after_cleanup_guard",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02156",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "810cd66d8d73d499bc7d3996e01570ee70418a29d9176388b8d3c57b60347c55",
+      "timeout_ms": 5000,
+      "trace_command": 1504,
+      "writeset": []
+    },
+    {
+      "action": "stream_after_cleanup_canonical",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02157",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "7d10b9ef765a9886d89e423ac8a6def20e8589493a8958af253431c52c1d2183",
+      "timeout_ms": 5000,
+      "trace_command": 1505,
+      "writeset": []
+    },
+    {
+      "action": "stream_after_cleanup_inventory",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02158",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "6918384197bebf43afd6b0416425ee07f1ffb2b807f1dd7928925ad4c845540b",
+      "timeout_ms": 5000,
+      "trace_command": 1506,
+      "writeset": []
+    },
+    {
+      "action": "stream_after_cleanup_reader_bind",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02159",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0216fdc5f79878fc4ea70b0b724f14472b8f4f028c6e6dcfe9c0c1b6137cc6d5",
+      "timeout_ms": 5000,
+      "trace_command": 1507,
+      "writeset": []
+    },
+    {
+      "action": "stream_after_cleanup_io",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02160",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "345817700e6ab22ac07149573a908f3971c6a631c32b1b5df4ff167233bdb824",
+      "timeout_ms": 5000,
+      "trace_command": 1508,
+      "writeset": []
+    },
+    {
+      "action": "stream_after_cleanup_utility",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02161",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "ba9fed54aa4f92e6624e40340fb49961d9f7ccb47b91d97a8091ffeaf12c6951",
+      "timeout_ms": 5000,
+      "trace_command": 1509,
+      "writeset": []
+    },
+    {
+      "action": "stream_after_cleanup_io",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02162",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "345817700e6ab22ac07149573a908f3971c6a631c32b1b5df4ff167233bdb824",
+      "timeout_ms": 5000,
+      "trace_command": 1510,
+      "writeset": []
+    },
+    {
+      "action": "stream_after_cleanup_utility",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02163",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "933befdbee9fa24508f5bc45bf5b71043e786200c4bf4758609edd515375adf0",
+      "timeout_ms": 5000,
+      "trace_command": 1511,
+      "writeset": []
+    },
+    {
+      "action": "stream_after_cleanup_io",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02164",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "345817700e6ab22ac07149573a908f3971c6a631c32b1b5df4ff167233bdb824",
+      "timeout_ms": 5000,
+      "trace_command": 1512,
+      "writeset": []
+    },
+    {
+      "action": "stream_after_cleanup_utility",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02165",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "558f7f98cf9d0942c32a5dc3269084520e5a302f9353cd68cd0f2c7459eea519",
+      "timeout_ms": 5000,
+      "trace_command": 1513,
+      "writeset": []
+    },
+    {
+      "action": "stream_after_cleanup_io",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02166",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "345817700e6ab22ac07149573a908f3971c6a631c32b1b5df4ff167233bdb824",
+      "timeout_ms": 5000,
+      "trace_command": 1514,
+      "writeset": []
+    },
+    {
+      "action": "stream_after_cleanup_utility",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02167",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "1701f0c7aadb2ebb3b3e40ce6e6823010eeeb672426589e9bfc0fe80be50a9c7",
+      "timeout_ms": 5000,
+      "trace_command": 1515,
+      "writeset": []
+    },
+    {
+      "action": "stream_after_cleanup_io",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02168",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "345817700e6ab22ac07149573a908f3971c6a631c32b1b5df4ff167233bdb824",
+      "timeout_ms": 5000,
+      "trace_command": 1516,
+      "writeset": []
+    },
+    {
+      "action": "stream_after_cleanup_io_terminal",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02169",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "3a7a3d78d675bbe1ef751e37b6f7fb72f83cf12ca40264701e4cba35bde3d8fa",
+      "timeout_ms": 5000,
+      "trace_command": 1517,
+      "writeset": []
+    },
+    {
+      "action": "stream_after_cleanup_final_guard",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02170",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "810cd66d8d73d499bc7d3996e01570ee70418a29d9176388b8d3c57b60347c55",
+      "timeout_ms": 5000,
+      "trace_command": 1518,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02171",
+      "optional": true,
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bfe939ae373aaa2b842a5cb300bba107c50d4442d01c78c743448095c9650d42",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02172",
+      "optional": true,
+      "ordinal_in_action": 1,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bfe939ae373aaa2b842a5cb300bba107c50d4442d01c78c743448095c9650d42",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02173",
+      "optional": true,
+      "ordinal_in_action": 2,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bfe939ae373aaa2b842a5cb300bba107c50d4442d01c78c743448095c9650d42",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02174",
+      "optional": true,
+      "ordinal_in_action": 3,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bfe939ae373aaa2b842a5cb300bba107c50d4442d01c78c743448095c9650d42",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02175",
+      "optional": true,
+      "ordinal_in_action": 4,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bfe939ae373aaa2b842a5cb300bba107c50d4442d01c78c743448095c9650d42",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02176",
+      "optional": true,
+      "ordinal_in_action": 5,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bfe939ae373aaa2b842a5cb300bba107c50d4442d01c78c743448095c9650d42",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02177",
+      "optional": true,
+      "ordinal_in_action": 6,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bfe939ae373aaa2b842a5cb300bba107c50d4442d01c78c743448095c9650d42",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02178",
+      "optional": true,
+      "ordinal_in_action": 7,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bfe939ae373aaa2b842a5cb300bba107c50d4442d01c78c743448095c9650d42",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02179",
+      "optional": true,
+      "ordinal_in_action": 8,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bfe939ae373aaa2b842a5cb300bba107c50d4442d01c78c743448095c9650d42",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02180",
+      "optional": true,
+      "ordinal_in_action": 9,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bfe939ae373aaa2b842a5cb300bba107c50d4442d01c78c743448095c9650d42",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02181",
+      "optional": true,
+      "ordinal_in_action": 10,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bfe939ae373aaa2b842a5cb300bba107c50d4442d01c78c743448095c9650d42",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02182",
+      "optional": true,
+      "ordinal_in_action": 11,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bfe939ae373aaa2b842a5cb300bba107c50d4442d01c78c743448095c9650d42",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02183",
+      "optional": true,
+      "ordinal_in_action": 12,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bfe939ae373aaa2b842a5cb300bba107c50d4442d01c78c743448095c9650d42",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02184",
+      "optional": true,
+      "ordinal_in_action": 13,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bfe939ae373aaa2b842a5cb300bba107c50d4442d01c78c743448095c9650d42",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02185",
+      "optional": true,
+      "ordinal_in_action": 14,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bfe939ae373aaa2b842a5cb300bba107c50d4442d01c78c743448095c9650d42",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02186",
+      "optional": true,
+      "ordinal_in_action": 15,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bfe939ae373aaa2b842a5cb300bba107c50d4442d01c78c743448095c9650d42",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02187",
+      "optional": true,
+      "ordinal_in_action": 16,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bfe939ae373aaa2b842a5cb300bba107c50d4442d01c78c743448095c9650d42",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02188",
+      "optional": true,
+      "ordinal_in_action": 17,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bfe939ae373aaa2b842a5cb300bba107c50d4442d01c78c743448095c9650d42",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02189",
+      "optional": true,
+      "ordinal_in_action": 18,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bfe939ae373aaa2b842a5cb300bba107c50d4442d01c78c743448095c9650d42",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02190",
+      "optional": true,
+      "ordinal_in_action": 19,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bfe939ae373aaa2b842a5cb300bba107c50d4442d01c78c743448095c9650d42",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02191",
+      "optional": true,
+      "ordinal_in_action": 20,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bfe939ae373aaa2b842a5cb300bba107c50d4442d01c78c743448095c9650d42",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02192",
+      "optional": true,
+      "ordinal_in_action": 21,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bfe939ae373aaa2b842a5cb300bba107c50d4442d01c78c743448095c9650d42",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02193",
+      "optional": true,
+      "ordinal_in_action": 22,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bfe939ae373aaa2b842a5cb300bba107c50d4442d01c78c743448095c9650d42",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02194",
+      "optional": true,
+      "ordinal_in_action": 23,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "bfe939ae373aaa2b842a5cb300bba107c50d4442d01c78c743448095c9650d42",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "stream_after_cleanup_rollback",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02195",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710",
+      "timeout_ms": 5000,
+      "trace_command": 1519,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_begin",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02196",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "3eb12e5bafe877f825399d2905523e26201831b46d6ebc54e734cdb0961a8fd5",
+      "timeout_ms": 5000,
+      "trace_command": 1520,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_timeout",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02197",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "2f0ad9318d8daad4452e9726e67089ca3909981bbd333d0f80972dd3f8470f2c",
+      "timeout_ms": 5000,
+      "trace_command": 1521,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_readonly",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02198",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "654b3989d19937e3700b1ef5374ce0b4c77f8460eb8318dd1f40d31c27c21b68",
+      "timeout_ms": 5000,
+      "trace_command": 1522,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_io_bind",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02199",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "437380dddfde7739b50fb08737e8fb6feaf1dffb0c273da602289e446c3cf998",
+      "timeout_ms": 5000,
+      "trace_command": 1523,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_io_sample",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02200",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0b8689aa5a9814bf7225969b10ec65eadce6b7aaa29dc372f6d9b9a19dc3b0f9",
+      "timeout_ms": 5000,
+      "trace_command": 1524,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_io_bind",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02201",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "143290e100a36ca810128a83a7035befaced99a17ab337515bd67f694f347570",
+      "timeout_ms": 5000,
+      "trace_command": 1525,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_io_sample",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02202",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0b8689aa5a9814bf7225969b10ec65eadce6b7aaa29dc372f6d9b9a19dc3b0f9",
+      "timeout_ms": 5000,
+      "trace_command": 1526,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_access",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02203",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "ad5ff4effb3cdfc8647f1bfa24815040cf3b1b20537b36d4f163ee36ccc8cb23",
+      "timeout_ms": 5000,
+      "trace_command": 1527,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_io_bind",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02204",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "7831789520a4b6399b38706b38d8f1e7d7b6fd585f26b15d3d47f78d2d348579",
+      "timeout_ms": 5000,
+      "trace_command": 1528,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_io_sample",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02205",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0b8689aa5a9814bf7225969b10ec65eadce6b7aaa29dc372f6d9b9a19dc3b0f9",
+      "timeout_ms": 5000,
+      "trace_command": 1529,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_migrations",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02206",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "c1b191e76b2023233a8ef5feef5da7cc838116790669bb55e5db23cce0b36ffd",
+      "timeout_ms": 5000,
+      "trace_command": 1530,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_io_bind",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02207",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "6d9925467e3246387d7a1c40df6cc5a57639e6cc213c29c3f6d6d9d18f2baa90",
+      "timeout_ms": 5000,
+      "trace_command": 1531,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_io_sample",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02208",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0b8689aa5a9814bf7225969b10ec65eadce6b7aaa29dc372f6d9b9a19dc3b0f9",
+      "timeout_ms": 5000,
+      "trace_command": 1532,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_catalog",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02209",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "74a7eed5191bbd4282cf64c142d805a57248bdbc3b9043a368c814f47782e501",
+      "timeout_ms": 5000,
+      "trace_command": 1533,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_io_bind",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02210",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "96b664380256db558c9f33c23d61e94de601ea6a53a601879d6f3a5caaa223cb",
+      "timeout_ms": 5000,
+      "trace_command": 1534,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_io_sample",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02211",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0b8689aa5a9814bf7225969b10ec65eadce6b7aaa29dc372f6d9b9a19dc3b0f9",
+      "timeout_ms": 5000,
+      "trace_command": 1535,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_absence",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02212",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "state_after": {
+        "controls": false,
+        "guard": false,
+        "observer": false
+      },
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "a028588b1357717f917d25dd0873f8882120c7e5207db5c0563beb1739ca97a0",
+      "timeout_ms": 5000,
+      "trace_command": 1536,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_io_sample",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02213",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0b8689aa5a9814bf7225969b10ec65eadce6b7aaa29dc372f6d9b9a19dc3b0f9",
+      "timeout_ms": 5000,
+      "trace_command": 1537,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_io_closing_witness",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02214",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "8b86e55eb52434a62227554d1d6da0548883b60528e2150b8add16090341dda4",
+      "timeout_ms": 5000,
+      "trace_command": 1538,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_rollback",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02215",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710",
+      "timeout_ms": 5000,
+      "trace_command": 1539,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "id": "cmd_02216",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "3eb12e5bafe877f825399d2905523e26201831b46d6ebc54e734cdb0961a8fd5",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "id": "cmd_02217",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "654b3989d19937e3700b1ef5374ce0b4c77f8460eb8318dd1f40d31c27c21b68",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "id": "cmd_02218",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "4c37732613791f84484c38265c0be027569ee1b7e1d55d69de16b4f9668159ce",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "id": "cmd_02219",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "id": "cmd_02220",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "e004ebd5b5532a4b85984a62f8ad48a81aa3460c1ca07701f386135d72cdecf5",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "id": "cmd_02221",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "a399b6fe975faca1ecc7b5049577f7c16879fb533dd25a156216e9c0822f2cd6",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "id": "cmd_02222",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "3eb12e5bafe877f825399d2905523e26201831b46d6ebc54e734cdb0961a8fd5",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "id": "cmd_02223",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "654b3989d19937e3700b1ef5374ce0b4c77f8460eb8318dd1f40d31c27c21b68",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "id": "cmd_02224",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "4c37732613791f84484c38265c0be027569ee1b7e1d55d69de16b4f9668159ce",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "id": "cmd_02225",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "retry": false,
+      "source_bundle_sha": "5ab37a4989c35cd893f2273e565e969ad5d50c4062d2858fb9cb0618d387f378",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710",
+      "timeout_ms": 5000,
+      "writeset": []
+    }
+  ]
+}
