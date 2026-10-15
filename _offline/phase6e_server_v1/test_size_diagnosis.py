@@ -2,6 +2,13 @@ import copy,json,unittest
 from size_diagnosis import numeric,capacity,run,Probe,GUARD,INVENTORY,ALL_STATS,INSTANCE
 
 class Tests(unittest.TestCase):
+    def test_historical_input_uses_extended_path_before_any_access_grant(self):
+        from unittest.mock import patch,Mock
+        from size_diagnosis import historical_binding
+        target=Mock();target.read_text.return_value='{"plan":[]}'
+        with patch('size_diagnosis.disk',return_value=target) as path:
+            self.assertEqual(historical_binding('long-historical-path'),{'plan':[]})
+        path.assert_called_once_with('long-historical-path')
     def test_numeric_has_same_filters_without_hash_content_sort_or_limit(self):
         plans=[{'name':'auth.sessions','predicate':'user_id is null or user_id::text not in (\'00000000-0000-0000-0000-000000000000\')'}]
         sql=numeric(plans)

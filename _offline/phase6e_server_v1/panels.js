@@ -28,10 +28,10 @@ function panel(s,current,tab,h){
  if(tab==='training'&&!current.capabilities.full_day21){
   let html=`<h2>${t('planned')}</h2>`;
   for(const [si,session] of p.training.sessions.entries()){
-   html+=`<section><h3>${esc(session.day)}</h3>${s.route==='B'?`<form data-session="${si}"><div class="row">${select('day',s.pair.training.fixture.intake.days.map(x=>[x,x]),session.day)}<button>${t('review')}</button></div></form>`:''}`;
+   html+=`<section><h3>${esc(label(session.day))}</h3>${s.route==='B'?`<form data-session="${si}"><div class="row">${select('day',s.pair.training.fixture.intake.days.map(x=>[x,x]),session.day)}<button>${t('review')}</button></div></form>`:''}`;
    for(const [ei,e] of session.exercises.entries()){
     const opt=s.editorOptions.training[si]?.[ei];
-    html+=`<article><p>${esc(label(e.label||e.exercise))} · ${e.sets} × ${e.reps} · ${e.load??t('missing')} ${esc(e.requestedUnit||'')} · ${e.rest} s</p><p class="small">${esc(e.rule)} v${e.ruleVersion}</p>`;
+    html+=`<article><p>${esc(label(e.label||e.exercise))} · ${e.sets} × ${e.reps} · ${esc(h.weight?h.weight(e.load,e.requestedUnit):e.load??t('missing'))} · ${e.rest} s</p><p class="small">${esc(e.rule)} v${e.ruleVersion}</p>`;
     if(s.route==='B'&&opt)html+=`<form data-exercise="${si}:${ei}">${select('exercise',opt.choices.map(x=>[x.id,x.name]),e.exercise)}<div class="fields">${num('sets',e.sets,'min="1" step="1"')}${num('reps',e.reps,'min="1" step="1"')}${num('rest',e.rest,'min="0" step="1"')}${num('rir',e.rir,'min="0" max="10" step="1"')}${num('rpe',e.rpe,'min="1" max="10" step="0.5"')}</div><button>${t('review')}</button></form>`;
     html+='</article>';
    }

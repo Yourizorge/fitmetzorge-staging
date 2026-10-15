@@ -38,7 +38,8 @@ const words={today:['Vandaag','Today','Heute'],training:['Training','Training','
  note:['Synthetische bronwaarden, niet deskundig gevalideerd.','Synthetic source values, not professionally validated.','Synthetische Quellenwerte, nicht fachlich validiert.'],
  eaten:['Gegeten','Eaten','Gegessen'],notEaten:['Niet gegeten','Not eaten','Nicht gegessen'],set:['Set','Set','Satz'],new:['Nieuw','New','Neu'],total:['Subtotaal','Subtotal','Zwischensumme']};
 Object.assign(words,{member:['Lid','Member','Mitglied'],trainer:['Trainer','Trainer','Trainer'],owner:['Eigenaar','Owner','Eigentümer'],load:['Gewicht','Weight','Gewicht'],reps:['REPS','REPS','WDH'],sets:['Sets','Sets','Sätze'],rest:['Rust (s)','Rest (s)','Pause (s)'],grams:['Gram','Grams','Gramm']});
-const t=k=>words[k]?.[language]||extraWords[k]?.[language]||k, label=x=>Array.isArray(x)?x[language]:x;
+const t=k=>words[k]?.[language]||extraWords[k]?.[language]||k, label=x=>FMZDisplay.caption(x,language);
+function weight(value,unit){const pref=views.find(v=>!v.capabilities.registration12)?.state.preferences?.units||'metric';return FMZDisplay.text(value,unit,pref,t('missing'));}
 Object.assign(words,FMZPanels.words);
 const reason=k=>extraWords[k]?.[language]||words[k]?.[language]||t('none');
 Object.assign(words,{notices:['Meldingen','Notifications','Mitteilungen'],seen:['Bekeken','Seen','Gesehen'],declined:['Afgewezen','Declined','Abgelehnt'],superseded:['Vervangen door nieuwere gegevens','Replaced by newer records','Durch neuere Daten ersetzt'],expired:['Verlopen','Expired','Abgelaufen'],applied:['Toegepast','Applied','Angewendet'],withdrawn:['Toestemming ingetrokken','Consent withdrawn','Einwilligung widerrufen'],records_changed:['Je registraties zijn bijgewerkt. Bekijk de feiten.','Your records changed. Review the facts.','Deine Einträge wurden geändert. Prüfe die Fakten.'],proposal_pending:['Er staat een voorstel klaar om te bekijken.','A proposal is ready to review.','Ein Vorschlag kann geprüft werden.'],markseen:['Markeren als bekeken','Mark as seen','Als gesehen markieren'],full_day21_disabled:['De volledige dagregistratie is hier nog niet ingeschakeld.','Full day recording is not enabled here yet.','Die vollständige Tageserfassung ist hier noch nicht aktiviert.']});
@@ -67,12 +68,12 @@ if(tab==='review'){const p=s.review;html=p?`<p>${t('pending')}</p><p>${t('reason
 if(tab==='history')html=s.history.map(p=>`<article><h2>${t('version')} ${p.version}</h2><p class="small">${esc(p.kind||t('original'))}</p>${planSummary(p)}${p.version!==s.active.version?button('restore','restore',`data-version="${p.version}"`):''}</article>`).join('');
 if(tab==='training')html+=`<h2>${t('facts')}</h2>`+(s.reflections||[]).map(reflection).join('');
 if(tab==='review')html+=planEditor(s);
-if(current.role==='member')html=FMZPanels.panel(s,current,tab,{esc,t,label,num,language,views})??html;
+if(current.role==='member')html=FMZPanels.panel(s,current,tab,{esc,t,label,num,language,views,weight})??html;
 if(tab==='today'&&current.role==='member')html=`<h2>${t('notices')}</h2>${(current.notices||[]).map(n=>`<article><p>${esc(t(n.kind))}</p><p class="small">${esc(t(n.status))}</p>${n.status==='pending'?`<button data-notice="${esc(n.id)}">${t('markseen')}</button>`:''}</article>`).join('')}`+html;
 if(tab==='today'&&current.role==='member')html+=`<h2>${extraWords.compare[language]}</h2><p>${extraWords.comparisonNote[language]}</p><button data-compare>${extraWords.compare[language]}</button>`;
 if(tab==='recovery'&&current.planning?.status==='planned')html+=`<p>${esc(current.planning.occurrence.date)} ${esc(current.planning.occurrence.at)} ${esc(current.planning.occurrence.zone)} · ${t('version')} ${current.planning.occurrence.source_version}</p>`;
 html=`<details><summary>${extraWords.guide[language]} ${guide+1}/${guideSteps.length}</summary><p>${guideSteps[guide][language]}</p><div class="row"><button data-guide="-1" ${guide===0?'disabled':''}>${extraWords.previous[language]}</button><button data-guide="1" ${guide===guideSteps.length-1?'disabled':''}>${extraWords.next[language]}</button></div></details>`+html;
-$('#content').innerHTML=html;}
+$('#content').innerHTML=html;$('#title').textContent=t(tab);}
 
 document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.hasAttribute('data-compare'))act('compare_window',{bundle:current.state.comparisonExample});if(b.dataset.guide){guide=Math.max(0,Math.min(guideSteps.length-1,guide+Number(b.dataset.guide)));render();}});
 document.addEventListener('click',e=>{const b=e.target.closest('[data-notice]');if(b)act('notice_seen',{id:b.dataset.notice});});
@@ -85,6 +86,12 @@ function renderRegistration(){
  const planned=s.snapshot.exercises.find(e=>e.exercise_id===row.exercise_id).sets.find(e=>e.index===row.set_index),actual=latest?.sets.find(e=>e.id===row.id);
  return `<article><h3>${esc(({ 'syn-squat':['Squat','Squat','Kniebeuge'],'syn-row':['Roeien','Row','Rudern'],'syn-press':['Drukken','Press','Drücken'] })[row.exercise_id]?.[language]||row.exercise_id)} · ${t('set')} ${row.set_index}</h3><p>${t('planned')}: ${planned.load.value} ${esc(planned.load.unit)} · ${planned.reps.min}–${planned.reps.max} reps</p><p>${t('recorded')}: ${actual?`${actual.load.value??t('missing')} ${esc(actual.load.unit)} · ${actual.reps??t('missing')} reps`:t('missing')}</p><div class="fields">${num('load'+i,actual?.load.value??null,'min="0" step="any"')}${num('reps'+i,actual?.reps??null,'min="0" step="1"')}${num('rir'+i,actual?.rir??null,'min="0" max="10"')}${num('rpe'+i,actual?.rpe??null,'min="1" max="10" step="0.5"')}</div><label><input type="checkbox" name="done${i}" ${actual?.completed?'checked':''}>${t('recorded')}</label></article>`;
  }).join('')}<button ${s.consent?'':'disabled'}>${t('save')}</button></form><h2>${t('history')}</h2>${s.registrations.map(r=>`<p>${t('version')} ${r.revision} · ${r.sets.filter(x=>x.completed).length}/${r.sets.length} ${t('recorded')}</p>`).join('')}${s.consent?button('revoke','revoke'):`<p>${t('consent')}</p>`}`;
+ for(const [i,row] of draft.sets.entries()){
+  const plan=s.snapshot.exercises.find(e=>e.exercise_id===row.exercise_id).sets.find(e=>e.index===row.set_index);
+  const article=$('[name=load'+i+']').closest('article'),paragraph=document.createElement('p');
+  paragraph.className='small';paragraph.dataset.weightDisplay='';paragraph.textContent=t('planned')+': '+weight(plan.load.value,plan.load.unit);article.prepend(paragraph);
+  const inputLabel=$('[name=load'+i+']').closest('label');inputLabel.firstChild.textContent=t('load')+' ('+row.load.unit+')';
+ }
  if(current.capabilities.journey12){
   const phase=s.session12,form=$('[data-registration12]');
   for(const el of form.elements)el.disabled=!s.consent||phase.status!=='started';

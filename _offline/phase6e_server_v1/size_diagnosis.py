@@ -13,6 +13,9 @@ RUN='91ba398d-8888-4026-9f0b-3aafd988e5b3'
 FILTER='b94f4eea413204787b134198bcaae488bf6c98082687e44bf466f735920ef85a'
 PREVIOUS=END/'receipts/reserved-debe3298-9772-40b1-a9f4-8e3d99c8fd20/integral-stream-before-binding.json'
 
+def historical_binding(path=PREVIOUS):
+    return json.loads(disk(path).read_text())
+
 def numeric(plans):
     return '/* fmz6e11:numeric_size_v1 */ '+ ' union all '.join(
         'select '+str(i)+'::text i,count(*)::text n from '+'.'.join(ident(n) for n in p['name'].split('.'))+
@@ -81,7 +84,7 @@ def main():
     ci=json.loads((evidence/'result.json').read_text());collection=json.loads((evidence/'collection.json').read_text())
     source=hashlib.sha256(pathlib.Path(__file__).read_bytes()).hexdigest()
     if collection.get('verified') is not True or ci.get('status')!='CLEAN_CI_PASS' or candidate['sources'].get('_offline/phase6e_server_v1/size_diagnosis.py')!=source or ci.get('numeric_size_pg17_checks',0)<4:raise ValueError('source_bound_ci_missing')
-    binding=json.loads(PREVIOUS.read_text());plans=binding['plan']
+    binding=historical_binding();plans=binding['plan']
     if hashlib.sha256(json.dumps(plans,sort_keys=True,separators=(',',':')).encode()).hexdigest()!=FILTER:raise ValueError('historical_filter_changed')
     if hashlib.sha256(statement(plans).encode()).hexdigest()!=binding['query_sha256']:raise ValueError('historical_query_changed')
     folder=ROOT/'supabase/.temp'/('phase6e11-numeric-size-'+RUN);disk(folder).mkdir(exist_ok=False);e=Evidence(folder)

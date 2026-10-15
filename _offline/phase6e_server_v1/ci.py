@@ -10,6 +10,7 @@ M46='20261014160019_phase6e_local_outbox.sql'
 NEW=['domain.cjs','domain.test.cjs','presentation.cjs','presentation.test.cjs','panels.js','composed_store.py','windows.cjs','windows.test.cjs','worker.cjs','store.py','database_tests.py','ci.py','ci_auth.py',
      'server.py','ui.html','ui.js','ui.css','browser_checks.cjs','composed_browser.cjs','protocol.py','test_protocol.py',
      'size_diagnosis.py','size_pg17.py','test_size_diagnosis.py',
+     'display.js','display.test.cjs',
      'sync_contract.cjs','access_policy.cjs','prepared_contracts.test.cjs','work_register.json','check_work_register.py',
      'release_packet.py','test_release_packet.py','outbox.py','test_outbox.py','planning.py','test_planning.py',
      'registration12.cjs','registration12.test.cjs','workout12.cjs','workout12.test.cjs','registration_store.py','registration_database.py','registration_browser.cjs',
@@ -20,6 +21,7 @@ NEW=['domain.cjs','domain.test.cjs','presentation.cjs','presentation.test.cjs','
      'supabase/migrations/'+M45,'supabase/migrations/'+M46]
 EXTRA={'_offline/phase6e_server_v1/'+p for p in NEW}
 EXTRA.add('assets/fit-met-zorge-logo-cropped.png')
+EXTRA.add('assets/training-workout-model.js')
 EXTRA.add('_offline/phase6e11/utility_diagnosis_v1/probe.py')
 pending=[HERE/'domain.cjs',HERE/'registration12.cjs'];seen=set()
 while pending:
@@ -147,6 +149,7 @@ class Gate(previous.Gate):
         self.result['integration_domain_tests']=int(count[1])
         prepared=self.command('prepared-contracts',['node','--test','--test-reporter=tap',str(folder/'prepared_contracts.test.cjs')])
         self.result['prepared_contract_tests']=int(re.search(r'# tests (\d+)',prepared.stdout)[1])
+        self.command('display-regression',['node','--test',str(folder/'display.test.cjs')])
         self.command('work-register',[sys.executable,'-B',str(folder/'check_work_register.py')])
         from stream_filter_check import run as stream_filter_check
         self.result['stream_filter_pg17_checks']=stream_filter_check(self)

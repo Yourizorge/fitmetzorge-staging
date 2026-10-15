@@ -29,6 +29,8 @@ try{
   await page.locator('[data-tab=training]').click();const name=`composed-${width}-${language}-${theme}.png`;await page.screenshot({path:path.join(c.screenshots,name)});screenshots.push(name);
  }
  stage='historical';await page.locator('[data-workspace]').click();ok(await page.locator('[data-registration12]').count()===1,'same_login_registration12');
+ ok((await page.locator('[data-weight-display]').first().innerText()).includes('lb'),'imperial_display_visible');
+ ok((await page.locator('[data-weight-display]').first().innerText()).includes('kg)'),'original_unit_preserved');
  const snapshot=JSON.stringify((await state()).find(v=>v.workspace===historical.workspace).state.snapshot);
  ok(await page.locator('[name=load0]').isDisabled(),'explicit_start_required');await click(page.locator('[data-action=start12]'));
  await page.locator('[name=load0]').fill('0');await page.locator('[name=reps0]').fill('8');await page.locator('[name=rir0]').fill('0');await page.locator('[name=rpe0]').fill('');await page.locator('[name=done0]').check();await click(page.locator('[data-registration12] button'));
