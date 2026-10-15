@@ -7,6 +7,8 @@ from store import Store,Denied,domain,digest,identifier,SCHEMA
 from protocol import transaction
 
 class RegistrationStore(Store):
+    # Transport factories intentionally omit loopback initialization.
+    journey=False
     def __init__(self,dsn,auth,bindings,enabled=False,observer=None,journey=False):
         super().__init__(dsn,auth,enabled=enabled,observer=observer)
         if not isinstance(bindings,dict) or not 1<=len(bindings)<=3:raise Denied('slice_bindings')

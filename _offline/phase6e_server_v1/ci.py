@@ -10,6 +10,7 @@ M46='20261014160019_phase6e_local_outbox.sql'
 NEW=['domain.cjs','domain.test.cjs','presentation.cjs','presentation.test.cjs','panels.js','composed_store.py','windows.cjs','windows.test.cjs','worker.cjs','store.py','database_tests.py','ci.py','ci_auth.py',
      'server.py','ui.html','ui.js','ui.css','browser_checks.cjs','composed_browser.cjs','protocol.py','test_protocol.py',
      'size_diagnosis.py','size_pg17.py','test_size_diagnosis.py',
+     'sync_contract.cjs','access_policy.cjs','prepared_contracts.test.cjs','work_register.json','check_work_register.py',
      'release_packet.py','test_release_packet.py','outbox.py','test_outbox.py','planning.py','test_planning.py',
      'registration12.cjs','registration12.test.cjs','workout12.cjs','workout12.test.cjs','registration_store.py','registration_database.py','registration_browser.cjs',
      'registration_release.py','test_registration_release.py',
@@ -131,7 +132,7 @@ class Gate(previous.Gate):
         # not global site-packages; the fresh test process needs that same path.
         self.command('registration-transport',['env','PYTHONPATH='+str(self.sources/'supabase/.temp/phase6e11-pg17-parser'),
             sys.executable,'-B',str(folder/'test_registration_transport.py')])
-        self.result['registration_candidate_unit_tests']=17
+        self.result['registration_candidate_unit_tests']=18
         self.result['registration_candidate_hosted_admitted']=False
         self.command('registration-proof',['env','PYTHONPATH='+str(self.sources/'supabase/.temp/phase6e11-pg17-parser'),
             sys.executable,'-B',str(folder/'test_registration_proof.py')])
@@ -144,6 +145,9 @@ class Gate(previous.Gate):
         count=re.search(r'# tests (\d+)',output.stdout)
         if not count:raise RuntimeError('domain_count')
         self.result['integration_domain_tests']=int(count[1])
+        prepared=self.command('prepared-contracts',['node','--test','--test-reporter=tap',str(folder/'prepared_contracts.test.cjs')])
+        self.result['prepared_contract_tests']=int(re.search(r'# tests (\d+)',prepared.stdout)[1])
+        self.command('work-register',[sys.executable,'-B',str(folder/'check_work_register.py')])
         from stream_filter_check import run as stream_filter_check
         self.result['stream_filter_pg17_checks']=stream_filter_check(self)
         import size_pg17

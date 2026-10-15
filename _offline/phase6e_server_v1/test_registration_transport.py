@@ -47,5 +47,17 @@ class Tests(unittest.TestCase):
         with patch.dict('os.environ',{'GITHUB_REPOSITORY':'elsewhere'}):
             with self.assertRaises(Denied):Candidate.disposable(None,None,{}, {},None)
             with self.assertRaises(Denied):VerifiedAuth.disposable([],lambda:None,types.SimpleNamespace(url='http://127.0.0.1:59999'))
+    def test_minimal_candidate_never_enables_local_workout_lifecycle(self):
+        import types
+        from unittest.mock import patch
+        from registration_store import RegistrationStore
+        self.assertFalse(object.__new__(RegistrationStore).journey)
+        self.assertFalse(object.__new__(Candidate).journey)
+        runtime=types.SimpleNamespace(environment='disposable_ci',auth_base='http://127.0.0.1:59999')
+        auth=types.SimpleNamespace(url=runtime.auth_base)
+        with patch.dict('os.environ',{'GITHUB_REPOSITORY':'Yourizorge/fitmetzorge-staging'}):
+            candidate=Candidate.disposable(runtime,auth,{ID(4):ID(1)},{'a':ID(1),'trainer':ID(2),'b':ID(3)},lambda e:None)
+        self.assertFalse(candidate.journey)
+        self.assertFalse(candidate.full_day21)
 
 if __name__=='__main__':unittest.main()

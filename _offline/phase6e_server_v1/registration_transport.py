@@ -55,6 +55,7 @@ class VerifiedAuth:
         return value
 
 class Candidate(RegistrationStore):
+    journey=False
     @classmethod
     def disposable(cls,runtime,local_auth,bindings,identities,observer):
         if os.environ.get('GITHUB_REPOSITORY')!='Yourizorge/fitmetzorge-staging' or runtime.environment!='disposable_ci' or runtime.auth_base!='http://127.0.0.1:59999':
