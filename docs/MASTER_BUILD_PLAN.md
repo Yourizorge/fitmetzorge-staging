@@ -1,5 +1,24 @@
 # FitMetZorge Master Build Plan
 
+## Completion Checkpoint - 15 October 2026
+
+The larger package is recorded in [the current combined report](PHASE6E_COMPLETION_RESULT_20261015.md).
+One newly authorized hosted run was consumed at the M44 CLI evidence gate:
+16 numeric commands versus14 expected. JIT is closed with zero mappings;
+no new Auth/workflow fixtures were reached. CLI reports M44 applied, but its
+independent hosted identity, final dry-run and protected after-snapshot remain
+unconfirmed. No repeat, owner window, hosted12 or owner acceptance is implied.
+
+The independent app adds a generic privacy-only offline startup shell, durable
+account-bound drafts with explicit resend, stale-session response protection,
+minimal trainer navigation and source-bound read-only entitlement display.
+Eight executable release packets share a server-side local action selector;
+their hosted gates remain closed. Fresh PG17/GoTrue CI38764963091 at1deac64
+passes clean46,135 database checks across three distinct groups,488 browser
+checks across four groups and27 selected-preferences HTTP checks. Eight
+selected hosted releases and their final command registers are NOT proven.
+All earlier evidence below remains historical.21 stays unaccepted/default-off.
+
 ## Current Integration Checkpoint - 15 October 2026
 
 The owner-authorized larger work package is tracked in

@@ -1,7 +1,7 @@
 {
   "scope": "local_synthetic_candidate",
   "hosted11": "NO_GO_CONSUMED_M44_CLI_EVIDENCE_16_VS_14",
-  "current_source_evidence": "Fresh integral CI pending after confirmed browser logout synchronization; CI38758448891 and38759936078 remain incomplete local attempts",
+  "current_source_evidence": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted; clean46; database25/46/64, browser209/127/79/73, selected preferences HTTP27",
   "historical_source_evidence": "CI38746007554 at ec97596: clean46, 124 composed browser checks including durable offline drafts, prior integration groups and synthetic106496-row PG17 PASS; not current-source or hosted admission",
   "full_day21": false,
   "functions": [
@@ -21,17 +21,23 @@
       "state": "real_local_ci_pass",
       "remaining": "Hosted11 auth/controller chain",
       "gate": "hosted11",
-      "evidence": "CI38739029524 at c0624a2; not hosted",
+      "evidence": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted",
       "built": true,
       "local_ci": {
-        "status": "HISTORICAL_EVIDENCE_OR_LOCAL_CONTRACT_ONLY",
-        "evidence": "CI38739029524 at c0624a2; not hosted",
-        "current_source_ci": "PARENT_OWNED; NEW_PACKET_STACK_CI_NOT_CLAIMED"
+        "status": "REAL_LOCAL_CI_PASS",
+        "evidence": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted",
+        "current_source_ci": "EXACT_SOURCE_CI; STATUS_REGISTER_UPDATED_AFTER_RUN"
       },
       "hosted": "SELECTED_RELEASE_NOT_PROVEN",
       "review": "SELECTED_HOSTED_REVIEW_NOT_RECORDED",
       "released": false,
-      "dependency": "Hosted11 auth/controller chain"
+      "dependency": "Hosted11 auth/controller chain",
+      "historical_local_evidence": {
+        "status": "HISTORICAL_EVIDENCE_OR_LOCAL_CONTRACT_ONLY",
+        "evidence": "CI38739029524 at c0624a2; not hosted",
+        "current_source_ci": "PARENT_OWNED; NEW_PACKET_STACK_CI_NOT_CLAIMED"
+      },
+      "historical_evidence": "CI38739029524 at c0624a2; not hosted"
     },
     {
       "id": "plans",
@@ -52,17 +58,23 @@
       "state": "real_local_ci_pass",
       "remaining": "Individual hosted plan slice and preservation budget",
       "gate": "selected_release",
-      "evidence": "CI38739029524 at c0624a2; not hosted",
+      "evidence": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted",
       "built": true,
       "local_ci": {
-        "status": "HISTORICAL_EVIDENCE_OR_LOCAL_CONTRACT_ONLY",
-        "evidence": "CI38739029524 at c0624a2; not hosted",
-        "current_source_ci": "PARENT_OWNED; NEW_PACKET_STACK_CI_NOT_CLAIMED"
+        "status": "REAL_LOCAL_CI_PASS",
+        "evidence": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted",
+        "current_source_ci": "EXACT_SOURCE_CI; STATUS_REGISTER_UPDATED_AFTER_RUN"
       },
       "hosted": "SELECTED_RELEASE_NOT_PROVEN",
       "review": "SELECTED_HOSTED_REVIEW_NOT_RECORDED",
       "released": false,
-      "dependency": "Individual hosted plan slice and preservation budget"
+      "dependency": "Individual hosted plan slice and preservation budget",
+      "historical_local_evidence": {
+        "status": "HISTORICAL_EVIDENCE_OR_LOCAL_CONTRACT_ONLY",
+        "evidence": "CI38739029524 at c0624a2; not hosted",
+        "current_source_ci": "PARENT_OWNED; NEW_PACKET_STACK_CI_NOT_CLAIMED"
+      },
+      "historical_evidence": "CI38739029524 at c0624a2; not hosted"
     },
     {
       "id": "intake",
@@ -81,17 +93,23 @@
       "state": "real_local_ci_pass",
       "remaining": "Hosted versioned intake storage under existing rules",
       "gate": "selected_release",
-      "evidence": "CI38739029524 at c0624a2; not hosted",
+      "evidence": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted",
       "built": true,
       "local_ci": {
-        "status": "HISTORICAL_EVIDENCE_OR_LOCAL_CONTRACT_ONLY",
-        "evidence": "CI38739029524 at c0624a2; not hosted",
-        "current_source_ci": "PARENT_OWNED; NEW_PACKET_STACK_CI_NOT_CLAIMED"
+        "status": "REAL_LOCAL_CI_PASS",
+        "evidence": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted",
+        "current_source_ci": "EXACT_SOURCE_CI; STATUS_REGISTER_UPDATED_AFTER_RUN"
       },
       "hosted": "SELECTED_RELEASE_NOT_PROVEN",
       "review": "SELECTED_HOSTED_REVIEW_NOT_RECORDED",
       "released": false,
-      "dependency": "Hosted versioned intake storage under existing rules"
+      "dependency": "Hosted versioned intake storage under existing rules",
+      "historical_local_evidence": {
+        "status": "HISTORICAL_EVIDENCE_OR_LOCAL_CONTRACT_ONLY",
+        "evidence": "CI38739029524 at c0624a2; not hosted",
+        "current_source_ci": "PARENT_OWNED; NEW_PACKET_STACK_CI_NOT_CLAIMED"
+      },
+      "historical_evidence": "CI38739029524 at c0624a2; not hosted"
     },
     {
       "id": "registration12",
@@ -112,17 +130,23 @@
       "state": "real_local_ci_pass",
       "remaining": "Minimal hosted12 only after complete11 and physical review",
       "gate": "owner11_and_release12",
-      "evidence": "CI38739029524 at c0624a2; not hosted",
+      "evidence": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted",
       "built": true,
       "local_ci": {
-        "status": "HISTORICAL_EVIDENCE_OR_LOCAL_CONTRACT_ONLY",
-        "evidence": "CI38739029524 at c0624a2; not hosted",
-        "current_source_ci": "PARENT_OWNED; NEW_PACKET_STACK_CI_NOT_CLAIMED"
+        "status": "REAL_LOCAL_CI_PASS",
+        "evidence": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted",
+        "current_source_ci": "EXACT_SOURCE_CI; STATUS_REGISTER_UPDATED_AFTER_RUN"
       },
       "hosted": "SELECTED_RELEASE_NOT_PROVEN",
       "review": "SELECTED_HOSTED_REVIEW_NOT_RECORDED",
       "released": false,
-      "dependency": "Minimal hosted12 only after complete11 and physical review"
+      "dependency": "Minimal hosted12 only after complete11 and physical review",
+      "historical_local_evidence": {
+        "status": "HISTORICAL_EVIDENCE_OR_LOCAL_CONTRACT_ONLY",
+        "evidence": "CI38739029524 at c0624a2; not hosted",
+        "current_source_ci": "PARENT_OWNED; NEW_PACKET_STACK_CI_NOT_CLAIMED"
+      },
+      "historical_evidence": "CI38739029524 at c0624a2; not hosted"
     },
     {
       "id": "workout12",
@@ -141,17 +165,23 @@
       "state": "real_local_ci_pass",
       "remaining": "Separate additive server release; not silently part of minimal12",
       "gate": "selected_release",
-      "evidence": "CI38739029524 at c0624a2; not hosted",
+      "evidence": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted",
       "built": true,
       "local_ci": {
-        "status": "HISTORICAL_EVIDENCE_OR_LOCAL_CONTRACT_ONLY",
-        "evidence": "CI38739029524 at c0624a2; not hosted",
-        "current_source_ci": "PARENT_OWNED; NEW_PACKET_STACK_CI_NOT_CLAIMED"
+        "status": "REAL_LOCAL_CI_PASS",
+        "evidence": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted",
+        "current_source_ci": "EXACT_SOURCE_CI; STATUS_REGISTER_UPDATED_AFTER_RUN"
       },
       "hosted": "SELECTED_RELEASE_NOT_PROVEN",
       "review": "SELECTED_HOSTED_REVIEW_NOT_RECORDED",
       "released": false,
-      "dependency": "Separate additive server release; not silently part of minimal12"
+      "dependency": "Separate additive server release; not silently part of minimal12",
+      "historical_local_evidence": {
+        "status": "HISTORICAL_EVIDENCE_OR_LOCAL_CONTRACT_ONLY",
+        "evidence": "CI38739029524 at c0624a2; not hosted",
+        "current_source_ci": "PARENT_OWNED; NEW_PACKET_STACK_CI_NOT_CLAIMED"
+      },
+      "historical_evidence": "CI38739029524 at c0624a2; not hosted"
     },
     {
       "id": "review",
@@ -170,17 +200,23 @@
       "state": "real_local_ci_pass",
       "remaining": "Hosted request/audit proof and owner review",
       "gate": "hosted11",
-      "evidence": "CI38739029524 at c0624a2; not hosted",
+      "evidence": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted",
       "built": true,
       "local_ci": {
-        "status": "HISTORICAL_EVIDENCE_OR_LOCAL_CONTRACT_ONLY",
-        "evidence": "CI38739029524 at c0624a2; not hosted",
-        "current_source_ci": "PARENT_OWNED; NEW_PACKET_STACK_CI_NOT_CLAIMED"
+        "status": "REAL_LOCAL_CI_PASS",
+        "evidence": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted",
+        "current_source_ci": "EXACT_SOURCE_CI; STATUS_REGISTER_UPDATED_AFTER_RUN"
       },
       "hosted": "SELECTED_RELEASE_NOT_PROVEN",
       "review": "SELECTED_HOSTED_REVIEW_NOT_RECORDED",
       "released": false,
-      "dependency": "Hosted request/audit proof and owner review"
+      "dependency": "Hosted request/audit proof and owner review",
+      "historical_local_evidence": {
+        "status": "HISTORICAL_EVIDENCE_OR_LOCAL_CONTRACT_ONLY",
+        "evidence": "CI38739029524 at c0624a2; not hosted",
+        "current_source_ci": "PARENT_OWNED; NEW_PACKET_STACK_CI_NOT_CLAIMED"
+      },
+      "historical_evidence": "CI38739029524 at c0624a2; not hosted"
     },
     {
       "id": "recovery",
@@ -201,17 +237,23 @@
       "state": "real_local_ci_pass",
       "remaining": "Server clock and scheduler release, expert content review",
       "gate": "selected_release",
-      "evidence": "CI38739029524 at c0624a2; not hosted",
+      "evidence": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted",
       "built": true,
       "local_ci": {
-        "status": "HISTORICAL_EVIDENCE_OR_LOCAL_CONTRACT_ONLY",
-        "evidence": "CI38739029524 at c0624a2; not hosted",
-        "current_source_ci": "PARENT_OWNED; NEW_PACKET_STACK_CI_NOT_CLAIMED"
+        "status": "REAL_LOCAL_CI_PASS",
+        "evidence": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted",
+        "current_source_ci": "EXACT_SOURCE_CI; STATUS_REGISTER_UPDATED_AFTER_RUN"
       },
       "hosted": "SELECTED_RELEASE_NOT_PROVEN",
       "review": "SELECTED_HOSTED_REVIEW_NOT_RECORDED",
       "released": false,
-      "dependency": "Server clock and scheduler release, expert content review"
+      "dependency": "Server clock and scheduler release, expert content review",
+      "historical_local_evidence": {
+        "status": "HISTORICAL_EVIDENCE_OR_LOCAL_CONTRACT_ONLY",
+        "evidence": "CI38739029524 at c0624a2; not hosted",
+        "current_source_ci": "PARENT_OWNED; NEW_PACKET_STACK_CI_NOT_CLAIMED"
+      },
+      "historical_evidence": "CI38739029524 at c0624a2; not hosted"
     },
     {
       "id": "today_progress",
@@ -232,29 +274,36 @@
       "state": "real_local_ci_pass",
       "remaining": "No real background push or AI chat",
       "gate": "selected_release",
-      "evidence": "CI38739029524 at c0624a2; not hosted",
+      "evidence": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted",
       "built": true,
       "local_ci": {
-        "status": "HISTORICAL_EVIDENCE_OR_LOCAL_CONTRACT_ONLY",
-        "evidence": "CI38739029524 at c0624a2; not hosted",
-        "current_source_ci": "PARENT_OWNED; NEW_PACKET_STACK_CI_NOT_CLAIMED"
+        "status": "REAL_LOCAL_CI_PASS",
+        "evidence": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted",
+        "current_source_ci": "EXACT_SOURCE_CI; STATUS_REGISTER_UPDATED_AFTER_RUN"
       },
       "hosted": "SELECTED_RELEASE_NOT_PROVEN",
       "review": "SELECTED_HOSTED_REVIEW_NOT_RECORDED",
       "released": false,
-      "dependency": "No real background push or AI chat"
+      "dependency": "No real background push or AI chat",
+      "historical_local_evidence": {
+        "status": "HISTORICAL_EVIDENCE_OR_LOCAL_CONTRACT_ONLY",
+        "evidence": "CI38739029524 at c0624a2; not hosted",
+        "current_source_ci": "PARENT_OWNED; NEW_PACKET_STACK_CI_NOT_CLAIMED"
+      },
+      "historical_evidence": "CI38739029524 at c0624a2; not hosted"
     },
     {
       "id": "preferences",
-      "behavior": "Persisted NL/EN/DE/light/dark/unit preference; approximate display conversion with original value/unit",
+      "behavior": "Persisted language/theme/unit presentation; original measurements and prescriptions preserved",
       "sources": [
         "presentation.cjs",
-        "domain.cjs",
-        "ui.js"
+        "display.js",
+        "panels.js"
       ],
       "tests": [
         "presentation.test.cjs",
-        "composed_browser.cjs"
+        "display.test.cjs",
+        "release_selection_http.py"
       ],
       "depends": [
         "auth"
@@ -262,17 +311,23 @@
       "state": "real_local_ci_pass",
       "remaining": "Hosted storage remains gated; display conversion never changes source/input/prescription",
       "gate": "selected_release",
-      "evidence": "CI38739029524 at c0624a2; not hosted",
+      "evidence": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted",
       "built": true,
       "local_ci": {
-        "status": "HISTORICAL_EVIDENCE_OR_LOCAL_CONTRACT_ONLY",
-        "evidence": "CI38739029524 at c0624a2; not hosted",
-        "current_source_ci": "PARENT_OWNED; NEW_PACKET_STACK_CI_NOT_CLAIMED"
+        "status": "REAL_LOCAL_CI_PASS",
+        "evidence": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted; selected preferences HTTP27",
+        "current_source_ci": "EXACT_SOURCE_CI"
       },
       "hosted": "SELECTED_RELEASE_NOT_PROVEN",
       "review": "SELECTED_HOSTED_REVIEW_NOT_RECORDED",
       "released": false,
-      "dependency": "Hosted storage remains gated; display conversion never changes source/input/prescription"
+      "dependency": "Hosted storage remains gated; display conversion never changes source/input/prescription",
+      "historical_local_evidence": {
+        "status": "HISTORICAL_EVIDENCE_OR_LOCAL_CONTRACT_ONLY",
+        "evidence": "CI38739029524 at c0624a2; not hosted",
+        "current_source_ci": "PARENT_OWNED; NEW_PACKET_STACK_CI_NOT_CLAIMED"
+      },
+      "historical_evidence": "CI38739029524 at c0624a2; not hosted"
     },
     {
       "id": "save_recovery",
@@ -289,19 +344,25 @@
         "auth"
       ],
       "state": "real_local_ci_pass",
-      "remaining": "Durable registration/recovery drafts now pass CI38746007554; full offline shell remains separate",
+      "remaining": "Hosted selected release still blocked by incomplete11; local recovery and generic shell pass actual stack",
       "gate": "selected_release",
-      "evidence": "CI38739029524 at c0624a2; not hosted",
+      "evidence": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted",
       "built": true,
       "local_ci": {
-        "status": "HISTORICAL_EVIDENCE_OR_LOCAL_CONTRACT_ONLY",
-        "evidence": "CI38739029524 at c0624a2; not hosted",
-        "current_source_ci": "PARENT_OWNED; NEW_PACKET_STACK_CI_NOT_CLAIMED"
+        "status": "REAL_LOCAL_CI_PASS",
+        "evidence": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted",
+        "current_source_ci": "EXACT_SOURCE_CI; STATUS_REGISTER_UPDATED_AFTER_RUN"
       },
       "hosted": "SELECTED_RELEASE_NOT_PROVEN",
       "review": "SELECTED_HOSTED_REVIEW_NOT_RECORDED",
       "released": false,
-      "dependency": "Durable registration/recovery drafts now pass CI38746007554; full offline shell remains separate"
+      "dependency": "Hosted selected release still blocked by incomplete11; local recovery and generic shell pass actual stack",
+      "historical_local_evidence": {
+        "status": "HISTORICAL_EVIDENCE_OR_LOCAL_CONTRACT_ONLY",
+        "evidence": "CI38739029524 at c0624a2; not hosted",
+        "current_source_ci": "PARENT_OWNED; NEW_PACKET_STACK_CI_NOT_CLAIMED"
+      },
+      "historical_evidence": "CI38739029524 at c0624a2; not hosted"
     },
     {
       "id": "offline_sync",
@@ -320,19 +381,25 @@
         "registration12"
       ],
       "state": "real_local_ci_pass_bounded_drafts",
-      "remaining": "No cached offline login/full shell; no approval/apply queue; hosted release remains gated",
+      "remaining": "No offline login or account-page cache; generic shell PASS; approval/application queue intentionally excluded; selected hosted release gated",
       "gate": "selected_release",
-      "evidence": "CI38746007554: browser offline, refresh/relogin, explicit sync, stale source, withdrawal and local-only discard",
+      "evidence": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted",
       "built": true,
       "local_ci": {
-        "status": "HISTORICAL_EVIDENCE_OR_LOCAL_CONTRACT_ONLY",
-        "evidence": "CI38746007554: browser offline, refresh/relogin, explicit sync, stale source, withdrawal and local-only discard",
-        "current_source_ci": "PARENT_OWNED; NEW_PACKET_STACK_CI_NOT_CLAIMED"
+        "status": "REAL_LOCAL_CI_PASS",
+        "evidence": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted",
+        "current_source_ci": "EXACT_SOURCE_CI; STATUS_REGISTER_UPDATED_AFTER_RUN"
       },
       "hosted": "SELECTED_RELEASE_NOT_PROVEN",
       "review": "SELECTED_HOSTED_REVIEW_NOT_RECORDED",
       "released": false,
-      "dependency": "No cached offline login/full shell; no approval/apply queue; hosted release remains gated"
+      "dependency": "No offline login or account-page cache; generic shell PASS; approval/application queue intentionally excluded; selected hosted release gated",
+      "historical_local_evidence": {
+        "status": "HISTORICAL_EVIDENCE_OR_LOCAL_CONTRACT_ONLY",
+        "evidence": "CI38746007554: browser offline, refresh/relogin, explicit sync, stale source, withdrawal and local-only discard",
+        "current_source_ci": "PARENT_OWNED; NEW_PACKET_STACK_CI_NOT_CLAIMED"
+      },
+      "historical_evidence": "CI38746007554: browser offline, refresh/relogin, explicit sync, stale source, withdrawal and local-only discard"
     },
     {
       "id": "tiers",
@@ -351,14 +418,20 @@
       "gate": "phase7_policy",
       "built": true,
       "local_ci": {
-        "status": "HISTORICAL_EVIDENCE_OR_LOCAL_CONTRACT_ONLY",
-        "evidence": "local_contract_only",
-        "current_source_ci": "PARENT_OWNED; NEW_PACKET_STACK_CI_NOT_CLAIMED"
+        "status": "CONTRACT_AND_READONLY_UI_ONLY",
+        "evidence": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted",
+        "current_source_ci": "EXACT_SOURCE_CI; STATUS_REGISTER_UPDATED_AFTER_RUN"
       },
       "hosted": "SELECTED_RELEASE_NOT_PROVEN",
       "review": "SELECTED_HOSTED_REVIEW_NOT_RECORDED",
       "released": false,
-      "dependency": "Phase7 authoritative issuance/abuse protection; final-day timezone/delivery rule; no payments"
+      "dependency": "Phase7 authoritative issuance/abuse protection; final-day timezone/delivery rule; no payments",
+      "historical_local_evidence": {
+        "status": "HISTORICAL_EVIDENCE_OR_LOCAL_CONTRACT_ONLY",
+        "evidence": "local_contract_only",
+        "current_source_ci": "PARENT_OWNED; NEW_PACKET_STACK_CI_NOT_CLAIMED"
+      },
+      "evidence": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted"
     },
     {
       "id": "size",
@@ -374,17 +447,23 @@
       "state": "numeric_hosted_pass_not_workflow_pass",
       "remaining": "106496/2237 exact hosted11 run consumed NO_GO at M44 CLI evidence comparison; preserve source admission and original receipts; no automatic retry",
       "gate": "numeric_only_authorization",
-      "evidence": "91ba398d-8888-4026-9f0b-3aafd988e5b3: 100843 rows, 13 SQL, zero own temp, JIT revoked",
+      "evidence": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted",
       "built": true,
       "local_ci": {
-        "status": "HISTORICAL_EVIDENCE_OR_LOCAL_CONTRACT_ONLY",
-        "evidence": "91ba398d-8888-4026-9f0b-3aafd988e5b3: 100843 rows, 13 SQL, zero own temp, JIT revoked",
-        "current_source_ci": "PARENT_OWNED; NEW_PACKET_STACK_CI_NOT_CLAIMED"
+        "status": "LOCAL_CAPACITY_AND_FILTER_ONLY",
+        "evidence": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted",
+        "current_source_ci": "EXACT_SOURCE_CI; STATUS_REGISTER_UPDATED_AFTER_RUN"
       },
       "hosted": "HISTORICAL_NUMERIC_ONLY_NOT_WORKFLOW_PROOF",
       "review": "SELECTED_HOSTED_REVIEW_NOT_RECORDED",
       "released": false,
-      "dependency": "106496/2237 exact hosted11 run consumed NO_GO at M44 CLI evidence comparison; preserve source admission and original receipts; no automatic retry"
+      "dependency": "106496/2237 exact hosted11 run consumed NO_GO at M44 CLI evidence comparison; preserve source admission and original receipts; no automatic retry",
+      "historical_local_evidence": {
+        "status": "HISTORICAL_EVIDENCE_OR_LOCAL_CONTRACT_ONLY",
+        "evidence": "91ba398d-8888-4026-9f0b-3aafd988e5b3: 100843 rows, 13 SQL, zero own temp, JIT revoked",
+        "current_source_ci": "PARENT_OWNED; NEW_PACKET_STACK_CI_NOT_CLAIMED"
+      },
+      "historical_evidence": "91ba398d-8888-4026-9f0b-3aafd988e5b3: 100843 rows, 13 SQL, zero own temp, JIT revoked"
     },
     {
       "id": "full_day21",
@@ -404,14 +483,20 @@
       "gate": "owner21",
       "built": true,
       "local_ci": {
-        "status": "HISTORICAL_EVIDENCE_OR_LOCAL_CONTRACT_ONLY",
-        "evidence": "owner_unaccepted_default_off",
-        "current_source_ci": "PARENT_OWNED; NEW_PACKET_STACK_CI_NOT_CLAIMED"
+        "status": "TECHNICAL_REGRESSION_ONLY_DEFAULT_OFF",
+        "evidence": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted",
+        "current_source_ci": "EXACT_SOURCE_CI; STATUS_REGISTER_UPDATED_AFTER_RUN"
       },
       "hosted": "SELECTED_RELEASE_NOT_PROVEN",
       "review": "OWNER_UNACCEPTED",
       "released": false,
-      "dependency": "Physical owner acceptance before activation"
+      "dependency": "Physical owner acceptance before activation",
+      "historical_local_evidence": {
+        "status": "HISTORICAL_EVIDENCE_OR_LOCAL_CONTRACT_ONLY",
+        "evidence": "owner_unaccepted_default_off",
+        "current_source_ci": "PARENT_OWNED; NEW_PACKET_STACK_CI_NOT_CLAIMED"
+      },
+      "evidence": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted"
     },
     {
       "id": "later_interfaces",
@@ -431,17 +516,81 @@
       "built": false,
       "local_ci": {
         "status": "NOT_IMPLEMENTED",
-        "evidence": "not_implemented",
-        "current_source_ci": "PARENT_OWNED; NEW_PACKET_STACK_CI_NOT_CLAIMED"
+        "evidence": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted",
+        "current_source_ci": "EXACT_SOURCE_CI; STATUS_REGISTER_UPDATED_AFTER_RUN"
       },
       "hosted": "SELECTED_RELEASE_NOT_PROVEN",
       "review": "SELECTED_HOSTED_REVIEW_NOT_RECORDED",
       "released": false,
-      "dependency": "Provider/source contracts, precise badge/streak rules, media quality/privacy/expert review; no fake integrations"
+      "dependency": "Provider/source contracts, precise badge/streak rules, media quality/privacy/expert review; no fake integrations",
+      "historical_local_evidence": {
+        "status": "NOT_IMPLEMENTED",
+        "evidence": "not_implemented",
+        "current_source_ci": "PARENT_OWNED; NEW_PACKET_STACK_CI_NOT_CLAIMED"
+      },
+      "evidence": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted"
+    },
+    {
+      "id": "account_center",
+      "behavior": "Server-owned role/source status, missing entitlement remains unknown, minimal linked trainer navigation and keyboard tabs",
+      "sources": [
+        "account_center.cjs",
+        "account_center.js",
+        "store.py"
+      ],
+      "tests": [
+        "account_center.test.cjs",
+        "account_center_browser.cjs"
+      ],
+      "depends": [
+        "auth"
+      ],
+      "state": "real_local_ci_pass",
+      "remaining": "Selected hosted release after complete11 and required review",
+      "gate": "selected_release",
+      "built": true,
+      "local_ci": {
+        "status": "REAL_LOCAL_CI_PASS",
+        "evidence": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted; account79",
+        "current_source_ci": "EXACT_SOURCE_CI"
+      },
+      "hosted": "SELECTED_RELEASE_NOT_PROVEN",
+      "review": "SELECTED_HOSTED_REVIEW_NOT_RECORDED",
+      "released": false,
+      "dependency": "Complete11, required owner review, selected source admission and measured command register"
+    },
+    {
+      "id": "offline_shell",
+      "behavior": "Generic cold offline startup; three account-free assets only; fresh server login required before drafts or account access",
+      "sources": [
+        "offline_sw.js",
+        "offline_shell.html",
+        "offline_shell.js"
+      ],
+      "tests": [
+        "offline_shell.test.cjs",
+        "offline_shell_browser.cjs"
+      ],
+      "depends": [
+        "offline_sync"
+      ],
+      "state": "real_local_ci_pass",
+      "remaining": "Selected hosted release after complete11 and required review",
+      "gate": "selected_release",
+      "built": true,
+      "local_ci": {
+        "status": "REAL_LOCAL_CI_PASS",
+        "evidence": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted; actual-stack73; standalone62 and worker12 separate",
+        "current_source_ci": "EXACT_SOURCE_CI"
+      },
+      "hosted": "SELECTED_RELEASE_NOT_PROVEN",
+      "review": "SELECTED_HOSTED_REVIEW_NOT_RECORDED",
+      "released": false,
+      "dependency": "Complete11, required owner review, selected source admission and measured command register"
     }
   ],
   "evidence_note": "This is a work register, not a completion percentage or new product acceptance.",
-  "current_source_ci_status": "PARENT_OWNS_EXACT_SOURCE_ADMISSION; NEW_PACKET_STACK_CI_NOT_CLAIMED",
+  "current_source_ci_status": "CLEAN_CI_PASS_LOCAL_ONLY",
   "new_run_authorization": {
     "row_places": 106496,
     "sql_commands": 2237,
@@ -461,24 +610,25 @@
     ],
     "packet": "workday_release_packets.json",
     "scope": "OFFLINE_EXECUTABLE_VALIDATION_ONLY",
-    "ci_integration": "Parent ci.py includes helpers and actual release_selection_http test; final CI results not claimed by this helper",
+    "ci_integration": "CI38764963091 builds and checks all eight source-bound packets; actual release_selection_http preferences27 PASS",
     "runtime_integration": "Optional local Application.release_slice and fresh server-context require_action implemented by parent; hosted adapter/admission and measured slice accounting remain gated",
     "built": true,
-    "local_ci": "OFFLINE_VALIDATION_PASS_NOT_CURRENT_SOURCE_CI",
+    "local_ci": "PACKET_AND_SELECTION_CI_PASS; PREFERENCES_HTTP_PG_AUTH_PASS",
     "hosted": "NOT_RUN_BY_PACKET_HELPER",
     "review": "NOT_RECORDED",
     "released": false,
-    "dependency": "Completed hosted11 chain (latest run consumed NO_GO), required review and independent selected release; actual local HTTP/PG/Auth evidence pending parent",
-    "artifact_state": "LOCAL_SOURCE_SNAPSHOT_CHECKED_NOT_CI_ATTESTATION",
+    "dependency": "Complete hosted11 and required review; independent selected release admission and full per-slice protocol budgets still required",
+    "artifact_state": "CURRENT_CI_GENERATED_PACKET_ARCHIVED; LOCAL_WORKING_SNAPSHOT_SEPARATE",
     "local_validation": {
       "packet_tests": 17,
       "existing_python_tests": 26,
       "node_tests": 41,
       "work_register": "VALID_NOT_FEATURE_PASS",
-      "generated_packet_check": "PACKETS_VALID_NOT_RELEASED; eight packets; source bundle f78d571372cbac22486b735a3941c468be6d4bc46cdcd2183c1c9b6a1a8a6d32; CI builds/checks its own exact candidate artifact",
-      "current_source_ci": "Parent-owned; no new actual HTTP/PG/Auth PASS claimed",
+      "generated_packet_check": "Exact-source packet artifact from CI38764963091 retained in completion receipts; working-copy check performed separately",
+      "current_source_ci": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted",
       "selection_tests": 12,
-      "preexisting_dirty_files_unchanged": 753
+      "preexisting_dirty_files_unchanged": 753,
+      "historical_generated_packet_check": "PACKETS_VALID_NOT_RELEASED; eight packets; source bundle f78d571372cbac22486b735a3941c468be6d4bc46cdcd2183c1c9b6a1a8a6d32; CI builds/checks its own exact candidate artifact"
     },
     "selection_helper": "release_selection.py"
   },
@@ -487,7 +637,7 @@
       "id": "registration12",
       "order": 1,
       "built": true,
-      "local_ci": "OFFLINE_PACKET_AND_SELECTION_TESTS_PASS; ACTUAL_SELECTED_HTTP_PG_AUTH_CI_PENDING",
+      "local_ci": "PACKET_AND_SELECTION_CI_PASS; COMPOSED_STACK_PASS; INDIVIDUAL_SELECTED_DEPLOYMENT_NOT_MEASURED",
       "hosted": "NOT_PROVEN",
       "review": "NOT_RECORDED",
       "released": false,
@@ -498,7 +648,7 @@
       "id": "signals13_14",
       "order": 2,
       "built": true,
-      "local_ci": "OFFLINE_PACKET_AND_SELECTION_TESTS_PASS; ACTUAL_SELECTED_HTTP_PG_AUTH_CI_PENDING",
+      "local_ci": "PACKET_AND_SELECTION_CI_PASS; COMPOSED_STACK_PASS; INDIVIDUAL_SELECTED_DEPLOYMENT_NOT_MEASURED",
       "hosted": "NOT_PROVEN",
       "review": "NOT_RECORDED",
       "released": false,
@@ -509,7 +659,7 @@
       "id": "intake15",
       "order": 3,
       "built": true,
-      "local_ci": "OFFLINE_PACKET_AND_SELECTION_TESTS_PASS; ACTUAL_SELECTED_HTTP_PG_AUTH_CI_PENDING",
+      "local_ci": "PACKET_AND_SELECTION_CI_PASS; COMPOSED_STACK_PASS; INDIVIDUAL_SELECTED_DEPLOYMENT_NOT_MEASURED",
       "hosted": "NOT_PROVEN",
       "review": "NOT_RECORDED",
       "released": false,
@@ -520,7 +670,7 @@
       "id": "plans16_17",
       "order": 4,
       "built": true,
-      "local_ci": "OFFLINE_PACKET_AND_SELECTION_TESTS_PASS; ACTUAL_SELECTED_HTTP_PG_AUTH_CI_PENDING",
+      "local_ci": "PACKET_AND_SELECTION_CI_PASS; COMPOSED_STACK_PASS; INDIVIDUAL_SELECTED_DEPLOYMENT_NOT_MEASURED",
       "hosted": "NOT_PROVEN",
       "review": "NOT_RECORDED",
       "released": false,
@@ -531,7 +681,7 @@
       "id": "review18",
       "order": 5,
       "built": true,
-      "local_ci": "OFFLINE_PACKET_AND_SELECTION_TESTS_PASS; ACTUAL_SELECTED_HTTP_PG_AUTH_CI_PENDING",
+      "local_ci": "PACKET_AND_SELECTION_CI_PASS; COMPOSED_STACK_PASS; INDIVIDUAL_SELECTED_DEPLOYMENT_NOT_MEASURED",
       "hosted": "NOT_PROVEN",
       "review": "NOT_RECORDED",
       "released": false,
@@ -542,7 +692,7 @@
       "id": "recovery19_today20",
       "order": 6,
       "built": true,
-      "local_ci": "OFFLINE_PACKET_AND_SELECTION_TESTS_PASS; ACTUAL_SELECTED_HTTP_PG_AUTH_CI_PENDING",
+      "local_ci": "PACKET_AND_SELECTION_CI_PASS; COMPOSED_STACK_PASS; INDIVIDUAL_SELECTED_DEPLOYMENT_NOT_MEASURED",
       "hosted": "NOT_PROVEN",
       "review": "NOT_RECORDED",
       "released": false,
@@ -553,7 +703,7 @@
       "id": "workout12",
       "order": 7,
       "built": true,
-      "local_ci": "OFFLINE_PACKET_AND_SELECTION_TESTS_PASS; ACTUAL_SELECTED_HTTP_PG_AUTH_CI_PENDING",
+      "local_ci": "PACKET_AND_SELECTION_CI_PASS; COMPOSED_STACK_PASS; INDIVIDUAL_SELECTED_DEPLOYMENT_NOT_MEASURED",
       "hosted": "NOT_PROVEN",
       "review": "NOT_RECORDED",
       "released": false,
@@ -564,7 +714,7 @@
       "id": "preferences",
       "order": 8,
       "built": true,
-      "local_ci": "OFFLINE_PACKET_AND_SELECTION_TESTS_PASS; ACTUAL_SELECTED_HTTP_PG_AUTH_CI_PENDING",
+      "local_ci": "PACKET_AND_SELECTION_CI_PASS; ACTUAL_SELECTED_HTTP_PG_AUTH_27_PASS",
       "hosted": "NOT_PROVEN",
       "review": "NOT_RECORDED",
       "released": false,
@@ -589,5 +739,14 @@
     "jit_closed": true,
     "auth_workflow_fixtures": false,
     "source_admission": "Preserve exact admitted sources and original receipts; no rebind, reopen or automatic retry"
+  },
+  "current_source_binding": {
+    "commit": "1deac64473d4dc84749187a2a35b781e3e950ad9",
+    "candidate_sha256": "d3cd5365e07a79a5b93f7687ad14ee3a1a7b37aaa704d87d7dcaa6a7b50567cc",
+    "archive_sha256": "f43da73af930a6e3265931d80c6f8a7816f6d3d3ca39185ea46123cfbd05774a",
+    "source_files": 384,
+    "verified_artifact_files": 579,
+    "receipt": "receipts/ci-38764963091-completion/MANIFEST.json",
+    "later_status_edit_is_runtime_change": false
   }
 }

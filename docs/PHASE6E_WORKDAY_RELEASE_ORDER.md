@@ -9,8 +9,8 @@ SQL-commando's. Volgens de actuele parentmelding is deze run inmiddels verbruikt
 NO-GO bij gereserveerd meterblok66-87 in de M44 CLI-bewijsvergelijking
 (16 numeriek tegenover14 verwacht).73 commando's zijn expliciet bevestigd;
 87 is het gereserveerde meterverbruik, niet het bewezen werkelijke aantal.
-CLI-exit0 en exacte M44-identiteit zijn
-geen complete eindketen. JIT gesloten; geen Auth/workflowfixtures. De parent
+CLI-exit0 meldt M44-toepassing. Onafhankelijke hosted44/44-, SQL-identiteits-
+en afsluitende dry-runcontrole ontbreken. JIT gesloten; geen Auth/workflowfixtures. De parent
 bewaart de exacte bronadmission en oorspronkelijke receipts; geen heropening
 of bronwijziging van deze poging. Geen hernieuwd owner-capaciteitsbesluit
 gevraagd. Deze toestemming is geen vrijgave van de acht volgende slices. Geaccepteerde
@@ -58,9 +58,9 @@ en accountinghelpers. De helper importeert `registration_accounting`,
 `registration_release.py` en alle bestaande accountingbestanden blijven gelijk.
 
 De builder en17 packettests zijn lokaal PASS, samen met12 pure selectietests,
-26 bestaande Python-helpertests en41 Node-tests. Dit is geen nieuwe integrale
-CI-PASS. De parent genereert definitieve manifesten na afronding van de bronnen
-uit de exacte geselecteerde CI-kandidaat. Een lokale JSON is een werksnapshot
+26 bestaande Python-helpertests en41 Node-tests. De volledige samenstelling
+is daarna bewezen in CI38764963091 op1deac64. Het gegenereerde manifest in dat
+artifact is aan de exacte geselecteerde CI-kandidaat gebonden. Een lokale JSON is een werksnapshot
 en vervangt die bron-CI niet. `work_register.json`, nieuwe
 gegenereerde manifesten en actuele statusreceipts zijn geen runtime-broninputs.
 
@@ -106,7 +106,8 @@ De JSON-pakketten bevatten volledige argv-lijsten en cwd. Node-tests draaien met
 bestaande `ci.py` aangeroepen binnen zijn bestaande kandidaat-/runneromgeving:
 PostgreSQL17, GoTrue, verify-full, psycopg en Playwright. Een los browserbestand
 zonder zijn server/fixture-invoer is geen uitvoerbare stackproef. Deze lokale
-voorbereiding start geen stack of hosted verbinding en claimt geen nieuwe CI-PASS.
+voorbereiding start geen stack of hosted verbinding. De daadwerkelijke volledige
+stackrun38764963091 is afzonderlijk geslaagd; niet acht afzonderlijke deployments.
 
 ## Opslag, rechten en accounting
 
@@ -124,7 +125,8 @@ De NOLOGIN/NOBYPASSRLS-serverrol heeft select, beperkte workspace-update,
 revision/request/audit-insert en bij M46 beperkte outboxwrites. Er zijn geen
 applicatie-DELETE-rechten. RLS, servermatige actor/workspacebinding en actuele
 sessiecontrole blijven vereist. Het pakket beschrijft bestaande grants;
-een nieuw per-slice serverfilter moet de gekozen acties nog afdwingen.
+het lokale per-slice serverfilter dwingt de gekozen acties af. De hosted
+aansluiting en eigen toelating zijn nog niet uitgevoerd.
 
 Een gewijzigde historische registratie schrijft exact workspace UPDATE,
 revision INSERT en request INSERT, met drie metadata-auditregels. Een primaire
@@ -177,8 +179,9 @@ beschadigd bewijs faalt; ontbrekend bewijs wordt niet als PASS behandeld.
   consent, CAS en writeset blijven bij de bestaande Store/domain.
 - De verse guard-read kost aanvullend8/9 applicatiecommando's plus managed Auth,
   ook bij een geweigerde buuractie. Dat zit niet impliciet in oudere registers.
-  Parent voert `release_selection_http.py` op echte lokale PG/Auth uit; bewijs
-  daarvan wordt pas na werkelijk resultaat toegevoegd. Hosted adapter,
+  Parent voert `release_selection_http.py` op echte lokale PG/Auth uit met
+  uitsluitend de preferences-selectie, niet alle acht geselecteerde releases.
+  CI38764963091 bewijst27 controles voor die selectie. Hosted adapter,
   exacte per-slice registers en veilige afsluiting blijven afzonderlijk nodig.
 - `work_register.json` onderscheidt gebouwd, lokaal/CI, hosted, review,
   vrijgegeven en dependency, naast de oudere velden. `status` verdraagt de
@@ -193,7 +196,9 @@ beschadigd bewijs faalt; ontbrekend bewijs wordt niet als PASS behandeld.
 - Duurzame browserconcepten voor historische registratie/herstel zijn lokaal
   geintegreerd en in CI38746007554 bewezen. Geen automatische verzending,
   goedkeuring/toepassing of21-invoer in de wachtrij. Een volledig offline
-  opstartbare shell en gecachte offline login zijn niet gebouwd/vrijgegeven.
+  opstartbare, algemene privacy-shell is gebouwd en doorstaat73 controles met
+  echte lokale Auth in CI38764963091. Offline accounttoegang en gecachte login
+  worden niet ondersteund.
 - Free/Pro/AI: read-only proefperiode-/terugvalcontract bestaat. Autoritatieve
   uitgifte/abusebescherming is Phase7; exacte final-day/tijdzonebezorging blijft
   een open productregel. Geen betalingen of entitlementwijzigingen activeren.

@@ -1,5 +1,28 @@
 # FitMetZorge Architecture
 
+## Completion Boundaries - 15 October 2026
+
+The same private local app now provides a generic offline shell. Its service
+worker caches exactly three account-free shell assets, never API/Auth responses,
+account data or authenticated app HTML. Account-bound IndexedDB drafts require
+fresh server identity and explicit resend. Session generations prevent delayed
+HTTP/IndexedDB completions from restoring a previous account's UI or retry.
+No offline authentication or automatic approval/application is introduced.
+
+An optional server-owned release_slice enforces the selected action/role/route
+and workspace kind before existing Auth/RLS/CAS execution. Client input cannot
+select a release. The new actual HTTP/PG/Auth check covers preferences, not all
+eight selected deployments. Packet manifests bind source closure, writesets,
+candidate SQL, tests and rollback; they never grant hosted admission.
+The account projection does not invent Free/trial status when no authoritative
+source exists. Trainer views remain minimal and contain no member-private chat.
+See [current results and exact limits](PHASE6E_COMPLETION_RESULT_20261015.md).
+This composition passes real local PG17/GoTrue CI38764963091 at1deac64.
+The worker explicitly blocks account-page fetches when its online hint is false;
+the hint can restrict access only, never authenticate. The cold-start shell
+passes73 real-local-Auth browser checks. No persistent Windows database service,
+hosted app release or phone-test window is inferred from ephemeral CI.
+
 ## Current Local Integration - 15 October 2026
 
 The default-off candidate in `_offline/phase6e_server_v1` composes accepted

@@ -1,0 +1,70 @@
+{
+  "account_center_browser_checks": 79,
+  "candidate_sha256": "d3cd5365e07a79a5b93f7687ad14ee3a1a7b37aaa704d87d7dcaa6a7b50567cc",
+  "clean_rebuild": "46/46_PASS_LOCAL_CANDIDATE",
+  "cli": "2.117.0",
+  "cli_sha256": "69c05f85b9e47ee706d30f1a6ca8a526b4e337bfd12c7ef1ef522d24e7280d24",
+  "commit": "1deac64473d4dc84749187a2a35b781e3e950ad9",
+  "composed_browser_checks": 127,
+  "controller_security": "PASS",
+  "dry_run": "EMPTY",
+  "endchain_budget_database_checks": 39,
+  "external_ai_calls": 0,
+  "hosted_requests": 0,
+  "integration_auth_tests": 4,
+  "integration_browser_checks": 209,
+  "integration_database_tests": 64,
+  "integration_domain_tests": 39,
+  "integration_scope": "LOCAL_CI_ONLY; no hosted admission; no owner acceptance",
+  "member_data_used": false,
+  "migrations_applied": 46,
+  "numeric_size_pg17_checks": 4,
+  "offline_shell_browser_checks": 73,
+  "phase": "advisors_and_dryrun",
+  "platform": {
+    "extensions": [
+      {
+        "default_version": "1.6.4",
+        "installed_version": null,
+        "name": "pg_cron"
+      },
+      {
+        "default_version": "1.6",
+        "installed_version": null,
+        "name": "pg_trgm"
+      },
+      {
+        "default_version": "1.3",
+        "installed_version": "1.3",
+        "name": "pgcrypto"
+      }
+    ],
+    "image": "public.ecr.aws/supabase/postgres:17.6.1.167",
+    "image_id": "sha256:66089200353d90686fe9b252a47d17d078364bf47c50190852c33dc850a0191f",
+    "repository_digests": [
+      "public.ecr.aws/supabase/postgres@sha256:6942962433a569e87f228b4d4ab7e11db5deca64e43babb3a038443ad6c4f1bb"
+    ],
+    "server": [
+      {
+        "num": "170006",
+        "version": "PostgreSQL 17.6 on x86_64-pc-linux-gnu, compiled by gcc (GCC) 15.2.0, 64-bit"
+      }
+    ]
+  },
+  "prepared_contract_tests": 4,
+  "production_touched": false,
+  "proposed_capacity_pg17": "DISPOSABLE_PG17_CAPACITY_PASS_NOT_HOSTED_ADMISSION",
+  "registration12_tests": 25,
+  "registration12_transport_auth_tests": 4,
+  "registration12_transport_database_tests": 46,
+  "registration12_transport_hosted": false,
+  "registration_candidate_hosted_admitted": false,
+  "registration_candidate_unit_tests": 18,
+  "release_selection_http_checks": 27,
+  "request_security": "PASS",
+  "run_id": "38764963091",
+  "sql_regressions_passed": 12,
+  "sql_regressions_planned": 12,
+  "status": "CLEAN_CI_PASS",
+  "stream_filter_pg17_checks": 36
+}

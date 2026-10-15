@@ -1,5 +1,27 @@
 # FitMetZorge Test Matrix
 
+## Completion Verification - 15 October 2026
+
+New targeted local results:93 queue/session/account/presentation/display cases,
+17 release-packet cases,12 selection cases and16 offline CLI-evidence cases PASS.
+These do not replace actual database/Auth/browser proof. Complete app
+CI38764963091 at1deac64 is CLEAN_CI_PASS: clean46,25 minimal12/46 transport/64
+combined database checks,209 existing/127 composed/79 account/73 offline-shell
+browser checks,27 actual selected-preferences HTTP checks,39 domain,4 prepared,
+12 SQL,39 M44-budget,36 PG17-filter and4 numeric-size checks. Also12 targeted
+worker tests and62 standalone pinned-browser checks PASS; these are separate
+from the actual-local-Auth groups. Three earlier incomplete CI runs remain
+retained, not promoted. Exact sources and limits belong in
+[the current combined report](PHASE6E_COMPLETION_RESULT_20261015.md).
+
+Endchain CI38753289792 atd430c19 passed clean44 with exact106496-row/2237-command
+admission. Its one hosted run then stopped at the CLI numeric/protocol mismatch.
+The100843-row baseline was complete; no final preservation comparison exists.
+No new hosted Auth/Route A/B/cleanup/delete PASS or owner test is claimed.
+152 runtime files were verified unchanged at published1c11006; private artifact
+roots were absent and seven direct probes returned404. Final-head verification
+must still follow the final documentation/receipt commit.
+
 ## Current Integrated Candidate - 15 October 2026
 
 Source-bound CI38739029524: clean46 local;25 minimal12/46 private-transport/62
