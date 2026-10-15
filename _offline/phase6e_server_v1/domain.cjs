@@ -205,6 +205,19 @@ function transition(input,request,role){
    raw[d.meal].items[d.item].grams=d.grams;
    target.nutrition=N.calculate(raw,s.pair.nutrition.fixture.intake,s.pair.nutrition.fixture.catalog,s.clock);
   }
+  else if(s.route==='B'&&data.domain==='nutrition_item'){
+   const d=data.value;
+   if(!exact(d,['meal','item','food','foodVersion','grams'])||!Number.isSafeInteger(d.meal)||!Number.isSafeInteger(d.item))fail('payload');
+   const old=target.nutrition.meals[d.meal]?.items[d.item];
+   if(!old||!old.alternatives.some(x=>x.id===d.food&&x.version===d.foodVersion))fail('food_source');
+   const raw=N.raw(target.nutrition);raw[d.meal].items[d.item]={food:d.food,grams:d.grams};
+   target.nutrition=N.calculate(raw,s.pair.nutrition.fixture.intake,s.pair.nutrition.fixture.catalog,s.clock);
+  }
+  else if(s.route==='B'&&data.domain==='training_session'){
+   const d=data.value;
+   if(!exact(d,['session','day'])||!Number.isSafeInteger(d.session)||!target.training.sessions[d.session])fail('payload');
+   target.training.sessions[d.session].day=d.day;
+  }
   else if(s.route==='B'&&data.domain==='nutrition_moment'){
    const raw=N.raw(target.nutrition);raw[0].moment=data.value;
    target.nutrition=N.calculate(raw,s.pair.nutrition.fixture.intake,s.pair.nutrition.fixture.catalog,s.clock);

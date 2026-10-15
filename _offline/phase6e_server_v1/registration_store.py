@@ -7,10 +7,11 @@ from store import Store,Denied,domain,digest,identifier,SCHEMA
 from protocol import transaction
 
 class RegistrationStore(Store):
-    def __init__(self,dsn,auth,bindings,enabled=False,observer=None):
+    def __init__(self,dsn,auth,bindings,enabled=False,observer=None,journey=False):
         super().__init__(dsn,auth,enabled=enabled,observer=observer)
         if not isinstance(bindings,dict) or not 1<=len(bindings)<=3:raise Denied('slice_bindings')
         self.bindings={identifier(w):identifier(a) for w,a in bindings.items()}
+        self.journey=journey is True
     def authorize(self,workspace,token):
         claims=self.auth.verify(token)
         if self.bindings.get(identifier(workspace))!=claims['sub']:raise Denied('workspace_denied')
@@ -28,7 +29,7 @@ class RegistrationStore(Store):
             db.execute('set transaction read only');self.bind(db,claims,str(uuid.uuid4()))
             row,state=self.row(db,workspace,claims)
             return {'workspace':workspace,'version':row['version'],'role':'member','durable':True,'hosted':False,
-                    'state':domain('registration_view',state=state),'capabilities':{'registration12':True,'full_day21':False}}
+                    'state':domain('workout12_view' if self.journey else 'registration_view',state=state),'capabilities':{'registration12':True,'journey12':self.journey,'full_day21':False}}
     def execute(self,workspace,token,request_id,expected,request,fault=None):
         identifier(request_id);claims=self.authorize(workspace,token)
         if type(expected) is not int or not 0<=expected<=250:raise Denied('expected_version')
@@ -43,7 +44,7 @@ class RegistrationStore(Store):
                 if str(prior['actor_id'])!=claims['sub'] or prior['payload_sha']!=payload:raise Denied('duplicate_conflict')
                 return {'version':prior['version'],'idempotent':True}
             if row['version']!=expected:raise Denied('version_conflict')
-            after=domain('registration_transition',state=state,request=request)
+            after=domain('workout12_transition' if self.journey else 'registration_transition',state=state,request=request)
             if after['revision']!=expected+1:raise Denied('domain_version')
             text=json.dumps(after,separators=(',',':'));sha=digest(text)
             # Recheck the actual database clock at the final write boundary.

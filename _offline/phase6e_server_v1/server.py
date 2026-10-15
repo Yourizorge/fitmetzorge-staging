@@ -122,7 +122,7 @@ if __name__=='__main__':
             if 'registration_bindings' in config:
                 from composed_store import ComposedStore
                 from registration_store import RegistrationStore
-                registration_store=RegistrationStore(config['dsn'],store.auth,config['registration_bindings'],enabled=True)
+                registration_store=RegistrationStore(config['dsn'],store.auth,config['registration_bindings'],enabled=True,journey=True)
                 store=ComposedStore(store,workspaces,registration_store)
                 workspaces=list(workspaces)+list(registration_store.bindings)
         app=Application(store,workspaces,enabled=True)

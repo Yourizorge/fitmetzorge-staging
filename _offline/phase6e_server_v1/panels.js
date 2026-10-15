@@ -1,9 +1,13 @@
 'use strict';
 const FMZPanels=(()=>{
 const words={progress:['Voortgang','Progress','Fortschritt'],settings:['Instellingen','Settings','Einstellungen'],
- historical:['Historische workout registreren','Record historical workout','Historisches Training erfassen'],
+ historical:['Historische workout registreren','Record historical workout','Historisches Training erfassen'],start12:['Workout starten / corrigeren','Start / correct workout','Training starten / korrigieren'],finish12:['Workout expliciet afronden','Explicitly finish workout','Training ausdrücklich abschließen'],
+ ready:['Nog niet gestart','Not started','Noch nicht gestartet'],started:['Gestart; nog niet afgerond','Started; not finished','Gestartet; nicht abgeschlossen'],finished:['Afgerond','Finished','Abgeschlossen'],
+ partialWorkout:['Gedeeltelijk geregistreerd; geen bewijs van een volledig uitgevoerde workout.','Partially recorded; not evidence of a fully performed workout.','Teilweise erfasst; kein Nachweis eines vollständig ausgeführten Trainings.'],
  historicalNote:['Afzonderlijke oorspronkelijke sessiesnapshot; geen uitvoering van het huidige plan.','Separate original session snapshot, not execution of the current plan.','Separater ursprünglicher Sitzungssnapshot, keine Ausführung des aktuellen Plans.'],
- preferences:['Persoonlijke voorkeuren','Personal preferences','Persönliche Vorlieben'],exercise:['Oefening','Exercise','Übung'],
+ preferences:['Persoonlijke voorkeuren','Personal preferences','Persönliche Vorlieben'],exercise:['Oefening','Exercise','Übung'],day:['Dag','Day','Tag'],food:['Product','Food','Lebensmittel'],
+ missing_allergies:['Allergiegegevens ontbreken. Er is geen nieuw voorstel gemaakt.','Allergy information is missing. No new proposal was created.','Allergieangaben fehlen. Es wurde kein neuer Vorschlag erstellt.'],
+ food_source:['Deze productversie hoort niet bij de toegestane bron.','This food version does not match the allowed source.','Diese Lebensmittelversion gehört nicht zur zulässigen Quelle.'],
  favorites:['Graag doen','Preferred exercises','Bevorzugte Übungen'],excluded:['Niet doen','Excluded exercises','Ausgeschlossene Übungen'],
  equipment:['Beschikbaar materiaal','Available equipment','Verfügbare Geräte'],frequency:['Trainingen per week','Workouts per week','Trainings pro Woche'],
  allergies:['Allergieën','Allergies','Allergien'],known:['Expliciet bekend','Explicitly known','Ausdrücklich bekannt'],unknown:['Onbekend','Unknown','Unbekannt'],
@@ -20,11 +24,11 @@ function panel(s,current,tab,h){
  const {esc,t,label,num,language,views}=h,w=k=>words[k]?.[language]||t(k),p=s.review?.target||s.active;
  const totals=v=>v?Object.entries(v).map(([k,n])=>`${esc(k)}: ${n/1000} ${k==='energy'?'kcal':'g'}`).join(' · '):t('missing');
  const select=(name,values,value)=>`<label>${w(name)}<select name="${name}">${values.map(([id,name])=>`<option value="${esc(id)}" ${id===value?'selected':''}>${esc(label(name))}</option>`).join('')}</select></label>`;
- const checks=(name,values,selected)=>`<fieldset><legend>${w(name)}</legend>${values.map(([id,name])=>`<label class="check"><input type="checkbox" name="${name}" value="${esc(id)}" ${selected.includes(id)?'checked':''}>${esc(label(name))}</label>`).join('')}</fieldset>`;
+ const checks=(name,values,selected)=>`<fieldset><legend>${w(name)}</legend>${values.map(([id,caption])=>`<label class="check"><input type="checkbox" name="${name}" value="${esc(id)}" ${selected.includes(id)?'checked':''}>${esc(label(caption))}</label>`).join('')}</fieldset>`;
  if(tab==='training'&&!current.capabilities.full_day21){
   let html=`<h2>${t('planned')}</h2>`;
   for(const [si,session] of p.training.sessions.entries()){
-   html+=`<section><h3>${esc(session.day)}</h3>`;
+   html+=`<section><h3>${esc(session.day)}</h3>${s.route==='B'?`<form data-session="${si}"><div class="row">${select('day',s.pair.training.fixture.intake.days.map(x=>[x,x]),session.day)}<button>${t('review')}</button></div></form>`:''}`;
    for(const [ei,e] of session.exercises.entries()){
     const opt=s.editorOptions.training[si]?.[ei];
     html+=`<article><p>${esc(label(e.label||e.exercise))} · ${e.sets} × ${e.reps} · ${e.load??t('missing')} ${esc(e.requestedUnit||'')} · ${e.rest} s</p><p class="small">${esc(e.rule)} v${e.ruleVersion}</p>`;
@@ -39,7 +43,7 @@ function panel(s,current,tab,h){
  }
  if(tab==='nutrition'&&!current.capabilities.full_day21){
   const n=p.nutrition;if(!n)return `<p>${t('missing')}</p>`;
-  return `<h2>${w('plannedTotal')}</h2><p>${totals(n.total)}</p><p>Δ ${totals(n.difference)}</p><p class="small">${esc(n.ruleId)} v${n.ruleVersion} · ${t('note')}</p>`+n.meals.map((m,mi)=>`<section><h2>${esc(m.moment)} · ${esc(label(m.name))}</h2><p>${totals(m.totals)}</p>${m.items.map((i,ii)=>`<article><h3>${esc(label(i.name))}</h3><p>${i.grams} g · ${esc(i.food)} v${i.foodVersion}</p><p>${totals(i.nutrients)}</p>${s.route==='B'?`<form data-portion="${mi}:${ii}"><div class="row">${num('grams',i.grams,`min="${i.bounds.min}" max="${i.bounds.max}" step="${i.bounds.step}"`)}<button>${t('review')}</button></div></form>`:''}</article>`).join('')}</section>`).join('');
+  return `<h2>${w('plannedTotal')}</h2><p>${totals(n.total)}</p><p>Δ ${totals(n.difference)}</p><p class="small">${esc(n.ruleId)} v${n.ruleVersion} · ${t('note')}</p>`+n.meals.map((m,mi)=>`<section><h2>${esc(m.moment)} · ${esc(label(m.name))}</h2><p>${totals(m.totals)}</p>${m.items.map((i,ii)=>`<article><h3>${esc(label(i.name))}</h3><p>${i.grams} g · ${esc(i.food)} v${i.foodVersion}</p><p>${totals(i.nutrients)}</p>${s.route==='B'?`<form data-portion="${mi}:${ii}"><div class="row">${select('food',i.alternatives.map(a=>[a.id,s.pair.nutrition.fixture.catalog.foods.find(f=>f.id===a.id)?.name||a.id]),i.food)}${num('grams',i.grams,`min="${i.bounds.min}" max="${i.bounds.max}" step="${i.bounds.step}"`)}<button>${t('review')}</button></div></form>`:''}</article>`).join('')}</section>`).join('');
  }
  if(tab==='intake'&&s.route==='B'){
   const f=s.pair.training.fixture,i=f.intake,n=s.pair.nutrition.fixture.intake;

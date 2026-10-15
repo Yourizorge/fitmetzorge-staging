@@ -30,7 +30,10 @@ try{
  }
  stage='historical';await page.locator('[data-workspace]').click();ok(await page.locator('[data-registration12]').count()===1,'same_login_registration12');
  const snapshot=JSON.stringify((await state()).find(v=>v.workspace===historical.workspace).state.snapshot);
+ ok(await page.locator('[name=load0]').isDisabled(),'explicit_start_required');await click(page.locator('[data-action=start12]'));
  await page.locator('[name=load0]').fill('0');await page.locator('[name=reps0]').fill('8');await page.locator('[name=rir0]').fill('0');await page.locator('[name=rpe0]').fill('');await page.locator('[name=done0]').check();await click(page.locator('[data-registration12] button'));
+ ok((await state()).find(v=>v.workspace===historical.workspace).state.session12.status==='started','save_not_finish');await click(page.locator('[data-action=finish12]'));
+ ok((await state()).find(v=>v.workspace===historical.workspace).state.session12.closures[0].completed===1,'partial_finish_facts');
  await logout();await login();await page.locator('#workspace').selectOption(historical.workspace);
  ok(await page.locator('[name=rir0]').inputValue()==='0','relogin_rir_zero');ok(await page.locator('[name=rpe0]').inputValue()==='','relogin_rpe_missing');
  ok(JSON.stringify((await state()).find(v=>v.workspace===historical.workspace).state.snapshot)===snapshot,'historical_snapshot_preserved');

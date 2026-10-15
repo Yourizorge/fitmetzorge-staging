@@ -9,8 +9,9 @@ M45='20261014105919_phase6e_synthetic_server_candidate.sql'
 M46='20261014160019_phase6e_local_outbox.sql'
 NEW=['domain.cjs','domain.test.cjs','presentation.cjs','presentation.test.cjs','panels.js','composed_store.py','windows.cjs','windows.test.cjs','worker.cjs','store.py','database_tests.py','ci.py','ci_auth.py',
      'server.py','ui.html','ui.js','ui.css','browser_checks.cjs','composed_browser.cjs','protocol.py','test_protocol.py',
+     'size_diagnosis.py','size_pg17.py','test_size_diagnosis.py',
      'release_packet.py','test_release_packet.py','outbox.py','test_outbox.py','planning.py','test_planning.py',
-     'registration12.cjs','registration12.test.cjs','registration_store.py','registration_database.py','registration_browser.cjs',
+     'registration12.cjs','registration12.test.cjs','workout12.cjs','workout12.test.cjs','registration_store.py','registration_database.py','registration_browser.cjs',
      'registration_release.py','test_registration_release.py',
      'registration_scope.py','test_registration_scope.py','registration_transport.py','test_registration_transport.py',
      'registration_proof.py','test_registration_proof.py','registration_accounting.py','test_registration_accounting.py',
@@ -18,6 +19,7 @@ NEW=['domain.cjs','domain.test.cjs','presentation.cjs','presentation.test.cjs','
      'supabase/migrations/'+M45,'supabase/migrations/'+M46]
 EXTRA={'_offline/phase6e_server_v1/'+p for p in NEW}
 EXTRA.add('assets/fit-met-zorge-logo-cropped.png')
+EXTRA.add('_offline/phase6e11/utility_diagnosis_v1/probe.py')
 pending=[HERE/'domain.cjs',HERE/'registration12.cjs'];seen=set()
 while pending:
     path=pending.pop().resolve()
@@ -138,12 +140,15 @@ class Gate(previous.Gate):
         self.command('integration-planning',[sys.executable,'-B',str(folder/'test_planning.py')])
         self.command('integration-application-io',[sys.executable,'-B',str(folder/'test_application_io.py')])
         self.command('integration-cli-isolation',[sys.executable,'-B',str(folder/'test_cli_isolation.py')])
-        output=self.command('integration-domain',['node','--test',str(folder/'domain.test.cjs'),str(folder/'windows.test.cjs'),str(folder/'registration12.test.cjs'),str(folder/'presentation.test.cjs')])
+        output=self.command('integration-domain',['node','--test',str(folder/'domain.test.cjs'),str(folder/'windows.test.cjs'),str(folder/'registration12.test.cjs'),str(folder/'presentation.test.cjs'),str(folder/'workout12.test.cjs')])
         count=re.search(r'# tests (\d+)',output.stdout)
         if not count:raise RuntimeError('domain_count')
         self.result['integration_domain_tests']=int(count[1])
         from stream_filter_check import run as stream_filter_check
         self.result['stream_filter_pg17_checks']=stream_filter_check(self)
+        import size_pg17
+        self.result['numeric_size_pg17_checks']=size_pg17.run(self)
+        self.command('numeric-size-unit',['env','PYTHONPATH='+str(self.sources/'supabase/.temp/phase6e11-pg17-parser'),sys.executable,'-B',str(folder/'test_size_diagnosis.py')])
         import ci_auth,database_tests,server,subprocess,threading
         with ci_auth.environment(self) as ctx:
             row=ctx['admin'].execute("select relrowsecurity,relforcerowsecurity from pg_class where oid='auth.sessions'::regclass").fetchone()
@@ -166,7 +171,7 @@ class Gate(previous.Gate):
                 from registration_store import RegistrationStore
                 from store import Store
                 primary=Store(ctx['dsn'],ctx['auth'],enabled=True,full_day21=False)
-                historical=RegistrationStore(ctx['dsn'],ctx['auth'],{workspaces['historical']:ctx['claims']['b']['sub']},enabled=True)
+                historical=RegistrationStore(ctx['dsn'],ctx['auth'],{workspaces['historical']:ctx['claims']['b']['sub']},enabled=True,journey=True)
                 joined=ComposedStore(primary,[workspaces['joinedB']],historical)
                 joined_app=server.Application(joined,[workspaces['joinedB'],workspaces['historical']],enabled=True)
                 http=server.serve(joined_app,0);thread=threading.Thread(target=http.serve_forever,daemon=True);thread.start()
