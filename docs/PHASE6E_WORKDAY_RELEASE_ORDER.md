@@ -2,8 +2,18 @@
 
 Dit register beschrijft de vervolgintegratie, niet een bulkpublicatie of nieuwe
 toestemming. De concrete lokale kandidaat staat in `_offline/phase6e_server_v1`.
-De huidige hosted blokkade, exacte budgetvoorstellen en bewijs staan in
-[het werkdagrapport](PHASE6E_WORKDAY_RESULT_20261015.md). Geaccepteerde
+Historisch bewijs staat in [het werkdagrapport](PHASE6E_WORKDAY_RESULT_20261015.md).
+De [actuele preregistratie](PHASE6E_COMPLETION_RUN_20261015.md) legt de expliciete
+toestemming vast voor precies een nieuwe 11-run met 106496 rijplaatsen en 2237
+SQL-commando's. Volgens de actuele parentmelding is deze run inmiddels verbruikt:
+NO-GO bij gereserveerd meterblok66-87 in de M44 CLI-bewijsvergelijking
+(16 numeriek tegenover14 verwacht).73 commando's zijn expliciet bevestigd;
+87 is het gereserveerde meterverbruik, niet het bewezen werkelijke aantal.
+CLI-exit0 en exacte M44-identiteit zijn
+geen complete eindketen. JIT gesloten; geen Auth/workflowfixtures. De parent
+bewaart de exacte bronadmission en oorspronkelijke receipts; geen heropening
+of bronwijziging van deze poging. Geen hernieuwd owner-capaciteitsbesluit
+gevraagd. Deze toestemming is geen vrijgave van de acht volgende slices. Geaccepteerde
 broncontracten13-20 blijven read-only;21 is niet geaccepteerd en default-off.
 
 ## Gemeenschappelijke grens
@@ -38,7 +48,145 @@ frontendnavigatie kan lokaal samen werken terwijl serveracties afzonderlijk
 default-off worden vrijgegeven. Lokale migratie45 ondersteunt meerdere onderdelen;
 dat is geen reden om alle acties bij de eerste hosted slice aan te zetten.
 
-## Nog geen uitvoerbare release
+## Uitvoerbare offline pakketten
+
+`_offline/phase6e_server_v1/workday_release.py` compileert en valideert de acht
+pakketten in `workday_release_packets.json`. Dit is een offline controle, geen
+hosted executor, nieuwe opslaglaag of vervanging van de bestaande admission-
+en accountinghelpers. De helper importeert `registration_accounting`,
+`receipt_accounting` en de canonieke JSON-hash uit `registration_scope`.
+`registration_release.py` en alle bestaande accountingbestanden blijven gelijk.
+
+De builder en17 packettests zijn lokaal PASS, samen met12 pure selectietests,
+26 bestaande Python-helpertests en41 Node-tests. Dit is geen nieuwe integrale
+CI-PASS. De parent genereert definitieve manifesten na afronding van de bronnen
+uit de exacte geselecteerde CI-kandidaat. Een lokale JSON is een werksnapshot
+en vervangt die bron-CI niet. `work_register.json`, nieuwe
+gegenereerde manifesten en actuele statusreceipts zijn geen runtime-broninputs.
+
+Elk pakket bevat de exacte ingangbestanden en transitieve lokale imports met
+SHA256 van de werkelijke bytes, kandidaat-SQL met SHA256, rollen/rechten,
+toegestane acties en edit-subdomeinen, JSON-statevelden, tabel-/sleutelwritesets,
+testcommando's, SQL-profielen, ontbrekende runbindingen, gesloten gate en rollback.
+Gedeelde ingeladen code is geen actiebevoegdheid. Een gewijzigde bron, ontbrekend
+bestand, gewijzigd pakket of corrupt gebruikt receipt maakt `check` NO-GO.
+Een nieuwe build legt gewijzigde bytes vast en vereist opnieuw review; hij
+herstelt geen CI- of hosted bewijs.
+
+Vanaf de repositoryroot, met Python 3.12 en Node beschikbaar:
+
+```powershell
+python -B _offline/phase6e_server_v1/test_workday_release.py
+python -B _offline/phase6e_server_v1/workday_release.py build
+python -B _offline/phase6e_server_v1/workday_release.py check
+python -B _offline/phase6e_server_v1/workday_release.py show --slice registration12
+python -B _offline/phase6e_server_v1/workday_release.py gate --slice registration12
+python -B _offline/phase6e_server_v1/workday_release.py status
+```
+
+`gate` eindigt opzettelijk met exitcode3, `enabled=false`. `check` eindigt bij
+geldige pakketten met0 en `PACKETS_VALID_NOT_RELEASED`; fouten geven2. Er is geen
+optie om hiermee een hosted gate te openen. `test --slice <id>` voert alleen de
+vaste lokale unitcommando's van dat pakket plus de packettests uit, zonder shell,
+CI-dispatch, database of Auth. Het artefact wordt vooraf en achteraf gecontroleerd.
+
+| Volgorde / pakket-ID | Lokale tests in de bestaande servermap | Aanvullend noodzakelijk op echte geisoleerde stack |
+| --- | --- | --- |
+| 1 / `registration12` | `registration12.test.cjs`; `test_registration_scope.py`, `test_registration_release.py`, `test_registration_accounting.py`, `test_receipt_accounting.py` | `registration_database.py`, `registration_browser.cjs`, `registration_proof.py`: beide routes, relogin, exact writeset/pairs |
+| 2 / `signals13_14` | `domain.test.cjs`, `windows.test.cjs`; `test_outbox.py` | `database_tests.py`, `browser_checks.cjs`: broncorrectie, vensters, intrekking |
+| 3 / `intake15` | `domain.test.cjs`, `presentation.test.cjs`; `test_outbox.py` | `database_tests.py`, `composed_browser.cjs`: B-intake/planbasis, A-weigering |
+| 4 / `plans16_17` | `domain.test.cjs`, `presentation.test.cjs`; `test_outbox.py` | `database_tests.py`, `composed_browser.cjs`: exacte training/productversie en porties |
+| 5 / `review18` | `domain.test.cjs`; `test_outbox.py`, `test_protocol.py` | `database_tests.py`, `browser_checks.cjs`, `composed_browser.cjs`: aparte acceptatie/apply, restore, foutrollback |
+| 6 / `recovery19_today20` | `domain.test.cjs`, `windows.test.cjs`, `presentation.test.cjs`; `test_outbox.py`, `test_planning.py` | `database_tests.py`, `composed_browser.cjs`: DST, outbox, verloren antwoord |
+| 7 / `workout12` | `registration12.test.cjs`, `workout12.test.cjs`; `test_protocol.py` | `database_tests.py`, `composed_browser.cjs`: aparte workspace, expliciet starten/afronden |
+| 8 / `preferences` | `presentation.test.cjs`, `display.test.cjs`, `domain.test.cjs`; `test_outbox.py` | `database_tests.py`, `composed_browser.cjs`: NL/EN/DE, herladen, bronwaarden gelijk |
+
+De JSON-pakketten bevatten volledige argv-lijsten en cwd. Node-tests draaien met
+`node --test`; Python-tests met `python -B`. De echte stackgroepen worden door de
+bestaande `ci.py` aangeroepen binnen zijn bestaande kandidaat-/runneromgeving:
+PostgreSQL17, GoTrue, verify-full, psycopg en Playwright. Een los browserbestand
+zonder zijn server/fixture-invoer is geen uitvoerbare stackproef. Deze lokale
+voorbereiding start geen stack of hosted verbinding en claimt geen nieuwe CI-PASS.
+
+## Opslag, rechten en accounting
+
+De minimale registratie gebruikt alleen lokale kandidaat
+`20261014105919_phase6e_synthetic_server_candidate.sql` (M45). `Store` leest en
+schrijft onvoorwaardelijk de outbox: slices2-6 en8 hebben daarom ook
+`20261014160019_phase6e_local_outbox.sql` (M46) nodig. Slice7 gebruikt voor de
+historische acties M45, maar zijn samengestelde mount heeft voor de primaire
+workspace eveneens M46 nodig. Dit is een werkelijke codeafhankelijkheid, geen
+reden om bezorging of andere acties vroeg te activeren. Geen nieuwe migration
+gemaakt; canonical hosted identiteit blijft oningevuld tot afzonderlijke toelating.
+
+De bestaande private schema-ACL weigert PUBLIC/anon/authenticated/service_role.
+De NOLOGIN/NOBYPASSRLS-serverrol heeft select, beperkte workspace-update,
+revision/request/audit-insert en bij M46 beperkte outboxwrites. Er zijn geen
+applicatie-DELETE-rechten. RLS, servermatige actor/workspacebinding en actuele
+sessiecontrole blijven vereist. Het pakket beschrijft bestaande grants;
+een nieuw per-slice serverfilter moet de gekozen acties nog afdwingen.
+
+Een gewijzigde historische registratie schrijft exact workspace UPDATE,
+revision INSERT en request INSERT, met drie metadata-auditregels. Een primaire
+mutatie voegt de exacte, uit gelockte state afgeleide outboxdelta toe. Een
+primaire no-op schrijft nog een requestreceipt en mogelijk outboxstatussen;
+een replay van hetzelfde verzoek schrijft niets. Denial/rollback laat geen
+gecommitteerde applicatie-/auditrijen achter; sequencegaten zijn wel mogelijk.
+Acteur, request, xid en SHA256-sleutels moeten exact matchen. Fixturecleanup
+vereist apart toegelaten eigen sleutels en blijvend deletebewijs.
+
+De helper leest de bestaande Python-SQL-literals via AST, zonder adapters te
+importeren of SQL uit te voeren. Statische aantallen omvatten BEGIN en terminal:
+historisch read8/write12/replay8; primair member-read9/trainer-read8,
+gewijzigd13+N/ongewijzigd11+N/replay8. N is het exacte aantal outboxwrites.
+Dit zijn **bronmodellen, geen metingen**. Elke commandoprefix vermeldt de
+rollbackpoging; de volledige afsluiting, managed Auth, CLI, observers, guards,
+fixtures, cleanup en beschermde metingen blijven afzonderlijk te binden.
+Daarom blijven normaal hosted totaal, maximale veilige afsluiting en toegelaten
+slice-budget `null`, nooit fictief0 of een overgenomen2237/4135.
+
+Waar het lokale archief beschikbaar is, verifieert de helper gebruikte receipts
+tegen MANIFEST en herberekent het bestaande transportregister en metercontrols.
+De historische minimale970 SQL en de afzonderlijke private-transportmeting zijn
+geen optelbare slice-budgetten. Ontbreekt het archief op CI, dan staat er expliciet
+`ARCHIVE_NOT_AVAILABLE`, zonder gemeten totalen of bronmatchclaim. Aanwezig maar
+beschadigd bewijs faalt; ontbrekend bewijs wordt niet als PASS behandeld.
+
+## Lokale selectie en CI
+
+- Parent heeft NEW/EXTRA aangevuld met `workday_release.py`,
+  `test_workday_release.py`, `release_selection.py`, `test_release_selection.py`,
+  `release_selection_http.py`, `receipt_accounting.py` en
+  `test_receipt_accounting.py`; bestaande registrationhelpers blijven nodig.
+- Voer packettests uit, gevolgd door `build` en `check` op de exacte CI-kandidaat.
+  Verzamel het gegenereerde JSON als artifact. Het hoeft niet als inputbron in
+  NEW; lokale bytes kunnen afwijken van een andere checkout. Geen historische
+  receiptmap verplicht meenemen en geen oude CI als nieuwe bron-PASS gebruiken.
+  Bij de bestaande Python-integratie: `packet = build(root=source, archive=archive)`
+  en `verify(packet, root=source, archive=archive)` met dezelfde bron/archiefpaden,
+  daarna opslaan. De lokale werksnapshot blokkeert deze CI-generatie niet.
+- `release_selection.py` bevat de gedeelde SLICES en pure `validate_slice` en
+  `require_action`. Parent heeft optionele `Application.release_slice` en
+  `FMZ_LOCAL_RELEASE_SLICE` geintegreerd: uitsluitend operatorconfiguratie;
+  requestdata kan de selectie niet wijzigen. DefaultNone houdt de bestaande
+  lokale bulkbediening. Een geselecteerde actie gebruikt eerst verse
+  `store.read`-identiteit/route/capabilities en daarna de guard voor execute.
+  De guard leest geen pakket, bestand, budget of bewijs en kent geen hosted
+  admission toe. Historische views hebben geen route: None is alleen bij de
+  exact historische member-workspace toegestaan. Payloadvalidatie, sessie,
+  consent, CAS en writeset blijven bij de bestaande Store/domain.
+- De verse guard-read kost aanvullend8/9 applicatiecommando's plus managed Auth,
+  ook bij een geweigerde buuractie. Dat zit niet impliciet in oudere registers.
+  Parent voert `release_selection_http.py` op echte lokale PG/Auth uit; bewijs
+  daarvan wordt pas na werkelijk resultaat toegevoegd. Hosted adapter,
+  exacte per-slice registers en veilige afsluiting blijven afzonderlijk nodig.
+- `work_register.json` onderscheidt gebouwd, lokaal/CI, hosted, review,
+  vrijgegeven en dependency, naast de oudere velden. `status` verdraagt de
+  oudere vorm en laat lopende CI lopend. De parent registreert finale actuele
+  CI-/hostedstatus; de toegestane11-run is verbruikt met NO_GO bij de
+  M44 CLI-evidencevergelijking. Geen hergebruik van die bronadmission.
+
+## Nog geen hosted vrijgave
 
 - Volledige actuele workout-/maaltijdregistratie21: owneracceptatie ontbreekt;
   serverweigering blijft actief. Historische registratie12 vervangt die niet.

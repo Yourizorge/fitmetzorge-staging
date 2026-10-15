@@ -4,10 +4,23 @@ from store import Denied,identifier
 HERE=pathlib.Path(__file__).resolve().parent
 
 class Application:
-    def __init__(self,store,workspaces,enabled=False):
+    def __init__(self,store,workspaces,enabled=False,release_slice=None):
         if enabled is not True:raise Denied('feature_disabled')
+        if release_slice is not None:
+            from release_selection import validate_slice
+            validate_slice(release_slice)
+        self.release_slice=release_slice
         self.store=store;self.workspaces=frozenset(identifier(x) for x in workspaces)
         self.sessions={};self.lock=threading.Lock()
+    def authorize_action(self,workspace,token,request):
+        if self.release_slice is None:return
+        from release_selection import require_action,SelectionDenied
+        view=self.store.read(workspace,token)
+        kind='registration12' if view.get('capabilities',{}).get('registration12') else 'primary'
+        try:
+            require_action(self.release_slice,request,role=view['role'],
+                route=view['state'].get('route'),workspace_kind=kind)
+        except SelectionDenied:raise Denied('release_slice_denied') from None
     def session(self,cookie):
         jar=http.cookies.SimpleCookie()
         try:jar.load(cookie or '');sid=jar['fmz_local'].value
@@ -42,6 +55,8 @@ def serve(app,port=8766):
             try:
                 self.valid_host()
                 static={'/':'ui.html','/ui.js':'ui.js','/ui.css':'ui.css','/panels.js':'panels.js','/display.js':'display.js','/draft_queue.js':'draft_queue.js','/queue_ui.js':'queue_ui.js'}
+                static.update({('/'+name):name for name in (
+                    'offline_shell.html','offline_shell.css','offline_shell.js','offline_sw.js','account_center.js')})
                 if self.path=='/workout-model.js':
                     return self.send(200,(HERE.parents[1]/'assets/training-workout-model.js').read_bytes(),mime='text/javascript')
                 if self.path=='/brand.png':
@@ -88,6 +103,7 @@ def serve(app,port=8766):
                     return self.send(200,{'ok':True},cookie='fmz_local=; Max-Age=0; HttpOnly; SameSite=Strict; Path=/')
                 if self.path!='/api/action' or set(data)!= {'workspace','request_id','version','request'}:raise Denied('route')
                 if data['workspace'] not in app.workspaces:raise Denied('workspace_denied')
+                app.authorize_action(data['workspace'],session['token'],data['request'])
                 result=app.store.execute(data['workspace'],session['token'],data['request_id'],data['version'],data['request'])
                 self.send(200,result)
             except Denied as e:self.send(403,{'code':str(e)})
@@ -127,7 +143,7 @@ if __name__=='__main__':
                 registration_store=RegistrationStore(config['dsn'],store.auth,config['registration_bindings'],enabled=True,journey=True)
                 store=ComposedStore(store,workspaces,registration_store)
                 workspaces=list(workspaces)+list(registration_store.bindings)
-        app=Application(store,workspaces,enabled=True)
+        app=Application(store,workspaces,enabled=True,release_slice=os.environ.get('FMZ_LOCAL_RELEASE_SLICE'))
         http=serve(app)
         print('LOCAL SYNTHETIC ONLY: http://127.0.0.1:8766',flush=True)
         try:http.serve_forever()

@@ -72,6 +72,8 @@ def run(dsn,auth,tokens,claims,admin,auth_kind,inspect=None):
     denied('outsider_cannot_read_A',lambda:read('A','outsider'))
     ok('owner_read',read('A','owner')['role']=='owner')
     ok('trainer_minimal_view',not ({'recovery','pair','records','health','initialSource'} & set(read('A','trainer')['state'])))
+    ok('missing_entitlement_not_invented',read('B')['access']=={'status':'source_missing','read_only':True})
+    ok('trainer_no_member_entitlement',read('A','trainer')['access'] is None)
     denied('owner_cannot_approve',lambda:act('A','approve',role='owner'))
     default=Store(dsn,auth,enabled=True,observer=protocol.append)
     denied('21_default_off',lambda:default.execute(workspaces['B'],tokens['b'],str(uuid.uuid4()),read('B')['version'],{'action':'record','data':{}}))

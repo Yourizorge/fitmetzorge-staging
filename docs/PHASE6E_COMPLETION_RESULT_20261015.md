@@ -31,6 +31,15 @@ van commando66 tot87; dit is geen bewijs dat de werkelijke CLI exact14 deed.
 De twee extra waarnemingen worden uitsluitend vanuit bewaarde metadata onderzocht.
 Geen nieuwe verbinding of automatische herhaling.
 
+De tekstvrije statistieklezer telt top-level postgres-activiteit in de database,
+niet uitsluitend de CLI-sessie. Hosted zijn20 calls waargenomen, minus4
+meet-/protocolcalls =16; in CI18 minus4 =14. Zonder sessiegebonden hosted
+CLI-log is niet bewezen of de extra2 van deze CLI of achtergrondactiviteit
+kwamen. De oorzaak blijft UNKNOWN. Er zijn65 voorafgaande commando's en8
+meetcommando's expliciet bevestigd (73). Meterverbruik87 omvat het niet volledig
+bevestigde reserveringsblok; het is geen werkelijk bewezen totaal. De gemeten
+temp-write-delta in dit CLI-venster is0. Dit vervangt geen volledige IO-eindcontrole.
+
 Migration44 is volgens CLI toegepast, maar hosted44/44, SQL-identiteit en
 de afsluitende lege dry-run zijn na deze stop niet onafhankelijk bevestigd.
 Migration44 mag daarom niet opnieuw blind worden toegepast. Lokale kandidaten

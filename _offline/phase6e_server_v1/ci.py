@@ -11,15 +11,21 @@ NEW=['domain.cjs','domain.test.cjs','presentation.cjs','presentation.test.cjs','
      'server.py','ui.html','ui.js','ui.css','browser_checks.cjs','composed_browser.cjs','protocol.py','test_protocol.py',
      'size_diagnosis.py','size_pg17.py','test_size_diagnosis.py',
      'display.js','display.test.cjs',
-     'draft_queue.js','draft_queue.test.cjs','queue_ui.js',
+     'draft_queue.js','draft_queue.test.cjs','queue_ui.js','ui_session.test.cjs',
+     'account_center.cjs','account_center.js','account_center.test.cjs','account_center_browser.cjs',
+     'offline_shell.html','offline_shell.css','offline_shell.js','offline_sw.js','offline_queue_ui.test.cjs',
+     'offline_shell_browser.cjs','offline_shell_local.cjs','offline_shell_INTEGRATION.md',
      'stream_size_fixture.json','stream_size_pg17.py','capacity_proposal.py','test_capacity_proposal.py',
      'sync_contract.cjs','access_policy.cjs','prepared_contracts.test.cjs','work_register.json','check_work_register.py',
      'release_packet.py','test_release_packet.py','outbox.py','test_outbox.py','planning.py','test_planning.py',
+     'workday_release.py','test_workday_release.py','receipt_accounting.py','test_receipt_accounting.py',
+     'release_selection.py','test_release_selection.py','release_selection_http.py',
      'registration12.cjs','registration12.test.cjs','workout12.cjs','workout12.test.cjs','registration_store.py','registration_database.py','registration_browser.cjs',
      'registration_release.py','test_registration_release.py',
      'registration_scope.py','test_registration_scope.py','registration_transport.py','test_registration_transport.py',
      'registration_proof.py','test_registration_proof.py','registration_accounting.py','test_registration_accounting.py',
      'application_io.py','test_application_io.py','cli_isolation.py','test_cli_isolation.py',
+     'cli_url_probe.py','test_cli_url_probe.py',
      'supabase/migrations/'+M45,'supabase/migrations/'+M46]
 EXTRA={'_offline/phase6e_server_v1/'+p for p in NEW}
 EXTRA.add('assets/fit-met-zorge-logo-cropped.png')
@@ -145,6 +151,7 @@ class Gate(previous.Gate):
         self.command('integration-planning',[sys.executable,'-B',str(folder/'test_planning.py')])
         self.command('integration-application-io',[sys.executable,'-B',str(folder/'test_application_io.py')])
         self.command('integration-cli-isolation',[sys.executable,'-B',str(folder/'test_cli_isolation.py')])
+        self.command('cli-url-evidence-replay',['env','PYTHONPATH='+str(self.sources/'supabase/.temp/phase6e11-pg17-parser'),sys.executable,'-B',str(folder/'test_cli_url_probe.py')])
         output=self.command('integration-domain',['node','--test',str(folder/'domain.test.cjs'),str(folder/'windows.test.cjs'),str(folder/'registration12.test.cjs'),str(folder/'presentation.test.cjs'),str(folder/'workout12.test.cjs')])
         count=re.search(r'# tests (\d+)',output.stdout)
         if not count:raise RuntimeError('domain_count')
@@ -153,7 +160,16 @@ class Gate(previous.Gate):
         self.result['prepared_contract_tests']=int(re.search(r'# tests (\d+)',prepared.stdout)[1])
         self.command('display-regression',['node','--test',str(folder/'display.test.cjs')])
         self.command('draft-queue-regression',['node','--test',str(folder/'draft_queue.test.cjs')])
+        self.command('account-center-regression',['node','--test',str(folder/'account_center.test.cjs')])
+        self.command('offline-queue-ui-regression',['node','--test',str(folder/'offline_queue_ui.test.cjs')])
+        self.command('ui-session-regression',['node','--test',str(folder/'ui_session.test.cjs')])
         self.command('work-register',[sys.executable,'-B',str(folder/'check_work_register.py')])
+        self.command('workday-release-packets',[sys.executable,'-B',str(folder/'test_workday_release.py')])
+        self.command('release-selection',[sys.executable,'-B',str(folder/'test_release_selection.py')])
+        import workday_release
+        packets=workday_release.build(root=self.sources,archive=self.sources/'absent-historical-receipts')
+        workday_release.verify(packets,root=self.sources,archive=self.sources/'absent-historical-receipts')
+        self.save('workday-release-packets.json',packets)
         from stream_filter_check import run as stream_filter_check
         self.result['stream_filter_pg17_checks']=stream_filter_check(self)
         import size_pg17
@@ -168,12 +184,20 @@ class Gate(previous.Gate):
             self.save('integration-auth-table-security.json',{'auth_sessions':row,'auth_objects_changed':False,
                 'session_check':'server verifies exact token sub/session before restricted app role; no new Auth grant or policy'})
             def browser(store,workspaces):
+                import release_selection_http
+                selected=release_selection_http.run(store,workspaces,ctx['accounts'])
+                self.save('release-selection-http.json',selected)
+                self.result['release_selection_http_checks']=selected['checks']
                 playwright=self.browser_dependencies()
                 app=server.Application(store,[workspaces['A'],workspaces['B']],enabled=True)
                 http=server.serve(app,0);thread=threading.Thread(target=http.serve_forever,daemon=True);thread.start()
                 try:
                     data={'url':'http://127.0.0.1:'+str(http.server_port),'accounts':ctx['accounts'],
                           'playwright':playwright,'screenshots':str(self.out)}
+                    p=subprocess.run(['node',str(folder/'account_center_browser.cjs')],input=json.dumps(data),text=True,capture_output=True,timeout=120)
+                    result=json.loads(p.stdout);self.save('account-center-browser.json',result)
+                    if p.returncode or result['status']!='PASS':raise RuntimeError('account_center_browser')
+                    self.result['account_center_browser_checks']=result['checks']
                     p=subprocess.run(['node',str(folder/'browser_checks.cjs')],input=json.dumps(data),text=True,capture_output=True,timeout=120)
                     result=json.loads(p.stdout)
                     self.save('integration-browser.json',result)
@@ -195,6 +219,10 @@ class Gate(previous.Gate):
                     result=json.loads(p.stdout);self.save('composed-browser.json',result)
                     if p.returncode or result['status']!='PASS':raise RuntimeError('composed_browser')
                     self.result['composed_browser_checks']=result['checks']
+                    p=subprocess.run(['node',str(folder/'offline_shell_browser.cjs')],input=json.dumps(data),text=True,capture_output=True,timeout=180)
+                    result=json.loads(p.stdout);self.save('offline-shell-browser.json',result)
+                    if p.returncode or result['status']!='PASS':raise RuntimeError('offline_shell_browser')
+                    self.result['offline_shell_browser_checks']=result['checks']
                 finally:http.shutdown();http.server_close();thread.join(timeout=5)
             result=database_tests.run(ctx['dsn'],ctx['auth'],ctx['tokens'],ctx['claims'],ctx['admin'],'real_local_GoTrue',browser)
             self.save('integration-database.json',result);self.result['integration_database_tests']=result['tests']

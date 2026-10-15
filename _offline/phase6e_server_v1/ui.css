@@ -4,3 +4,8 @@
 fieldset{border:0;border-bottom:1px solid var(--line);padding:12px 0;margin:12px 0;min-width:0}legend{font-weight:600}.check{display:inline-flex;flex-direction:row;align-items:center;gap:8px;min-height:44px;margin-right:16px;color:var(--fg)}dl{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}dd{margin:0;font-weight:600}.fields:has(label:nth-child(5)){grid-template-columns:repeat(5,minmax(0,1fr))}#message button{margin-left:12px}section{min-width:0}
 .title{flex-wrap:wrap}.title select{max-width:240px}
 @media(max-width:600px){.title select{max-width:160px}}
+.title>div{min-width:0}.title #status{overflow-wrap:anywhere}.title #workspace{width:100%;max-width:420px;min-width:0}
+.workspace-list{list-style:none;padding:0;margin:0}.workspace-list>li{border-bottom:1px solid var(--line);padding:12px 0 20px}.workspace-list h3{overflow-wrap:anywhere}.workspace-list .actions{margin-bottom:0}
+.account-access,.account-notifications{padding:4px 0 16px;border-bottom:1px solid var(--line)}.account-identity,.account-access dl{grid-template-columns:minmax(120px,1fr) minmax(0,2fr)}.account-identity dd,.account-access dd{overflow-wrap:anywhere}
+#content:focus-visible{outline:3px solid #ce8f34;outline-offset:4px}#tabs button{overflow-wrap:anywhere}
+@media(max-width:600px){.title #workspace{max-width:100%;flex-basis:100%}.account-identity,.account-access dl{grid-template-columns:minmax(0,1fr)}.account-identity dd,.account-access dd{padding-bottom:8px}.workspace-list .actions button{flex:1 1 180px}}

@@ -105,6 +105,7 @@ class Store:
             return {'workspace':workspace,'version':row['version'],'role':role,'actor':claims['sub'],
                     'state':visible,'durable':True,'hosted':False,
                     'capabilities':{'full_day21':self.full_day21},
+                    'access':domain('access',source=state.get('accessSource'),now=int(row['server_now'].timestamp()*1000)) if role=='member' else None,
                     'notices':[outbox.visible(e,row['server_now']) for e in events],
                     'planning':planning.from_state(state) if role=='member' else None}
     def execute(self,workspace,token,request_id,expected,request,fault=None):

@@ -1,0 +1,17 @@
+:root{color-scheme:light;--shell-bg:#f5f7f7;--shell-fg:#19242a;--shell-surface:#fff;--shell-line:#a9bbba;--shell-accent:#116b4e;--shell-warn:#933a2d}
+body[data-theme=dark]{color-scheme:dark;--shell-bg:#13191c;--shell-fg:#eef4f3;--shell-surface:#1c2529;--shell-line:#697e82;--shell-accent:#91d6ad;--shell-warn:#ffb4a4}
+body[data-offline-shell]{margin:0;background:var(--shell-bg);color:var(--shell-fg);font:16px/1.6 system-ui,sans-serif}
+[data-offline-shell] *{box-sizing:border-box;letter-spacing:0}
+[data-offline-shell] header{padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:var(--shell-surface);border-bottom:1px solid var(--shell-line)}
+[data-offline-shell] header strong{font-size:24px;color:var(--shell-accent)}
+[data-offline-shell] header div{display:flex;gap:8px}
+[data-offline-shell] main{max-width:760px;margin:32px auto;padding:0 24px 48px}
+[data-offline-shell] h1{font-size:28px;line-height:1.3;margin:24px 0 16px;overflow-wrap:anywhere}
+[data-offline-shell] p{overflow-wrap:anywhere}
+[data-offline-shell] button,[data-offline-shell] select{font:inherit;min-height:44px;max-width:100%;padding:8px 12px;border:1px solid var(--shell-line);border-radius:5px;color:var(--shell-fg);background:var(--shell-surface)}
+[data-offline-shell] button{font-weight:600;cursor:pointer;border-color:var(--shell-accent)}
+[data-offline-shell] :focus-visible{outline:3px solid #ce8f34;outline-offset:3px}
+#shell-note{font-size:14px;border-top:1px solid var(--shell-line);padding-top:16px}
+#offline-status{padding:10px 0;border-bottom:1px solid var(--shell-line);font-size:14px;color:var(--shell-warn);overflow-wrap:anywhere}
+#queued button{margin:6px 8px 6px 0;white-space:normal;overflow-wrap:anywhere}
+@media(max-width:600px){[data-offline-shell] header{padding:12px 16px}[data-offline-shell] main{margin-top:24px;padding-inline:16px}}
