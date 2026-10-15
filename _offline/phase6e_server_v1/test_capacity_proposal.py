@@ -1,6 +1,14 @@
 import unittest
 from capacity_proposal import build,benchmark
 class Tests(unittest.TestCase):
+    def test_hash_plan_validates_stream_rows_not_single_row_statistics_reader(self):
+        from stream_size_pg17 import validate_plan
+        plan=[{'Query Identifier':123,'Execution Time':100,'Plan':{'Node Type':'Append','Actual Rows':106496}}]
+        self.assertEqual(validate_plan(plan,106496),'123')
+        for change in ({'Actual Rows':1},{'Temp Written Blocks':1},{'Temp Read Blocks':1},{'Node Type':'Sort'}):
+            with self.assertRaises(ValueError):validate_plan([{**plan[0],'Plan':{**plan[0]['Plan'],**change}}],106496)
+        for elapsed in (2500,float('nan'),-1):
+            with self.assertRaises(ValueError):validate_plan([{**plan[0],'Execution Time':elapsed}],106496)
     def test_every_extra_page_is_counted_in_three_cycles_and_safety(self):
         rows=[{'phase':'setup','action':'fixed','sql':1} for _ in range(2193)]
         rows += [{'phase':phase,'action':'stream_'+label+'_rollback','sql':1} for label,phase in [('before','baseline'),('before_cleanup','measurements'),('after_cleanup','final')]]

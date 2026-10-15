@@ -1,9 +1,19 @@
 """Proposed capacity only, on disposable PG17 with entirely synthetic contents."""
-import hashlib,json,pathlib,time,tracemalloc
+import hashlib,json,math,pathlib,time,tracemalloc
 from native_runtime import NativeRuntime
 from integral_stream import statement,frame,CONFIG,PAGE
 from integral_io import check_plan
 HERE=pathlib.Path(__file__).resolve().parent
+
+def validate_plan(plan,expected):
+    queryid=check_plan(plan)
+    def check(node):
+        if node.get('Node Type') in ('Sort','Incremental Sort') or node.get('Temp Read Blocks',0) or node.get('Temp Written Blocks',0):raise ValueError('benchmark_sort_or_temp')
+        for child in node.get('Plans',[]):check(child)
+    check(plan[0]['Plan']);elapsed=plan[0].get('Execution Time',math.inf)
+    if plan[0]['Plan'].get('Actual Rows')!=expected:raise ValueError('benchmark_plan_rows')
+    if not isinstance(elapsed,(int,float)) or not math.isfinite(elapsed) or not 0<=elapsed<2500:raise ValueError('benchmark_own_load')
+    return queryid
 
 def run(gate):
     fixture=json.loads((HERE/'stream_size_fixture.json').read_text());counts=fixture['row_counts'][:]
@@ -30,12 +40,7 @@ def run(gate):
         q('canonical',CONFIG)
         sql=statement(plans)
         plan=q('bound_plan','EXPLAIN (ANALYZE,BUFFERS,WAL,VERBOSE,COSTS FALSE,FORMAT JSON) '+sql)[0]['QUERY PLAN']
-        queryid=check_plan(plan,True)
-        def check(node):
-            if node.get('Node Type') in ('Sort','Incremental Sort') or node.get('Temp Written Blocks',0):raise ValueError('benchmark_sort_or_temp')
-            for child in node.get('Plans',[]):check(child)
-        check(plan[0]['Plan'])
-        if plan[0]['Execution Time']>=2500:raise ValueError('benchmark_own_load')
+        queryid=validate_plan(plan,sum(counts))
         q('declare','DECLARE fmz_capacity_hashes NO SCROLL CURSOR WITHOUT HOLD FOR '+sql)
         tracemalloc.start();started=time.perf_counter();buffer={i:[] for i in range(158)};wire=0
         for page in range(13):
