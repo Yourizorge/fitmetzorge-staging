@@ -65,3 +65,10 @@ Continue independent local integration. Registration12 still requires complete11
 physical review and a concrete selected-release decision.970 measured local SQL
 and the old4135 proposal are not hosted authorizations. No bulk12-21 activation,
 ownerfreeze or real-member AI. All1376 protected files and older dirty files stay.
+
+CI38721412989 at36c000737170e0ac0a6ff6b895a4cd04b582d561 is retained NO-GO.
+Clean44,36 migration checks,175 Python/131 JS and18 local Auth checks passed.
+The new disposable boundary test then failed before execution because psycopg
+interpreted the modulo percent sign in parameterized SQL as a placeholder.
+Use mod(g,2) in that synthetic generator; no hosted access or attempt was used.
+Verified artifact SHA25609e245ae1ccd7e268388796fdf1ceb4d34d3a1b09666431eb3531571e954a7d9.

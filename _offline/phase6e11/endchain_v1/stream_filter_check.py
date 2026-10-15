@@ -11,7 +11,7 @@ def boundaries(gate):
             connection.execute('BEGIN')
             try:
                 connection.execute('create temporary table stream_boundary on commit drop as '
-                    'select case when g%2=0 then null else 0 end quantity, '
+                    'select case when mod(g,2)=0 then null else 0 end quantity, '
                     'case when g<=%s then true when g=%s then null else false end allowed '
                     'from generate_series(1,73728) g',(size,size+1))
                 plans=[{'name':'pg_temp.stream_boundary','predicate':'allowed'}]
