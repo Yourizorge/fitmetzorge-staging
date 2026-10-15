@@ -53,6 +53,28 @@ exactly `dsn`, `auth_url`, `bindings`; for the combined entry it has `dsn`,
 Both entries reject non-loopback database/Auth endpoints. A hosted transport,
 full hosted lifecycle/budget and release decision remain separate gates.
 
+The combined private configuration may additionally contain
+`registration_bindings` (exact historical workspace-to-member UUID map). This
+mounts registration12 beneath the same verified login. Those workspaces cannot
+collide with the primary workspaces and must share the same server Auth object.
+The historical workout lifecycle is enabled only on this explicit local mount;
+the minimal registration12 transport remains disabled for start/finish actions.
+Current catalogue plans are never relabelled as original historical snapshots.
+
+The current accepted-plan interface works with `full_day21=false`. It exposes
+catalogue-bound days/exercises/food/portions, separate review/application, intake,
+recovery, progress, history and durable presentation preferences. Weight display
+reuses the existing workout unit helper, always retains the original value/unit,
+and never converts an input, prescription or stored source. A lost save response
+offers explicit reconciliation of the exact same request, not an automatic retry.
+`sync_contract.cjs` is preparation only, not an implemented browser offline queue.
+`access_policy.cjs` does not grant entitlements or start billing/trials.
+
+On this workstation Docker/WSL is unavailable. The real loopback PostgreSQL/Auth
+and browser tests run on the existing isolated CI runner; no persistent local
+server is claimed to be running on this Windows host. `server.py` is executable
+on a machine with the documented local stack and private operator configuration.
+
 Historical source-bound evidence: CI38710983711, completion receipt in
 `receipts/ci-38710983711-completion/`; the older receipt remains unchanged.
 The selected12 register has970 observed

@@ -11,6 +11,7 @@ NEW=['domain.cjs','domain.test.cjs','presentation.cjs','presentation.test.cjs','
      'server.py','ui.html','ui.js','ui.css','browser_checks.cjs','composed_browser.cjs','protocol.py','test_protocol.py',
      'size_diagnosis.py','size_pg17.py','test_size_diagnosis.py',
      'display.js','display.test.cjs',
+     'stream_size_fixture.json','stream_size_pg17.py','capacity_proposal.py','test_capacity_proposal.py',
      'sync_contract.cjs','access_policy.cjs','prepared_contracts.test.cjs','work_register.json','check_work_register.py',
      'release_packet.py','test_release_packet.py','outbox.py','test_outbox.py','planning.py','test_planning.py',
      'registration12.cjs','registration12.test.cjs','workout12.cjs','workout12.test.cjs','registration_store.py','registration_database.py','registration_browser.cjs',
@@ -155,6 +156,9 @@ class Gate(previous.Gate):
         self.result['stream_filter_pg17_checks']=stream_filter_check(self)
         import size_pg17
         self.result['numeric_size_pg17_checks']=size_pg17.run(self)
+        import stream_size_pg17
+        self.result['proposed_capacity_pg17']=stream_size_pg17.run(self)['status']
+        self.command('capacity-proposal',['env','PYTHONPATH='+str(self.sources/'supabase/.temp/phase6e11-pg17-parser'),sys.executable,'-B',str(folder/'test_capacity_proposal.py')])
         self.command('numeric-size-unit',['env','PYTHONPATH='+str(self.sources/'supabase/.temp/phase6e11-pg17-parser'),sys.executable,'-B',str(folder/'test_size_diagnosis.py')])
         import ci_auth,database_tests,server,subprocess,threading
         with ci_auth.environment(self) as ctx:

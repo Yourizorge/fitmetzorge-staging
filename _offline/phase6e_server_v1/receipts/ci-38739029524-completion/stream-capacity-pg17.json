@@ -1,0 +1,104 @@
+{
+  "capacity": 65536,
+  "cases": [
+    {
+      "bounded_numeric_result": 0,
+      "denied_before_hash_cursor": false,
+      "hash_rows": 0,
+      "hash_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "independent_legacy_multiset_equal": true,
+      "numeric_execution_ms": 3.222,
+      "numeric_temp_blocks": 0,
+      "pages": [],
+      "protected_rows": 0,
+      "query_sha256": "e59a324b0e81c0186844138ef1981e5d4df929663563e3115675103cf1d23f61"
+    },
+    {
+      "bounded_numeric_result": 8192,
+      "denied_before_hash_cursor": false,
+      "hash_rows": 8192,
+      "hash_sha256": "d553f1cb593ed9235de2d4e15ec3dddcd64e47baadaee3a28ed10c70592bf1f8",
+      "independent_legacy_multiset_equal": true,
+      "numeric_execution_ms": 4.53,
+      "numeric_temp_blocks": 0,
+      "pages": [
+        8192
+      ],
+      "protected_rows": 8192,
+      "query_sha256": "e59a324b0e81c0186844138ef1981e5d4df929663563e3115675103cf1d23f61"
+    },
+    {
+      "bounded_numeric_result": 8193,
+      "denied_before_hash_cursor": false,
+      "hash_rows": 8193,
+      "hash_sha256": "24c0d572572e0234148eafa20321521d3f1f8987f7bffac1e13a9853dfd2fbd6",
+      "independent_legacy_multiset_equal": true,
+      "numeric_execution_ms": 4.493,
+      "numeric_temp_blocks": 0,
+      "pages": [
+        8192,
+        1
+      ],
+      "protected_rows": 8193,
+      "query_sha256": "e59a324b0e81c0186844138ef1981e5d4df929663563e3115675103cf1d23f61"
+    },
+    {
+      "bounded_numeric_result": 65535,
+      "denied_before_hash_cursor": false,
+      "hash_rows": 65535,
+      "hash_sha256": "a30db5e7d1905c2d7fff2f63b986d1a1b8e200555e3f2f412002b71a1b257ffa",
+      "independent_legacy_multiset_equal": true,
+      "numeric_execution_ms": 13.499,
+      "numeric_temp_blocks": 0,
+      "pages": [
+        8192,
+        8192,
+        8192,
+        8192,
+        8192,
+        8192,
+        8192,
+        8191
+      ],
+      "protected_rows": 65535,
+      "query_sha256": "e59a324b0e81c0186844138ef1981e5d4df929663563e3115675103cf1d23f61"
+    },
+    {
+      "bounded_numeric_result": 65536,
+      "denied_before_hash_cursor": false,
+      "hash_rows": 65536,
+      "hash_sha256": "5d24ffecdcf2bc2566a1d805ed287b220db446105e2f7deddb7d6e63692b7b35",
+      "independent_legacy_multiset_equal": true,
+      "numeric_execution_ms": 13.478,
+      "numeric_temp_blocks": 0,
+      "pages": [
+        8192,
+        8192,
+        8192,
+        8192,
+        8192,
+        8192,
+        8192,
+        8192
+      ],
+      "protected_rows": 65536,
+      "query_sha256": "e59a324b0e81c0186844138ef1981e5d4df929663563e3115675103cf1d23f61"
+    },
+    {
+      "bounded_numeric_result": 65537,
+      "denied_before_hash_cursor": true,
+      "hash_rows": 0,
+      "hash_sha256": null,
+      "independent_legacy_multiset_equal": false,
+      "numeric_execution_ms": 13.007,
+      "numeric_temp_blocks": 0,
+      "pages": [],
+      "protected_rows": 65537,
+      "query_sha256": "e59a324b0e81c0186844138ef1981e5d4df929663563e3115675103cf1d23f61"
+    }
+  ],
+  "checks": 30,
+  "disposable_only": true,
+  "hosted_size_proven": false,
+  "status": "PASS"
+}
