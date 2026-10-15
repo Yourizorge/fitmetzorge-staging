@@ -12,6 +12,9 @@ Full hosted11 remains NO-GO; proposed capacity106496 and SQL2237 are not admitte
 CI38742498080 at4712f7a repeats the full local composition PASS and measures the
 proposed106496-row synthetic PG17 stream at253.565ms with zero temp blocks.
 No new hosted mutation, fixture cleanup, M44 application or owner window.
+Additional local CI38746007554 at ec97596 passes124 composed browser checks,
+including durable account-bound registration/recovery drafts through offline,
+reload/relogin, conflict and consent withdrawal. No auto-sync or approval queue.
 Older snapshots below remain historical, not current attempt availability.
 
 ## Earlier Snapshot: Filtered Attempt, 15 October 2026

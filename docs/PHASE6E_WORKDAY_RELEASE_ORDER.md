@@ -42,8 +42,10 @@ dat is geen reden om alle acties bij de eerste hosted slice aan te zetten.
 
 - Volledige actuele workout-/maaltijdregistratie21: owneracceptatie ontbreekt;
   serverweigering blijft actief. Historische registratie12 vervangt die niet.
-- Duurzame browser-offlinewachtrij: synchronisatiecontract en negatieve tests
-  bestaan; browseropslag, conflictoplossing en volledige offline shell nog niet.
+- Duurzame browserconcepten voor historische registratie/herstel zijn lokaal
+  geintegreerd en in CI38746007554 bewezen. Geen automatische verzending,
+  goedkeuring/toepassing of21-invoer in de wachtrij. Een volledig offline
+  opstartbare shell en gecachte offline login zijn niet gebouwd/vrijgegeven.
 - Free/Pro/AI: read-only proefperiode-/terugvalcontract bestaat. Autoritatieve
   uitgifte/abusebescherming is Phase7; exacte final-day/tijdzonebezorging blijft
   een open productregel. Geen betalingen of entitlementwijzigingen activeren.

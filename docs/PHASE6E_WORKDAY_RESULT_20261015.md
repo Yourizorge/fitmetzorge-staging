@@ -24,6 +24,7 @@ deze Windows-pc en er is geen nieuwe publieke demo of owner-testvenster geopend.
 | Voeding begrijpen | Exacte geplande subtotalen en bronversies; nadrukkelijk geen claim dat gepland gelijk is aan gegeten | Domein en browser |
 | Herstel/voortgang | Bestaande complete vergelijkbare vensters, brongebonden check-inopties, historie en ontdubbelde duurzame in-app-outbox samengebracht | Bestaande componenten plus integrale regressie |
 | Opslaguitval herstellen | Een verloren antwoord na commit toont onzekerheid; expliciet dezelfde request controleren maakt geen tweede versie | Werkelijke HTTP-onderbreking in browser |
+| Offline concept behouden | Historische workout/herstelregistratie blijft account-/workspace-/brongebonden in IndexedDB; opnieuw inloggen en expliciet verzenden; conflict en intrekking blokkeren | Echt browser-offline, PG17 en GoTrue |
 | Voorkeuren bewaren | NL/EN/DE, licht/donker, eenhedenkeuze blijven na herladen; benaderde weergave toont originele waarde/eenheid en herschrijft niets | Domein en browser |
 
 Route A behoudt lidacceptatie, trainergoedkeuring en afzonderlijk toepassen.
@@ -47,6 +48,15 @@ kandidaat `ca5b39fc8a7f39b08eeeada5c0ac2495445cfd4dc4b496fa41b4a5636510e2bc`,
 artifact `ee4d07ab291f1b2cf9618b18b7922f298ca6806ebb0a30e96db737acfc045e76`.
 Alle onderstaande integratietotalen zijn opnieuw PASS.172 gesanitiseerde
 receipts/screenshots staan in `receipts/ci-38742498080-completion` met manifest.
+
+De aanvullende duurzame conceptwachtrij is daarna integraal PASS in
+[CI38746007554](https://github.com/Yourizorge/fitmetzorge-staging/actions/runs/38746007554):
+bron `ec97596902931dcc6c56d44e26a0b46ab6cc8a85`,356 bestanden,
+kandidaat `02441afc2cc09b00c292e6bb114f11498c6b0fe4aa60ebac3b2bb43613234154`,
+artifact `aba33ce3480334c51abf790c613fcfcf13365f9dcf40f29515f8b14ffafbe043`.
+124 samengestelde browsercontroles zijn PASS; de overige groepen hieronder
+blijven gelijk.3 extra queue-integriteitstests en61 lokale Python-helpertests.
+172 nieuwe receipts zijn apart bewaard. Geen hosted Auth of workflowwrites.
 
 - Schone 46/46 lokale opbouw: 44 behouden canonical migrations plus alleen lokale kandidaten45/46. Dit is NIET hosted46.
 - 25 minimale registratie-DB-controles; 46 private-transport-DB-controles; 62 gezamenlijke DB-controles.
@@ -158,8 +168,11 @@ blijft UNKNOWN en is niet opnieuw onderzocht.
 
 ## Wat nog niet af is
 
-Een duurzame browser-offlinewachtrij is niet geintegreerd; alleen bron-/actor-/
-versiegebonden synchronisatiecontract en fouttests zijn voorbereid. Free/Pro/AI-
+De duurzame browserconceptwachtrij voor historische workout/herstel is nu
+geintegreerd. Zij bewaart maximaal10 concepten, geen credentials, en verzendt
+niets automatisch. Goedkeuren/toepassen en21-acties zijn uitgesloten. Een
+volledig offline opstartbare shell of offline login is niet gebouwd; voor
+opnieuw aanmelden is serververbinding nodig. Free/Pro/AI-
 proefperiode is een read-only synthetische beleidsmodule, geen nieuwe entitlement-
 uitgifte, betaalfunctie of volledige instellingenintegratie. Definitieve final-day-
 melding/tijdzoneregel, badges/streaks, sport/wearables/media-interfaces zijn niet
@@ -194,5 +207,13 @@ bijbehorende publicatiereceipt en eindbericht.
 Functionele checkpoints: b80a753,7f02bc5,38da185,c0624a2. Bewijs/capaciteitscheckpoint:
 25db2bb en4712f7a. Geen hosted app-, Edge- of databasedeployment. Geen telefoontestlink of
 vervaltijd zolang11 NO-GO is. Geen JARVIS-overdracht.
+
+Aanvullend functioneel checkpoint ec97596 implementeert de duurzame lokale
+conceptwachtrij. De eerdere volledige HTTP-padronde bij d3e74e9 blijft INCOMPLETE
+na607 bewezen404's en een503, niet als publieke toegang of PASS bestempeld.
+Vervangend bewijs op ec97596: officieel Pages-artifact met771 entries, alle152
+runtimehashes gelijk en geen `_offline`, `supabase` of `.github` erin. Zeven
+gerichte HTTP-probes geven404, inclusief het eerder503-pad. Dit voorkomt een
+nieuwe lange HTTP-pollingronde; de oorspronkelijke foutregistratie blijft bestaan.
 
 External AI calls/cost:0 / EUR0.00. Real-member AI enabled:NO. Production touched:NO.

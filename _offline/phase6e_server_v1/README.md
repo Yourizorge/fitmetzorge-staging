@@ -75,6 +75,19 @@ and browser tests run on the existing isolated CI runner; no persistent local
 server is claimed to be running on this Windows host. `server.py` is executable
 on a machine with the documented local stack and private operator configuration.
 
+The local UI now retains registration12/recovery drafts in IndexedDB, bound to
+the authenticated actor, workspace, source hash, expected version and original
+request ID. No credentials are stored; at most10 pending workspace drafts.
+Explicit check/submit is required after reconnect/relogin. The server repeats
+session, consent, source and CAS/idempotency checks. An uncertain committed
+request can only be replayed with the same ID/payload. Conflicts preserve the
+newer server version; discard removes only the local draft, never server history.
+Physical approvals/applications and21 actions cannot enter this queue. This is
+not a cached offline login or a fully offline application shell. The app must
+already be loaded to record during disconnection; fresh login needs the server.
+Current source-bound CI38746007554 proves124 composed browser assertions with
+real local GoTrue/PG17, including actual browser-offline mode and reconnect.
+
 Historical source-bound evidence: CI38710983711, completion receipt in
 `receipts/ci-38710983711-completion/`; the older receipt remains unchanged.
 The selected12 register has970 observed

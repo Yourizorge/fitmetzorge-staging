@@ -1,7 +1,7 @@
 {
   "scope": "local_synthetic_candidate",
   "hosted11": "NO_GO_CAPACITY_DECISION_PENDING",
-  "current_source_evidence": "CI38742498080 at 4712f7a: clean46, all prior integration groups plus synthetic106496-row PG17 PASS; not hosted admission",
+  "current_source_evidence": "CI38746007554 at ec97596: clean46, 124 composed browser checks including durable offline drafts, prior integration groups and synthetic106496-row PG17 PASS; not hosted admission",
   "full_day21": false,
   "functions": [
     {
@@ -198,7 +198,7 @@
         "auth"
       ],
       "state": "real_local_ci_pass",
-      "remaining": "Durable browser draft storage and full offline shell not implemented",
+      "remaining": "Durable registration/recovery drafts now pass CI38746007554; full offline shell remains separate",
       "gate": "selected_release",
       "evidence": "CI38739029524 at c0624a2; not hosted"
     },
@@ -206,17 +206,22 @@
       "id": "offline_sync",
       "behavior": "Account/workspace/source/version-bound draft, stable request, explicit conflict and consent gate",
       "sources": [
-        "sync_contract.cjs"
+        "sync_contract.cjs",
+        "draft_queue.js",
+        "queue_ui.js"
       ],
       "tests": [
-        "prepared_contracts.test.cjs"
+        "prepared_contracts.test.cjs",
+        "draft_queue.test.cjs",
+        "composed_browser.cjs"
       ],
       "depends": [
         "registration12"
       ],
-      "state": "local_contract_only",
-      "remaining": "Browser persistence, offline shell, UI conflict resolution, end-to-end real Auth sync",
-      "gate": "local_integration"
+      "state": "real_local_ci_pass_bounded_drafts",
+      "remaining": "No cached offline login/full shell; no approval/apply queue; hosted release remains gated",
+      "gate": "selected_release",
+      "evidence": "CI38746007554: browser offline, refresh/relogin, explicit sync, stale source, withdrawal and local-only discard"
     },
     {
       "id": "tiers",
