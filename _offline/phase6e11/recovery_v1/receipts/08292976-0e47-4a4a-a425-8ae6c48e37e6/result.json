@@ -1,0 +1,20 @@
+{
+  "application_writes": 0,
+  "auth_writes": 0,
+  "automatic_retries": 0,
+  "error_class": "ValueError",
+  "external_ai_calls": 0,
+  "jit_revoked": true,
+  "migration_apply": false,
+  "native_protocol": {
+    "attempted": 6,
+    "closed": true,
+    "confirmed": 6
+  },
+  "phase": "paired_dry_run",
+  "production_touched": false,
+  "real_member_ai": false,
+  "reason": "migration_history_identity",
+  "sqlstate": null,
+  "status": "NO_GO"
+}

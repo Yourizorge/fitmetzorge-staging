@@ -8,4 +8,12 @@ fieldset{border:0;border-bottom:1px solid var(--line);padding:12px 0;margin:12px
 .workspace-list{list-style:none;padding:0;margin:0}.workspace-list>li{border-bottom:1px solid var(--line);padding:12px 0 20px}.workspace-list h3{overflow-wrap:anywhere}.workspace-list .actions{margin-bottom:0}
 .account-access,.account-notifications{padding:4px 0 16px;border-bottom:1px solid var(--line)}.account-identity,.account-access dl{grid-template-columns:minmax(120px,1fr) minmax(0,2fr)}.account-identity dd,.account-access dd{overflow-wrap:anywhere}
 #content:focus-visible{outline:3px solid #ce8f34;outline-offset:4px}#tabs button{overflow-wrap:anywhere}
+body{font-size:1rem}h1{font-size:1.75rem}h2{font-size:1.3125rem}h3{font-size:1.0625rem}
+label,.small,.boundary{font-size:.8125rem}header strong{font-size:1.375rem}
+header{flex-wrap:wrap}header>div{min-width:0}.brand strong{overflow-wrap:anywhere}
+button,p,h1,h2,h3,dt,dd{overflow-wrap:anywhere}.row>label{max-width:100%}
+.fields,.fields:has(label:nth-child(5)){grid-template-columns:repeat(auto-fit,minmax(min(100%,5.5em),1fr))}
+.summary{grid-template-columns:repeat(auto-fit,minmax(min(100%,9em),1fr))}
+.summary strong{font-size:1.4375rem}.form-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,12em),1fr))}
+#tabs button{font-size:.875rem;max-width:100%}.actions>*{max-width:100%;min-width:0}
 @media(max-width:600px){.title #workspace{max-width:100%;flex-basis:100%}.account-identity,.account-access dl{grid-template-columns:minmax(0,1fr)}.account-identity dd,.account-access dd{padding-bottom:8px}.workspace-list .actions button{flex:1 1 180px}}

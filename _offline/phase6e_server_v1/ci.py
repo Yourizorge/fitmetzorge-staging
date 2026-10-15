@@ -19,7 +19,7 @@ NEW=['domain.cjs','domain.test.cjs','presentation.cjs','presentation.test.cjs','
      'sync_contract.cjs','access_policy.cjs','prepared_contracts.test.cjs','work_register.json','check_work_register.py',
      'release_packet.py','test_release_packet.py','outbox.py','test_outbox.py','planning.py','test_planning.py',
      'workday_release.py','test_workday_release.py','receipt_accounting.py','test_receipt_accounting.py',
-     'release_selection.py','test_release_selection.py','release_selection_http.py',
+     'release_selection.py','test_release_selection.py','release_selection_http.py','release_matrix.py',
      'registration12.cjs','registration12.test.cjs','workout12.cjs','workout12.test.cjs','registration_store.py','registration_database.py','registration_browser.cjs',
      'registration_release.py','test_registration_release.py',
      'registration_scope.py','test_registration_scope.py','registration_transport.py','test_registration_transport.py',
@@ -181,6 +181,15 @@ class Gate(previous.Gate):
         self.command('capacity-proposal',['env','PYTHONPATH='+str(self.sources/'supabase/.temp/phase6e11-pg17-parser'),sys.executable,'-B',str(folder/'test_capacity_proposal.py')])
         self.command('numeric-size-unit',['env','PYTHONPATH='+str(self.sources/'supabase/.temp/phase6e11-pg17-parser'),sys.executable,'-B',str(folder/'test_size_diagnosis.py')])
         import ci_auth,database_tests,server,subprocess,threading,browser_evidence
+        old_save=self.save
+        self.save=lambda name,value:old_save('selected-'+name,value)
+        try:
+            import release_matrix
+            with ci_auth.environment(self) as ctx:
+                matrix=release_matrix.run(ctx,self.save)
+                self.result['selected_release_slices']=len(matrix['slices'])
+                self.result['selected_release_checks']=matrix['checks']
+        finally:self.save=old_save
         with ci_auth.environment(self) as ctx:
             row=ctx['admin'].execute("select relrowsecurity,relforcerowsecurity from pg_class where oid='auth.sessions'::regclass").fetchone()
             self.save('integration-auth-table-security.json',{'auth_sessions':row,'auth_objects_changed':False,

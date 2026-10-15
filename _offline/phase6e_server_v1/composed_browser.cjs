@@ -28,6 +28,26 @@ try{
   for(const tab of ['today','training','nutrition','intake','progress','settings']){await page.locator(`[data-tab=${tab}]`).click();ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'viewport_'+tab);}
   await page.locator('[data-tab=training]').click();const name=`composed-${width}-${language}-${theme}.png`;await page.screenshot({path:path.join(c.screenshots,name)});screenshots.push(name);
  }
+ stage='large_text_keyboard';await page.setViewportSize({width:390,height:844});
+ await page.evaluate(()=>document.documentElement.style.fontSize='200%');
+ for(const language of ['0','1','2'])for(const theme of ['light','dark']){
+  await page.locator('#lang').selectOption(language);await page.locator('#theme').selectOption(theme);
+  for(const tab of ['today','training','nutrition','intake','progress','settings']){
+   await page.locator(`[data-tab=${tab}]`).click();
+   ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'large_text_'+language+'_'+theme+'_'+tab);
+  }
+  await page.locator('[data-tab=today]').click();await page.locator('[data-tab=today]').press('ArrowRight');
+  ok(await page.locator('[data-tab=training]').getAttribute('aria-selected')==='true','keyboard_tabs_'+language+'_'+theme);
+ }
+ await page.screenshot({path:path.join(c.screenshots,'composed-large-text-de-dark.png')});screenshots.push('composed-large-text-de-dark.png');
+ await page.evaluate(()=>document.documentElement.style.fontSize='');
+ stage='slow_connection';await page.locator('[data-tab=settings]').click();await page.locator('[name=language]').selectOption('en');
+ const slowBefore=(await state()).find(v=>v.workspace===main.workspace).version;let slowRequests=0;
+ await page.route('**/api/action',async route=>{slowRequests++;await new Promise(resolve=>setTimeout(resolve,600));await route.continue();});
+ const slowResult=page.waitForResponse(r=>new URL(r.url()).pathname==='/api/action');
+ await page.locator('[data-preferences] button').dblclick();ok((await slowResult).status()===200,'slow_save');await page.waitForFunction(()=>!busy);
+ ok(slowRequests===1,'slow_double_click_single_request');await page.unroute('**/api/action');
+ ok((await state()).find(v=>v.workspace===main.workspace).version===slowBefore+1,'slow_single_durable_version');
  stage='historical';await page.locator('[data-workspace]').click();ok(await page.locator('[data-registration12]').count()===1,'same_login_registration12');
  ok((await page.locator('[data-weight-display]').first().innerText()).includes('lb'),'imperial_display_visible');
  ok((await page.locator('[data-weight-display]').first().innerText()).includes('kg)'),'original_unit_preserved');
