@@ -3,6 +3,7 @@ import importlib.util,json,pathlib,sys
 HERE=pathlib.Path(__file__).resolve().parent
 sys.path.insert(0,str(HERE))
 from database_checks import M44,run as check_budget
+from quota_boundary import FILE as QUOTA
 from sequence import SOURCES
 spec=importlib.util.spec_from_file_location('endchain_prior_guard_ci',HERE.parent/'controller_guard_v1/ci.py')
 prior=importlib.util.module_from_spec(spec);spec.loader.exec_module(prior)
@@ -23,7 +24,7 @@ NAMES=['authorization.json','test_authorization.py','budget.mjs','budget.test.mj
  'registered_lifecycle.py','test_registered_lifecycle.py','metered_composition.py','test_metered_composition.py',
  'registered_runner.py','test_registered_runner.py','cli_stat_reader.py','test_cli_stat_reader.py',
  'migration_boundary.py','test_migration_boundary.py','hosted_gate.py','test_hosted_gate.py','source_scan.py','test_source_scan.py',
- 'stream_filter_check.py']
+ 'stream_filter_check.py','quota_boundary.py','test_quota_boundary.py','cli_envelope.py','test_cli_envelope.py']
 EXTRA={'_offline/phase6e11/endchain_v1/'+n for n in NAMES}
 EXTRA|={'_offline/phase6e11/request_v4/'+n for n in ['transport.mjs','connection_options.mjs','config_shape.mjs']}
 EXTRA|={'_offline/phase6e11/resume_v1/read_only.mjs','_offline/phase6e11/transport_v1/contract.mjs',
@@ -39,16 +40,17 @@ EXTRA|={'_offline/phase6e11/'+name for name in (
  'm41_tx_v2/measure.py','m41_tx_v2/install.py','readiness_v1/targeted/query_load.py','readiness_v1/targeted/transport.py',
  'textfree_tx_v2/connection.py','textfree_tx_v2/hosted.py','textfree_tx_v2/session.py','textfree_v1/monitor.py','textfree_v1/native.py')}
 EXTRA.add('supabase/tests/phase6d0-staging-query.py')
+EXTRA.add('docs/PHASE6E11_RECOVERY_RUN_AUTHORIZATION_20261018.md')
 EXTRA|={'_offline/phase6e_server_v1/cli_isolation.py','_offline/phase6e_server_v1/test_cli_isolation.py'}
 from closure import AUTHORIZATION
 NUMERIC=pathlib.PurePosixPath(AUTHORIZATION['numeric_evidence']['result'])
 EXTRA|={str(NUMERIC),str(NUMERIC.with_name('MANIFEST.json'))}
 prior.EXTRA|=EXTRA;prior.old.EXTRA|=EXTRA
 class Gate(prior.Gate):
-    cli_namespace='clean44-'
+    cli_namespace='clean45-'
     controller_node_count=198
-    migration_count=44
-    migration_last=M44
+    migration_count=45
+    migration_last=QUOTA
     def isolated_cli(self,args,timeout):
         import cli_meter
         spec=importlib.util.spec_from_file_location('endchain_disposable_cli_isolation',
@@ -69,7 +71,7 @@ class Gate(prior.Gate):
         import integral_ci
         integral_ci.configure_local_tls(self)
     def cli(self,*args,timeout=120):
-        migration=args[:2]==('migration','up') and self.result.get('phase')=='migration_44'
+        migration=args[:2]==('migration','up') and self.result.get('phase')=='migration_45'
         dry=args[:2]==('db','push') and '--dry-run' in args
         if dry and getattr(self,'final_dry_run',None) is not None:return self.final_dry_run
         if migration or dry:
@@ -89,10 +91,11 @@ class Gate(prior.Gate):
         return migrations
     def check_controller_functions(self):
         p=self.rows("select proname,prosecdef,proconfig from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='fmz6e11_controller_private'")
-        if p!=[{'proname':'single_endchain_receipt','prosecdef':False,'proconfig':['search_path=pg_catalog, pg_temp']}]:
+        if sorted(p,key=lambda r:r['proname'])!=[{'proname':name,'prosecdef':False,'proconfig':['search_path=pg_catalog, pg_temp']}
+                for name in ('recovery_run_receipt','single_endchain_receipt')]:
             raise RuntimeError('endchain_function_boundary')
         for role in ('anon','authenticated','service_role','fmz_ci_unprivileged'):
-            value=self.rows("select has_function_privilege('"+role+"','fmz6e11_controller_private.single_endchain_receipt()','EXECUTE') allowed")
+            value=self.rows("select has_function_privilege('"+role+"','fmz6e11_controller_private.single_endchain_receipt()','EXECUTE') or has_function_privilege('"+role+"','fmz6e11_controller_private.recovery_run_receipt()','EXECUTE') allowed")
             if value!=[{'allowed':False}]:raise RuntimeError('endchain_execute_grant')
         return 1
     def check_bridge(self):
@@ -142,7 +145,8 @@ class Gate(prior.Gate):
         if os.environ.get('GITHUB_REPOSITORY')!='Yourizorge/fitmetzorge-staging':raise RuntimeError('ci_reset_only')
         # A second disposable build begins at the actual hosted prerequisite.
         # Initial clean44 receipts retain their own immutable namespace.
-        super().cli('db','reset','--local','--version','20261012104331','--no-seed',timeout=180)
+        version='20261018070231' if getattr(self,'quota_already_present',False) else '20261012185121'
+        super().cli('db','reset','--local','--version',version,'--no-seed',timeout=180)
         from integral_ci import configure_local_tls
         saved=self.save
         try:
@@ -150,10 +154,12 @@ class Gate(prior.Gate):
             configure_local_tls(self)
         finally:self.save=saved
         self.cli_namespace='';self.cli_protocol=[]
-        self.save('registered-database-bootstrap.json',{'disposable_only':True,'version':'20261012104331','hosted_calls':0})
+        self.save('registered-database-bootstrap.json',{'disposable_only':True,'version':version,'hosted_calls':0})
     def apply_endchain_migration(self):
         import cli_meter
-        self.isolated_cli(('db','push','--local','--skip-vault','--yes'),45)
+        pending=not getattr(self,'quota_already_present',False)
+        args=('db','push','--local','--skip-vault','--yes') if pending else ('db','push','--local','--dry-run','--skip-vault')
+        self.isolated_cli(args,45)
         return self.cli_protocol[-1]
     def advisors(self):
         super().advisors()
@@ -177,7 +183,8 @@ class Gate(prior.Gate):
             ('complete_register','normal_capacity','worst_including_safety','phase_budgets','recommended_maximum','fits')}
         if register['fits'] is not True:raise RuntimeError('integral_budget_not_admitted')
         self.result['scope']='Integral local GoTrue/controller/workflow/cleanup/IO and confirmed closure; hosted identity and source admission remain separate.'
-        from integral_failures import run as failure_matrix
+        from integral_failures import run as failure_matrix,already_present
+        self.result['quota_present_chain_pass']=already_present(self)
         self.result['integral_real_failure_cases']=len(failure_matrix(self))
         self.result['full_chain_admission']=True
 if __name__=='__main__':sys.exit(Gate().run())

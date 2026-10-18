@@ -6,9 +6,10 @@ It uses only the already approved owner JIT and registered synthetic identities.
 import hashlib,importlib.util,json,os,pathlib,re,subprocess,sys,time,uuid
 from native_runtime import NativeRuntime,PROJECT
 from metered_composition import MeteredComposition,capacity
-from migration_boundary import FILE,SOURCE_SHA
+from quota_boundary import FILE,SOURCE_SHA
 from closure import AUTHORIZATION,RUN_ID,PURPOSE,allowance
-from cli_stat_reader import snapshot,compare
+from cli_stat_reader import snapshot
+from cli_envelope import attribution,charged,CAP,CHARGE
 
 HERE=pathlib.Path(__file__).resolve().parent;ROOT=HERE.parents[2]
 
@@ -33,7 +34,7 @@ def save(folder,name,value):
 def admission(folder,root=ROOT):
     read=lambda n:json.loads(disk(folder/n).read_bytes())
     result=read('result.json');collection=read('collection.json');sources=read('candidate.json')['sources']
-    if result.get('status')!='CLEAN_CI_PASS' or result.get('full_chain_admission') is not True or result.get('migrations_applied')!=44:
+    if result.get('status')!='CLEAN_CI_PASS' or result.get('full_chain_admission') is not True or result.get('migrations_applied')!=45 or result.get('quota_present_chain_pass') is not True:
         raise ValueError('hosted_full_ci_missing')
     if collection.get('all_file_hashes_valid') is not True or collection.get('head')!=result['commit'] or str(collection['run'])!=str(result['run_id']):
         raise ValueError('hosted_archive_binding')
@@ -49,7 +50,7 @@ def admission(folder,root=ROOT):
             raise ValueError('hosted_composition_changed')
     required={'_offline/phase6e11/endchain_v1/'+n for n in
               ('hosted_gate.py','authorization.json','budget.mjs','closure.py','metered_composition.py',
-               'complete_register.py','runtime_budget.py','integral_stream.py','migration_boundary.py')}
+               'complete_register.py','runtime_budget.py','integral_stream.py','migration_boundary.py','quota_boundary.py','cli_envelope.py')}
     numeric=AUTHORIZATION['numeric_evidence']['result']
     required|={'supabase/migrations/'+FILE,numeric,str(pathlib.PurePosixPath(numeric).with_name('MANIFEST.json'))}
     if not required<=sources.keys():raise ValueError('hosted_entry_not_source_bound')
@@ -102,26 +103,31 @@ class Gate:
         return self.scalar.query(text)
     def metered_cli(self,dry):
         index=len(self.cli_protocol)
-        if index!=int(dry):raise ValueError('hosted_cli_sequence')
-        expected=2 if dry else 14
+        if index>1 or (index==1 and not dry):raise ValueError('hosted_cli_sequence')
         before,first=snapshot(self.runtime)
         self.save('hosted-cli-before-'+str(index)+'.json',{'stats':before,'commands':first})
-        outcome=self.cli_executor(dry)
-        after,last=snapshot(self.runtime)
-        self.save('hosted-cli-after-'+str(index)+'.json',{'stats':after,'commands':last,'outcome':outcome})
-        numeric=compare(before,after,expected,between=3)
+        outcome=None;failure=None
+        try:outcome=self.cli_executor(dry)
+        except Exception as error:failure=type(error).__name__
+        finally:
+            # The direct after-observation is mandatory even after CLI failure.
+            after,last=snapshot(self.runtime)
+            self.save('hosted-cli-after-'+str(index)+'.json',{'stats':after,'commands':last,'outcome':outcome,'error_class':failure})
+        if failure:raise ValueError('hosted_cli_execution_failed')
+        numeric=attribution(before,after,between=3)
         self.save('cli-numeric-coverage-'+str(index)+'.json',numeric)
-        if outcome['exit_code'] or not numeric['all_protocol_visible'] or numeric['temp_written']:
+        if outcome['exit_code']:
             raise ValueError('hosted_cli_or_numeric_evidence_failed')
         if dry and (not outcome['up_to_date'] or outcome['migration_files']):raise ValueError('hosted_dry_run_not_empty')
-        if not dry and outcome['migration_files']!=[FILE]:raise ValueError('hosted_migration_not_exact_44')
-        templates=json.loads(disk(self.ci_folder/('cli-protocol-'+str(index)+'.json')).read_bytes())['commands']
-        receipt={'complete':True,'protocol_commands':expected,'commands':templates,'observer_commands':first+last,
-            'total_commands':expected+8,'numeric_protocol_coverage':True,'outcome':outcome,
-            'command_identity':'source-bound CLI templates plus hosted numeric total; no hosted SQL text logged'}
+        if not dry and outcome['migration_files']!=[FILE]:raise ValueError('hosted_migration_not_exact_quota')
+        receipt={'complete':True,'environment':'staging','protocol_commands':None,'commands':[],
+            'observer_commands':first+last,'outcome':outcome,'attribution':numeric,
+            'capacity_reserved':CAP,'charged_commands':CHARGE,
+            'command_identity':'64 reserved CLI/unknown commands; database-wide numeric deltas are not session attribution'}
+        charged(receipt)
         self.save('cli-protocol-'+str(index)+'.json',receipt);self.cli_protocol.append(receipt)
         return receipt
-    def apply_endchain_migration(self):return self.metered_cli(False)
+    def apply_endchain_migration(self):return self.metered_cli(not self.composition.fixture_context['migration_boundary'])
     def cli(self,*args,timeout=90):
         if args!=('db','push','--local','--dry-run','--skip-vault'):raise ValueError('hosted_cli_action_denied')
         return self.metered_cli(True)
@@ -196,7 +202,7 @@ def main(ci_folder):
         admin=anon=None;result['phase']='registered_chain'
         outcome=execute(gate,c,lifecycle,config)
         result.update(status='HOSTED_CHAIN_PASS_PENDING_ACCESS_CLOSURE',outcome=outcome['status'],commands=c.meter.used,
-            auth_pairs=18,workflow_pairs=71,deletes=123,migrations=44,dry_run_empty=True)
+            auth_pairs=18,workflow_pairs=71,deletes=123,migrations=45,dry_run_empty=True)
     except Exception as error:
         import traceback
         result.update(status='NO_GO',error_class=type(error).__name__,sqlstate=getattr(error,'sqlstate',None),

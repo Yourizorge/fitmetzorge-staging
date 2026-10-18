@@ -19,7 +19,7 @@ class RuntimeBudgetTests(unittest.TestCase):
         for phase,cost in register()['phase_budgets'].items():
             n=m.charge(phase,cost,action=phase,mutation=phase in ('guard','setup','route_a','route_b','restore'))
             m.confirm(n)
-        self.assertEqual(m.used,2226);self.assertTrue(m.close()['complete'])
+        self.assertEqual(m.used,2338);self.assertTrue(m.close()['complete'])
     def test_pending_statement_prevents_next_mutation(self):
         m=self.meter();m.charge('setup',1,action='prepare',mutation=True)
         with self.assertRaisesRegex(BudgetStop,'unconfirmed'):m.charge('setup',1,action='next',mutation=True)

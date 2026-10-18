@@ -65,7 +65,7 @@ class Composition:
         return self.runtime
     def finalize(self,gate,request):
         from closure import counted_close
-        def read(name):return json.loads((gate.out/name).read_text())
+        def read(name):return json.loads((gate.out/(getattr(gate,'evidence_prefix','')+name)).read_text())
         gate.final_dry_run=gate.cli('db','push','--local','--dry-run','--skip-vault',timeout=90)
         self.closing_receipt=counted_close(self.commands,read('integral-preflight.json'),
             [read('cli-protocol-'+str(i)+'.json') for i in range(2)],
@@ -116,15 +116,19 @@ class Composition:
                 pending=label=='before' and self.fixture_context.get('migration_boundary',False)
                 gates.check_migrations(migrations,self.gate_baseline['migrations'] if self.gate_baseline and label!='after_migration' else None,pending)
                 catalog=checked('catalog',gates.CATALOG,[schemas])[0]['value']
+                if label=='before':
+                    from quota_boundary import initial
+                    if initial({'migrations':migrations,'catalog':catalog},gate.sources)!=pending:
+                        raise RuntimeError('ci_quota_pending_mismatch')
                 stable=lambda c:{k:v for k,v in c.items() if k!='m44'}
                 if self.gate_baseline and label!='after_migration' and stable(catalog)!=stable(self.gate_baseline['catalog']):raise RuntimeError('ci_object_or_acl_drift')
                 absence=checked('absence',gates.ABSENCE,[schemas,people,context['window']])[0];gates.check_absence(absence)
                 if label=='after_migration':
-                    from migration_boundary import validate,SOURCE_SHA
+                    from quota_boundary import validate,SOURCE_SHA
                     gate.save('migration-boundary-after.json',{'migrations':migrations,'catalog':catalog})
                     updated=validate(self.gate_baseline,{'migrations':migrations,'catalog':catalog},gate.sources)
                     gate.save('integral-migration-pair.json',{'before_sha':gates.digest(self.gate_baseline),'after_sha':gates.digest(updated),
-                        'migration_sha256':SOURCE_SHA,'complete':True,'history_before':43,'history_after':44,
+                        'migration_sha256':SOURCE_SHA,'complete':True,'history_before':len(self.gate_baseline['migrations']),'history_after':45,
                         'controller_rows_unchanged':True,'only_expected_ddl':True,'protected_stream_baseline_preserved':True})
                     self.gate_baseline=updated
                 gate.save('integral-gates-'+label+'.json',{'access':access,'migrations':migrations,

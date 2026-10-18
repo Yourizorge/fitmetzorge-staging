@@ -28,7 +28,7 @@ class LifecycleTests(unittest.TestCase):
         for key in value:
             with self.assertRaises(ValueError):g.check_access({**value,key:1})
     def test_migration_change_is_not_accepted(self):
-        rows=[{'version':str(i),'name':'synthetic','sql_sha':'a'*64} for i in range(43)]+[{'version':'20261012185121','name':'synthetic','sql_sha':'b'*64}]
+        rows=[{'version':str(i),'name':'synthetic','sql_sha':'a'*64} for i in range(44)]+[{'version':'20261018070231','name':'synthetic','sql_sha':'b'*64}]
         g.check_migrations(rows,rows)
         with self.assertRaises(ValueError):g.check_migrations(rows,rows[:-1])
 

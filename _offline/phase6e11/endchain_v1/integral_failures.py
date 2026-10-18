@@ -6,6 +6,33 @@ only its disposable CI database and writes a separate evidence namespace.
 import importlib.util,json,os,pathlib
 from closure import RUN_ID,PURPOSE,allowance
 
+def already_present(gate):
+    """Prove the second allowed entry state without a second migration apply."""
+    if os.environ.get('GITHUB_REPOSITORY')!='Yourizorge/fitmetzorge-staging':raise RuntimeError('ci_only')
+    from metered_composition import MeteredComposition
+    import audit,auth_arm
+    path=pathlib.Path(__file__).resolve().parent.parent/'controller_guard_v1/auth_service.py'
+    spec=importlib.util.spec_from_file_location('present_actual_gotrue',path)
+    real=importlib.util.module_from_spec(spec);spec.loader.exec_module(real)
+    original_save=gate.save;original_arm=audit.arm;original_dry=getattr(gate,'final_dry_run',None)
+    gate.save=lambda name,value:original_save('quota-present-'+name,value)
+    gate.quota_already_present=True;gate.final_dry_run=None;gate.evidence_prefix='quota-present-'
+    composition=MeteredComposition()
+    try:
+        audit.arm=auth_arm.render
+        real.run(gate,composition)
+        meter=composition.meter.receipt()
+        if not meter['complete'] or meter['stopped'] or composition.fixture_context['migration_boundary']:
+            raise RuntimeError('ci_present_quota_incomplete')
+        if len(gate.cli_protocol)!=2 or any('--dry-run' not in r['arguments'] for r in gate.cli_protocol):
+            raise RuntimeError('ci_present_quota_reapplied')
+        gate.save('validated.json',{'complete':True,'hosted_calls':0,'migration_reapplied':False,
+            'commands':meter['used'],'same_registered_chain':True})
+        return True
+    finally:
+        gate.quota_already_present=False;gate.save=original_save;audit.arm=original_arm;gate.evidence_prefix=''
+        gate.final_dry_run=original_dry
+
 def run(gate):
     if os.environ.get('GITHUB_REPOSITORY')!='Yourizorge/fitmetzorge-staging':raise RuntimeError('ci_only')
     from integral_ci import configure_local_tls

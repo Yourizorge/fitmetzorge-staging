@@ -2,7 +2,7 @@ import test from 'node:test';import assert from 'node:assert/strict';
 import {validateManifest} from '../controller_v1/manifest.mjs';
 import {ENDCHAIN_RUN_ID,PURPOSE} from './budget.mjs';
 const id=n=>'69000000-0000-4000-8000-'+String(n).padStart(12,'0');
-function fixture(){return {version:2,run_id:ENDCHAIN_RUN_ID,budget_ref:PURPOSE,max_commands:2237,
+function fixture(){return {version:2,run_id:ENDCHAIN_RUN_ID,budget_ref:PURPOSE,max_commands:2349,
  identities:[{id:id(1),role:'a_member',trainer_id:id(2)},{id:id(2),role:'a_trainer',trainer_id:null},{id:id(3),role:'b_member',trainer_id:null}],
  workspaces:[{id:id(4),window:id(6),route:'A',member:id(1),trainer:id(2)},{id:id(5),window:id(6),route:'B',member:id(3),trainer:null}],
  cleanup:{operator_id:id(2),requires_revoked_window:true},

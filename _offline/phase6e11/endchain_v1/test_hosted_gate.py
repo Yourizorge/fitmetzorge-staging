@@ -1,4 +1,5 @@
 import json,pathlib,tempfile,types,unittest
+from unittest.mock import patch
 from hosted_gate import ScalarSession,Gate,save,admission,assert_unused,RUN_ID
 
 class Cursor:
@@ -11,6 +12,26 @@ class Cursor:
         return self.index<len(self.sets)
 
 class Tests(unittest.TestCase):
+    def test_failed_cli_still_saves_direct_after_without_retry(self):
+        from test_cli_stat_reader import snap
+        g=object.__new__(Gate);g.cli_protocol=[];g.runtime=object();saved={}
+        calls=[]
+        def fail(dry):calls.append(dry);raise TimeoutError('secret must not leak')
+        g.cli_executor=fail;g.save=lambda n,v:saved.update({n:v})
+        with patch('hosted_gate.snapshot',side_effect=[(snap(),[]),(snap(8),[])]) as reader:
+            with self.assertRaisesRegex(ValueError,'execution_failed'):g.metered_cli(False)
+        self.assertEqual(calls,[False]);self.assertEqual(reader.call_count,2)
+        self.assertEqual(saved['hosted-cli-after-0.json']['error_class'],'TimeoutError')
+        self.assertNotIn('secret',json.dumps(saved));self.assertEqual(g.cli_protocol,[])
+    def test_hosted_dry_run_keeps_unknown_commands_unknown(self):
+        from test_cli_stat_reader import snap
+        g=object.__new__(Gate);g.cli_protocol=[];g.runtime=object();g.save=lambda *a:None
+        g.cli_executor=lambda dry:dict(exit_code=0,up_to_date=True,migration_files=[])
+        trace=[{'confirmed':True}]*4
+        with patch('hosted_gate.snapshot',side_effect=[(snap(),trace),(snap(13),trace)]):
+            r=g.metered_cli(True)
+        self.assertIsNone(r['protocol_commands']);self.assertEqual(r['commands'],[])
+        self.assertEqual(r['charged_commands'],72);self.assertEqual(r['attribution']['unattributed_calls'],7)
     def test_used_receipt_blocks_even_without_temporary_folder(self):
         with tempfile.TemporaryDirectory() as tmp:
             root=pathlib.Path(tmp);assert_unused(root)

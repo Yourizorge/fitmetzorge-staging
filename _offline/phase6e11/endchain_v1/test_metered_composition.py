@@ -1,6 +1,7 @@
 import unittest
 from metered_composition import MeteredComposition,capacity
 from runtime_budget import BudgetStop
+from cli_envelope import local
 
 class Tests(unittest.TestCase):
     def test_phase_and_protocol_charged_before_query(self):
@@ -29,12 +30,13 @@ class Tests(unittest.TestCase):
     def test_ci_prefix_requires_actual_protocol_evidence(self):
         c=MeteredComposition()
         with self.assertRaises(ValueError):c.admit_ci_prefix({'commands':[]},{})
-        c.admit_ci_prefix({'commands':[{'confirmed':True}]*4},{'protocol_commands':14,'complete':True})
-        self.assertEqual(c.meter.used,18)
+        c.admit_ci_prefix({'commands':[{'confirmed':True}]*4},local({'protocol_commands':14,'complete':True,
+            'numeric_protocol_coverage':True,'observer_commands':[{'confirmed':True}]*8}))
+        self.assertEqual(c.meter.used,76)
     def test_final_receipt_cannot_exceed_registered_limit(self):
-        self.assertEqual(sum(capacity()['phase_budgets'].values()),2226)
-        self.assertEqual(capacity()['normal_capacity'],2226)
-        self.assertEqual(capacity()['worst_including_safety'],2237)
-        self.assertEqual(capacity()['approved_limit'],2237)
+        self.assertEqual(sum(capacity()['phase_budgets'].values()),2338)
+        self.assertEqual(capacity()['normal_capacity'],2338)
+        self.assertEqual(capacity()['worst_including_safety'],2349)
+        self.assertEqual(capacity()['approved_limit'],2349)
 
 if __name__=='__main__':unittest.main()

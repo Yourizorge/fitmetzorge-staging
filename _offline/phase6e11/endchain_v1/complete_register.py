@@ -15,6 +15,7 @@ scenario_source=bound_module('register_bound_scenario',HERE/'scenario.py')
 auth_source=bound_module('register_bound_auth',HERE.parent/'auth_metadata_v1/auth_contract.py')
 
 from closure import RUN_ID,PURPOSE,allowance
+from cli_envelope import CAP,charged
 from integral_stream import ROWS,PAGE,PAGES,PROTOCOL_CAPACITY
 APPROVED=allowance(RUN_ID,PURPOSE)
 PHASES=('preflight','migration','baseline','setup','guard','auth','controller','route_a',
@@ -132,7 +133,7 @@ def build(folder):
     if [x['command'] for x in trace]!=list(range(1,len(trace)+1)) or not all(x['confirmed'] for x in trace):
         raise ValueError('register_incomplete_protocol_trace')
     preflight=read('integral-preflight.json')
-    if len(preflight['commands'])!=4 or len(preflight['migrations'])!=43 or not all(x['confirmed'] for x in preflight['commands']):
+    if len(preflight['commands'])!=4 or len(preflight['migrations']) not in (44,45) or not all(x['confirmed'] for x in preflight['commands']):
         raise ValueError('register_preflight')
     workflow=read('integral-workflow.json')
     if workflow.get('pairs')!=71 or workflow.get('deletes')!=123 or workflow.get('next_step')!=83:
@@ -164,11 +165,16 @@ def build(folder):
         matches=[i for i,row in enumerate(rest) if predicate(row)]
         if not matches:raise ValueError('register_action_anchor_missing')
         at=matches[0];rows=rest[:at]+group+rest[at:]
-    for c in preflight['commands']:add('preflight','project_tls_and_43_history',1,template_sha=c['sql_sha256'],writeset=[])
+    for c in preflight['commands']:add('preflight','project_tls_and_quota_history',1,template_sha=c['sql_sha256'],writeset=[])
     cli=[read('cli-protocol-'+str(i)+'.json') for i in range(2)]
-    if [c['protocol_commands'] for c in cli]!=[14,2] or not all(c['complete'] for c in cli):raise ValueError('register_cli_shape')
-    for c in cli[0]['observer_commands'][:4]+cli[0]['commands']+cli[0]['observer_commands'][4:]:
-        add('migration','candidate_44_migration_aware_cli',1,template_sha=c['sha256'],writeset=['exact M44 DDL and migration identity only'] if c['kind']!='numeric_observer' else [])
+    for c in cli:charged(c)
+    def add_cli(phase,action,receipt,writes):
+        for c in receipt['observer_commands'][:4]:add(phase,action,1,template_sha=c['sha256'],writeset=[])
+        add(phase,action,CAP,reservation_only=True,observed_commands=receipt['protocol_commands'],
+            writeset=writes,proof=['CLI exit','numeric unknown envelope','independent exact migration identity'],
+            classification='reserved capacity, not observed hosted SQL')
+        for c in receipt['observer_commands'][4:]:add(phase,action,1,template_sha=c['sha256'],writeset=[])
+    add_cli('migration','candidate_quota_migration_aware_cli',cli[0],['exact new-run quota DDL and migration identity only'])
     for c in trace:
         phase=classify(c,scenario)
         if phase=='ci_bootstrap':bootstrap.append(c);continue
@@ -227,13 +233,13 @@ def build(folder):
         phase='cleanup' if step>=45 else 'restore' if 'restore' in scenario[step]['request']['action'] else 'route_a' if scenario[step]['route']=='A' else 'route_b'
         add(phase,'gotrue_workflow_identity_'+str(step),5,managed=True,writeset=[])
         move_last_before(5,lambda row:row.get('action_binding')=={'kind':'workflow','step':step})
-    for c in cli[1]['observer_commands'][:4]+cli[1]['commands']+cli[1]['observer_commands'][4:]:add('final','empty_cli_dry_run',1,template_sha=c['sha256'],writeset=[])
-    if closure['global_commands']!=len(trace)-len(bootstrap)+36+594:raise ValueError('register_closure_count')
+    add_cli('final','empty_cli_dry_run',cli[1],[])
+    if closure['global_commands']!=len(trace)-len(bootstrap)+4+sum(charged(c) for c in cli)+594:raise ValueError('register_closure_count')
     closing=[r for r in rows if r['phase']=='closure']
     if len(closing)!=1:raise ValueError('register_closure_missing')
     rows=[r for r in rows if r['phase']!='closure']+closing
-    migration=[r for r in rows if r['action']=='candidate_44_migration_aware_cli']
-    rows=[r for r in rows if r['action']!='candidate_44_migration_aware_cli']
+    migration=[r for r in rows if r['action']=='candidate_quota_migration_aware_cli']
+    rows=[r for r in rows if r['action']!='candidate_quota_migration_aware_cli']
     at=next(i for i,r in enumerate(rows) if r['action']=='gates_after_migration_begin')
     rows=rows[:at]+migration+rows[at:]
     # Managed SQL rows are charged before their HTTP action by the executor.

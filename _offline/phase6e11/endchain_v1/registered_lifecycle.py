@@ -39,8 +39,9 @@ class RegisteredLifecycle:
             if hasattr(self.gate,'apply_endchain_migration'):
                 from lifecycle_gates import preflight
                 runtime=c.native_runtime(self.gate)
-                c.admit_preflight(preflight(runtime,self.gate.save))
-                c.fixture_context['migration_boundary']=True
+                initial=preflight(runtime,self.gate.save)
+                c.admit_preflight(initial)
+                c.fixture_context['migration_boundary']=len(initial['migrations'])==44
                 c.preservation(self.gate,self.ids,'before')
                 self.gate.save('migration-boundary-before.json',c.gate_baseline)
                 c.apply_migration(self.gate)

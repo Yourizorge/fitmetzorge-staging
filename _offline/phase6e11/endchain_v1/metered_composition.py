@@ -1,19 +1,20 @@
 """The shared executor, with pre-execution phase and emergency accounting.
 
-Capacity extends the complete 2196-command register by five FETCH/IO pairs in
-each of three cycles. Fresh CI must recompute every prefix and agree.
+The two CLI/unknown envelopes are reservations, not observed session commands.
+Fresh complete CI must recompute every prefix and agree before hosted admission.
 """
 from integral_ci import Composition
 from complete_register import classify,scenario_source,AUTH_CALLS
 from runtime_budget import RuntimeBudget
 from closure import RUN_ID,PURPOSE,BOOTSTRAP,allowance
+from cli_envelope import CHARGE,charged
 
-LIMITS=dict(preflight=4,migration=42,baseline=61,setup=33,guard=13,auth=318,controller=286,
-    route_a=191,route_b=286,restore=54,measurements=136,io=97,cleanup=633,final=71,closure=1)
+LIMITS=dict(preflight=4,migration=92,baseline=61,setup=33,guard=13,auth=318,controller=286,
+    route_a=191,route_b=286,restore=54,measurements=136,io=97,cleanup=633,final=133,closure=1)
 
 def capacity():
     return dict(complete_register=True,approved_limit=allowance(RUN_ID,PURPOSE),fits=True,run_id=RUN_ID,purpose=PURPOSE,
-        phase_budgets=dict(LIMITS),normal_capacity=2226,worst_including_safety=2237)
+        phase_budgets=dict(LIMITS),normal_capacity=2338,worst_including_safety=2349)
 
 class MeteredComposition(Composition):
     def __init__(self,*args,**kwargs):
@@ -25,9 +26,8 @@ class MeteredComposition(Composition):
     def admit_ci_prefix(self,preflight,cli):
         if len(preflight['commands'])!=4 or not all(x['confirmed'] for x in preflight['commands']):
             raise ValueError('meter_ci_preflight_missing')
-        if cli.get('protocol_commands')!=14 or not cli.get('complete'):
-            raise ValueError('meter_ci_migration_protocol_missing')
-        for phase,n in [('preflight',4),('migration',14)]:
+        charged(cli)
+        for phase,n in [('preflight',4),('migration',CHARGE)]:
             ticket=self.meter.charge(phase,n,action='verified_disposable_ci_prefix',kind='cli_bound')
             self.meter.confirm(ticket)
 
@@ -38,11 +38,11 @@ class MeteredComposition(Composition):
         self.meter.confirm(ticket)
 
     def apply_migration(self,gate):
-        ticket=self.meter.charge('migration',22,action='candidate_44_migration_aware_cli',kind='cli_bound',mutation=True)
+        ticket=self.meter.charge('migration',CHARGE,action='candidate_quota_migration_aware_cli',kind='cli_reserved',mutation=True)
         receipt=gate.apply_endchain_migration()
-        if receipt.get('total_commands')!=22 or receipt.get('protocol_commands')!=14 or receipt.get('complete') is not True or receipt.get('numeric_protocol_coverage') is not True:
+        if charged(receipt)!=CHARGE:
             self.abort('migration_protocol_incomplete');raise ValueError('migration_protocol_incomplete')
-        self.meter.confirm(ticket,actual=22)
+        self.meter.confirm(ticket)
 
     def abort(self,reason):
         self.meter.stop(reason)
@@ -105,7 +105,7 @@ class MeteredComposition(Composition):
         return result
 
     def finalize(self,gate,request):
-        ticket=self.meter.charge('final',10,action='empty_cli_dry_run',kind='cli_bound')
+        ticket=self.meter.charge('final',CHARGE,action='empty_cli_dry_run',kind='cli_reserved')
         result=super().finalize(gate,request)
         self.meter.confirm(ticket)
         return result

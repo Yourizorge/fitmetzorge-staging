@@ -39,7 +39,7 @@ class RuntimeBudget:
     def _charge(self,phase,count,*,action,kind,state_after,mutation):
         if self.stopped or self.closed:raise BudgetStop('runtime_stopped_no_new_action')
         if self.pending is not None:raise BudgetStop('runtime_unconfirmed_command')
-        if phase not in self.limits or type(count) is not int or count<1 or kind not in ('native','managed_auth','cli_bound'):
+        if phase not in self.limits or type(count) is not int or count<1 or kind not in ('native','managed_auth','cli_bound','cli_reserved'):
             raise BudgetStop('runtime_command_shape')
         if type(action) is not str or not action or len(action)>120:raise BudgetStop('runtime_action_shape')
         elapsed=self.clock()-self.started

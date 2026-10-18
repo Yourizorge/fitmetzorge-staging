@@ -88,6 +88,8 @@ def run(gate,args,timeout):
     result['observer_commands']=before_trace+after_trace
     result['total_commands']=len(commands)+len(before_trace)+len(after_trace)
     if result['unexpected_applications']:result.update(complete=False,error='ci_cli_unattributed_connection')
+    from cli_envelope import local
+    if result['complete']:result=local(result)
     save('cli-protocol-'+str(len(getattr(gate,'cli_protocol',[])))+'.json',result)
     if not hasattr(gate,'cli_protocol'):gate.cli_protocol=[]
     gate.cli_protocol.append(result)

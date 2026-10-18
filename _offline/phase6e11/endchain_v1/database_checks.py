@@ -25,23 +25,24 @@ def run(sql):
     case('ordinary_128',insert(OTHER,128))
     case('ordinary_129',insert(OTHER,129),'runs_command_count_check')
     for number,old in enumerate([AUTHORIZATION['previous_used_run']]+AUTHORIZATION['earlier_used_runs']):
-        case('old_used_run_no_new_allowance_'+str(number),insert(old,129),'runs_command_count_check')
+        old_cap=2237 if old=='1c3bf7e7-bc78-40c5-9ac1-5ba3512ec66d' else 128
+        case('old_used_run_no_new_allowance_'+str(number),insert(old,old_cap+1),'runs_command_count_check')
         case('old_used_run_retained_'+str(number),insert(old)+"delete from "+SCHEMA+".runs;",'single_endchain_receipt_retained')
         case('old_used_run_cannot_reopen_'+str(number),insert(old,state='stopped')+"update "+SCHEMA+".runs set state='running';",'single_endchain_identity_immutable')
     for field,value in [('id',"'"+OTHER+"'"),('github_run','124'),('head_sha',"'"+'c'*40+"'"),
                         ('manifest_sha',"'"+'d'*64+"'"),('created_at',"created_at-interval '1 second'"),
                         ('expires_at',"expires_at+interval '1 second'")]:
         case('identity_'+field,insert()+"update "+SCHEMA+".runs set "+field+"="+value+";",
-             'single_endchain_identity_immutable')
+             'recovery_run_identity_immutable')
     case('count_decrease',insert(count=2)+"update "+SCHEMA+".runs set command_count=1;",
-         'single_endchain_identity_immutable')
+         'recovery_run_identity_immutable')
     for state in ('stopped','complete','closed'):
         case('no_restart_'+state,insert(state=state)+"update "+SCHEMA+".runs set state='running';",
-             'single_endchain_identity_immutable')
-    case('receipt_retained',insert()+"delete from "+SCHEMA+".runs;",'single_endchain_receipt_retained')
+             'recovery_run_identity_immutable')
+    case('receipt_retained',insert()+"delete from "+SCHEMA+".runs;",'recovery_run_receipt_retained')
     case('ordinary_delete',insert(OTHER)+"delete from "+SCHEMA+".runs;")
     case('ordinary_to_exception',insert(OTHER)+"update "+SCHEMA+".runs set id='"+RUN+"';",
-         'single_endchain_identity_immutable')
+         'recovery_run_identity_immutable')
     case('safe_stop_and_close',insert()+"update "+SCHEMA+".runs set state='stopped',command_count=100;"
          "update "+SCHEMA+".runs set state='closed',command_count=110;")
     case('expiry_cap',insert().replace("interval '9 minutes'","interval '11 minutes'"),'violates check constraint')
@@ -51,7 +52,7 @@ def run(sql):
     p=sql("select jsonb_build_object('functions',count(*),'safe',bool_and(not prosecdef and "
           "proconfig=array['search_path=pg_catalog, pg_temp'])) from pg_proc p join pg_namespace n "
           "on n.oid=p.pronamespace where n.nspname='"+SCHEMA+"';")
-    if p.returncode or json.loads(p.stdout.strip())!={'functions':1,'safe':True}:
+    if p.returncode or json.loads(p.stdout.strip())!={'functions':2,'safe':True}:
         raise RuntimeError('budget_function_acl')
     checks.append({'name':'invoker_fixed_path','pass':True})
     p=sql('select count(*) from '+SCHEMA+'.runs;')

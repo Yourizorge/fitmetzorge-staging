@@ -1,6 +1,6 @@
 """Read-only lifecycle gates. Technical metadata only, no hosted transport."""
 import hashlib,json,os,re,subprocess,time
-from migration_boundary import TARGET,CONSTRAINTS
+from quota_boundary import TARGET,CONSTRAINTS,VERSION
 
 CATALOG="""select jsonb_build_object(
  'functions',(select coalesce(jsonb_object_agg(p.oid::text,jsonb_build_object(
@@ -65,13 +65,13 @@ def check_absence(value):
         raise ValueError('lifecycle_cleanup_incomplete')
 
 def check_migrations(rows,expected,pending=False):
-    count,last=(43,'20261012104331') if pending else (44,'20261012185121')
+    count,last=(44,'20261012185121') if pending else (45,VERSION)
     if len(rows)!=count or rows[-1]['version']!=last or any(not re.fullmatch('[a-f0-9]{64}',r['sql_sha']) for r in rows):
         raise ValueError('lifecycle_migration_identity')
     if expected is not None and rows!=expected:raise ValueError('lifecycle_migration_drift')
 
 def ci_preflight(gate):
-    """Actual four-command native preflight immediately before candidate M44."""
+    """Actual four-command native preflight before the one-run quota boundary."""
     if os.environ.get('GITHUB_REPOSITORY')!='Yourizorge/fitmetzorge-staging':raise RuntimeError('ci_only')
     from native_runtime import NativeRuntime
     return preflight(NativeRuntime.disposable(gate),gate.save,getattr(gate,'cli_namespace',''))
@@ -93,10 +93,11 @@ def preflight(runtime,save,prefix=''):
         if runtime.environment=='staging' and identity['instance_sha']!='d165ac49d4d2aaa4733f7f220c351c99ff09493dace033a726f6fd722a573a15':
             raise ValueError('preflight_wrong_project_instance')
         migrations=query(MIGRATIONS)
-        if len(migrations)!=43 or migrations[-1]['version']!='20261012104331':raise ValueError('preflight_not_43')
+        if (len(migrations),migrations[-1]['version']) not in ((44,'20261012185121'),(45,VERSION)):
+            raise ValueError('preflight_quota_history')
     finally:
         if opened:query('ROLLBACK')
         connection.close()
-        value={'commands':trace,'migrations':migrations,'hosted_calls':0}
+        value={'commands':trace,'migrations':migrations,'hosted_calls':int(runtime.environment=='staging')}
         save(prefix+'integral-preflight.json',value)
     return value

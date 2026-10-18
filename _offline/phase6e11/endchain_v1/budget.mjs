@@ -1,16 +1,16 @@
 // One owner-authorized end-run. Every other run retains the 128-command cap.
-export const ENDCHAIN_RUN_ID='1c3bf7e7-bc78-40c5-9ac1-5ba3512ec66d';
-export const PURPOSE='6e11_capacity_endchain_20261015';
+export const ENDCHAIN_RUN_ID='4b0bb35f-02b5-4a9d-92d7-c29995691460';
+export const PURPOSE='6e11_recovery_endchain_20261018';
 // The complete register additionally reserves the exact safety suffix before
 // every mutation. These phase ceilings alone never grant hosted admission.
-export const LIMITS=Object.freeze({preflight:4,migration:42,baseline:61,setup:33,guard:13,
+export const LIMITS=Object.freeze({preflight:4,migration:92,baseline:61,setup:33,guard:13,
  auth:318,controller:286,route_a:191,route_b:286,restore:54,measurements:136,io:97,
- cleanup:633,final:71,closure:1});
+ cleanup:633,final:133,closure:1});
 const NORMAL=Object.values(LIMITS).reduce((a,b)=>a+b,0);
 const RESERVE=Object.freeze({cleanup:18,final:18,closure:18});
 const SAFETY=new Set(['guard_remove','observer_remove','jit_revoke','proven_fixture_delete','safety_check','record_stop']);
 const LABEL=/^[a-z][a-z0-9_]{1,63}$/;
-export const limitFor=g=>g?.id===ENDCHAIN_RUN_ID&&g?.budget_ref===PURPOSE?2237:128;
+export const limitFor=g=>g?.id===ENDCHAIN_RUN_ID&&g?.budget_ref===PURPOSE?2349:128;
 export class BudgetStop extends Error{
  constructor(phase,attempt,code){super(code);this.phase=phase;this.command=attempt;this.code=code;}
 }

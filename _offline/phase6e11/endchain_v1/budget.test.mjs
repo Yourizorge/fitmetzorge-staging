@@ -5,18 +5,18 @@ const zero={temp_written:0,own_wal_bytes:0,background_wal_bytes:0,background_tem
 const make=()=>new SqlBudget({runId:ENDCHAIN_RUN_ID,now:()=>1});
 const use=(b,phase,safety=false)=>{const e=b.charge(phase,safety?'safety_check':'metadata_read',{safety});b.finish(e,zero);};
 test('exact single run and purpose only; old cap unchanged',()=>{
- assert.equal(limitFor({id:ENDCHAIN_RUN_ID,budget_ref:PURPOSE}),2237);
+ assert.equal(limitFor({id:ENDCHAIN_RUN_ID,budget_ref:PURPOSE}),2349);
  for(const g of [{},{id:ENDCHAIN_RUN_ID},{id:'other',budget_ref:PURPOSE}])assert.equal(limitFor(g),128);
  assert.throws(()=>new SqlBudget({runId:'other'}),/run_not_registered/);
 });
-test('normal phases total 2226 with 11 remaining for the worst suffix',()=>assert.equal(Object.values(LIMITS).reduce((a,b)=>a+b),2226));
+test('normal phases total 2338 with 11 remaining for the worst suffix',()=>assert.equal(Object.values(LIMITS).reduce((a,b)=>a+b),2338));
 test('complete normal budget and worst suffix stop exactly at the new ceiling',()=>{
  const b=make();
  for(const [phase,n] of Object.entries(LIMITS))for(let i=0;i<n;i++)use(b,phase);
- assert.equal(b.total,2226);assert.throws(()=>use(b,'route_a'),/global_query_budget/);
+ assert.equal(b.total,2338);assert.throws(()=>use(b,'route_a'),/global_query_budget/);
  for(let i=0;i<11;i++)use(b,'cleanup',true);
- assert.equal(b.total,2237);assert.throws(()=>use(b,'cleanup',true),/global_query_budget/);
- assert.equal(b.total,2237);
+ assert.equal(b.total,2349);assert.throws(()=>use(b,'cleanup',true),/global_query_budget/);
+ assert.equal(b.total,2349);
 });
 test('truthy strings cannot enter safety reserve',()=>assert.throws(()=>make().charge('cleanup','safety_check',{safety:'true'}),/safety_flag_invalid/));
 test('query completing beyond deadline stops before a next action',()=>{

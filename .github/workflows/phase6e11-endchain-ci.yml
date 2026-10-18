@@ -24,7 +24,7 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 1
-      - name: Clean 44-migration candidate and component regressions
+      - name: Clean 45-migration candidate and integral regressions
         env:
           CANDIDATE_BLOB: ${{ inputs.candidate_blob }}
           CANDIDATE_SHA256: ${{ inputs.candidate_sha256 }}
