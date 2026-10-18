@@ -4,7 +4,7 @@ import migration_boundary as legacy
 ast=legacy.ast
 VERSION='20261018070231'
 FILE=VERSION+'_phase6e11_recovery_run_quota.sql'
-SOURCE_SHA='00c3757bcb8b3da367285835e2b3013063838d133a9d77f2c10c718e72be2a5b'
+SOURCE_SHA='d0f7b100480651da44fea23324a34445ab8a0d04f44e35ce5ed1c1a1f65d4745'
 CONSTRAINTS=legacy.CONSTRAINTS
 TARGET=legacy.TARGET.replace('single_endchain_receipt','recovery_run_receipt').replace(legacy.VERSION,VERSION)
 TARGET+=' || jsonb_build_object(\'legacy_m44\',('+legacy.TARGET+") - 'constraint' - 'constraint_oid' - 'run_hashes')"

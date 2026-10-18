@@ -43,7 +43,7 @@ chain. A CLI exception still requires its direct after-observation, without retr
 
 CLI2.117.0 generated
 `20261018070231_phase6e11_recovery_run_quota.sql` (canonical ordinal45).
-SHA256: `00c3757bcb8b3da367285835e2b3013063838d133a9d77f2c10c718e72be2a5b`.
+Final candidate SHA256: `d0f7b100480651da44fea23324a34445ab8a0d04f44e35ce5ed1c1a1f65d4745`.
 It adds only the exact new UUID's quota exception and a private invoker trigger
 protecting its immutable identity, counter and retained terminal receipt.
 No public execution, new role, app table, RLS change or existing row rewrite.
@@ -95,3 +95,19 @@ The extra complete already-present CI branch retains separate files. Its bounded
 local artifact reader allows2200 files/80MB expanded, retaining the30MB compressed
 and2MB per-file limits, digest/path/manifest checks. This does not increase any
 hosted execution, SQL, data-transport or timeout budget.
+
+Final safety review lowers the new candidate's inherited15-second DDL setting
+to5 seconds, matching the current query limit; lock_timeout remains1 second.
+M44 itself is unchanged. Earlier CI evidence retains the prior candidate hash
+`00c3757bcb8b3da367285835e2b3013063838d133a9d77f2c10c718e72be2a5b`
+and cannot admit the changed candidate. Another complete source-bound CI is
+required before hosted execution, even if the earlier source passes its tests.
+
+CI39107530887 ata8a9f9e is CLEAN_CI_PASS for that earlier source: clean45,
+42 quota checks,18 actual Auth contracts,71 workflow pairs with123 deletes,
+both pending/already-present entry states and3 actual failure cases. Its
+independently reconstructed complete register is2338 normal/2349 worst,
+including633 cleanup and133 final-check capacity. Both normal local chains
+charged2266 (including128 reserved unknown CLI slots, not2266 observed SQL).
+The archive has1926 verified files. This is local disposable evidence only;
+the5-second candidate requires the next separate full CI admission.

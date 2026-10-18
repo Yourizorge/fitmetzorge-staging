@@ -1,7 +1,7 @@
 -- One additional owner-authorized run. M44 and its closed receipts are retained.
 begin;
 set local lock_timeout='1s';
-set local statement_timeout='15s';
+set local statement_timeout='5s';
 alter table fmz6e11_controller_private.runs drop constraint runs_command_count_check;
 alter table fmz6e11_controller_private.runs add constraint runs_command_count_check
  check(command_count>=0 and command_count<=case

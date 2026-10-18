@@ -1,0 +1,308 @@
+{
+  "default_closed": true,
+  "denials": [
+    {
+      "denied": true,
+      "operation": "select",
+      "role": "anon",
+      "table": "runs"
+    },
+    {
+      "denied": true,
+      "operation": "insert",
+      "role": "anon",
+      "table": "runs"
+    },
+    {
+      "denied": true,
+      "operation": "update",
+      "role": "anon",
+      "table": "runs"
+    },
+    {
+      "denied": true,
+      "operation": "delete",
+      "role": "anon",
+      "table": "runs"
+    },
+    {
+      "denied": true,
+      "operation": "select",
+      "role": "authenticated",
+      "table": "runs"
+    },
+    {
+      "denied": true,
+      "operation": "insert",
+      "role": "authenticated",
+      "table": "runs"
+    },
+    {
+      "denied": true,
+      "operation": "update",
+      "role": "authenticated",
+      "table": "runs"
+    },
+    {
+      "denied": true,
+      "operation": "delete",
+      "role": "authenticated",
+      "table": "runs"
+    },
+    {
+      "denied": true,
+      "operation": "select",
+      "role": "service_role",
+      "table": "runs"
+    },
+    {
+      "denied": true,
+      "operation": "insert",
+      "role": "service_role",
+      "table": "runs"
+    },
+    {
+      "denied": true,
+      "operation": "update",
+      "role": "service_role",
+      "table": "runs"
+    },
+    {
+      "denied": true,
+      "operation": "delete",
+      "role": "service_role",
+      "table": "runs"
+    },
+    {
+      "denied": true,
+      "operation": "select",
+      "role": "fmz_ci_unprivileged",
+      "table": "runs"
+    },
+    {
+      "denied": true,
+      "operation": "insert",
+      "role": "fmz_ci_unprivileged",
+      "table": "runs"
+    },
+    {
+      "denied": true,
+      "operation": "update",
+      "role": "fmz_ci_unprivileged",
+      "table": "runs"
+    },
+    {
+      "denied": true,
+      "operation": "delete",
+      "role": "fmz_ci_unprivileged",
+      "table": "runs"
+    },
+    {
+      "denied": true,
+      "operation": "select",
+      "role": "anon",
+      "table": "steps"
+    },
+    {
+      "denied": true,
+      "operation": "insert",
+      "role": "anon",
+      "table": "steps"
+    },
+    {
+      "denied": true,
+      "operation": "update",
+      "role": "anon",
+      "table": "steps"
+    },
+    {
+      "denied": true,
+      "operation": "delete",
+      "role": "anon",
+      "table": "steps"
+    },
+    {
+      "denied": true,
+      "operation": "select",
+      "role": "authenticated",
+      "table": "steps"
+    },
+    {
+      "denied": true,
+      "operation": "insert",
+      "role": "authenticated",
+      "table": "steps"
+    },
+    {
+      "denied": true,
+      "operation": "update",
+      "role": "authenticated",
+      "table": "steps"
+    },
+    {
+      "denied": true,
+      "operation": "delete",
+      "role": "authenticated",
+      "table": "steps"
+    },
+    {
+      "denied": true,
+      "operation": "select",
+      "role": "service_role",
+      "table": "steps"
+    },
+    {
+      "denied": true,
+      "operation": "insert",
+      "role": "service_role",
+      "table": "steps"
+    },
+    {
+      "denied": true,
+      "operation": "update",
+      "role": "service_role",
+      "table": "steps"
+    },
+    {
+      "denied": true,
+      "operation": "delete",
+      "role": "service_role",
+      "table": "steps"
+    },
+    {
+      "denied": true,
+      "operation": "select",
+      "role": "fmz_ci_unprivileged",
+      "table": "steps"
+    },
+    {
+      "denied": true,
+      "operation": "insert",
+      "role": "fmz_ci_unprivileged",
+      "table": "steps"
+    },
+    {
+      "denied": true,
+      "operation": "update",
+      "role": "fmz_ci_unprivileged",
+      "table": "steps"
+    },
+    {
+      "denied": true,
+      "operation": "delete",
+      "role": "fmz_ci_unprivileged",
+      "table": "steps"
+    },
+    {
+      "denied": true,
+      "operation": "select",
+      "role": "anon",
+      "table": "evidence"
+    },
+    {
+      "denied": true,
+      "operation": "insert",
+      "role": "anon",
+      "table": "evidence"
+    },
+    {
+      "denied": true,
+      "operation": "update",
+      "role": "anon",
+      "table": "evidence"
+    },
+    {
+      "denied": true,
+      "operation": "delete",
+      "role": "anon",
+      "table": "evidence"
+    },
+    {
+      "denied": true,
+      "operation": "select",
+      "role": "authenticated",
+      "table": "evidence"
+    },
+    {
+      "denied": true,
+      "operation": "insert",
+      "role": "authenticated",
+      "table": "evidence"
+    },
+    {
+      "denied": true,
+      "operation": "update",
+      "role": "authenticated",
+      "table": "evidence"
+    },
+    {
+      "denied": true,
+      "operation": "delete",
+      "role": "authenticated",
+      "table": "evidence"
+    },
+    {
+      "denied": true,
+      "operation": "select",
+      "role": "service_role",
+      "table": "evidence"
+    },
+    {
+      "denied": true,
+      "operation": "insert",
+      "role": "service_role",
+      "table": "evidence"
+    },
+    {
+      "denied": true,
+      "operation": "update",
+      "role": "service_role",
+      "table": "evidence"
+    },
+    {
+      "denied": true,
+      "operation": "delete",
+      "role": "service_role",
+      "table": "evidence"
+    },
+    {
+      "denied": true,
+      "operation": "select",
+      "role": "fmz_ci_unprivileged",
+      "table": "evidence"
+    },
+    {
+      "denied": true,
+      "operation": "insert",
+      "role": "fmz_ci_unprivileged",
+      "table": "evidence"
+    },
+    {
+      "denied": true,
+      "operation": "update",
+      "role": "fmz_ci_unprivileged",
+      "table": "evidence"
+    },
+    {
+      "denied": true,
+      "operation": "delete",
+      "role": "fmz_ci_unprivileged",
+      "table": "evidence"
+    }
+  ],
+  "functions": 1,
+  "tables": [
+    {
+      "relname": "evidence",
+      "relrowsecurity": true
+    },
+    {
+      "relname": "runs",
+      "relrowsecurity": true
+    },
+    {
+      "relname": "steps",
+      "relrowsecurity": true
+    }
+  ]
+}

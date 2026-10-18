@@ -1,0 +1,227 @@
+[
+  {
+    "name": "legacy_phase1_3_source_baseline",
+    "statements": 156,
+    "version": "20260812000000"
+  },
+  {
+    "name": "trainer_signup_bootstrap",
+    "statements": 8,
+    "version": "20260813"
+  },
+  {
+    "name": "phase4_nutrition_schema_slice1",
+    "statements": 144,
+    "version": "20260818"
+  },
+  {
+    "name": "phase4_nutrition_slice3_atomic_log_item_replacement",
+    "statements": 7,
+    "version": "20260819134024"
+  },
+  {
+    "name": "phase4_nutrition_slice4b_alias_search",
+    "statements": 19,
+    "version": "20260819163738"
+  },
+  {
+    "name": "phase4_nutrition_slice4c_operational_state",
+    "statements": 51,
+    "version": "20260819175756"
+  },
+  {
+    "name": "phase4_nutrition_slice4d_provider_snapshot_logging",
+    "statements": 24,
+    "version": "20260820082018"
+  },
+  {
+    "name": "phase4_nutrition_slice4d_historical_provider_resolver",
+    "statements": 8,
+    "version": "20260820150513"
+  },
+  {
+    "name": "phase4_nutrition_slice4e_ingestion_alias_search",
+    "statements": 35,
+    "version": "20260822172635"
+  },
+  {
+    "name": "phase4_nutrition_slice4f_off_catalog_search",
+    "statements": 95,
+    "version": "20260824113551"
+  },
+  {
+    "name": "phase4_nutrition_slice4fc_off_authoritative_logging",
+    "statements": 25,
+    "version": "20260826143000"
+  },
+  {
+    "name": "phase4_nutrition_slice4fd_transient_off_barcode",
+    "statements": 63,
+    "version": "20260827125343"
+  },
+  {
+    "name": "phase4_nutrition_slice4fd_transient_off_parent_context_fix",
+    "statements": 8,
+    "version": "20260827152727"
+  },
+  {
+    "name": "phase5_progress_foundation",
+    "statements": 85,
+    "version": "20260831145357"
+  },
+  {
+    "name": "phase5_progress_unit_preference",
+    "statements": 5,
+    "version": "20260831150434"
+  },
+  {
+    "name": "phase5_progress_revision_indexes",
+    "statements": 4,
+    "version": "20260831153512"
+  },
+  {
+    "name": "phase5_unit_system_constraint_fix",
+    "statements": 6,
+    "version": "20260901161314"
+  },
+  {
+    "name": "phase6a_ai_trust_foundation",
+    "statements": 153,
+    "version": "20260901183914"
+  },
+  {
+    "name": "phase6a_ai_consent_event_ordering",
+    "statements": 7,
+    "version": "20260901184418"
+  },
+  {
+    "name": "phase6a_pgcrypto_search_path",
+    "statements": 5,
+    "version": "20260901190328"
+  },
+  {
+    "name": "phase6a_foreign_key_indexes",
+    "statements": 10,
+    "version": "20260901191328"
+  },
+  {
+    "name": "phase6b_provider_privacy_cost_gate",
+    "statements": 43,
+    "version": "20260902045834"
+  },
+  {
+    "name": "phase6c_private_ai_chat",
+    "statements": 62,
+    "version": "20260903085454"
+  },
+  {
+    "name": "phase6c_request_scoped_safety",
+    "statements": 3,
+    "version": "20260903125150"
+  },
+  {
+    "name": "phase6d0_legacy_authorization_gate",
+    "statements": 39,
+    "version": "20260904105918"
+  },
+  {
+    "name": "phase6d_read_only_ai_analyses",
+    "statements": 82,
+    "version": "20260904230850"
+  },
+  {
+    "name": "phase6d_analysis_lifecycle_safe_code_fix",
+    "statements": 5,
+    "version": "20260904235253"
+  },
+  {
+    "name": "phase6d_owner_safety_settings",
+    "statements": 40,
+    "version": "20260906080455"
+  },
+  {
+    "name": "phase6d_automatic_inbox",
+    "statements": 48,
+    "version": "20260906092905"
+  },
+  {
+    "name": "phase6d_recent_dashboard_analyses",
+    "statements": 8,
+    "version": "20260906134827"
+  },
+  {
+    "name": "phase6d_theme_preference",
+    "statements": 10,
+    "version": "20260907095307"
+  },
+  {
+    "name": "training_workout_editor",
+    "statements": 22,
+    "version": "20260908100106"
+  },
+  {
+    "name": "training_plan_effort_tracking",
+    "statements": 6,
+    "version": "20260909215122"
+  },
+  {
+    "name": "phase6e9_synthetic_authorization",
+    "statements": 51,
+    "version": "20260915072202"
+  },
+  {
+    "name": "phase6e10_sources_managed_windows",
+    "statements": 51,
+    "version": "20260915104711"
+  },
+  {
+    "name": "phase6e10_source_reference_indexes",
+    "statements": 5,
+    "version": "20260916071416"
+  },
+  {
+    "name": "phase6e10_strict_command_versions",
+    "statements": 3,
+    "version": "20260916072203"
+  },
+  {
+    "name": "phase6e10_api_conflict_sqlstate",
+    "statements": 3,
+    "version": "20260916073923"
+  },
+  {
+    "name": "phase6e11_final_app_integration",
+    "statements": 67,
+    "version": "20260916162120"
+  },
+  {
+    "name": "phase6e11_private_transaction_audit",
+    "statements": 26,
+    "version": "20260924130052"
+  },
+  {
+    "name": "phase6e11_rpc_bridge",
+    "statements": 17,
+    "version": "20260924155822"
+  },
+  {
+    "name": "phase6e11_request_binding",
+    "statements": 20,
+    "version": "20260928120846"
+  },
+  {
+    "name": "phase6e11_controller_evidence",
+    "statements": 15,
+    "version": "20261012104331"
+  },
+  {
+    "name": "phase6e11_single_endchain_budget",
+    "statements": 9,
+    "version": "20261012185121"
+  },
+  {
+    "name": "phase6e11_recovery_run_quota",
+    "statements": 9,
+    "version": "20261018070231"
+  }
+]

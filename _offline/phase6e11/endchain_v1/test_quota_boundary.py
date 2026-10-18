@@ -3,6 +3,10 @@ import quota_boundary as q
 import migration_boundary as old
 
 class Tests(unittest.TestCase):
+    def test_new_ddl_does_not_raise_query_or_lock_deadlines(self):
+        text=q.source(pathlib.Path(__file__).resolve().parents[3])
+        self.assertIn("set local statement_timeout='5s';",text)
+        self.assertIn("set local lock_timeout='1s';",text)
     def objects(self,text,base):
         body=text.split('as $f$',1)[1].split('$f$;',1)[0].replace('\r\n','\n')
         return dict(function_oid=base,trigger_oid=base+1,migration_statements=[text],
