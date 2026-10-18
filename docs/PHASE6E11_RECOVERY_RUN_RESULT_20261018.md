@@ -146,6 +146,16 @@ Python PASS. A new disposable PG17 interleaving check and complete CI validation
 are prepared; their outcome will be recorded separately. No new hosted attempt
 is authorized by that validation.
 
+Final local safety review also requires `track_utility=on` and `track=top/all`
+in both existing numeric snapshots. Disabled or missing utility tracking must
+not allow another query's counter to stand in for an untracked FETCH. This adds
+no command. It changes the numeric reader's source hash and therefore requires
+fresh full CI for the final source, not reuse of a previous source's PASS.
+[PostgreSQL17 documents](https://www.postgresql.org/docs/17/pgstatstatements.html)
+that these counters aggregate by database, database user, query family and
+top-level status; they are not per-session audit identities. The collector
+retains those limits and never treats a numeric family as an Auth identity.
+
 ## Preservation and next boundary
 
 Only offline code/tests, evidence, quota candidate, CI label and documentation

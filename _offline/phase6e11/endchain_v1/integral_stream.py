@@ -14,6 +14,8 @@ PAGE=8192
 PAGES=(ROWS+PAGE-1)//PAGE
 PROTOCOL_CAPACITY=15+2*PAGES
 ALL_STATS=SNAPSHOT.replace("and queryid::text in(select jsonb_array_elements_text($1::jsonb))",'')
+ALL_STATS=ALL_STATS.replace(" 'reset',", " 'track_utility',current_setting('pg_stat_statements.track_utility'),\n"
+    " 'track',current_setting('pg_stat_statements.track'),\n 'reset',",1)
 INVENTORY="""select n.nspname schema,c.relname name,array_agg(a.attname order by a.attnum) columns
  from pg_class c join pg_namespace n on n.oid=c.relnamespace
  join pg_attribute a on a.attrelid=c.oid and a.attnum>0 and not a.attisdropped
@@ -206,7 +208,8 @@ def run(query,save,ids,context,label,expected=None):
                 'stream_protected_drift','stream_snapshot_changed','stream_inventory_changed',
                 'stream_unattributed_load','stream_own_load','io_own_spill','io_project_health',
                 'io_duplicate_query_identity','io_command_attribution','io_statistics_reset',
-                'io_counter_missing_or_replaced','io_background_counter_reset','io_query_time'}
+                'io_counter_missing_or_replaced','io_background_counter_reset','io_query_time',
+                'stream_utility_tracking_disabled'}
             save('integral-stream-'+label+'-stop.json',{'failed_phase':active_phase,'command':count,
                 'exception_class':type(error).__name__,'sqlstate':getattr(error,'sqlstate',None),
                 'reason_code':str(error) if type(error) is ValueError and str(error) in safe_reasons else 'unclassified_sanitized_failure',

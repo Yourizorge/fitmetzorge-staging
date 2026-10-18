@@ -41,8 +41,8 @@ class StreamTests(unittest.TestCase):
     def test_ambiguous_utility_preserves_both_numeric_samples_before_stop(self):
         from copy import deepcopy
         saved={};calls=[];samples=[]
-        before={'statements':[{'queryid':'1','calls':1}]}
-        after={'statements':[{'queryid':'1','calls':2},{'queryid':'2','calls':1},{'queryid':'3','calls':1}]}
+        before={'track_utility':'on','track':'all','statements':[{'queryid':'1','calls':1}]}
+        after={'track_utility':'on','track':'all','statements':[{'queryid':'1','calls':2},{'queryid':'2','calls':1},{'queryid':'3','calls':1}]}
         samples.extend([before,after])
         def query(phase,sql,args=()):
             calls.append(phase);query.terminal_count=-1
@@ -84,7 +84,7 @@ class StreamTests(unittest.TestCase):
             if sql.startswith('EXPLAIN'):return [{'QUERY PLAN':[{'Query Identifier':1,'Execution Time':0,'Plan':{'Actual Rows':1,'Temp Written Blocks':0,'Temp Read Blocks':0,'WAL Bytes':0,'Actual Total Time':0}}]}]
             if sql==ALL_STATS:
                 stats['1']+=1
-                return [{'value':{'statements':[{'queryid':k,'calls':v} for k,v in stats.items()]}}]
+                return [{'value':{'track_utility':'on','track':'all','statements':[{'queryid':k,'calls':v} for k,v in stats.items()]}}]
             if sql.startswith(('DECLARE','FETCH','CLOSE','select count(*)')):stats['2']+=1
             if sql.startswith('select count(*)'):
                 self.assertIn('integral-stream-capacity-binding.json',saved)

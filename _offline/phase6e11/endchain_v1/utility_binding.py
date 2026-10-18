@@ -17,6 +17,8 @@ class UtilityBindings:
     def __init__(self):self.bound={}
 
     def observe(self,source_hash,before,after,reader):
+        if any(s.get('track_utility')!='on' or s.get('track') not in ('all','top') for s in (before,after)):
+            raise ValueError('stream_utility_tracking_disabled')
         old=counters(before);new=counters(after)
         if set(old)-set(new):raise ValueError('io_counter_missing_or_replaced')
         changed={qid:row['calls']-old.get(qid,{}).get('calls',0)

@@ -4,7 +4,7 @@ from utility_binding import UtilityBindings,other_load
 
 
 def sample(reader=0,own=0,other=0):
-    return {'reset':'r','dealloc':0,'statements':[
+    return {'reset':'r','dealloc':0,'track_utility':'on','track':'all','statements':[
         {'queryid':qid,'calls':calls,'since':'s','temp_read':0,'temp_written':0,
          'wal':'0','exec_ms':float(calls)} for qid,calls in [('1',reader),('2',own),('3',other)]],
         'background':{'temp_bytes':0,'reset':'b'},'health':{'io_wait':0,'long_active':0}}
@@ -74,6 +74,14 @@ class UtilityTests(unittest.TestCase):
     def test_confirm_cannot_replace_an_existing_binding(self):
         b=self.bind()
         with self.assertRaises(ValueError):b.confirm('source',{'unambiguous':True,'queryid':'3'})
+
+    def test_disabled_or_missing_utility_tracking_blocks_before_attribution(self):
+        for field,value in [('track_utility','off'),('track_utility',None),('track','none'),('track',None)]:
+            for where in ('before','after'):
+                before=sample(1,1);after=sample(2,2,1)
+                (before if where=='before' else after)[field]=value
+                with self.assertRaisesRegex(ValueError,'stream_utility_tracking_disabled'):
+                    self.bind().observe('source',before,after,'1')
 
 
 if __name__=='__main__':unittest.main()
