@@ -25,7 +25,8 @@ NAMES=['authorization.json','test_authorization.py','budget.mjs','budget.test.mj
  'registered_runner.py','test_registered_runner.py','cli_stat_reader.py','test_cli_stat_reader.py',
  'migration_boundary.py','test_migration_boundary.py','hosted_gate.py','test_hosted_gate.py','source_scan.py','test_source_scan.py',
  'stream_filter_check.py','quota_boundary.py','test_quota_boundary.py','cli_envelope.py','test_cli_envelope.py',
- 'utility_binding.py','test_utility_binding.py','utility_binding_check.py']
+ 'utility_binding.py','test_utility_binding.py','utility_binding_check.py',
+ 'history_pin.py','history_pin.json','test_history_pin.py','management_reads.py','test_management_reads.py']
 EXTRA={'_offline/phase6e11/endchain_v1/'+n for n in NAMES}
 EXTRA|={'_offline/phase6e11/request_v4/'+n for n in ['transport.mjs','connection_options.mjs','config_shape.mjs']}
 EXTRA|={'_offline/phase6e11/resume_v1/read_only.mjs','_offline/phase6e11/transport_v1/contract.mjs',
@@ -41,7 +42,7 @@ EXTRA|={'_offline/phase6e11/'+name for name in (
  'm41_tx_v2/measure.py','m41_tx_v2/install.py','readiness_v1/targeted/query_load.py','readiness_v1/targeted/transport.py',
  'textfree_tx_v2/connection.py','textfree_tx_v2/hosted.py','textfree_tx_v2/session.py','textfree_v1/monitor.py','textfree_v1/native.py')}
 EXTRA.add('supabase/tests/phase6d0-staging-query.py')
-EXTRA.add('docs/PHASE6E11_RECOVERY_RUN_AUTHORIZATION_20261018.md')
+EXTRA.add('docs/PHASE6E11_PARALLEL_RUN_AUTHORIZATION_20261018.md')
 EXTRA|={'_offline/phase6e_server_v1/cli_isolation.py','_offline/phase6e_server_v1/test_cli_isolation.py'}
 from closure import AUTHORIZATION
 NUMERIC=pathlib.PurePosixPath(AUTHORIZATION['numeric_evidence']['result'])
