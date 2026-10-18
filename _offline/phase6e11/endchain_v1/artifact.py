@@ -1,6 +1,6 @@
 """Verify the exact endchain CI artifact; preserve already collected logs."""
 import hashlib,io,json,os,pathlib,re,zipfile
-MAX_FILES=1420
+MAX_FILES=2200
 def disk(p):return pathlib.Path('\\\\?\\'+str(p.resolve())) if os.name=='nt' else p
 def collect(folder,run,api,recover=False):
     meta=api('/actions/runs/'+str(run));blob=json.loads((folder/'blob.json').read_text())
@@ -25,13 +25,13 @@ def collect(folder,run,api,recover=False):
         names=archive.namelist()
         # Separate Auth before/after/pair receipts add bounded files; byte and
         # per-file limits remain unchanged. This does not expand SQL budgets.
-        # The capacity-bound archive has1416 entries, including numeric capacity
-        # receipts. SQL, byte, per-file and timeout caps are unchanged.
+        # One additional complete disposable entry-state proof has its own
+        # immutable namespace. Only archive capacity grows, never hosted limits.
         if len(names)>MAX_FILES or len(names)!=len(set(names)) or any(not re.fullmatch('[a-zA-Z0-9_.-]+\\.(json|txt)',n) for n in names):
             raise RuntimeError('artifact_paths')
         # Immutable numeric before/after samples raise the measured 1,341-file
         # archive to 43.2 MB. Keep finite path, compressed and per-file limits.
-        if sum(x.file_size for x in archive.infolist())>48000000 or any(x.file_size>2000000 for x in archive.infolist()):
+        if sum(x.file_size for x in archive.infolist())>80000000 or any(x.file_size>2000000 for x in archive.infolist()):
             raise RuntimeError('artifact_size')
         manifest=json.loads(archive.read('artifact-manifest.json'))
         if set(names)!=set(manifest)|{'artifact-manifest.json'}:raise RuntimeError('artifact_files')

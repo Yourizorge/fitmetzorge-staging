@@ -73,3 +73,25 @@ by this document. 6E-21 remains unaccepted.
 
 External AI calls/cost:0 / EUR0.00. Real-member AI enabled:NO.
 Production touched:NO.
+
+## First disposable CI stop, retained
+
+CI39107025300 atb04c939 completed clean45/45,42 quota database checks,
+controller/request security and34 guard/34 observer checks. It is still NO_GO:
+the normal workflow stopped at its pre-cleanup protected comparison. The pending
+migration predicate still named historical M44, while the independent complete
+DDL pair correctly registered the new quota migration. Numeric protected counts
+were434 then435. The stopped run did not save the complete after-table hash map;
+therefore no retrospective all-table preservation claim is made for that run.
+
+The corrected predicate separates only the new pending quota history row, whose
+SQL/object/ACL/row boundary is independently checked. M44 returns to the protected
+stream. Already-present45 excludes no migration row. No member/Auth/workflow
+predicate, capacity, deadline or retry policy changes. New regressions cover
+both predicate states and preserve hash-only before/after maps with an explicit
+protected_comparison stop reason.201 Python tests pass locally after correction.
+
+The extra complete already-present CI branch retains separate files. Its bounded
+local artifact reader allows2200 files/80MB expanded, retaining the30MB compressed
+and2MB per-file limits, digest/path/manifest checks. This does not increase any
+hosted execution, SQL, data-transport or timeout budget.

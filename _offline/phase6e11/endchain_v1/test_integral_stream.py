@@ -4,6 +4,12 @@ from sql_protocol import statements
 
 ID=lambda n:'78000000-0000-4000-8000-'+str(n).zfill(12)
 class StreamTests(unittest.TestCase):
+    def test_only_new_quota_history_has_separate_pending_boundary(self):
+        context={'window':ID(4),'a':ID(5),'b':ID(6),'runs':{'seed':ID(7)},'migration_boundary':True}
+        row={'schema':'supabase_migrations','name':'schema_migrations','columns':['version']}
+        self.assertEqual(predicates(row,{'a':ID(1)},context),"version<>'20261018070231'")
+        context['migration_boundary']=False
+        self.assertEqual(predicates(row,{'a':ID(1)},context),'true')
     def test_primary_failure_survives_failed_stop_storage_and_rollback(self):
         calls=[]
         def query(phase,sql,args=()):
@@ -67,7 +73,7 @@ class StreamTests(unittest.TestCase):
             self.assertIn("'1'::text keep",sql)
             self.assertNotIn('case when',sql.lower())
 
-    def capacity_run(self,size,limit=9,page=4,short=False,interrupt=False):
+    def capacity_run(self,size,limit=9,page=4,short=False,interrupt=False,expected=None):
         from unittest.mock import patch
         import integral_stream
         saved={};calls=[];stats={'1':0,'2':0};received=[]
@@ -93,7 +99,7 @@ class StreamTests(unittest.TestCase):
         context={'window':ID(4),'a':ID(5),'b':ID(6),'runs':{'seed':ID(7)}}
         error=None;result=None
         with patch.object(integral_stream,'ROWS',limit),patch.object(integral_stream,'PAGE',page),patch.object(integral_stream,'delta',return_value={'queries':[]}):
-            try:result=run(query,lambda n,v:saved.update({n:v}),{'member':ID(1)},context,'capacity')
+            try:result=run(query,lambda n,v:saved.update({n:v}),{'member':ID(1)},context,'capacity',expected)
             except Exception as e:error=e
         self.assertEqual(calls[-1],'ROLLBACK')
         return result,error,saved,calls,received
@@ -106,6 +112,16 @@ class StreamTests(unittest.TestCase):
                          ('row_capacity','stream_row_ceiling',0,9))
         self.assertFalse(any(q.startswith(('DECLARE','FETCH')) for q in calls))
         self.assertNotIn('integral-stream-capacity.json',saved)
+
+    def test_protected_drift_retains_both_scoped_hashes_and_precise_stop(self):
+        before=self.capacity_run(6)[0]
+        result,error,saved,calls,received=self.capacity_run(7,expected=before)
+        self.assertIsNone(result);self.assertEqual(str(error),'stream_protected_drift')
+        pair=saved['integral-stream-capacity-comparison.json']
+        self.assertFalse(pair['equal']);self.assertEqual(pair['before'],before['tables'])
+        self.assertEqual(pair['after']['public.synthetic_0']['rows'],7)
+        stop=saved['integral-stream-capacity-stop.json']
+        self.assertEqual((stop['failed_phase'],stop['reason_code']),('protected_comparison','stream_protected_drift'))
 
     def test_zero_full_and_partial_last_pages_are_complete(self):
         for size,pages in [(0,[]),(4,[4]),(8,[4,4]),(9,[4,4,1]),(6,[4,2])]:

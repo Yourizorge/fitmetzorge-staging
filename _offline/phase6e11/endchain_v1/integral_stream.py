@@ -6,6 +6,7 @@ replace or authorize the separately proven hosted native streaming adapter.
 import hashlib,json,pathlib,re
 from integral_io import SNAPSHOT,check_plan,delta
 from closure import AUTHORIZATION,RUN_ID
+from quota_boundary import VERSION as QUOTA_VERSION
 
 ROWS=AUTHORIZATION['maximum_rows_per_cycle']
 PAGE=8192
@@ -43,7 +44,7 @@ def predicates(row,ids,c):
     new_runs=f"({owned_runs} union select unnest(array[{life}]::uuid[]))"
     if s=='cron' and t=='job_run_details':return 'false'
     if s=='supabase_migrations' and t=='schema_migrations' and c.get('migration_boundary'):
-        return "version<>'20261012185121'"
+        return "version<>'"+QUOTA_VERSION+"'"
     if s=='fmz_ci_auth_observer':return 'false'
     if s=='auth':
         if t=='users':return 'id not in('+users+')'
@@ -180,8 +181,12 @@ def run(query,save,ids,context,label,expected=None):
         terminal=q('io_terminal','EXPLAIN (ANALYZE,BUFFERS,WAL,VERBOSE,COSTS FALSE,FORMAT JSON) '+ALL_STATS)
         if check_plan(terminal[0]['QUERY PLAN'],True)!=reader:raise ValueError('stream_closing_binding')
         if q('final_guard',GUARD)[0]!=identity:raise ValueError('stream_snapshot_changed')
+        active_phase='protected_comparison'
         tables={name:{'rows':len(h),'sha256':hashlib.sha256(','.join(sorted(h)).encode()).hexdigest()} for name,h in buffer.items()}
-        if expected is not None and expected['tables']!=tables:raise ValueError('stream_protected_drift')
+        if expected is not None:
+            save('integral-stream-'+label+'-comparison.json',{'before':expected['tables'],'after':tables,
+                'equal':expected['tables']==tables,'contents_exported':False})
+            if expected['tables']!=tables:raise ValueError('stream_protected_drift')
         value={'label':label,'tables':tables,'rows':total,'plan':plans,'frames':frames,'profiles':profiles,
             'protected_rows_bounded':required,'complete_by_same_snapshot_capacity':total==required,
             'capacity_query_sha256':hashlib.sha256(capacity.encode()).hexdigest(),
@@ -196,7 +201,8 @@ def run(query,save,ids,context,label,expected=None):
         try:
             safe_reasons={'stream_row_ceiling','stream_utility_attribution','stream_terminal_count',
                 'stream_frame_content','stream_frame_bytes','stream_table_index','stream_empty_terminal_missing',
-                'stream_capacity_frame','stream_capacity_mismatch','stream_unfiltered_row'}
+                'stream_capacity_frame','stream_capacity_mismatch','stream_unfiltered_row',
+                'stream_protected_drift','stream_snapshot_changed','stream_inventory_changed'}
             save('integral-stream-'+label+'-stop.json',{'failed_phase':active_phase,'command':count,
                 'exception_class':type(error).__name__,'sqlstate':getattr(error,'sqlstate',None),
                 'reason_code':str(error) if type(error) is ValueError and str(error) in safe_reasons else 'unclassified_sanitized_failure',
