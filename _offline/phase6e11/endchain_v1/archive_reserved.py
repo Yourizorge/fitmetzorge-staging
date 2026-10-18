@@ -25,7 +25,7 @@ def export(source,kind):
         names=['result.json','collection.json','artifact-manifest.json','endchain-sources.json',
                'complete-command-register.json','runtime-command-meter.json','integral-real-failure-matrix.json',
                'integral-closure.json','integral-migration-pair.json','integral-workflow.json',
-               'stream-filter-pg17.json','stream-capacity-pg17.json','register-prefix-reserves.json',
+               'stream-filter-pg17.json','stream-capacity-pg17.json','utility-binding-pg17.json','register-prefix-reserves.json',
                'endchain-budget-database.json','integral-control-enable-pair.json','integral-control-restore-pair.json',
                'registered-worker-terminal.json']
         names=[n for n in names if disk(source/n).is_file()]

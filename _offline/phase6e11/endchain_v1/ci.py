@@ -24,7 +24,8 @@ NAMES=['authorization.json','test_authorization.py','budget.mjs','budget.test.mj
  'registered_lifecycle.py','test_registered_lifecycle.py','metered_composition.py','test_metered_composition.py',
  'registered_runner.py','test_registered_runner.py','cli_stat_reader.py','test_cli_stat_reader.py',
  'migration_boundary.py','test_migration_boundary.py','hosted_gate.py','test_hosted_gate.py','source_scan.py','test_source_scan.py',
- 'stream_filter_check.py','quota_boundary.py','test_quota_boundary.py','cli_envelope.py','test_cli_envelope.py']
+ 'stream_filter_check.py','quota_boundary.py','test_quota_boundary.py','cli_envelope.py','test_cli_envelope.py',
+ 'utility_binding.py','test_utility_binding.py','utility_binding_check.py']
 EXTRA={'_offline/phase6e11/endchain_v1/'+n for n in NAMES}
 EXTRA|={'_offline/phase6e11/request_v4/'+n for n in ['transport.mjs','connection_options.mjs','config_shape.mjs']}
 EXTRA|={'_offline/phase6e11/resume_v1/read_only.mjs','_offline/phase6e11/transport_v1/contract.mjs',
@@ -136,6 +137,8 @@ class Gate(prior.Gate):
         self.result['endchain_python_tests']=int(n[1])
         from stream_filter_check import run as stream_filter_check
         self.result['stream_filter_pg17_checks']=stream_filter_check(self)
+        from utility_binding_check import run as utility_binding_check
+        self.result['utility_binding_pg17_checks']=utility_binding_check(self)
         self.command('endchain-command-trace',['node',str(folder/'component_trace.mjs')])
         self.result['hosted_admitted']=False
         self.result['full_chain_admission']=False

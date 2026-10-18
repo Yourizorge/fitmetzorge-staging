@@ -1,0 +1,14 @@
+{
+  "disable_signup": false,
+  "external_email_enabled": true,
+  "hook_before_user_created_enabled": false,
+  "hook_custom_access_token_enabled": false,
+  "hook_mfa_verification_attempt_enabled": false,
+  "hook_password_verification_attempt_enabled": false,
+  "mailer_autoconfirm": false,
+  "refresh_token_rotation_enabled": true,
+  "security_refresh_token_reuse_interval": 10,
+  "sessions_inactivity_timeout": 0,
+  "sessions_single_per_user": false,
+  "sessions_timebox": 0
+}

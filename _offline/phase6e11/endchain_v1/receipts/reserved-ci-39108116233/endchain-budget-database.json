@@ -1,0 +1,178 @@
+{
+  "cases": [
+    {
+      "name": "exact_run_0",
+      "pass": true
+    },
+    {
+      "name": "exact_run_128",
+      "pass": true
+    },
+    {
+      "name": "exact_run_129",
+      "pass": true
+    },
+    {
+      "name": "exact_run_2349",
+      "pass": true
+    },
+    {
+      "name": "exact_limit_-1",
+      "pass": true
+    },
+    {
+      "name": "exact_limit_2350",
+      "pass": true
+    },
+    {
+      "name": "ordinary_128",
+      "pass": true
+    },
+    {
+      "name": "ordinary_129",
+      "pass": true
+    },
+    {
+      "name": "old_used_run_no_new_allowance_0",
+      "pass": true
+    },
+    {
+      "name": "old_used_run_retained_0",
+      "pass": true
+    },
+    {
+      "name": "old_used_run_cannot_reopen_0",
+      "pass": true
+    },
+    {
+      "name": "old_used_run_no_new_allowance_1",
+      "pass": true
+    },
+    {
+      "name": "old_used_run_retained_1",
+      "pass": true
+    },
+    {
+      "name": "old_used_run_cannot_reopen_1",
+      "pass": true
+    },
+    {
+      "name": "old_used_run_no_new_allowance_2",
+      "pass": true
+    },
+    {
+      "name": "old_used_run_retained_2",
+      "pass": true
+    },
+    {
+      "name": "old_used_run_cannot_reopen_2",
+      "pass": true
+    },
+    {
+      "name": "old_used_run_no_new_allowance_3",
+      "pass": true
+    },
+    {
+      "name": "old_used_run_retained_3",
+      "pass": true
+    },
+    {
+      "name": "old_used_run_cannot_reopen_3",
+      "pass": true
+    },
+    {
+      "name": "identity_id",
+      "pass": true
+    },
+    {
+      "name": "identity_github_run",
+      "pass": true
+    },
+    {
+      "name": "identity_head_sha",
+      "pass": true
+    },
+    {
+      "name": "identity_manifest_sha",
+      "pass": true
+    },
+    {
+      "name": "identity_created_at",
+      "pass": true
+    },
+    {
+      "name": "identity_expires_at",
+      "pass": true
+    },
+    {
+      "name": "count_decrease",
+      "pass": true
+    },
+    {
+      "name": "no_restart_stopped",
+      "pass": true
+    },
+    {
+      "name": "no_restart_complete",
+      "pass": true
+    },
+    {
+      "name": "no_restart_closed",
+      "pass": true
+    },
+    {
+      "name": "receipt_retained",
+      "pass": true
+    },
+    {
+      "name": "ordinary_delete",
+      "pass": true
+    },
+    {
+      "name": "ordinary_to_exception",
+      "pass": true
+    },
+    {
+      "name": "safe_stop_and_close",
+      "pass": true
+    },
+    {
+      "name": "expiry_cap",
+      "pass": true
+    },
+    {
+      "name": "private_anon_35",
+      "pass": true
+    },
+    {
+      "name": "private_anon_36",
+      "pass": true
+    },
+    {
+      "name": "private_authenticated_37",
+      "pass": true
+    },
+    {
+      "name": "private_authenticated_38",
+      "pass": true
+    },
+    {
+      "name": "private_service_role_39",
+      "pass": true
+    },
+    {
+      "name": "private_service_role_40",
+      "pass": true
+    },
+    {
+      "name": "invoker_fixed_path",
+      "pass": true
+    }
+  ],
+  "checks": 42,
+  "hosted_calls": 0,
+  "ordinary_cap": 128,
+  "single_run_cap": 2349,
+  "status": "LOCAL_SINGLE_BUDGET_PASS",
+  "test_rows_remaining": 0
+}

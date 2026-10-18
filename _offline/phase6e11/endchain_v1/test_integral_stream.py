@@ -98,7 +98,7 @@ class StreamTests(unittest.TestCase):
             return []
         context={'window':ID(4),'a':ID(5),'b':ID(6),'runs':{'seed':ID(7)}}
         error=None;result=None
-        with patch.object(integral_stream,'ROWS',limit),patch.object(integral_stream,'PAGE',page),patch.object(integral_stream,'delta',return_value={'queries':[]}):
+        with patch.object(integral_stream,'ROWS',limit),patch.object(integral_stream,'PAGE',page),patch.object(integral_stream,'delta',return_value={'queries':[]}),patch.object(integral_stream,'other_load',return_value={'queries':[]}):
             try:result=run(query,lambda n,v:saved.update({n:v}),{'member':ID(1)},context,'capacity',expected)
             except Exception as e:error=e
         self.assertEqual(calls[-1],'ROLLBACK')

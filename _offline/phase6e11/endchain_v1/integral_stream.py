@@ -5,6 +5,7 @@ replace or authorize the separately proven hosted native streaming adapter.
 """
 import hashlib,json,pathlib,re
 from integral_io import SNAPSHOT,check_plan,delta
+from utility_binding import UtilityBindings,other_load
 from closure import AUTHORIZATION,RUN_ID
 from quota_boundary import VERSION as QUOTA_VERSION
 
@@ -126,7 +127,7 @@ def run(query,save,ids,context,label,expected=None):
             value=q('io',ALL_STATS)[0]['value']
             if len(value['statements'])>5000:raise ValueError('stream_numeric_metadata_budget')
             return value
-        previous=sample();buffer={r['name']:[] for r in plans};total=0
+        previous=sample();buffer={r['name']:[] for r in plans};total=0;bindings=UtilityBindings()
         def utility(sql):
             nonlocal previous,active_phase
             before=previous
@@ -136,20 +137,20 @@ def run(query,save,ids,context,label,expected=None):
             rows=q('utility',sql);terminal=query.terminal_count;after=sample()
             save(prefix+'-after.json',{'binding':binding,'sample':after,'command':count,
                 'returned_rows':len(rows),'terminal_count':terminal})
-            old={v['queryid']:v for v in before['statements']}
-            changed={v['queryid']:v['calls']-old.get(v['queryid'],{}).get('calls',0) for v in after['statements']
-                if v['queryid']!=reader and v['calls']!=old.get(v['queryid'],{}).get('calls',0)}
-            save(prefix+'-attribution.json',{'binding':binding,'changed_query_calls':changed,
-                'unambiguous':len(changed)==1 and list(changed.values())==[1],
-                'background_attributed_to_collector':False,'query_text_read':False})
-            if len(changed)!=1 or list(changed.values())!=[1]:
-                active_phase='utility_attribution'
+            active_phase='utility_attribution'
+            observation=bindings.observe(binding['sql_sha256'],before,after,reader)
+            save(prefix+'-attribution.json',{'binding':binding,**observation})
+            if not observation['unambiguous']:
                 raise ValueError('stream_utility_attribution')
-            profile=delta(before,after,{**changed,reader:1})
+            active_phase='utility_load'
+            profile=delta(before,after,{observation['queryid']:1,reader:1})
+            background=other_load(before,after,observation)
+            save(prefix+'-other-load.json',background)
             save('integral-stream-'+label+'-io-%03d.json'%len(profiles),profile)
             # A read-only cursor may generate WAL for PostgreSQL hint bits.
             # Keep that load visible; temporary writes remain a hard failure.
             if any(x['exec_ms']>2500 for x in profile['queries']):raise ValueError('stream_own_load')
+            bindings.confirm(binding['sql_sha256'],observation)
             profiles.append(profile);previous=after
             return rows,terminal
         size,size_terminal=utility(capacity)
@@ -202,7 +203,10 @@ def run(query,save,ids,context,label,expected=None):
             safe_reasons={'stream_row_ceiling','stream_utility_attribution','stream_terminal_count',
                 'stream_frame_content','stream_frame_bytes','stream_table_index','stream_empty_terminal_missing',
                 'stream_capacity_frame','stream_capacity_mismatch','stream_unfiltered_row',
-                'stream_protected_drift','stream_snapshot_changed','stream_inventory_changed'}
+                'stream_protected_drift','stream_snapshot_changed','stream_inventory_changed',
+                'stream_unattributed_load','stream_own_load','io_own_spill','io_project_health',
+                'io_duplicate_query_identity','io_command_attribution','io_statistics_reset',
+                'io_counter_missing_or_replaced','io_background_counter_reset','io_query_time'}
             save('integral-stream-'+label+'-stop.json',{'failed_phase':active_phase,'command':count,
                 'exception_class':type(error).__name__,'sqlstate':getattr(error,'sqlstate',None),
                 'reason_code':str(error) if type(error) is ValueError and str(error) in safe_reasons else 'unclassified_sanitized_failure',
