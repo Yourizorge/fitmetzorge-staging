@@ -1,0 +1,1976 @@
+{
+  "rows": [
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "id": "cmd_00066",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "3eb12e5bafe877f825399d2905523e26201831b46d6ebc54e734cdb0961a8fd5",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "id": "cmd_00067",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "654b3989d19937e3700b1ef5374ce0b4c77f8460eb8318dd1f40d31c27c21b68",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "id": "cmd_00068",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "4c37732613791f84484c38265c0be027569ee1b7e1d55d69de16b4f9668159ce",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "id": "cmd_00069",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00070",
+      "observed_commands": 14,
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00071",
+      "observed_commands": 14,
+      "ordinal_in_action": 1,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00072",
+      "observed_commands": 14,
+      "ordinal_in_action": 2,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00073",
+      "observed_commands": 14,
+      "ordinal_in_action": 3,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00074",
+      "observed_commands": 14,
+      "ordinal_in_action": 4,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00075",
+      "observed_commands": 14,
+      "ordinal_in_action": 5,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00076",
+      "observed_commands": 14,
+      "ordinal_in_action": 6,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00077",
+      "observed_commands": 14,
+      "ordinal_in_action": 7,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00078",
+      "observed_commands": 14,
+      "ordinal_in_action": 8,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00079",
+      "observed_commands": 14,
+      "ordinal_in_action": 9,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00080",
+      "observed_commands": 14,
+      "ordinal_in_action": 10,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00081",
+      "observed_commands": 14,
+      "ordinal_in_action": 11,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00082",
+      "observed_commands": 14,
+      "ordinal_in_action": 12,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00083",
+      "observed_commands": 14,
+      "ordinal_in_action": 13,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00084",
+      "observed_commands": 14,
+      "ordinal_in_action": 14,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00085",
+      "observed_commands": 14,
+      "ordinal_in_action": 15,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00086",
+      "observed_commands": 14,
+      "ordinal_in_action": 16,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00087",
+      "observed_commands": 14,
+      "ordinal_in_action": 17,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00088",
+      "observed_commands": 14,
+      "ordinal_in_action": 18,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00089",
+      "observed_commands": 14,
+      "ordinal_in_action": 19,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00090",
+      "observed_commands": 14,
+      "ordinal_in_action": 20,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00091",
+      "observed_commands": 14,
+      "ordinal_in_action": 21,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00092",
+      "observed_commands": 14,
+      "ordinal_in_action": 22,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00093",
+      "observed_commands": 14,
+      "ordinal_in_action": 23,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00094",
+      "observed_commands": 14,
+      "ordinal_in_action": 24,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00095",
+      "observed_commands": 14,
+      "ordinal_in_action": 25,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00096",
+      "observed_commands": 14,
+      "ordinal_in_action": 26,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00097",
+      "observed_commands": 14,
+      "ordinal_in_action": 27,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00098",
+      "observed_commands": 14,
+      "ordinal_in_action": 28,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00099",
+      "observed_commands": 14,
+      "ordinal_in_action": 29,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00100",
+      "observed_commands": 14,
+      "ordinal_in_action": 30,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00101",
+      "observed_commands": 14,
+      "ordinal_in_action": 31,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00102",
+      "observed_commands": 14,
+      "ordinal_in_action": 32,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00103",
+      "observed_commands": 14,
+      "ordinal_in_action": 33,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00104",
+      "observed_commands": 14,
+      "ordinal_in_action": 34,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00105",
+      "observed_commands": 14,
+      "ordinal_in_action": 35,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00106",
+      "observed_commands": 14,
+      "ordinal_in_action": 36,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00107",
+      "observed_commands": 14,
+      "ordinal_in_action": 37,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00108",
+      "observed_commands": 14,
+      "ordinal_in_action": 38,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00109",
+      "observed_commands": 14,
+      "ordinal_in_action": 39,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00110",
+      "observed_commands": 14,
+      "ordinal_in_action": 40,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00111",
+      "observed_commands": 14,
+      "ordinal_in_action": 41,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00112",
+      "observed_commands": 14,
+      "ordinal_in_action": 42,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00113",
+      "observed_commands": 14,
+      "ordinal_in_action": 43,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00114",
+      "observed_commands": 14,
+      "ordinal_in_action": 44,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00115",
+      "observed_commands": 14,
+      "ordinal_in_action": 45,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00116",
+      "observed_commands": 14,
+      "ordinal_in_action": 46,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00117",
+      "observed_commands": 14,
+      "ordinal_in_action": 47,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00118",
+      "observed_commands": 14,
+      "ordinal_in_action": 48,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00119",
+      "observed_commands": 14,
+      "ordinal_in_action": 49,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00120",
+      "observed_commands": 14,
+      "ordinal_in_action": 50,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00121",
+      "observed_commands": 14,
+      "ordinal_in_action": 51,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00122",
+      "observed_commands": 14,
+      "ordinal_in_action": 52,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00123",
+      "observed_commands": 14,
+      "ordinal_in_action": 53,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00124",
+      "observed_commands": 14,
+      "ordinal_in_action": 54,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00125",
+      "observed_commands": 14,
+      "ordinal_in_action": 55,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00126",
+      "observed_commands": 14,
+      "ordinal_in_action": 56,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00127",
+      "observed_commands": 14,
+      "ordinal_in_action": 57,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00128",
+      "observed_commands": 14,
+      "ordinal_in_action": 58,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00129",
+      "observed_commands": 14,
+      "ordinal_in_action": 59,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00130",
+      "observed_commands": 14,
+      "ordinal_in_action": 60,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00131",
+      "observed_commands": 14,
+      "ordinal_in_action": 61,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00132",
+      "observed_commands": 14,
+      "ordinal_in_action": 62,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_00133",
+      "observed_commands": 14,
+      "ordinal_in_action": 63,
+      "phase": "migration",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": [
+        "exact new-run quota DDL and migration identity only"
+      ]
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "id": "cmd_00134",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "3eb12e5bafe877f825399d2905523e26201831b46d6ebc54e734cdb0961a8fd5",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "id": "cmd_00135",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "654b3989d19937e3700b1ef5374ce0b4c77f8460eb8318dd1f40d31c27c21b68",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "id": "cmd_00136",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "4c37732613791f84484c38265c0be027569ee1b7e1d55d69de16b4f9668159ce",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "candidate_quota_migration_aware_cli",
+      "id": "cmd_00137",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_begin",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00138",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "3eb12e5bafe877f825399d2905523e26201831b46d6ebc54e734cdb0961a8fd5",
+      "timeout_ms": 5000,
+      "trace_command": 54,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_timeout",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00139",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "2f0ad9318d8daad4452e9726e67089ca3909981bbd333d0f80972dd3f8470f2c",
+      "timeout_ms": 5000,
+      "trace_command": 55,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_readonly",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00140",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "654b3989d19937e3700b1ef5374ce0b4c77f8460eb8318dd1f40d31c27c21b68",
+      "timeout_ms": 5000,
+      "trace_command": 56,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_io_bind",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00141",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "437380dddfde7739b50fb08737e8fb6feaf1dffb0c273da602289e446c3cf998",
+      "timeout_ms": 5000,
+      "trace_command": 57,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_io_sample",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00142",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0b8689aa5a9814bf7225969b10ec65eadce6b7aaa29dc372f6d9b9a19dc3b0f9",
+      "timeout_ms": 5000,
+      "trace_command": 58,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_io_bind",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00143",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "143290e100a36ca810128a83a7035befaced99a17ab337515bd67f694f347570",
+      "timeout_ms": 5000,
+      "trace_command": 59,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_io_sample",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00144",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0b8689aa5a9814bf7225969b10ec65eadce6b7aaa29dc372f6d9b9a19dc3b0f9",
+      "timeout_ms": 5000,
+      "trace_command": 60,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_access",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00145",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "ad5ff4effb3cdfc8647f1bfa24815040cf3b1b20537b36d4f163ee36ccc8cb23",
+      "timeout_ms": 5000,
+      "trace_command": 61,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_io_bind",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00146",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "7831789520a4b6399b38706b38d8f1e7d7b6fd585f26b15d3d47f78d2d348579",
+      "timeout_ms": 5000,
+      "trace_command": 62,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_io_sample",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00147",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0b8689aa5a9814bf7225969b10ec65eadce6b7aaa29dc372f6d9b9a19dc3b0f9",
+      "timeout_ms": 5000,
+      "trace_command": 63,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_migrations",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00148",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "c1b191e76b2023233a8ef5feef5da7cc838116790669bb55e5db23cce0b36ffd",
+      "timeout_ms": 5000,
+      "trace_command": 64,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_io_bind",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00149",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0521f46856d508f3ed746032a08c893e8d269767c54a9d81ef80f21a47d5f9fc",
+      "timeout_ms": 5000,
+      "trace_command": 65,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_io_sample",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00150",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0b8689aa5a9814bf7225969b10ec65eadce6b7aaa29dc372f6d9b9a19dc3b0f9",
+      "timeout_ms": 5000,
+      "trace_command": 66,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_catalog",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00151",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "44d02a45d91c28596f639b7c8318f87cff2bf0ce4c15d97bdef7be286f827b93",
+      "timeout_ms": 5000,
+      "trace_command": 67,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_io_bind",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00152",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "96b664380256db558c9f33c23d61e94de601ea6a53a601879d6f3a5caaa223cb",
+      "timeout_ms": 5000,
+      "trace_command": 68,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_io_sample",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00153",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0b8689aa5a9814bf7225969b10ec65eadce6b7aaa29dc372f6d9b9a19dc3b0f9",
+      "timeout_ms": 5000,
+      "trace_command": 69,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_absence",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00154",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "a028588b1357717f917d25dd0873f8882120c7e5207db5c0563beb1739ca97a0",
+      "timeout_ms": 5000,
+      "trace_command": 70,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_io_sample",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00155",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0b8689aa5a9814bf7225969b10ec65eadce6b7aaa29dc372f6d9b9a19dc3b0f9",
+      "timeout_ms": 5000,
+      "trace_command": 71,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_io_closing_witness",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00156",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "8b86e55eb52434a62227554d1d6da0548883b60528e2150b8add16090341dda4",
+      "timeout_ms": 5000,
+      "trace_command": 72,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_migration_rollback",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "install"
+      },
+      "id": "cmd_00157",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "migration",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710",
+      "timeout_ms": 5000,
+      "trace_command": 73,
+      "writeset": []
+    }
+  ]
+}

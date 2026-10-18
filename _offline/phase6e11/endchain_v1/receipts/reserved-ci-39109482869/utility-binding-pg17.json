@@ -1,0 +1,64 @@
+{
+  "ambiguous_first_denied": true,
+  "binding": {
+    "background_attributed_to_collector": false,
+    "binding_method": "same-stream isolated source-hash observation",
+    "changed_query_calls": {
+      "-4002475219222852758": 1,
+      "-7454739251920263333": 1
+    },
+    "other_query_calls": {
+      "-7454739251920263333": 1
+    },
+    "previously_bound": true,
+    "query_text_read": false,
+    "queryid": "-4002475219222852758",
+    "unambiguous": true
+  },
+  "checks": 6,
+  "disposable_only": true,
+  "double_fetch_denied": true,
+  "hosted_calls": 0,
+  "other_profile": {
+    "actor": "UNKNOWN",
+    "attributed_to_collector": false,
+    "queries": [
+      {
+        "calls": 1,
+        "exec_ms": 0.002775,
+        "queryid": "-7454739251920263333",
+        "temp_read": 0,
+        "temp_written": 0,
+        "wal": 0
+      }
+    ],
+    "query_text_read": false
+  },
+  "own_profile": {
+    "background_attributed_to_collector": false,
+    "background_temp_bytes": 0,
+    "own_temp_written": 0,
+    "own_wal_bytes": 0,
+    "queries": [
+      {
+        "calls": 1,
+        "exec_ms": 0.002465000000000001,
+        "queryid": "-4002475219222852758",
+        "temp_read": 0,
+        "temp_written": 0,
+        "wal": 0
+      },
+      {
+        "calls": 1,
+        "exec_ms": 15.497198999999995,
+        "queryid": "-2615294633339133552",
+        "temp_read": 0,
+        "temp_written": 0,
+        "wal": 0
+      }
+    ]
+  },
+  "read_only": true,
+  "source_sha256": "236d6a643d7374414d7d7f23f61e448d6f91568e15c8874f9ba4522d39ab65cd",
+  "status": "PASS"
+}

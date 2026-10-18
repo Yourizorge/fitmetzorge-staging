@@ -1,0 +1,102 @@
+{
+  "artifact_receipt_tests": 8,
+  "audit_session_hash_tests": 4,
+  "auth_exact_negative_tests": 4,
+  "auth_metadata_checks": 34,
+  "auth_metadata_database": "AUTH_METADATA_DATABASE_PASS",
+  "candidate_sha256": "10c7199e15a2f7fc097150931f57193e6f8c8ed4272d389f984d7e334a2dbf2f",
+  "clean_rebuild": "45/45_PASS",
+  "cli": "2.117.0",
+  "cli_protocol_complete": true,
+  "cli_sha256": "69c05f85b9e47ee706d30f1a6ca8a526b4e337bfd12c7ef1ef522d24e7280d24",
+  "commit": "ab9d4c0e12e78cfd4cda072b569691364e6851c3",
+  "compact_arm_real_auth_contracts": 18,
+  "controller_node_tests": 63,
+  "controller_security": "PASS",
+  "dry_run": "EMPTY",
+  "endchain_arm_unit_tests": 4,
+  "endchain_budget_database_checks": 42,
+  "endchain_node_tests": 132,
+  "endchain_python_tests": 205,
+  "external_ai_calls": 0,
+  "full_chain_admission": true,
+  "full_controller_guard_node_tests": 198,
+  "hosted_admitted": false,
+  "hosted_requests": 0,
+  "integral_capacity_register": {
+    "complete_register": true,
+    "fits": true,
+    "normal_capacity": 2338,
+    "phase_budgets": {
+      "auth": 318,
+      "baseline": 61,
+      "cleanup": 633,
+      "closure": 1,
+      "controller": 286,
+      "final": 133,
+      "guard": 13,
+      "io": 97,
+      "measurements": 136,
+      "migration": 92,
+      "preflight": 4,
+      "restore": 54,
+      "route_a": 191,
+      "route_b": 286,
+      "setup": 33
+    },
+    "recommended_maximum": 2349,
+    "worst_including_safety": 2349
+  },
+  "integral_real_failure_cases": 3,
+  "member_data_used": false,
+  "metadata_probe_unit_tests": 10,
+  "migrations_applied": 45,
+  "native_transport_tests": 8,
+  "owner_budget_tests": 4,
+  "phase": "advisors_and_dryrun",
+  "platform": {
+    "extensions": [
+      {
+        "default_version": "1.6.4",
+        "installed_version": null,
+        "name": "pg_cron"
+      },
+      {
+        "default_version": "1.6",
+        "installed_version": null,
+        "name": "pg_trgm"
+      },
+      {
+        "default_version": "1.3",
+        "installed_version": "1.3",
+        "name": "pgcrypto"
+      }
+    ],
+    "image": "public.ecr.aws/supabase/postgres:17.6.1.167",
+    "image_id": "sha256:66089200353d90686fe9b252a47d17d078364bf47c50190852c33dc850a0191f",
+    "repository_digests": [
+      "public.ecr.aws/supabase/postgres@sha256:6942962433a569e87f228b4d4ab7e11db5deca64e43babb3a038443ad6c4f1bb"
+    ],
+    "server": [
+      {
+        "num": "170006",
+        "version": "PostgreSQL 17.6 on x86_64-pc-linux-gnu, compiled by gcc (GCC) 15.2.0, 64-bit"
+      }
+    ]
+  },
+  "production_touched": false,
+  "quota_present_chain_pass": true,
+  "real_auth_ci": "INTEGRAL_REAL_AUTH_WORKFLOW_CI_PASS",
+  "real_auth_ci_checks": 18,
+  "real_auth_exact_write_contracts": 18,
+  "request_security": "PASS",
+  "run_id": "39109482869",
+  "scope": "Integral local GoTrue/controller/workflow/cleanup/IO and confirmed closure; hosted identity and source admission remain separate.",
+  "sql_regressions_passed": 12,
+  "sql_regressions_planned": 12,
+  "status": "CLEAN_CI_PASS",
+  "stream_filter_pg17_checks": 36,
+  "temporary_guard_checks": 34,
+  "temporary_guard_database": "GUARD_DATABASE_PASS",
+  "utility_binding_pg17_checks": 6
+}

@@ -1,0 +1,33 @@
+{
+  "exception_class": "RuntimeError",
+  "frames": [
+    {
+      "file": "registered_runner.py",
+      "function": "execute",
+      "line": 27
+    },
+    {
+      "file": "registered_lifecycle.py",
+      "function": "dispatch",
+      "line": 27
+    },
+    {
+      "file": "registered_lifecycle.py",
+      "function": "_dispatch",
+      "line": 91
+    },
+    {
+      "file": "metered_composition.py",
+      "function": "workflow",
+      "line": 101
+    },
+    {
+      "file": "integral_ci.py",
+      "function": "workflow",
+      "line": 337
+    }
+  ],
+  "operation": "workflow",
+  "sqlstate": null,
+  "values_exported": false
+}

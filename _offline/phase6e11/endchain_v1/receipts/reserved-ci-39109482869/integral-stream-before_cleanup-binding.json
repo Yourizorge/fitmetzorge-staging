@@ -1,0 +1,702 @@
+{
+  "canonicalization": "PG17 JSONB text UTF8 SHA256 / sorted duplicate-preserving multiset",
+  "capacity_query_sha256": "ad986b3d1eb56fa4634cd7159fe2771ff6f1e9ace23716f57c3f832c912bea17",
+  "capacity_sentinel_limit": 106497,
+  "filter_before_transport": true,
+  "filter_sha256": "c45bbe38513ef4218d2bd1efce1141e23a34f551f937b80cb94791cb9ce168dd",
+  "limit_scope": "total transported protected row hashes per cycle; duplicate rows count separately",
+  "page_limit": 8192,
+  "plan": [
+    {
+      "name": "_realtime.extensions",
+      "predicate": "true"
+    },
+    {
+      "name": "_realtime.feature_flags",
+      "predicate": "true"
+    },
+    {
+      "name": "_realtime.schema_migrations",
+      "predicate": "true"
+    },
+    {
+      "name": "_realtime.tenants",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.action_policies",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.analysis_jobs",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.analysis_safety_recoveries",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.audit_events",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.budget_accounts",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.budget_policies",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.consent_documents",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.feature_flags",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.phase6c_runtime_config",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.phase6d_runtime_config",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.provider_configurations",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.provider_models",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.provider_payload_fields",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.provider_test_budget",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.provider_test_runs",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.rate_buckets",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.rate_policies",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.runs",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.safety_events",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.structured_schemas",
+      "predicate": "true"
+    },
+    {
+      "name": "ai_private.usage_ledger",
+      "predicate": "true"
+    },
+    {
+      "name": "auth.audit_log_entries",
+      "predicate": "coalesce(payload->>'actor_id','') not in('a444cbbd-e5a9-4004-b895-e46be5db404e','95a51aff-19e6-4c13-ba8a-6500126e4583','7449494d-dd9e-4d71-98fa-beffe880bcc5')"
+    },
+    {
+      "name": "auth.custom_oauth_providers",
+      "predicate": "true"
+    },
+    {
+      "name": "auth.flow_state",
+      "predicate": "user_id is null or user_id::text not in('a444cbbd-e5a9-4004-b895-e46be5db404e','95a51aff-19e6-4c13-ba8a-6500126e4583','7449494d-dd9e-4d71-98fa-beffe880bcc5')"
+    },
+    {
+      "name": "auth.identities",
+      "predicate": "user_id is null or user_id::text not in('a444cbbd-e5a9-4004-b895-e46be5db404e','95a51aff-19e6-4c13-ba8a-6500126e4583','7449494d-dd9e-4d71-98fa-beffe880bcc5')"
+    },
+    {
+      "name": "auth.instances",
+      "predicate": "true"
+    },
+    {
+      "name": "auth.mfa_amr_claims",
+      "predicate": "session_id not in(select id from auth.sessions where user_id in('a444cbbd-e5a9-4004-b895-e46be5db404e','95a51aff-19e6-4c13-ba8a-6500126e4583','7449494d-dd9e-4d71-98fa-beffe880bcc5'))"
+    },
+    {
+      "name": "auth.mfa_challenges",
+      "predicate": "true"
+    },
+    {
+      "name": "auth.mfa_factors",
+      "predicate": "user_id is null or user_id::text not in('a444cbbd-e5a9-4004-b895-e46be5db404e','95a51aff-19e6-4c13-ba8a-6500126e4583','7449494d-dd9e-4d71-98fa-beffe880bcc5')"
+    },
+    {
+      "name": "auth.mfa_recovery_code_sets",
+      "predicate": "user_id is null or user_id::text not in('a444cbbd-e5a9-4004-b895-e46be5db404e','95a51aff-19e6-4c13-ba8a-6500126e4583','7449494d-dd9e-4d71-98fa-beffe880bcc5')"
+    },
+    {
+      "name": "auth.mfa_recovery_codes",
+      "predicate": "true"
+    },
+    {
+      "name": "auth.oauth_authorizations",
+      "predicate": "user_id is null or user_id::text not in('a444cbbd-e5a9-4004-b895-e46be5db404e','95a51aff-19e6-4c13-ba8a-6500126e4583','7449494d-dd9e-4d71-98fa-beffe880bcc5')"
+    },
+    {
+      "name": "auth.oauth_client_states",
+      "predicate": "true"
+    },
+    {
+      "name": "auth.oauth_clients",
+      "predicate": "true"
+    },
+    {
+      "name": "auth.oauth_consents",
+      "predicate": "user_id is null or user_id::text not in('a444cbbd-e5a9-4004-b895-e46be5db404e','95a51aff-19e6-4c13-ba8a-6500126e4583','7449494d-dd9e-4d71-98fa-beffe880bcc5')"
+    },
+    {
+      "name": "auth.one_time_tokens",
+      "predicate": "user_id is null or user_id::text not in('a444cbbd-e5a9-4004-b895-e46be5db404e','95a51aff-19e6-4c13-ba8a-6500126e4583','7449494d-dd9e-4d71-98fa-beffe880bcc5')"
+    },
+    {
+      "name": "auth.refresh_tokens",
+      "predicate": "user_id is null or user_id::text not in('a444cbbd-e5a9-4004-b895-e46be5db404e','95a51aff-19e6-4c13-ba8a-6500126e4583','7449494d-dd9e-4d71-98fa-beffe880bcc5')"
+    },
+    {
+      "name": "auth.saml_providers",
+      "predicate": "true"
+    },
+    {
+      "name": "auth.saml_relay_states",
+      "predicate": "true"
+    },
+    {
+      "name": "auth.schema_migrations",
+      "predicate": "true"
+    },
+    {
+      "name": "auth.scim_tokens",
+      "predicate": "true"
+    },
+    {
+      "name": "auth.scim_users",
+      "predicate": "user_id is null or user_id::text not in('a444cbbd-e5a9-4004-b895-e46be5db404e','95a51aff-19e6-4c13-ba8a-6500126e4583','7449494d-dd9e-4d71-98fa-beffe880bcc5')"
+    },
+    {
+      "name": "auth.sessions",
+      "predicate": "user_id is null or user_id::text not in('a444cbbd-e5a9-4004-b895-e46be5db404e','95a51aff-19e6-4c13-ba8a-6500126e4583','7449494d-dd9e-4d71-98fa-beffe880bcc5')"
+    },
+    {
+      "name": "auth.sso_domains",
+      "predicate": "true"
+    },
+    {
+      "name": "auth.sso_providers",
+      "predicate": "true"
+    },
+    {
+      "name": "auth.users",
+      "predicate": "id not in('a444cbbd-e5a9-4004-b895-e46be5db404e','95a51aff-19e6-4c13-ba8a-6500126e4583','7449494d-dd9e-4d71-98fa-beffe880bcc5')"
+    },
+    {
+      "name": "auth.webauthn_challenges",
+      "predicate": "user_id is null or user_id::text not in('a444cbbd-e5a9-4004-b895-e46be5db404e','95a51aff-19e6-4c13-ba8a-6500126e4583','7449494d-dd9e-4d71-98fa-beffe880bcc5')"
+    },
+    {
+      "name": "auth.webauthn_credentials",
+      "predicate": "user_id is null or user_id::text not in('a444cbbd-e5a9-4004-b895-e46be5db404e','95a51aff-19e6-4c13-ba8a-6500126e4583','7449494d-dd9e-4d71-98fa-beffe880bcc5')"
+    },
+    {
+      "name": "cron.job",
+      "predicate": "true"
+    },
+    {
+      "name": "cron.job_run_details",
+      "predicate": "false"
+    },
+    {
+      "name": "fmz6e10_private.audit",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e10_private.config",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e10_private.identities",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e10_private.operators",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e10_private.participants",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e10_private.plans",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e10_private.proposals",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e10_private.requests",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e10_private.source_heads",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e10_private.source_versions",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e10_private.windows",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e10_private.workspaces",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e11_audit_private.actions",
+      "predicate": "run_id not in (select run_id from fmz6e11_request_private.receipts where window_id='8f71e3da-fa9f-412d-9bf0-9bdb8527c2c9' union select unnest(array['e4fc9dd9-ed23-4fb0-bb43-ebb9a332e69f','48622242-af4c-4886-9826-d5e38a6970cd','8f640689-5146-411c-aa1f-c4086b6172bc']::uuid[]))"
+    },
+    {
+      "name": "fmz6e11_audit_private.actors",
+      "predicate": "id not in('a444cbbd-e5a9-4004-b895-e46be5db404e','95a51aff-19e6-4c13-ba8a-6500126e4583','7449494d-dd9e-4d71-98fa-beffe880bcc5')"
+    },
+    {
+      "name": "fmz6e11_audit_private.bindings",
+      "predicate": "action_id not in(select id from fmz6e11_audit_private.actions where run_id in (select run_id from fmz6e11_request_private.receipts where window_id='8f71e3da-fa9f-412d-9bf0-9bdb8527c2c9' union select unnest(array['e4fc9dd9-ed23-4fb0-bb43-ebb9a332e69f','48622242-af4c-4886-9826-d5e38a6970cd','8f640689-5146-411c-aa1f-c4086b6172bc']::uuid[])))"
+    },
+    {
+      "name": "fmz6e11_audit_private.fixture",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e11_audit_private.forbidden_fixture",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e11_audit_private.relations",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e11_audit_private.runs",
+      "predicate": "id not in (select run_id from fmz6e11_request_private.receipts where window_id='8f71e3da-fa9f-412d-9bf0-9bdb8527c2c9' union select unnest(array['e4fc9dd9-ed23-4fb0-bb43-ebb9a332e69f','48622242-af4c-4886-9826-d5e38a6970cd','8f640689-5146-411c-aa1f-c4086b6172bc']::uuid[]))"
+    },
+    {
+      "name": "fmz6e11_audit_private.writes",
+      "predicate": "run_id not in (select run_id from fmz6e11_request_private.receipts where window_id='8f71e3da-fa9f-412d-9bf0-9bdb8527c2c9' union select unnest(array['e4fc9dd9-ed23-4fb0-bb43-ebb9a332e69f','48622242-af4c-4886-9826-d5e38a6970cd','8f640689-5146-411c-aa1f-c4086b6172bc']::uuid[]))"
+    },
+    {
+      "name": "fmz6e11_controller_private.evidence",
+      "predicate": "run_id<>'4b0bb35f-02b5-4a9d-92d7-c29995691460'"
+    },
+    {
+      "name": "fmz6e11_controller_private.runs",
+      "predicate": "id<>'4b0bb35f-02b5-4a9d-92d7-c29995691460'"
+    },
+    {
+      "name": "fmz6e11_controller_private.steps",
+      "predicate": "run_id<>'4b0bb35f-02b5-4a9d-92d7-c29995691460'"
+    },
+    {
+      "name": "fmz6e11_private.audit",
+      "predicate": "window_id<>'8f71e3da-fa9f-412d-9bf0-9bdb8527c2c9'"
+    },
+    {
+      "name": "fmz6e11_private.b_states",
+      "predicate": "workspace_id not in('bae8c443-683f-4f53-896f-83811ecd643d','dbbf85e9-3ff0-430a-a52e-b9c720b9761e')"
+    },
+    {
+      "name": "fmz6e11_private.b_versions",
+      "predicate": "workspace_id not in('bae8c443-683f-4f53-896f-83811ecd643d','dbbf85e9-3ff0-430a-a52e-b9c720b9761e')"
+    },
+    {
+      "name": "fmz6e11_private.config",
+      "predicate": "false"
+    },
+    {
+      "name": "fmz6e11_private.events",
+      "predicate": "window_id<>'8f71e3da-fa9f-412d-9bf0-9bdb8527c2c9'"
+    },
+    {
+      "name": "fmz6e11_private.identities",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e11_private.inbox_state",
+      "predicate": "workspace_id not in('bae8c443-683f-4f53-896f-83811ecd643d','dbbf85e9-3ff0-430a-a52e-b9c720b9761e')"
+    },
+    {
+      "name": "fmz6e11_private.operators",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e11_private.participants",
+      "predicate": "window_id<>'8f71e3da-fa9f-412d-9bf0-9bdb8527c2c9'"
+    },
+    {
+      "name": "fmz6e11_private.plans",
+      "predicate": "workspace_id not in('bae8c443-683f-4f53-896f-83811ecd643d','dbbf85e9-3ff0-430a-a52e-b9c720b9761e')"
+    },
+    {
+      "name": "fmz6e11_private.proposals",
+      "predicate": "workspace_id not in('bae8c443-683f-4f53-896f-83811ecd643d','dbbf85e9-3ff0-430a-a52e-b9c720b9761e')"
+    },
+    {
+      "name": "fmz6e11_private.requests",
+      "predicate": "window_id<>'8f71e3da-fa9f-412d-9bf0-9bdb8527c2c9'"
+    },
+    {
+      "name": "fmz6e11_private.source_heads",
+      "predicate": "workspace_id not in('bae8c443-683f-4f53-896f-83811ecd643d','dbbf85e9-3ff0-430a-a52e-b9c720b9761e')"
+    },
+    {
+      "name": "fmz6e11_private.source_versions",
+      "predicate": "workspace_id not in('bae8c443-683f-4f53-896f-83811ecd643d','dbbf85e9-3ff0-430a-a52e-b9c720b9761e')"
+    },
+    {
+      "name": "fmz6e11_private.windows",
+      "predicate": "id<>'8f71e3da-fa9f-412d-9bf0-9bdb8527c2c9'"
+    },
+    {
+      "name": "fmz6e11_private.workspaces",
+      "predicate": "window_id<>'8f71e3da-fa9f-412d-9bf0-9bdb8527c2c9'"
+    },
+    {
+      "name": "fmz6e11_request_private.control",
+      "predicate": "false"
+    },
+    {
+      "name": "fmz6e11_request_private.receipts",
+      "predicate": "window_id<>'8f71e3da-fa9f-412d-9bf0-9bdb8527c2c9'"
+    },
+    {
+      "name": "fmz6e11_workflow_audit.control",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e11_workflow_audit.intents",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e9_private.config",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e9_private.requests",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e9_private.safety",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e9_private.subjects",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz6e9_private.versions",
+      "predicate": "true"
+    },
+    {
+      "name": "fmz_ci_auth_observer.events",
+      "predicate": "false"
+    },
+    {
+      "name": "legacy_auth_private.client_invitations",
+      "predicate": "true"
+    },
+    {
+      "name": "public.ai_action_decisions",
+      "predicate": "true"
+    },
+    {
+      "name": "public.ai_action_proposals",
+      "predicate": "true"
+    },
+    {
+      "name": "public.ai_analysis_lifecycle_requests",
+      "predicate": "true"
+    },
+    {
+      "name": "public.ai_analysis_preferences",
+      "predicate": "true"
+    },
+    {
+      "name": "public.ai_analysis_results",
+      "predicate": "true"
+    },
+    {
+      "name": "public.ai_consent_events",
+      "predicate": "true"
+    },
+    {
+      "name": "public.ai_context_manifests",
+      "predicate": "true"
+    },
+    {
+      "name": "public.ai_data_lifecycle_requests",
+      "predicate": "true"
+    },
+    {
+      "name": "public.ai_member_safety_state",
+      "predicate": "true"
+    },
+    {
+      "name": "public.ai_messages",
+      "predicate": "true"
+    },
+    {
+      "name": "public.ai_threads",
+      "predicate": "true"
+    },
+    {
+      "name": "public.body_measurements",
+      "predicate": "true"
+    },
+    {
+      "name": "public.coach_workspaces",
+      "predicate": "true"
+    },
+    {
+      "name": "public.entitlements",
+      "predicate": "true"
+    },
+    {
+      "name": "public.exercises",
+      "predicate": "true"
+    },
+    {
+      "name": "public.fmz6e9_audit",
+      "predicate": "true"
+    },
+    {
+      "name": "public.fmz6e9_notices",
+      "predicate": "true"
+    },
+    {
+      "name": "public.food_aliases",
+      "predicate": "true"
+    },
+    {
+      "name": "public.food_log_items",
+      "predicate": "true"
+    },
+    {
+      "name": "public.food_logs",
+      "predicate": "true"
+    },
+    {
+      "name": "public.food_portions",
+      "predicate": "true"
+    },
+    {
+      "name": "public.foods",
+      "predicate": "true"
+    },
+    {
+      "name": "public.member_app_preferences",
+      "predicate": "true"
+    },
+    {
+      "name": "public.member_notifications",
+      "predicate": "true"
+    },
+    {
+      "name": "public.nutrition_food_ingestions",
+      "predicate": "true"
+    },
+    {
+      "name": "public.nutrition_off_catalog_releases",
+      "predicate": "true"
+    },
+    {
+      "name": "public.nutrition_off_product_names",
+      "predicate": "true"
+    },
+    {
+      "name": "public.nutrition_off_products",
+      "predicate": "true"
+    },
+    {
+      "name": "public.nutrition_preferences",
+      "predicate": "true"
+    },
+    {
+      "name": "public.nutrition_provider_food_cache",
+      "predicate": "true"
+    },
+    {
+      "name": "public.nutrition_provider_query_cache",
+      "predicate": "true"
+    },
+    {
+      "name": "public.nutrition_provider_rate_buckets",
+      "predicate": "true"
+    },
+    {
+      "name": "public.nutrition_provider_runtime_state",
+      "predicate": "true"
+    },
+    {
+      "name": "public.nutrition_targets",
+      "predicate": "true"
+    },
+    {
+      "name": "public.profiles",
+      "predicate": "true"
+    },
+    {
+      "name": "public.progress_goals",
+      "predicate": "true"
+    },
+    {
+      "name": "public.progress_preferences",
+      "predicate": "true"
+    },
+    {
+      "name": "public.recovery_logs",
+      "predicate": "true"
+    },
+    {
+      "name": "public.training_plan_days",
+      "predicate": "true"
+    },
+    {
+      "name": "public.training_plan_exercises",
+      "predicate": "true"
+    },
+    {
+      "name": "public.training_plans",
+      "predicate": "true"
+    },
+    {
+      "name": "public.user_onboarding",
+      "predicate": "true"
+    },
+    {
+      "name": "public.user_settings",
+      "predicate": "true"
+    },
+    {
+      "name": "public.weight_logs",
+      "predicate": "true"
+    },
+    {
+      "name": "public.workout_sessions",
+      "predicate": "true"
+    },
+    {
+      "name": "public.workout_set_logs",
+      "predicate": "true"
+    },
+    {
+      "name": "realtime.messages",
+      "predicate": "true"
+    },
+    {
+      "name": "realtime.messages_2026_10_17",
+      "predicate": "true"
+    },
+    {
+      "name": "realtime.messages_2026_10_18",
+      "predicate": "true"
+    },
+    {
+      "name": "realtime.messages_2026_10_19",
+      "predicate": "true"
+    },
+    {
+      "name": "realtime.messages_2026_10_20",
+      "predicate": "true"
+    },
+    {
+      "name": "realtime.messages_2026_10_21",
+      "predicate": "true"
+    },
+    {
+      "name": "realtime.schema_migrations",
+      "predicate": "true"
+    },
+    {
+      "name": "realtime.subscription",
+      "predicate": "true"
+    },
+    {
+      "name": "storage.buckets",
+      "predicate": "true"
+    },
+    {
+      "name": "storage.buckets_analytics",
+      "predicate": "true"
+    },
+    {
+      "name": "storage.buckets_vectors",
+      "predicate": "true"
+    },
+    {
+      "name": "storage.iceberg_namespaces",
+      "predicate": "true"
+    },
+    {
+      "name": "storage.iceberg_tables",
+      "predicate": "true"
+    },
+    {
+      "name": "storage.migrations",
+      "predicate": "true"
+    },
+    {
+      "name": "storage.objects",
+      "predicate": "true"
+    },
+    {
+      "name": "storage.s3_multipart_uploads",
+      "predicate": "true"
+    },
+    {
+      "name": "storage.s3_multipart_uploads_parts",
+      "predicate": "true"
+    },
+    {
+      "name": "storage.vector_indexes",
+      "predicate": "true"
+    },
+    {
+      "name": "supabase_functions.hooks",
+      "predicate": "true"
+    },
+    {
+      "name": "supabase_functions.migrations",
+      "predicate": "true"
+    },
+    {
+      "name": "supabase_migrations.schema_migrations",
+      "predicate": "version<>'20261018070231'"
+    },
+    {
+      "name": "vault.secrets",
+      "predicate": "true"
+    }
+  ],
+  "query_sha256": "63f7a13896a52b6f53644bae535af64301fd7ace934e92c30326b76798b9adac",
+  "row_limit": 106496,
+  "source_sha256": "5a1ff1003484092c5d4f7679616196d2380aa5b0442478b6baf4294d4b6668ea"
+}

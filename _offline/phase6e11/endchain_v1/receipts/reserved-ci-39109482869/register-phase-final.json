@@ -1,0 +1,2700 @@
+{
+  "rows": [
+    {
+      "action": "stream_after_cleanup_begin",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02205",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "39a735c5dae2019f7ec2a41de9b4b8f37d979b14d999d9abd06b7f5d1bb9c95a",
+      "timeout_ms": 5000,
+      "trace_command": 1503,
+      "writeset": []
+    },
+    {
+      "action": "stream_after_cleanup_guard",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02206",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "810cd66d8d73d499bc7d3996e01570ee70418a29d9176388b8d3c57b60347c55",
+      "timeout_ms": 5000,
+      "trace_command": 1504,
+      "writeset": []
+    },
+    {
+      "action": "stream_after_cleanup_canonical",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02207",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "7d10b9ef765a9886d89e423ac8a6def20e8589493a8958af253431c52c1d2183",
+      "timeout_ms": 5000,
+      "trace_command": 1505,
+      "writeset": []
+    },
+    {
+      "action": "stream_after_cleanup_inventory",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02208",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "6918384197bebf43afd6b0416425ee07f1ffb2b807f1dd7928925ad4c845540b",
+      "timeout_ms": 5000,
+      "trace_command": 1506,
+      "writeset": []
+    },
+    {
+      "action": "stream_after_cleanup_reader_bind",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02209",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "9b54447691ffc47a963a1a4e94b2fe52809eb843c321b7771d7bef9b72716888",
+      "timeout_ms": 5000,
+      "trace_command": 1507,
+      "writeset": []
+    },
+    {
+      "action": "stream_after_cleanup_io",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02210",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "839978472c6d48d99c412e48fa9defe29ad608b7c8601feaf43c604a6534d7de",
+      "timeout_ms": 5000,
+      "trace_command": 1508,
+      "writeset": []
+    },
+    {
+      "action": "stream_after_cleanup_utility",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02211",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "ad986b3d1eb56fa4634cd7159fe2771ff6f1e9ace23716f57c3f832c912bea17",
+      "timeout_ms": 5000,
+      "trace_command": 1509,
+      "writeset": []
+    },
+    {
+      "action": "stream_after_cleanup_io",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02212",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "839978472c6d48d99c412e48fa9defe29ad608b7c8601feaf43c604a6534d7de",
+      "timeout_ms": 5000,
+      "trace_command": 1510,
+      "writeset": []
+    },
+    {
+      "action": "stream_after_cleanup_utility",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02213",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "cf7318928b9368b95994533538a643717f0de1aaea75beca79fb02ecae5482b5",
+      "timeout_ms": 5000,
+      "trace_command": 1511,
+      "writeset": []
+    },
+    {
+      "action": "stream_after_cleanup_io",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02214",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "839978472c6d48d99c412e48fa9defe29ad608b7c8601feaf43c604a6534d7de",
+      "timeout_ms": 5000,
+      "trace_command": 1512,
+      "writeset": []
+    },
+    {
+      "action": "stream_after_cleanup_utility",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02215",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "5c7142b90557fd5ea876e4d92732e0d46e0deda5f40a7df211aa7341b7f52cb7",
+      "timeout_ms": 5000,
+      "trace_command": 1513,
+      "writeset": []
+    },
+    {
+      "action": "stream_after_cleanup_io",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02216",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "839978472c6d48d99c412e48fa9defe29ad608b7c8601feaf43c604a6534d7de",
+      "timeout_ms": 5000,
+      "trace_command": 1514,
+      "writeset": []
+    },
+    {
+      "action": "stream_after_cleanup_utility",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02217",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "1701f0c7aadb2ebb3b3e40ce6e6823010eeeb672426589e9bfc0fe80be50a9c7",
+      "timeout_ms": 5000,
+      "trace_command": 1515,
+      "writeset": []
+    },
+    {
+      "action": "stream_after_cleanup_io",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02218",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "839978472c6d48d99c412e48fa9defe29ad608b7c8601feaf43c604a6534d7de",
+      "timeout_ms": 5000,
+      "trace_command": 1516,
+      "writeset": []
+    },
+    {
+      "action": "stream_after_cleanup_io_terminal",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02219",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "480104242f7f43510973787f3aea7f8180781b2f72c6cf049629199c40e12eba",
+      "timeout_ms": 5000,
+      "trace_command": 1517,
+      "writeset": []
+    },
+    {
+      "action": "stream_after_cleanup_final_guard",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02220",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "810cd66d8d73d499bc7d3996e01570ee70418a29d9176388b8d3c57b60347c55",
+      "timeout_ms": 5000,
+      "trace_command": 1518,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02221",
+      "optional": true,
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "63f7a13896a52b6f53644bae535af64301fd7ace934e92c30326b76798b9adac",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02222",
+      "optional": true,
+      "ordinal_in_action": 1,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "63f7a13896a52b6f53644bae535af64301fd7ace934e92c30326b76798b9adac",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02223",
+      "optional": true,
+      "ordinal_in_action": 2,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "63f7a13896a52b6f53644bae535af64301fd7ace934e92c30326b76798b9adac",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02224",
+      "optional": true,
+      "ordinal_in_action": 3,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "63f7a13896a52b6f53644bae535af64301fd7ace934e92c30326b76798b9adac",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02225",
+      "optional": true,
+      "ordinal_in_action": 4,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "63f7a13896a52b6f53644bae535af64301fd7ace934e92c30326b76798b9adac",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02226",
+      "optional": true,
+      "ordinal_in_action": 5,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "63f7a13896a52b6f53644bae535af64301fd7ace934e92c30326b76798b9adac",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02227",
+      "optional": true,
+      "ordinal_in_action": 6,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "63f7a13896a52b6f53644bae535af64301fd7ace934e92c30326b76798b9adac",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02228",
+      "optional": true,
+      "ordinal_in_action": 7,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "63f7a13896a52b6f53644bae535af64301fd7ace934e92c30326b76798b9adac",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02229",
+      "optional": true,
+      "ordinal_in_action": 8,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "63f7a13896a52b6f53644bae535af64301fd7ace934e92c30326b76798b9adac",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02230",
+      "optional": true,
+      "ordinal_in_action": 9,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "63f7a13896a52b6f53644bae535af64301fd7ace934e92c30326b76798b9adac",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02231",
+      "optional": true,
+      "ordinal_in_action": 10,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "63f7a13896a52b6f53644bae535af64301fd7ace934e92c30326b76798b9adac",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02232",
+      "optional": true,
+      "ordinal_in_action": 11,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "63f7a13896a52b6f53644bae535af64301fd7ace934e92c30326b76798b9adac",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02233",
+      "optional": true,
+      "ordinal_in_action": 12,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "63f7a13896a52b6f53644bae535af64301fd7ace934e92c30326b76798b9adac",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02234",
+      "optional": true,
+      "ordinal_in_action": 13,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "63f7a13896a52b6f53644bae535af64301fd7ace934e92c30326b76798b9adac",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02235",
+      "optional": true,
+      "ordinal_in_action": 14,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "63f7a13896a52b6f53644bae535af64301fd7ace934e92c30326b76798b9adac",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02236",
+      "optional": true,
+      "ordinal_in_action": 15,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "63f7a13896a52b6f53644bae535af64301fd7ace934e92c30326b76798b9adac",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02237",
+      "optional": true,
+      "ordinal_in_action": 16,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "63f7a13896a52b6f53644bae535af64301fd7ace934e92c30326b76798b9adac",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02238",
+      "optional": true,
+      "ordinal_in_action": 17,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "63f7a13896a52b6f53644bae535af64301fd7ace934e92c30326b76798b9adac",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02239",
+      "optional": true,
+      "ordinal_in_action": 18,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "63f7a13896a52b6f53644bae535af64301fd7ace934e92c30326b76798b9adac",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02240",
+      "optional": true,
+      "ordinal_in_action": 19,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "63f7a13896a52b6f53644bae535af64301fd7ace934e92c30326b76798b9adac",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02241",
+      "optional": true,
+      "ordinal_in_action": 20,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "63f7a13896a52b6f53644bae535af64301fd7ace934e92c30326b76798b9adac",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02242",
+      "optional": true,
+      "ordinal_in_action": 21,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "63f7a13896a52b6f53644bae535af64301fd7ace934e92c30326b76798b9adac",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02243",
+      "optional": true,
+      "ordinal_in_action": 22,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "63f7a13896a52b6f53644bae535af64301fd7ace934e92c30326b76798b9adac",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "bounded_additional_fetch_and_io",
+      "id": "cmd_02244",
+      "optional": true,
+      "ordinal_in_action": 23,
+      "phase": "final",
+      "proof": [
+        "same snapshot",
+        "one complete frame",
+        "numeric zero-temp delta"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "63f7a13896a52b6f53644bae535af64301fd7ace934e92c30326b76798b9adac",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "stream_after_cleanup_rollback",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02245",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710",
+      "timeout_ms": 5000,
+      "trace_command": 1519,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_begin",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02246",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "3eb12e5bafe877f825399d2905523e26201831b46d6ebc54e734cdb0961a8fd5",
+      "timeout_ms": 5000,
+      "trace_command": 1520,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_timeout",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02247",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "2f0ad9318d8daad4452e9726e67089ca3909981bbd333d0f80972dd3f8470f2c",
+      "timeout_ms": 5000,
+      "trace_command": 1521,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_readonly",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02248",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "654b3989d19937e3700b1ef5374ce0b4c77f8460eb8318dd1f40d31c27c21b68",
+      "timeout_ms": 5000,
+      "trace_command": 1522,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_io_bind",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02249",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "437380dddfde7739b50fb08737e8fb6feaf1dffb0c273da602289e446c3cf998",
+      "timeout_ms": 5000,
+      "trace_command": 1523,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_io_sample",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02250",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0b8689aa5a9814bf7225969b10ec65eadce6b7aaa29dc372f6d9b9a19dc3b0f9",
+      "timeout_ms": 5000,
+      "trace_command": 1524,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_io_bind",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02251",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "143290e100a36ca810128a83a7035befaced99a17ab337515bd67f694f347570",
+      "timeout_ms": 5000,
+      "trace_command": 1525,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_io_sample",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02252",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0b8689aa5a9814bf7225969b10ec65eadce6b7aaa29dc372f6d9b9a19dc3b0f9",
+      "timeout_ms": 5000,
+      "trace_command": 1526,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_access",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02253",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "ad5ff4effb3cdfc8647f1bfa24815040cf3b1b20537b36d4f163ee36ccc8cb23",
+      "timeout_ms": 5000,
+      "trace_command": 1527,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_io_bind",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02254",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "7831789520a4b6399b38706b38d8f1e7d7b6fd585f26b15d3d47f78d2d348579",
+      "timeout_ms": 5000,
+      "trace_command": 1528,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_io_sample",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02255",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0b8689aa5a9814bf7225969b10ec65eadce6b7aaa29dc372f6d9b9a19dc3b0f9",
+      "timeout_ms": 5000,
+      "trace_command": 1529,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_migrations",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02256",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "c1b191e76b2023233a8ef5feef5da7cc838116790669bb55e5db23cce0b36ffd",
+      "timeout_ms": 5000,
+      "trace_command": 1530,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_io_bind",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02257",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0521f46856d508f3ed746032a08c893e8d269767c54a9d81ef80f21a47d5f9fc",
+      "timeout_ms": 5000,
+      "trace_command": 1531,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_io_sample",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02258",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0b8689aa5a9814bf7225969b10ec65eadce6b7aaa29dc372f6d9b9a19dc3b0f9",
+      "timeout_ms": 5000,
+      "trace_command": 1532,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_catalog",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02259",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "44d02a45d91c28596f639b7c8318f87cff2bf0ce4c15d97bdef7be286f827b93",
+      "timeout_ms": 5000,
+      "trace_command": 1533,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_io_bind",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02260",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "96b664380256db558c9f33c23d61e94de601ea6a53a601879d6f3a5caaa223cb",
+      "timeout_ms": 5000,
+      "trace_command": 1534,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_io_sample",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02261",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0b8689aa5a9814bf7225969b10ec65eadce6b7aaa29dc372f6d9b9a19dc3b0f9",
+      "timeout_ms": 5000,
+      "trace_command": 1535,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_absence",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02262",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "state_after": {
+        "controls": false,
+        "guard": false,
+        "observer": false
+      },
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "a028588b1357717f917d25dd0873f8882120c7e5207db5c0563beb1739ca97a0",
+      "timeout_ms": 5000,
+      "trace_command": 1536,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_io_sample",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02263",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "0b8689aa5a9814bf7225969b10ec65eadce6b7aaa29dc372f6d9b9a19dc3b0f9",
+      "timeout_ms": 5000,
+      "trace_command": 1537,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_io_closing_witness",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02264",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "8b86e55eb52434a62227554d1d6da0548883b60528e2150b8add16090341dda4",
+      "timeout_ms": 5000,
+      "trace_command": 1538,
+      "writeset": []
+    },
+    {
+      "action": "gates_after_cleanup_rollback",
+      "action_binding": {
+        "kind": "lifecycle",
+        "operation": "remove"
+      },
+      "id": "cmd_02265",
+      "infrastructure_writeset": "readonly",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "source identity",
+        "before/after or read-only receipt"
+      ],
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710",
+      "timeout_ms": 5000,
+      "trace_command": 1539,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "id": "cmd_02266",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "3eb12e5bafe877f825399d2905523e26201831b46d6ebc54e734cdb0961a8fd5",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "id": "cmd_02267",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "654b3989d19937e3700b1ef5374ce0b4c77f8460eb8318dd1f40d31c27c21b68",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "id": "cmd_02268",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "4c37732613791f84484c38265c0be027569ee1b7e1d55d69de16b4f9668159ce",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "id": "cmd_02269",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02270",
+      "observed_commands": 2,
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02271",
+      "observed_commands": 2,
+      "ordinal_in_action": 1,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02272",
+      "observed_commands": 2,
+      "ordinal_in_action": 2,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02273",
+      "observed_commands": 2,
+      "ordinal_in_action": 3,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02274",
+      "observed_commands": 2,
+      "ordinal_in_action": 4,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02275",
+      "observed_commands": 2,
+      "ordinal_in_action": 5,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02276",
+      "observed_commands": 2,
+      "ordinal_in_action": 6,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02277",
+      "observed_commands": 2,
+      "ordinal_in_action": 7,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02278",
+      "observed_commands": 2,
+      "ordinal_in_action": 8,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02279",
+      "observed_commands": 2,
+      "ordinal_in_action": 9,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02280",
+      "observed_commands": 2,
+      "ordinal_in_action": 10,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02281",
+      "observed_commands": 2,
+      "ordinal_in_action": 11,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02282",
+      "observed_commands": 2,
+      "ordinal_in_action": 12,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02283",
+      "observed_commands": 2,
+      "ordinal_in_action": 13,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02284",
+      "observed_commands": 2,
+      "ordinal_in_action": 14,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02285",
+      "observed_commands": 2,
+      "ordinal_in_action": 15,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02286",
+      "observed_commands": 2,
+      "ordinal_in_action": 16,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02287",
+      "observed_commands": 2,
+      "ordinal_in_action": 17,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02288",
+      "observed_commands": 2,
+      "ordinal_in_action": 18,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02289",
+      "observed_commands": 2,
+      "ordinal_in_action": 19,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02290",
+      "observed_commands": 2,
+      "ordinal_in_action": 20,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02291",
+      "observed_commands": 2,
+      "ordinal_in_action": 21,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02292",
+      "observed_commands": 2,
+      "ordinal_in_action": 22,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02293",
+      "observed_commands": 2,
+      "ordinal_in_action": 23,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02294",
+      "observed_commands": 2,
+      "ordinal_in_action": 24,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02295",
+      "observed_commands": 2,
+      "ordinal_in_action": 25,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02296",
+      "observed_commands": 2,
+      "ordinal_in_action": 26,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02297",
+      "observed_commands": 2,
+      "ordinal_in_action": 27,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02298",
+      "observed_commands": 2,
+      "ordinal_in_action": 28,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02299",
+      "observed_commands": 2,
+      "ordinal_in_action": 29,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02300",
+      "observed_commands": 2,
+      "ordinal_in_action": 30,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02301",
+      "observed_commands": 2,
+      "ordinal_in_action": 31,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02302",
+      "observed_commands": 2,
+      "ordinal_in_action": 32,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02303",
+      "observed_commands": 2,
+      "ordinal_in_action": 33,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02304",
+      "observed_commands": 2,
+      "ordinal_in_action": 34,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02305",
+      "observed_commands": 2,
+      "ordinal_in_action": 35,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02306",
+      "observed_commands": 2,
+      "ordinal_in_action": 36,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02307",
+      "observed_commands": 2,
+      "ordinal_in_action": 37,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02308",
+      "observed_commands": 2,
+      "ordinal_in_action": 38,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02309",
+      "observed_commands": 2,
+      "ordinal_in_action": 39,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02310",
+      "observed_commands": 2,
+      "ordinal_in_action": 40,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02311",
+      "observed_commands": 2,
+      "ordinal_in_action": 41,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02312",
+      "observed_commands": 2,
+      "ordinal_in_action": 42,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02313",
+      "observed_commands": 2,
+      "ordinal_in_action": 43,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02314",
+      "observed_commands": 2,
+      "ordinal_in_action": 44,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02315",
+      "observed_commands": 2,
+      "ordinal_in_action": 45,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02316",
+      "observed_commands": 2,
+      "ordinal_in_action": 46,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02317",
+      "observed_commands": 2,
+      "ordinal_in_action": 47,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02318",
+      "observed_commands": 2,
+      "ordinal_in_action": 48,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02319",
+      "observed_commands": 2,
+      "ordinal_in_action": 49,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02320",
+      "observed_commands": 2,
+      "ordinal_in_action": 50,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02321",
+      "observed_commands": 2,
+      "ordinal_in_action": 51,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02322",
+      "observed_commands": 2,
+      "ordinal_in_action": 52,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02323",
+      "observed_commands": 2,
+      "ordinal_in_action": 53,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02324",
+      "observed_commands": 2,
+      "ordinal_in_action": 54,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02325",
+      "observed_commands": 2,
+      "ordinal_in_action": 55,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02326",
+      "observed_commands": 2,
+      "ordinal_in_action": 56,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02327",
+      "observed_commands": 2,
+      "ordinal_in_action": 57,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02328",
+      "observed_commands": 2,
+      "ordinal_in_action": 58,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02329",
+      "observed_commands": 2,
+      "ordinal_in_action": 59,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02330",
+      "observed_commands": 2,
+      "ordinal_in_action": 60,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02331",
+      "observed_commands": 2,
+      "ordinal_in_action": 61,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02332",
+      "observed_commands": 2,
+      "ordinal_in_action": 62,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "classification": "reserved capacity, not observed hosted SQL",
+      "id": "cmd_02333",
+      "observed_commands": 2,
+      "ordinal_in_action": 63,
+      "phase": "final",
+      "proof": [
+        "CLI exit",
+        "numeric unknown envelope",
+        "independent exact migration identity"
+      ],
+      "reservation_only": true,
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "id": "cmd_02334",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "3eb12e5bafe877f825399d2905523e26201831b46d6ebc54e734cdb0961a8fd5",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "id": "cmd_02335",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "654b3989d19937e3700b1ef5374ce0b4c77f8460eb8318dd1f40d31c27c21b68",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "id": "cmd_02336",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "4c37732613791f84484c38265c0be027569ee1b7e1d55d69de16b4f9668159ce",
+      "timeout_ms": 5000,
+      "writeset": []
+    },
+    {
+      "action": "empty_cli_dry_run",
+      "id": "cmd_02337",
+      "ordinal_in_action": 0,
+      "phase": "final",
+      "retry": false,
+      "source_bundle_sha": "625db892fed7606f9cc410733f7babe75e31867ecd92ce470cfef8da044def2a",
+      "sql": 1,
+      "stop": "NO_GO; no dependent mutation; identity-bound safety suffix",
+      "template_sha": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710",
+      "timeout_ms": 5000,
+      "writeset": []
+    }
+  ]
+}

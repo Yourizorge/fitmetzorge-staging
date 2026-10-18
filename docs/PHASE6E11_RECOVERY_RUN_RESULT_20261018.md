@@ -58,6 +58,7 @@ Local GoTrue: 2.197.0. No query/connect deadline was increased.
 
 Run: `4b0bb35f-02b5-4a9d-92d7-c29995691460`.
 Exact admitted source: `306a7559fd25ac4de770ea63059616e2f34ad1dc`.
+Management window: 18 October 2026, 09:41:38-09:42:08 Europe/Amsterdam (CEST).
 **21 SQL commands**, consisting of 4 read-only preflight and 17 baseline
 protocol commands, including confirmed ROLLBACK. The registered worker lasted
 7765 ms; the command meter records rollback at 8782 ms from its start.
@@ -144,7 +145,8 @@ can still block. No binding is reused across streams or from historical logs.
 The correction does not retroactively admit the stopped run. Local tests:212
 Python PASS. A new disposable PG17 interleaving check and complete CI validation
 are prepared; their outcome will be recorded separately. No new hosted attempt
-is authorized by that validation.
+is authorized by that validation. The final local suite contains 213 passing
+Python tests; unchanged Node regressions remain 132/132.
 
 Final local safety review also requires `track_utility=on` and `track=top/all`
 in both existing numeric snapshots. Disabled or missing utility tracking must
@@ -156,6 +158,41 @@ that these counters aggregate by database, database user, query family and
 top-level status; they are not per-session audit identities. The collector
 retains those limits and never treats a numeric family as an Auth identity.
 
+Intermediate complete CI39109175578 at
+`6956444bf7d27882a82a026e31fc0b1e0738d942` passed the real PG17 interleaving
+check: one source-bound FETCH remains separate from an independently identified
+second connection's query; an ambiguous first observation and double FETCH are
+denied. The full 45-migration/Auth/workflow/cleanup/fault composition also passed.
+Its 1963-file archive hash is
+`7f79fb2189088b2d055e08e0655c44fd8c56bc4f57b8481bf855eb6048eb849b`.
+This does not cover the later explicit tracking-configuration gate; final-source
+CI39109482869 is separate. Neither CI permits reuse of the consumed hosted run.
+
+### Final corrected source
+
+[CI39109482869](https://github.com/Yourizorge/fitmetzorge-staging/actions/runs/39109482869)
+is **CLEAN_CI_PASS** at
+`ab9d4c0e12e78cfd4cda072b569691364e6851c3`.
+Payload SHA256:
+`10c7199e15a2f7fc097150931f57193e6f8c8ed4272d389f984d7e334a2dbf2f`.
+Archive SHA256:
+`d41e9a12af9cf4f2e911ef869e5d2a62802e94eec9d6d12bf91015953c865c8b`.
+1963 artifact-file hashes verified; 240 exact source files bound.
+
+It passes clean45/45, 205 CI Python tests (the local suite additionally includes
+8 archive-export checks), 132 Node tests, 42 quota checks, 18 real local Auth
+contracts, both full workflow entry states, three real fault paths and six
+PG17 interleaving checks. No mock replaces the native database or GoTrue.
+The complete register is still 2338/2349 with the unchanged phase capacities.
+The final stack pulled the official public.ecr.aws/supabase/postgres:17.6.1.167
+mirror, with the same repository digest and image ID as the earlier GHCR image.
+
+53 selected immutable receipts are committed under
+`_offline/phase6e11/endchain_v1/receipts/reserved-ci-39109482869`.
+Manifest SHA256:
+`cbc78199ff654b78355fbd825cdea981519de111f20d7f97215db42ccad13896`.
+All original archives remain local. **No hosted call followed this PASS.**
+
 ## Preservation and next boundary
 
 Only offline code/tests, evidence, quota candidate, CI label and documentation
@@ -166,12 +203,36 @@ receipt flags .gitattributes because exactly two authorized LF rules were
 appended; a separate scoped check confirms the original prefix and all other
 protected files. This is not described as universal byte-identity.
 
+The post-run strict local check retained its NO_GO at
+`supabase/.temp/phase6e-server-ci-d96cbfd340e64ea2b493ee98f33b8f32/workday-preservation-02f606600d744eb1883a1ab7a35d2f8d.json`:
+1372/1376 files byte-identical, three previously authorized documentation
+prefixes preserved, and only .gitattributes outside that old check's allowlist.
+A separate exact-prefix comparison confirms only the two authorized LF rules.
+M44 remains byte-identical. All 119 archived CI/hosted receipt files also match
+both their original local files and their immutable manifest hashes.
+
 The smallest next boundary is **one separately authorized, new run**, after the
-local query-binding correction has complete source-bound CI, with a fresh
+now-completed local query-binding correction, with fresh source admission and a fresh
 run-specific quota binding. Neither the consumed run nor its migration exception
 may be silently reused. No budget increase is currently indicated; 2349 still
 covers the register. Owner phone review remains closed until a complete hosted
 Auth/Route A/B/audit/delete/cleanup and preservation PASS.
+
+## Commits and publication scope
+
+- b04c939: one-run quota and complete reserved register.
+- a8a9f9e: exact migration boundary and retained comparison evidence.
+- 306a755: five-second DDL and complete pre-hosted CI evidence.
+- 6956444: preserved consumed hosted attempt and utility-binding correction.
+- ab9d4c0: mandatory utility-tracking metadata and negative tests.
+
+Only offline sources, tests, immutable receipts and documentation are published
+to Git, plus the already described unexecuted quota candidate and CI label.
+GitHub Pages excludes all `_offline`, `supabase` and `.github` roots. The final
+publication check verifies the artifact for the actual remote main and 152
+protected runtime assets, plus bounded HTTP probes. That separate publication
+receipt records its exact head rather than inventing a self-referential report
+commit hash. A clean worktree is not claimed: older unrelated changes remain.
 
 External AI calls/cost: 0 / EUR 0.00.
 Real-member AI enabled: NO.
