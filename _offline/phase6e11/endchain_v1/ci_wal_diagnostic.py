@@ -21,8 +21,9 @@ START="""select pg_current_wal_insert_lsn()::text start_lsn,
  current_setting('transaction_read_only')='on' readonly"""
 
 # Description, raw block references, relation IDs and block data never leave SQL.
-INSPECT="""with boundary as materialized(select pg_current_wal_insert_lsn() end_lsn,
- pg_current_wal_flush_lsn() flush_lsn)
+INSPECT="""with boundary_end as materialized(select pg_current_wal_insert_lsn() end_lsn),
+ settled as materialized(select end_lsn,pg_sleep(0.3) from boundary_end),
+ boundary as materialized(select end_lsn,pg_current_wal_flush_lsn() flush_lsn from settled)
  select end_lsn::text end_lsn,flush_lsn::text flush_lsn,
  pg_wal_lsn_diff(end_lsn,%s::pg_lsn)::bigint span_bytes,
  case when flush_lsn>=end_lsn and end_lsn>%s::pg_lsn
@@ -106,7 +107,8 @@ def run(connection,*,environment,ids,context,ci_ca_path,environ=None):
     result={'status':'DIAGNOSTIC_ONLY','full_chain_admission':False,'wal_zero_pass':False,
         'causal_attribution':False,'scope':'cluster_wal_interval_not_exclusive_to_query',
         'queries':[],'commands':0,'limitations':[],'extension_installed':False,
-        'row_contents_exported':False,'query_text_exported':False,'rollback_confirmed':False}
+        'row_contents_exported':False,'query_text_exported':False,'rollback_confirmed':False,
+        'fixed_flush_wait_ms_per_query':300,'max_total_flush_wait_ms':1200,'automatic_retries':0}
     opened=False;phase='preflight'
     def execute(sql,args=()):
         # Always retain a slot for the one rollback after an attempted BEGIN.

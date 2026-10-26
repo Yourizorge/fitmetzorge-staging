@@ -171,6 +171,18 @@ class Tests(unittest.TestCase):
                 self.assertTrue(r['rollback_confirmed']);self.assertFalse(r['queries'][0]['complete'])
                 self.assertNotIn('technical',r['queries'][0])
 
+    def test_fixed_wait_preserves_end_boundary_and_existing_limits(self):
+        self.assertIn('boundary_end as materialized(select pg_current_wal_insert_lsn() end_lsn)',d.INSPECT)
+        self.assertIn('settled as materialized(select end_lsn,pg_sleep(0.3) from boundary_end)',d.INSPECT)
+        self.assertIn('pg_current_wal_flush_lsn() flush_lsn from settled',d.INSPECT)
+        self.assertEqual(d.INSPECT.count('pg_sleep('),1)
+        self.assertNotIn('pg_switch_wal',d.INSPECT)
+        r=self.run_probe(self.connection())
+        self.assertEqual(r['commands'],16)
+        self.assertEqual(r['fixed_flush_wait_ms_per_query'],300)
+        self.assertEqual(r['max_total_flush_wait_ms'],1200)
+        self.assertEqual(r['automatic_retries'],0)
+
     def test_unflushed_boundary_stays_incomplete_without_retry_or_force_flush(self):
         for partial_result in (None,{'record_count':0,'groups':[]}):
             with self.subTest(partial_result=partial_result):

@@ -94,6 +94,23 @@ helper17 and entry15 mock tests pass; live diagnostic results remain separate.
 An independent reviewer found and verified the correction for incomplete
 flush coverage before this diagnostic was dispatched.
 
+Dedicated diagnostic CI40362576305 at46a5c3b rebuilt45/45 but safely stopped
+after7 diagnostic commands: the ACCESS interval ended at `0/282D5B8`, while
+flush was only `0/282D478` (320 bytes behind). Its record inspection is
+incomplete, not a WAL-zero or causal PASS. Rollback and removal of the fresh
+disposable stack are confirmed. No Auth account was created. All91 artifact
+hashes verify; archive SHA256
+`4deb1b353ee502bcee891a1c2ce74b614f5cb1e48f623d3ece48e1dd935bd248`.
+Six byte-identical receipts are in `receipts/ci-40362576305-flush-lag/` under
+the endchain source directory.
+
+The bounded CI-only correction captures the end-LSN first, waits once for300ms
+inside the same inspection command, then verifies flush coverage. It neither
+forces a flush nor retries; lag still stops the diagnostic. Query/connect limits
+stay5s, command cap16, maximum aggregate wait1.2s for four queries. The helper's
+18 mock tests and PG17 parser check pass. This changes no hosted WAL allowance
+and does not retrospectively complete the first diagnostic.
+
 The CI stopped at meter command39 (`gates_before_io_sample`) and confirmed
 rollback at40. Exactly40 charged commands are4 preflight plus36 baseline.
 The native trace has52 entries:16 disposable-CI bootstrap plus36 baseline;
@@ -122,6 +139,18 @@ Selected immutable receipts are in
 Historical failed runs,112 historical pairs and incomplete113 are unchanged.
 
 ## Source and publication
+
+| Agent role | Integrated outcome |
+|---|---|
+| Budget and composition | Full2338/2349 model, safe reserve release and worker-exit ordering; no full CI path claimed after the early stop. Dedicated diagnostic entry is separate. |
+| Data/IO and safety | Numeric failed-pair receipt, bounded metadata-only diagnostic and flush-coverage correction; strict read-WAL gate unchanged. |
+| App integration | New-plan comparison invalidation, exact CI harness/source loading, successful real local app CI and corrected source-bound work-register statuses. |
+| Independent reviewer | Checked hashes/claims and the application proof; found incomplete flush coverage, verified its fix, and admitted source-only diagnostic CI, not hosted execution. |
+
+Agent patches were integrated only by main. The final local endchain unit suite
+passes359 tests, including the32 new diagnostic helper/entry cases. The updated
+work-register/release checks pass17 tests. No agent changed staging data or
+published independently.
 
 - `24574c1666e945b2eff410b13971643570e1d6dd`: combined private candidate,
   validated reserve release, safe child completion, app comparison invalidation
