@@ -1,7 +1,7 @@
 {
   "scope": "local_synthetic_candidate",
-  "hosted11": "NO_GO_PENDING_REAL_CI; NEW_6F8C_RUN_UNUSED_2349_CONDITIONAL; OLD_4B_CONSUMED_NO_GO",
-  "current_source_evidence": "IN_PROGRESS_PENDING_REAL_CI; historical app CI38777789327 at ca3d6c0d529be03ccf559f70b256314547af3e2e proves its own implementation only, not the new candidate",
+  "hosted11": "NO_GO_READONLY_METADATA_WAL_IN_CI40354914899; NEW_6F8C_RUN_UNUSED_2349_CONDITIONAL; OLD_4B_CONSUMED_NO_GO",
+  "current_source_evidence": "CI40354972820 PASS at06b9ac0ad961705a3f7fc8de2fb80d3cf82637a4; private candidate93a6798; real disposable PG17/GoTrue/browser; not hosted admission",
   "historical_source_evidence": "CI38746007554 at ec97596: clean46, 124 composed browser checks including durable offline drafts, prior integration groups and synthetic106496-row PG17 PASS; not current-source or hosted admission",
   "full_day21": false,
   "functions": [
@@ -26,9 +26,10 @@
       "local_ci": {
         "status": "REAL_LOCAL_CI_PASS",
         "evidence": "CI38777789327 atca3d6c0d529be03ccf559f70b256314547af3e2e; candidate792d3c8; real local PG17/GoTrue; not hosted",
-        "current_source_ci": "IN_PROGRESS_PENDING_REAL_CI",
+        "current_source_ci": "REAL_LOCAL_CI40354972820_PASS",
         "historical_current_source_ci": "EXACT_CANDIDATE; STATUS_REGISTER_UPDATED_AFTER_RUN",
-        "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE"
+        "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE",
+        "current_evidence": "CI40354972820 PASS at06b9ac0ad961705a3f7fc8de2fb80d3cf82637a4; private candidate93a6798; real disposable PG17/GoTrue/browser; not hosted admission"
       },
       "hosted": "SELECTED_RELEASE_NOT_PROVEN",
       "review": "SELECTED_HOSTED_REVIEW_NOT_RECORDED",
@@ -66,9 +67,10 @@
       "local_ci": {
         "status": "REAL_LOCAL_CI_PASS",
         "evidence": "CI38777789327 atca3d6c0d529be03ccf559f70b256314547af3e2e; candidate792d3c8; real local PG17/GoTrue; not hosted",
-        "current_source_ci": "IN_PROGRESS_PENDING_REAL_CI",
+        "current_source_ci": "REAL_LOCAL_CI40354972820_PASS",
         "historical_current_source_ci": "EXACT_CANDIDATE; STATUS_REGISTER_UPDATED_AFTER_RUN",
-        "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE"
+        "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE",
+        "current_evidence": "CI40354972820 PASS at06b9ac0ad961705a3f7fc8de2fb80d3cf82637a4; private candidate93a6798; real disposable PG17/GoTrue/browser; not hosted admission"
       },
       "hosted": "SELECTED_RELEASE_NOT_PROVEN",
       "review": "SELECTED_HOSTED_REVIEW_NOT_RECORDED",
@@ -104,9 +106,10 @@
       "local_ci": {
         "status": "REAL_LOCAL_CI_PASS",
         "evidence": "CI38777789327 atca3d6c0d529be03ccf559f70b256314547af3e2e; candidate792d3c8; real local PG17/GoTrue; not hosted",
-        "current_source_ci": "IN_PROGRESS_PENDING_REAL_CI",
+        "current_source_ci": "REAL_LOCAL_CI40354972820_PASS",
         "historical_current_source_ci": "EXACT_CANDIDATE; STATUS_REGISTER_UPDATED_AFTER_RUN",
-        "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE"
+        "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE",
+        "current_evidence": "CI40354972820 PASS at06b9ac0ad961705a3f7fc8de2fb80d3cf82637a4; private candidate93a6798; real disposable PG17/GoTrue/browser; not hosted admission"
       },
       "hosted": "SELECTED_RELEASE_NOT_PROVEN",
       "review": "SELECTED_HOSTED_REVIEW_NOT_RECORDED",
@@ -144,9 +147,10 @@
       "local_ci": {
         "status": "REAL_LOCAL_CI_PASS",
         "evidence": "CI38777789327 atca3d6c0d529be03ccf559f70b256314547af3e2e; candidate792d3c8; real local PG17/GoTrue; not hosted",
-        "current_source_ci": "IN_PROGRESS_PENDING_REAL_CI",
+        "current_source_ci": "REAL_LOCAL_CI40354972820_PASS",
         "historical_current_source_ci": "EXACT_CANDIDATE; STATUS_REGISTER_UPDATED_AFTER_RUN",
-        "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE"
+        "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE",
+        "current_evidence": "CI40354972820 PASS at06b9ac0ad961705a3f7fc8de2fb80d3cf82637a4; private candidate93a6798; real disposable PG17/GoTrue/browser; not hosted admission"
       },
       "hosted": "SELECTED_RELEASE_NOT_PROVEN",
       "review": "SELECTED_HOSTED_REVIEW_NOT_RECORDED",
@@ -182,9 +186,10 @@
       "local_ci": {
         "status": "REAL_LOCAL_CI_PASS",
         "evidence": "CI38777789327 atca3d6c0d529be03ccf559f70b256314547af3e2e; candidate792d3c8; real local PG17/GoTrue; not hosted",
-        "current_source_ci": "IN_PROGRESS_PENDING_REAL_CI",
+        "current_source_ci": "REAL_LOCAL_CI40354972820_PASS",
         "historical_current_source_ci": "EXACT_CANDIDATE; STATUS_REGISTER_UPDATED_AFTER_RUN",
-        "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE"
+        "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE",
+        "current_evidence": "CI40354972820 PASS at06b9ac0ad961705a3f7fc8de2fb80d3cf82637a4; private candidate93a6798; real disposable PG17/GoTrue/browser; not hosted admission"
       },
       "hosted": "SELECTED_RELEASE_NOT_PROVEN",
       "review": "SELECTED_HOSTED_REVIEW_NOT_RECORDED",
@@ -220,9 +225,10 @@
       "local_ci": {
         "status": "REAL_LOCAL_CI_PASS",
         "evidence": "CI38777789327 atca3d6c0d529be03ccf559f70b256314547af3e2e; candidate792d3c8; real local PG17/GoTrue; not hosted",
-        "current_source_ci": "IN_PROGRESS_PENDING_REAL_CI",
+        "current_source_ci": "REAL_LOCAL_CI40354972820_PASS",
         "historical_current_source_ci": "EXACT_CANDIDATE; STATUS_REGISTER_UPDATED_AFTER_RUN",
-        "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE"
+        "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE",
+        "current_evidence": "CI40354972820 PASS at06b9ac0ad961705a3f7fc8de2fb80d3cf82637a4; private candidate93a6798; real disposable PG17/GoTrue/browser; not hosted admission"
       },
       "hosted": "SELECTED_RELEASE_NOT_PROVEN",
       "review": "SELECTED_HOSTED_REVIEW_NOT_RECORDED",
@@ -260,9 +266,10 @@
       "local_ci": {
         "status": "REAL_LOCAL_CI_PASS",
         "evidence": "CI38777789327 atca3d6c0d529be03ccf559f70b256314547af3e2e; candidate792d3c8; real local PG17/GoTrue; not hosted",
-        "current_source_ci": "IN_PROGRESS_PENDING_REAL_CI",
+        "current_source_ci": "REAL_LOCAL_CI40354972820_PASS",
         "historical_current_source_ci": "EXACT_CANDIDATE; STATUS_REGISTER_UPDATED_AFTER_RUN",
-        "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE"
+        "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE",
+        "current_evidence": "CI40354972820 PASS at06b9ac0ad961705a3f7fc8de2fb80d3cf82637a4; private candidate93a6798; real disposable PG17/GoTrue/browser; not hosted admission"
       },
       "hosted": "SELECTED_RELEASE_NOT_PROVEN",
       "review": "SELECTED_HOSTED_REVIEW_NOT_RECORDED",
@@ -300,9 +307,10 @@
       "local_ci": {
         "status": "REAL_LOCAL_CI_PASS",
         "evidence": "CI38777789327 atca3d6c0d529be03ccf559f70b256314547af3e2e; candidate792d3c8; real local PG17/GoTrue; not hosted",
-        "current_source_ci": "IN_PROGRESS_PENDING_REAL_CI",
+        "current_source_ci": "REAL_LOCAL_CI40354972820_PASS",
         "historical_current_source_ci": "EXACT_CANDIDATE; STATUS_REGISTER_UPDATED_AFTER_RUN",
-        "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE"
+        "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE",
+        "current_evidence": "CI40354972820 PASS at06b9ac0ad961705a3f7fc8de2fb80d3cf82637a4; private candidate93a6798; real disposable PG17/GoTrue/browser; not hosted admission"
       },
       "hosted": "SELECTED_RELEASE_NOT_PROVEN",
       "review": "SELECTED_HOSTED_REVIEW_NOT_RECORDED",
@@ -340,9 +348,10 @@
       "local_ci": {
         "status": "REAL_LOCAL_CI_PASS",
         "evidence": "CI38777789327 atca3d6c0d529be03ccf559f70b256314547af3e2e; candidate792d3c8; real local PG17/GoTrue; not hosted",
-        "current_source_ci": "IN_PROGRESS_PENDING_REAL_CI",
+        "current_source_ci": "REAL_LOCAL_CI40354972820_PASS",
         "historical_current_source_ci": "EXACT_CANDIDATE; STATUS_REGISTER_UPDATED_AFTER_RUN",
-        "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE"
+        "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE",
+        "current_evidence": "CI40354972820 PASS at06b9ac0ad961705a3f7fc8de2fb80d3cf82637a4; private candidate93a6798; real disposable PG17/GoTrue/browser; not hosted admission"
       },
       "hosted": "SELECTED_RELEASE_NOT_PROVEN",
       "review": "SELECTED_HOSTED_REVIEW_NOT_RECORDED",
@@ -378,9 +387,10 @@
       "local_ci": {
         "status": "REAL_LOCAL_CI_PASS",
         "evidence": "CI38777789327 atca3d6c0d529be03ccf559f70b256314547af3e2e; candidate792d3c8; real local PG17/GoTrue; not hosted",
-        "current_source_ci": "IN_PROGRESS_PENDING_REAL_CI",
+        "current_source_ci": "REAL_LOCAL_CI40354972820_PASS",
         "historical_current_source_ci": "EXACT_CANDIDATE; STATUS_REGISTER_UPDATED_AFTER_RUN",
-        "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE"
+        "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE",
+        "current_evidence": "CI40354972820 PASS at06b9ac0ad961705a3f7fc8de2fb80d3cf82637a4; private candidate93a6798; real disposable PG17/GoTrue/browser; not hosted admission"
       },
       "hosted": "SELECTED_RELEASE_NOT_PROVEN",
       "review": "SELECTED_HOSTED_REVIEW_NOT_RECORDED",
@@ -418,9 +428,10 @@
       "local_ci": {
         "status": "REAL_LOCAL_CI_PASS",
         "evidence": "CI38777789327 atca3d6c0d529be03ccf559f70b256314547af3e2e; candidate792d3c8; real local PG17/GoTrue; not hosted",
-        "current_source_ci": "IN_PROGRESS_PENDING_REAL_CI",
+        "current_source_ci": "REAL_LOCAL_CI40354972820_PASS",
         "historical_current_source_ci": "EXACT_CANDIDATE; STATUS_REGISTER_UPDATED_AFTER_RUN",
-        "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE"
+        "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE",
+        "current_evidence": "CI40354972820 PASS at06b9ac0ad961705a3f7fc8de2fb80d3cf82637a4; private candidate93a6798; real disposable PG17/GoTrue/browser; not hosted admission"
       },
       "hosted": "SELECTED_RELEASE_NOT_PROVEN",
       "review": "SELECTED_HOSTED_REVIEW_NOT_RECORDED",
@@ -453,9 +464,10 @@
       "local_ci": {
         "status": "CONTRACT_AND_READONLY_UI_ONLY",
         "evidence": "CI38777789327 atca3d6c0d529be03ccf559f70b256314547af3e2e; candidate792d3c8; real local PG17/GoTrue; not hosted",
-        "current_source_ci": "IN_PROGRESS_PENDING_REAL_CI",
+        "current_source_ci": "READ_ONLY_PROJECTION_TESTED_NOT_BILLING_OR_POLICY_RELEASE",
         "historical_current_source_ci": "EXACT_CANDIDATE; STATUS_REGISTER_UPDATED_AFTER_RUN",
-        "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE"
+        "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE",
+        "current_evidence": "CI40354972820 PASS at06b9ac0ad961705a3f7fc8de2fb80d3cf82637a4; private candidate93a6798; real disposable PG17/GoTrue/browser; not hosted admission"
       },
       "hosted": "SELECTED_RELEASE_NOT_PROVEN",
       "review": "SELECTED_HOSTED_REVIEW_NOT_RECORDED",
@@ -488,9 +500,10 @@
       "local_ci": {
         "status": "LOCAL_CAPACITY_AND_FILTER_ONLY",
         "evidence": "CI38777789327 atca3d6c0d529be03ccf559f70b256314547af3e2e; candidate792d3c8; real local PG17/GoTrue; not hosted",
-        "current_source_ci": "IN_PROGRESS_PENDING_REAL_CI",
+        "current_source_ci": "DISPOSABLE_PG17_CAPACITY_ONLY_NO_NEW_HOSTED_MEASUREMENT",
         "historical_current_source_ci": "EXACT_CANDIDATE; STATUS_REGISTER_UPDATED_AFTER_RUN",
-        "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE"
+        "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE",
+        "current_evidence": "CI40354972820 PASS at06b9ac0ad961705a3f7fc8de2fb80d3cf82637a4; private candidate93a6798; real disposable PG17/GoTrue/browser; not hosted admission"
       },
       "hosted": "HISTORICAL_NUMERIC_ONLY_NOT_WORKFLOW_PROOF",
       "review": "SELECTED_HOSTED_REVIEW_NOT_RECORDED",
@@ -524,9 +537,10 @@
       "local_ci": {
         "status": "TECHNICAL_REGRESSION_ONLY_DEFAULT_OFF",
         "evidence": "CI38777789327 atca3d6c0d529be03ccf559f70b256314547af3e2e; candidate792d3c8; real local PG17/GoTrue; not hosted",
-        "current_source_ci": "IN_PROGRESS_PENDING_REAL_CI",
+        "current_source_ci": "DEFAULT_OFF_VERIFIED_NO_OWNER_ACCEPTANCE",
         "historical_current_source_ci": "EXACT_CANDIDATE; STATUS_REGISTER_UPDATED_AFTER_RUN",
-        "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE"
+        "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE",
+        "current_evidence": "CI40354972820 PASS at06b9ac0ad961705a3f7fc8de2fb80d3cf82637a4; private candidate93a6798; real disposable PG17/GoTrue/browser; not hosted admission"
       },
       "hosted": "SELECTED_RELEASE_NOT_PROVEN",
       "review": "OWNER_UNACCEPTED",
@@ -559,9 +573,10 @@
       "local_ci": {
         "status": "NOT_IMPLEMENTED",
         "evidence": "CI38777789327 atca3d6c0d529be03ccf559f70b256314547af3e2e; candidate792d3c8; real local PG17/GoTrue; not hosted",
-        "current_source_ci": "IN_PROGRESS_PENDING_REAL_CI",
+        "current_source_ci": "NOT_IMPLEMENTED",
         "historical_current_source_ci": "EXACT_CANDIDATE; STATUS_REGISTER_UPDATED_AFTER_RUN",
-        "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE"
+        "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE",
+        "current_evidence": "CI40354972820 PASS at06b9ac0ad961705a3f7fc8de2fb80d3cf82637a4; private candidate93a6798; real disposable PG17/GoTrue/browser; not hosted admission"
       },
       "hosted": "SELECTED_RELEASE_NOT_PROVEN",
       "review": "SELECTED_HOSTED_REVIEW_NOT_RECORDED",
@@ -597,9 +612,10 @@
       "local_ci": {
         "status": "REAL_LOCAL_CI_PASS",
         "evidence": "CI38777789327 atca3d6c0d529be03ccf559f70b256314547af3e2e; candidate792d3c8; real local PG17/GoTrue; not hosted",
-        "current_source_ci": "IN_PROGRESS_PENDING_REAL_CI",
+        "current_source_ci": "REAL_LOCAL_CI40354972820_PASS",
         "historical_current_source_ci": "EXACT_CANDIDATE; STATUS_REGISTER_UPDATED_AFTER_RUN",
-        "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE"
+        "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE",
+        "current_evidence": "CI40354972820 PASS at06b9ac0ad961705a3f7fc8de2fb80d3cf82637a4; private candidate93a6798; real disposable PG17/GoTrue/browser; not hosted admission"
       },
       "hosted": "SELECTED_RELEASE_NOT_PROVEN",
       "review": "SELECTED_HOSTED_REVIEW_NOT_RECORDED",
@@ -629,9 +645,10 @@
       "local_ci": {
         "status": "REAL_LOCAL_CI_PASS",
         "evidence": "CI38777789327 atca3d6c0d529be03ccf559f70b256314547af3e2e; candidate792d3c8; real local PG17/GoTrue; not hosted",
-        "current_source_ci": "IN_PROGRESS_PENDING_REAL_CI",
+        "current_source_ci": "REAL_LOCAL_CI40354972820_PASS",
         "historical_current_source_ci": "EXACT_CANDIDATE; STATUS_REGISTER_UPDATED_AFTER_RUN",
-        "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE"
+        "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE",
+        "current_evidence": "CI40354972820 PASS at06b9ac0ad961705a3f7fc8de2fb80d3cf82637a4; private candidate93a6798; real disposable PG17/GoTrue/browser; not hosted admission"
       },
       "hosted": "SELECTED_RELEASE_NOT_PROVEN",
       "review": "SELECTED_HOSTED_REVIEW_NOT_RECORDED",
@@ -640,8 +657,8 @@
       "evidence": "CI38777789327 atca3d6c0d529be03ccf559f70b256314547af3e2e; candidate792d3c8; real local PG17/GoTrue; not hosted"
     }
   ],
-  "evidence_note": "This is a work register, not a completion percentage or new product acceptance. Historical feature implementation/proof is preserved; the new candidate is pending real CI, not source PASS. Conditional owner permission is not hosted admission.",
-  "current_source_ci_status": "IN_PROGRESS_PENDING_REAL_CI",
+  "evidence_note": "This is a work register, not a completion percentage or new product acceptance. Historical feature implementation/proof is preserved. App CI40354972820 proves only commit 06b9ac0ad961705a3f7fc8de2fb80d3cf82637a4 and its exact candidate; no current or later HEAD PASS is inferred. Chain CI40354914899 and hosted admission remain NO_GO. Conditional owner permission is not hosted admission.",
+  "current_source_ci_status": "APP_CI40354972820_PASS_AT_06b9ac0_ONLY",
   "new_run_authorization": {
     "run_id": "6f8c8909-9b79-4011-a9d1-db5e23c6b6c1",
     "row_places": 106496,
@@ -682,14 +699,14 @@
     "review": "NOT_RECORDED",
     "released": false,
     "dependency": "Full hosted11, required review, selected release source admission and independent hosted budget",
-    "artifact_state": "HISTORICAL_CI_PACKET_ARCHIVED; NEW_CANDIDATE_PENDING_REAL_CI",
+    "artifact_state": "APP_CI40354972820_PACKET_PROVEN_AT_06b9ac0_ONLY_NOT_RELEASED",
     "local_validation": {
       "packet_tests": 17,
       "existing_python_tests": 26,
       "node_tests": 41,
       "work_register": "VALID_NOT_FEATURE_PASS",
       "generated_packet_check": "Exact-source packet artifact from CI38764963091 retained in completion receipts; working-copy check performed separately",
-      "current_source_ci": "IN_PROGRESS_PENDING_REAL_CI",
+      "current_source_ci": "APP_CI40354972820_PASS_AT_06b9ac0_ONLY",
       "selection_tests": 12,
       "preexisting_dirty_files_unchanged": 753,
       "historical_generated_packet_check": "PACKETS_VALID_NOT_RELEASED; eight packets; source bundle f78d571372cbac22486b735a3941c468be6d4bc46cdcd2183c1c9b6a1a8a6d32; CI builds/checks its own exact candidate artifact",
@@ -699,7 +716,7 @@
     "measured_cost_receipt": "receipts/ci-38777789327-completion/selected-measured-costs.json",
     "historical_artifact_state": "CURRENT_CI_GENERATED_PACKET_ARCHIVED; LOCAL_WORKING_SNAPSHOT_SEPARATE",
     "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE",
-    "current_candidate_status": "IN_PROGRESS_PENDING_REAL_CI"
+    "current_candidate_status": "APP_CI40354972820_PASS_AT_06b9ac0_ONLY_NOT_RELEASED"
   },
   "release_packets": [
     {
@@ -714,7 +731,7 @@
       "local_guard": "IMPLEMENTED_OPTIONAL_LOCAL_BOUNDARY_NOT_HOSTED_ADMISSION",
       "measured_cost_receipt": "receipts/ci-38777789327-completion/selected-release-matrix-registration12.json",
       "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE",
-      "current_candidate_status": "IN_PROGRESS_PENDING_REAL_CI"
+      "current_candidate_status": "APP_CI40354972820_PASS_AT_06b9ac0_ONLY_NOT_RELEASED"
     },
     {
       "id": "signals13_14",
@@ -728,7 +745,7 @@
       "local_guard": "IMPLEMENTED_OPTIONAL_LOCAL_BOUNDARY_NOT_HOSTED_ADMISSION",
       "measured_cost_receipt": "receipts/ci-38777789327-completion/selected-release-matrix-signals13_14.json",
       "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE",
-      "current_candidate_status": "IN_PROGRESS_PENDING_REAL_CI"
+      "current_candidate_status": "APP_CI40354972820_PASS_AT_06b9ac0_ONLY_NOT_RELEASED"
     },
     {
       "id": "intake15",
@@ -742,7 +759,7 @@
       "local_guard": "IMPLEMENTED_OPTIONAL_LOCAL_BOUNDARY_NOT_HOSTED_ADMISSION",
       "measured_cost_receipt": "receipts/ci-38777789327-completion/selected-release-matrix-intake15.json",
       "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE",
-      "current_candidate_status": "IN_PROGRESS_PENDING_REAL_CI"
+      "current_candidate_status": "APP_CI40354972820_PASS_AT_06b9ac0_ONLY_NOT_RELEASED"
     },
     {
       "id": "plans16_17",
@@ -756,7 +773,7 @@
       "local_guard": "IMPLEMENTED_OPTIONAL_LOCAL_BOUNDARY_NOT_HOSTED_ADMISSION",
       "measured_cost_receipt": "receipts/ci-38777789327-completion/selected-release-matrix-plans16_17.json",
       "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE",
-      "current_candidate_status": "IN_PROGRESS_PENDING_REAL_CI"
+      "current_candidate_status": "APP_CI40354972820_PASS_AT_06b9ac0_ONLY_NOT_RELEASED"
     },
     {
       "id": "review18",
@@ -770,7 +787,7 @@
       "local_guard": "IMPLEMENTED_OPTIONAL_LOCAL_BOUNDARY_NOT_HOSTED_ADMISSION",
       "measured_cost_receipt": "receipts/ci-38777789327-completion/selected-release-matrix-review18.json",
       "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE",
-      "current_candidate_status": "IN_PROGRESS_PENDING_REAL_CI"
+      "current_candidate_status": "APP_CI40354972820_PASS_AT_06b9ac0_ONLY_NOT_RELEASED"
     },
     {
       "id": "recovery19_today20",
@@ -784,7 +801,7 @@
       "local_guard": "IMPLEMENTED_OPTIONAL_LOCAL_BOUNDARY_NOT_HOSTED_ADMISSION",
       "measured_cost_receipt": "receipts/ci-38777789327-completion/selected-release-matrix-recovery19_today20.json",
       "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE",
-      "current_candidate_status": "IN_PROGRESS_PENDING_REAL_CI"
+      "current_candidate_status": "APP_CI40354972820_PASS_AT_06b9ac0_ONLY_NOT_RELEASED"
     },
     {
       "id": "workout12",
@@ -798,7 +815,7 @@
       "local_guard": "IMPLEMENTED_OPTIONAL_LOCAL_BOUNDARY_NOT_HOSTED_ADMISSION",
       "measured_cost_receipt": "receipts/ci-38777789327-completion/selected-release-matrix-workout12.json",
       "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE",
-      "current_candidate_status": "IN_PROGRESS_PENDING_REAL_CI"
+      "current_candidate_status": "APP_CI40354972820_PASS_AT_06b9ac0_ONLY_NOT_RELEASED"
     },
     {
       "id": "preferences",
@@ -812,7 +829,7 @@
       "local_guard": "IMPLEMENTED_OPTIONAL_LOCAL_BOUNDARY_NOT_HOSTED_ADMISSION",
       "measured_cost_receipt": "receipts/ci-38777789327-completion/selected-release-matrix-preferences.json",
       "evidence_scope": "HISTORICAL_CITED_IMPLEMENTATION_NOT_CURRENT_CANDIDATE",
-      "current_candidate_status": "IN_PROGRESS_PENDING_REAL_CI"
+      "current_candidate_status": "APP_CI40354972820_PASS_AT_06b9ac0_ONLY_NOT_RELEASED"
     }
   ],
   "hosted11_latest": {
@@ -825,13 +842,13 @@
     "historical_read_only_evidence": "historical_hosted11_read_only_evidence; original read-only44 result retained, not a current workflow PASS"
   },
   "current_source_binding": {
-    "status": "IN_PROGRESS_PENDING_REAL_CI",
-    "commit": null,
-    "candidate_sha256": null,
-    "archive_sha256": null,
-    "receipt": null,
-    "exact_source_ci_pass": false,
-    "note": "Populate only from newly verified real candidate CI; do not relabel historical receipts as current-source PASS."
+    "status": "APP_CI40354972820_PASS_AT_06b9ac0_ONLY",
+    "commit": "06b9ac0ad961705a3f7fc8de2fb80d3cf82637a4",
+    "candidate_sha256": "93a6798a0e55156ed0a14d13021cd3976fce540a3f701b4535e0023188849829",
+    "archive_sha256": "d2c4719cac92a74d9005d01fa606e840ea8df1258bdc8f554607a982128171f5",
+    "receipt": "receipts/ci-40354972820/result.json",
+    "exact_source_ci_pass": true,
+    "note": "Exact-source PASS applies only to the recorded app commit/candidate in CI40354972820. It is not a PASS for current or later HEAD, chain CI40354914899, hosted admission or owner acceptance; historical receipts are unchanged."
   },
   "previous_source_evidence": "CI38764963091 at1deac64473d4dc84749187a2a35b781e3e950ad9; real local PG17/GoTrue; not hosted; clean46; database25/46/64, browser209/127/79/73, selected preferences HTTP27",
   "historical_run_authorization": {
@@ -908,12 +925,13 @@
     "status_evidence": "docs/PHASE6E11_PARALLEL_RUN_AUTHORIZATION_20261018.md"
   },
   "current_candidate": {
-    "status": "IN_PROGRESS_PENDING_REAL_CI",
-    "source_ci": "PENDING_REAL_PG17_GOTRUE_BROWSER_CI",
+    "status": "APP_CI40354972820_PASS_AT_06b9ac0_ONLY",
+    "source_ci": "CI40354972820_REAL_PG17_GOTRUE_BROWSER_AT_06b9ac0ad961705a3f7fc8de2fb80d3cf82637a4_ONLY",
     "historical_implementation_preserved": true,
     "hosted_admitted": false,
     "owner_accepted": false,
     "full_day21": false
   },
-  "implementation_evidence_scope": "Feature state/built and historical local_ci statuses describe existing implementations and their explicitly cited historical receipts. They do not admit the current candidate; current_source_ci remains pending."
+  "implementation_evidence_scope": "Feature state/built and historical local_ci statuses retain their original implementation evidence. Current app-CI fields refer only to CI40354972820 at commit 06b9ac0ad961705a3f7fc8de2fb80d3cf82637a4 and current_source_binding's exact candidate/archive. They do not establish current or later HEAD PASS, full-chain PASS, hosted admission or owner acceptance.",
+  "current_ci_receipt": "_offline/phase6e_server_v1/receipts/ci-40354972820/result.json"
 }

@@ -1,0 +1,43 @@
+{
+  "exception_class": "ValueError",
+  "frames": [
+    {
+      "file": "registered_runner.py",
+      "function": "execute",
+      "line": 26
+    },
+    {
+      "file": "registered_lifecycle.py",
+      "function": "dispatch",
+      "line": 31
+    },
+    {
+      "file": "registered_lifecycle.py",
+      "function": "_dispatch",
+      "line": 54
+    },
+    {
+      "file": "integral_ci.py",
+      "function": "preservation",
+      "line": 202
+    },
+    {
+      "file": "integral_io.py",
+      "function": "close",
+      "line": 114
+    },
+    {
+      "file": "integral_io.py",
+      "function": "checkpoint",
+      "line": 103
+    },
+    {
+      "file": "integral_io.py",
+      "function": "delta",
+      "line": 54
+    }
+  ],
+  "operation": "install",
+  "sqlstate": null,
+  "values_exported": false
+}

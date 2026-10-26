@@ -1,0 +1,64 @@
+name: 6E-11 disposable WAL diagnostic only
+run-name: "6E-11 WAL diagnostic ${{ inputs.candidate_sha256 }}"
+on:
+  workflow_dispatch:
+    inputs:
+      enabled:
+        type: boolean
+        default: false
+        required: true
+      candidate_blob:
+        type: string
+        required: true
+      candidate_sha256:
+        type: string
+        required: true
+permissions:
+  contents: read
+concurrency:
+  group: phase6e11-wal-diagnostic
+  cancel-in-progress: false
+jobs:
+  diagnostic:
+    if: inputs.enabled && github.repository == 'Yourizorge/fitmetzorge-staging' && github.ref == 'refs/heads/main' && github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Separate empty-fixture diagnostic
+        env:
+          FMZ6E11_LOCAL_WAL_DIAGNOSTIC: '1'
+          EXPECTED_SOURCE_COMMIT: ${{ github.sha }}
+          CANDIDATE_BLOB: ${{ inputs.candidate_blob }}
+          CANDIDATE_SHA256: ${{ inputs.candidate_sha256 }}
+          GH_READ_TOKEN: ${{ github.token }}
+        run: python3 -B _offline/phase6e11/endchain_v1/diagnostic_ci.py
+      - name: Hash diagnostic evidence
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,pathlib
+          root=pathlib.Path(os.environ['RUNNER_TEMP'])/'fmz-db41-evidence'
+          manifest={}
+          for path in sorted(root.glob('*')):
+              if path.is_file() and path.suffix in ('.json','.txt'):
+                  raw=path.read_bytes()
+                  if len(raw)>2000000:raise SystemExit('evidence_limit')
+                  manifest[path.name]=hashlib.sha256(raw).hexdigest()
+          if not manifest:raise SystemExit('diagnostic_evidence_missing')
+          with (root/'artifact-manifest.json').open('x') as out:
+              json.dump(manifest,out,sort_keys=True)
+          PY
+      - name: Preserve diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: phase6e11-endchain-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/fmz-db41-evidence/*.json
+            ${{ runner.temp }}/fmz-db41-evidence/*.txt
+          retention-days: 1
+          if-no-files-found: error

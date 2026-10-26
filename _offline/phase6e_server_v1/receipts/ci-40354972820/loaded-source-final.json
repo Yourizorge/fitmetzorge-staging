@@ -1,0 +1,978 @@
+{
+  "candidate_only_does_not_authorize_hosted": true,
+  "canonicalization": "CRLF-to-LF-only",
+  "sources": {
+    "_offline/phase6e11/access_v1/cli_check.py": {
+      "candidate_sha256": "f4f0293cc033cc3a5e2e5762ea3ccc110febc0ba5415cfdbf1ef782ddb778f0a",
+      "distribution": "explicit_candidate_only"
+    },
+    "_offline/phase6e11/access_v1/inventory.py": {
+      "candidate_sha256": "554bbce7ee03cedf66b75ec38f5f3a6f9a839c530e869d4a21758616e402a556",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "554bbce7ee03cedf66b75ec38f5f3a6f9a839c530e869d4a21758616e402a556"
+    },
+    "_offline/phase6e11/access_v1/jit.py": {
+      "candidate_sha256": "b65b249343eb44f34945a76d34422133b0c724339cab63b687b463cf9973f98d",
+      "distribution": "explicit_candidate_only"
+    },
+    "_offline/phase6e11/access_v1/migration_run.py": {
+      "candidate_sha256": "ae1ae20ae32997e142ff7c4c08576cd890cb8584742fd8b1f3e5aceba14a6998",
+      "distribution": "explicit_candidate_only"
+    },
+    "_offline/phase6e11/access_v1/migration_snapshot.py": {
+      "candidate_sha256": "afb51c2ee9e6e75f8cc1abee1f530e4ce2d8124e084bbe047823092c20f52683",
+      "distribution": "explicit_candidate_only"
+    },
+    "_offline/phase6e11/access_v1/temporary.py": {
+      "candidate_sha256": "8d48d70c5b503c70790594c76b70259eef771914d17621369aa04db8e4d96923",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "8d48d70c5b503c70790594c76b70259eef771914d17621369aa04db8e4d96923"
+    },
+    "_offline/phase6e11/auth_metadata_v1/audit.py": {
+      "candidate_sha256": "b7bd0b957a10483fdfcbb7f0a7d6fe5bde1547810ec418bc5a0669bf49dd642f",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "b7bd0b957a10483fdfcbb7f0a7d6fe5bde1547810ec418bc5a0669bf49dd642f"
+    },
+    "_offline/phase6e11/auth_metadata_v1/auth_contract.py": {
+      "candidate_sha256": "8c3862741ee4748aee822948eda773ee63aa3a1a7ea5b2d4822579b364bb58d6",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "8c3862741ee4748aee822948eda773ee63aa3a1a7ea5b2d4822579b364bb58d6"
+    },
+    "_offline/phase6e11/auth_metadata_v1/budget.py": {
+      "candidate_sha256": "2dce27b4fb7d07bfc7750f8f2415108d2d606b3d78672e99c2a52446673d723d",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "2dce27b4fb7d07bfc7750f8f2415108d2d606b3d78672e99c2a52446673d723d"
+    },
+    "_offline/phase6e11/auth_metadata_v1/checks.py": {
+      "candidate_sha256": "5ad614407016bc652ab3e54f25f5f8c62d73847b5cbe4e22bf2c61538ab1f9ff",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "5ad614407016bc652ab3e54f25f5f8c62d73847b5cbe4e22bf2c61538ab1f9ff"
+    },
+    "_offline/phase6e11/auth_metadata_v1/failure.py": {
+      "candidate_sha256": "3742bb946b16d44da9ae37a93d03b63be3e580d52bef5e999840cb8488c57620",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "3742bb946b16d44da9ae37a93d03b63be3e580d52bef5e999840cb8488c57620"
+    },
+    "_offline/phase6e11/auth_metadata_v1/hosted.py": {
+      "candidate_sha256": "3fbd11bec39c82e9b5b47864b99e7db1245c20edc6dd019ace30d0afcc757aed",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "3fbd11bec39c82e9b5b47864b99e7db1245c20edc6dd019ace30d0afcc757aed"
+    },
+    "_offline/phase6e11/auth_metadata_v1/local.py": {
+      "candidate_sha256": "3ab0982f1ad12e5a03a4f6e66cfe29de6c789508ebd6140e0ec1c1b49b51c1e3",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "3ab0982f1ad12e5a03a4f6e66cfe29de6c789508ebd6140e0ec1c1b49b51c1e3"
+    },
+    "_offline/phase6e11/auth_metadata_v1/probe.py": {
+      "candidate_sha256": "84a43ee3909697acbf0bf05c09dbb615661089e5ea1ce37ed2d760058d30b66a",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "84a43ee3909697acbf0bf05c09dbb615661089e5ea1ce37ed2d760058d30b66a"
+    },
+    "_offline/phase6e11/auth_metadata_v1/test_auth_contract.py": {
+      "candidate_sha256": "fc4cef2d8d19fc612d5a9f4ff4244d8ffb5c70dc1309d42a2972ae29649d6676",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "fc4cef2d8d19fc612d5a9f4ff4244d8ffb5c70dc1309d42a2972ae29649d6676"
+    },
+    "_offline/phase6e11/auth_metadata_v1/test_budget.py": {
+      "candidate_sha256": "6600f75381033322f51f51c204fba0349031e07be277dbfaa381674c946dabba",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "6600f75381033322f51f51c204fba0349031e07be277dbfaa381674c946dabba"
+    },
+    "_offline/phase6e11/auth_metadata_v1/test_hosted.py": {
+      "candidate_sha256": "c31a72a3a4239d7bf1db73642f8c58f4decd62e02f3756ccbb0455401e706194",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "c31a72a3a4239d7bf1db73642f8c58f4decd62e02f3756ccbb0455401e706194"
+    },
+    "_offline/phase6e11/auth_metadata_v1/test_native_transport.py": {
+      "candidate_sha256": "e404268cd6dac18be59d9c37defefc0ae166cac55644df09b886d46b341c58f9",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "e404268cd6dac18be59d9c37defefc0ae166cac55644df09b886d46b341c58f9"
+    },
+    "_offline/phase6e11/auth_metadata_v1/test_probe.py": {
+      "candidate_sha256": "c989cf54c98a7452ebc7f40086d92caadcfceabdb9dded9d6bf99c3cc383d8c5",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "c989cf54c98a7452ebc7f40086d92caadcfceabdb9dded9d6bf99c3cc383d8c5"
+    },
+    "_offline/phase6e11/ci41/fixture_compat.py": {
+      "checkout_sha256": "9f006933dfc7ef3ba97954c9988fed61e086cecb03e4201a63c1923c9f204729",
+      "distribution": "pinned_harness",
+      "lf_sha256": "9f006933dfc7ef3ba97954c9988fed61e086cecb03e4201a63c1923c9f204729"
+    },
+    "_offline/phase6e11/ci41/ops.py": {
+      "candidate_sha256": "d8bffcc0cd240d83fe81755d7308122bc25fc6492c0c97c2e64fdc7850245091",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "d8bffcc0cd240d83fe81755d7308122bc25fc6492c0c97c2e64fdc7850245091"
+    },
+    "_offline/phase6e11/ci41/runner.py": {
+      "checkout_sha256": "18f8efaa9dfc91be59926a40c805499cacce73f5717975b0756a52720839dc45",
+      "distribution": "pinned_harness",
+      "lf_sha256": "18f8efaa9dfc91be59926a40c805499cacce73f5717975b0756a52720839dc45"
+    },
+    "_offline/phase6e11/ci42/fixture_calendar.py": {
+      "checkout_sha256": "1eb40ca1dff38ae4fc7f21bfb39a6d7595de60fc36e179aa969fb49b812270e0",
+      "distribution": "pinned_harness",
+      "lf_sha256": "1eb40ca1dff38ae4fc7f21bfb39a6d7595de60fc36e179aa969fb49b812270e0"
+    },
+    "_offline/phase6e11/ci42/runner.py": {
+      "checkout_sha256": "8e0ab728c58e47022a6002c7964070cf8faadbe79789605ddbfcca9327173402",
+      "distribution": "pinned_harness",
+      "lf_sha256": "8e0ab728c58e47022a6002c7964070cf8faadbe79789605ddbfcca9327173402"
+    },
+    "_offline/phase6e11/controller_guard_v1/artifact.py": {
+      "candidate_sha256": "d380a567812ecaed51468619023cfdd3d6466403c48a60805fda24a8c574c6ab",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "d380a567812ecaed51468619023cfdd3d6466403c48a60805fda24a8c574c6ab"
+    },
+    "_offline/phase6e11/controller_guard_v1/auth_service.py": {
+      "candidate_sha256": "acca1eec07d67728d224f1c472d959865de6e1dd9aa9ccc51375e7574e33da86",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "acca1eec07d67728d224f1c472d959865de6e1dd9aa9ccc51375e7574e33da86"
+    },
+    "_offline/phase6e11/controller_guard_v1/checks.py": {
+      "candidate_sha256": "30a081bc5fb2af8b5d9a325f3fe87852d6c37867c9890dccac210990b6a6ef28",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "30a081bc5fb2af8b5d9a325f3fe87852d6c37867c9890dccac210990b6a6ef28"
+    },
+    "_offline/phase6e11/controller_guard_v1/ci.py": {
+      "candidate_sha256": "b117a24053cd4ade33e2cbcfe1ba748df3604b8055fce1e5ae00610cc0b1aace",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "b117a24053cd4ade33e2cbcfe1ba748df3604b8055fce1e5ae00610cc0b1aace"
+    },
+    "_offline/phase6e11/controller_guard_v1/guard.py": {
+      "candidate_sha256": "9edffd4a1f70d2175b60f1a031a2f550bff1465296a2daac568cdc7401dbab03",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "9edffd4a1f70d2175b60f1a031a2f550bff1465296a2daac568cdc7401dbab03"
+    },
+    "_offline/phase6e11/controller_guard_v1/hosted_lifecycle.py": {
+      "candidate_sha256": "b9bdf5f9591489fbf42e340e8d222ee8ae11dc59fd009259c653745e6c39ef66",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "b9bdf5f9591489fbf42e340e8d222ee8ae11dc59fd009259c653745e6c39ef66"
+    },
+    "_offline/phase6e11/controller_guard_v1/lifecycle.py": {
+      "candidate_sha256": "2f06872f838a3cd5430776f45a698fc41336c77011211d4ae467eb63af6de7f5",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "2f06872f838a3cd5430776f45a698fc41336c77011211d4ae467eb63af6de7f5"
+    },
+    "_offline/phase6e11/controller_guard_v1/local.py": {
+      "candidate_sha256": "a5e59f3049307dd9f842479671cf96ddc7ce6e68f07b29938e330f2b95f26050",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "a5e59f3049307dd9f842479671cf96ddc7ce6e68f07b29938e330f2b95f26050"
+    },
+    "_offline/phase6e11/controller_guard_v1/ops.py": {
+      "candidate_sha256": "7164bf5c6a5154db87dadfcdb0b12739a23a556cb6acbb7a1165a39a0972624b",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "7164bf5c6a5154db87dadfcdb0b12739a23a556cb6acbb7a1165a39a0972624b"
+    },
+    "_offline/phase6e11/controller_guard_v1/test_artifact.py": {
+      "candidate_sha256": "7e059b8c950967fad210f315e1494dafb341112831fdd27e1f29fe86e9c22dca",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "7e059b8c950967fad210f315e1494dafb341112831fdd27e1f29fe86e9c22dca"
+    },
+    "_offline/phase6e11/controller_v1/auth_preflight.py": {
+      "candidate_sha256": "7891ae981fab76c10f68be8ddfa8c77b2cf9890fe5016f610cb5a5e1935e034e",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "7891ae981fab76c10f68be8ddfa8c77b2cf9890fe5016f610cb5a5e1935e034e"
+    },
+    "_offline/phase6e11/controller_v1/ci.py": {
+      "checkout_sha256": "890ef5659b35b3840cde74cba9958baaaa7e5b006b9708a9a53601e2df55982e",
+      "distribution": "pinned_harness",
+      "lf_sha256": "890ef5659b35b3840cde74cba9958baaaa7e5b006b9708a9a53601e2df55982e"
+    },
+    "_offline/phase6e11/controller_v1/install.py": {
+      "candidate_sha256": "b5bb9374d0db64060dac42b5c6af494c62297615dbddbf5b9ee21a4f14e51496",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "b5bb9374d0db64060dac42b5c6af494c62297615dbddbf5b9ee21a4f14e51496"
+    },
+    "_offline/phase6e11/controller_v1/jit_diagnose.py": {
+      "candidate_sha256": "c6d8a2adcbcaea8ba48d5b7f319a7cbe6204689ca5f4b0b3f55f23d77cfd4c46",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "c6d8a2adcbcaea8ba48d5b7f319a7cbe6204689ca5f4b0b3f55f23d77cfd4c46"
+    },
+    "_offline/phase6e11/controller_v1/transfer.py": {
+      "candidate_sha256": "36a36fb3dfd2e6741d85eac412369304ca7e1bf0bf23541d9f33c0fa9ad51a6c",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "36a36fb3dfd2e6741d85eac412369304ca7e1bf0bf23541d9f33c0fa9ad51a6c"
+    },
+    "_offline/phase6e11/cursor_hosted_v2/canary.py": {
+      "candidate_sha256": "8822d327343d5133cf17e199645323525876481124fe8a572d276523a2d1252b",
+      "distribution": "explicit_candidate_only"
+    },
+    "_offline/phase6e11/cursor_hosted_v2/discovery.py": {
+      "candidate_sha256": "44c15e045ac7021c4ddffe1ba43e988b15c10cf335d660e474a98502e3929c0a",
+      "distribution": "explicit_candidate_only"
+    },
+    "_offline/phase6e11/cursor_v1/transfer.py": {
+      "candidate_sha256": "553a7cbee459d73879eb897dc6d025b9376e736c2425706c9bb1ef966f107909",
+      "distribution": "explicit_candidate_only"
+    },
+    "_offline/phase6e11/cursor_v2/adapter.py": {
+      "candidate_sha256": "035c8c0b17b5463155e7b39568f288fd008853fa7aa0fa6957384d09eb20d5a7",
+      "distribution": "explicit_candidate_only"
+    },
+    "_offline/phase6e11/endchain_v1/admission.py": {
+      "candidate_sha256": "ac432546e36c9a0a433275d7eda7dfc37516cf4559893373e1f3092eb40d7190",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "ac432546e36c9a0a433275d7eda7dfc37516cf4559893373e1f3092eb40d7190"
+    },
+    "_offline/phase6e11/endchain_v1/artifact.py": {
+      "candidate_sha256": "b9fb2d76fe5b5f779af020b8d379dae7650c28c7a9d6efc8717635f15ae3069f",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "b9fb2d76fe5b5f779af020b8d379dae7650c28c7a9d6efc8717635f15ae3069f"
+    },
+    "_offline/phase6e11/endchain_v1/auth_arm.py": {
+      "candidate_sha256": "61726743def7a5412c89ddfb8f3cb6bbe88a58cdfc00f9ec1d260c48121d89c0",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "61726743def7a5412c89ddfb8f3cb6bbe88a58cdfc00f9ec1d260c48121d89c0"
+    },
+    "_offline/phase6e11/endchain_v1/auth_evidence.py": {
+      "candidate_sha256": "b00a89b6512b26b225ef9e5adede4fd0ee50e58858d9e987fcc034e1469a9fb1",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "b00a89b6512b26b225ef9e5adede4fd0ee50e58858d9e987fcc034e1469a9fb1"
+    },
+    "_offline/phase6e11/endchain_v1/auth_protocol.py": {
+      "candidate_sha256": "2dcc1c464ff339925396e724a60616ab16ce8c1b837938ff6da328205c07e617",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "2dcc1c464ff339925396e724a60616ab16ce8c1b837938ff6da328205c07e617"
+    },
+    "_offline/phase6e11/endchain_v1/auth_zero.py": {
+      "candidate_sha256": "dd62f0e6c54530f2c5b9c8bcd37251b31ccc01e84277a7727299b898cde2d6d6",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "dd62f0e6c54530f2c5b9c8bcd37251b31ccc01e84277a7727299b898cde2d6d6"
+    },
+    "_offline/phase6e11/endchain_v1/capacity_check.py": {
+      "candidate_sha256": "4fb72edc54c666034acae27dd5c8b664d74194bdb39be50309130eed1fb4e7c8",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "4fb72edc54c666034acae27dd5c8b664d74194bdb39be50309130eed1fb4e7c8"
+    },
+    "_offline/phase6e11/endchain_v1/ci.py": {
+      "candidate_sha256": "550286ab7ca388e4a9a30bd3a6e9cf42ce9487723895fc3de8f93a70e1bd167a",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "550286ab7ca388e4a9a30bd3a6e9cf42ce9487723895fc3de8f93a70e1bd167a"
+    },
+    "_offline/phase6e11/endchain_v1/ci_source_binding.py": {
+      "candidate_sha256": "3f9f0ef485f7ec757a0135f05899af49665025f5835dbab9f6230f7ec6137a30",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "3f9f0ef485f7ec757a0135f05899af49665025f5835dbab9f6230f7ec6137a30"
+    },
+    "_offline/phase6e11/endchain_v1/cli_envelope.py": {
+      "candidate_sha256": "2ddf9046553a2a4da0a9eb2d7eda3674d57068d442e4e2291582b10b28f4ea09",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "2ddf9046553a2a4da0a9eb2d7eda3674d57068d442e4e2291582b10b28f4ea09"
+    },
+    "_offline/phase6e11/endchain_v1/cli_meter.py": {
+      "candidate_sha256": "ae1ccff754aaf9950c4ce85ce584831fd01a6e3a41806ce1ae988bf80edc5855",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "ae1ccff754aaf9950c4ce85ce584831fd01a6e3a41806ce1ae988bf80edc5855"
+    },
+    "_offline/phase6e11/endchain_v1/cli_stat_reader.py": {
+      "candidate_sha256": "2c591cf72f6a5bca86baea81300b541e1e43821796312be3d5b3f8f9ff07ad4a",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "2c591cf72f6a5bca86baea81300b541e1e43821796312be3d5b3f8f9ff07ad4a"
+    },
+    "_offline/phase6e11/endchain_v1/closure.py": {
+      "candidate_sha256": "582ae34616da68c004e42f98fbdf8e0c6cb4c1e1d3b59551ba709b81e1d23e79",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "582ae34616da68c004e42f98fbdf8e0c6cb4c1e1d3b59551ba709b81e1d23e79"
+    },
+    "_offline/phase6e11/endchain_v1/command_ledger.py": {
+      "candidate_sha256": "46419a94c8272ab5874a708148661e1efe385db4479a11086095f4070d2b3f1c",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "46419a94c8272ab5874a708148661e1efe385db4479a11086095f4070d2b3f1c"
+    },
+    "_offline/phase6e11/endchain_v1/complete_register.py": {
+      "candidate_sha256": "95809b8f660e56b94f18b4663371a12507eddf365f10d3f89d060655d809cdfe",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "95809b8f660e56b94f18b4663371a12507eddf365f10d3f89d060655d809cdfe"
+    },
+    "_offline/phase6e11/endchain_v1/database_checks.py": {
+      "candidate_sha256": "a8b16883c4ac048156c37e23f9d64207779d9a961274ad98f2f346de2642e223",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "a8b16883c4ac048156c37e23f9d64207779d9a961274ad98f2f346de2642e223"
+    },
+    "_offline/phase6e11/endchain_v1/fixture_lifecycle.py": {
+      "candidate_sha256": "b2d551399367a70409c44db33fcba7ccc2db02fabe6e8e8c1e66d5ec97ec84cf",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "b2d551399367a70409c44db33fcba7ccc2db02fabe6e8e8c1e66d5ec97ec84cf"
+    },
+    "_offline/phase6e11/endchain_v1/history_pin.py": {
+      "candidate_sha256": "152e31da8b7f78d2f936f9c75b67b1e0ced80e990fa469c4099a18f70919fcca",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "152e31da8b7f78d2f936f9c75b67b1e0ced80e990fa469c4099a18f70919fcca"
+    },
+    "_offline/phase6e11/endchain_v1/hosted_gate.py": {
+      "candidate_sha256": "9046067eb614d0ff27ce31fd50b42e7ff127f7b334a53183f71d5358d5f8e089",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "9046067eb614d0ff27ce31fd50b42e7ff127f7b334a53183f71d5358d5f8e089"
+    },
+    "_offline/phase6e11/endchain_v1/integral_ci.py": {
+      "candidate_sha256": "9124a573e1daeeac512d8a185f045cfc4283076ea31bacf290ace14d94a61001",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "9124a573e1daeeac512d8a185f045cfc4283076ea31bacf290ace14d94a61001"
+    },
+    "_offline/phase6e11/endchain_v1/integral_failures.py": {
+      "candidate_sha256": "6784efd0af34393da51d8d2058d7450640b5c8e102724b175f32a8979e7268c5",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "6784efd0af34393da51d8d2058d7450640b5c8e102724b175f32a8979e7268c5"
+    },
+    "_offline/phase6e11/endchain_v1/integral_io.py": {
+      "candidate_sha256": "f3f78e4540931cd1a067f7baba69ef4dc8985a419d285768f7961e4bd27c0de3",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "f3f78e4540931cd1a067f7baba69ef4dc8985a419d285768f7961e4bd27c0de3"
+    },
+    "_offline/phase6e11/endchain_v1/integral_stream.py": {
+      "candidate_sha256": "4625a55b22e65353947c23867d0f1ce53a3fa9b16a7dc67930c45d0bbdb06d40",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "4625a55b22e65353947c23867d0f1ce53a3fa9b16a7dc67930c45d0bbdb06d40"
+    },
+    "_offline/phase6e11/endchain_v1/lifecycle_gates.py": {
+      "candidate_sha256": "f030556a3c921a5e4b6077199cee84a3a6a1900720179e23a8fcfe791c59d9df",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "f030556a3c921a5e4b6077199cee84a3a6a1900720179e23a8fcfe791c59d9df"
+    },
+    "_offline/phase6e11/endchain_v1/local_composition.py": {
+      "candidate_sha256": "55102c1bafaa5ebd50db0e05b19990a6e4d6f766dd9c2104c9e4aa74b0b10d77",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "55102c1bafaa5ebd50db0e05b19990a6e4d6f766dd9c2104c9e4aa74b0b10d77"
+    },
+    "_offline/phase6e11/endchain_v1/local_failure_matrix.py": {
+      "candidate_sha256": "0b45f744e1cb7ae37206fb14816c610bff651b6cf1fe6f5223e798385568429f",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "0b45f744e1cb7ae37206fb14816c610bff651b6cf1fe6f5223e798385568429f"
+    },
+    "_offline/phase6e11/endchain_v1/management_reads.py": {
+      "candidate_sha256": "8a580ed3465f0588bbfc044a57f64a6261ea99f244c1bf99ebda40c8b4360ee8",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "8a580ed3465f0588bbfc044a57f64a6261ea99f244c1bf99ebda40c8b4360ee8"
+    },
+    "_offline/phase6e11/endchain_v1/metered_composition.py": {
+      "candidate_sha256": "b9d39bfb28a62314c8319a2136abd0dde134a850d9922c678a518a6e26276afd",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "b9d39bfb28a62314c8319a2136abd0dde134a850d9922c678a518a6e26276afd"
+    },
+    "_offline/phase6e11/endchain_v1/migration_boundary.py": {
+      "candidate_sha256": "9ad465bfb7a45a82253c823b4594f5278787a00a1e3af73159ee70d4e14816c2",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "9ad465bfb7a45a82253c823b4594f5278787a00a1e3af73159ee70d4e14816c2"
+    },
+    "_offline/phase6e11/endchain_v1/native_runtime.py": {
+      "candidate_sha256": "6e0b05650aeccd16196920c7b73b6be2b22840df5e8fcf776af8ed69bca52b6c",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "6e0b05650aeccd16196920c7b73b6be2b22840df5e8fcf776af8ed69bca52b6c"
+    },
+    "_offline/phase6e11/endchain_v1/quota_boundary.py": {
+      "candidate_sha256": "5c57a4092dc64fa4c8d6ec073872d98afe1d05b6948abf31f30e9ad17c100042",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "5c57a4092dc64fa4c8d6ec073872d98afe1d05b6948abf31f30e9ad17c100042"
+    },
+    "_offline/phase6e11/endchain_v1/registered_lifecycle.py": {
+      "candidate_sha256": "739df778e5addcb459dd4b020b223797c241ca7be7872a930543b4addf3b856a",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "739df778e5addcb459dd4b020b223797c241ca7be7872a930543b4addf3b856a"
+    },
+    "_offline/phase6e11/endchain_v1/registered_runner.py": {
+      "candidate_sha256": "8006e51d6e45d9720b5514e3e9d09a6b345d9188628c98bacdce8779215fc515",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "8006e51d6e45d9720b5514e3e9d09a6b345d9188628c98bacdce8779215fc515"
+    },
+    "_offline/phase6e11/endchain_v1/runtime_budget.py": {
+      "candidate_sha256": "d921c31c014acade987f5881ea88a583d01bd70dc3f400d273e65284bc89b4ce",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "d921c31c014acade987f5881ea88a583d01bd70dc3f400d273e65284bc89b4ce"
+    },
+    "_offline/phase6e11/endchain_v1/safety_auth.py": {
+      "candidate_sha256": "49c98eff26861e420c81d8f85b379d559feb2f4b236b28156e0812b4e36e3fa0",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "49c98eff26861e420c81d8f85b379d559feb2f4b236b28156e0812b4e36e3fa0"
+    },
+    "_offline/phase6e11/endchain_v1/safety_auth_budget.py": {
+      "candidate_sha256": "f0635a129ab150fd5389e88f1408b20c9ba41aa37054c61fa80cadbd87442db6",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "f0635a129ab150fd5389e88f1408b20c9ba41aa37054c61fa80cadbd87442db6"
+    },
+    "_offline/phase6e11/endchain_v1/safety_auth_native.py": {
+      "candidate_sha256": "2ef9dc3c10a6ca3ad7c1070026e9e025e3772f92866c140b36e76e2de274c6e4",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "2ef9dc3c10a6ca3ad7c1070026e9e025e3772f92866c140b36e76e2de274c6e4"
+    },
+    "_offline/phase6e11/endchain_v1/scenario.py": {
+      "candidate_sha256": "d33a6ccf8aa8d38e0c6a6e2eaca2d0438e88213c16a0e32b6b325ef867b230ec",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "d33a6ccf8aa8d38e0c6a6e2eaca2d0438e88213c16a0e32b6b325ef867b230ec"
+    },
+    "_offline/phase6e11/endchain_v1/sequence.py": {
+      "candidate_sha256": "7e35997c7e40837538ace02d1d2392ae50f45c159f68d329cda126ef3cb930f9",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "7e35997c7e40837538ace02d1d2392ae50f45c159f68d329cda126ef3cb930f9"
+    },
+    "_offline/phase6e11/endchain_v1/source_scan.py": {
+      "candidate_sha256": "7dda28ca309b9edc2ea282e97beeecc680231e0a5513ac5a905909a09f3a4750",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "7dda28ca309b9edc2ea282e97beeecc680231e0a5513ac5a905909a09f3a4750"
+    },
+    "_offline/phase6e11/endchain_v1/sql_protocol.py": {
+      "candidate_sha256": "e9fed4ad8268e051979fc38c19a63aab1ed9f1ce6f82e06183be577e157cfe74",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "e9fed4ad8268e051979fc38c19a63aab1ed9f1ce6f82e06183be577e157cfe74"
+    },
+    "_offline/phase6e11/endchain_v1/stream_filter_check.py": {
+      "candidate_sha256": "18d765a66f99e8c8a68eb3f95e8f311ff7dd327219f37ca955bf71b58e43b3cd",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "18d765a66f99e8c8a68eb3f95e8f311ff7dd327219f37ca955bf71b58e43b3cd"
+    },
+    "_offline/phase6e11/endchain_v1/test_admission.py": {
+      "candidate_sha256": "0a1318e6453a3441c95a4f7c5808e6b50ade42a539840c4514bceeb82c8dd5f1",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "0a1318e6453a3441c95a4f7c5808e6b50ade42a539840c4514bceeb82c8dd5f1"
+    },
+    "_offline/phase6e11/endchain_v1/test_artifact.py": {
+      "candidate_sha256": "33ae4f0547048756fb4347a53034deabc768287ceafc80fe0ee66619be3e572c",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "33ae4f0547048756fb4347a53034deabc768287ceafc80fe0ee66619be3e572c"
+    },
+    "_offline/phase6e11/endchain_v1/test_auth_arm.py": {
+      "candidate_sha256": "791856baa9bc5b35beb5dd85396ad992d533cd311f32df3c1b37af94e52bbd0e",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "791856baa9bc5b35beb5dd85396ad992d533cd311f32df3c1b37af94e52bbd0e"
+    },
+    "_offline/phase6e11/endchain_v1/test_auth_evidence.py": {
+      "candidate_sha256": "bcb73c7ce80bc16e72fcf277fc41cdd85596c5f7346585ce80c57a050bb1187b",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "bcb73c7ce80bc16e72fcf277fc41cdd85596c5f7346585ce80c57a050bb1187b"
+    },
+    "_offline/phase6e11/endchain_v1/test_auth_protocol.py": {
+      "candidate_sha256": "567d9a5fb96f4cbcb762a6c42e3fa801acc75e0977f8c9c7bd26e20bc0a95fc7",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "567d9a5fb96f4cbcb762a6c42e3fa801acc75e0977f8c9c7bd26e20bc0a95fc7"
+    },
+    "_offline/phase6e11/endchain_v1/test_auth_zero.py": {
+      "candidate_sha256": "de3b20cf2de14d582d8a70ec24fec28bac0dd6c40af7fc633c2c5a0383232a23",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "de3b20cf2de14d582d8a70ec24fec28bac0dd6c40af7fc633c2c5a0383232a23"
+    },
+    "_offline/phase6e11/endchain_v1/test_authorization.py": {
+      "candidate_sha256": "729cb24cd489d955852fb958bb99590a95ec9da7ed4310d25a1451b83c4db76d",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "729cb24cd489d955852fb958bb99590a95ec9da7ed4310d25a1451b83c4db76d"
+    },
+    "_offline/phase6e11/endchain_v1/test_candidate_transport.py": {
+      "candidate_sha256": "acb624c41125dbe029698a4ee128a90cb75a3e3b9ad56cc6c0ae2d148c0ebe5a",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "acb624c41125dbe029698a4ee128a90cb75a3e3b9ad56cc6c0ae2d148c0ebe5a"
+    },
+    "_offline/phase6e11/endchain_v1/test_capacity_check.py": {
+      "candidate_sha256": "14ffe4d9a1a5a189491be1354f1a7da441fc60e2a034ddf8038ecccdf8bf6696",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "14ffe4d9a1a5a189491be1354f1a7da441fc60e2a034ddf8038ecccdf8bf6696"
+    },
+    "_offline/phase6e11/endchain_v1/test_ci_cli_sequence.py": {
+      "candidate_sha256": "dec5810d11a9208eb692fbcc5a830419813d47fd54ff4f732019fe7a3b8aeb0e",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "dec5810d11a9208eb692fbcc5a830419813d47fd54ff4f732019fe7a3b8aeb0e"
+    },
+    "_offline/phase6e11/endchain_v1/test_ci_source_binding.py": {
+      "candidate_sha256": "d7d6dd48c4572518566f8a0ebc8dd9c34aa3c3d1b5af7022614252110ae5bc5f",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "d7d6dd48c4572518566f8a0ebc8dd9c34aa3c3d1b5af7022614252110ae5bc5f"
+    },
+    "_offline/phase6e11/endchain_v1/test_cli_envelope.py": {
+      "candidate_sha256": "65ade398e7a8d3454b561c7e5468273bbcd780993723f0879e246e45c1414d02",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "65ade398e7a8d3454b561c7e5468273bbcd780993723f0879e246e45c1414d02"
+    },
+    "_offline/phase6e11/endchain_v1/test_cli_meter.py": {
+      "candidate_sha256": "8a51a1a6fd0ced082aa3644411e30f659172eb990858d0b2572485b3619ba4dd",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "8a51a1a6fd0ced082aa3644411e30f659172eb990858d0b2572485b3619ba4dd"
+    },
+    "_offline/phase6e11/endchain_v1/test_cli_stat_reader.py": {
+      "candidate_sha256": "ae25fc3f673e70fcc3c0da4b55d339e4b90710fcfa34bb6274798b33c25c8c7d",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "ae25fc3f673e70fcc3c0da4b55d339e4b90710fcfa34bb6274798b33c25c8c7d"
+    },
+    "_offline/phase6e11/endchain_v1/test_closure.py": {
+      "candidate_sha256": "0b1cbfce0d3bcde4bcdbad4cc20e3fc363854bb1dce232fc32570cee18e1dc2e",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "0b1cbfce0d3bcde4bcdbad4cc20e3fc363854bb1dce232fc32570cee18e1dc2e"
+    },
+    "_offline/phase6e11/endchain_v1/test_command_ledger.py": {
+      "candidate_sha256": "ae72e101f52cfef7a9f9d26720bfae85a2c9168c8ce77b37e4f7e88501ed67e3",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "ae72e101f52cfef7a9f9d26720bfae85a2c9168c8ce77b37e4f7e88501ed67e3"
+    },
+    "_offline/phase6e11/endchain_v1/test_complete_register.py": {
+      "candidate_sha256": "9755ca96b6b2573ef934747ee64af3c61d3ab459aeccbaf09faafb92c140978a",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "9755ca96b6b2573ef934747ee64af3c61d3ab459aeccbaf09faafb92c140978a"
+    },
+    "_offline/phase6e11/endchain_v1/test_control_restore.py": {
+      "candidate_sha256": "5fb7b6e0baedc5949288fb5559ae3ecd2933e4f1d7d7980a3451d94f57640628",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "5fb7b6e0baedc5949288fb5559ae3ecd2933e4f1d7d7980a3451d94f57640628"
+    },
+    "_offline/phase6e11/endchain_v1/test_final_gates.py": {
+      "candidate_sha256": "4dd5d7e62e1e92b4c13ae1ece060df3849a0a60a675c6ddbd725ac1652e9fa78",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "4dd5d7e62e1e92b4c13ae1ece060df3849a0a60a675c6ddbd725ac1652e9fa78"
+    },
+    "_offline/phase6e11/endchain_v1/test_fixture_lifecycle.py": {
+      "candidate_sha256": "1601daa2e5baf36031567b82df5258811a1002a1f7b05810fa70a65a437020c3",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "1601daa2e5baf36031567b82df5258811a1002a1f7b05810fa70a65a437020c3"
+    },
+    "_offline/phase6e11/endchain_v1/test_history_pin.py": {
+      "candidate_sha256": "68684e22172aec02378d062097db4769c8253e8e535cd1848fe44608744891b8",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "68684e22172aec02378d062097db4769c8253e8e535cd1848fe44608744891b8"
+    },
+    "_offline/phase6e11/endchain_v1/test_hosted_gate.py": {
+      "candidate_sha256": "8f84643a125f698b4d1299671ac816f4ec35090f8833c599d95b82c5cd1e432b",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "8f84643a125f698b4d1299671ac816f4ec35090f8833c599d95b82c5cd1e432b"
+    },
+    "_offline/phase6e11/endchain_v1/test_integral_io.py": {
+      "candidate_sha256": "a35dea6d0ff8cfdc1c6dc039b2257abc159673986d1d1e1da0be5e9677ddca79",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "a35dea6d0ff8cfdc1c6dc039b2257abc159673986d1d1e1da0be5e9677ddca79"
+    },
+    "_offline/phase6e11/endchain_v1/test_integral_stream.py": {
+      "candidate_sha256": "e5e986ebbcc5e4b9ba5c0884d3b4cb1883703a42c4c9acf8d88e647b6919e198",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "e5e986ebbcc5e4b9ba5c0884d3b4cb1883703a42c4c9acf8d88e647b6919e198"
+    },
+    "_offline/phase6e11/endchain_v1/test_lifecycle_gates.py": {
+      "candidate_sha256": "182e2a92117fc88f04e64748aec3b6f791f1fe955a3c70d799506540ceabb583",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "182e2a92117fc88f04e64748aec3b6f791f1fe955a3c70d799506540ceabb583"
+    },
+    "_offline/phase6e11/endchain_v1/test_management_reads.py": {
+      "candidate_sha256": "47c673079383a122e4ba9c8ee568733bc589aff68efc19ac79c522ee9665fa2f",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "47c673079383a122e4ba9c8ee568733bc589aff68efc19ac79c522ee9665fa2f"
+    },
+    "_offline/phase6e11/endchain_v1/test_metered_composition.py": {
+      "candidate_sha256": "fc8752863ee1c2b64b54137c312e059b931c74d77608fdba3e40399453b3e57b",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "fc8752863ee1c2b64b54137c312e059b931c74d77608fdba3e40399453b3e57b"
+    },
+    "_offline/phase6e11/endchain_v1/test_migration_boundary.py": {
+      "candidate_sha256": "c83af6c505fd2be29f701c2eb17f41d9594cb629d04baee28e8259168362b557",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "c83af6c505fd2be29f701c2eb17f41d9594cb629d04baee28e8259168362b557"
+    },
+    "_offline/phase6e11/endchain_v1/test_native_runtime.py": {
+      "candidate_sha256": "1a3c1fb836da9bb1c78390aa964978add9e8df991ee03c4dfe418d5a6d9e1152",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "1a3c1fb836da9bb1c78390aa964978add9e8df991ee03c4dfe418d5a6d9e1152"
+    },
+    "_offline/phase6e11/endchain_v1/test_quota_boundary.py": {
+      "candidate_sha256": "d47a2c2a098016c8620a8b9927865d02363169b2dcec7b137799a5bdb0bef576",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "d47a2c2a098016c8620a8b9927865d02363169b2dcec7b137799a5bdb0bef576"
+    },
+    "_offline/phase6e11/endchain_v1/test_registered_lifecycle.py": {
+      "candidate_sha256": "4523cfa88c11fbd1fa5a101cbd0009ce982d4028290b3200bc0165d3c3d1d27f",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "4523cfa88c11fbd1fa5a101cbd0009ce982d4028290b3200bc0165d3c3d1d27f"
+    },
+    "_offline/phase6e11/endchain_v1/test_registered_runner.py": {
+      "candidate_sha256": "022b33720d6f203a4a224d57424b0adac29a90d5729e0059193fd8cea9b63380",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "022b33720d6f203a4a224d57424b0adac29a90d5729e0059193fd8cea9b63380"
+    },
+    "_offline/phase6e11/endchain_v1/test_runtime_budget.py": {
+      "candidate_sha256": "5e54c2b1df47faf644267347773aba2cee437cb21b2ffefcb8d18fc839cfcee4",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "5e54c2b1df47faf644267347773aba2cee437cb21b2ffefcb8d18fc839cfcee4"
+    },
+    "_offline/phase6e11/endchain_v1/test_safety_auth.py": {
+      "candidate_sha256": "a9ef507c85db8160472b8ed32077be3e66ebae315a5ebd11b48f47770e901d3e",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "a9ef507c85db8160472b8ed32077be3e66ebae315a5ebd11b48f47770e901d3e"
+    },
+    "_offline/phase6e11/endchain_v1/test_safety_auth_meter.py": {
+      "candidate_sha256": "3b27101e179143533166bd71ba22095a4259e9053583721a6693508b615baf62",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "3b27101e179143533166bd71ba22095a4259e9053583721a6693508b615baf62"
+    },
+    "_offline/phase6e11/endchain_v1/test_sequence.py": {
+      "candidate_sha256": "da8cb8bb907d23b22757c7d61d3a152f979be65b909d1f583bf54ddb6844171c",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "da8cb8bb907d23b22757c7d61d3a152f979be65b909d1f583bf54ddb6844171c"
+    },
+    "_offline/phase6e11/endchain_v1/test_source_scan.py": {
+      "candidate_sha256": "82445d375bfdf67a3754e547268c1dabe912fcaba210956f1778e9a326799648",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "82445d375bfdf67a3754e547268c1dabe912fcaba210956f1778e9a326799648"
+    },
+    "_offline/phase6e11/endchain_v1/test_sql_protocol.py": {
+      "candidate_sha256": "f543f9f948d1dae8bf7a77d6b27f6706684d727772f7a6efc9893577345fa492",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "f543f9f948d1dae8bf7a77d6b27f6706684d727772f7a6efc9893577345fa492"
+    },
+    "_offline/phase6e11/endchain_v1/test_utility_binding.py": {
+      "candidate_sha256": "e1ea6ac0a6da2bf94b9d154d9832f889c61b6786b4e4a5bf33264f899bef5c6c",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "e1ea6ac0a6da2bf94b9d154d9832f889c61b6786b4e4a5bf33264f899bef5c6c"
+    },
+    "_offline/phase6e11/endchain_v1/utility_binding.py": {
+      "candidate_sha256": "21ac584bc8d005ce851aa97929ff256e57bd7e8ee48453d14b531e8a9b9c24e6",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "21ac584bc8d005ce851aa97929ff256e57bd7e8ee48453d14b531e8a9b9c24e6"
+    },
+    "_offline/phase6e11/endchain_v1/utility_binding_check.py": {
+      "candidate_sha256": "b96a20ebe89bfd4c8d206c2483b75602b07d93bfd58b2bbd51a82919dcc19129",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "b96a20ebe89bfd4c8d206c2483b75602b07d93bfd58b2bbd51a82919dcc19129"
+    },
+    "_offline/phase6e11/fingerprint_v1/fingerprint.py": {
+      "candidate_sha256": "c2a59bdb13d8ac1b95c4cf67cd42057d111775b316996a3816cd1b8a0d5ccf57",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "c2a59bdb13d8ac1b95c4cf67cd42057d111775b316996a3816cd1b8a0d5ccf57"
+    },
+    "_offline/phase6e11/fingerprint_v1/guard.py": {
+      "candidate_sha256": "5a67b549e983cf4a6c04dd11f57dd4f1a2fce0d4d020a5e504fad315a5f427b3",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "5a67b549e983cf4a6c04dd11f57dd4f1a2fce0d4d020a5e504fad315a5f427b3"
+    },
+    "_offline/phase6e11/fingerprint_v1/local_cluster.py": {
+      "candidate_sha256": "7e2c1ea6ce11da0cf00ec4e65bc78d5ac0b70067c83ebf26912da5d05d8eee89",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "7e2c1ea6ce11da0cf00ec4e65bc78d5ac0b70067c83ebf26912da5d05d8eee89"
+    },
+    "_offline/phase6e11/fingerprint_v1/pq.py": {
+      "candidate_sha256": "9d9e4e8d5884538e97302fe77db6fa957b46ec154a957c8fd348f21323e14b27",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "9d9e4e8d5884538e97302fe77db6fa957b46ec154a957c8fd348f21323e14b27"
+    },
+    "_offline/phase6e11/m41_tx_v2/install.py": {
+      "candidate_sha256": "e74221f3c6b412ae5473e281f50ce069c8af6aa7d53e5623c7f679af11e2e729",
+      "distribution": "explicit_candidate_only"
+    },
+    "_offline/phase6e11/m41_tx_v2/measure.py": {
+      "candidate_sha256": "bb2f2fb051916d9aa079938f15f60e99558cc8038443055270d27c4a5a49beab",
+      "distribution": "explicit_candidate_only"
+    },
+    "_offline/phase6e11/migration_cursor_v2/install.py": {
+      "candidate_sha256": "6a51f2eaa43eb456cc2ed9d4a0d95a6c62098f211e9528519c6dc61a3d4c203c",
+      "distribution": "explicit_candidate_only"
+    },
+    "_offline/phase6e11/readiness_v1/targeted/query_load.py": {
+      "candidate_sha256": "2f7028628b338a9e067a6854bec763dc181c8a4e0ead1d8d25db22bb94a8176a",
+      "distribution": "explicit_candidate_only"
+    },
+    "_offline/phase6e11/readiness_v1/targeted/transport.py": {
+      "candidate_sha256": "ac350e4d91cfa275e8430d2c60784659e6b6b9dd8b4216d151834a8f513632db",
+      "distribution": "explicit_candidate_only"
+    },
+    "_offline/phase6e11/readiness_v1/txaudit/common.py": {
+      "candidate_sha256": "e218487d95c2ab14caf73ddcfac0c429cca4430b9a5262cb5bd6b79094e2a5f7",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "e218487d95c2ab14caf73ddcfac0c429cca4430b9a5262cb5bd6b79094e2a5f7"
+    },
+    "_offline/phase6e11/readiness_v1/txaudit/test_audit.py": {
+      "candidate_sha256": "acb6db6fa7a3a7041dd350895aadb0d26b11e923c320d7da64bdc0f410f98058",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "acb6db6fa7a3a7041dd350895aadb0d26b11e923c320d7da64bdc0f410f98058"
+    },
+    "_offline/phase6e11/readiness_v1/workflow_audit_v1/workflow_local.py": {
+      "candidate_sha256": "3343f906077c766e95e4d06b7cf9b9b7752ada8b0a9805a77a8203644cb27da9",
+      "distribution": "explicit_candidate_only"
+    },
+    "_offline/phase6e11/request_v4/install.py": {
+      "candidate_sha256": "8951b32ee1d1f577f63ec360c1607a8685947bcc7354d5740e77114987fbf078",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "8951b32ee1d1f577f63ec360c1607a8685947bcc7354d5740e77114987fbf078"
+    },
+    "_offline/phase6e11/request_v4/security.py": {
+      "candidate_sha256": "15d72cfa471b33722e3818cfe2011d8d5a530c09ea2751a804a6ec1e5a298663",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "15d72cfa471b33722e3818cfe2011d8d5a530c09ea2751a804a6ec1e5a298663"
+    },
+    "_offline/phase6e11/textfree_tx_v2/connection.py": {
+      "candidate_sha256": "5e90ae7459cf3a9e74eeb14552ae708daf0ef956e913e3f4f8e94e8f3bb58d4f",
+      "distribution": "explicit_candidate_only"
+    },
+    "_offline/phase6e11/textfree_tx_v2/hosted.py": {
+      "candidate_sha256": "fb84a56a207b85613e5b531fafaf9ed551167cd09296a2979b432826939e61af",
+      "distribution": "explicit_candidate_only"
+    },
+    "_offline/phase6e11/textfree_tx_v2/session.py": {
+      "candidate_sha256": "726790402d99b8dfdfda4737afa45667f764058b051d2e886adc223626d69179",
+      "distribution": "explicit_candidate_only"
+    },
+    "_offline/phase6e11/textfree_v1/monitor.py": {
+      "candidate_sha256": "b3f0c36ebb1ff9aaf232c72add2c032b8abed9fd90f7323ffe62440f019106cd",
+      "distribution": "explicit_candidate_only"
+    },
+    "_offline/phase6e11/textfree_v1/native.py": {
+      "candidate_sha256": "7c869b2179ef6d2d76ebb3437d0eaec495749eb3f2d9308556fe135d50dc0581",
+      "distribution": "explicit_candidate_only"
+    },
+    "_offline/phase6e11/utility_diagnosis_v1/probe.py": {
+      "candidate_sha256": "1810d1010821ddd50a72466db861f1a9ceb32842108b48767fe645d8b86b9a56",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "1810d1010821ddd50a72466db861f1a9ceb32842108b48767fe645d8b86b9a56"
+    },
+    "_offline/phase6e_server_v1/application_io.py": {
+      "candidate_sha256": "cbfab87d5896d0e87c3d820dfeffb423b55be954e8b5d3113f11d370e1096ccf",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "cbfab87d5896d0e87c3d820dfeffb423b55be954e8b5d3113f11d370e1096ccf"
+    },
+    "_offline/phase6e_server_v1/browser_evidence.py": {
+      "candidate_sha256": "b3c83bb97b0ab45c2fef5eb8b0b79366e0ee05b820413ccbff66632b19c14dea",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "b3c83bb97b0ab45c2fef5eb8b0b79366e0ee05b820413ccbff66632b19c14dea"
+    },
+    "_offline/phase6e_server_v1/capacity_proposal.py": {
+      "candidate_sha256": "3d9a9ce648fc1d2a32be28979132280aefda621accc53c75006aceecb14fa933",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "3d9a9ce648fc1d2a32be28979132280aefda621accc53c75006aceecb14fa933"
+    },
+    "_offline/phase6e_server_v1/check_work_register.py": {
+      "candidate_sha256": "072cef0bd32d5c1dbd66bf12f0c34ab5b4d33534784a54dbd8fc72d92a619a9d",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "072cef0bd32d5c1dbd66bf12f0c34ab5b4d33534784a54dbd8fc72d92a619a9d"
+    },
+    "_offline/phase6e_server_v1/ci.py": {
+      "candidate_sha256": "450fd400b56531830c12ea2d9705d9ac98fe88d6197c0ecd42348c3d11417fb4",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "450fd400b56531830c12ea2d9705d9ac98fe88d6197c0ecd42348c3d11417fb4"
+    },
+    "_offline/phase6e_server_v1/ci_auth.py": {
+      "candidate_sha256": "45ad89524edb61ba92fd482454a08306b8688f290a9952eb2effbd7fc915d487",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "45ad89524edb61ba92fd482454a08306b8688f290a9952eb2effbd7fc915d487"
+    },
+    "_offline/phase6e_server_v1/ci_profile.py": {
+      "candidate_sha256": "3a9ea0af703fa6a9c04ab4eaeb655a5239910751384b47c064c426a1895b2ea1",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "3a9ea0af703fa6a9c04ab4eaeb655a5239910751384b47c064c426a1895b2ea1"
+    },
+    "_offline/phase6e_server_v1/cli_isolation.py": {
+      "candidate_sha256": "93fe1c9a72abd88bc033cfaab03cead8232ada0ff68ccf5342ea2372eb1f114a",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "93fe1c9a72abd88bc033cfaab03cead8232ada0ff68ccf5342ea2372eb1f114a"
+    },
+    "_offline/phase6e_server_v1/cli_url_probe.py": {
+      "candidate_sha256": "e33ae8d6ad7aacb307b5c2cb69d0c5690fce85957fc57a7713ee7f8e902dba9a",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "e33ae8d6ad7aacb307b5c2cb69d0c5690fce85957fc57a7713ee7f8e902dba9a"
+    },
+    "_offline/phase6e_server_v1/composed_store.py": {
+      "candidate_sha256": "a2a61654d6305d7a3d3a8bcf74ed7d199656803e0739ce7bc2c6164201732d88",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "a2a61654d6305d7a3d3a8bcf74ed7d199656803e0739ce7bc2c6164201732d88"
+    },
+    "_offline/phase6e_server_v1/database_tests.py": {
+      "candidate_sha256": "40f80256e23ee79c5ed638a1f50422e1dff5c936b241f499f013283e724fd7ad",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "40f80256e23ee79c5ed638a1f50422e1dff5c936b241f499f013283e724fd7ad"
+    },
+    "_offline/phase6e_server_v1/outbox.py": {
+      "candidate_sha256": "c79ad43791d3fa852c51887275dada259be242baa0eb1b2851a53cdd4f92163d",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "c79ad43791d3fa852c51887275dada259be242baa0eb1b2851a53cdd4f92163d"
+    },
+    "_offline/phase6e_server_v1/planning.py": {
+      "candidate_sha256": "64f83e73d35cbc0edc37e825a9194c98a8919db940c1e230ebe467187b4a5b0f",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "64f83e73d35cbc0edc37e825a9194c98a8919db940c1e230ebe467187b4a5b0f"
+    },
+    "_offline/phase6e_server_v1/protocol.py": {
+      "candidate_sha256": "6524b23ffb9cb602688f89c2a7459433434f1af46c64429da5d4c241d48c9054",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "6524b23ffb9cb602688f89c2a7459433434f1af46c64429da5d4c241d48c9054"
+    },
+    "_offline/phase6e_server_v1/receipt_accounting.py": {
+      "candidate_sha256": "5548bd4e2134752139b71d9be64047cc79f73bf8d3a332de6d35dfe6d194f919",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "5548bd4e2134752139b71d9be64047cc79f73bf8d3a332de6d35dfe6d194f919"
+    },
+    "_offline/phase6e_server_v1/registration_accounting.py": {
+      "candidate_sha256": "bdcff4c6c9216720727dced9b827386b57f275bf09c65ff45190c46afa2ceb31",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "bdcff4c6c9216720727dced9b827386b57f275bf09c65ff45190c46afa2ceb31"
+    },
+    "_offline/phase6e_server_v1/registration_database.py": {
+      "candidate_sha256": "ce48b88dea583596f7b3f088a5b9fab61a84ed5a20511f4e2a494f1db62e1317",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "ce48b88dea583596f7b3f088a5b9fab61a84ed5a20511f4e2a494f1db62e1317"
+    },
+    "_offline/phase6e_server_v1/registration_proof.py": {
+      "candidate_sha256": "a173ffe671441d1b17ff37e192127a0718699dfe4f26a6760b404d80ea3759ff",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "a173ffe671441d1b17ff37e192127a0718699dfe4f26a6760b404d80ea3759ff"
+    },
+    "_offline/phase6e_server_v1/registration_release.py": {
+      "candidate_sha256": "17db5f636c2805ad9dbc47427857ca25a410d1f4b04e6f988b473533585036a7",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "17db5f636c2805ad9dbc47427857ca25a410d1f4b04e6f988b473533585036a7"
+    },
+    "_offline/phase6e_server_v1/registration_scope.py": {
+      "candidate_sha256": "4177d857bfa94d7d61195dd3383d8df8ab6e6fa872caf9d8e90fc2291bc4ffe0",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "4177d857bfa94d7d61195dd3383d8df8ab6e6fa872caf9d8e90fc2291bc4ffe0"
+    },
+    "_offline/phase6e_server_v1/registration_store.py": {
+      "candidate_sha256": "ed5b39dcfcad9b73e36dc057ab317965d6e7e785a63928ed223e8436f4b0a8f1",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "ed5b39dcfcad9b73e36dc057ab317965d6e7e785a63928ed223e8436f4b0a8f1"
+    },
+    "_offline/phase6e_server_v1/registration_transport.py": {
+      "candidate_sha256": "40f85353fc445a0857e57f64ac61dfc6a5841ed82b2b22e62520066652ea46e6",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "40f85353fc445a0857e57f64ac61dfc6a5841ed82b2b22e62520066652ea46e6"
+    },
+    "_offline/phase6e_server_v1/release_matrix.py": {
+      "candidate_sha256": "b36619bb91cc75ab4e8d45c130b9d046e7838b79ab38dbe95ee0ca934c43c11e",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "b36619bb91cc75ab4e8d45c130b9d046e7838b79ab38dbe95ee0ca934c43c11e"
+    },
+    "_offline/phase6e_server_v1/release_packet.py": {
+      "candidate_sha256": "a8b737b2866804c42bbbde43dc3deda63789c29ff841edb7ef44aadfbb107f8f",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "a8b737b2866804c42bbbde43dc3deda63789c29ff841edb7ef44aadfbb107f8f"
+    },
+    "_offline/phase6e_server_v1/release_selection.py": {
+      "candidate_sha256": "2bcf99866c0efb5e7764d12dda6d491bd5d13c0967f43dedf1982d7565ec7528",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "2bcf99866c0efb5e7764d12dda6d491bd5d13c0967f43dedf1982d7565ec7528"
+    },
+    "_offline/phase6e_server_v1/release_selection_http.py": {
+      "candidate_sha256": "963563e1d399e9f3281410be8619260cf0636100dcd69b067ce3ae34c6d0881f",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "963563e1d399e9f3281410be8619260cf0636100dcd69b067ce3ae34c6d0881f"
+    },
+    "_offline/phase6e_server_v1/server.py": {
+      "candidate_sha256": "7cd23d0d3b6103fc7700728f8708a3e9e56c13d40d64e49a65e02665c42cc5c4",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "7cd23d0d3b6103fc7700728f8708a3e9e56c13d40d64e49a65e02665c42cc5c4"
+    },
+    "_offline/phase6e_server_v1/size_diagnosis.py": {
+      "candidate_sha256": "a000189ea8f2fe75055be8bcea7bd7dcd171124d6c05c3a16456460268ecd335",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "a000189ea8f2fe75055be8bcea7bd7dcd171124d6c05c3a16456460268ecd335"
+    },
+    "_offline/phase6e_server_v1/size_pg17.py": {
+      "candidate_sha256": "cf90447e6370077e2c5e8eeee142872a6099515d5941d7b267bdc0cc56a08c41",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "cf90447e6370077e2c5e8eeee142872a6099515d5941d7b267bdc0cc56a08c41"
+    },
+    "_offline/phase6e_server_v1/store.py": {
+      "candidate_sha256": "a1e11929faef77e1388bbb5b4103fc6e712198ec37cd59f2f4fb9d450c40a866",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "a1e11929faef77e1388bbb5b4103fc6e712198ec37cd59f2f4fb9d450c40a866"
+    },
+    "_offline/phase6e_server_v1/stream_size_pg17.py": {
+      "candidate_sha256": "68fdd8f1bf63de4b6d1706a64e8712db6212ccc547340b6a1d5f9e5ced9c71cb",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "68fdd8f1bf63de4b6d1706a64e8712db6212ccc547340b6a1d5f9e5ced9c71cb"
+    },
+    "_offline/phase6e_server_v1/test_application_io.py": {
+      "candidate_sha256": "d1b041cab96ee1d9cfc6d3e6685b99de473fd5c171cc3498d69d187008fded72",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "d1b041cab96ee1d9cfc6d3e6685b99de473fd5c171cc3498d69d187008fded72"
+    },
+    "_offline/phase6e_server_v1/test_browser_evidence.py": {
+      "candidate_sha256": "9936bbc312f9a69042296ad7463c895dfd5626d7809cc312a2e0b57870d33879",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "9936bbc312f9a69042296ad7463c895dfd5626d7809cc312a2e0b57870d33879"
+    },
+    "_offline/phase6e_server_v1/test_capacity_proposal.py": {
+      "candidate_sha256": "6722ea7aadb9cd6f6a7919a152262e31fced493a0135dd33cce5748494bf2088",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "6722ea7aadb9cd6f6a7919a152262e31fced493a0135dd33cce5748494bf2088"
+    },
+    "_offline/phase6e_server_v1/test_ci_profile.py": {
+      "candidate_sha256": "11bbcae6ce966d55b2889da2d9f1dba8e2c70a01b6793e34c46bd6b04dffb4e1",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "11bbcae6ce966d55b2889da2d9f1dba8e2c70a01b6793e34c46bd6b04dffb4e1"
+    },
+    "_offline/phase6e_server_v1/test_cli_isolation.py": {
+      "candidate_sha256": "e3c4d12c1a29b03630fbf6608eb7fb1f15dbf72e38f89e03e5995865f166c55a",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "e3c4d12c1a29b03630fbf6608eb7fb1f15dbf72e38f89e03e5995865f166c55a"
+    },
+    "_offline/phase6e_server_v1/test_cli_url_probe.py": {
+      "candidate_sha256": "8a741963a6a71a19beb04c8ccee6533a13cd6b0f99a1db59ea7fcd6c849e5c03",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "8a741963a6a71a19beb04c8ccee6533a13cd6b0f99a1db59ea7fcd6c849e5c03"
+    },
+    "_offline/phase6e_server_v1/test_outbox.py": {
+      "candidate_sha256": "96cb5863b01eb03c453bb7eed64d7e373bf9ff4c2ba721a6145cd18d1ebe54d4",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "96cb5863b01eb03c453bb7eed64d7e373bf9ff4c2ba721a6145cd18d1ebe54d4"
+    },
+    "_offline/phase6e_server_v1/test_planning.py": {
+      "candidate_sha256": "39cfd45e0ea4f05847549856c36d29c73733768179f5addae9e9ccd30fb5ccdf",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "39cfd45e0ea4f05847549856c36d29c73733768179f5addae9e9ccd30fb5ccdf"
+    },
+    "_offline/phase6e_server_v1/test_protocol.py": {
+      "candidate_sha256": "c48614ab89e2147b18c5abdb8c4865323b509557ebf9261b766faa0c05c84e51",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "c48614ab89e2147b18c5abdb8c4865323b509557ebf9261b766faa0c05c84e51"
+    },
+    "_offline/phase6e_server_v1/test_receipt_accounting.py": {
+      "candidate_sha256": "85b2dd0bb363271b7853d69fc37ae9c66a9505ac5ea1fba0f4884a7708a9a7df",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "85b2dd0bb363271b7853d69fc37ae9c66a9505ac5ea1fba0f4884a7708a9a7df"
+    },
+    "_offline/phase6e_server_v1/test_registration_accounting.py": {
+      "candidate_sha256": "fddac05206ba05b3ed3f4f2150634dd31fe862ab39e0d093a962ae8b269f8d02",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "fddac05206ba05b3ed3f4f2150634dd31fe862ab39e0d093a962ae8b269f8d02"
+    },
+    "_offline/phase6e_server_v1/test_registration_proof.py": {
+      "candidate_sha256": "e8b75a2943d5837e49b318232421f82d8d985348327bedc15fe57308fb943a4f",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "e8b75a2943d5837e49b318232421f82d8d985348327bedc15fe57308fb943a4f"
+    },
+    "_offline/phase6e_server_v1/test_registration_release.py": {
+      "candidate_sha256": "8bab75753e481317ee09f0a4e55eeb64ac75206aba3a6133856491cbcecd8a70",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "8bab75753e481317ee09f0a4e55eeb64ac75206aba3a6133856491cbcecd8a70"
+    },
+    "_offline/phase6e_server_v1/test_registration_scope.py": {
+      "candidate_sha256": "8810d572a01e70c3494faf9d61e4ac456e0362faafea61d8f35ae443be8aa2d6",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "8810d572a01e70c3494faf9d61e4ac456e0362faafea61d8f35ae443be8aa2d6"
+    },
+    "_offline/phase6e_server_v1/test_registration_transport.py": {
+      "candidate_sha256": "1411f045cd7caa8e171a9bf05deac03765d129d041278d86b9606e4c69ea139f",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "1411f045cd7caa8e171a9bf05deac03765d129d041278d86b9606e4c69ea139f"
+    },
+    "_offline/phase6e_server_v1/test_release_packet.py": {
+      "candidate_sha256": "df19df649e3f7cc1d11775164f5ea74593ebef9411b4ecaf7cc9ccaea72f83b8",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "df19df649e3f7cc1d11775164f5ea74593ebef9411b4ecaf7cc9ccaea72f83b8"
+    },
+    "_offline/phase6e_server_v1/test_release_selection.py": {
+      "candidate_sha256": "7e0edeacc8e573cfbd2ca286794c67e086ebe9a01accdea187b67af71c622ee5",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "7e0edeacc8e573cfbd2ca286794c67e086ebe9a01accdea187b67af71c622ee5"
+    },
+    "_offline/phase6e_server_v1/test_size_diagnosis.py": {
+      "candidate_sha256": "2ac7253920baba01536ca1fe98231f8e2bcb0ba59cce344c3b7db2e8c2edcd17",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "2ac7253920baba01536ca1fe98231f8e2bcb0ba59cce344c3b7db2e8c2edcd17"
+    },
+    "_offline/phase6e_server_v1/test_workday_release.py": {
+      "candidate_sha256": "13dd51109c5d832a17d5acadb8284e2e737183110970586f863808f61d3d8abb",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "13dd51109c5d832a17d5acadb8284e2e737183110970586f863808f61d3d8abb"
+    },
+    "_offline/phase6e_server_v1/workday_release.py": {
+      "candidate_sha256": "7ea60d799131c2255241890b9412b8dc9bb40dddd0a3b7be37b13a3f83b66161",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "7ea60d799131c2255241890b9412b8dc9bb40dddd0a3b7be37b13a3f83b66161"
+    },
+    "supabase/tests/phase6d0-staging-query.py": {
+      "candidate_sha256": "2ec4c6bebee97bea665050ef085e99f7bdbb4e7baad299cb13a55b220b11acfb",
+      "canonicalization": "CRLF-to-LF-only",
+      "checkout_sha256": "2ec4c6bebee97bea665050ef085e99f7bdbb4e7baad299cb13a55b220b11acfb"
+    }
+  },
+  "status": "ALL_PYTHON_SOURCE_BINDING_PASS"
+}

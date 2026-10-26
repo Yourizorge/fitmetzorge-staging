@@ -1,0 +1,122 @@
+{
+  "additional_sql_commands": 0,
+  "after": {
+    "background": {
+      "reset": "2026-10-26T16:04:47.336066+00:00",
+      "temp_bytes": 0
+    },
+    "dealloc": 0,
+    "health": {
+      "io_wait": 0,
+      "long_active": 0
+    },
+    "reset": "2026-10-26T16:04:47.335868+00:00",
+    "statements": [
+      {
+        "calls": 1,
+        "exec_ms": 28.233931,
+        "queryid": "-4298648437779073773",
+        "since": "2026-10-26T16:05:09.811112+00:00",
+        "temp_read": 0,
+        "temp_written": 0,
+        "wal": "836",
+        "wal_fpi": "0",
+        "wal_records": "15"
+      },
+      {
+        "calls": 1,
+        "exec_ms": 1.012207,
+        "queryid": "83440048382226879",
+        "since": "2026-10-26T16:05:09.586071+00:00",
+        "temp_read": 0,
+        "temp_written": 0,
+        "wal": "108",
+        "wal_fpi": "0",
+        "wal_records": "2"
+      },
+      {
+        "calls": 2,
+        "exec_ms": 5.233434,
+        "queryid": "7916432885626777276",
+        "since": "2026-10-26T16:05:08.707826+00:00",
+        "temp_read": 0,
+        "temp_written": 0,
+        "wal": "0",
+        "wal_fpi": "0",
+        "wal_records": "0"
+      },
+      {
+        "calls": 1,
+        "exec_ms": 0.030556,
+        "queryid": "240128645851807461",
+        "since": "2026-10-26T16:05:09.857246+00:00",
+        "temp_read": 0,
+        "temp_written": 0,
+        "wal": "0",
+        "wal_fpi": "0",
+        "wal_records": "0"
+      },
+      {
+        "calls": 5,
+        "exec_ms": 7.530229,
+        "queryid": "-6647076033600343782",
+        "since": "2026-10-26T16:05:09.574453+00:00",
+        "temp_read": 0,
+        "temp_written": 0,
+        "wal": "0",
+        "wal_fpi": "0",
+        "wal_records": "0"
+      }
+    ]
+  },
+  "before": {
+    "background": {
+      "reset": "2026-10-26T16:04:47.336066+00:00",
+      "temp_bytes": 0
+    },
+    "dealloc": 0,
+    "health": {
+      "io_wait": 0,
+      "long_active": 0
+    },
+    "reset": "2026-10-26T16:04:47.335868+00:00",
+    "statements": [
+      {
+        "calls": 1,
+        "exec_ms": 2.97675,
+        "queryid": "7916432885626777276",
+        "since": "2026-10-26T16:05:08.707826+00:00",
+        "temp_read": 0,
+        "temp_written": 0,
+        "wal": "0",
+        "wal_fpi": "0",
+        "wal_records": "0"
+      }
+    ]
+  },
+  "bindings": {
+    "3d8a5a0790efdcdf086ba95dd4bd28daca3ac5de148856b5c2b63f89f1191cdf": "-6647076033600343782",
+    "5e3cce093162da75aa5133f845bcb11396d67126a4ddec3b0345711dedb950ec": "-4298648437779073773",
+    "8941af7a96d93dfd60aaad325f075dbab6565fef1f8f316914a18b528786f769": "240128645851807461",
+    "ad5ff4effb3cdfc8647f1bfa24815040cf3b1b20537b36d4f163ee36ccc8cb23": "83440048382226879",
+    "c1b191e76b2023233a8ef5feef5da7cc838116790669bb55e5db23cce0b36ffd": "7916432885626777276"
+  },
+  "does_not_authorize_wal_or_retry": true,
+  "expected": {
+    "-4298648437779073773": 1,
+    "-6647076033600343782": 5,
+    "240128645851807461": 1,
+    "7916432885626777276": 1,
+    "83440048382226879": 1
+  },
+  "query_text_read": false,
+  "readonly_queryids": [
+    "-4298648437779073773",
+    "-6647076033600343782",
+    "240128645851807461",
+    "7916432885626777276",
+    "83440048382226879"
+  ],
+  "reason": "io_read_wal",
+  "status": "NO_GO"
+}
