@@ -9,7 +9,7 @@ from metered_composition import MeteredComposition,capacity
 from quota_boundary import FILE,SOURCE_SHA
 from closure import AUTHORIZATION,RUN_ID,PURPOSE,allowance
 from cli_stat_reader import snapshot
-from cli_envelope import attribution,charged,CAP,CHARGE
+from cli_envelope import attribution,charged,capacity as cli_capacity,OBSERVERS
 
 HERE=pathlib.Path(__file__).resolve().parent;ROOT=HERE.parents[2]
 
@@ -103,9 +103,12 @@ class Gate:
         return self.scalar.query(text)
     def metered_cli(self,dry):
         index=len(self.cli_protocol)
-        if index>1 or (index==1 and not dry):raise ValueError('hosted_cli_sequence')
+        if index>2 or (index>0 and not dry):raise ValueError('hosted_cli_sequence')
+        slot=('quota','pre_auth','final')[index];cap=cli_capacity(slot)
         before,first=snapshot(self.runtime)
-        self.save('hosted-cli-before-'+str(index)+'.json',{'stats':before,'commands':first})
+        self.save('hosted-cli-before-'+str(index)+'.json',{'stats':before,'commands':first,
+            'run_id':RUN_ID,'source_commit':self.result['head'],'slot':slot,'dry_run':dry,
+            'capacity_reserved':cap,'observer_commands_reserved':OBSERVERS})
         outcome=None;failure=None
         try:outcome=self.cli_executor(dry)
         except Exception as error:failure=type(error).__name__
@@ -114,16 +117,16 @@ class Gate:
             after,last=snapshot(self.runtime)
             self.save('hosted-cli-after-'+str(index)+'.json',{'stats':after,'commands':last,'outcome':outcome,'error_class':failure})
         if failure:raise ValueError('hosted_cli_execution_failed')
-        numeric=attribution(before,after,between=3)
+        numeric=attribution(before,after,between=3,slot=slot)
         self.save('cli-numeric-coverage-'+str(index)+'.json',numeric)
         if outcome['exit_code']:
             raise ValueError('hosted_cli_or_numeric_evidence_failed')
         if dry and (not outcome['up_to_date'] or outcome['migration_files']):raise ValueError('hosted_dry_run_not_empty')
         if not dry and outcome['migration_files']!=[FILE]:raise ValueError('hosted_migration_not_exact_quota')
-        receipt={'complete':True,'environment':'staging','protocol_commands':None,'commands':[],
+        receipt={'complete':True,'environment':'staging','protocol_commands':None,'commands':[],'slot':slot,'dry_run':dry,
             'observer_commands':first+last,'outcome':outcome,'attribution':numeric,
-            'capacity_reserved':CAP,'charged_commands':CHARGE,
-            'command_identity':'64 reserved CLI/unknown commands; database-wide numeric deltas are not session attribution'}
+            'capacity_reserved':cap,'charged_commands':cap+OBSERVERS,
+            'command_identity':'reserved CLI/unknown capacity; database-wide numeric deltas are not session attribution'}
         charged(receipt)
         self.save('cli-protocol-'+str(index)+'.json',receipt);self.cli_protocol.append(receipt)
         return receipt
@@ -168,17 +171,12 @@ def main(ci_folder):
         if policy.get('sessions_single_per_user') is not False or any(v is not False for k,v in policy.items() if k.startswith('hook_')):
             raise ValueError('hosted_auth_policy_changed')
         save(out,'auth-policy.json',policy)
-        import urllib.request
-        req=urllib.request.Request(j.jit.API+j.BASE+'/api-keys?reveal=true',headers={'Authorization':'Bearer '+token,'Accept':'application/json'})
-        with urllib.request.build_opener(j.jit.NoRedirect()).open(req,timeout=5) as response:
-            raw=response.read(100001)
-        if len(raw)>100000:raise ValueError('private_keys_response_budget')
-        keys=json.loads(raw);raw=None
+        from management_reads import read as private_read
+        private_save=lambda name,value:save(out,name,value)
+        keys=private_read(journal,'api_keys',private_save)
         admin=next(x['api_key'] for x in keys if x['name']=='service_role')
         anon=next(x['api_key'] for x in keys if x['name']=='anon');keys=None
-        req=urllib.request.Request('https://'+PROJECT+'.supabase.co/auth/v1/health',headers={'apikey':anon})
-        with urllib.request.build_opener(j.jit.NoRedirect()).open(req,timeout=5) as response:
-            health=json.loads(response.read(4097))
+        health=private_read(journal,'auth_health',private_save,anon=anon)
         if health.get('version')!='v2.197.0':raise ValueError('hosted_auth_version_changed')
         save(out,'auth-version.json',{'version':health['version']})
         result['phase']='jit';granted=True;journal.grant()
@@ -219,7 +217,7 @@ def main(ci_folder):
         if c is not None:
             result['commands']=c.meter.used
             save(out,'final-command-meter.json',c.meter.receipt())
-        if journal:journal.token=None
+        if journal:result['management_requests']=journal.calls;journal.token=None
         token=None
         if result['status']=='HOSTED_CHAIN_PASS_PENDING_ACCESS_CLOSURE' and result.get('jit_revoked'):
             result['status']='HOSTED_CHAIN_TECHNICAL_PASS'

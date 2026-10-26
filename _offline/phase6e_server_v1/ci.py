@@ -1,13 +1,15 @@
-"""Clean 44 preserved migrations + one isolated candidate; zero hosted access."""
+"""Clean canonical45 plus two actual isolated app migrations; zero hosted access."""
 import hashlib,importlib.util,json,pathlib,re,shutil,sys
 HERE=pathlib.Path(__file__).resolve().parent
 ROOT=HERE.parents[1]
+sys.path.insert(0,str(HERE))
+import ci_profile
 spec=importlib.util.spec_from_file_location('integration_prior_ci',HERE.parent/'phase6e11/endchain_v1/ci.py')
 previous=importlib.util.module_from_spec(spec);spec.loader.exec_module(previous)
 base=previous.prior.old.old
 M45='20261014105919_phase6e_synthetic_server_candidate.sql'
 M46='20261014160019_phase6e_local_outbox.sql'
-NEW=['domain.cjs','domain.test.cjs','presentation.cjs','presentation.test.cjs','panels.js','composed_store.py','windows.cjs','windows.test.cjs','worker.cjs','store.py','database_tests.py','ci.py','ci_auth.py',
+NEW=['domain.cjs','domain.test.cjs','presentation.cjs','presentation.test.cjs','panels.js','composed_store.py','windows.cjs','windows.test.cjs','worker.cjs','store.py','database_tests.py','ci.py','ci_auth.py','ci_profile.py','test_ci_profile.py',
      'server.py','ui.html','ui.js','ui.css','browser_checks.cjs','composed_browser.cjs','protocol.py','test_protocol.py',
      'size_diagnosis.py','size_pg17.py','test_size_diagnosis.py',
      'display.js','display.test.cjs',
@@ -44,6 +46,19 @@ previous.prior.old.EXTRA|=EXTRA
 
 class Gate(previous.Gate):
     cli_namespace=''
+    cli_profile=ci_profile.PROFILE
+    migration_count=ci_profile.CANONICAL_COUNT
+    migration_last=ci_profile.QUOTA
+    def install(self):
+        self.command('pg17-parser-install',['python3','-m','pip','install','--disable-pip-version-check',
+            '--only-binary=:all:','--target',str(self.sources/'supabase/.temp/phase6e11-pg17-parser'),
+            'pglast==7.20','psycopg[binary]==3.2.10'],timeout=120)
+        sys.path.insert(0,str(self.sources/'supabase/.temp/phase6e11-pg17-parser'))
+        sys.path.insert(0,str(self.sources/'_offline/phase6e11/endchain_v1'))
+        # Platform setup only: no registered endchain runner or capacity hooks.
+        base.Gate.install(self)
+        from integral_ci import configure_local_tls
+        configure_local_tls(self)
     def browser_dependencies(self):
         deps=self.work/'browser-deps'
         if not (deps/'node_modules/playwright').exists():
@@ -51,31 +66,42 @@ class Gate(previous.Gate):
             self.command('integration-chromium',['node',str(deps/'node_modules/playwright/cli.js'),'install','--with-deps','chromium'],timeout=180)
         return str(deps/'node_modules/playwright')
     def fetch(self):
+        self.result['cli_profile']=self.cli_profile
         migrations=super().fetch()
         files=json.loads((self.out/'candidate.json').read_text())['sources']
         if not EXTRA<=set(files):raise RuntimeError('integration_sources_missing')
+        # The parent verifies all sources and owns the exclusive preflight receipt.
         for name in files:
             if not name.startswith(('_offline/','supabase/')) and name.endswith('.js'):
                 if (ROOT/name).read_bytes()!=(self.sources/name).read_bytes():raise RuntimeError('frozen_model_changed')
         return migrations
     def cli(self,*args,timeout=120):
-        candidate=args[:2]==('migration','up') and self.result.get('phase')=='local_candidate_45'
+        candidate=args[:2]==('migration','up') and self.result.get('phase') in ('local_app_schema','local_app_outbox')
         dry=args[:2]==('db','push') and '--dry-run' in args
         if candidate or dry:
             import cli_meter
-            actual=('db','push','--local','--skip-vault','--yes') if candidate else args
+            index=len(getattr(self,'cli_protocol',[]))
+            actual=ci_profile.cli_arguments(args,self.result.get('phase'),index)
             from cli_isolation import measured
-            return measured(self,actual,timeout,cli_meter.run)
+            result=measured(self,actual,timeout,cli_meter.run)
+            ci_profile.cli_receipt(self.cli_protocol[-1],index)
+            return result
+        if args[:2]==('db','push'):raise RuntimeError('app_cli_sequence')
         return base.Gate.cli(self,*args,timeout=timeout)
     def rebuild(self,migrations):
-        super().rebuild(migrations)
+        if migrations!=ci_profile.canonical(migrations):raise RuntimeError('app_canonical_order')
+        base.Gate.rebuild(self,migrations)
+        if self.result['platform']['server'][0]['num']!='170006':raise RuntimeError('exact_PG17_6_required')
+        history=self.rows('select version from supabase_migrations.schema_migrations order by version')
+        self.save('app-canonical-history.json',{'history':history,**ci_profile.history_contract(history,migrations,'canonical')})
         path=self.sources/'_offline/phase6e_server_v1/supabase/migrations'/M45
         shutil.copyfile(path,self.work/'supabase/migrations'/M45)
-        self.result['phase']='local_candidate_45'
+        self.result['phase']='local_app_schema'
         self.cli('migration','up','--local')
         folder=self.sources/'_offline/phase6e_server_v1';sys.path.insert(0,str(folder))
         import ci_auth,registration_database
-        self.save('registration12-minimal-history.json',{'history':self.rows('select version from supabase_migrations.schema_migrations order by version'),
+        history=self.rows('select version from supabase_migrations.schema_migrations order by version')
+        self.save('registration12-minimal-history.json',{'history':history,**ci_profile.history_contract(history,migrations,'minimal'),
             'migration_sha256':hashlib.sha256(path.read_bytes()).hexdigest(),'hosted_applied':False})
         dry=self.cli('db','push','--local','--dry-run','--skip-vault')
         combined=(dry.stdout+dry.stderr).lower()
@@ -124,16 +150,27 @@ class Gate(previous.Gate):
                 self.result['registration12_transport_hosted']=False
         finally:self.save=old_save
         shutil.copyfile(self.sources/'_offline/phase6e_server_v1/supabase/migrations'/M46,self.work/'supabase/migrations'/M46)
+        self.result['phase']='local_app_outbox'
         self.cli('migration','up','--local')
         history=self.rows('select version from supabase_migrations.schema_migrations order by version')
-        if len(history)!=46 or history[-1]['version']!=M46.split('_')[0]:raise RuntimeError('candidate_history')
-        self.save('candidate-46-history.json',{'history':history,'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),
+        self.save('candidate-47-history.json',{'history':history,**ci_profile.history_contract(history,migrations,'complete'),
+            'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),
             'outbox_sha256':hashlib.sha256((self.sources/'_offline/phase6e_server_v1/supabase/migrations'/M46).read_bytes()).hexdigest(),'hosted_applied':False})
-        self.result['clean_rebuild']='46/46_PASS_LOCAL_CANDIDATE';self.result['migrations_applied']=46
+        self.result['clean_rebuild']='47/47_PASS_LOCAL_CANDIDATE';self.result['migrations_applied']=47
+        self.result['cli_profile']=self.cli_profile
+    def check_bridge(self):
+        # Keep workflow/request/controller ACL checks and real canonical quota
+        # assertions, without the endchain runtime/admission orchestration.
+        previous.prior.old.Gate.check_bridge(self)
+        from database_checks import run as check_budget
+        result=check_budget(lambda q:self.sql(q,False))
+        self.save('endchain-budget-database.json',result)
+        self.result['endchain_budget_database_checks']=result['checks']
     def regressions(self):
         # Existing SQL/audit regressions remain mandatory; no second 6E-11 run.
         base.Gate.regressions(self)
         folder=self.sources/'_offline/phase6e_server_v1';sys.path.insert(0,str(folder))
+        self.command('integration-ci-profile',[sys.executable,'-B',str(folder/'test_ci_profile.py')])
         self.command('integration-protocol',[sys.executable,'-B',str(folder/'test_protocol.py')])
         self.command('integration-release-packet',[sys.executable,'-B',str(folder/'test_release_packet.py')])
         self.command('registration-release-packet',[sys.executable,'-B',str(folder/'test_registration_release.py')])
@@ -257,5 +294,13 @@ class Gate(previous.Gate):
         actual={(x['member'],x['grantor'],x['admin_option'],x['inherit_option'],x['set_option']) for x in memberships}
         if actual!=expected or len(memberships)!=2:raise RuntimeError('candidate_membership')
         self.save('integration-security.json',{'functions':funcs,'roles':roles,'memberships':memberships,'Data_API_exposed':False})
+        receipts=getattr(self,'cli_protocol',[])
+        if len(receipts)!=len(ci_profile.SLOTS):raise RuntimeError('app_cli_invocation_count')
+        self.save('app-cli-profile.json',{'profile':self.cli_profile,
+            'invocations':[ci_profile.cli_receipt(receipt,i) for i,receipt in enumerate(receipts)],
+            'endchain_capacity_used':False,'hosted_calls':0})
+        from ci_source_binding import verify_all
+        files=json.loads((self.out/'candidate.json').read_text())['sources']
+        self.save('loaded-source-final.json',verify_all(ROOT,self.sources,files))
 
 if __name__=='__main__':sys.exit(Gate().run())

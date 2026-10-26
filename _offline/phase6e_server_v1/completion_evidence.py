@@ -7,12 +7,14 @@ def main():
     if not folder.is_relative_to(ROOT/'supabase/.temp') or not folder.name.startswith('verified-'):raise ValueError('scope')
     read=lambda n:json.loads(disk(folder/n).read_bytes())
     result,collection,manifest=read('result.json'),read('collection.json'),read('artifact-manifest.json')
+    current=result.get('cli_profile')=='local_app'
+    complete_history='candidate-47-history.json' if current else 'candidate-46-history.json'
     if result['status'] not in ('CLEAN_CI_PASS','NO_GO') or not collection['verified'] or str(collection['run'])!=result['run_id'] or collection['head']!=result['commit']:raise ValueError('ci_required')
     if read('candidate.json')['sha256']!=result['candidate_sha256']:raise ValueError('candidate_binding')
     if result['status']=='NO_GO':
         sys.path.insert(0,str(ROOT/'_offline/phase6e11/endchain_v1'));from source_scan import check
         target=disk(HERE/'receipts'/('ci-'+result['run_id']+'-incomplete'));target.mkdir(parents=True,exist_ok=False);saved={}
-        names=['result.json','collection.json','candidate-46-history.json','release-selection-http.json',
+        names=['result.json','collection.json',complete_history,'release-selection-http.json',
                'account-center-browser.json','integration-browser.json','composed-browser.json','offline-shell-browser.json']
         names += [n for n in manifest if n.startswith('selected-') and n.endswith('.json')]
         for name in names:
@@ -26,12 +28,13 @@ def main():
             'files':saved,'head':result['commit'],'candidate_sha256':result['candidate_sha256'],
             'archive_sha256':collection['archive_sha256'],'hosted':False,'owner_acceptance':False},f,indent=2,sort_keys=True)
         print(json.dumps({'files':len(saved),'directory':str(target),'scope':'incomplete_local_CI_only'}));return
-    names=['result.json','collection.json','candidate-46-history.json','registration12-minimal-history.json',
+    names=['result.json','collection.json',complete_history,'registration12-minimal-history.json',
         'registration12-dry-run.json','registration12-database.json','registration12-browser.json',
         'registration12-auth.json','registration12-integration-native-admin-protocol.json','registration12-integration-managed-auth-protocol.json',
         'registration12-integration-application-io.json','integration-application-io.json',
         'integration-auth.json','integration-auth-table-security.json','integration-database.json','integration-browser.json','integration-security.json','integration-role-memberships.json',
         'integration-native-admin-protocol.json','integration-managed-auth-protocol.json']
+    if current:names+=['app-canonical-history.json','app-cli-profile.json','loaded-source-preflight.json','loaded-source-final.json']
     if 'stream-filter-pg17.json' in manifest:names.append('stream-filter-pg17.json')
     if 'stream-capacity-pg17.json' in manifest:names.append('stream-capacity-pg17.json')
     for name in ('composed-browser.json','account-center-browser.json','account-browser-delayed-logout.json','offline-shell-browser.json','release-selection-http.json','workday-release-packets.json','numeric-size-pg17.json','proposed-size-pg17.json'):

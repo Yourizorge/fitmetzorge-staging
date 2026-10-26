@@ -7,6 +7,24 @@ previous=importlib.util.module_from_spec(spec);spec.loader.exec_module(previous)
 old=previous.old
 M43='20261012104331_phase6e11_controller_evidence.sql'
 EXTRA={'_offline/phase6e11/controller_v1/'+n for n in ['core.mjs','core.test.mjs','oidc.mjs','oidc.test.mjs','store.mjs']}
+CANDIDATE_ENVELOPE_LIMIT=16*1024*1024
+CANDIDATE_PAYLOAD_LIMIT=12*1024*1024
+
+def read_candidate(response,expected):
+    raw=response.read(CANDIDATE_ENVELOPE_LIMIT+1)
+    if len(raw)>CANDIDATE_ENVELOPE_LIMIT:raise RuntimeError('candidate_envelope_limit')
+    try:obj=json.loads(raw)
+    except (ValueError,UnicodeError):raise RuntimeError('candidate_envelope_invalid') from None
+    if not isinstance(obj,dict) or obj.get('encoding')!='base64' or not isinstance(obj.get('content'),str):
+        raise RuntimeError('candidate_encoding')
+    size=obj.get('size')
+    if type(size) is not int or not 0<=size<=CANDIDATE_PAYLOAD_LIMIT:raise RuntimeError('candidate_payload_limit')
+    try:data=base64.b64decode(''.join(obj['content'].split()),validate=True)
+    except (ValueError,UnicodeError):raise RuntimeError('candidate_base64_invalid') from None
+    if len(data)!=size:raise RuntimeError('candidate_payload_length')
+    if hashlib.sha256(data).hexdigest()!=expected:raise RuntimeError('candidate_digest')
+    return data
+
 class Gate(previous.Gate42):
     migration_count=43
     migration_last=M43
@@ -16,10 +34,8 @@ class Gate(previous.Gate42):
         token=os.environ.pop('GH_READ_TOKEN')
         req=urllib.request.Request('https://api.github.com/repos/Yourizorge/fitmetzorge-staging/git/blobs/'+blob,
           headers={'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json'})
-        with urllib.request.urlopen(req,timeout=30) as response:obj=json.loads(response.read(8000000))
+        with urllib.request.urlopen(req,timeout=30) as response:data=read_candidate(response,expected)
         del token,req
-        data=base64.b64decode(obj['content'])
-        if old.sha(data)!=expected:raise RuntimeError('candidate_digest')
         bundle=json.loads(data);manifest={}
         migrations=sorted(p for p in bundle['files'] if p.startswith('supabase/migrations/'))
         if len(migrations)!=self.migration_count or len({pathlib.Path(p).name.split('_')[0] for p in migrations})!=self.migration_count or pathlib.Path(migrations[-1]).name!=self.migration_last:raise RuntimeError('exact_migration_composition')

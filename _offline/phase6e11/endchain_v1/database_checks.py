@@ -27,8 +27,13 @@ def run(sql):
     for number,old in enumerate([AUTHORIZATION['previous_used_run']]+AUTHORIZATION['earlier_used_runs']):
         old_cap=2237 if old=='1c3bf7e7-bc78-40c5-9ac1-5ba3512ec66d' else 128
         case('old_used_run_no_new_allowance_'+str(number),insert(old,old_cap+1),'runs_command_count_check')
-        case('old_used_run_retained_'+str(number),insert(old)+"delete from "+SCHEMA+".runs;",'single_endchain_receipt_retained')
-        case('old_used_run_cannot_reopen_'+str(number),insert(old,state='stopped')+"update "+SCHEMA+".runs set state='running';",'single_endchain_identity_immutable')
+        prefix='recovery_run' if old==AUTHORIZATION['previous_used_run'] else 'single_endchain'
+        case('old_used_run_retained_'+str(number),insert(old)+"delete from "+SCHEMA+".runs;",prefix+'_receipt_retained')
+        denial=prefix+('_receipt_retained' if old==AUTHORIZATION['previous_used_run'] else '_identity_immutable')
+        case('old_used_run_cannot_reopen_'+str(number),insert(old,state='stopped')+"update "+SCHEMA+".runs set state='running';",denial)
+    for change in ("state='complete'",'command_count=1'):
+        case('consumed_receipt_cannot_change_'+str(len(checks)),insert(AUTHORIZATION['previous_used_run'],state='stopped')+
+             'update '+SCHEMA+'.runs set '+change+';','recovery_run_receipt_retained')
     for field,value in [('id',"'"+OTHER+"'"),('github_run','124'),('head_sha',"'"+'c'*40+"'"),
                         ('manifest_sha',"'"+'d'*64+"'"),('created_at',"created_at-interval '1 second'"),
                         ('expires_at',"expires_at+interval '1 second'")]:

@@ -57,6 +57,8 @@ class Composition:
         self.preservation_baseline=None
         self.gate_baseline=None
         self.closing_receipt=None
+        self.final_pre_complete=False;self.final_dry_complete=False;self.final_post_complete=False
+        self.final_attempted=set()
         self.runtime=runtime
     def native_runtime(self,gate):
         if self.runtime is None:
@@ -64,11 +66,28 @@ class Composition:
             self.runtime=NativeRuntime.disposable(gate)
         return self.runtime
     def finalize(self,gate,request):
+        """Existing metered hook: charge/execute the final CLI before removal."""
+        from cli_envelope import charged,DRY_CAP,OBSERVERS
+        if not self.final_pre_complete or 'dry' in self.final_attempted:
+            raise RuntimeError('ci_final_dry_sequence')
+        self.final_attempted.add('dry')
+        result=gate.cli('db','push','--local','--dry-run','--skip-vault',timeout=45)
+        receipt=gate.cli_protocol[-1]
+        if receipt.get('slot')!='final' or charged(receipt)!=DRY_CAP+OBSERVERS:
+            raise RuntimeError('ci_final_dry_incomplete')
+        self.final_dry_complete=True
+        gate.final_dry_run=result
+        gate.save('integral-final-dry-sequence.json',{'after_trace_command':len(self.commands),
+            'before_temporary_removal':True,'slot':'final','cli_receipt_sha256':
+            hashlib.sha256(json.dumps(receipt,sort_keys=True,separators=(',',':')).encode()).hexdigest()})
+        return result
+    def close_receipt(self,gate,request):
+        if not self.final_post_complete or self.closing_receipt is not None:
+            raise RuntimeError('ci_final_post_required')
         from closure import counted_close
         def read(name):return json.loads((gate.out/(getattr(gate,'evidence_prefix','')+name)).read_text())
-        gate.final_dry_run=gate.cli('db','push','--local','--dry-run','--skip-vault',timeout=90)
         self.closing_receipt=counted_close(self.commands,read('integral-preflight.json'),
-            [read('cli-protocol-'+str(i)+'.json') for i in range(2)],
+            [read('cli-protocol-'+str(i)+'.json') for i in range(3)],
             [read('auth-protocol-%02d.json'%i) for i in range(18)],
             read('workflow-auth-protocol.json'),request['run_id'],request['purpose'])
         gate.save('integral-closure-intent.json',self.closing_receipt)
@@ -82,8 +101,50 @@ class Composition:
         total=sum(c['phase'] not in BOOTSTRAP for c in self.commands)+receipt['managed_auth']+receipt['preflight']+receipt['cli']
         if total!=receipt['global_commands']:raise RuntimeError('ci_closure_count_mismatch')
         gate.save('integral-closure.json',{**receipt,'confirmed':True})
+    def final_cleanup_confirmed(self):
+        """Post-proof hook for the runtime safety owner; never called on failure."""
+        self.final_post_complete=True
+        self.commands[-1]['final_cleanup_validated']=True
+    def temporary_absence_confirmed(self):
+        """Validated returned metadata, not a precharge and not an IO/PASS claim."""
+        self.commands[-1]['temporary_absence_validated']=True
+    def final_metadata(self,gate,ids,stage,query):
+        import lifecycle_gates as gates
+        from integral_io import QueryIO
+        from history_pin import validate as validate_history
+        phase='gates_final_'+stage
+        args=gates.final_parameters(ids,self.fixture_context,stage)
+        query(phase+'_begin','BEGIN TRANSACTION READ ONLY')
+        if stage=='pre':
+            query(phase+'_timeout',"SET LOCAL statement_timeout='5s'")
+            if query(phase+'_readonly',"select current_setting('transaction_read_only')='on' readonly")[0]['readonly'] is not True:
+                raise RuntimeError('ci_gates_not_readonly')
+        monitor=QueryIO(lambda channel,name,text,values=():query(phase+'_'+name,text,values))
+        monitor.start()
+        qid=monitor.bind(gates.FINAL,args,read_only=True)
+        rows=query(phase+'_metadata',gates.FINAL,args);monitor.executed(qid)
+        if len(rows)!=1:raise ValueError('final_metadata_rows')
+        value=rows[0]['value']
+        validate_history(value['migrations'],self.native_runtime(gate).environment,gate.sources)
+        gates.check_final(value,self.gate_baseline,args[3],stage)
+        if stage=='post':self.temporary_absence_confirmed()
+        io=monitor.close()
+        if io['last_pair']['own_wal_bytes']!=0 or io['closing_wal_bytes']!=0:
+            raise ValueError('io_read_wal')
+        query(phase+'_rollback','ROLLBACK')
+        receipt={'access':value['access'],'migrations':value['migrations'],
+            'catalog_sha':gates.digest(value['catalog']),'absence':value['absence'],'io':io,
+            'unchanged':True,'stage':stage,'metadata_sql_sha256':hashlib.sha256(gates.FINAL.encode()).hexdigest(),
+            'catalog_excluded_schemas':args[0],'temporary_schema_names':value['temporary_schema_names']}
+        gate.save('integral-gates-'+('after_cleanup' if stage=='post' else 'final_pre')+'.json',receipt)
+        if stage=='pre':self.final_pre_complete=True
+        else:self.final_cleanup_confirmed()
     def preservation(self,gate,ids,label):
-        import psycopg,integral_stream
+        import integral_stream
+        if label in ('after_cleanup','final_post'):
+            if label in self.final_attempted or label=='final_post' and not self.final_dry_complete:
+                raise RuntimeError('ci_final_metadata_sequence')
+            self.final_attempted.add(label)
         connection=self.native_runtime(gate).connect()
         def query(phase,text,args=()):
             bound,params=bind_parameters(text,args)
@@ -94,10 +155,12 @@ class Composition:
             self.after_sql(phase,text);return rows
         try:
             value=None
-            if label!='after_migration':
+            if label not in ('after_migration','final_post'):
                 value=integral_stream.run(query,gate.save,ids,self.fixture_context,label,self.preservation_baseline)
                 if self.preservation_baseline is None:self.preservation_baseline=value
-            if label in ('before','after_migration','after_cleanup'):
+            if label in ('after_cleanup','final_post'):
+                self.final_metadata(gate,ids,'pre' if label=='after_cleanup' else 'post',query)
+            if label in ('before','after_migration'):
                 import lifecycle_gates as gates
                 from integral_io import QueryIO
                 query('gates_'+label+'_begin','BEGIN TRANSACTION READ ONLY')
@@ -107,12 +170,14 @@ class Composition:
                 monitor=QueryIO(lambda channel,phase,text,args=():query('gates_'+label+'_'+phase,text,args))
                 monitor.start()
                 def checked(name,text,args=()):
-                    qid=monitor.bind(text,args);rows=query('gates_'+label+'_'+name,text,args);monitor.executed(qid)
+                    qid=monitor.bind(text,args,read_only=True);rows=query('gates_'+label+'_'+name,text,args);monitor.executed(qid)
                     return rows
                 context=self.fixture_context;people=list(ids.values());schemas=context['temporary_schemas']
                 access=checked('access',gates.ACCESS,[people])[0]
                 gate.save('integral-gates-'+label+'-access.json',access);gates.check_access(access)
                 migrations=checked('migrations',gates.MIGRATIONS)
+                from history_pin import validate as validate_history
+                validate_history(migrations,self.native_runtime(gate).environment,gate.sources)
                 pending=label=='before' and self.fixture_context.get('migration_boundary',False)
                 gates.check_migrations(migrations,self.gate_baseline['migrations'] if self.gate_baseline and label!='after_migration' else None,pending)
                 catalog=checked('catalog',gates.CATALOG,[schemas])[0]['value']
@@ -187,6 +252,11 @@ class Composition:
         tail=matches[0];value=sql(body.rstrip()[:-len(tail)]+tails[tail])
         rows=[json.loads(line) for line in value.splitlines() if line.startswith('{')]
         return {'rows':rows,'commandCount':len(self.commands)}
+    def confirm_controls_restored(self,restored,expected):
+        if restored!=expected:raise RuntimeError('ci_control_restore_mismatch')
+        if not self.commands or self.commands[-1]['phase']!='control_restored' or not self.commands[-1]['confirmed']:
+            raise RuntimeError('ci_control_restore_unconfirmed')
+        self.commands[-1]['controls_restored_validated']=True
     def workflow(self,gate,request,outer_sql,ids,run_id):
         import psycopg
         from psycopg.types.json import Jsonb
@@ -221,7 +291,9 @@ class Composition:
                 raise RuntimeError('ci_sql_'+(e.sqlstate or 'unknown')) from None
         def query(channel,phase,text,values=()):
             track=monitor is not None and re.match(r'\s*(?:/\*.*?\*/\s*)?(select|with|insert|update|delete)\b',text,re.I|re.S)
-            qid=monitor.bind(text,values) if track else None
+            pure_read=channel=='reader' or (channel,phase) in {
+                ('workflow','identity'),('workflow','binding'),('workflow','read_binding'),('setup','lifecycle_bind')}
+            qid=monitor.bind(text,values,read_only=pure_read) if track else None
             result=raw_query(channel,phase,text,values)
             if qid is not None:monitor.executed(qid)
             return result
@@ -349,7 +421,7 @@ class Composition:
             if query('setup','control_restore',"update fmz6e11_request_private.control set enabled=false,expires_at=null where id and enabled and expires_at=$1::timestamptz returning id",[enabled['request']['expires_at']])!=[{'id':True}]:raise RuntimeError('ci_bridge_restore_count')
             if query('setup','control_restore',"update fmz6e11_private.config set enabled=false,proof_hash=null where id and enabled and proof_hash=$1 returning id",[enabled['config']['proof_hash']])!=[{'id':True}]:raise RuntimeError('ci_control_restore_count')
             restored=query('reader','control_restored',control_sql)[0]['value']
-            if restored!=controls:raise RuntimeError('ci_control_restore_mismatch')
+            self.confirm_controls_restored(restored,controls)
             gate.save('integral-control-restore-pair.json',{'before_sha':hashlib.sha256(json.dumps(restore_before,sort_keys=True).encode()).hexdigest(),
                 'after_sha':hashlib.sha256(json.dumps(restored,sort_keys=True).encode()).hexdigest(),'expected_updates':2,'actual_updates':2,'original_state_restored':True})
             end_reader('fixture_closeout')

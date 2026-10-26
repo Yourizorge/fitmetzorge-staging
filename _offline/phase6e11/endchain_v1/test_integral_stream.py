@@ -73,7 +73,7 @@ class StreamTests(unittest.TestCase):
             self.assertIn("'1'::text keep",sql)
             self.assertNotIn('case when',sql.lower())
 
-    def capacity_run(self,size,limit=9,page=4,short=False,interrupt=False,expected=None):
+    def capacity_run(self,size,limit=9,page=4,short=False,interrupt=False,expected=None,own_wal=0):
         from unittest.mock import patch
         import integral_stream
         saved={};calls=[];stats={'1':0,'2':0};received=[]
@@ -98,11 +98,17 @@ class StreamTests(unittest.TestCase):
             return []
         context={'window':ID(4),'a':ID(5),'b':ID(6),'runs':{'seed':ID(7)}}
         error=None;result=None
-        with patch.object(integral_stream,'ROWS',limit),patch.object(integral_stream,'PAGE',page),patch.object(integral_stream,'delta',return_value={'queries':[]}),patch.object(integral_stream,'other_load',return_value={'queries':[]}):
+        with patch.object(integral_stream,'ROWS',limit),patch.object(integral_stream,'PAGE',page),patch.object(integral_stream,'delta',return_value={'queries':[],'own_wal_bytes':own_wal}),patch.object(integral_stream,'other_load',return_value={'queries':[]}):
             try:result=run(query,lambda n,v:saved.update({n:v}),{'member':ID(1)},context,'capacity',expected)
             except Exception as e:error=e
         self.assertEqual(calls[-1],'ROLLBACK')
         return result,error,saved,calls,received
+
+    def test_readonly_wal_is_never_waived_as_hint_bits(self):
+        result,error,saved,calls,received=self.capacity_run(6,own_wal=1)
+        self.assertIsNone(result);self.assertEqual(str(error),'stream_own_wal')
+        self.assertEqual(saved['integral-stream-capacity-stop.json']['reason_code'],'stream_own_wal')
+        self.assertEqual(received,[])
 
     def test_row_ceiling_checked_before_hash_cursor_or_transport(self):
         result,error,saved,calls,received=self.capacity_run(10)

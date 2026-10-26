@@ -29,6 +29,7 @@ def check_plan(value,analyzed=False):
     root=value[0]
     def visit(node):
         if node.get('Temp Read Blocks',0) or node.get('Temp Written Blocks',0):raise ValueError('io_own_spill')
+        if node.get('WAL Bytes',0) or node.get('WAL Records',0) or node.get('WAL FPI',0):raise ValueError('io_read_wal')
         for child in node.get('Plans',[]):visit(child)
     if analyzed:
         visit(root['Plan'])
@@ -36,7 +37,7 @@ def check_plan(value,analyzed=False):
             raise ValueError('io_closing_witness')
     return str(root['Query Identifier'])
 
-def delta(before,after,expected):
+def delta(before,after,expected,readonly=()):
     if before['reset']!=after['reset'] or before['dealloc']!=after['dealloc']:raise ValueError('io_statistics_reset')
     if before['background']['reset']!=after['background']['reset'] or after['background']['temp_bytes']<before['background']['temp_bytes']:
         raise ValueError('io_background_counter_reset')
@@ -49,6 +50,7 @@ def delta(before,after,expected):
            for k in ('calls','temp_read','temp_written','wal','exec_ms')}
         if min(d.values())<0 or d['calls']!=count:raise ValueError('io_command_attribution')
         if d['temp_read'] or d['temp_written']:raise ValueError('io_own_spill')
+        if qid in readonly and d['wal']:raise ValueError('io_read_wal')
         if d['exec_ms']>5000*count:raise ValueError('io_query_time')
         out.append({'queryid':qid,**d})
     if after['health']['io_wait'] or after['health']['long_active']:raise ValueError('io_project_health')
@@ -59,11 +61,16 @@ def delta(before,after,expected):
 
 class QueryIO:
     def __init__(self,query):
-        self.query=query;self.bindings={};self.expected={};self.baseline=None;self.samples=[];self.reader_id=None
+        self.query=query;self.bindings={};self.expected={};self.baseline=None;self.samples=[];self.reader_id=None;self.readonly=set();self.classes={}
+    def register(self,source_sha,qid,read_only):
+        if type(read_only) is not bool:raise ValueError('io_read_class_missing')
+        if qid in self.classes and self.classes[qid]!=read_only:raise ValueError('io_read_write_family_collision')
+        self.classes[qid]=read_only;self.bindings[source_sha]=qid
+        if read_only:self.readonly.add(qid)
     def start(self):
         rows=self.query('reader','io_bind','EXPLAIN (VERBOSE,COSTS FALSE,FORMAT JSON) '+SNAPSHOT,['[]'])
         self.reader_id=check_plan(rows[0]['QUERY PLAN'])
-        self.bindings[hashlib.sha256(SNAPSHOT.encode()).hexdigest()]=self.reader_id
+        self.register(hashlib.sha256(SNAPSHOT.encode()).hexdigest(),self.reader_id,True)
         self.baseline=self.sample()
     def sample(self):
         rows=self.query('reader','io_sample',SNAPSHOT,[json.dumps(sorted(set(self.bindings.values())))])
@@ -72,11 +79,13 @@ class QueryIO:
         # The current stats query completes after its own observed counter.
         if self.reader_id:self.executed(self.reader_id)
         return result
-    def bind(self,sql,args):
+    def bind(self,sql,args,*,read_only):
         key=hashlib.sha256(sql.encode()).hexdigest()
-        if key in self.bindings:return self.bindings[key]
+        if key in self.bindings:
+            self.register(key,self.bindings[key],read_only)
+            return self.bindings[key]
         rows=self.query('reader','io_bind','EXPLAIN (VERBOSE,COSTS FALSE,FORMAT JSON) '+sql,args)
-        qid=check_plan(rows[0]['QUERY PLAN']);self.bindings[key]=qid
+        qid=check_plan(rows[0]['QUERY PLAN']);self.register(key,qid,read_only)
         # Preserve the actual previous value for a new family, never assume 0.
         sample=self.sample()
         if self.baseline is None:self.baseline=sample
@@ -89,7 +98,7 @@ class QueryIO:
     def checkpoint(self):
         expected=dict(self.expected)
         after=self.sample()
-        result=delta(self.baseline,after,expected)
+        result=delta(self.baseline,after,expected,self.readonly)
         self.baseline=after;self.expected={self.reader_id:1} if self.reader_id else {};return result
     def close(self):
         result=self.checkpoint()
@@ -97,5 +106,8 @@ class QueryIO:
             'EXPLAIN (ANALYZE,BUFFERS,WAL,VERBOSE,COSTS FALSE,FORMAT JSON) '+SNAPSHOT,
             [json.dumps(sorted(set(self.bindings.values())))])
         qid=check_plan(rows[0]['QUERY PLAN'],True)
+        if qid!=self.reader_id:raise ValueError('io_closing_reader_identity')
         return {'last_pair':result,'closing_queryid':qid,'closing_temp_written':0,
-            'bindings':self.bindings,'samples':len(self.samples),'query_text_read':False}
+            'bindings':self.bindings,'source_classes':{h:{'queryid':q,'readonly':self.classes[q]} for h,q in self.bindings.items()},
+            'readonly_queryids':sorted(self.readonly),'closing_wal_bytes':0,
+            'samples':len(self.samples),'query_text_read':False}

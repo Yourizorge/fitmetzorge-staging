@@ -83,6 +83,39 @@ def run(dsn,auth,tokens,claims,admin,auth_kind,inspect=None):
     ok('comparison_deduplicated',read('B')==before)
     bad=json.loads(json.dumps(bundle));bad['rows'].pop()
     denied('incomplete_comparison',lambda:act('B','compare_window',{'bundle':bad}))
+    compared=default.read(workspaces['B'],tokens['b'])
+    for action in ('build','confirm','apply'):
+        current=default.read(workspaces['B'],tokens['b'])
+        default.execute(workspaces['B'],tokens['b'],str(uuid.uuid4()),current['version'],{'action':action,'data':{}})
+    applied=default.read(workspaces['B'],tokens['b'])
+    ok('21_off_apply_expires_comparison',applied['capabilities']['full_day21'] is False
+       and applied['state']['active']['version']==compared['state']['active']['version']+1
+       and applied['state']['comparison'] is None and applied['state']['facts']==[])
+    ok('apply_retains_comparison_history',applied['state']['comparisonHistory']==compared['state']['comparisonHistory'])
+    restarted=Store(dsn,auth,enabled=True,observer=protocol.append)
+    ok('applied_comparison_expiry_survives_new_connection',restarted.read(workspaces['B'],tokens['b'])==applied)
+    denied('old_plan_comparison_cannot_replay',lambda:default.execute(workspaces['B'],tokens['b'],
+        str(uuid.uuid4()),applied['version'],{'action':'compare_window','data':{'bundle':bundle}}))
+    default.execute(workspaces['B'],tokens['b'],str(uuid.uuid4()),applied['version'],
+        {'action':'compare_window','data':{'bundle':applied['state']['comparisonExample']}})
+    refreshed=default.read(workspaces['B'],tokens['b'])
+    ok('new_plan_comparison_can_be_created',len(refreshed['state']['facts'])==4
+       and refreshed['state']['comparison']['revision']==compared['state']['comparison']['revision']+1
+       and refreshed['state']['comparisonHistory'][:-1]==compared['state']['comparisonHistory'])
+    comparison_history=read('B')['state']['comparisonHistory']
+    active=read('B')['state']['active']
+    default.execute(workspaces['B'],tokens['b'],str(uuid.uuid4()),read('B')['version'],
+        {'action':'edit','data':{'domain':'nutrition_portion','value':{'meal':0,'item':0,'grams':225}}})
+    edited=default.read(workspaces['B'],tokens['b'])
+    ok('21_off_edit_invalidates_current_facts',edited['capabilities']['full_day21'] is False
+       and edited['state']['comparison'] is None and edited['state']['facts']==[])
+    ok('comparison_history_retained_after_edit',edited['state']['comparisonHistory']==comparison_history)
+    ok('comparison_invalidation_does_not_apply',edited['state']['active']==active
+       and edited['state']['review']['member'] is False)
+    denied('invalidated_facts_do_not_grant_apply',lambda:default.execute(workspaces['B'],tokens['b'],
+        str(uuid.uuid4()),edited['version'],{'action':'apply','data':{}}))
+    restarted=Store(dsn,auth,enabled=True,observer=protocol.append)
+    ok('invalidated_facts_survive_new_connection',restarted.read(workspaces['B'],tokens['b'])==edited)
     ok('planning_explicit_source',read('B')['planning']['occurrence']['zone']=='UTC' and not read('B')['planning']['background_delivery'])
     out=read('A')['notices'];ok('outbox_durable_history',bool(out) and any(e['status']=='applied' for e in out))
     ok('trainer_no_notice_details',read('A','trainer')['notices']==[])

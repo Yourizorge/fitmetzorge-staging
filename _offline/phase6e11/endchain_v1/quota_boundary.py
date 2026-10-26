@@ -4,8 +4,9 @@ import migration_boundary as legacy
 ast=legacy.ast
 VERSION='20261018070231'
 FILE=VERSION+'_phase6e11_recovery_run_quota.sql'
-SOURCE_SHA='d0f7b100480651da44fea23324a34445ab8a0d04f44e35ce5ed1c1a1f65d4745'
-CONSTRAINTS=legacy.CONSTRAINTS
+SOURCE_SHA='64498fa910966497e92705dcf66b76f40c40f01c006aed98c191ce109dd88635'
+CONSTRAINTS=legacy.CONSTRAINTS.replace("(n.nspname in('public','auth') or n.nspname like 'fmz6e11%')",
+    "(n.nspname not like 'pg_%' and n.nspname<>'information_schema')")
 TARGET=legacy.TARGET.replace('single_endchain_receipt','recovery_run_receipt').replace(legacy.VERSION,VERSION)
 TARGET+=' || jsonb_build_object(\'legacy_m44\',('+legacy.TARGET+") - 'constraint' - 'constraint_oid' - 'run_hashes')"
 

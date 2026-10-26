@@ -1,12 +1,47 @@
 """Offline release dossier. It cannot grant access, migrate or make requests."""
 import hashlib,json,os,pathlib,sys
+import ci_profile
 HERE=pathlib.Path(__file__).resolve().parent
 MIGRATION='20261014105919_phase6e_synthetic_server_candidate.sql'
+
+def current_dossier(read,result,collection,sources):
+    if result['status']!='CLEAN_CI_PASS' or not collection.get('verified') or result['migrations_applied']!=47:
+        raise ValueError('release_ci_missing')
+    minimal=ci_profile.history_contract(read('registration12-minimal-history.json')['history'],sources,'minimal')
+    complete=ci_profile.history_contract(read('candidate-47-history.json')['history'],sources,'complete')
+    cli=[read('cli-protocol-'+str(i)+'.json') for i in range(4)]
+    for i,row in enumerate(cli):ci_profile.cli_receipt(row,i)
+    coverage=[read('cli-numeric-coverage-'+str(i)+'.json') for i in range(4)]
+    isolation=[read('cli-isolation-'+str(i)+'.json') for i in range(4)]
+    if not all(x['all_protocol_visible'] and x['temp_written']==0 for x in coverage) or \
+       not all(x['restored'] and x['commands']==len(x['protocol']) and all(c['confirmed'] for c in x['protocol']) for x in isolation):
+        raise ValueError('release_cli_count_incomplete')
+    from receipt_accounting import meter_controls
+    controls=meter_controls(read('artifact-manifest.json'),read,4)
+    database=read('integration-database.json');admin=read('integration-native-admin-protocol.json')
+    auth=read('integration-managed-auth-protocol.json')
+    if any(x['temp_written'] for x in auth['statements']):raise ValueError('release_temp_io')
+    actual={'application_protocol':database['protocol']['commands'],'fixture_admin_protocol':admin['commands'],
+        'managed_auth':auth['commands'],'app_cli_protocol':sum(x['protocol_commands'] for x in cli),
+        'cli_observers':sum(len(x['observer_commands']) for x in cli),
+        'cli_isolation':sum(x['commands'] for x in isolation),'cli_meter_controls':controls['commands']}
+    return {'status':'OFFLINE_RELEASE_DOSSIER_NOT_HOSTED_ADMISSION','ci_run':collection['run'],
+        'commit':result['commit'],'archive_sha256':collection['archive_sha256'],
+        'candidate_sha256':result['candidate_sha256'],'source_hashes':sources,'cli_profile':ci_profile.PROFILE,
+        'migration_history':{'minimal':minimal,'complete':complete},
+        'observed_local_commands':actual,'observed_local_total':sum(actual.values()),
+        'scope':'Actual app runtime/admin/Auth and four app CLI invocations; excludes canonical bootstrap and other CI suites.',
+        'normal_capacity':None,'safety_reserve':None,'proposed_maximum':None,
+        'owner_budget_approval':False,'hosted_applied':False,'endchain_capacity_used':False,
+        'flags':{'entry_enabled':False,'full_day21':False,'real_member_ai':False},
+        'rollback':'Close the synthetic entry; preserve revisions and audit. No migration rewind.'}
 
 def build(receipt):
     def disk(p):return pathlib.Path('\\\\?\\'+str(p.resolve())) if os.name=='nt' else p
     read=lambda n:json.loads(disk(receipt/n).read_bytes())
     result=read('result.json');collection=read('collection.json');sources=read('candidate.json')['sources']
+    if result.get('cli_profile')==ci_profile.PROFILE:return current_dossier(read,result,collection,sources)
+    if result.get('cli_profile') is not None:raise ValueError('release_ci_profile')
     if result['status']!='CLEAN_CI_PASS' or not collection.get('verified') or result['migrations_applied']!=45:
         raise ValueError('release_ci_missing')
     database=read('integration-database.json')
@@ -49,8 +84,9 @@ def build(receipt):
     return {'status':'OFFLINE_RELEASE_DOSSIER_NOT_HOSTED_ADMISSION','ci_run':collection['run'],
         'commit':result['commit'],'archive_sha256':collection['archive_sha256'],
         'candidate_sha256':result['candidate_sha256'],'source_hashes':sources,
+        'cli_profile':'historical_canonical44_app1','current_profile':False,
         'migration':{'path':'_offline/phase6e_server_v1/supabase/migrations/'+MIGRATION,
-            'sha256':hashlib.sha256((HERE/'supabase/migrations'/MIGRATION).read_bytes()).hexdigest(),
+            'sha256':hashlib.sha256(disk(HERE/'supabase/migrations'/MIGRATION).read_bytes()).hexdigest(),
             'canonical_hosted_directory':False,'hosted_applied':False},
         'observed_local_commands':actual,'observed_local_total':sum(actual.values()),
         'phase_caps':phases,'normal_capacity':normal,'safety_suffix':safety,'safety_reserve':reserve,

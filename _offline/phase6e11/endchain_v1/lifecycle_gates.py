@@ -21,6 +21,8 @@ CATALOG="""select jsonb_build_object(
    join pg_class c on c.oid=p.polrelid join pg_namespace n on n.oid=c.relnamespace
    where (n.nspname in('public','auth') or n.nspname like 'fmz6e11%') and n.nspname<>all($1::text[])),
  'constraints',"""+CONSTRAINTS+", 'm44',"+TARGET+") value"
+CATALOG=CATALOG.replace("(n.nspname in('public','auth') or n.nspname like 'fmz6e11%')",
+    "(n.nspname not like 'pg_%' and n.nspname<>'information_schema')")
 
 MIGRATIONS="""select version,name,encode(sha256(convert_to(array_to_string(statements,E'\\n'),'UTF8')),'hex') sql_sha
  from supabase_migrations.schema_migrations order by version"""
@@ -52,7 +54,53 @@ ABSENCE="""select
  (select count(*) from auth.refresh_tokens where user_id::text=any($2::text[])) refresh_tokens,
  (select count(*) from fmz6e11_private.windows where id=$3::uuid) windows,
  (select count(*) from fmz6e11_private.workspaces where window_id=$3::uuid) workspaces,
- (select count(*) from fmz6e11_private.participants where window_id=$3::uuid) participants"""
+ (select count(*) from fmz6e11_private.participants where window_id=$3::uuid) participants,
+ (select count(*) from fmz6e11_private.windows) all_test_windows,
+ (select count(*) from fmz6e11_private.workspaces) all_test_workspaces,
+ (select count(*) from fmz6e11_private.participants) all_test_participants,
+ (select count(*) from auth.sessions where user_id in(select user_id from fmz6e11_private.identities)) all_registered_sessions,
+ (select count(*) from auth.refresh_tokens where user_id::text in(select user_id::text from fmz6e11_private.identities)) all_registered_refresh_tokens"""
+
+# Only fixed source fragments are renumbered; runtime values remain driver binds.
+FINAL="""with final_access as ("""+ACCESS.replace('$1','$2')+"""),
+ final_migrations as ("""+MIGRATIONS+"""),
+ final_catalog as ("""+CATALOG+"""),
+ final_absence as ("""+ABSENCE.replace('$1','$4')+""")
+ select jsonb_build_object(
+ 'access',(select to_jsonb(a) from final_access a),
+ 'migrations',(select jsonb_agg(to_jsonb(m) order by version) from final_migrations m),
+ 'catalog',(select value from final_catalog),
+ 'absence',(select to_jsonb(a) from final_absence a),
+ 'temporary_schema_names',(select coalesce(jsonb_agg(nspname order by nspname),'[]')
+   from pg_namespace where nspname=any($4::text[])),
+ 'readonly',current_setting('transaction_read_only')='on',
+ 'statement_timeout',current_setting('statement_timeout'),
+ 'lock_timeout',current_setting('lock_timeout')) value"""
+
+def final_parameters(ids,context,stage):
+    schemas=context['temporary_schemas']
+    if stage not in ('pre','post') or len(schemas)!=2 or len(set(schemas))!=2:
+        raise ValueError('final_schema_scope')
+    guard=next((s for s in schemas if re.fullmatch('fmz6e11_guard_[a-f0-9]{32}',s)),None)
+    audit=next((s for s in schemas if re.fullmatch('fmz6e11_am_[a-f0-9]{32}',s)),None)
+    if not guard or not audit or guard[-32:]!=audit[-32:]:raise ValueError('final_schema_scope')
+    return [list(schemas) if stage=='pre' else [],list(ids.values()),context['window'],list(schemas)]
+
+def check_final(value,baseline,schemas,stage):
+    if set(value)!=set(('access','migrations','catalog','absence','temporary_schema_names',
+                       'readonly','statement_timeout','lock_timeout')) or stage not in ('pre','post'):
+        raise ValueError('final_metadata_shape')
+    if value['readonly'] is not True or value['statement_timeout'] not in ('5s','5000ms') or value['lock_timeout'] not in ('1s','1000ms'):
+        raise ValueError('final_readonly_limits')
+    check_access(value['access'])
+    check_migrations(value['migrations'],baseline['migrations'])
+    stable=lambda c:{k:v for k,v in c.items() if k!='m44'}
+    if stable(value['catalog'])!=stable(baseline['catalog']):raise ValueError('ci_object_or_acl_drift')
+    expected=sorted(schemas) if stage=='pre' else []
+    if value['temporary_schema_names']!=expected or type(value['absence'].get('temporary_schemas')) is not int or value['absence']['temporary_schemas']!=len(expected):
+        raise ValueError('final_temporary_schema_state')
+    # PRE expects exactly our two schemas; all fixture/session fields stay zero.
+    check_absence({**value['absence'],'temporary_schemas':0})
 
 def digest(value):return hashlib.sha256(json.dumps(value,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 
@@ -61,7 +109,8 @@ def check_access(value):
         raise ValueError('lifecycle_access_denied')
 
 def check_absence(value):
-    if set(value)!=set(('temporary_schemas','sessions','refresh_tokens','windows','workspaces','participants')) or any(type(v) is not int or v!=0 for v in value.values()):
+    if set(value)!=set(('temporary_schemas','sessions','refresh_tokens','windows','workspaces','participants',
+        'all_test_windows','all_test_workspaces','all_test_participants','all_registered_sessions','all_registered_refresh_tokens')) or any(type(v) is not int or v!=0 for v in value.values()):
         raise ValueError('lifecycle_cleanup_incomplete')
 
 def check_migrations(rows,expected,pending=False):
@@ -93,6 +142,8 @@ def preflight(runtime,save,prefix=''):
         if runtime.environment=='staging' and identity['instance_sha']!='d165ac49d4d2aaa4733f7f220c351c99ff09493dace033a726f6fd722a573a15':
             raise ValueError('preflight_wrong_project_instance')
         migrations=query(MIGRATIONS)
+        from history_pin import validate
+        validate(migrations,runtime.environment)
         if (len(migrations),migrations[-1]['version']) not in ((44,'20261012185121'),(45,VERSION)):
             raise ValueError('preflight_quota_history')
     finally:

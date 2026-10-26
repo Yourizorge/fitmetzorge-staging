@@ -6,24 +6,28 @@ by the owner. Admission, transport, command escrow and JIT are caller-owned.
 """
 import copy,hashlib,json,uuid
 from auth_evidence import AuthEvidence
+from safety_auth import SafetyAuth
 
 class RegisteredLifecycle:
     def __init__(self,*,gate,composition,run_id,ids,guard,audit,contract_type,sql,lock_query,independent_ci=False):
         guard.scope(run_id,ids)
         self.gate=gate;self.composition=composition;self.run_id=run_id;self.ids=dict(ids)
         self.guard=guard;self.audit=audit;self.sql=sql;self.lock_query=lock_query
+        if hasattr(composition,'bind_auth_scope'):composition.bind_auth_scope(run_id,ids,gate=gate)
         self.receipt=None;self.metadata_receipt=None;self.removal_attempted={'guard':False,'audit':False}
         self.install_attempted={'guard':False,'audit':False}
         self.expiry=None
         self.installed=False;self.workflow_complete=False;self.removed=False;self.failed=False
         self.evidence=AuthEvidence(run_id=run_id,ids=ids,audit=audit,contract_type=contract_type,
-            sql=sql,save=gate.save,independent_ci=independent_ci)
+            sql=sql,save=gate.save,independent_ci=independent_ci,
+            zero_scope=getattr(composition,'auth_zero_scope',None))
+        self.safety_auth=SafetyAuth(self)
 
     def dispatch(self,request):
         op=request.get('op')
-        if op not in {'install','query','before','after','workflow','remove','finalize','evidence_query'}:
+        if op not in {'install','query','before','after','workflow','remove','finalize','evidence_query','safetyAuthlogout'}:
             raise ValueError('registered_operation_denied')
-        if self.failed and op!='remove':raise ValueError('registered_stopped')
+        if self.failed and op not in ('remove','safetyAuthlogout'):raise ValueError('registered_stopped')
         try:return self._dispatch(op,request)
         except Exception:
             self.failed=True
@@ -32,6 +36,11 @@ class RegisteredLifecycle:
 
     def _dispatch(self,op,request):
         c=self.composition
+        if op=='safetyAuthlogout':
+            if request.get('stage')=='start' and request.get('receipt')==self.receipt and self.receipt is not None:
+                self.failed=True
+                if hasattr(c,'abort'):c.abort('safety_auth_client_stop')
+            return self.safety_auth.dispatch(request)
         if op=='install':
             if self.installed or request.get('ids')!=self.ids:raise ValueError('registered_install_binding')
             self.installed=True
@@ -46,6 +55,7 @@ class RegisteredLifecycle:
                 self.gate.save('migration-boundary-before.json',c.gate_baseline)
                 c.apply_migration(self.gate)
                 c.preservation(self.gate,self.ids,'after_migration')
+                c.pre_auth_dry_run(self.gate)
             else:c.preservation(self.gate,self.ids,'before')
             c.current_phase='guard_install'
             self.install_attempted['guard']=True
@@ -61,15 +71,19 @@ class RegisteredLifecycle:
         if not self.installed:raise ValueError('registered_not_installed')
         if op=='remove':
             if request.get('receipt')!=self.receipt:raise ValueError('registered_removal_receipt')
-            self.close_temporary()
             if not request.get('stopped'):
                 if self.failed or not self.workflow_complete or any(x.step!=6 for x in self.evidence.contracts.values()):
                     raise ValueError('registered_cleanup_chain_incomplete')
                 c.preservation(self.gate,self.ids,'after_cleanup')
+                c.finalize(self.gate,request)
+            self.close_temporary()
+            if not request.get('stopped'):
+                if not self.removed:raise ValueError('registered_removal_unconfirmed')
+                c.preservation(self.gate,self.ids,'final_post')
             return {'removed':self.removed,'commandCount':len(c.commands)}
         if op=='finalize':
             if not self.removed or self.failed:raise ValueError('registered_close_incomplete')
-            return c.finalize(self.gate,request)
+            return c.close_receipt(self.gate,request)
         if op=='evidence_query':return c.evidence_query(request,self.sql)
         if self.removed or self.receipt is None or self.metadata_receipt is None:
             raise ValueError('registered_guard_not_active')
@@ -84,6 +98,8 @@ class RegisteredLifecycle:
         if op=='after':
             result=self.evidence.after(request['role'],request['operation'],request['before'],request['result'])
             if hasattr(c,'auth_after'):c.auth_after(request['operation'])
+            if 'registered_auth_zero' in result:
+                c.confirm_auth_zero(metadata=result['registered_auth_zero'])
             return result
         if op=='workflow':
             if self.workflow_complete or any(x.step!=4 for x in self.evidence.contracts.values()):

@@ -4,7 +4,7 @@ from test_cli_stat_reader import snap
 
 class Tests(unittest.TestCase):
     def receipt(self):
-        return dict(environment='staging',complete=True,protocol_commands=None,commands=[],
+        return dict(environment='staging',complete=True,protocol_commands=None,commands=[],slot='quota',dry_run=False,
             observer_commands=[{'confirmed':True}]*8,capacity_reserved=CAP,charged_commands=CHARGE,
             attribution=attribution(snap(),snap(10)))
     def test_numeric_delta_never_becomes_session_attribution(self):
@@ -12,6 +12,16 @@ class Tests(unittest.TestCase):
         self.assertIsNone(r['attribution']['cli_confirmed_commands'])
         self.assertIsNone(r['attribution']['background_confirmed_commands'])
         self.assertEqual(r['attribution']['unattributed_calls'],4)
+    def test_two_separate_readonly_slots_have_stricter_cap(self):
+        for slot in ('pre_auth','final'):
+            a=attribution(snap(),snap(34),slot=slot)
+            self.assertEqual(a['unattributed_calls'],28)
+            with self.assertRaisesRegex(ValueError,'exceeded'):attribution(snap(),snap(35),slot=slot)
+            r={**self.receipt(),'slot':slot,'dry_run':True,'capacity_reserved':28,'charged_commands':36,'attribution':a}
+            self.assertEqual(charged(r),36)
+            with self.assertRaisesRegex(ValueError,'readonly'):charged({**r,'dry_run':False})
+            with self.assertRaisesRegex(ValueError,'capacity'):charged({**r,'capacity_reserved':64})
+        with self.assertRaisesRegex(ValueError,'slot_invalid'):attribution(snap(),snap(),slot='unregistered')
     def test_exact_boundary_and_excess(self):
         self.assertEqual(attribution(snap(),snap(70))['unattributed_calls'],64)
         with self.assertRaisesRegex(ValueError,'exceeded'):attribution(snap(),snap(71))

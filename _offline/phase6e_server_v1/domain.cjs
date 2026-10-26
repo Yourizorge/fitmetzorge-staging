@@ -28,7 +28,7 @@ function initial(route){
 }
 function invalidate(s,external=true){
  s.sourceRevision++;s.review=null;s.proposal=null;s.member=false;s.trainer=false;
- s.comparison=null;
+ s.comparison=null;s.facts=[];
  if(external)s.sourceGeneration++;
  for(const n of s.notices)if(n.status==='current')n.status='superseded';
  s.sourceHash=hash({pair:s.pair,recovery:s.recovery,records:s.records,health:s.healthLatch});
@@ -258,6 +258,12 @@ function transition(input,request,role){
     sourceRevision:s.sourceRevision,sourceGeneration:s.sourceGeneration,sourceHash:s.sourceHash,kind:p.kind,restores:p.restores,
     approvals:{member:p.member,trainer:s.route==='A'?p.trainer:null}});
    s.active=next;
+   // Comparison sources include the active plan version, even for a cadence-only apply.
+   if(s.comparison){
+    const notice=hash({window:s.comparison.bundleHash});
+    for(const n of s.notices)if(n.id===notice&&n.status==='current')n.status='superseded';
+    s.comparison=null;s.facts=[];
+   }
    if(changed){s.records=C.slots(next,next.version,s.route);s.closed={};s.dayClose=null;
     s.recordHistory.push({revision:s.sourceRevision,plan:clone(next),rows:clone(s.records)});}
    s.review=null;s.status='active';s.reason='applied';

@@ -149,8 +149,8 @@ def run(query,save,ids,context,label,expected=None):
             background=other_load(before,after,observation)
             save(prefix+'-other-load.json',background)
             save('integral-stream-'+label+'-io-%03d.json'%len(profiles),profile)
-            # A read-only cursor may generate WAL for PostgreSQL hint bits.
-            # Keep that load visible; temporary writes remain a hard failure.
+            # Even hint-bit WAL is not waived for this owner's read-only run.
+            if profile['own_wal_bytes'] != 0:raise ValueError('stream_own_wal')
             if any(x['exec_ms']>2500 for x in profile['queries']):raise ValueError('stream_own_load')
             bindings.confirm(binding['sql_sha256'],observation)
             profiles.append(profile);previous=after
@@ -206,7 +206,7 @@ def run(query,save,ids,context,label,expected=None):
                 'stream_frame_content','stream_frame_bytes','stream_table_index','stream_empty_terminal_missing',
                 'stream_capacity_frame','stream_capacity_mismatch','stream_unfiltered_row',
                 'stream_protected_drift','stream_snapshot_changed','stream_inventory_changed',
-                'stream_unattributed_load','stream_own_load','io_own_spill','io_project_health',
+                'stream_unattributed_load','stream_own_load','stream_own_wal','io_own_spill','io_project_health',
                 'io_duplicate_query_identity','io_command_attribution','io_statistics_reset',
                 'io_counter_missing_or_replaced','io_background_counter_reset','io_query_time',
                 'stream_utility_tracking_disabled'}

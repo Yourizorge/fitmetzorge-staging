@@ -17,6 +17,7 @@ auth_source=bound_module('register_bound_auth',HERE.parent/'auth_metadata_v1/aut
 from closure import RUN_ID,PURPOSE,allowance
 from cli_envelope import CAP,charged
 from integral_stream import ROWS,PAGE,PAGES,PROTOCOL_CAPACITY
+from safety_auth_budget import labels as auth_safety_labels
 APPROVED=allowance(RUN_ID,PURPOSE)
 PHASES=('preflight','migration','baseline','setup','guard','auth','controller','route_a',
         'route_b','restore','measurements','io','cleanup','final','closure')
@@ -66,30 +67,78 @@ def infrastructure_ref(command):
 
 def sha(value):return hashlib.sha256(json.dumps(value,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 
-def safety_path(guard=False,observer=False,controls=False,claimed=False):
+def safety_path(guard=False,observer=False,controls=False,claimed=False,auth_maybe_live=False,
+        guard_remove_attempted=False,observer_remove_attempted=False):
     # No replay, blind fixture deletion or replacement of an incomplete pair.
     # Each connection is closed even if its one ROLLBACK cannot be confirmed.
     path=[('rollback_'+channel,1) for channel in ('auth_lock','writer','reader','workflow')]
     if claimed:path.append(('durable_stop',1))
     path += [('scoped_after_once',2),('numeric_io_and_terminal_witness',3)]
     if controls:path += [('control_before',1),('control_compare_restore',2),('control_after',1)]
-    if observer:path += [('observer_inspect',1),('observer_exact_remove',5),('observer_absent',1)]
-    if guard:path += [('guard_inspect',1),('guard_exact_remove',5),('guard_absent',1)]
+    for name,active,attempted in [('observer',observer,observer_remove_attempted),('guard',guard,guard_remove_attempted)]:
+        if active:
+            path.append((name+'_inspect',1))
+            if not attempted:path.append((name+'_exact_remove',5))
+            path.append((name+'_absent',1))
     if claimed:path.append(('close_stopped_run',1))
-    return [{'action':action,'sql':cost,'retry':False,'identity_bound':True} for action,cost in path]
+    result=[{'action':action,'sql':cost,'retry':False,'identity_bound':True,'kind':'native'} for action,cost in path]
+    if auth_maybe_live:
+        result.extend({**row,'retry':False,'identity_bound':True} for row in auth_safety_labels())
+    return result
+
+
+def bind_auth_states(rows,zero_action=None):
+    """Bind only validated normal-chain receipts; never mutate historical rows."""
+    out=[]
+    for original in rows:
+        row=dict(original);action=row.get('action','')
+        if action.startswith('gotrue_') and action.endswith('_issue') and row.get('ordinal_in_action',0)==0:
+            row['state_after']={**row.get('state_after',{}),'auth_maybe_live':True}
+        if row.get('auth_zero_validated') is True or zero_action is not None and action==zero_action:
+            row['confirmed_state_after']={**row.get('confirmed_state_after',{}),'auth_maybe_live':False}
+        release={k:v for k,v in row.get('state_after',{}).items() if k in ('guard','observer') and v is False}
+        if release:
+            row['state_after']={k:v for k,v in row['state_after'].items() if k not in release}
+            row['confirmed_state_after']={**row.get('confirmed_state_after',{}),**release}
+        if row.get('temporary_absence_validated') is True:
+            row['confirmed_state_after']={**row.get('confirmed_state_after',{}),'guard':False,'observer':False}
+        if row.get('controls_restored_validated') is True:
+            row['confirmed_state_after']={**row.get('confirmed_state_after',{}),'controls':False}
+        removal=row.get('removal_precharged')
+        if removal:
+            if removal.get('object') not in ('guard','observer') or removal.get('commands')!=5:
+                raise ValueError('register_removal_precharge_shape')
+            row['state_after']={**row.get('state_after',{}),removal['object']+'_remove_attempted':True}
+            row['prepaid_safety_tail']=4
+        out.append(row)
+    return out
 
 def reserve_prefixes(rows):
-    state={'guard':False,'observer':False,'controls':False,'claimed':False};out=[];used=0
+    state={'guard':False,'observer':False,'controls':False,'claimed':False,'auth_maybe_live':False};out=[];used=0
+    state.update(guard_remove_attempted=False,observer_remove_attempted=False);prepaid=0
     cleanup_remaining=sum(r['sql'] for r in rows if r['phase'] in ('cleanup','final','closure'))
     for i in range(len(rows)+1):
+        attempted=dict(state)
         if i:
             row=rows[i-1];used+=row['sql']
+            prepaid=max(0,prepaid-row['sql'])+row.get('prepaid_safety_tail',0)
             if row['phase'] in ('cleanup','final','closure'):cleanup_remaining-=row['sql']
+            if row.get('state_after',{}).get('auth_maybe_live') is False:
+                raise ValueError('register_auth_release_before_confirmation')
+            if row.get('state_after',{}).get('controls') is False:
+                raise ValueError('register_control_release_before_confirmation')
             for name,value in row.get('state_after',{}).items():state[name]=value
+            attempted=dict(state)
+            for name,value in row.get('confirmed_state_after',{}).items():state[name]=value
         suffix=safety_path(**state);emergency=sum(x['sql'] for x in suffix)
-        reserve=max(emergency,cleanup_remaining)
+        attempted_emergency=sum(x['sql'] for x in safety_path(**attempted))
+        reserve=max(emergency+prepaid,attempted_emergency+prepaid,cleanup_remaining)
         out.append({'after':i,'used':used,'remaining_normal_cleanup':cleanup_remaining,
                     'emergency_sql':emergency,'reserve':reserve,'required_total':used+reserve,
+                    'unconfirmed_emergency_sql':attempted_emergency,
+                    'auth_maybe_live':state['auth_maybe_live'],
+                    'unconfirmed_auth_maybe_live':attempted['auth_maybe_live'],
+                    'prepaid_safety_tail':prepaid,
                     'path':suffix,'within_approved_limit':used+reserve<=APPROVED})
     return out
 
@@ -99,7 +148,7 @@ def classify(command,scenario):
     if p=='final_closure':return 'closure'
     if p.startswith('gates_after_migration'):return 'migration'
     if p.startswith('stream_before_cleanup'):return 'measurements'
-    if p.startswith(('stream_after_cleanup','gates_after_cleanup')):return 'final'
+    if p.startswith(('stream_after_cleanup','gates_after_cleanup','gates_final_pre','gates_final_post')):return 'final'
     if p.startswith(('stream_before','gates_before')):return 'baseline'
     if p.startswith('preservation_'):return 'measurements'
     if a.get('kind')=='workflow' and a.get('step',0)>=45:return 'cleanup'
@@ -121,6 +170,26 @@ def classify(command,scenario):
     if p=='measurement':return 'measurements'
     raise ValueError('register_unclassified_'+p)
 
+def validate_final_sequence(trace,receipt,cli_receipt):
+    phases=[r['phase'] for r in trace]
+    def one(phase):
+        matches=[i for i,p in enumerate(phases) if p==phase]
+        if len(matches)!=1:raise ValueError('register_final_anchor')
+        return matches[0]
+    stream=one('stream_after_cleanup_rollback')
+    pre=one('gates_final_pre_begin');pre_end=one('gates_final_pre_rollback')
+    post=one('gates_final_post_begin');post_end=one('gates_final_post_rollback')
+    removed=[i for i,p in enumerate(phases) if p=='remove']
+    if len(removed)!=10 or not stream<pre<pre_end<removed[0]<=removed[-1]<post<post_end:
+        raise ValueError('register_final_sequence')
+    if receipt.get('after_trace_command')!=trace[pre_end]['command'] or receipt.get('before_temporary_removal') is not True or receipt.get('slot')!='final' or receipt.get('cli_receipt_sha256')!=sha(cli_receipt):
+        raise ValueError('register_final_cli_binding')
+    if trace[post_end].get('final_cleanup_validated') is not True:raise ValueError('register_final_post_unvalidated')
+    metadata=one('gates_final_post_metadata')
+    if not post<metadata<post_end or trace[metadata].get('temporary_absence_validated') is not True:
+        raise ValueError('register_temporary_absence_unvalidated')
+    if pre_end-pre+1!=11 or post_end-post+1!=9:raise ValueError('register_final_budget')
+
 def build(folder):
     folder=pathlib.Path(folder).resolve()
     if os.name=='nt' and not str(folder).startswith('\\\\?\\'):folder=pathlib.Path('\\\\?\\'+str(folder))
@@ -130,6 +199,11 @@ def build(folder):
         raise ValueError('register_closure_unconfirmed')
     source=read('endchain-sources.json')['sources'];bundle=sha(source)
     trace=read('integral-complete-protocol-trace.json')['commands']
+    if sum(c.get('auth_zero_validated') is True for c in trace)!=1:
+        raise ValueError('register_independent_auth_zero_missing')
+    restored=[c for c in trace if c.get('controls_restored_validated') is True]
+    if len(restored)!=1 or restored[0]['phase']!='control_restored':
+        raise ValueError('register_control_confirmation_missing')
     if [x['command'] for x in trace]!=list(range(1,len(trace)+1)) or not all(x['confirmed'] for x in trace):
         raise ValueError('register_incomplete_protocol_trace')
     preflight=read('integral-preflight.json')
@@ -166,11 +240,22 @@ def build(folder):
         if not matches:raise ValueError('register_action_anchor_missing')
         at=matches[0];rows=rest[:at]+group+rest[at:]
     for c in preflight['commands']:add('preflight','project_tls_and_quota_history',1,template_sha=c['sql_sha256'],writeset=[])
-    cli=[read('cli-protocol-'+str(i)+'.json') for i in range(2)]
+    cli=[read('cli-protocol-'+str(i)+'.json') for i in range(3)]
+    if [x.get('slot') for x in cli]!=['quota','pre_auth','final']:raise ValueError('register_cli_order')
     for c in cli:charged(c)
+    validate_final_sequence(trace,read('integral-final-dry-sequence.json'),cli[2])
+    pre_gate=read('integral-gates-final_pre.json')
+    if pre_gate.get('stage')!='pre' or pre_gate.get('unchanged') is not True or pre_gate['absence']['temporary_schemas']!=2:
+        raise ValueError('register_final_pre_missing')
+    from lifecycle_gates import check_absence
+    check_absence({**pre_gate['absence'],'temporary_schemas':0})
+    if read('integral-gates-after_cleanup.json').get('stage')!='post':raise ValueError('register_final_post_missing')
+    for gate in (pre_gate,read('integral-gates-after_cleanup.json')):
+        if gate['io']['last_pair']['own_wal_bytes']!=0 or gate['io']['closing_wal_bytes']!=0:
+            raise ValueError('register_final_read_wal')
     def add_cli(phase,action,receipt,writes):
         for c in receipt['observer_commands'][:4]:add(phase,action,1,template_sha=c['sha256'],writeset=[])
-        add(phase,action,CAP,reservation_only=True,observed_commands=receipt['protocol_commands'],
+        add(phase,action,receipt['capacity_reserved'],reservation_only=True,observed_commands=receipt['protocol_commands'],
             writeset=writes,proof=['CLI exit','numeric unknown envelope','independent exact migration identity'],
             classification='reserved capacity, not observed hosted SQL')
         for c in receipt['observer_commands'][4:]:add(phase,action,1,template_sha=c['sha256'],writeset=[])
@@ -186,16 +271,17 @@ def build(folder):
             'infrastructure_writeset':infrastructure_ref(c),
             'proof':list(PAIRS) if kind in ('workflow','auth') else ['source identity','before/after or read-only receipt']}
         add(phase,c['phase'],1,**binding)
+        for marker in ('auth_zero_validated','temporary_absence_validated','controls_restored_validated','removal_precharged'):
+            if marker in c:rows[-1][marker]=c[marker]
         # Safety reserve deliberately begins at the first attempted setup SQL.
         if c['phase']=='guard_install':rows[-1]['state_after']={'guard':True}
         if c['phase']=='metadata_install':rows[-1]['state_after']={'observer':True}
         if c['phase']=='control_enable':rows[-1]['state_after']={'controls':True}
         if c['phase']=='evidence_query':rows[-1]['state_after']={'claimed':True}
-        if c['phase']=='control_restored':rows[-1]['state_after']={'controls':False}
     # Exact source-trigger removals are independently confirmed by the final
     # gates, not merely by observing that a removal was attempted.
     for row in rows:
-        if row['action']=='gates_after_cleanup_absence':row['state_after']={'guard':False,'observer':False,'controls':False}
+        if row['action']=='gates_final_post_metadata':row['state_after']={'guard':False,'observer':False}
     streams=[]
     for label,phase in [('before','baseline'),('before_cleanup','measurements'),('after_cleanup','final')]:
         value=read('integral-stream-'+label+'.json')
@@ -233,7 +319,10 @@ def build(folder):
         phase='cleanup' if step>=45 else 'restore' if 'restore' in scenario[step]['request']['action'] else 'route_a' if scenario[step]['route']=='A' else 'route_b'
         add(phase,'gotrue_workflow_identity_'+str(step),5,managed=True,writeset=[])
         move_last_before(5,lambda row:row.get('action_binding')=={'kind':'workflow','step':step})
-    add_cli('final','empty_cli_dry_run',cli[1],[])
+    add_cli('migration','pre_auth_empty_cli_dry_run',cli[1],[])
+    move_last_before(charged(cli[1]),lambda row:row['action']=='guard_install')
+    add_cli('final','empty_cli_dry_run',cli[2],[])
+    move_last_before(charged(cli[2]),lambda row:row['action']=='remove')
     if closure['global_commands']!=len(trace)-len(bootstrap)+4+sum(charged(c) for c in cli)+594:raise ValueError('register_closure_count')
     closing=[r for r in rows if r['phase']=='closure']
     if len(closing)!=1:raise ValueError('register_closure_missing')
@@ -245,6 +334,7 @@ def build(folder):
     # Managed SQL rows are charged before their HTTP action by the executor.
     # The conservative prefix model reserves them even if the next action fails.
     for i,row in enumerate(rows):row['id']='cmd_'+str(i+1).zfill(5)
+    rows=bind_auth_states(rows)
     prefixes=reserve_prefixes(rows);normal=sum(x['sql'] for x in rows);worst=max(x['required_total'] for x in prefixes)
     counts=dict(collections.Counter(r['phase'] for r in rows));total_managed=sum(x['sql'] for x in rows if x.get('managed'))
     return {'version':2,'run_id':RUN_ID,'purpose':PURPOSE,'complete_register':True,'approved_limit':APPROVED,'normal_capacity':normal,

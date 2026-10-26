@@ -3,6 +3,7 @@ import collections, hashlib, json, pathlib, sys
 from registration_release import disk
 from release_selection import SLICES
 from receipt_accounting import meter_controls
+import ci_profile
 
 
 def register(rows, count):
@@ -53,6 +54,7 @@ def build(folder):
     for i in range(4):
         cli=read('cli-protocol-'+str(i)+'.json');isolation=read('cli-isolation-'+str(i)+'.json')
         coverage=read('cli-numeric-coverage-'+str(i)+'.json')
+        if result.get('cli_profile')==ci_profile.PROFILE:ci_profile.cli_receipt(cli,i)
         if not cli['complete'] or not isolation['restored'] or not coverage['all_protocol_visible'] or coverage['temp_written']:
             raise ValueError('selected_installation')
         installation.append(dict(invocation=i,cli=cli['protocol_commands'],
@@ -64,7 +66,7 @@ def build(folder):
         shared=dict(admin=shared_admin,managed_auth=shared_auth,installation=installation_total,
                     installation_detail=installation,cli_meter_controls=controls['commands']),
         measured_commands=sum(s['measured_commands'] for s in slices)+shared_admin+shared_auth+installation_total,
-        measured_scope='Eight selected A/B HTTP tests, their fixtures/cleanup/Auth and shared private45/46 installation. Not canonical44 bootstrap, browser suites, hosted allowance or physical review.',
+        measured_scope='Eight selected A/B HTTP tests, their fixtures/cleanup/Auth and shared two-app-migration installation. Excludes canonical'+('45' if result.get('cli_profile')==ci_profile.PROFILE else '44')+' bootstrap, browser suites, hosted allowance or physical review.',
         source_evidence=used,hosted_admission=False)
 
 

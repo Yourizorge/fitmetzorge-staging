@@ -1,5 +1,5 @@
 """Clean CI candidate gate. Never authorizes or executes a hosted run."""
-import importlib.util,json,pathlib,sys
+import hashlib,importlib.util,json,pathlib,sys
 HERE=pathlib.Path(__file__).resolve().parent
 sys.path.insert(0,str(HERE))
 from database_checks import M44,run as check_budget
@@ -26,8 +26,15 @@ NAMES=['authorization.json','test_authorization.py','budget.mjs','budget.test.mj
  'migration_boundary.py','test_migration_boundary.py','hosted_gate.py','test_hosted_gate.py','source_scan.py','test_source_scan.py',
  'stream_filter_check.py','quota_boundary.py','test_quota_boundary.py','cli_envelope.py','test_cli_envelope.py',
  'utility_binding.py','test_utility_binding.py','utility_binding_check.py',
- 'history_pin.py','history_pin.json','test_history_pin.py','management_reads.py','test_management_reads.py']
+ 'history_pin.py','history_pin.json','test_history_pin.py','management_reads.py','test_management_reads.py',
+ 'ci_source_binding.py','test_ci_source_binding.py','test_final_gates.py','test_ci_cli_sequence.py','test_control_restore.py','test_candidate_transport.py']
+NAMES += ['safety_auth.mjs','safety_auth.py','safety_auth_native.py','safety_auth_budget.py',
+ 'auth_zero.py','test_auth_zero.py','test_safety_auth.py','test_safety_auth_meter.py','safety_auth.test.mjs']
 EXTRA={'_offline/phase6e11/endchain_v1/'+n for n in NAMES}
+EXTRA|={'_offline/phase6e11/endchain_v1/receipts/reserved-ci-39109482869/'+name for name in
+ ['register-prefix-reserves.json']+['register-phase-'+p+'.json' for p in
+ ('preflight','migration','baseline','setup','guard','auth','controller','route_a','route_b',
+  'restore','measurements','io','cleanup','final','closure')]}
 EXTRA|={'_offline/phase6e11/request_v4/'+n for n in ['transport.mjs','connection_options.mjs','config_shape.mjs']}
 EXTRA|={'_offline/phase6e11/resume_v1/read_only.mjs','_offline/phase6e11/transport_v1/contract.mjs',
  '_offline/phase6e11/readiness_v1/workflow_audit_v1/workflow_local.py'}
@@ -49,6 +56,7 @@ NUMERIC=pathlib.PurePosixPath(AUTHORIZATION['numeric_evidence']['result'])
 EXTRA|={str(NUMERIC),str(NUMERIC.with_name('MANIFEST.json'))}
 prior.EXTRA|=EXTRA;prior.old.EXTRA|=EXTRA
 class Gate(prior.Gate):
+    cli_profile='endchain'
     cli_namespace='clean45-'
     controller_node_count=198
     migration_count=45
@@ -73,21 +81,38 @@ class Gate(prior.Gate):
         import integral_ci
         integral_ci.configure_local_tls(self)
     def cli(self,*args,timeout=120):
+        import cli_meter
+        commit=cli_meter.source_commit(self.result)
         migration=args[:2]==('migration','up') and self.result.get('phase')=='migration_45'
         dry=args[:2]==('db','push') and '--dry-run' in args
-        if dry and getattr(self,'final_dry_run',None) is not None:return self.final_dry_run
+        cache=getattr(self,'final_dry_cache',None)
+        key=(commit,getattr(self,'cli_namespace',''),getattr(self,'evidence_prefix',''),tuple(args))
+        receipts=getattr(self,'cli_protocol',[])
+        if dry and cache is not None and cache['key']==key and cache['protocol'] is receipts and len(receipts)==3:
+            from cli_envelope import charged
+            if [r.get('slot') for r in receipts]!=['quota','pre_auth','final']:
+                raise RuntimeError('ci_final_cache_slots')
+            if cache['receipts_sha']!=hashlib.sha256(json.dumps(receipts,sort_keys=True).encode()).hexdigest():
+                raise RuntimeError('ci_final_cache_changed')
+            for receipt in receipts:charged(receipt)
+            return cache['result']
         if migration or dry:
-            import cli_meter
             if migration:
                 from lifecycle_gates import ci_preflight
                 ci_preflight(self)
             exact=('db','push','--local','--skip-vault','--yes') if migration else args
-            return self.isolated_cli(exact,timeout)
+            result=self.isolated_cli(exact,min(timeout,45))
+            if dry and len(self.cli_protocol)==3 and self.cli_protocol[-1].get('slot')=='final':
+                self.final_dry_cache={'key':key,'protocol':self.cli_protocol,'result':result,
+                    'receipts_sha':hashlib.sha256(json.dumps(self.cli_protocol,sort_keys=True).encode()).hexdigest()}
+            return result
         return super().cli(*args,timeout=timeout)
     def fetch(self):
         migrations=super().fetch()
         files=json.loads((self.out/'candidate.json').read_text())['sources']
         if not EXTRA<=set(files):raise RuntimeError('endchain_composition_missing')
+        from ci_source_binding import verify_all
+        self.save('loaded-source-preflight.json',verify_all(HERE.parents[2],self.sources,files))
         self.save('endchain-sources.json',{'sources':{p:files[p] for p in sorted(EXTRA)},
                    'hosted_admitted':False,'full_chain_admission':False})
         return migrations
@@ -157,8 +182,10 @@ class Gate(prior.Gate):
             self.save=lambda name,value:saved('registered-bootstrap-'+name,value)
             configure_local_tls(self)
         finally:self.save=saved
-        self.cli_namespace='';self.cli_protocol=[]
+        self.reset_registered_cli()
         self.save('registered-database-bootstrap.json',{'disposable_only':True,'version':version,'hosted_calls':0})
+    def reset_registered_cli(self):
+        self.cli_namespace='';self.cli_protocol=[];self.final_dry_run=None;self.final_dry_cache=None
     def apply_endchain_migration(self):
         import cli_meter
         pending=not getattr(self,'quota_already_present',False)
@@ -190,5 +217,8 @@ class Gate(prior.Gate):
         from integral_failures import run as failure_matrix,already_present
         self.result['quota_present_chain_pass']=already_present(self)
         self.result['integral_real_failure_cases']=len(failure_matrix(self))
+        from ci_source_binding import verify_all
+        sources=json.loads((self.out/'candidate.json').read_text())['sources']
+        self.save('loaded-source-postchecks.json',verify_all(HERE.parents[2],self.sources,sources))
         self.result['full_chain_admission']=True
 if __name__=='__main__':sys.exit(Gate().run())

@@ -3,8 +3,29 @@
 Never a hosted retry. The normal receipt remains untouched. Each case resets
 only its disposable CI database and writes a separate evidence namespace.
 """
-import importlib.util,json,os,pathlib
+import importlib.util,json,os,pathlib,uuid
 from closure import RUN_ID,PURPOSE,allowance
+from safety_auth_budget import ROLES
+
+
+def auth_zero_projection(ids):
+    if set(ids)!=set(ROLES) or len(set(ids.values()))!=3:raise ValueError('ci_failure_auth_scope')
+    for value in ids.values():
+        if str(uuid.UUID(value))!=value:raise ValueError('ci_failure_auth_scope')
+    values=','.join("'"+ids[role]+"'" for role in ROLES)
+    return (f",(select count(*) from auth.users where id in ({values})) auth_accounts"
+        +f",(select count(*) from auth.sessions where user_id in ({values})) auth_sessions"
+        +f",(select count(*) from auth.refresh_tokens where user_id::text in ({values})) auth_refresh_tokens")
+
+
+def check_auth_zero(row,composition):
+    if any(type(row.get(k)) is not int or row[k]!=v
+            for k,v in {'auth_accounts':3,'auth_sessions':0,'auth_refresh_tokens':0}.items()):
+        raise RuntimeError('ci_failure_three_auth_not_zero')
+    receipt=composition.safety_auth_result
+    if (not receipt or receipt.get('status')!='NO_GO' or receipt.get('revocation_confirmed') is not True
+            or not composition.auth_zero_proof or composition.meter.state['auth_maybe_live']):
+        raise RuntimeError('ci_failure_auth_zero_unconfirmed')
 
 def already_present(gate):
     """Prove the second allowed entry state without a second migration apply."""
@@ -24,7 +45,7 @@ def already_present(gate):
         meter=composition.meter.receipt()
         if not meter['complete'] or meter['stopped'] or composition.fixture_context['migration_boundary']:
             raise RuntimeError('ci_present_quota_incomplete')
-        if len(gate.cli_protocol)!=2 or any('--dry-run' not in r['arguments'] for r in gate.cli_protocol):
+        if len(gate.cli_protocol)!=3 or any('--dry-run' not in r['arguments'] for r in gate.cli_protocol):
             raise RuntimeError('ci_present_quota_reapplied')
         gate.save('validated.json',{'complete':True,'hosted_calls':0,'migration_reapplied':False,
             'commands':meter['used'],'same_registered_chain':True})
@@ -61,14 +82,17 @@ def run(gate):
  (select count(*) from pg_namespace where nspname like 'fmz6e11_guard_%' or nspname like 'fmz6e11_am_%') temporary_schemas,
  (select count(*) from fmz6e11_private.windows where id='"""+w+"""') retained_window,
  (select count(*) from fmz6e11_private.config where enabled) control_enabled,
- (select count(*) from fmz6e11_request_private.control where enabled) bridge_enabled"""
+ (select count(*) from fmz6e11_request_private.control where enabled) bridge_enabled"""+auth_zero_projection(composition.auth_scope_ids)
             row=gate.rows(sql)[0]
             expected={'receipts':receipts,'sealed':sealed,'completed':12,'stopped':1,'temporary_schemas':0,
-                      'retained_window':1,'control_enabled':0,'bridge_enabled':0}
+                      'retained_window':1,'control_enabled':0,'bridge_enabled':0,
+                      'auth_accounts':3,'auth_sessions':0,'auth_refresh_tokens':0}
             if row!=expected:raise RuntimeError('ci_failure_final_state_'+fault)
+            check_auth_zero(row,composition)
             evidence={'case':fault,'expected':expected,'actual':row,'hosted_calls':0,
                 'diagnostic_sql_commands':1,'mutation_retried':False,'incomplete_pair_preserved':True,
-                'normal_receipt_reused_as_pass':False,'commands':len(composition.commands)}
+                'normal_receipt_reused_as_pass':False,'commands':len(composition.commands),
+                'three_auth_zero_confirmed':True,'safety_auth':composition.safety_auth_result}
             evidence['runtime_meter']=composition.meter.close()
             if not evidence['runtime_meter']['stopped'] or evidence['runtime_meter']['used']>allowance(RUN_ID,PURPOSE):
                 raise RuntimeError('ci_failure_meter_not_stopped')

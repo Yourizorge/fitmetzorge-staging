@@ -15,7 +15,8 @@ class RegisteredLifecycleTests(unittest.TestCase):
         c=types.SimpleNamespace(fixture_context={},commands=[],current_phase=None,
             preservation=lambda *a:self.calls.append('preserve_'+a[-1]),
             workflow=lambda *a:dict(pairs=71,deletes=123),
-            finalize=lambda *a:'final',evidence_query=lambda *a:'evidence')
+            finalize=lambda *a:self.calls.append('final_dry'),
+            close_receipt=lambda *a:'final',evidence_query=lambda *a:'evidence')
         contract=lambda actor:types.SimpleNamespace(step=0)
         r=RegisteredLifecycle(gate=types.SimpleNamespace(save=save),composition=c,run_id='synthetic-run',ids=self.ids,
             guard=module('guard'),audit=module('audit'),contract_type=contract,sql=sql,
@@ -37,7 +38,8 @@ class RegisteredLifecycleTests(unittest.TestCase):
     def test_normal_close_requires_complete_auth_and_workflow(self):
         r=self.make();receipt=r.dispatch({'op':'install','ids':self.ids})
         with self.assertRaisesRegex(ValueError,'chain_incomplete'):r.dispatch({'op':'remove','receipt':receipt})
-        self.assertTrue(r.removed)
+        self.assertFalse(r.removed)
+        self.assertNotIn('audit_remove',self.calls)
         with self.assertRaises(ValueError):r.dispatch({'op':'finalize'})
     def test_full_registered_path_preserves_after_only_when_complete(self):
         r=self.make();receipt=r.dispatch({'op':'install','ids':self.ids})
@@ -45,8 +47,32 @@ class RegisteredLifecycleTests(unittest.TestCase):
         self.assertEqual(r.dispatch({'op':'workflow'})['pairs'],71)
         for contract in r.evidence.contracts.values():contract.step=6
         self.assertTrue(r.dispatch({'op':'remove','receipt':receipt})['removed'])
-        self.assertIn('preserve_after_cleanup',self.calls)
+        self.assertEqual(self.calls[-5:],['preserve_after_cleanup','final_dry','audit_remove',
+                                         'guard_remove','preserve_final_post'])
         self.assertEqual(r.dispatch({'op':'finalize'}),'final')
+        self.assertEqual(self.calls.count('final_dry'),1)
+    def test_failed_pre_keeps_guards_until_explicit_stop_cleanup(self):
+        r=self.make();receipt=r.dispatch({'op':'install','ids':self.ids})
+        r.workflow_complete=True
+        for contract in r.evidence.contracts.values():contract.step=6
+        def failure(*args):raise ValueError('synthetic_pre_failure')
+        r.composition.preservation=failure
+        with self.assertRaisesRegex(ValueError,'synthetic_pre'):
+            r.dispatch({'op':'remove','receipt':receipt})
+        self.assertNotIn('audit_remove',self.calls)
+        self.assertNotIn('final_dry',self.calls)
+        self.assertTrue(r.dispatch({'op':'remove','receipt':receipt,'stopped':True})['removed'])
+    def test_failed_final_dry_never_runs_post_or_closure(self):
+        r=self.make();receipt=r.dispatch({'op':'install','ids':self.ids})
+        r.workflow_complete=True
+        for contract in r.evidence.contracts.values():contract.step=6
+        def failure(*args):raise ValueError('synthetic_dry_failure')
+        r.composition.finalize=failure
+        with self.assertRaisesRegex(ValueError,'synthetic_dry'):
+            r.dispatch({'op':'remove','receipt':receipt})
+        self.assertNotIn('audit_remove',self.calls)
+        self.assertNotIn('preserve_final_post',self.calls)
+        with self.assertRaises(ValueError):r.dispatch({'op':'finalize'})
     def test_unknown_operation_never_reaches_sql(self):
         r=self.make()
         for op in ['signup','create_account','cleanup_all','admin_delete']:

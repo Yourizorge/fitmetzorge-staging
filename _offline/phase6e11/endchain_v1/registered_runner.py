@@ -6,7 +6,7 @@ def execute(gate,composition,lifecycle,config):
         raise ValueError('runner_environment')
     if config.get('identityBinding',{}).get('preexisting') is not True:
         raise ValueError('runner_preexisting_required')
-    worker=None;timer=None;result=None;count=0;started=time.monotonic()
+    worker=None;timer=None;candidate=None;result=None;count=0;started=time.monotonic()
     try:
         worker=subprocess.Popen(['node',str(composition.runner)],stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
@@ -18,8 +18,7 @@ def execute(gate,composition,lifecycle,config):
                 raise RuntimeError('registered_worker_budget')
             request=json.loads(line);op=request['op']
             if op=='complete':
-                candidate=request['result'];composition.confirm_closure(gate,candidate)
-                result=candidate;break
+                candidate=request['result'];break
             if op=='failed':raise RuntimeError('registered_worker_failed')
             if op=='before':composition.action={'kind':'auth','role':request['role'],'operation':request['operation']}
             if op in ('install','remove','workflow'):composition.action={'kind':'lifecycle','operation':op}
@@ -34,11 +33,13 @@ def execute(gate,composition,lifecycle,config):
                 reply={'error':'registered_'+op+'_failed'}
             worker.stdin.write(json.dumps(reply,default=str)+'\n');worker.stdin.flush()
         worker.wait(timeout=5)
-        if worker.returncode or not result or result.get('checks')!=18 or not lifecycle.removed:
+        if worker.returncode or not candidate or candidate.get('checks')!=18 or not lifecycle.removed:
             raise RuntimeError('registered_worker_incomplete')
+        composition.confirm_closure(gate,candidate)
         gate.save('integral-complete-protocol-trace.json',{'commands':composition.commands,
             'outer_sql_commands':len(composition.commands),'environment':config['environment'],
             'full_chain_admission':False})
+        result=candidate
         return result
     finally:
         if timer:timer.cancel()

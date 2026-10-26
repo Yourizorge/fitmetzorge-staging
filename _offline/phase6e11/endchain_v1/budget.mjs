@@ -1,11 +1,11 @@
 // One owner-authorized end-run. Every other run retains the 128-command cap.
-export const ENDCHAIN_RUN_ID='4b0bb35f-02b5-4a9d-92d7-c29995691460';
-export const PURPOSE='6e11_recovery_endchain_20261018';
+export const ENDCHAIN_RUN_ID='6f8c8909-9b79-4011-a9d1-db5e23c6b6c1';
+export const PURPOSE='6e11_parallel_endchain_20261018';
 // The complete register additionally reserves the exact safety suffix before
 // every mutation. These phase ceilings alone never grant hosted admission.
-export const LIMITS=Object.freeze({preflight:4,migration:92,baseline:61,setup:33,guard:13,
+export const LIMITS=Object.freeze({preflight:4,migration:128,baseline:61,setup:33,guard:13,
  auth:318,controller:286,route_a:191,route_b:286,restore:54,measurements:136,io:97,
- cleanup:633,final:133,closure:1});
+ cleanup:633,final:97,closure:1});
 const NORMAL=Object.values(LIMITS).reduce((a,b)=>a+b,0);
 const RESERVE=Object.freeze({cleanup:18,final:18,closure:18});
 const SAFETY=new Set(['guard_remove','observer_remove','jit_revoke','proven_fixture_delete','safety_check','record_stop']);

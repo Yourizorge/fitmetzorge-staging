@@ -1,5 +1,5 @@
 import copy,unittest
-from integral_io import delta,check_plan
+from integral_io import delta,check_plan,QueryIO
 
 def sample(calls=0,temp=0):
     return {'reset':'r','dealloc':0,'statements':[{'queryid':'1','calls':calls,'since':'s',
@@ -26,5 +26,29 @@ class IOTests(unittest.TestCase):
         p[0]['Plan']['Plans']=[];self.assertEqual(check_plan(p,True),'2')
     def test_plan_identity_must_be_lossless_integer(self):
         with self.assertRaises(ValueError):check_plan([{'Query Identifier':'2'}])
+    def test_read_wal_rejected_but_expected_mutation_wal_recorded(self):
+        self.assertEqual(delta(sample(),sample(2),{'1':2})['own_wal_bytes'],6)
+        with self.assertRaisesRegex(ValueError,'io_read_wal'):delta(sample(),sample(2),{'1':2},{'1'})
+        after=sample(2);after['statements'][0]['wal']='0'
+        self.assertEqual(delta(sample(),after,{'1':2},{'1'})['own_wal_bytes'],0)
+    def test_terminal_reader_rejects_nested_wal(self):
+        for field in ('WAL Bytes','WAL Records','WAL FPI'):
+            p=[{'Query Identifier':2,'Execution Time':1,'Plan':{'Actual Rows':1,'Plans':[{field:1}]}}]
+            with self.assertRaisesRegex(ValueError,'io_read_wal'):check_plan(p,True)
+    def test_read_write_family_collision_and_missing_class_fail_closed(self):
+        q=QueryIO(lambda *a:self.fail('no SQL expected'))
+        q.register('source1','1',True)
+        q.register('source2','1',True)
+        with self.assertRaisesRegex(ValueError,'family_collision'):q.register('source3','1',False)
+        with self.assertRaisesRegex(ValueError,'class_missing'):q.register('source4','2',None)
+        q.register('write-source','3',False)
+        self.assertEqual(q.readonly,{'1'})
+    def test_closing_plan_must_match_the_bound_reader(self):
+        plan=[{'Query Identifier':999,'Execution Time':1,'Plan':{'Actual Rows':1}}]
+        q=QueryIO(lambda *a:[{'QUERY PLAN':plan}])
+        q.reader_id='1';q.checkpoint=lambda:{'own_wal_bytes':0}
+        with self.assertRaisesRegex(ValueError,'io_closing_reader_identity'):q.close()
+        plan[0]['Query Identifier']=1
+        self.assertEqual(q.close()['closing_queryid'],'1')
 
 if __name__=='__main__':unittest.main()

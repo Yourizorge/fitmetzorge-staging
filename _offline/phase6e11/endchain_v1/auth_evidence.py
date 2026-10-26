@@ -8,10 +8,11 @@ from auth_protocol import STATS,difference
 from complete_register import AUTH_CALLS
 
 class AuthEvidence:
-    def __init__(self,*,run_id,ids,audit,contract_type,sql,save,independent_ci=False):
+    def __init__(self,*,run_id,ids,audit,contract_type,sql,save,independent_ci=False,zero_scope=None):
         self.run_id=run_id;self.ids=dict(ids);self.audit=audit;self.sql=sql;self.save=save
         self.independent_ci=independent_ci;self.active=None;self.receipts=[];self.stopped=False
         self.contracts={r:contract_type(hashlib.sha256(ids[r].encode()).hexdigest()) for r in ids}
+        self.zero_scope=zero_scope
 
     def before(self,role,operation,action):
         if self.stopped or self.active is not None:raise ValueError('auth_evidence_not_ready')
@@ -34,14 +35,21 @@ class AuthEvidence:
             raise ValueError('auth_evidence_pair_binding')
         self.active=None
         try:
+            final_zero=(self.zero_scope is not None and operation=='revoked_denial'
+                and self.contracts[role].step==5
+                and all(v.step==6 for k,v in self.contracts.items() if k!=role))
+            extra=''
+            if final_zero:
+                from auth_zero import expression
+                extra=",'registered_auth_zero',("+expression(self.zero_scope)+")"
             # In staging the fixed scoped audit is the observation source. CI
             # additionally checks it against an all-Auth observer; that broad
             # observer is never installed by this runtime.
             if self.independent_ci:
                 events_sql='select table_name,operation,xid,key_sha,actor_sha from fmz_ci_auth_observer.events where seq>'+str(int(before['seq']))+' order by seq'
-                combined=json.loads(self.sql("select jsonb_build_object('events',(select coalesce(jsonb_agg(e),'[]') from ("+events_sql+") e),'auth_stats',"+STATS+")::text"))
+                combined=json.loads(self.sql("select jsonb_build_object('events',(select coalesce(jsonb_agg(e),'[]') from ("+events_sql+") e),'auth_stats',"+STATS+extra+")::text"))
             else:
-                combined=json.loads(self.sql("select jsonb_build_object('auth_stats',"+STATS+")::text"))
+                combined=json.loads(self.sql("select jsonb_build_object('auth_stats',"+STATS+extra+")::text"))
             observed=json.loads(self.sql(self.audit.events(self.run_id,self.ids,before['action'])))
             captured={'role':role,'operation':operation,'action_id':before['action'],'events':observed,
                 'after_stats':combined['auth_stats'],'pair_complete':False,'independent_ci':self.independent_ci}
@@ -55,10 +63,16 @@ class AuthEvidence:
                 if sorted(tuple(e[k] for k in keys) for e in combined['events'])!=sorted(tuple(e[k] for k in keys) for e in observed):
                     raise ValueError('auth_independent_observer_mismatch')
             check=self.contracts[role].validate(operation,observed,result.get('key_sha'))
+            zero=None
+            if final_zero:
+                from auth_zero import validate
+                zero=validate(combined.get('registered_auth_zero'),self.zero_scope)
+                captured['registered_auth_zero']=zero
             self.sql(self.audit.disarm(self.run_id,self.ids,before['action']))
             captured.update(pair_complete=True,contract=check)
             self.save('auth-pair-%02d.json'%len(self.receipts),captured)
             self.receipts.append(captured)
-            return {'events':observed,'pair_complete':True,'exact_contract':True}
+            return {'events':observed,'pair_complete':True,'exact_contract':True,
+                **({'registered_auth_zero':zero} if zero is not None else {})}
         except Exception:
             self.stopped=True;raise

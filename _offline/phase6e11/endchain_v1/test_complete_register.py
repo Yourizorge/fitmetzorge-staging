@@ -1,5 +1,5 @@
 import unittest
-from complete_register import safety_path,reserve_prefixes,Escrow,classify,RUN_ID,PURPOSE,APPROVED
+from complete_register import safety_path,reserve_prefixes,Escrow,classify,RUN_ID,PURPOSE,APPROVED,validate_final_sequence,sha
 
 class RegisterTests(unittest.TestCase):
     def test_every_prefix_keeps_remaining_cleanup(self):
@@ -37,5 +37,36 @@ class RegisterTests(unittest.TestCase):
         executor=Escrow(register)
         for _ in range(APPROVED-9):executor.charge()
         with self.assertRaises(ValueError):executor.charge()
+    def final_trace(self):
+        phases=['stream_after_cleanup_rollback','gates_final_pre_begin']+['gates_final_pre_io']*9+[
+            'gates_final_pre_rollback']+['remove']*10+['gates_final_post_begin']+['gates_final_post_io']*7+['gates_final_post_rollback']
+        trace=[{'phase':p,'command':i+1,'confirmed':True} for i,p in enumerate(phases)]
+        trace[-4]['phase']='gates_final_post_metadata'
+        trace[-4]['temporary_absence_validated']=True
+        trace[-1]['final_cleanup_validated']=True
+        cli={'slot':'final'}
+        binding={'after_trace_command':12,'before_temporary_removal':True,'slot':'final','cli_receipt_sha256':sha(cli)}
+        return trace,binding,cli
+    def test_final_cli_bound_between_pre_and_removal(self):
+        trace,binding,cli=self.final_trace()
+        validate_final_sequence(trace,binding,cli)
+        with self.assertRaisesRegex(ValueError,'cli_binding'):
+            validate_final_sequence(trace,{**binding,'after_trace_command':22},cli)
+        with self.assertRaisesRegex(ValueError,'cli_binding'):
+            validate_final_sequence(trace,binding,{'slot':'quota'})
+        trace[-1].pop('final_cleanup_validated')
+        with self.assertRaisesRegex(ValueError,'unvalidated'):validate_final_sequence(trace,binding,cli)
+    def test_old_remove_before_stream_is_rejected(self):
+        trace,binding,cli=self.final_trace()
+        old=[r for r in trace if r['phase']=='remove']+[r for r in trace if r['phase']!='remove']
+        with self.assertRaisesRegex(ValueError,'sequence'):validate_final_sequence(old,binding,cli)
+    def test_final_phases_not_classified_as_cleanup_by_last_auth_action(self):
+        for phase in ('gates_final_pre_metadata','gates_final_post_rollback'):
+            self.assertEqual(classify({'phase':phase,'action':{'kind':'auth','operation':'logout'}},[]),'final')
+    def test_auth_reserve_until_final_pre_is_a_blocking_model_not_a_pass(self):
+        used_at_pre=2338-(36+10+9+1)
+        emergency=sum(x['sql'] for x in safety_path(guard=True,observer=True,claimed=True))
+        self.assertEqual(used_at_pre+60+emergency,2367)
+        self.assertGreater(used_at_pre+60+emergency,APPROVED)
 
 if __name__=='__main__':unittest.main()

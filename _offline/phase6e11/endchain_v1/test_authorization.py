@@ -6,9 +6,9 @@ class Tests(unittest.TestCase):
     def test_one_new_separately_authorized_attempt_not_historical_retry(self):
         self.assertNotEqual(RUN_ID,A['previous_used_run'])
         self.assertTrue(A['additional_attempt_granted'])
-        self.assertEqual(RUN_ID,'4b0bb35f-02b5-4a9d-92d7-c29995691460')
-        self.assertEqual(A['previous_used_run'],'1c3bf7e7-bc78-40c5-9ac1-5ba3512ec66d')
-        self.assertEqual(A['owner_instruction'],'call_280e9ec6eccd4a42b1100d837fde9e1b')
+        self.assertEqual(RUN_ID,'6f8c8909-9b79-4011-a9d1-db5e23c6b6c1')
+        self.assertEqual(A['previous_used_run'],'4b0bb35f-02b5-4a9d-92d7-c29995691460')
+        self.assertEqual(A['owner_instruction'],'attachment_2b52b6a2-356a-444a-bfcd-5a4b210ff497')
         root=pathlib.Path(__file__).resolve().parents[3]
         self.assertEqual(hashlib.sha256((root/A['owner_instruction_file']).read_bytes()).hexdigest(),A['owner_instruction_sha256'])
         for old in A['earlier_used_runs']:
@@ -51,10 +51,11 @@ class Tests(unittest.TestCase):
         from migration_boundary import source
         from quota_boundary import source as quota
         root=pathlib.Path(__file__).resolve().parents[3];text=source(root)
-        self.assertEqual(re.findall(r"when id='([^']+)'::uuid then (\d+)",text),[(A['previous_used_run'],'2237')])
+        self.assertEqual(re.findall(r"when id='([^']+)'::uuid then (\d+)",text),[('1c3bf7e7-bc78-40c5-9ac1-5ba3512ec66d','2237')])
         self.assertNotIn(RUN_ID,text)
-        self.assertEqual(re.findall(r"when id='([^']+)'::uuid then (\d+)",quota(root)),[(A['previous_used_run'],'2237'),(RUN_ID,'2349')])
-        for old in [A['previous_used_run'],*A['earlier_used_runs']]:
+        self.assertEqual(re.findall(r"when id='([^']+)'::uuid then (\d+)",quota(root)),[('1c3bf7e7-bc78-40c5-9ac1-5ba3512ec66d','2237'),(RUN_ID,'2349')])
+        for old in A['earlier_used_runs']:
             self.assertGreaterEqual(text.count("'"+old+"'::uuid"),3)
+        self.assertGreaterEqual(quota(root).count("'"+A['previous_used_run']+"'::uuid"),3)
 
 if __name__=='__main__':unittest.main()

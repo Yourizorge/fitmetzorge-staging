@@ -1,5 +1,6 @@
 """Build a source-bound registration12 dossier, not a hosted admission token."""
 import hashlib,json,os,pathlib,sys
+import ci_profile
 HERE=pathlib.Path(__file__).resolve().parent
 def disk(p):return pathlib.Path('\\\\?\\'+str(p.resolve())) if os.name=='nt' else p
 def build(folder):
@@ -7,10 +8,20 @@ def build(folder):
     result=read('result.json');collection=read('collection.json');sources=read('candidate.json')['sources']
     if result['status']!='CLEAN_CI_PASS' or not collection['verified']:raise ValueError('ci_required')
     history=read('registration12-minimal-history.json')
-    if len(history['history'])!=45 or history['history'][-1]['version']!='20261014105919':raise ValueError('minimal_slice_history')
+    current=result.get('cli_profile')==ci_profile.PROFILE
+    if result.get('cli_profile') not in (None,ci_profile.PROFILE):raise ValueError('registration_ci_profile')
+    if current:
+        if result.get('migrations_applied')!=47:raise ValueError('registration_complete_history')
+        migration_history=ci_profile.history_contract(history['history'],sources,'minimal')
+        ci_profile.history_contract(read('candidate-47-history.json')['history'],sources,'complete')
+    else:
+        if len(history['history'])!=45 or history['history'][-1]['version']!='20261014105919':raise ValueError('minimal_slice_history')
+        migration_history={'profile':'historical_canonical44_app1','count':45,'current_profile':False}
     if read('registration12-dry-run.json')!={**read('registration12-dry-run.json'),'pending':False,'local_only':True}:raise ValueError('slice_dryrun')
     db=read('registration12-database.json');admin=read('registration12-integration-native-admin-protocol.json');auth=read('registration12-integration-managed-auth-protocol.json')
     cli=[read('cli-protocol-'+str(i)+'.json') for i in (0,1)]
+    if current:
+        for i,receipt in enumerate(cli):ci_profile.cli_receipt(receipt,i)
     coverage=[read('cli-numeric-coverage-'+str(i)+'.json') for i in (0,1)]
     isolation=[read('cli-isolation-'+str(i)+'.json') for i in (0,1)]
     if not all(x['restored'] and all(p['confirmed'] for p in x['protocol']) for x in isolation):raise ValueError('cli_isolation')
@@ -28,6 +39,7 @@ def build(folder):
             {'phase':'registration_read_write_rollback_and_terminal','commands':db['commands'],'evidence':'registration12-database.json'}]
     return {'status':'LOCAL_RELEASE_PREPARATION_ONLY','ci':collection['run'],'head':result['commit'],
         'candidate_sha256':result['candidate_sha256'],'source_hashes':sources,
+        'migration_history':migration_history,'complete_history_count':47 if current else None,
         'scope':'frozen12 synthetic registration and historical facts only; no plan application, outbox or package21',
         'migration':'20261014105919_phase6e_synthetic_server_candidate.sql','migration_sha256':history['migration_sha256'],
         'phases':phases,'observed_sql_total':sum(x['commands'] for x in phases),

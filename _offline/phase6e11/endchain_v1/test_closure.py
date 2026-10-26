@@ -8,7 +8,7 @@ class ClosureTests(unittest.TestCase):
     def setUp(self):
         self.trace=[{'command':i+1,'phase':'evidence_query','confirmed':True} for i in range(1518)]
         self.pre={'commands':[{'confirmed':True} for _ in range(4)]}
-        self.cli=[local({'protocol_commands':n,'complete':True,'numeric_protocol_coverage':True,'observer_commands':[{'confirmed':True}]*8,'total_commands':n+8}) for n in (14,2)]
+        self.cli=[local({'protocol_commands':n,'complete':True,'numeric_protocol_coverage':True,'observer_commands':[{'confirmed':True}]*8,'total_commands':n+8,'dry_run':slot!='quota'},slot) for slot,n in [('quota',14),('pre_auth',2),('final',2)]]
         self.auth=[{'role':r,'operation':op,'commands':n,'statements':[{'temp_written':0}]}
                    for r in ('a_member','a_trainer','b_member')
                    for op,n in {'issue':11,'verify':21,'getUser':5,'refresh':27,'logout':10,'revoked_denial':4}.items()]

@@ -21,7 +21,7 @@ def counted_close(trace, preflight, cli, auth, workflow, run_id, purpose):
         raise ValueError('closure_already_attempted')
     if len(preflight['commands']) != 4 or not all(c['confirmed'] for c in preflight['commands']):
         raise ValueError('closure_preflight')
-    if len(cli) != 2:
+    if len(cli) != 3 or [x.get('slot') for x in cli]!=['quota','pre_auth','final']:
         raise ValueError('closure_cli')
     cli_charge=sum(charged(item) for item in cli)
     expected = {'issue': 11, 'verify': 21, 'getUser': 5, 'refresh': 27, 'logout': 10, 'revoked_denial': 4}
@@ -39,5 +39,5 @@ def counted_close(trace, preflight, cli, auth, workflow, run_id, purpose):
         raise ValueError('closure_budget')
     return {'run_id': run_id, 'purpose': purpose, 'native_before_close': native,
             'managed_auth': managed, 'preflight': 4, 'cli': cli_charge, 'closing_commands': 1,
-            'cli_count_classification':'128 reserved unknown slots plus 16 confirmed native observers; not 144 observed CLI commands',
+            'cli_count_classification':'120 reserved unknown slots plus 24 confirmed native observers; not 144 observed CLI commands',
             'global_commands': total, 'confirmed': False}

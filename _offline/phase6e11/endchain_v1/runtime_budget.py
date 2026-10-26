@@ -22,9 +22,11 @@ class RuntimeBudget:
             raise BudgetStop('runtime_complete_capacity')
         self.limit=allowance(run_id,purpose);self.limits=dict(limits);self.clock=clock;self.started=clock()
         self.used=0;self.phases=collections.Counter();self.events=[];self.stopped=False;self.closed=False
-        self.state={'guard':False,'observer':False,'controls':False,'claimed':False}
+        self.state={'guard':False,'observer':False,'controls':False,'claimed':False,'auth_maybe_live':False}
+        self.state.update(guard_remove_attempted=False,observer_remove_attempted=False)
         self.safety_spent=collections.Counter();self.pending=None;self.stop_reason=None
         self.managed_pending={}
+        self.safety_pending={};self.state_confirmations=[]
 
     def _reserve(self,phases,state):
         normal=sum(max(0,self.limits[p]-phases[p]) for p in ('cleanup','final','closure'))
@@ -47,6 +49,12 @@ class RuntimeBudget:
         projected=self.phases.copy();projected[phase]+=count
         state={**self.state,**(state_after or {})}
         if set(state)!=set(self.state) or any(type(v) is not bool for v in state.values()):raise BudgetStop('runtime_state_shape')
+        if (state_after or {}).get('auth_maybe_live') is False:
+            raise BudgetStop('runtime_auth_release_requires_known_zero')
+        if (state_after or {}).get('controls') is False:
+            raise BudgetStop('runtime_control_release_requires_confirmation')
+        if any((state_after or {}).get(k) is False for k in ('guard','observer')):
+            raise BudgetStop('runtime_temporary_release_requires_known_zero')
         reserve=self._reserve(projected,state)
         if projected[phase]>self.limits[phase]:raise BudgetStop('runtime_phase_exhausted_'+phase)
         if self.used+count>self.limit or (mutation and self.used+count+reserve>self.limit):
@@ -78,33 +86,65 @@ class RuntimeBudget:
         if self.stop_reason is None:self.stop_reason=reason
         if self.pending:self.pending['stop_reason']=reason;self.pending=None
 
-    def safety(self,action,count):
+    def safety(self,action,count,*,kind='native'):
         if self.closed or not self.stopped:raise BudgetStop('runtime_safety_state')
         elapsed=self.clock()-self.started
         if elapsed<0 or elapsed>=600:raise BudgetStop('runtime_safety_deadline')
-        allowed={x['action']:x['sql'] for x in safety_path(**self.state)}
-        if type(count) is not int or count<1 or action not in allowed or self.safety_spent[action]+count>allowed[action]:
+        allowed={x['action']:x for x in safety_path(**self.state)}
+        if (type(count) is not int or count<1 or action not in allowed
+                or kind!=allowed[action]['kind'] or self.safety_spent[action]+count>allowed[action]['sql']):
             raise BudgetStop('runtime_safety_action')
         if self.used+count>self.limit:raise BudgetStop('runtime_safety_ceiling')
         self.safety_spent[action]+=count;self.used+=count
         self.events.append({'number':len(self.events)+1,'first_command':self.used-count+1,
-            'commands':count,'phase':'safety','action':action,'kind':'native','confirmed':False})
+            'commands':count,'phase':'safety','action':action,'kind':kind,'confirmed':False})
+        self.safety_pending[self.events[-1]['number']]=self.events[-1]
         return self.events[-1]['number']
 
-    def confirm_safety(self,number):
-        event=self.events[-1]
-        if event['number']!=number or event['phase']!='safety' or event['confirmed']:
+    def confirm_safety(self,number,*,actual=None):
+        event=self.safety_pending.get(number)
+        if event is None or event['phase']!='safety' or event['confirmed']:
             raise BudgetStop('runtime_safety_confirmation')
+        if actual is not None and (type(actual) is not int or actual!=event['commands']):
+            if type(actual) is int and actual>=0:
+                event['actual_commands']=actual;extra=max(0,actual-event['commands'])
+                self.used+=extra;self.safety_spent[event['action']]+=extra
+            self.stop('safety_managed_command_count_mismatch')
+            raise BudgetStop('runtime_safety_command_count_mismatch')
         event['confirmed']=True
+        del self.safety_pending[number]
+
+    def confirm_auth_zero(self):
+        if self.closed or not self.state['auth_maybe_live']:
+            raise BudgetStop('runtime_auth_zero_state')
+        self.state['auth_maybe_live']=False
+        self.state_confirmations.append({'after_command':self.used,'state':'auth_maybe_live','value':False,
+            'reason':'validated_terminal_auth_zero','sql':0})
 
     def close(self):
+        if self.state['auth_maybe_live'] and not self.stopped:
+            raise BudgetStop('runtime_auth_zero_unconfirmed')
         if self.pending is not None or (self.managed_pending and not self.stopped):
             raise BudgetStop('runtime_final_unconfirmed')
         self.closed=True
         return self.receipt()
 
+    def confirm_temporary_absence(self):
+        if self.closed or self.pending is not None:raise BudgetStop('runtime_absence_unconfirmed')
+        self.state.update(guard=False,observer=False)
+        self.state_confirmations.append({'after_command':self.used,'state':'temporary_absence',
+            'value':False,'reason':'validated_metadata_absence','sql':0})
+
+    def confirm_controls_restored(self):
+        if self.closed or self.pending is not None or not self.state['controls']:
+            raise BudgetStop('runtime_controls_unconfirmed')
+        self.state['controls']=False
+        self.state_confirmations.append({'after_command':self.used,'state':'controls',
+            'value':False,'reason':'validated_original_controls','sql':0})
+
     def receipt(self):
         """Observe an incomplete run without closing or authorizing any action."""
         return {'used':self.used,'limit':self.limit,'phases':dict(self.phases),
+            'state':dict(self.state),'state_confirmations':copy.deepcopy(self.state_confirmations),
             'safety':dict(self.safety_spent),'stopped':self.stopped,'stop_reason':self.stop_reason,
             'complete':all(x['confirmed'] for x in self.events),'events':copy.deepcopy(self.events)}

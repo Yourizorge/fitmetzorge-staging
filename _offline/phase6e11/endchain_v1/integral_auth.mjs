@@ -8,6 +8,7 @@ import {NativeStore} from './native_store.mjs';
 import {ENDCHAIN_RUN_ID,PURPOSE,limitFor} from './budget.mjs';
 import {bindSession} from '../auth_metadata_v1/hashes.mjs';
 import {executionContext,AUTH_ORIGIN} from './execution_context.mjs';
+import {safetyAuthlogout} from './safety_auth.mjs';
 const lines=readline.createInterface({input:process.stdin,terminal:false})[Symbol.asyncIterator]();
 const read=async()=>JSON.parse((await lines.next()).value);
 const send=async value=>{process.stdout.write(JSON.stringify(value)+'\n');const reply=await read();if(reply.error)throw new Halt('ci_'+value.op,reply.error);return reply.value;};
@@ -75,6 +76,7 @@ try{
   hosted_requests:execution.local?0:90,emails_sent:0,environment:execution.local?'disposable_ci':'staging'}})+'\n');
 }catch(error){
  if(guard)guard.close();
+ if(receipt){try{await safetyAuthlogout({send,receipt,auths});}catch{}}
  if(receipt){try{await send({op:'remove',receipt,stopped:true});}catch{}}
  process.stdout.write(JSON.stringify({op:'failed',code:/^[a-z_]+[0-9]*$/.test(error.message)?error.message:'integral_auth_failed'})+'\n');process.exitCode=2;
 }finally{

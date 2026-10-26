@@ -126,3 +126,19 @@ Planning resolves explicitly approved local times and DST folds/gaps; ambiguous
 or nonexistent times fail closed. The accepted fixture still uses UTC and its
 historical explicit appointment date. No new cadence, medical policy or durable
 background scheduler is implied.
+
+Current-fact invalidation correction (base `c64f0bc4637bd9153b5339d015b14d768eaf965b`):
+existing intake, plan-edit and consent invalidation now removes the current
+`facts` projection alongside `comparison`. Prior comparison revisions remain
+in `comparisonHistory`; a new complete comparison is still explicit. Presentation
+preferences and failed edits retain valid current facts. The existing separate
+confirmation/application and default-off21 boundaries are unchanged.
+
+`windows.test.cjs` covers the reproduced regression and the combined comparison,
+confirmation, edit and application flow. `database_tests.py` and
+`composed_browser.cjs` add durable/API/browser assertions to the existing real
+local PG/Auth CI path. Those additions require fresh coordinator CI; the earlier
+CI38777789327 is historical baseline evidence only. No migration is needed.
+Rollback: omit or revert this isolated source patch before integration. If it
+has been deployed locally, close the local entry first; retain existing revisions
+and audit, and do not reconstruct current facts from historical comparisons.
