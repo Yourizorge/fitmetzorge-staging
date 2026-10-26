@@ -123,6 +123,32 @@ Wrong registries, image IDs and mismatched registry/digest pairs remain denied.
 Entry16 tests pass. One final disposable diagnostic is planned; no automatic
 retry, hosted attempt or WAL-limit exception is authorized by it.
 
+The final run, CI40366195569 at4402598, rebuilt45/45 and stopped after7
+diagnostic commands. The cluster interval around ACCESS was304 bytes, ending at `0/2819BC0`,
+but flush remained at `0/2819A90` after the fixed300ms wait. The corrected
+container provenance check passed. Rollback and fresh-stack removal are
+confirmed; Auth accounts created0, hosted requests0. No WAL record types were
+exported or classified. All91 artifact hashes verify, archive SHA256
+`2336caf48982db8a7dae1f9f4ddd1b8aa3f2592a5fe46be0480761767b893d91`.
+Six byte-identical receipts are retained in
+`receipts/ci-40366195569-final-incomplete/`.
+These cluster intervals are not exclusively attributed to ACCESS. Independent
+review confirmed the receipt hashes and absence of any hidden admission/PASS claim.
+
+This method is stopped after three separate diagnostic CI attempts. The second
+attempt never reached the diagnostic query; neither incomplete interval is
+promoted to PASS. No fourth diagnostic, hosted retry, forced flush, longer
+timeout or WAL-limit relaxation was performed. The original944-byte/17-record
+metadata WAL observation therefore remains causally unresolved.
+
+Smallest next technical step: design an independent disposable-PG17 inspection
+that retains fixed start/end-LSNs, closes the measurement transaction and only
+classifies records after durable coverage of that exact interval is proven.
+Any CI-only synchronization must have its own counted, explicit fixture phase;
+it must not be hidden inside hosted read-only evidence or alter protected data.
+Current CI acceptance and the zero-read-WAL limit remain unchanged until that
+evidence exists and any necessary new boundary is explicitly decided.
+
 The CI stopped at meter command39 (`gates_before_io_sample`) and confirmed
 rollback at40. Exactly40 charged commands are4 preflight plus36 baseline.
 The native trace has52 entries:16 disposable-CI bootstrap plus36 baseline;
@@ -172,12 +198,31 @@ published independently.
   and corrected checkout/candidate test paths. Local327 endchain Python and141
   app Python tests passed. Independent review found no remaining source blocker
   in those fixes; it explicitly keeps hosted admission NO-GO.
+- `46a5c3b757604d941d90a2c8d358ecc167828980`: separate default-off CI diagnostic,
+  immutable app/endchain receipts and corrected work-register source binding.
+- `2d1627bf07543a2c3fe73420e08c77cc02398594`: fixed300ms diagnostic settling,
+  retained first incomplete interval, helper18 targeted tests PASS.
+- `44025981224d384b6446cccb68eeb316d2782a89`: exact official image-mirror binding
+  with image-ID/digest checks, retained bootstrap failure, entry16 tests PASS.
+
+Only `work_register.json` intersects the432-file app-CI candidate in changes
+after06b9ac0 through4402598; executable application sources are unchanged. This
+comparison is not a new CI-PASS for a later commit.
 
 Pages run40354775552 at06b9ac0 succeeded. Archive SHA256
 `3b0a16c9b961869556ab3d6b5cd82f31fd9c3c07acaed0119b400d236198ac5c`:
 152/152 protected runtime assets byte-identical, private roots absent, seven
 HTTP probes404. No runtime, frozen source or migration1-44 changed in this work.
 Older dirty files remain outside these commits; the worktree is not claimed clean.
+
+Pages at46a5c3b also passed (run40362455119, archive
+`a73213a5af8bcf18504867fd323b3d3472c2b979a84d579d6fc6ff1aed1ca85c`):
+152 assets equal, private roots absent, seven HTTP404s. Final report-checkpoint
+publication is checked separately and reported in the final chat message.
+Local preservation remains1376 entries,1372 byte-identical and four previously
+authorized documentation/attributes differences, with zero unexpected changes.
+The original baseline hash remains
+`213673e2a04f04b715f247efe3f27263c0dc998859d5d7e54685a356412f8fef`.
 
 Hosted migrations: last proven44, not remeasured; candidate45 remains unapplied.
 The reserved6f8c run is unused. No JIT mapping was opened or changed this turn,

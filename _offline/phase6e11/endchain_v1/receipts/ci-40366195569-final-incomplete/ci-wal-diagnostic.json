@@ -1,0 +1,30 @@
+{
+  "automatic_retries": 0,
+  "causal_attribution": false,
+  "commands": 7,
+  "extension_installed": true,
+  "fixed_flush_wait_ms_per_query": 300,
+  "full_chain_admission": false,
+  "limitations": [
+    "wal_not_flushed_through_end"
+  ],
+  "max_total_flush_wait_ms": 1200,
+  "queries": [
+    {
+      "complete": false,
+      "duration_ms": 5,
+      "end_lsn": "0/2819BC0",
+      "flush_lsn": "0/2819A90",
+      "name": "access",
+      "source_sha256": "ad5ff4effb3cdfc8647f1bfa24815040cf3b1b20537b36d4f163ee36ccc8cb23",
+      "span_bytes": 304,
+      "start_lsn": "0/2819A90"
+    }
+  ],
+  "query_text_exported": false,
+  "rollback_confirmed": true,
+  "row_contents_exported": false,
+  "scope": "cluster_wal_interval_not_exclusive_to_query",
+  "status": "DIAGNOSTIC_ONLY",
+  "wal_zero_pass": false
+}
