@@ -111,6 +111,18 @@ stay5s, command cap16, maximum aggregate wait1.2s for four queries. The helper's
 18 mock tests and PG17 parser check pass. This changes no hosted WAL allowance
 and does not retrospectively complete the first diagnostic.
 
+CI40364445423 at2d1627b stopped earlier, during bootstrap: the official ECR
+registry name differed from the literal Docker Hub name. Image ID and repository
+digest were identical to the pinned bytes; no migration or diagnostic query was
+run, and disposable cleanup is confirmed. All36 artifact hashes verify; archive
+SHA256 `b0ed650fa36f2b6b022f9ea6b29a19a092dd706e22ed7794313b0ef179d023c5`.
+The receipt remains in `receipts/ci-40364445423-registry-alias/`.
+The correction allows only these two exact official registry spellings and now
+requires the exact image ID as well as the matching fixed repository digest.
+Wrong registries, image IDs and mismatched registry/digest pairs remain denied.
+Entry16 tests pass. One final disposable diagnostic is planned; no automatic
+retry, hosted attempt or WAL-limit exception is authorized by it.
+
 The CI stopped at meter command39 (`gates_before_io_sample`) and confirmed
 rollback at40. Exactly40 charged commands are4 preflight plus36 baseline.
 The native trace has52 entries:16 disposable-CI bootstrap plus36 baseline;

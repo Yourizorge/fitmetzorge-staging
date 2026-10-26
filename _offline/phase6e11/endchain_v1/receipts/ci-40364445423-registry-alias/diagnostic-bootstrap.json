@@ -1,0 +1,123 @@
+{
+  "cli_internal_sql_total": null,
+  "cli_invocations": 4,
+  "diagnostic_sql_separately_capped": 16,
+  "direct_sql_attempted": 13,
+  "entries": [
+    {
+      "arguments": [
+        "--version"
+      ],
+      "internal_sql_commands": null,
+      "kind": "cli",
+      "scope": "CI_BOOTSTRAP_NOT_HOSTED_BUDGET"
+    },
+    {
+      "arguments": [
+        "init",
+        "--yes"
+      ],
+      "internal_sql_commands": null,
+      "kind": "cli",
+      "scope": "CI_BOOTSTRAP_NOT_HOSTED_BUDGET"
+    },
+    {
+      "arguments": [
+        "db",
+        "start"
+      ],
+      "internal_sql_commands": null,
+      "kind": "cli",
+      "scope": "CI_BOOTSTRAP_NOT_HOSTED_BUDGET"
+    },
+    {
+      "attempted_commands": 1,
+      "kind": "direct_sql",
+      "label": "psql",
+      "sql_sha256": "976da2977c81f995fdcf149c1c13b34041c34cfe26940af68992dd2b8e1cf468"
+    },
+    {
+      "attempted_commands": 1,
+      "kind": "direct_sql",
+      "label": "psql",
+      "sql_sha256": "8166b7f3fec8eb3aee3e1747be01f183f66f34f0498501a196c2d29090cc37ec"
+    },
+    {
+      "attempted_commands": 1,
+      "kind": "direct_sql",
+      "label": "psql",
+      "sql_sha256": "40d6c934e014ca675f62da16e40cdc062c674df9aa2cff636803e6ea4ad68b2b"
+    },
+    {
+      "attempted_commands": 1,
+      "kind": "direct_sql",
+      "label": "ci-bootstrap-ssl_cert_file",
+      "sql_sha256": "8ce0c78fb30109378d654ed7517c37a24494431342134c02f70faf5744c32897"
+    },
+    {
+      "attempted_commands": 1,
+      "kind": "direct_sql",
+      "label": "ci-bootstrap-ssl_key_file",
+      "sql_sha256": "cdaada2c0694a0d3f4363c664ddde2a0ec4f1c96ae2c53a18f08e9de6c9c42e6"
+    },
+    {
+      "attempted_commands": 1,
+      "kind": "direct_sql",
+      "label": "ci-bootstrap-ssl",
+      "sql_sha256": "73e8d52ca9f3aa5aebaabc13381fa4ed53305557aaaf6f87616a90839640d3bb"
+    },
+    {
+      "attempted_commands": 1,
+      "kind": "direct_sql",
+      "label": "ci-bootstrap-log_parameter_max_length",
+      "sql_sha256": "3618cc218f2198fbd8e2c8eff8e399f288a922161980194dec28a26146b90f72"
+    },
+    {
+      "attempted_commands": 1,
+      "kind": "direct_sql",
+      "label": "ci-bootstrap-log_parameter_max_length_on_error",
+      "sql_sha256": "a3932f39952c69ea5204285cb13a20e2a0483b7e32c13a5e6ffa400a69a6f789"
+    },
+    {
+      "attempted_commands": 1,
+      "kind": "direct_sql",
+      "label": "ci-bootstrap-log_statement",
+      "sql_sha256": "aa08aa450ce8567bd34e1c390e5a24b9b0e160ea5f16090503b77a6e29630b37"
+    },
+    {
+      "attempted_commands": 1,
+      "kind": "direct_sql",
+      "label": "ci-bootstrap-log_min_duration_statement",
+      "sql_sha256": "5608281b19feb470fbb6ba1cfe7cbfe306e07a67aa02a69b404d839ff90f1351"
+    },
+    {
+      "attempted_commands": 1,
+      "kind": "direct_sql",
+      "label": "ci-bootstrap-log_min_duration_sample",
+      "sql_sha256": "7d36461927c9b1bf1033011bdb4790dbec7b14aad5218f1b578e3b3acd59212f"
+    },
+    {
+      "attempted_commands": 1,
+      "kind": "direct_sql",
+      "label": "ci-bootstrap-log_transaction_sample_rate",
+      "sql_sha256": "04795c274b081598978d97e385b1903baf951d8b3860faff39f2988ca00860f9"
+    },
+    {
+      "attempted_commands": 1,
+      "kind": "direct_sql",
+      "label": "ci-bootstrap-reload",
+      "sql_sha256": "cd7a852829ce5bdbfb3ae50c8610d1733cfbf50dc3d80dec3fbaae509b0f80b8"
+    },
+    {
+      "arguments": [
+        "stop",
+        "--no-backup"
+      ],
+      "internal_sql_commands": null,
+      "kind": "cli",
+      "scope": "CI_BOOTSTRAP_NOT_HOSTED_BUDGET"
+    }
+  ],
+  "exact_total_sql_claim": false,
+  "scope": "CI_ONLY_NOT_HOSTED_METER"
+}

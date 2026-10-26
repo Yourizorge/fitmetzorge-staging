@@ -22,7 +22,7 @@ class FakeGate(d.DiagnosticGate):
     def fetch(self):self.touch('fetch');return list(range(45))
     def install(self):
         self.stack_attempted=True;self.touch('install')
-        self.result['platform']={'image':d.IMAGE,'repository_digests':[d.DIGEST]}
+        self.result['platform']={'image':d.IMAGE,'image_id':d.IMAGE_ID,'repository_digests':[d.DIGEST]}
     def rebuild(self,migrations):self.touch('rebuild');self.result['migrations_applied']=len(migrations)
     def probe(self):self.touch('probe');return self.value
     def postcheck(self):self.touch('postcheck')
@@ -80,6 +80,31 @@ class Tests(unittest.TestCase):
             self.assertIsNone(g.bootstrap[-1]['internal_sql_commands'])
             cli.assert_called_once()
             with self.assertRaises(ValueError):d.DiagnosticGate.cli(g,'db','push','--linked')
+
+    def test_only_two_proven_registry_names_same_image_id_and_digest(self):
+        for image,digest in d.IMAGES.items():
+            g=FakeGate()
+            def install():
+                g.stack_attempted=True
+                g.result['platform']={'image':image,'image_id':d.IMAGE_ID,'repository_digests':[digest]}
+            g.install=install
+            self.assertEqual(self.run_gate(g),0)
+        for image,image_id,digest in (
+            ('untrusted.example/'+d.IMAGE,d.IMAGE_ID,d.DIGEST),
+            (d.IMAGE.replace('17.6.1.167','17.7.0'),d.IMAGE_ID,d.DIGEST),
+            (None,d.IMAGE_ID,d.DIGEST),
+            (d.IMAGE,d.IMAGE_ID,'supabase/postgres@sha256:'+'0'*64),
+            (d.IMAGE,d.IMAGE_ID,None),
+            (d.IMAGE,'sha256:'+'0'*64,d.DIGEST),
+            (d.IMAGE,None,d.DIGEST),
+            ('public.ecr.aws/'+d.IMAGE,d.IMAGE_ID,d.DIGEST)):
+            g=FakeGate()
+            def install():
+                g.stack_attempted=True
+                g.result['platform']={'image':image,'image_id':image_id,'repository_digests':[digest]}
+            g.install=install
+            self.assertEqual(self.run_gate(g),1)
+            self.assertNotIn('rebuild',g.calls)
     def test_exact_disposable_cleanup(self):
         g=FakeGate();g.stack_attempted=True
         with patch.object(g,'cli') as cli:

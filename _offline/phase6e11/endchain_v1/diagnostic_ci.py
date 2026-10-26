@@ -11,6 +11,8 @@ EXTRA={'_offline/phase6e11/endchain_v1/'+name for name in (
 EXTRA.add('.github/workflows/phase6e11-wal-diagnostic.yml')
 IMAGE='supabase/postgres:17.6.1.167'
 DIGEST='supabase/postgres@sha256:6942962433a569e87f228b4d4ab7e11db5deca64e43babb3a038443ad6c4f1bb'
+IMAGE_ID='sha256:66089200353d90686fe9b252a47d17d078364bf47c50190852c33dc850a0191f'
+IMAGES={IMAGE:DIGEST,'public.ecr.aws/'+IMAGE:'public.ecr.aws/'+DIGEST}
 IDS={r:'69000000-0000-4000-8000-%012d'%(i+1)
      for i,r in enumerate(('a_member','a_trainer','b_member'))}
 CONTEXT={'window':'69000000-0000-4000-8000-000000000004',
@@ -124,7 +126,9 @@ class DiagnosticGate(ci.Gate):
             self.result['phase']='candidate';migrations=self.fetch()
             self.result['phase']='ci_bootstrap';self.install()
             platform=self.result['platform']
-            if platform['image']!=IMAGE or DIGEST not in platform['repository_digests']:
+            expected_digest=IMAGES.get(platform['image'])
+            if (expected_digest is None or platform.get('image_id')!=IMAGE_ID
+                or expected_digest not in platform['repository_digests']):
                 raise ValueError('diagnostic_image_binding')
             self.rebuild(migrations)
             if self.result['migrations_applied']!=45:raise ValueError('diagnostic_schema_45')
