@@ -119,7 +119,8 @@ class Composition:
             query(phase+'_timeout',"SET LOCAL statement_timeout='5s'")
             if query(phase+'_readonly',"select current_setting('transaction_read_only')='on' readonly")[0]['readonly'] is not True:
                 raise RuntimeError('ci_gates_not_readonly')
-        monitor=QueryIO(lambda channel,name,text,values=():query(phase+'_'+name,text,values))
+        monitor=QueryIO(lambda channel,name,text,values=():query(phase+'_'+name,text,values),
+            on_failure=lambda evidence:gate.save('integral-'+phase+'-io-failure.json',evidence))
         monitor.start()
         qid=monitor.bind(gates.FINAL,args,read_only=True)
         rows=query(phase+'_metadata',gates.FINAL,args);monitor.executed(qid)
@@ -167,7 +168,8 @@ class Composition:
                 query('gates_'+label+'_timeout',"SET LOCAL statement_timeout='5s'")
                 if query('gates_'+label+'_readonly',"select current_setting('transaction_read_only')='on' readonly")[0]['readonly'] is not True:
                     raise RuntimeError('ci_gates_not_readonly')
-                monitor=QueryIO(lambda channel,phase,text,args=():query('gates_'+label+'_'+phase,text,args))
+                monitor=QueryIO(lambda channel,phase,text,args=():query('gates_'+label+'_'+phase,text,args),
+                    on_failure=lambda evidence:gate.save('integral-gates-'+label+'-io-failure.json',evidence))
                 monitor.start()
                 def checked(name,text,args=()):
                     qid=monitor.bind(text,args,read_only=True);rows=query('gates_'+label+'_'+name,text,args);monitor.executed(qid)
@@ -305,7 +307,7 @@ class Composition:
                 if query('reader','lifecycle_reader_check',"select current_setting('transaction_read_only')='on' readonly")[0]['readonly'] is not True:
                     raise RuntimeError('ci_lifecycle_readonly')
                 from integral_io import QueryIO
-                monitor=QueryIO(raw_query);monitor.start()
+                monitor=QueryIO(raw_query,on_failure=lambda evidence:gate.save('integral-workflow-io-failure.json',evidence));monitor.start()
             def end_reader(label):
                 nonlocal monitor
                 if monitor is not None:
@@ -384,7 +386,7 @@ class Composition:
                             'commandCount':len(self.commands)-offset}
                         if message['channel']=='reader' and message['q'].startswith('select current_setting') and monitor is None:
                             from integral_io import QueryIO
-                            monitor=QueryIO(raw_query);monitor.start()
+                            monitor=QueryIO(raw_query,on_failure=lambda evidence:gate.save('integral-workflow-io-failure.json',evidence));monitor.start()
                             reply['commandCount']=len(self.commands)-offset
                     elif message['op']=='persist':
                         self.events.append({**message['event'],'protocol_count':len(self.commands)})

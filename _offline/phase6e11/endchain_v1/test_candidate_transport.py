@@ -1,7 +1,9 @@
 """Exercise the pinned fetch parser without networking or database imports."""
-import ast,base64,hashlib,io,json,pathlib,unittest
+import ast,base64,hashlib,io,json,os,pathlib,unittest
 
-SOURCE=pathlib.Path(__file__).resolve().parent.parent/'controller_v1/ci.py'
+# The pinned fetch harness lives in the checkout, not in its own downloaded bundle.
+CHECKOUT=pathlib.Path(os.environ.get('GITHUB_WORKSPACE',pathlib.Path(__file__).resolve().parents[3]))
+SOURCE=CHECKOUT/'_offline/phase6e11/controller_v1/ci.py'
 tree=ast.parse(SOURCE.read_text(encoding='utf-8'))
 nodes=[node for node in tree.body if
        isinstance(node,ast.FunctionDef) and node.name=='read_candidate' or

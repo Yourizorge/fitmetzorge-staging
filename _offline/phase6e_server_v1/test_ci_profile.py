@@ -1,8 +1,11 @@
 """Offline contracts only; real migration/Auth execution remains mandatory CI."""
 import ast
+import hashlib
 import importlib.util
 import json
+import os
 import pathlib
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -10,6 +13,15 @@ from unittest.mock import patch
 import ci_profile as p
 
 HERE = pathlib.Path(__file__).resolve().parent
+
+
+def checkout_ci(here=HERE):
+    # The downloaded candidate omits the pinned harness; CI already binds it to this checkout.
+    root = pathlib.Path(os.environ.get('GITHUB_WORKSPACE', here.parents[1])).resolve()
+    source = root / '_offline/phase6e_server_v1/ci.py'
+    if source.read_bytes().replace(b'\r\n', b'\n') != (here / 'ci.py').read_bytes().replace(b'\r\n', b'\n'):
+        raise ValueError('ci_profile_checkout_mismatch')
+    return source
 
 
 def sources():
@@ -127,11 +139,40 @@ class Tests(unittest.TestCase):
         self.assertNotIn('ci_source_binding.py', names)
 
 
+class CheckoutLayoutTests(unittest.TestCase):
+    def test_downloaded_layout_runs_real_inheritance_from_bound_checkout(self):
+        checkout = checkout_ci().parents[2]
+        with tempfile.TemporaryDirectory() as tmp:
+            folder = pathlib.Path(tmp) / '_offline/phase6e_server_v1'
+            folder.mkdir(parents=True)
+            for name in ('ci.py', 'ci_profile.py', 'test_ci_profile.py'):
+                (folder / name).write_bytes((HERE / name).read_bytes())
+            self.assertFalse((folder.parent / 'phase6e11/controller_v1/ci.py').exists())
+            env = dict(os.environ, GITHUB_WORKSPACE=str(checkout))
+            result = subprocess.run([sys.executable, '-B', str(folder / 'test_ci_profile.py'),
+                                     'FetchInheritanceTests'], cwd=folder, env=env,
+                                    capture_output=True, text=True, timeout=30)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertIn('Ran 3 tests', result.stderr)
+
+    def test_changed_checkout_app_source_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            candidate = root / 'candidate'
+            source = root / '_offline/phase6e_server_v1/ci.py'
+            candidate.mkdir();source.parent.mkdir(parents=True)
+            (candidate / 'ci.py').write_bytes(b'candidate = 1\n')
+            source.write_bytes(b'candidate = 2\n')
+            with patch.dict(os.environ, {'GITHUB_WORKSPACE': str(root)}):
+                with self.assertRaisesRegex(ValueError, 'ci_profile_checkout_mismatch'):
+                    checkout_ci(candidate)
+
+
 class FetchInheritanceTests(unittest.TestCase):
     def setUp(self):
         original_path = sys.path[:]
         self.addCleanup(lambda: sys.path.__setitem__(slice(None), original_path))
-        spec = importlib.util.spec_from_file_location('app_ci_fetch_test', HERE / 'ci.py')
+        spec = importlib.util.spec_from_file_location('app_ci_fetch_test', checkout_ci())
         self.app = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(self.app)
         import ci_source_binding
@@ -148,6 +189,12 @@ class FetchInheritanceTests(unittest.TestCase):
         fetch = patch.object(self.app.previous.prior.old.Gate, 'fetch', return_value=['canonical.sql'])
         self.network_fetch = fetch.start()
         self.addCleanup(fetch.stop)
+
+    def test_checkout_harness_matches_all_source_binding_pins(self):
+        for name, expected in self.binding.HARNESS.items():
+            raw = (self.app.ROOT / name).read_bytes().replace(b'\r\n', b'\n')
+            with self.subTest(name=name):
+                self.assertEqual(hashlib.sha256(raw).hexdigest(), expected)
 
     def test_actual_fetch_inheritance_writes_one_exclusive_preflight(self):
         proof = {'status': 'unit-source-verifier-result'}

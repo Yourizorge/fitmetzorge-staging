@@ -12,7 +12,8 @@ select jsonb_build_object(
  'statements',(select coalesce(jsonb_agg(jsonb_build_object(
    'queryid',queryid::text,'calls',calls,'since',stats_since,
    'temp_read',temp_blks_read,'temp_written',temp_blks_written,
-   'wal',wal_bytes::text,'exec_ms',total_exec_time)),'[]')
+   'wal',wal_bytes::text,'wal_records',wal_records::text,'wal_fpi',wal_fpi::text,
+   'exec_ms',total_exec_time)),'[]')
    from extensions.pg_stat_statements(false)
    where dbid=(select oid from pg_database where datname=current_database())
      and userid=(select oid from pg_roles where rolname=current_user) and toplevel
@@ -60,8 +61,9 @@ def delta(before,after,expected,readonly=()):
         'background_attributed_to_collector':False}
 
 class QueryIO:
-    def __init__(self,query):
+    def __init__(self,query,on_failure=None):
         self.query=query;self.bindings={};self.expected={};self.baseline=None;self.samples=[];self.reader_id=None;self.readonly=set();self.classes={}
+        self.on_failure=on_failure
     def register(self,source_sha,qid,read_only):
         if type(read_only) is not bool:raise ValueError('io_read_class_missing')
         if qid in self.classes and self.classes[qid]!=read_only:raise ValueError('io_read_write_family_collision')
@@ -98,7 +100,15 @@ class QueryIO:
     def checkpoint(self):
         expected=dict(self.expected)
         after=self.sample()
-        result=delta(self.baseline,after,expected,self.readonly)
+        try:result=delta(self.baseline,after,expected,self.readonly)
+        except ValueError as error:
+            if self.on_failure:
+                self.on_failure({'status':'NO_GO','reason':str(error),
+                    'before':self.baseline,'after':after,'expected':expected,
+                    'bindings':self.bindings,'readonly_queryids':sorted(self.readonly),
+                    'additional_sql_commands':0,'query_text_read':False,
+                    'does_not_authorize_wal_or_retry':True})
+            raise
         self.baseline=after;self.expected={self.reader_id:1} if self.reader_id else {};return result
     def close(self):
         result=self.checkpoint()

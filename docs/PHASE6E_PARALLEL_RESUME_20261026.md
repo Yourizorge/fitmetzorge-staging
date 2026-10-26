@@ -111,6 +111,48 @@ because these later changes do not alter its Node source. These are local tests,
 not new clean database, real Auth, browser or hosted results. Fresh source-bound
 CI remains mandatory. The reserved hosted attempt is still unused.
 
+## First resumed CI outcomes
+
+Source commit `24574c1666e945b2eff410b13971643570e1d6dd` was pushed only to
+staging main. The independent reviewer approved source admission, not hosted
+execution. Both newly dispatched CI results remain immutable NO-GO evidence:
+
+- Endchain run40351976416: clean45/45, 12/12 SQL regressions, private controller,
+  guard and request-security checks PASS. The first registered install stopped
+  in the pre-mutation read-only gate at `integral_io.delta: io_read_wal`.
+  No Auth issuance or temporary guard installation had begun. Terminal is
+  incomplete; `guard_audit_removed=true` means nothing was installed, not a
+  global session-zero claim. The four preceding row-stream pairs show zero
+  own temp writes and zero WAL. The failing metadata sample was not retained,
+  so its exact query attribution is not reconstructed or guessed. Artifact
+  SHA256 `04ba3cf18731c6882da51a5d00425edc69c62f551a069073a7feeb1b99b5bf7a`.
+- Private app run40351991523: clean47/47 LOCAL CANDIDATE, 12/12 SQL regressions,
+  registration12 unit25, transport-auth4 and transport-database46 checks PASS.
+  The CI-profile unit group then failed because it imported the downloaded
+  candidate as a complete checkout; the pinned controller harness is deliberately
+  outside that bundle. No full application/browser PASS is claimed. Artifact
+  SHA256 `20425958c987a319aceca8fbdb4af09fee6e0b6b930f7f7094aabb813d4ed36e`.
+
+The next narrow correction retains failed QueryIO before/after numeric samples,
+source hashes, expected calls and read classifications before rethrowing the
+same hard failure. `wal_records` and `wal_fpi` add classification metadata to
+the existing read, not extra SQL. Zero-read-WAL and zero-own-temp requirements
+are unchanged. Local327 Python tests pass after updating the metadata test
+double. The fetch-parser test now locates its hash-pinned checkout harness in
+the CI layout. Neither correction makes the first run a PASS.
+
+The app-profile inheritance test similarly imports the exact, content-matched
+checkout harness instead of the incomplete downloaded harness tree. A new
+fresh-process test recreates that downloaded layout and retains real inheritance,
+source-mismatch rejection and all five harness-hash assertions (16 focused tests).
+
+Pages run40351819506 at24574c1 succeeded. Artifact
+`eca48b45f1ac9600b6ce23031feb200db2264e388b0aba79159753c8826b9897`
+contains152 byte-identical protected runtime assets; all private roots are
+absent and seven live private-path probes returned404. No Supabase operation
+was performed by these CI/publication checks; hosted remains last-proven44,
+candidate45 unapplied and the reserved run unused.
+
 External AI calls/cost: 0 / EUR 0.00.
 Real-member AI enabled: NO.
 Production touched: NO.

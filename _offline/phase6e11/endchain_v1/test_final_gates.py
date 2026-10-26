@@ -60,7 +60,9 @@ class FinalGatesTests(unittest.TestCase):
             if phase.endswith('_readonly'):return [{'readonly':True}]
             return [{'value':value}]
         class IO:
-            def __init__(self,query):self.query=query
+            def __init__(self,query,on_failure=None):
+                if not callable(on_failure):raise AssertionError('metadata failure evidence required')
+                self.query=query
             def start(self):
                 self.query('reader','io_bind','SELECT 1')
                 self.query('reader','io_sample','SELECT 1')

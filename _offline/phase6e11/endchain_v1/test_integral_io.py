@@ -50,5 +50,24 @@ class IOTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'io_closing_reader_identity'):q.close()
         plan[0]['Query Identifier']=1
         self.assertEqual(q.close()['closing_queryid'],'1')
+    def test_failed_read_wal_retains_numeric_pair_without_new_queries(self):
+        saved=[];calls=[]
+        after=sample(1);after['statements'][0].update(wal_records='1',wal_fpi='1')
+        q=QueryIO(lambda *a:(calls.append(a) or [{'value':after}]),on_failure=saved.append)
+        q.reader_id='1';q.register('source-sha','1',True)
+        q.baseline=sample();q.expected={'1':1}
+        with self.assertRaisesRegex(ValueError,'io_read_wal'):q.checkpoint()
+        self.assertEqual(len(calls),1);self.assertEqual(len(saved),1)
+        proof=saved[0]
+        self.assertEqual(proof['before'],sample());self.assertEqual(proof['after'],after)
+        self.assertEqual(proof['expected'],{'1':1});self.assertEqual(proof['bindings'],{'source-sha':'1'})
+        self.assertEqual(proof['readonly_queryids'],['1'])
+        self.assertEqual(proof['reason'],'io_read_wal');self.assertEqual(proof['additional_sql_commands'],0)
+        self.assertTrue(proof['does_not_authorize_wal_or_retry'])
+    def test_failed_evidence_save_is_not_silently_ignored(self):
+        def fail(value):raise OSError('disk_failure')
+        q=QueryIO(lambda *a:[{'value':sample(1)}],on_failure=fail)
+        q.reader_id='1';q.register('source-sha','1',True);q.baseline=sample();q.expected={'1':1}
+        with self.assertRaisesRegex(OSError,'disk_failure'):q.checkpoint()
 
 if __name__=='__main__':unittest.main()
