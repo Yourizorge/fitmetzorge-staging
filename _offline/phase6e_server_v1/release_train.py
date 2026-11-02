@@ -3,6 +3,8 @@
 CI integration: add this module and its test to ci.NEW; union input_files(ROOT)
 into ci.EXTRA. After unit checks, build/verify against Gate.sources and save the
 returned document as release-train.json. The generated JSON is never an input.
+Frozen bodies stay in the existing checkout, not in the candidate transport.
+Every build/check verifies them there; pass frozen_root for an isolated caller.
 """
 import argparse
 import copy
@@ -17,7 +19,7 @@ from workday_release import closure, commands, digest, permissions, raw, safe_fi
 HERE = pathlib.Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 PREFIX = '_offline/phase6e_server_v1/'
-FORMAT = 'fmz-release-train-v1'
+FORMAT = 'fmz-release-train-v2'
 OFFLINE = 'COMPLETE / OWNER-ACCEPTED / FROZEN - OFFLINE/SYNTHETIC ONLY'
 OWNER_BASE = '9715ac8600bad89ff813ad399e745360028ce48a'
 HISTORY = PREFIX + 'receipts/ci-40354972820/'
@@ -108,9 +110,31 @@ def validate_plan(plan=PLAN):
         raise ValueError('packages_12_through_20_only')
 
 
-def frozen(root, number):
+def frozen_body(root, name, working_sha256, git_sha256=None):
+    """Check omitted bytes, allowing only an explicitly hash-proven EOL mapping."""
+    data = raw(safe_file(pathlib.Path(root).resolve(), name))
+    variants = [('exact', data), ('CRLF-to-LF-only', data.replace(b'\r\n', b'\n'))]
+    if b'\r' not in data:
+        variants.append(('LF-to-CRLF-only', data.replace(b'\n', b'\r\n')))
+    for mapping, working in variants:
+        if digest(working) != working_sha256:
+            continue
+        lf_sha256 = digest(working.replace(b'\r\n', b'\n'))
+        if git_sha256 is not None and git_sha256 not in (working_sha256, lf_sha256):
+            raise ValueError('frozen_git_mapping:' + name)
+        return {'working_sha256': working_sha256, 'git_sha256_recorded': git_sha256,
+                'checkout_sha256': digest(data), 'lf_sha256': lf_sha256,
+                'checkout_to_working_mapping': mapping,
+                'checkout_bytes_verified': True, 'git_object_reverified_here': False}
+    raise ValueError('pinned_source_drift:' + name)
+
+
+def frozen(root, number, *, frozen_root=None):
+    frozen_root = root if frozen_root is None else frozen_root
     evidence = f'docs/PHASE6E{number}_FREEZE_EVIDENCE.json'
     files = {evidence: pinned(root, evidence, FREEZE_PINS[number])}
+    inputs = dict(files)
+    bodies = {}
     receipt = read_json(root, evidence)
     if receipt['package'] != f'6E-{number}' or receipt['status'] != OFFLINE or not receipt['sources']:
         raise ValueError('frozen_contract')
@@ -118,7 +142,8 @@ def frozen(root, number):
         name = source['file']
         if name in files:
             raise ValueError('duplicate_frozen_source')
-        files[name] = pinned(root, name, source['working_sha256'])
+        bodies[name] = frozen_body(frozen_root, name, source['working_sha256'], source['git_sha256'])
+        files[name] = source['working_sha256']
     reports = dict(receipt.get('reports', {}))
     for key in ('technical_evidence_sha256', 'evidence_sha256'):
         if key in receipt:
@@ -126,11 +151,17 @@ def frozen(root, number):
     if 'publication_receipt_sha256' in receipt:
         reports[f'docs/PHASE6E{number}_PUBLICATION_RECEIPT.md'] = receipt['publication_receipt_sha256']
     for name, expected in reports.items():
-        files[name] = pinned(root, name, expected)
+        if name in files:
+            raise ValueError('duplicate_frozen_source')
+        bodies[name] = frozen_body(frozen_root, name, expected)
+        files[name] = expected
     name = f'docs/PHASE6E{number}_FREEZE_RECEIPT.md'
     files[name] = file_hash(root, name)
+    inputs[name] = files[name]
     return {'status': OFFLINE, 'accepted_on': receipt['accepted_on'],
             'live_acceptance': False, 'sources': dict(sorted(files.items())),
+            'input_hashes': dict(sorted(inputs.items())),
+            'checkout_body_bindings': dict(sorted(bodies.items())),
             'source_bundle_sha256': canonical_hash(files)}
 
 
@@ -218,8 +249,9 @@ def slice_contract(root, spec, historic_sources, shared_sources):
     }
 
 
-def build(root=ROOT):
+def build(root=ROOT, *, frozen_root=None):
     root = pathlib.Path(root).resolve()
+    frozen_root = ROOT if frozen_root is None else pathlib.Path(frozen_root).resolve()
     validate_plan()
     history = historical(root)
     entries = set(COMMON)
@@ -233,8 +265,8 @@ def build(root=ROOT):
     sources = dict(history['source_hashes'])
     packages = []
     for number, title, selected, dependencies in PLAN:
-        contract = frozen(root, number)
-        sources.update(contract['sources'])
+        contract = frozen(root, number, frozen_root=frozen_root)
+        sources.update(contract['input_hashes'])
         peers = [n for n, _, s, _ in PLAN if s == selected]
         packages.append({'package': number, 'title': title, 'depends_on': list(dependencies),
                          'frozen_contract': contract, 'selected_slice': selected,
@@ -249,13 +281,27 @@ def build(root=ROOT):
     canonical = ci_profile.canonical(p.relative_to(root).as_posix()
                                      for p in (root / 'supabase/migrations').glob('*.sql'))
     sources.update({n: file_hash(root, n) for n in canonical})
+    references = {}
+    for package in packages:
+        for name, expected in package['frozen_contract']['sources'].items():
+            if name in sources:
+                if sources[name] != expected:
+                    raise ValueError('pinned_source_drift:' + name)
+            elif name in references and references[name] != expected:
+                raise ValueError('frozen_reference_conflict:' + name)
+            else:
+                references[name] = expected
     if PREFIX + 'release_train.json' in sources:
         raise ValueError('generated_manifest_is_not_an_input')
     return {
         'format': FORMAT, 'status': 'LOCAL_SOURCE_BOUND_MANIFEST_NOT_RELEASED',
         'owner_confirmed_base': OWNER_BASE, 'base_is_not_a_git_attestation': True,
-        'source_binding_scope': 'selected app, local CI entry, frozen contracts and pinned historical receipts; not all endchain/CI sources',
+        'source_binding_scope': 'candidate bytes: selected app/runtime/tests, CI tooling, migrations, pinned freeze metadata and selected historical receipts; not all endchain/CI sources',
         'source_hashes': dict(sorted(sources.items())), 'source_bundle_sha256': canonical_hash(sources),
+        'frozen_checkout_reference_hashes': dict(sorted(references.items())),
+        'frozen_checkout_reference_bundle_sha256': canonical_hash(references),
+        'frozen_checkout_root': str(frozen_root),
+        'frozen_checkout_policy': 'All frozen bodies are hash-checked against the existing checkout on every build/check. Omitted bodies are not candidate bytes or fresh CI evidence. Only hash-proven CRLF/LF mapping is allowed; Git object identity is not re-attested.',
         'hash_policy': 'SHA256 exact file bytes; JSON excludes itself; rebuild never creates CI evidence',
         'release_order': list(range(12, 21)), 'dependency_policy_source': order_doc,
         'migration_baseline': {'canonical_count': 45, 'canonical_sources': {n: sources[n] for n in canonical},
@@ -272,12 +318,12 @@ def build(root=ROOT):
     }
 
 
-def input_files(root=ROOT):
-    """Candidate packaging inputs; no generated JSON or execution side effects."""
-    return set(build(root)['source_hashes'])
+def input_files(root=ROOT, *, frozen_root=None):
+    """Verify all frozen bytes, but transport only execution inputs and receipts."""
+    return set(build(root, frozen_root=frozen_root)['source_hashes'])
 
 
-def verify(document, root=ROOT):
+def verify(document, root=ROOT, *, frozen_root=None):
     if not isinstance(document, dict) or document.get('format') != FORMAT:
         raise ValueError('release_train_format')
     sources = document.get('source_hashes', {})
@@ -285,14 +331,14 @@ def verify(document, root=ROOT):
         raise ValueError('source_bundle_binding')
     for name, expected in sources.items():
         pinned(root, name, expected)
-    if document != build(root):
+    if document != build(root, frozen_root=frozen_root):
         raise ValueError('release_train_drift_rebuild_and_review')
     return {'status': 'MANIFEST_VALID_NOT_RELEASED', 'packages': 9,
             'fresh_full_ci_claimed': False, 'hosted_admission': False}
 
 
-def gate(document, selected, root=ROOT):
-    verify(document, root)
+def gate(document, selected, root=ROOT, *, frozen_root=None):
+    verify(document, root, frozen_root=frozen_root)
     if not selected or any(type(n) is not int or n not in range(12, 21) for n in selected):
         raise ValueError('packages_12_through_20_only')
     if len(selected) != len(set(selected)):
@@ -318,21 +364,23 @@ def main(argv=None):
     parser.add_argument('--package', type=int, action='append')
     parser.add_argument('--manifest', type=pathlib.Path,
                         help='Existing local generated snapshot, for check/gate only')
+    parser.add_argument('--frozen-checkout', type=pathlib.Path,
+                        help='Existing checkout with all frozen bodies; never a network fetch')
     args = parser.parse_args(argv)
     try:
         # CLI is read-only: main/CI owns serialization and artifact collection.
         if args.manifest is not None and args.command not in ('check', 'gate'):
             raise ValueError('manifest_input_command')
         document = (json.loads(raw(args.manifest).decode('utf-8-sig'))
-                    if args.manifest is not None else build())
+                    if args.manifest is not None else build(frozen_root=args.frozen_checkout))
         if args.command == 'build':
             value = document
         elif args.command == 'inputs':
             value = sorted(document['source_hashes'])
         elif args.command == 'check':
-            value = verify(document)
+            value = verify(document, frozen_root=args.frozen_checkout)
         else:
-            value = gate(document, args.package or [])
+            value = gate(document, args.package or [], frozen_root=args.frozen_checkout)
         print(json.dumps(value, sort_keys=True, indent=2))
         return 3 if args.command == 'gate' else 0
     except (ValueError, KeyError, TypeError, OSError):

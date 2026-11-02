@@ -68,6 +68,22 @@ Neither diagnostic completion nor classified physical WAL grants hosted PASS.
 
 ## Composition and release
 
+### Corrected observation after the two retained samples
+
+Runs41466921367 and41467755577 at dd854e8 are retained as INCOMPLETE.
+Their fixed intervals and last existing flush samples show a classification-order
+gap: an earlier interval can become durable by a later already-counted sample.
+One corrected fresh disposable observation is now preregistered after local tests
+and independent diagnostic-only review. It is not a rerun of either old receipt.
+No measured query, coverage query or wait is added or repeated. Classification
+uses only the last existing sample and each fixed interval at most once.
+Historical failed checks remain in the new receipt alongside any later coverage.
+Calculated maximum remains76/80 commands; waits remain at most6x300ms. No forced
+flush, checkpoint, timeout or read-WAL relaxation is permitted. Missing durable
+coverage, record coverage or attribution remains NO_GO. This corrected observation
+ends this diagnostic method for this package; no automatic further trial follows.
+The hosted attempt remains separate and unused.
+
 After diagnostic repair, require a composed admission with real local Auth,
 database adapter, RLS, controller, workflows, cleanup, exact source manifests
 and clean migration reconstruction. Separate suites remain individually labeled.

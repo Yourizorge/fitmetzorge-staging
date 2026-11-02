@@ -39,6 +39,7 @@ SOURCE_FILES = (
     'scenario.py', 'sql_protocol.py', 'integral_stream.py',
     'hosted_gate.py', 'lifecycle_gates.py', 'cli_stat_reader.py',
     'closure_budget.py', 'test_closure_budget.py',
+    'control_recovery.py', 'test_control_recovery.py',
 )
 
 
@@ -301,6 +302,8 @@ def control_loss_probe(lost_enable):
                  'restored': None, 'controls': controls, 'hashlib': hashlib,
                  'json': json, 'control_sql': 'synthetic_metadata',
                  'enable_attempted':False,'run_id':'69000000-0000-4000-8000-000000000099',
+                 'connections':{'setup':Mock()},
+                 'runtime':types.SimpleNamespace(connect=Mock(return_value=Mock())),
                  'gate': types.SimpleNamespace(save=lambda n, v: saved.update({n: v}))}
     extracted = ast.Module(body=[ast.Try(body=setup, handlers=[], orelse=[],
                                         finalbody=[recovery])], type_ignores=[])
@@ -367,7 +370,7 @@ def findings():
          'Parent requires worker termination and identity-lock closure before one-shot Auth cleanup. Persisted parent evidence permits exact owned guard/audit removal even when Auth is unknown; removal identity checks remain mandatory. Offline sequencing regression passes; no real endchain failure-matrix claim.',
          'Validate the corrected parent path in the source-bound real failure matrix. Unknown mid-Auth outcomes remain C03, not proven revocation.'),
         ('C02', 'integral_ci.py', 'if enable_attempted and enabled is not None and restored!=controls:',
-         'Main now records control intents before mutation and uses control_recovery. Both current-source lost-enable-response AST regressions restore the in-memory controls.',
+         'Control intents precede mutation. Recovery now replaces the uncertain setup transport through the same native runtime before four metered queries. Current-source finally regressions cover committed enable plus connection loss; unknown rollback/close evidence is retained.',
          'Keep the source-bound real-stack control response-loss cases as a diagnostic gate; offline AST PASS is not hosted evidence.'),
         ('C03', 'safety_auth.py', 'self.mint_terminal=(set(e.contracts)',
          'Parent cleanup observes incomplete mint outcomes without session deletion or zero claims. Exact owned guard/audit removal is independent of Auth PASS after the child barrier and persisted parent evidence. Mid-Auth revocation remains unproven.',

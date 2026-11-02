@@ -17,6 +17,27 @@ def intent(original,run_id,expires_at):
               'request':{'id':True,'enabled':True,'expires_at':expires_at}}
     return proof,expected
 
+def replace_setup(runtime,connections,save):
+    """Detach the uncertain transport; never replay its mutation or rollback."""
+    old=connections.pop('setup',None)
+    evidence={'old_present':old is not None,'old_closed':old is None,
+              'fresh_connected':False,'same_native_runtime':True,'retry':False,
+              'additional_sql_commands':0}
+    if old is not None:
+        try:old.close();evidence['old_closed']=True
+        except Exception as error:evidence['old_close_error_class']=type(error).__name__
+    try:
+        # Reuse the admitted runtime's private binding and existing 5s timeout.
+        fresh=runtime.connect()
+        if fresh is old:raise RuntimeError('control_recovery_connection_reused')
+        connections['setup']=fresh
+        evidence['fresh_connected']=True
+    except Exception as error:
+        evidence['connect_error_class']=type(error).__name__
+        raise
+    finally:save('integral-safety-control-connection.json',evidence)
+
+
 def recover(query,original,expected):
     before=query('setup','safety_control_before',CONTROL_SQL)[0]['value']
     # Original, partially enabled, fully enabled and already restored are valid.

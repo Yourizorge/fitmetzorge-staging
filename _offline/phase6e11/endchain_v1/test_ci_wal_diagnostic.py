@@ -1,4 +1,4 @@
-import copy,json,pathlib,tempfile,types,unittest
+import copy,itertools,json,pathlib,tempfile,types,unittest
 from unittest.mock import patch
 import ci_wal_diagnostic as d
 
@@ -8,6 +8,31 @@ IDS={r:'00000000-0000-0000-0000-%012d'%i for i,r in enumerate(sorted(d.ROLES),1)
 CONTEXT={'window':'00000000-0000-0000-0000-000000000004',
  'temporary_schemas':['fmz6e11_guard_'+'a'*32,'fmz6e11_am_'+'a'*32]}
 COUNTERS={'calls':0,'wal_bytes':0,'wal_records':0,'wal_fpi':0,'temp_read':0,'temp_written':0}
+
+# Frozen sanitized metadata only. Inspection rows below remain MOCK control-flow
+# responses, not classifications obtained from either historical CI run.
+RECEIPT_METADATA={
+ '41466921367':{
+  'sha256':'4e9e275a45f3bb4bd825e8ae824d3a5d887ec3df37b8bc32bc5bb99b27c4b53f',
+  'commands':70,'outcome':'INCOMPLETE',
+  'rows':(
+   ('access','0/281A248','0/281A308','0/281A1F8','0/281A248',192,3),
+   ('migrations','0/281A308','0/281A308','0/281A248','0/281A248',0,0),
+   ('catalog','0/281A370','0/281A770','0/281A370','0/281A370',972,15),
+   ('absence','0/281A770','0/281A770','0/281A370','0/281A370',0,0),
+   ('snapshot','0/281A770','0/281A770','0/281A370','0/281A370',0,0),
+   ('rowhash','0/281A770','0/281A770','0/281A370','0/281A7A8',0,0))},
+ '41467755577':{
+  'sha256':'1feb6a95ddd3d955468c5ae109cbae05500fd7037c6874c3e3832c11a699eada',
+  'commands':70,'outcome':'INCOMPLETE',
+  'rows':(
+   ('access','0/281B3F8','0/281B4F0','0/281B3A8','0/281B3F8',246,4),
+   ('migrations','0/281B4F0','0/281B4F0','0/281B3F8','0/281B3F8',0,0),
+   ('catalog','0/281B558','0/281BA00','0/281B558','0/281B558',1110,19),
+   ('absence','0/281BA00','0/281BA00','0/281B558','0/281B558',0,0),
+   ('snapshot','0/281BA00','0/281BA00','0/281B558','0/281B558',0,0),
+   ('rowhash','0/281BA00','0/281BA00','0/281B558','0/281B558',0,0))}
+}
 
 class Cursor:
     def __init__(self,value=None,rows=None):self.value=value;self.rows=rows or []
@@ -29,10 +54,11 @@ class Connection:
         self.qids={name:str(100+i) for i,name in enumerate(d.QUERY_NAMES)}
         self.reader_sql=d.bind_parameters(d.STATS,['0'])[0]
         self.measured={name:0 for name in d.QUERY_NAMES}
+        self.starts=dict.fromkeys(d.QUERY_NAMES,'0/100')
         self.ends={name:'0/100' if zero else '0/200' for name in d.QUERY_NAMES}
         self.flush={name:[] for name in d.QUERY_NAMES}
         self.wal={name:{} for name in d.QUERY_NAMES};self.stats_mutate=None
-        self.technical_mutate=None;self.row_count=45
+        self.technical_mutate=None;self.inspect_mutate=None;self.row_count=45
         self.start_readonly=True;self.end_readonly=True
         self.current=None;self.keep_open=False;self.collision=False
     def execute(self,sql,args=()):
@@ -59,17 +85,18 @@ class Connection:
         if sql=='ROLLBACK':
             if not self.keep_open:self.info.transaction_status=0
             return Cursor()
-        if sql==d.START:return Cursor({'start_lsn':'0/100','readonly':self.start_readonly})
+        if sql==d.START:return Cursor({'start_lsn':self.starts[self.current],'readonly':self.start_readonly})
         if sql==d.END:return Cursor({'end_lsn':self.ends[self.current],'readonly':self.end_readonly})
         if sql==d.COVERAGE:
             queue=self.flush[self.current]
             return Cursor({'flush_lsn':queue.pop(0) if queue else self.ends[self.current]})
         if sql.startswith('with bounds as materialized'):
             value={'record_count':2,'block_count':2,'outside_records':0,'outside_blocks':0,
-                'first_lsn':'0/100','last_lsn':self.ends[self.current],
+                'first_lsn':args[0],'last_lsn':args[1],
                 'groups':[{'rmgr':'Heap2','record_type':'PRUNE','records':2}],
                 'object_classes':[{'object_class':'current_pg_catalog','blocks':2}]}
             if self.technical_mutate:self.technical_mutate(value,self.current)
+            if self.inspect_mutate:self.inspect_mutate(value,args)
             return Cursor({'technical':value})
         for name,(query,params) in self.bound.items():
             if sql==query:
@@ -119,6 +146,171 @@ class Tests(unittest.TestCase):
         for forbidden in ('ANALYZE','CHECKPOINT','PG_SWITCH_WAL','PG_STAT_RESET','PG_STAT_FORCE_NEXT_FLUSH'):
             self.assertNotIn(forbidden,all_sql)
 
+    def metadata_connection(self,run):
+        c=self.connection(installed=None)
+        for name,start,end,first,last,wal,records in RECEIPT_METADATA[run]['rows']:
+            c.starts[name]=start;c.ends[name]=end;c.flush[name]=[first,last]
+            c.wal[name]={'wal_bytes':wal,'wal_records':records}
+        def mock_inspect(value,args):
+            value.update(record_count=1,block_count=0,object_classes=[],
+                groups=[{'rmgr':'MOCK','record_type':'MOCK_RECORD','records':1}])
+        c.inspect_mutate=mock_inspect
+        return c
+
+    def assert_metadata_preserved(self,c,r,run):
+        self.assertEqual(c.measured,dict.fromkeys(d.QUERY_NAMES,1))
+        self.assertEqual(r['last_coverage']['command_number'],70)
+        self.assertEqual(r['last_coverage']['family'],'rowhash')
+        self.assertEqual(r['last_coverage']['phase'],'coverage_after_wait')
+        row=r['command_ledger'][69]
+        self.assertEqual(row['phase'],'coverage_after_wait');self.assertTrue(row['confirmed'])
+        self.assertEqual(sum(x[0]==d.COVERAGE for x in c.calls),12)
+        self.assertEqual(sum(x[0]==d.WAIT for x in c.calls),6)
+        self.assertEqual(sum(x[0]==d.START for x in c.calls),6)
+        self.assertEqual(sum(x[0]==d.END for x in c.calls),6)
+        self.assertEqual(sum(x[0]=='ROLLBACK' for x in c.calls),6)
+        self.assertEqual(r['wait_ms'],1800);self.assertTrue(r['rollback_confirmed'])
+        self.assertFalse(r['full_chain_admission']);self.assertFalse(r['wal_zero_pass'])
+        self.assertFalse(r['causal_attribution']);self.assertEqual(r['outcome'],'INCOMPLETE')
+        self.assertEqual(RECEIPT_METADATA[run]['outcome'],'INCOMPLETE')
+        for q,meta in zip(r['queries'],RECEIPT_METADATA[run]['rows']):
+            name,start,end,first,last,wal,records=meta
+            self.assertEqual((q['name'],q['start_lsn'],q['end_lsn']),(name,start,end))
+            self.assertEqual([x['flush_lsn'] for x in q['coverage_checks']],[first,last])
+            self.assertEqual(q['flush_lsn'],last)
+            self.assertEqual(q['query_stats']['delta']['wal_bytes'],wal)
+            self.assertEqual(q['query_stats']['delta']['wal_records'],records)
+            self.assertEqual(q['query_stats']['delta']['calls'],1)
+            for sample in q['coverage_checks']:
+                command=r['command_ledger'][sample['command_number']-1]
+                self.assertEqual(command['family'],name)
+                self.assertEqual(command['phase'],sample['phase'])
+            if 'deferred_coverage' in q:
+                self.assertEqual(q['deferred_coverage'],{**r['last_coverage'],'covers_end':True})
+                self.assertIn('wal_not_flushed_through_fixed_end',q['limitations'])
+                self.assertIn('wal_not_flushed_through_fixed_end',q['resolved_limitations'])
+
+    def test_sample1_metadata_counterfactual_adds_only_two_mock_classifications(self):
+        c=self.metadata_connection('41466921367');r=self.run_probe(c)
+        self.assert_metadata_preserved(c,r,'41466921367')
+        self.assertEqual(r['commands'],72);self.assertTrue(r['intervals_complete'])
+        self.assertFalse(r['diagnostic_complete'])
+        deferred=[x for x in r['command_ledger'] if x['phase']=='classify_deferred_fixed_interval']
+        self.assertEqual([(x['number'],x['family']) for x in deferred],[(71,'access'),(72,'catalog')])
+        inspections=[x for x in c.calls if x[0].startswith('with bounds as materialized')]
+        self.assertEqual([x[1] for x in inspections],
+            [['0/281A248','0/281A308'],['0/281A370','0/281A770']])
+        self.assertTrue(all(x[2]==0 for x in inspections))
+        self.assertTrue(all(q['coverage_complete'] for q in r['queries']))
+
+    def test_sample2_metadata_counterfactual_only_access_not_catalog_is_classifiable(self):
+        c=self.metadata_connection('41467755577');r=self.run_probe(c)
+        self.assert_metadata_preserved(c,r,'41467755577')
+        self.assertEqual(r['commands'],71);self.assertFalse(r['intervals_complete'])
+        self.assertEqual([q['name'] for q in r['queries'] if q['coverage_complete']],
+                         ['access','migrations'])
+        self.assertEqual([q['name'] for q in r['queries'] if q['classification_attempted']],['access'])
+        for q in r['queries'][2:]:
+            self.assertFalse(q['complete']);self.assertNotIn('technical',q)
+            self.assertNotIn('deferred_coverage',q)
+            self.assertEqual(q['resolved_limitations'],[])
+        inspections=[x for x in c.calls if x[0].startswith('with bounds as materialized')]
+        self.assertEqual([x[1] for x in inspections],[['0/281B3F8','0/281B4F0']])
+
+    def test_all_729_wait_coverage_branch_combinations_stay_at_most_76(self):
+        largest=0
+        for states in itertools.product(range(3),repeat=6):
+            # 0: covered immediately; 1: covered after the one wait;
+            # 2: still uncovered. Increasing intervals keep samples monotonic.
+            c=self.connection(installed=None)
+            for i,(name,state) in enumerate(zip(d.QUERY_NAMES,states)):
+                start='0/%X'%(0x100+i*0x100);end='0/%X'%(0x180+i*0x100)
+                c.starts[name]=start;c.ends[name]=end
+                c.flush[name]=[end] if state==0 else [start,end if state==1 else start]
+            r=self.run_probe(c);waits=sum(x!=0 for x in states)
+            classified=6-(states[-1]==2)
+            expected=58+2*waits+classified
+            self.assertEqual(r['commands'],expected,states);largest=max(largest,expected)
+            self.assertEqual(sum(x[0]==d.COVERAGE for x in c.calls),6+waits,states)
+            self.assertEqual(sum(x[0]==d.WAIT for x in c.calls),waits,states)
+            self.assertEqual(c.measured,dict.fromkeys(d.QUERY_NAMES,1),states)
+            self.assertEqual(sum(q['classification_attempted'] for q in r['queries']),classified,states)
+            self.assertEqual(sum(x[0].startswith('with bounds as materialized') for x in c.calls),classified,states)
+            self.assertLessEqual(expected,d.MAX_COMMANDS)
+        self.assertEqual(largest,76)
+
+    def test_all_zero_nonzero_masks_and_extension_branches_have_exact_cost(self):
+        for installed in (None,'extensions'):
+            for mask in range(64):
+                c=self.connection(installed=installed)
+                for i,name in enumerate(d.QUERY_NAMES):
+                    start=0x100+i*0x100;end=start+(0x80 if mask&(1<<i) else 0)
+                    c.starts[name]='0/%X'%start;c.ends[name]='0/%X'%end
+                    c.flush[name]=['0/%X'%(start-8),'0/%X'%(end if i==5 else start-8)]
+                r=self.run_probe(c)
+                self.assertEqual(r['commands'],69+(installed is None)+mask.bit_count(),(installed,mask))
+                self.assertEqual(sum(x[0]==d.COVERAGE for x in c.calls),12)
+                self.assertEqual(sum(x[0]==d.WAIT for x in c.calls),6)
+                self.assertTrue(all(q['coverage_complete'] for q in r['queries']))
+                self.assertFalse(r['wal_zero_pass']);self.assertFalse(r['full_chain_admission'])
+
+    def test_failed_or_unconfirmed_inspection_is_never_retried_in_deferred_round(self):
+        c=self.connection()
+        c.technical_mutate=lambda v,n:v.update(last_lsn='0/1FF') if n=='access' else None
+        r=self.run_probe(c)
+        self.assertEqual(sum(x[0].startswith('with bounds as materialized') for x in c.calls),6)
+        self.assertTrue(r['queries'][0]['classification_attempted'])
+        self.assertNotIn('deferred_coverage',r['queries'][0])
+        self.assertFalse(r['queries'][0]['complete'])
+        c=self.metadata_connection('41466921367')
+        c.inspect_mutate=lambda value,args:value.update(last_lsn=args[0])
+        r=self.run_probe(c)
+        self.assertEqual(r['commands'],72)
+        self.assertFalse(r['queries'][0]['complete']);self.assertFalse(r['queries'][2]['complete'])
+        self.assertNotIn('technical',r['queries'][0]);self.assertNotIn('technical',r['queries'][2])
+        self.assertEqual(r['outcome'],'INCOMPLETE')
+
+    def test_fatal_last_family_or_deferred_transport_error_stops_without_more_sql(self):
+        c=self.metadata_connection('41466921367')
+        c.fail=lambda sql:sql==c.bound['rowhash'][0]
+        r=self.run_probe(c)
+        self.assertFalse(any(x['phase']=='classify_deferred_fixed_interval' for x in r['command_ledger']))
+        self.assertTrue(r['rollback_confirmed']);self.assertEqual(r['outcome'],'INCOMPLETE')
+        c=self.metadata_connection('41466921367')
+        c.fail=lambda sql:sql.startswith('with bounds as materialized')
+        r=self.run_probe(c)
+        self.assertEqual(r['commands'],71)
+        self.assertEqual(sum(x[0].startswith('with bounds as materialized') for x in c.calls),1)
+        self.assertEqual(r['command_ledger'][-1]['family'],'access')
+        self.assertFalse(r['command_ledger'][-1]['confirmed'])
+        self.assertFalse(r['queries'][2]['classification_attempted'])
+        self.assertEqual(r['outcome'],'INCOMPLETE')
+
+    def test_deferred_stage_preserves_stats_temp_and_interval_failures(self):
+        for kind in ('stats','temp','capacity'):
+            c=self.metadata_connection('41466921367')
+            if kind=='stats':
+                c.stats_mutate=lambda v,n,after:v.update(reset='changed') if n=='access' and after else None
+            elif kind=='temp':c.wal['access']['temp_written']=1
+            else:c.ends['access']='0/282A249'
+            r=self.run_probe(c)
+            self.assertFalse(r['queries'][0]['complete'],kind)
+            self.assertEqual(r['outcome'],'INCOMPLETE',kind)
+            self.assertEqual(c.measured,dict.fromkeys(d.QUERY_NAMES,1))
+            if kind=='capacity':self.assertFalse(r['queries'][0]['classification_attempted'])
+            else:self.assertTrue(r['queries'][0]['classification_attempted'])
+
+    def test_deferred_stage_obeys_command_cap_without_retry_or_extra_wait(self):
+        c=self.metadata_connection('41466921367')
+        with patch.object(d,'MAX_COMMANDS',70):r=self.run_probe(c)
+        self.assertEqual(r['commands'],70)
+        self.assertFalse(any(q['classification_attempted'] for q in r['queries']))
+        self.assertFalse(any('classification_command_number' in q for q in r['queries']))
+        self.assertFalse(any(x[0].startswith('with bounds as materialized') for x in c.calls))
+        self.assertEqual(sum(x[0]==d.WAIT for x in c.calls),6)
+        self.assertEqual(sum(x[0]==d.COVERAGE for x in c.calls),12)
+        self.assertEqual(r['outcome'],'INCOMPLETE')
+
     def test_normal_and_worst_exact_command_ledger(self):
         for installed,wait,expected in ((None,False,64),('extensions',False,63),(None,True,76)):
             with self.subTest(installed=installed,wait=wait):
@@ -153,11 +345,15 @@ class Tests(unittest.TestCase):
         self.assertEqual(len(r['queries']),6);first=r['queries'][0]
         self.assertEqual(first['end_lsn'],'0/200');self.assertEqual(first['flush_lsn'],'0/1FF')
         self.assertEqual(first['wait_ms'],300);self.assertEqual(len(first['coverage_checks']),2)
-        self.assertFalse(first['complete']);self.assertFalse(first['coverage_complete'])
-        self.assertNotIn('technical',first);self.assertEqual(first['query_stats']['delta']['calls'],1)
+        self.assertTrue(first['complete']);self.assertTrue(first['coverage_complete'])
+        self.assertEqual(first['classification_mode'],'deferred')
+        self.assertIn('wal_not_flushed_through_fixed_end',first['limitations'])
+        self.assertIn('wal_not_flushed_through_fixed_end',first['resolved_limitations'])
+        self.assertFalse(any(x['covers_end'] for x in first['coverage_checks']))
+        self.assertEqual(first['query_stats']['delta']['calls'],1)
         self.assertTrue(all(q['complete'] for q in r['queries'][1:]))
         self.assertEqual(sum(x[0]==d.WAIT for x in c.calls),1)
-        self.assertEqual(sum(x[0].startswith('with bounds as materialized') for x in c.calls),5)
+        self.assertEqual(sum(x[0].startswith('with bounds as materialized') for x in c.calls),6)
         self.assertEqual(r['outcome'],'INCOMPLETE');self.assertFalse(r['diagnostic_complete'])
         self.assertTrue(r['rollback_confirmed'])
 
@@ -176,7 +372,10 @@ class Tests(unittest.TestCase):
         self.assertFalse(r['wal_zero_pass']);self.assertFalse(r['full_chain_admission'])
         self.assertTrue(all(q['technical']['record_count']==0 for q in r['queries']))
         c=self.connection(zero=True);c.flush['access']=['0/FF','0/FF'];r=self.run_probe(c)
-        self.assertEqual(r['outcome'],'INCOMPLETE');self.assertNotIn('technical',r['queries'][0])
+        self.assertEqual(r['outcome'],'WAL_ZERO');self.assertTrue(r['queries'][0]['deferred_coverage']['covers_end'])
+        self.assertEqual(r['queries'][0]['technical']['record_count'],0)
+        self.assertFalse(any(x['covers_end'] for x in r['queries'][0]['coverage_checks']))
+        self.assertFalse(r['wal_zero_pass']);self.assertFalse(r['full_chain_admission'])
         self.assertEqual(c.measured,dict.fromkeys(d.QUERY_NAMES,1))
 
     def test_query_fingerprint_wal_deltas_not_cluster_or_historical_attribution(self):

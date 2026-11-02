@@ -3,16 +3,19 @@ import contextlib
 import copy
 import io
 import pathlib
+import tempfile
 import unittest
 from unittest.mock import patch
 
 import release_train as train
 
+FROZEN_CHECKOUT = train.ROOT
+
 
 class ReleaseTrainTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.document = train.build()
+        cls.document = train.build(frozen_root=FROZEN_CHECKOUT)
 
     def test_all_nine_frozen_contracts_are_verified(self):
         self.assertEqual(self.document['release_order'], list(range(12, 21)))
@@ -53,6 +56,75 @@ class ReleaseTrainTests(unittest.TestCase):
     def test_stable_input_packaging(self):
         with patch.object(train, 'build', return_value=self.document):
             self.assertEqual(train.input_files(), set(self.document['source_hashes']))
+
+    def test_large_frozen_bodies_are_checked_but_not_uploaded(self):
+        sources = self.document['source_hashes']
+        references = self.document['frozen_checkout_reference_hashes']
+        for name in ('proactive-signals-demo/data.js', 'bounded-adjustments-demo/data.js',
+                     'workout-reflection-demo/data.js', 'docs/PHASE6E17_EXAMPLES.json',
+                     'docs/PHASE6E16_EXAMPLES.json', 'docs/PHASE6E18_EXAMPLES.json'):
+            self.assertNotIn(name, sources)
+            self.assertIn(name, references)
+        self.assertFalse(set(sources) & set(references))
+        self.assertEqual(self.document['frozen_checkout_reference_bundle_sha256'],
+                         train.canonical_hash(references))
+        for item in self.document['packages']:
+            contract = item['frozen_contract']
+            self.assertTrue(contract['checkout_body_bindings'])
+            for name, binding in contract['checkout_body_bindings'].items():
+                self.assertTrue(binding['checkout_bytes_verified'])
+                self.assertFalse(binding['git_object_reverified_here'])
+                self.assertEqual(binding['working_sha256'], contract['sources'][name])
+                self.assertEqual(contract['sources'][name], sources.get(name, references.get(name)))
+            for name in contract['input_hashes']:
+                self.assertIn(name, sources)
+
+    def test_minimal_candidate_verifies_against_separate_checkout(self):
+        with tempfile.TemporaryDirectory() as directory:
+            candidate = pathlib.Path(directory)
+            for name in self.document['source_hashes']:
+                target = candidate / name
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(train.raw(train.safe_file(train.ROOT, name)))
+            document = train.build(candidate, frozen_root=FROZEN_CHECKOUT)
+            self.assertEqual(document, self.document)
+            self.assertEqual(train.verify(document, candidate, frozen_root=FROZEN_CHECKOUT)['status'],
+                             'MANIFEST_VALID_NOT_RELEASED')
+            with self.assertRaisesRegex(ValueError, 'source_missing'):
+                train.build(candidate, frozen_root=candidate)
+            target = candidate / (train.PREFIX + 'release_train.py')
+            target.write_bytes(target.read_bytes() + b'\n# changed\n')
+            with self.assertRaisesRegex(ValueError, 'pinned_source_drift'):
+                train.verify(document, candidate, frozen_root=FROZEN_CHECKOUT)
+
+    def test_checkout_mapping_requires_exact_working_and_git_hashes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            target = root / 'body.js'
+            lf, crlf = b'first\nsecond\n', b'first\r\nsecond\r\n'
+            for actual, working, mapping in ((lf, lf, 'exact'), (lf, crlf, 'LF-to-CRLF-only'),
+                                              (crlf, lf, 'CRLF-to-LF-only')):
+                with self.subTest(mapping=mapping):
+                    target.write_bytes(actual)
+                    result = train.frozen_body(root, 'body.js', train.digest(working), train.digest(lf))
+                    self.assertEqual(result['checkout_to_working_mapping'], mapping)
+                    self.assertEqual(result['checkout_sha256'], train.digest(actual))
+            target.write_bytes(lf)
+            with self.assertRaisesRegex(ValueError, 'frozen_git_mapping'):
+                train.frozen_body(root, 'body.js', train.digest(lf), '0' * 64)
+            for changed in (b'first\nchanged\n', b'first\nsecond \n', b'first\rsecond\r'):
+                target.write_bytes(changed)
+                with self.assertRaisesRegex(ValueError, 'pinned_source_drift'):
+                    train.frozen_body(root, 'body.js', train.digest(lf))
+
+    def test_modified_reference_cannot_be_self_attested(self):
+        altered = copy.deepcopy(self.document)
+        refs = altered['frozen_checkout_reference_hashes']
+        refs[next(iter(refs))] = '0' * 64
+        altered['frozen_checkout_reference_bundle_sha256'] = train.canonical_hash(refs)
+        with patch.object(train, 'pinned'), patch.object(train, 'build', return_value=self.document):
+            with self.assertRaisesRegex(ValueError, 'release_train_drift'):
+                train.verify(altered)
 
     def test_coupled_selections_are_not_separate_runtime_gates(self):
         expected = {13: [13, 14], 14: [13, 14], 16: [16, 17], 17: [16, 17],
@@ -114,11 +186,12 @@ class ReleaseTrainTests(unittest.TestCase):
 
     def test_frozen_source_drift_is_rejected_without_rebaselining(self):
         expected = train.read_json(train.ROOT, 'docs/PHASE6E12_FREEZE_EVIDENCE.json')['sources'][0]['file']
-        original = train.file_hash
-        with patch.object(train, 'file_hash', side_effect=lambda root, name:
-                          '0' * 64 if name == expected else original(root, name)):
+        original = train.raw
+        with patch.object(train, 'raw', side_effect=lambda path:
+                          b'changed' if pathlib.Path(path).as_posix().endswith('/' + expected)
+                          else original(path)):
             with self.assertRaisesRegex(ValueError, 'pinned_source_drift'):
-                train.frozen(train.ROOT, 12)
+                train.frozen(train.ROOT, 12, frozen_root=FROZEN_CHECKOUT)
 
     def test_rewritten_freeze_receipt_cannot_self_attest(self):
         with patch.object(train, 'file_hash', return_value='0' * 64):
@@ -140,7 +213,7 @@ class ReleaseTrainTests(unittest.TestCase):
                     train.validate_plan(plan)
 
     def test_valid_snapshot_verifies_but_does_not_release(self):
-        result = train.verify(self.document)
+        result = train.verify(self.document, frozen_root=FROZEN_CHECKOUT)
         self.assertEqual(result['status'], 'MANIFEST_VALID_NOT_RELEASED')
         self.assertFalse(result['hosted_admission'])
 

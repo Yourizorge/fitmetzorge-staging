@@ -437,16 +437,27 @@ class Composition:
         finally:
             if timer:timer.cancel()
             if process and process.poll() is None:process.kill();process.communicate(timeout=5)
+            rollback_evidence=[]
             for channel,connection in connections.items():
-                if connection.info.transaction_status!=0:
-                    try:
+                evidence={'channel':channel,'requested':False,'confirmed':False}
+                before_commands=len(self.commands)
+                try:
+                    if connection.info.transaction_status!=0:
+                        evidence['requested']=True
                         self.safety_label='rollback_'+channel
                         query(channel,'safety_rollback','ROLLBACK')
-                    except Exception:pass
-                    finally:self.safety_label=None
+                        evidence['confirmed']=True
+                except Exception as error:evidence['exception_class']=type(error).__name__
+                finally:
+                    self.safety_label=None
+                    evidence['dispatched_commands']=len(self.commands)-before_commands
+                    if evidence['requested'] or 'exception_class' in evidence:rollback_evidence.append(evidence)
+            if rollback_evidence:
+                gate.save('integral-safety-rollback.json',{'connections':rollback_evidence,'retry':False})
             if enable_attempted and enabled is not None and restored!=controls:
                 try:
-                    from control_recovery import recover
+                    from control_recovery import recover,replace_setup
+                    replace_setup(runtime,connections,gate.save)
                     gate.save('integral-safety-control-pair.json',recover(raw_query,controls,enabled))
                 except Exception as error:
                     gate.save('integral-safety-control-stop.json',{'exception_class':type(error).__name__,'retry':False})

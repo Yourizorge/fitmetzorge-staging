@@ -212,12 +212,13 @@ def run(connection,*,environment,ids,context,ci_ca_path,environ=None):
         queries=[],commands=0,command_cap=MAX_COMMANDS,command_ledger=[],limitations=[],
         extension_installed=False,row_contents_exported=False,query_text_exported=False,
         rollback_confirmed=False,automatic_retries=0,wait_ms=0,
+        last_coverage=None,resolved_limitations=[],
         measured_executions_per_family=1,warmup_executions=0,
         planning='counted_explain_without_analyze_before_first_execution',
         historical_cause='UNKNOWN',hosted_read_wal_limit_unchanged=0,
         max_wait_ms_per_query=WAIT_MS,max_total_wait_ms=WAIT_MS*len(FAMILIES),
         families=list(FAMILIES),rowhash_scope='bounded_migration_history_expression_not_full_cursor_cycle')
-    opened=False;family='bootstrap';phase='preflight';item=None
+    opened=False;family='bootstrap';phase='preflight';item=None;pending=[]
     def execute(sql,args=(),label=''):
         nonlocal phase
         phase=label
@@ -236,6 +237,41 @@ def run(connection,*,environment,ids,context,ci_ca_path,environ=None):
         opened=False
         execute('ROLLBACK',label='rollback');idle()
         if item is not None:item['rollback_confirmed']=True
+    def coverage(label):
+        idle()
+        flush=execute(COVERAGE,label=label).fetchone()['flush_lsn'];lsn(flush)
+        sample={'flush_lsn':flush,'command_number':result['commands'],'family':family,'phase':label}
+        result['last_coverage']=sample
+        item['coverage_checks'].append({**sample,'covers_end':lsn(flush)>=lsn(item['end_lsn'])})
+        return flush
+    def finish_interval(deferred=False):
+        if item['span_bytes']:
+            if item['classification_attempted']:raise ValueError('wal_diagnostic_classification_repeat')
+            if result['commands']>=MAX_COMMANDS:raise ValueError('wal_diagnostic_command_limit')
+            idle();item['classification_attempted']=True
+            item['classification_mode']='deferred' if deferred else 'immediate'
+            item['classification_command_number']=result['commands']+1
+            raw=execute(INSPECT.format(schema='"'+schema+'"'),
+                [item['start_lsn'],item['end_lsn']],label='classify_deferred_fixed_interval' if deferred else 'classify_fixed_interval').fetchone()['technical']
+            try:item['technical']=technical_only(raw,item['start_lsn'],item['end_lsn'])
+            except (ValueError,KeyError,TypeError):
+                item['limitations'].append('record_coverage_or_shape_unconfirmed')
+                return
+        else:item['technical']={'record_count':0,'block_count':0,'groups':[],
+                'object_classes':[],'record_owner_attribution':False}
+        stats=item['query_stats']
+        if stats['reliable']:
+            delta=stats['delta']
+            item['query_family_wal_nonzero']=any(delta[k] for k in ('wal_bytes','wal_records','wal_fpi'))
+            if delta['temp_written'] or delta['temp_read'] or stats['background_temp_bytes']:
+                item['limitations'].append('temporary_io_nonzero')
+            if not item['span_bytes'] and item['query_family_wal_nonzero']:
+                item['limitations'].append('cluster_query_statistics_inconsistent')
+        item['complete']=not any(x not in item['resolved_limitations'] for x in item['limitations'])
+        if item['complete'] and item['span_bytes']==0:item['outcome']='WAL_ZERO'
+        elif item['complete']:
+            # Classification is complete; ownership/benignness is NOT proven.
+            item['limitations'].append('record_owner_attribution_unproven')
     try:
         p=execute(PREFLIGHT,label='preflight').fetchone()
         if (p['statement_timeout'] not in ('5s','5000ms') or p['lock_timeout'] not in ('1s','1000ms')
@@ -258,7 +294,8 @@ def run(connection,*,environment,ids,context,ci_ca_path,environ=None):
         for family,source,args in queries:
             item=dict(name=family,source_sha256=hashlib.sha256(source.encode()).hexdigest(),
                 start_lsn=None,end_lsn=None,complete=False,coverage_complete=False,
-                rollback_confirmed=False,outcome='INCOMPLETE',limitations=[],coverage_checks=[],wait_ms=0)
+                rollback_confirmed=False,outcome='INCOMPLETE',limitations=[],coverage_checks=[],wait_ms=0,
+                classification_attempted=False,resolved_limitations=[])
             result['queries'].append(item)
             sql,params=bind_parameters(source,args)
             qid=check_plan(execute('EXPLAIN (VERBOSE,COSTS FALSE,FORMAT JSON) '+sql,
@@ -293,42 +330,34 @@ def run(connection,*,environment,ids,context,ci_ca_path,environ=None):
             if span<0 or span>MAX_WAL_BYTES:
                 item['limitations'].append('wal_interval_capacity')
                 continue
-            idle()
-            flush=execute(COVERAGE,label='coverage').fetchone()['flush_lsn']
-            item['coverage_checks'].append({'flush_lsn':flush,'covers_end':lsn(flush)>=lsn(item['end_lsn'])})
+            flush=coverage('coverage')
             if lsn(flush)<lsn(item['end_lsn']):
                 idle();item['wait_ms']=WAIT_MS;result['wait_ms']+=WAIT_MS
                 execute(WAIT,label='coverage_wait_outside_transaction')
-                idle();flush=execute(COVERAGE,label='coverage_after_wait').fetchone()['flush_lsn']
-                item['coverage_checks'].append({'flush_lsn':flush,'covers_end':lsn(flush)>=lsn(item['end_lsn'])})
+                flush=coverage('coverage_after_wait')
             item['flush_lsn']=flush
             if lsn(flush)<lsn(item['end_lsn']):
                 item['limitations'].append('wal_not_flushed_through_fixed_end')
+                pending.append(item)
                 continue
             item['coverage_complete']=True
-            if span:
-                idle()
-                raw=execute(INSPECT.format(schema='"'+schema+'"'),
-                    [item['start_lsn'],item['end_lsn']],label='classify_fixed_interval').fetchone()['technical']
-                try:item['technical']=technical_only(raw,item['start_lsn'],item['end_lsn'])
-                except (ValueError,KeyError,TypeError):
-                    item['limitations'].append('record_coverage_or_shape_unconfirmed')
-                    continue
-            else:item['technical']={'record_count':0,'block_count':0,'groups':[],
-                    'object_classes':[],'record_owner_attribution':False}
-            stats=item['query_stats']
-            if stats['reliable']:
-                delta=stats['delta']
-                item['query_family_wal_nonzero']=any(delta[k] for k in ('wal_bytes','wal_records','wal_fpi'))
-                if delta['temp_written'] or delta['temp_read'] or stats['background_temp_bytes']:
-                    item['limitations'].append('temporary_io_nonzero')
-                if not span and item['query_family_wal_nonzero']:
-                    item['limitations'].append('cluster_query_statistics_inconsistent')
-            item['complete']=not item['limitations']
-            if item['complete'] and span==0:item['outcome']='WAL_ZERO'
-            elif item['complete']:
-                # Classification is complete; ownership/benignness is NOT proven.
-                item['limitations'].append('record_owner_attribution_unproven')
+            finish_interval()
+        # No new coverage query or wait: only the last already-counted sample.
+        # Failed reads/transactions exit the try before reaching this block.
+        if pending:
+            idle()
+            if len(result['queries'])!=len(FAMILIES) or not all(q['rollback_confirmed'] for q in result['queries']):
+                raise ValueError('wal_diagnostic_deferred_transaction_scope')
+            sample=result['last_coverage']
+            for item in pending:
+                family=item['name']
+                if sample is None or lsn(sample['flush_lsn'])<lsn(item['end_lsn']):continue
+                if item['classification_attempted']:raise ValueError('wal_diagnostic_classification_repeat')
+                # Keep the original failed checks, flush_lsn and limitation in place.
+                item['deferred_coverage']={**sample,'covers_end':True}
+                item['coverage_complete']=True
+                item['resolved_limitations'].append('wal_not_flushed_through_fixed_end')
+                finish_interval(deferred=True)
     except Exception as error:
         result['limitations'].append('pg_walinspect_install_unavailable' if phase=='extension_install' else 'probe_unconfirmed')
         result['error_class']=type(error).__name__
@@ -343,7 +372,8 @@ def run(connection,*,environment,ids,context,ci_ca_path,environ=None):
             q['rollback_confirmed'] for q in result['queries'])
         for q in result['queries']:
             for limitation in q['limitations']:
-                result['limitations'].append(q['name']+':'+limitation)
+                target='resolved_limitations' if limitation in q['resolved_limitations'] else 'limitations'
+                result[target].append(q['name']+':'+limitation)
         result['intervals_complete']=(len(result['queries'])==len(FAMILIES)
             and all(q['complete'] for q in result['queries']) and result['rollback_confirmed'])
         result['diagnostic_complete']=result['intervals_complete'] and not result['limitations']

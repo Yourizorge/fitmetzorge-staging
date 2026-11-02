@@ -207,11 +207,11 @@ class Gate(previous.Gate):
         self.command('ui-session-regression',['node','--test',str(folder/'ui_session.test.cjs')])
         self.command('work-register',[sys.executable,'-B',str(folder/'check_work_register.py')])
         self.command('workday-release-packets',[sys.executable,'-B',str(folder/'test_workday_release.py')])
-        self.command('release-train',[sys.executable,'-B',str(folder/'test_release_train.py')])
+        self.command('release-train',[sys.executable,'-B',str(ROOT/'_offline/phase6e_server_v1/test_release_train.py')])
         self.command('release-security',[sys.executable,'-B',str(folder/'test_release_security.py')])
         import release_train
-        train=release_train.build(root=self.sources)
-        release_train.verify(train,root=self.sources)
+        train=release_train.build(root=self.sources,frozen_root=ROOT)
+        release_train.verify(train,root=self.sources,frozen_root=ROOT)
         self.save('release-train.json',train)
         self.command('release-selection',[sys.executable,'-B',str(folder/'test_release_selection.py')])
         import workday_release
