@@ -1,6 +1,7 @@
 """Separate opt-in disposable WAL observation. Never a proof-chain entry."""
 import hashlib,json,os,pathlib,re,sys
 import ci
+from ci_wal_diagnostic import MAX_COMMANDS,QUERY_NAMES
 
 HERE=pathlib.Path(__file__).resolve().parent
 ROOT=HERE.parents[2]
@@ -41,8 +42,8 @@ class DiagnosticGate(ci.Gate):
         self.bootstrap=[];self.stack_attempted=False
         self.result.update(status='DIAGNOSTIC_ONLY',full_chain_admission=False,
             hosted_admitted=False,wal_zero_pass=False,causal_attribution=False,
-            diagnostic_completed=False,diagnostic_sql_cap=16,
-            fixture='EMPTY_METADATA_DIFFERENT_FROM_HISTORICAL',
+            diagnostic_completed=False,diagnostic_sql_cap=MAX_COMMANDS,
+            fixture='CLEAN45_METADATA_NO_AUTH_USERS_DIFFERENT_FROM_HISTORICAL',
             synthetic_ids=IDS,auth_accounts_created=0,
             fixture_limitations=['No Auth users, registry identities, guard or audit fixtures are created.',
                 'Empty metadata results do not reproduce or explain historical WAL.',
@@ -100,7 +101,7 @@ class DiagnosticGate(ci.Gate):
             if (receipt.get('status')!='DIAGNOSTIC_ONLY'
                 or receipt.get('full_chain_admission') is not False
                 or receipt.get('wal_zero_pass') is not False
-                or type(receipt.get('commands')) is not int or not 0<=receipt['commands']<=16):
+                or type(receipt.get('commands')) is not int or not 0<=receipt['commands']<=MAX_COMMANDS):
                 raise ValueError('diagnostic_receipt_contract')
             self.save('ci-wal-diagnostic.json',receipt)
             return receipt
@@ -135,8 +136,10 @@ class DiagnosticGate(ci.Gate):
             self.result['phase']='diagnostic'
             receipt=self.probe();self.postcheck()
             self.result['diagnostic_commands']=receipt['commands']
-            self.result['diagnostic_completed']=(receipt.get('rollback_confirmed') is True
-                and not receipt.get('limitations') and len(receipt.get('queries',[]))==4
+            self.result['diagnostic_completed']=(receipt.get('diagnostic_complete') is True
+                and receipt.get('rollback_confirmed') is True
+                and not receipt.get('limitations')
+                and [q.get('name') for q in receipt.get('queries',[])]==list(QUERY_NAMES)
                 and all(q.get('complete') is True for q in receipt['queries']))
             code=0 if self.result['diagnostic_completed'] else 1
         except Exception as error:
@@ -151,7 +154,7 @@ class DiagnosticGate(ci.Gate):
                     x['attempted_commands'] for x in self.bootstrap if x['kind']=='direct_sql'),
                 'cli_invocations':sum(x['kind']=='cli' for x in self.bootstrap),
                 'cli_internal_sql_total':None,'exact_total_sql_claim':False,
-                'diagnostic_sql_separately_capped':16})
+                'diagnostic_sql_separately_capped':MAX_COMMANDS})
             self.result.update(status='DIAGNOSTIC_ONLY',full_chain_admission=False,
                 hosted_admitted=False,wal_zero_pass=False,causal_attribution=False)
             self.save('result.json',self.result)

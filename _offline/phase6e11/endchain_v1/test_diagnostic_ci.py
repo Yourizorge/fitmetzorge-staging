@@ -8,8 +8,8 @@ ENV={'FMZ6E11_LOCAL_WAL_DIAGNOSTIC':'1','GITHUB_ACTIONS':'true',
      'GITHUB_RUN_ATTEMPT':'1','GITHUB_SHA':'a'*40,'EXPECTED_SOURCE_COMMIT':'a'*40}
 def receipt():
     return dict(status='DIAGNOSTIC_ONLY',full_chain_admission=False,wal_zero_pass=False,
-        commands=16,rollback_confirmed=True,limitations=[],
-        queries=[{'complete':True} for _ in range(4)])
+        commands=64,rollback_confirmed=True,diagnostic_complete=True,limitations=[],
+        queries=[{'name':name,'complete':True} for name in d.QUERY_NAMES])
 
 class FakeGate(d.DiagnosticGate):
     def __init__(self):
@@ -48,7 +48,7 @@ class Tests(unittest.TestCase):
         self.assertEqual(g.result['status'],'DIAGNOSTIC_ONLY')
         for field in ('full_chain_admission','hosted_admitted','wal_zero_pass','causal_attribution'):
             self.assertIs(g.result[field],False)
-        self.assertEqual(g.result['diagnostic_commands'],16)
+        self.assertEqual(g.result['diagnostic_commands'],64)
         self.assertFalse(g.saved['diagnostic-bootstrap.json']['exact_total_sql_claim'])
     def test_each_failure_closes_stack_without_secret_output(self):
         for stage in ('fetch','install','rebuild','probe','postcheck'):
@@ -116,7 +116,7 @@ class Tests(unittest.TestCase):
             g=FakeGate();connection=unittest.mock.Mock();runtime=unittest.mock.Mock()
             runtime.connect.return_value=connection
             r=receipt()
-            if bad:r['commands']=17
+            if bad:r['commands']=d.MAX_COMMANDS+1
             helper=types.SimpleNamespace(run=unittest.mock.Mock(return_value=r))
             with patch.dict(sys.modules,{'ci_wal_diagnostic':helper}),patch.object(
                     native_runtime.NativeRuntime,'disposable',return_value=runtime):
@@ -127,6 +127,14 @@ class Tests(unittest.TestCase):
             args=helper.run.call_args.kwargs
             self.assertEqual(args['environment'],'disposable_ci')
             self.assertEqual(args['ids'],d.IDS)
+    def test_all_six_distinct_families_and_complete_coverage_required(self):
+        for change in ('missing','duplicate','helper_incomplete'):
+            g=FakeGate()
+            if change=='missing':g.value['queries'].pop()
+            elif change=='duplicate':g.value['queries'][-1]['name']='access'
+            else:g.value['diagnostic_complete']=False
+            self.assertEqual(self.run_gate(g),1)
+            self.assertFalse(g.result['diagnostic_completed'])
     def test_subprocess_outputs_are_hashed_not_exported(self):
         g=FakeGate()
         with patch.object(d.ci.Gate,'save') as save:
