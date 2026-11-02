@@ -1,16 +1,31 @@
 """Unit-only boundaries/negative cases; never substitute for real CI receipts."""
 import copy
+import importlib.util
 import json
 import os
 import pathlib
+import shutil
 import subprocess
 import tempfile
 import time
+import sys
 import unittest
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
 
 import migration_failure_boundaries as m
+
+# Projection of verified-41507466863/candidate.json, not production SOURCES.
+# Manifest raw SHA256: cab8979d9aeb8a329167e2b1cf35b30c1fe7276979bdf40cc3b3494da24c0a8f
+# Current bytes are tested against this historical packaging layout, not passed
+# off as the bytes or successful runtime evidence of the historical candidate.
+CI1_HOOK_LAYOUT = frozenset(m.rt.PREFIX + name for name in (
+    'admission_binding.py', 'admission_ci.py', 'admission_failure.py',
+    'ci_source_binding.py', 'integral_failure_runtime.py',
+    'migration_failure_boundaries.py', 'native_runtime.py', 'sql_protocol.py',
+    'test_migration_failure_boundaries.py'))
+CI1_MIGRATION_LAYOUT_SHA = '5de323e909067e5bb45790b844fc4ae90b3dbffba9b9e5037c7418a64f8a653d'
+CI1_CHECKOUT_ONLY = '_offline/phase6e11/ci41/runner.py'
 
 
 def metadata(after=False):
@@ -159,16 +174,11 @@ class BoundariesTests(unittest.TestCase):
         self.assertNotIn(m.rt.NEW_RUN,m.METADATA)
 
     def test_exact_checkout_binding_and_m45_pin_without_database(self):
-        environment={'GITHUB_ACTIONS':'true','GITHUB_REPOSITORY':m.REPOSITORY,'GITHUB_REF':'refs/heads/main',
-                     'GITHUB_SHA':'b'*40,'GITHUB_RUN_ID':'12'}
-        names=set(m.SOURCES) | {p.relative_to(m.ROOT).as_posix() for p in (m.ROOT/'supabase/migrations').glob('*.sql')}
-        files={name:m.sha((m.ROOT/name).read_bytes()) for name in names}
-        candidate={'sha256':'c'*64,'sources':files}
+        gate,helper,environment=self.composed_checkout_and_candidate()
         path=self.folder/'candidate.json'
-        path.write_text(json.dumps(candidate),encoding='utf-8')
-        self.gate.sources=m.ROOT;self.gate.work=m.ROOT;self.gate.cli=m.before
+        candidate=json.loads(path.read_text())
         with patch.dict(os.environ,environment,clear=True):
-            source,history=m.binding(self.gate)
+            source,history=helper.binding(gate)
             self.assertEqual(source['sources'][m.M45],m.PRESERVED[m.M45])
             self.assertEqual(source['source_bytes'][m.M45]['canonicalization'],'byte-exact')
             self.assertEqual(sum(row['canonicalization']=='CRLF-to-LF-only'
@@ -176,9 +186,100 @@ class BoundariesTests(unittest.TestCase):
             self.assertLess(len(json.dumps({'source_binding':source},indent=2).encode()),m.RECEIPT_LIMIT-8192)
             self.assertEqual(len(history),45)
             self.assertEqual(history[-1],m.VERSION)
-            files[m.rt.PREFIX+'migration_failure_boundaries.py']='0'*64
+            candidate['sources'][m.rt.PREFIX+'migration_failure_boundaries.py']='0'*64
             path.write_text(json.dumps(candidate),encoding='utf-8')
-            with self.assertRaises(m.rt.Blocked):m.binding(self.gate)
+            with self.assertRaises(m.rt.Blocked):helper.binding(gate)
+
+    def composed_checkout_and_candidate(self):
+        """Load the current real composed Gate, without constructing/running it."""
+        dispatcher=m.rt.PREFIX+'admission_ci.py'
+        old_path=sys.path[:]
+        try:
+            spec=importlib.util.spec_from_file_location('boundary_unit_composed_ci',m.ROOT/dispatcher)
+            app=importlib.util.module_from_spec(spec)
+            with patch('subprocess.run',side_effect=AssertionError('unexpected process')), \
+                    patch('subprocess.Popen',side_effect=AssertionError('unexpected process')), \
+                    patch('urllib.request.urlopen',side_effect=AssertionError('unexpected network')):
+                spec.loader.exec_module(app)
+        finally:
+            sys.path[:]=old_path
+        gate=object.__new__(app.Gate)
+        gate.__dict__.update(vars(self.gate))
+        del gate.cli
+        candidate=self.folder/'candidate';work=self.folder/'work'
+        migrations={p.relative_to(m.ROOT).as_posix() for p in (m.ROOT/'supabase/migrations').glob('*.sql')}
+        self.assertEqual(m.sha(('\n'.join(sorted(migrations))+'\n').encode()),CI1_MIGRATION_LAYOUT_SHA)
+        names=CI1_HOOK_LAYOUT|migrations
+        for name in names:
+            target=candidate/name;target.parent.mkdir(parents=True,exist_ok=True)
+            shutil.copyfile(m.ROOT/name,target)
+        (work/m.M45).parent.mkdir(parents=True)
+        shutil.copyfile(candidate/m.M45,work/m.M45)
+        files={name:m.sha((candidate/name).read_bytes()) for name in names}
+        self.assertNotIn(CI1_CHECKOUT_ONLY,files)
+        self.assertFalse((candidate/CI1_CHECKOUT_ONLY).exists())
+        (self.folder/'candidate.json').write_text(json.dumps({'sha256':'c'*64,'sources':files}),encoding='utf-8')
+        gate.sources=candidate;gate.work=work
+        spec=importlib.util.spec_from_file_location('boundary_unit_candidate_helper',
+                                                   candidate/m.rt.PREFIX/'migration_failure_boundaries.py')
+        helper=importlib.util.module_from_spec(spec);spec.loader.exec_module(helper)
+        environment={'GITHUB_ACTIONS':'true','GITHUB_REPOSITORY':m.REPOSITORY,'GITHUB_REF':'refs/heads/main',
+                     'GITHUB_SHA':'b'*40,'GITHUB_RUN_ID':'12','GITHUB_WORKSPACE':str(m.ROOT)}
+        return gate,helper,environment
+
+    def test_real_composed_checkout_dispatcher_with_candidate_loaded_helper(self):
+        gate,helper,environment=self.composed_checkout_and_candidate()
+        self.assertEqual(helper.ROOT,gate.sources)
+        self.assertNotEqual(helper.ROOT,m.ROOT)
+        with patch.dict(os.environ,environment,clear=True), \
+                patch('subprocess.run',side_effect=AssertionError('unexpected process')), \
+                patch('subprocess.Popen',side_effect=AssertionError('unexpected process')):
+            source,history=helper.binding(gate)
+        self.assertEqual(source['sources'][m.M45],m.PRESERVED[m.M45])
+        self.assertEqual(len(history),45)
+        self.assertEqual(source['loaded_locations'],{'dispatcher':'checkout','boundary_helper':'candidate'})
+        self.assertNotIn(CI1_CHECKOUT_ONLY,source['sources'])
+        self.assertEqual(source['checkout_harness'][CI1_CHECKOUT_ONLY]['distribution'],'pinned_checkout_harness')
+        self.assertFalse(source['checkout_harness'][CI1_CHECKOUT_ONLY]['candidate_required'])
+
+    def test_checkout_harness_uses_existing_pin_and_keeps_raw_hash(self):
+        from ci_source_binding import HARNESS
+        result=m.harness_binding(m.ROOT)[CI1_CHECKOUT_ONLY]
+        raw=(m.ROOT/CI1_CHECKOUT_ONLY).read_bytes()
+        self.assertEqual(result['lf_sha256'],HARNESS[CI1_CHECKOUT_ONLY])
+        self.assertEqual(result['checkout_sha256'],m.sha(raw))
+        with patch.object(pathlib.Path,'read_bytes',return_value=raw+b'\n# changed harness\n'), \
+                self.assertRaisesRegex(m.rt.Blocked,'checkout_harness_changed'):
+            m.harness_binding(m.ROOT)
+
+    def test_missing_checkout_harness_is_not_replaced_by_candidate(self):
+        with self.assertRaisesRegex(m.rt.Blocked,'checkout_harness_missing'):
+            m.harness_binding(self.folder)
+
+    def test_composed_roots_do_not_admit_missing_wrong_or_third_root(self):
+        gate,helper,environment=self.composed_checkout_and_candidate()
+        for workspace in ('',str(gate.sources),str(self.folder/'unrelated')):
+            with self.subTest(workspace=workspace), \
+                    patch.dict(os.environ,{**environment,'GITHUB_WORKSPACE':workspace},clear=True), \
+                    self.assertRaises(m.rt.Blocked):
+                helper.binding(gate)
+        with patch.dict(os.environ,environment,clear=True), \
+                patch.object(helper,'ROOT',self.folder/'unrelated'),self.assertRaises(m.rt.Blocked):
+            helper.binding(gate)
+        gate.cli=m.before
+        with patch.dict(os.environ,environment,clear=True),self.assertRaises(m.rt.Blocked):
+            helper.binding(gate)
+
+    def test_candidate_loaded_helper_still_checks_checkout_dispatcher_bytes(self):
+        gate,helper,environment=self.composed_checkout_and_candidate()
+        path=gate.sources/m.DISPATCHER
+        path.write_bytes(path.read_bytes()+b'\n# unit-only drift\n')
+        manifest=self.folder/'candidate.json'
+        candidate=json.loads(manifest.read_text())
+        candidate['sources'][m.DISPATCHER]=m.sha(path.read_bytes())
+        manifest.write_text(json.dumps(candidate),encoding='utf-8')
+        with patch.dict(os.environ,environment,clear=True),self.assertRaises(m.rt.Blocked):
+            helper.binding(gate)
 
     def test_historical_lf_equivalence_records_both_raw_and_lf_hashes(self):
         checkout=b'select 1;\n';candidate=b'select 1;\r\n'

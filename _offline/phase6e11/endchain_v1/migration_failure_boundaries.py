@@ -26,11 +26,13 @@ from admission_binding import M45, PRESERVED, REPOSITORY, sha
 
 HERE = pathlib.Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
+DISPATCHER = rt.PREFIX + 'admission_ci.py'
 SOURCES = tuple(rt.PREFIX + x for x in (
     'migration_failure_boundaries.py', 'test_migration_failure_boundaries.py',
     'integral_failure_runtime.py', 'native_runtime.py', 'admission_binding.py',
     'admission_failure.py', 'ci_source_binding.py', 'sql_protocol.py')) + (
-    M45, '_offline/phase6e11/ci41/runner.py')
+    M45, DISPATCHER)
+CHECKOUT_HARNESS = ('_offline/phase6e11/ci41/runner.py',)
 VERSION = pathlib.PurePosixPath(M45).name.split('_')[0]
 NAMES = ('migration-boundary-claim.json', 'migration-boundary-pre.json',
          'migration-boundary-post.json')
@@ -86,6 +88,22 @@ def byte_binding(checkout, candidate, expected, *, historical):
             'canonicalization': 'CRLF-to-LF-only' if historical else 'byte-exact'}
 
 
+def harness_binding(checkout):
+    from ci_source_binding import HARNESS
+    found = {}
+    for name in CHECKOUT_HARNESS:
+        path = checkout / name
+        if (path.is_symlink() or not path.resolve().is_relative_to(checkout) or not path.is_file()):
+            raise rt.Blocked('migration_boundary_checkout_harness_missing')
+        raw = path.read_bytes()
+        canonical_sha = sha(raw.replace(b'\r\n', b'\n'))
+        if canonical_sha != HARNESS.get(name):
+            raise rt.Blocked('migration_boundary_checkout_harness_changed')
+        found[name] = {'checkout_sha256': sha(raw), 'lf_sha256': canonical_sha,
+                       'distribution': 'pinned_checkout_harness', 'candidate_required': False}
+    return found
+
+
 def binding(gate):
     if (os.environ.get('GITHUB_ACTIONS') != 'true' or
             os.environ.get('GITHUB_REPOSITORY') != REPOSITORY or
@@ -101,10 +119,22 @@ def binding(gate):
     candidate = json.loads((pathlib.Path(gate.out) / 'candidate.json').read_text())
     if not re.fullmatch('[a-f0-9]{64}', str(candidate.get('sha256', ''))):
         raise rt.Blocked('migration_boundary_candidate_identity')
+    workspace = os.environ.get('GITHUB_WORKSPACE')
+    if not workspace or not pathlib.Path(workspace).is_absolute():
+        raise rt.Blocked('migration_boundary_checkout_root')
+    checkout = pathlib.Path(workspace).resolve()
+    candidate_root = pathlib.Path(gate.sources).resolve()
+    if ROOT.resolve() not in (checkout, candidate_root):
+        raise rt.Blocked('migration_boundary_helper_source')
+    # The entry Gate stays in checkout; install() puts candidate modules first.
     source = inspect.getsourcefile(gate.cli)
-    if not source or not pathlib.Path(source).resolve().is_relative_to(ROOT):
+    source_path = pathlib.Path(source) if source else None
+    if source_path is not None and not source_path.is_absolute():
+        source_path = checkout / source_path
+    if (not inspect.ismethod(gate.cli) or source_path is None or
+            source_path.resolve() != (checkout / DISPATCHER).resolve()):
         raise rt.Blocked('migration_boundary_dispatcher_source')
-    names = set(SOURCES) | {pathlib.Path(source).resolve().relative_to(ROOT).as_posix()}
+    names = set(SOURCES)
     migrations = sorted(n for n in candidate['sources'] if n.startswith('supabase/migrations/'))
     if len(migrations) != 45 or migrations[-1] != M45:
         raise rt.Blocked('migration_boundary_canonical45')
@@ -116,7 +146,7 @@ def binding(gate):
         if not isinstance(expected, str) or not re.fullmatch('[a-f0-9]{64}', expected):
             raise rt.Blocked('migration_boundary_source_missing')
         raw = []
-        for root in (ROOT, pathlib.Path(gate.sources).resolve()):
+        for root in (checkout, candidate_root):
             path = root / name
             if (path.is_symlink() or not path.resolve().is_relative_to(root) or
                     not path.is_file()):
@@ -132,6 +162,9 @@ def binding(gate):
         raise rt.Blocked('migration_boundary_history_identity')
     return {'source_commit': os.environ['GITHUB_SHA'], 'ci_run': os.environ['GITHUB_RUN_ID'],
             'candidate_sha256': candidate['sha256'], 'sources': hashes,
+            'checkout_harness': harness_binding(checkout),
+            'loaded_locations': {'dispatcher': 'checkout',
+                'boundary_helper': 'checkout' if ROOT.resolve() == checkout else 'candidate'},
             'source_bytes': byte_hashes}, versions
 
 

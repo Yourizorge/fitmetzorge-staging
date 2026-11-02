@@ -20,6 +20,7 @@ LOCAL_SOURCES = ('admission_ci.py', 'admission_ops.py', 'admission_binding.py',
     'admission_journal.py', 'test_admission_journal.py',
     'admission_failure.py', 'test_admission_failure.py',
     'admission_tools.py', 'test_admission_tools.py',
+    'admission_module_binding.py', 'test_admission_module_binding.py',
     'admission_quota_readonly.py', 'test_admission_quota_readonly.py',
     'admission_budget.py', 'admission_budget_test.py',
     'admission_budget_register.py', 'admission_budget_register_test.py',
@@ -43,12 +44,18 @@ app.previous.prior.old.EXTRA |= EXTRA
 
 
 class Gate(app.Gate):
+    def bind_modules(self, *modules):
+        import admission_module_binding
+        checked = admission_module_binding.verify(self, [admission_module_binding, *modules])
+        self.result.setdefault('admission_module_bindings', []).append(checked)
+
     def instrumented_cli(self):
         module=getattr(self,'_instrumented_cli',None)
         if module is None:
             spec=importlib.util.spec_from_file_location('admission_cli_predispatch',
                 self.sources/'_offline/phase6e11/endchain_v1/cli_predispatch/ci.py')
             module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+            self.bind_modules(module)
             self._instrumented_cli=module
         return module
 
@@ -60,6 +67,7 @@ class Gate(app.Gate):
             return self.instrumented_cli().run_pending(self,args,expected)
         if self.result.get('phase')=='migration_45' and args==('migration','up','--local'):
             import migration_failure_boundaries as boundary
+            self.bind_modules(boundary, boundary.rt)
             token=boundary.before(self)
             result=super().cli(*args,timeout=timeout)
             boundary.after(self,token,result)
@@ -69,12 +77,14 @@ class Gate(app.Gate):
     def install(self):
         super().install()
         import admission_tools
+        self.bind_modules(admission_tools)
         admission_tools.install(self)
 
     def check_bridge(self):
         # Preserve actual ACL/RLS checks without executing the old October identity.
         app.previous.prior.old.Gate.check_bridge(self)
         import admission_quota_readonly
+        self.bind_modules(admission_quota_readonly)
         result = admission_quota_readonly.run(self)
         self.result['admission_components']['quota'] = result['status']
 
@@ -105,6 +115,7 @@ class Gate(app.Gate):
         self.command('admission-journal-unit', ['python3', '-B', str(folder/'test_admission_journal.py')])
         self.command('admission-fixture-unit', ['python3', '-B', str(folder/'fixture_cleanup_runtime_test.py')])
         for name in ('test_admission_failure.py','test_admission_tools.py',
+                     'test_admission_module_binding.py',
                      'test_admission_quota_readonly.py','admission_budget_test.py',
                      'admission_budget_register_test.py','admission_budget_receipts_test.py','test_integral_failures.py',
                      'test_migration_failure_boundaries.py'):
@@ -134,6 +145,20 @@ class Gate(app.Gate):
         import integral_failure_runtime_workflow
         import ci_auth
         from admission_binding import NEW_RUN
+        import admission_journal
+        import admission_failure
+        import native_runtime
+        import auth_failure_transport
+        import fixture_cleanup_runtime
+        import fixture_cleanup_runtime_sql
+        import fixture_cleanup_evidence
+        import sql_protocol
+        import admission_binding
+        self.bind_modules(auth_failure, admission_fixture_context, fixture_cleanup_runtime_ci,
+            admission_journal, admission_failure, integral_failure_runtime,
+            integral_failure_runtime_workflow, ci_auth, native_runtime,
+            auth_failure_transport, fixture_cleanup_runtime, fixture_cleanup_runtime_sql,
+            fixture_cleanup_evidence, sql_protocol, admission_binding)
         original_save = self.save
         self.save = lambda name, value: original_save('admission-auth-' + name, value)
         try:
@@ -151,7 +176,8 @@ class Gate(app.Gate):
                     matrix = integral_failure_runtime.run(self,
                         selection=integral_failure_runtime_workflow.SUPPORTED,diagnostic_only=True)
                     self.result['admission_components']['fault_matrix'] = matrix['status']
-                    if matrix.get('bootstrap_or_runner_failure'):
+                    if (matrix.get('bootstrap_or_runner_failure')
+                            or matrix.get('diagnostic_subset_verified') is not True):
                         raise RuntimeError('admission_fault_component_failed')
                     admission_fixture_context.run(self, ctx)
                     fixture_save = self.save

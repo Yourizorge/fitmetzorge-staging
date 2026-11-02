@@ -63,5 +63,23 @@ class AdmissionCIContract(unittest.TestCase):
         self.assertIn("original_save('admission-auth-' + name, value)",
                       ast.unparse(cleanup[-1]))
 
+    def test_unconfirmed_fault_cleanup_blocks_following_fixture_mutation(self):
+        tree = ast.parse((HERE/'admission_ci.py').read_text())
+        method = next(n for n in ast.walk(tree) if isinstance(n, ast.FunctionDef)
+                      and n.name == 'run_components')
+        check = next(n for n in ast.walk(method) if isinstance(n, ast.If)
+                     and 'diagnostic_subset_verified' in ast.unparse(n.test))
+        self.assertIn("matrix.get('diagnostic_subset_verified') is not True", ast.unparse(check.test))
+        self.assertIsInstance(check.body[0], ast.Raise)
+        predicate = compile(ast.Expression(check.test), '<actual-admission-guard>', 'eval')
+        for matrix, blocked in (({}, True), ({'diagnostic_subset_verified': False}, True),
+                                ({'diagnostic_subset_verified': True}, False),
+                                ({'diagnostic_subset_verified': True,
+                                  'bootstrap_or_runner_failure': 'failure'}, True)):
+            self.assertEqual(bool(eval(predicate, {'__builtins__': {}}, {'matrix': matrix})), blocked)
+        mutation = next(n for n in ast.walk(method) if isinstance(n, ast.Call)
+                        and ast.unparse(n.func) == 'admission_fixture_context.run')
+        self.assertLess(check.lineno, mutation.lineno)
+
 
 if __name__ == '__main__': unittest.main()
