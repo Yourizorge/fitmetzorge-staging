@@ -162,6 +162,7 @@ class Case:
         self.baseline_absent = self.mint_closed = self.cleanup_started = False
         self.terminals, self.observed_costs = {}, {}
         self.http_failures, self.observer_failures = [], []
+        self.journal_failures = []
         self.raised_failure = None
         self.injected = False
 
@@ -233,8 +234,16 @@ class Case:
                 self.terminals[op] = caught.terminal
             http_failure = {'operation': op, 'phase': http_phase, 'error_class': type(caught).__name__}
             self.http_failures.append(http_failure)
-            self.journal.event({'phase': 'unknown', 'key': op, 'terminal': self.terminals[op],
-                                'failure': http_failure})
+            self.raised_failure = http_failure
+            try:
+                self.journal.event({'phase': 'unknown', 'key': op, 'terminal': self.terminals[op],
+                                    'failure': http_failure})
+            except Exception as save_error:
+                self.journal_failures.append({'operation': op, 'phase': 'http_unknown_receipt',
+                    'error_class': type(save_error).__name__, 'secondary_to_http': True})
+                # The existing prepaid entry remains spent even if the outcome
+                # cannot be persisted. Never replace the original HTTP exception.
+                raise caught from save_error
         # Statistics are evidence, not refunds, and are counted as separate native reads.
         observer_phase = 'stats_after'
         try:
@@ -382,15 +391,17 @@ class Case:
             special_ok = cleanup['reason'] == 'mint_barrier_or_ownership_unproven'
         elif self.name == 'duplicate_cleanup':
             special_ok = cleanup.get('duplicate_blocked') is True and cleanup.get('duplicate_zero_dispatch') is True
-        checked = (self.injected and outcome_matches and costs_ok and measured and prefix_ok and special_ok
+        journal_complete = not self.journal_failures
+        checked = (self.injected and outcome_matches and costs_ok and measured and journal_complete and prefix_ok and special_ok
                    and http == expected_http and primary == expected_primary)
         snapshots = [row for row in self.journal.entries if row['phase'] == 'snapshot']
         report = {'case': self.name, 'run_id': self.run_id, 'execution_status': 'NO_GO',
                   'component_case_pass': checked, 'primary_failure': primary,
                   'primary_failure_detail': primary_detail, 'http_failures': self.http_failures,
                   'observer_failures': self.observer_failures,
+                  'journal_failures': self.journal_failures, 'journal_complete': journal_complete,
                   'evidence_kind': self.backend.evidence_kind, 'prefix_counts': prefix,
-                  'cleanup': cleanup, 'claim_released': cleanup['confirmed'] and costs_ok and measured,
+                  'cleanup': cleanup, 'claim_released': cleanup['confirmed'] and costs_ok and measured and journal_complete,
                   'mint_barrier': self.mint_closed and all(self.terminals.values()),
                   'mint_barrier_scope': 'sealed_client_dispatch_and_complete_upstream_response',
                   'gotrue_process_quiescence_proven': False, 'hosted_mint_barrier_proven': False,

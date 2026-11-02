@@ -5,13 +5,18 @@ They are never written as CI evidence and never count as scenario coverage.
 """
 import copy
 import hashlib
+import json
+import os
 import pathlib
 import sys
+import time
 import unittest
 from types import SimpleNamespace
 from unittest.mock import patch
 
 import integral_failures as f
+import integral_failure_runtime as rt
+import integral_failure_runtime_workflow as workflow
 
 
 class FailureSelectionTests(unittest.TestCase):
@@ -46,10 +51,10 @@ class FailureSelectionTests(unittest.TestCase):
             'safety_auth':{'status':'NO_GO','revocation_confirmed':True,'global_zero_claim':False}}
             for case in plan['selection']]
 
-    def test_register_has_twelve_requirements_and_three_distinct_legacy_cases(self):
+    def test_register_has_fourteen_faults_normal_reference_and_three_legacy_cases(self):
         rows=f.scenario_register()
-        self.assertEqual(len(f.REQUIRED),12)
-        self.assertEqual(len(rows),15)
+        self.assertEqual(len(f.REQUIRED),14)
+        self.assertEqual(len(rows),18)
         self.assertEqual({r['id'] for r in rows if r['implemented']},set(f.LEGACY))
         for row in rows:
             self.assertIn(row['source'],f.SOURCE_FILES)
@@ -70,7 +75,7 @@ class FailureSelectionTests(unittest.TestCase):
         plan=self.plan(selection=None,diagnostic_only=False)
         self.assertFalse(plan['ready_for_execution'])
         self.assertEqual(plan['selection'],list(f.REQUIRED))
-        self.assertEqual(len(plan['missing_hooks']),12)
+        self.assertEqual(len(plan['missing_hooks']),15)
         self.assertIn('selected_cases_exceed_existing_three_case_bound',plan['blockers'])
         for case in f.REQUIRED:
             self.assertIn('required_hook_not_implemented:'+case,plan['blockers'])
@@ -78,7 +83,7 @@ class FailureSelectionTests(unittest.TestCase):
     def test_old_three_cannot_be_full_selection(self):
         plan=self.plan(diagnostic_only=False)
         self.assertFalse(plan['ready_for_execution'])
-        self.assertIn('required_scenario_not_selected:normal',plan['blockers'])
+        self.assertIn('required_scenario_not_selected:pre_migration',plan['blockers'])
         self.assertIn('required_hook_not_implemented:mid_auth',plan['blockers'])
 
     def test_explicit_diagnostic_selection_only_admits_execution(self):
@@ -176,15 +181,12 @@ class FailureSelectionTests(unittest.TestCase):
                 patch.object(pathlib.Path,'write_bytes',side_effect=AssertionError('write')):
             self.assertTrue(self.plan()['ready_for_execution'])
 
-    def test_blocked_run_never_imports_or_calls_actual_backend(self):
-        plan=self.plan(selection=None,diagnostic_only=False)
-        saved=[]
-        gate=SimpleNamespace(save=lambda name,value:saved.append((name,value)))
-        with patch.object(f,'prepare',return_value=plan), \
-                patch.dict(sys.modules,{'metered_composition':None}):
-            with self.assertRaises(f.FailureCoverageBlocked):
-                f.run(gate)
-        self.assertEqual([name for name,_ in saved],['integral-failure-preflight.json'])
+    def test_historical_replays_never_import_or_call_actual_backend(self):
+        with patch.dict(sys.modules,{'metered_composition':None}):
+            for method in (f.already_present, f._historical_run_disabled,
+                           f._historical_already_present_disabled):
+                with self.subTest(method=method), self.assertRaises(f.FailureCoverageBlocked):
+                    method(SimpleNamespace())
 
     def test_run_rejects_local_or_hosted_without_reading_candidate(self):
         with patch.dict(f.os.environ,{},clear=True),self.assertRaisesRegex(RuntimeError,'ci_only'):
@@ -274,6 +276,299 @@ class FailureSelectionTests(unittest.TestCase):
         for row in ({'auth_accounts':3,'auth_sessions':False,'auth_refresh_tokens':0},
                     {'auth_accounts':3,'auth_sessions':1,'auth_refresh_tokens':0}):
             with self.assertRaises(RuntimeError):f.check_auth_zero(row,composition)
+
+
+class UnitCursor:
+    description = True
+    def __init__(self, rows): self.rows = rows
+    def fetchall(self): return self.rows
+
+
+class UnitConnection:
+    """Unit-only double. Never supplied to run() or emitted as real CI evidence."""
+    def __init__(self, rows=None, error=None):
+        self.rows = [] if rows is None else rows
+        self.error, self.calls, self.closed = error, [], False
+        self.info = SimpleNamespace(backend_pid=123)
+    def execute(self, text, args=None):
+        self.calls.append((text, args))
+        if self.error: raise self.error
+        return UnitCursor(self.rows)
+    def close(self): self.closed = True
+
+
+class NativeFaultBoundaryUnitTests(unittest.TestCase):
+    def session(self, case='mid_route_a', connection=None):
+        connection = connection or UnitConnection()
+        s = rt.Session(SimpleNamespace(connect=lambda:connection), case,
+                       {'limit':128,'cleanup_reserve':16}, time.monotonic()+180)
+        s.connect()
+        return s, connection
+
+    def setUp(self):
+        self.parser = patch('sql_protocol.single', return_value={'kind':'SelectStmt'})
+        self.parser.start()
+        self.addCleanup(self.parser.stop)
+
+    def test_fourteen_explicit_categories(self):
+        self.assertEqual(len(rt.REQUIRED),14)
+        self.assertEqual(f.REQUIRED,rt.REQUIRED)
+        for name in ('cleanup_failure','final_check_failure','closure_failure'):
+            self.assertIn(name,rt.REQUIRED)
+
+    def test_source_owned_driver_has_twelve_real_components_and_two_blockers(self):
+        config={'dsn':'unit-only','auth_url':'http://127.0.0.1:59999','admin_token':'unit-only',
+                'run_id':rt.NEW_RUN,'managed_costs':dict.fromkeys(('create','login','logout','delete'),10),
+                'environment':'disposable_ci','exclusive_local_auth':True}
+        driver=workflow.WorkflowDriver(SimpleNamespace(auth_failure_context=config),local_component_authorized=True)
+        plan=driver.describe()
+        self.assertEqual(set(plan['cases']),set(rt.REQUIRED)-{'pre_migration','post_migration'})
+        self.assertEqual(set(plan['blocked']),{'pre_migration','post_migration'})
+        self.assertTrue(plan['historical_registry_read_only'])
+
+    def test_missing_auth_still_has_real_controller_closure_and_timeout(self):
+        driver=workflow.WorkflowDriver(SimpleNamespace(),local_component_authorized=True)
+        self.assertEqual(set(driver.describe()['cases']),{'mid_controller','closure_failure','timeout'})
+
+    def test_unknown_or_failed_auth_cleanup_cannot_verify_subset(self):
+        for value in ({}, {'confirmed':False}, {'all_component_owned_auth_zero':False},
+                      {'all_component_owned_auth_zero':True,'close_error':{'class':'OSError'}},
+                      {'owned_auth_cleanup_required':False,'error':{'class':'OSError'}}):
+            with self.subTest(value=value):self.assertFalse(rt.cleanup_verified(value))
+        self.assertTrue(rt.cleanup_verified(None))
+        self.assertTrue(rt.cleanup_verified({'owned_auth_cleanup_required':False,'close_error':None}))
+        self.assertTrue(rt.cleanup_verified({'owned_auth_cleanup_required':True,
+                                            'all_component_owned_auth_zero':True,'close_error':None}))
+
+    def test_delegated_auth_needs_independent_zero_not_only_delegated_pass(self):
+        for count in (0,1):
+            s,_=self.session('mid_auth')
+            s.delegated_actor='unit-actor';s.phase_semantics=True
+            observation=SimpleNamespace(values={'users':count,'sessions':0,'refresh_tokens':0})
+            with patch.object(s,'snapshot',return_value=observation):
+                result=workflow.WorkflowDriver(SimpleNamespace()).observe('mid_auth',s)
+            self.assertIs(result,observation)
+            self.assertEqual(s.phase_semantics,count==0)
+
+    def test_concrete_driver_needs_explicit_local_authorization(self):
+        driver=workflow.WorkflowDriver(SimpleNamespace())
+        self.assertEqual(driver.describe()['cases'],{})
+        with self.assertRaises(rt.Blocked):
+            driver.open(SimpleNamespace(environment='disposable_ci'),['timeout'])
+
+    def test_driver_refuses_hosted_even_when_authorized(self):
+        driver=workflow.WorkflowDriver(SimpleNamespace(),local_component_authorized=True)
+        with self.assertRaises(rt.Blocked):
+            driver.open(SimpleNamespace(environment='staging'),['timeout'])
+
+    def test_before_boundary_does_not_dispatch(self):
+        s,c=self.session('pre_migration')
+        with self.assertRaises(rt.InjectedFailure):
+            s.step('pre_migration',lambda:s.query(c,'migration','select 1'))
+        self.assertEqual(c.calls,[])
+        self.assertEqual(s.used,0)
+        self.assertTrue(s.stopped)
+
+    def test_after_boundary_executes_once_and_preserves_charge(self):
+        s,c=self.session()
+        with self.assertRaises(rt.InjectedFailure):
+            s.step('mid_route_a',lambda:s.query(c,'route_a','select 1'))
+        self.assertEqual(len(c.calls),1)
+        self.assertEqual(s.used,1)
+        self.assertTrue(s.events[0]['confirmed'])
+        self.assertTrue(s.injected)
+
+    def test_lost_reply_preserves_dispatch_but_not_delivery(self):
+        s,c=self.session('lost_reply')
+        with self.assertRaises(rt.InjectedFailure):
+            s.step('lost_reply',lambda:s.query(c,'route_a','select 1'))
+        self.assertTrue(s.events[0]['confirmed'])
+        self.assertFalse(s.events[0]['reply_delivered'])
+        self.assertTrue(s.unknown)
+        self.assertEqual(s.used,1)
+
+    def test_duplicate_is_two_explicit_same_parameter_dispatches(self):
+        s,c=self.session('duplicate')
+        with self.assertRaises(rt.InjectedFailure):
+            s.step('duplicate',lambda:s.query(c,'route_a','select %s',[1]))
+        self.assertEqual(len(c.calls),2)
+        self.assertEqual(s.used,2)
+        self.assertEqual(s.events[0]['request_sha256'],s.events[1]['request_sha256'])
+
+    def test_duplicate_changed_parameter_is_not_accepted(self):
+        s,c=self.session('duplicate')
+        values=iter((1,2))
+        with self.assertRaisesRegex(rt.Blocked,'duplicate_protocol_changed'):
+            s.step('duplicate',lambda:s.query(c,'route_a','select %s',[next(values)]))
+        self.assertFalse(s.injected)
+
+    def test_successful_query_is_not_a_timeout(self):
+        s,c=self.session('timeout')
+        with self.assertRaises(rt.Blocked):
+            s.step('timeout',lambda:s.query(c,'timeout',rt.TIMEOUT_SQL))
+        self.assertFalse(s.injected)
+
+    def test_real_driver_cancel_sqlstate_only_marks_timeout(self):
+        error=RuntimeError('never expose query text'); error.sqlstate='57014'
+        s,c=self.session('timeout',UnitConnection(error=error))
+        with self.assertRaises(RuntimeError):
+            s.step('timeout',lambda:s.query(c,'timeout',rt.TIMEOUT_SQL))
+        self.assertTrue(s.injected)
+        self.assertEqual(s.primary['sqlstate'],'57014')
+        self.assertEqual(s.secondary,[])
+        self.assertEqual(s.used,1)
+
+    def test_cleanup_failure_requires_real_fk_sqlstate(self):
+        for code,expected in [('23503',True),('42501',False)]:
+            error=RuntimeError('unit'); error.sqlstate=code
+            s,c=self.session('cleanup_failure',UnitConnection(error=error))
+            with self.assertRaises(RuntimeError):
+                s.step('cleanup_failure',lambda:s.query(c,'cleanup_windows','delete from unit_only'))
+            self.assertEqual(s.injected,expected)
+
+    def test_first_failure_survives_cleanup_error(self):
+        s,c=self.session()
+        first=ValueError('raw secret SQL'); second=OSError('raw password')
+        s.fail(first);s.fail(second);s.fail(first)
+        self.assertEqual(s.primary['class'],'ValueError')
+        self.assertEqual([x['class'] for x in s.secondary],['OSError'])
+        self.assertNotIn('secret',json.dumps(s.primary))
+        self.assertNotIn('password',json.dumps(s.secondary))
+
+    def test_unknown_native_result_is_charged_and_not_retried(self):
+        s,c=self.session(connection=UnitConnection(error=OSError('connection lost')))
+        with self.assertRaises(OSError):s.query(c,'native','select 1')
+        self.assertTrue(s.unknown)
+        self.assertFalse(s.events[0]['confirmed'])
+        self.assertEqual(s.used,1)
+        with self.assertRaises(rt.Blocked):s.query(c,'native','select 1')
+        self.assertEqual(len(c.calls),1)
+
+    def test_cleanup_capacity_is_prepaid_before_normal_dispatch(self):
+        s,c=self.session();s.used=112
+        with self.assertRaises(rt.Blocked):s.query(c,'native','select 1')
+        self.assertEqual(c.calls,[])
+        s.safety=True
+        s.query(c,'rollback','ROLLBACK')
+        self.assertEqual(s.used,113)
+
+    def test_exhausted_cleanup_has_no_refund_or_dispatch(self):
+        s,c=self.session();s.safety=True;s.used=128
+        with self.assertRaises(rt.Blocked):s.query(c,'rollback','ROLLBACK')
+        self.assertEqual(c.calls,[])
+        self.assertEqual(s.used,128)
+
+    def test_old_and_preparation_uuid_never_reach_database(self):
+        for value in (rt.OLD_RUN,rt.NEW_RUN):
+            s,c=self.session()
+            with self.assertRaises(rt.Blocked):s.query(c,'native','select %s',[value])
+            with self.assertRaises(rt.Blocked):s.query(c,'native',"select '"+value+"'")
+            self.assertEqual(c.calls,[])
+            self.assertEqual(s.used,0)
+
+    def test_fresh_case_uuid_is_not_historical_or_preparation(self):
+        s,_=self.session()
+        self.assertNotIn(s.case_id,(rt.OLD_RUN,rt.NEW_RUN))
+
+    def test_receipts_have_hashes_not_raw_sql_or_values(self):
+        s,c=self.session()
+        s.query(c,'native','select %s',['private unit value'])
+        payload=json.dumps(s.events)
+        self.assertNotIn('select',payload)
+        self.assertNotIn('private unit value',payload)
+        self.assertIn('sha256',payload)
+
+    def test_deadline_checked_before_dispatch(self):
+        s,c=self.session();s.deadline=time.monotonic()-1
+        with self.assertRaises(rt.Blocked):s.query(c,'native','select 1')
+        self.assertEqual(c.calls,[])
+
+    def test_raw_or_unregistered_connection_refused(self):
+        s,_=self.session()
+        with self.assertRaises(rt.Blocked):s.query(UnitConnection(),'native','select 1')
+
+    def test_empty_callback_not_real_boundary(self):
+        s,_=self.session()
+        with self.assertRaises(rt.Blocked):s.step('mid_route_a',lambda:True)
+        self.assertFalse(s.injected)
+
+    def test_scope_mismatch_and_second_fault_refused(self):
+        s,_=self.session('pre_migration')
+        with self.assertRaises(rt.Blocked):s.step('mid_route_a',lambda:None)
+        with self.assertRaises(rt.InjectedFailure):s.step('pre_migration',lambda:None)
+        with self.assertRaises(rt.Blocked):s.step('pre_migration',lambda:None)
+
+    def test_no_missing_driver_defaults_to_real_execution(self):
+        environment={'GITHUB_ACTIONS':'true','GITHUB_REPOSITORY':'Yourizorge/fitmetzorge-staging',
+                     'GITHUB_REF':'refs/heads/main','GITHUB_SHA':'b'*40,'GITHUB_RUN_ID':'1'}
+        with patch.dict(os.environ,environment,clear=True), patch('subprocess.Popen',side_effect=AssertionError('process')):
+            value=rt.preflight(SimpleNamespace(),None,None,False)
+        self.assertFalse(value['ready'])
+        self.assertEqual(len(value['missing']),14)
+
+    def test_inherited_hostaddr_service_cannot_redirect_native_connection(self):
+        environment={'GITHUB_ACTIONS':'true','GITHUB_REPOSITORY':'Yourizorge/fitmetzorge-staging',
+                     'GITHUB_REF':'refs/heads/main','GITHUB_SHA':'b'*40,'GITHUB_RUN_ID':'1'}
+        for key,value in [('PGHOSTADDR','203.0.113.1'),('PGSERVICE','remote'),('PGSERVICEFILE','unit-file')]:
+            with patch.dict(os.environ,{**environment,key:value},clear=True), self.assertRaises(rt.Blocked):
+                rt.preflight(SimpleNamespace(),None,None,False)
+
+    def test_dollar_parameters_repeat_without_string_interpolation(self):
+        text,args=workflow.dollar('select $2::uuid, $1::jsonb, $2::uuid',[{'a':1},'unit-id'])
+        self.assertEqual(text,'select %s::uuid, %s::jsonb, %s::uuid')
+        self.assertEqual(args,['unit-id','{"a": 1}','unit-id'])
+
+    def test_real_pg17_parser_accepts_native_placeholders_without_values(self):
+        import sql_protocol
+        self.parser.stop()
+        try:
+            single=sql_protocol.single
+            parsed=rt.parser_sql(workflow.API,['never insert this into SQL'])
+            self.assertIn('$1',parsed)
+            self.assertNotIn('never insert',parsed)
+            self.assertEqual(single(parsed)['protocol_commands'],1)
+            single(rt.parser_sql(workflow.BIND,['{}','{}']))
+            with self.assertRaises(ValueError):single(rt.parser_sql('select %s; select 2',[1]))
+        finally:
+            self.parser.start()
+
+    def test_auth_deadline_rejects_before_backend_dispatch(self):
+        backend=SimpleNamespace(db=None,evidence_kind='unit',http=lambda *a,**k:self.fail('dispatch'))
+        bounded=workflow.DeadlineBackend(backend,time.monotonic()+1)
+        with self.assertRaises(rt.Blocked):bounded.http('POST','/admin/users')
+
+    def test_real_b_worker_reuses_frozen_computation_without_database(self):
+        s,_=self.session('mid_route_b')
+        row={'route':'B','actor_role':'member','consent':True,'guard':'clear','seed':'normal',
+             'events':[],'versions':[],'revision':0,'proposal_version':0,
+             'basis':{'model':'1993a8073f40c583f108cc6baa2ef78c1d522d52b81b0f6071f10f109ca4753b','source':1}}
+        value=workflow.WorkflowDriver(SimpleNamespace()).worker(s,{'op':'compute_b','row':row,'action':'build','data':{}})
+        self.assertEqual(value['event']['action'],'build')
+        self.assertEqual(value['status'],'member_pending')
+        self.assertEqual(value['row_revision'],0)
+        self.assertEqual(len(value['candidate_hash']),64)
+        self.assertEqual(s.events,[])
+
+    def test_parent_preserves_nonzero_after_worker_complete(self):
+        s,_=self.session('mid_controller')
+        process=SimpleNamespace(stdin=SimpleNamespace(write=lambda _:None,flush=lambda:None,close=lambda:None),
+            stdout=SimpleNamespace(readline=lambda _:json.dumps({'op':'complete','value':{}})+'\n',close=lambda:None),
+            wait=lambda **_:None,poll=lambda:2,returncode=2,kill=lambda:None)
+        with patch.object(workflow.subprocess,'Popen',return_value=process), self.assertRaisesRegex(rt.Blocked,'nonzero'):
+            workflow.WorkflowDriver(SimpleNamespace()).worker(s,{'op':'controller'})
+
+    def test_parent_kills_joins_on_worker_wait_timeout(self):
+        s,_=self.session('mid_controller')
+        calls=[]
+        def wait(**kwargs):
+            calls.append('wait')
+            if len(calls)==1:raise workflow.subprocess.TimeoutExpired('node',5)
+        process=SimpleNamespace(stdin=SimpleNamespace(write=lambda _:None,flush=lambda:None,close=lambda:None),
+            stdout=SimpleNamespace(readline=lambda _:json.dumps({'op':'complete','value':{}})+'\n',close=lambda:None),
+            wait=wait,poll=lambda:None,returncode=None,kill=lambda:calls.append('kill'))
+        with patch.object(workflow.subprocess,'Popen',return_value=process), self.assertRaises(workflow.subprocess.TimeoutExpired):
+            workflow.WorkflowDriver(SimpleNamespace()).worker(s,{'op':'controller'})
+        self.assertEqual(calls,['wait','kill','wait'])
 
 
 if __name__=='__main__':unittest.main()

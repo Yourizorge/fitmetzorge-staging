@@ -1,0 +1,204 @@
+"""One disposable 47-migration source, independent checks, no hosted admission."""
+import importlib.util
+import json
+import os
+import pathlib
+import sys
+
+HERE = pathlib.Path(__file__).resolve().parent
+APP = HERE.parents[1] / 'phase6e_server_v1'
+sys.path.insert(0, str(APP))
+spec = importlib.util.spec_from_file_location('admission_application_ci', APP/'ci.py')
+app = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(app)
+
+# Explicit source list; never ship unrelated dirty or historical evidence files.
+LOCAL_SOURCES = ('admission_ci.py', 'admission_ops.py', 'admission_binding.py',
+    'test_admission_binding.py', 'test_admission_ci.py', 'auth_failure.py',
+    'auth_failure_transport.py', 'auth_failure_test.py', 'auth_failure_contract.md',
+    'admission_fixture_context.py', 'test_admission_fixture_context.py',
+    'admission_journal.py', 'test_admission_journal.py',
+    'admission_failure.py', 'test_admission_failure.py',
+    'admission_tools.py', 'test_admission_tools.py',
+    'admission_quota_readonly.py', 'test_admission_quota_readonly.py',
+    'admission_budget.py', 'admission_budget_test.py',
+    'admission_budget_register.py', 'admission_budget_register_test.py',
+    'admission_budget_graph.py', 'admission_budget_receipts.py', 'admission_budget_receipts_test.py',
+    'integral_failure_runtime.py', 'integral_failure_runtime_workflow.py',
+    'integral_failure_runtime_worker.mjs',
+    'migration_failure_boundaries.py', 'test_migration_failure_boundaries.py',
+    'fixture_cleanup_evidence.py', 'test_fixture_cleanup_evidence.py',
+    'fixture_cleanup_runtime.py', 'fixture_cleanup_runtime_sql.py',
+    'fixture_cleanup_runtime_ci.py', 'fixture_cleanup_runtime_test.py')
+EXTRA = {'_offline/phase6e11/endchain_v1/' + name for name in LOCAL_SOURCES}
+EXTRA |= {'_offline/phase6e11/endchain_v1/cli_predispatch/'+name for name in (
+    'ci.py','entry.mjs','hook.cjs','package.json','pnpm-lock.yaml','pnpm-workspace.yaml',
+    'policy.cjs','prepare.py','README.md','smoke.py','test_ci.py','test_hook.cjs','test_policy.cjs')}
+EXTRA |= {'_offline/phase6e11/endchain_v1/cli_predispatch/'+name for name in ('pending.py','test_pending.py')}
+EXTRA.add('.github/workflows/phase6e-admission-local-ci.yml')
+EXTRA.add('_offline/phase6e_server_v1/ops.py')
+EXTRA.add('docs/PHASE6E11_ADMISSION_PREREGISTRATION_20261102.md')
+EXTRA.add('_offline/phase6e11/endchain_v1/receipts/reserved-ci-39109482869/complete-command-register.json')
+app.previous.prior.old.EXTRA |= EXTRA
+
+
+class Gate(app.Gate):
+    def instrumented_cli(self):
+        module=getattr(self,'_instrumented_cli',None)
+        if module is None:
+            spec=importlib.util.spec_from_file_location('admission_cli_predispatch',
+                self.sources/'_offline/phase6e11/endchain_v1/cli_predispatch/ci.py')
+            module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+            self._instrumented_cli=module
+        return module
+
+    def cli(self,*args,timeout=120):
+        phase=self.result.get('phase')
+        if args==('migration','up','--local') and phase in ('local_app_schema','local_app_outbox'):
+            name=app.M45 if phase=='local_app_schema' else app.M46
+            expected=self.sources/'_offline/phase6e_server_v1/supabase/migrations'/name
+            return self.instrumented_cli().run_pending(self,args,expected)
+        if self.result.get('phase')=='migration_45' and args==('migration','up','--local'):
+            import migration_failure_boundaries as boundary
+            token=boundary.before(self)
+            result=super().cli(*args,timeout=timeout)
+            boundary.after(self,token,result)
+            return result
+        return super().cli(*args,timeout=timeout)
+
+    def install(self):
+        super().install()
+        import admission_tools
+        admission_tools.install(self)
+
+    def check_bridge(self):
+        # Preserve actual ACL/RLS checks without executing the old October identity.
+        app.previous.prior.old.Gate.check_bridge(self)
+        import admission_quota_readonly
+        result = admission_quota_readonly.run(self)
+        self.result['admission_components']['quota'] = result['status']
+
+    def fetch(self):
+        if (os.environ.get('GITHUB_REPOSITORY') != 'Yourizorge/fitmetzorge-staging'
+                or os.environ.get('GITHUB_REF') != 'refs/heads/main'
+                or os.environ.get('GITHUB_RUN_ATTEMPT') != '1'):
+            raise RuntimeError('admission_ci_scope_or_retry')
+        migrations = super().fetch()
+        sources = json.loads((self.out/'candidate.json').read_text())['sources']
+        if not EXTRA <= sources.keys():
+            raise RuntimeError('admission_source_missing')
+        self.result['full_chain_admission'] = False
+        self.result['hosted_admitted'] = False
+        self.result['package21_released'] = False
+        self.result['admission_components'] = {}
+        return migrations
+
+    def regressions(self):
+        super().regressions()
+        folder = self.sources/'_offline/phase6e11/endchain_v1'
+        self.command('admission-binding-unit', ['python3', '-B', '-m', 'unittest',
+            'discover', '-s', str(folder), '-p', 'test_admission_binding.py'])
+        self.command('admission-ci-unit', ['python3', '-B', '-m', 'unittest',
+            'discover', '-s', str(folder), '-p', 'test_admission_ci.py'])
+        self.command('admission-auth-unit', ['python3', '-B', str(folder/'auth_failure_test.py')])
+        self.command('admission-fixture-bootstrap-unit', ['python3', '-B', str(folder/'test_admission_fixture_context.py')])
+        self.command('admission-journal-unit', ['python3', '-B', str(folder/'test_admission_journal.py')])
+        self.command('admission-fixture-unit', ['python3', '-B', str(folder/'fixture_cleanup_runtime_test.py')])
+        for name in ('test_admission_failure.py','test_admission_tools.py',
+                     'test_admission_quota_readonly.py','admission_budget_test.py',
+                     'admission_budget_register_test.py','admission_budget_receipts_test.py','test_integral_failures.py',
+                     'test_migration_failure_boundaries.py'):
+            self.command('admission-'+name[:-3],['python3','-B',str(folder/name)])
+        self.result['admission_components']['binding'] = 'OFFLINE_TESTED_NOT_AUTHORITY'
+        try:
+            self.run_components()
+        finally:
+            primary = sys.exc_info()[1]
+            try:
+                import admission_budget
+                budget = admission_budget.run(self)
+                self.result['admission_components']['command_budget'] = budget['status']
+            except Exception as error:
+                from admission_failure import secondary
+                secondary(self,'budget_packaging',error,primary)
+                if primary is None:raise
+
+    def run_components(self):
+        # This local diagnostic prepayment is not an observed hosted Auth cost.
+        import auth_failure
+        import admission_fixture_context
+        import fixture_cleanup_runtime_ci
+        from admission_journal import Journal
+        from admission_failure import package_journal
+        import integral_failure_runtime
+        import integral_failure_runtime_workflow
+        import ci_auth
+        from admission_binding import NEW_RUN
+        original_save = self.save
+        self.save = lambda name, value: original_save('admission-auth-' + name, value)
+        try:
+            with ci_auth.environment(self, roles=('a','trainer','b'), include_test_admin=True) as ctx:
+                self.auth_failure_context = auth_failure.context_from_ci(ctx, run_id=NEW_RUN,
+                    managed_costs={name:128 for name in auth_failure.OPERATIONS}, exclusive_local_auth=True)
+                try:
+                    receipt = auth_failure.run(self,safety_reconciliation=True)
+                    self.result['admission_components']['auth_failures'] = receipt['status']
+                    if receipt['status'] != 'LOCAL_AUTH_FAILURE_COMPONENT_PASS':
+                        raise RuntimeError('admission_auth_component_failed')
+                    self.save = original_save
+                    self.integral_failure_driver = integral_failure_runtime_workflow.WorkflowDriver(
+                        self,local_component_authorized=True)
+                    matrix = integral_failure_runtime.run(self,
+                        selection=integral_failure_runtime_workflow.SUPPORTED,diagnostic_only=True)
+                    self.result['admission_components']['fault_matrix'] = matrix['status']
+                    if matrix.get('bootstrap_or_runner_failure'):
+                        raise RuntimeError('admission_fault_component_failed')
+                    admission_fixture_context.run(self, ctx)
+                    fixture_save = self.save
+                    journal = Journal(self.out/'admission-fixture-private-journal', original_save,
+                        'admission-fixture-journal')
+                    self.save = journal.save
+                    try:
+                        fixture_receipt = fixture_cleanup_runtime_ci.run(self)
+                    finally:
+                        primary = sys.exc_info()[1]
+                        self.save = fixture_save
+                        package_journal(self,journal,original_save,primary)
+                    self.result['admission_components']['fixture_cleanup'] = fixture_receipt['status']
+                    if fixture_receipt['status'] != 'COMPONENT_PASS':
+                        raise RuntimeError('admission_fixture_component_failed')
+                finally:
+                    self.auth_failure_context.clear()
+                    self.save = lambda name, value: original_save('admission-auth-' + name, value)
+        finally:
+            self.save = original_save
+        receipt = self.instrumented_cli().run(self)
+        self.result['admission_components']['cli_predispatch'] = (
+            'LOCAL_EMPTY_DRY_RUN_PASS' if receipt.get('complete') is True
+            and receipt.get('actual_empty_dry_run') is True else 'NO_GO')
+        self.save('admission-component-coverage.json', {
+            'status': 'NO_GO', 'source_commit': os.environ['GITHUB_SHA'],
+            'run_id': os.environ['GITHUB_RUN_ID'],
+            'components': self.result['admission_components'],
+            'strict_wal': 'BLOCKED_RETAINED_INCOMPLETE_EVIDENCE',
+            'exhausted_wal_diagnostic_reexecuted': False,
+            'hosted_calls': 0, 'full_chain_admission': False})
+
+    def advisors(self):
+        super().advisors()
+        self.result['application_component'] = 'CLEAN_CI_PASS'
+        self.result['full_chain_admission'] = False
+        self.result['hosted_admitted'] = False
+        self.result['admission_blockers'] = ['strict_wal_not_proven',
+            'integral_components_not_yet_admitted', 'independent_review_required']
+        self.save('admission-terminal.json', {
+            'source_commit': os.environ['GITHUB_SHA'], 'ci_run': os.environ['GITHUB_RUN_ID'],
+            'application_component': self.result['application_component'],
+            'blockers': self.result['admission_blockers'],
+            'hosted_calls': 0, 'owner_window_allowed': False,
+            'full_chain_admission': False, 'status': 'NO_GO'})
+        raise RuntimeError('complete_admission_blocked_not_component_failure')
+
+
+if __name__ == '__main__':
+    sys.exit(Gate().run())

@@ -4,6 +4,7 @@ HERE=pathlib.Path(__file__).resolve().parent
 spec=importlib.util.spec_from_file_location('server_ci',HERE/'ci.py');ci=importlib.util.module_from_spec(spec);spec.loader.exec_module(ci)
 spec=importlib.util.spec_from_file_location('server_github',HERE.parent/'phase6e11/ci41/ops.py');g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
 ROOT=g.ROOT
+WORKFLOW='phase6e-server-local-ci.yml'
 def disk(p):return pathlib.Path('\\\\?\\'+str(p.resolve())) if os.name=='nt' else p
 def main():
     mode=sys.argv[1]
@@ -25,7 +26,7 @@ def main():
     folder=pathlib.Path(sys.argv[2]).resolve()
     if folder.parent!=ROOT/'supabase/.temp' or not folder.name.startswith('phase6e-server-ci-'):raise RuntimeError('scope')
     if mode=='upload':return g.upload(folder)
-    workflow='phase6e-server-local-ci.yml'
+    workflow=WORKFLOW
     if mode=='dispatch':
         if (folder/'dispatch.json').exists():raise RuntimeError('no_retry')
         blob=json.loads((folder/'blob.json').read_text());inputs={'candidate_blob':blob['blob'],'candidate_sha256':blob['sha256']}

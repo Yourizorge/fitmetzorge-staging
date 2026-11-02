@@ -154,6 +154,14 @@ retained in `primary_failure_detail`, `http_failures`, `observer_failures` and
 journal events. Both dispatch reservations stay spent, no refund is issued, and
 the missing managed observation prevents claim release or component PASS.
 
+Further F follow-up: failure to persist the HTTP `unknown` event also cannot
+replace the original HTTP exception. Its phase/class is captured before that
+write; the save error is retained separately in `journal_failures` without raw
+error text. `journal_complete=False` prevents claim release and component PASS.
+The pre-dispatch charge stays spent. If later receipt writes remain possible,
+the result retains both failures; persistent storage failure still cannot yield
+a successful durable receipt. No create retry or refund is performed.
+
 This is NOT proof that the entire GoTrue process has no background writers.
 `gotrue_process_quiescence_proven` and `hosted_mint_barrier_proven` remain false.
 Parent must retain service lifecycle evidence; this local relay does not solve the
@@ -241,7 +249,8 @@ binding must also cover the imported existing auth_protocol module and test file
 
 Earlier checkpoint: 22 tests PASS in 14.601s. After independent F's P1/P2 fixes:
 31 tests PASS in 23.570s. After explicit safety-reconciliation support:
-**38 tests PASS in 23.937s**, run with the supplied Python runtime and
+38 tests PASS in 23.937s. After the failed-unknown-event persistence correction:
+**39 tests PASS in 19.351s**, run with the supplied Python runtime and
 `-B auth_failure_test.py`. These exercise the state machine with a
 fake Auth backend and actual loopback relay HTTP. They are not real GoTrue/SQL evidence.
 An initial sandbox attempt failed due temporary-directory and loopback restrictions;

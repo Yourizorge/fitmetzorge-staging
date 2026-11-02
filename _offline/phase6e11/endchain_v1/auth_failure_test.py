@@ -241,6 +241,40 @@ class StateTests(unittest.TestCase):
                             for e in case.journal.entries))
         self.assertNotIn('PRIVATE_OBSERVER_ERROR', json.dumps(result))
 
+    def test_unknown_journal_failure_preserves_http_primary_claim_and_charge(self):
+        for terminal in (True, False):
+            with self.subTest(upstream_terminal=terminal):
+                backend = FakeBackend()
+                backend.unknown_terminal = terminal
+                case = af.Case(backend, self.root / str(terminal), str(uuid.uuid4()), 'create_lost_reply', COSTS)
+                original_event = case.journal.event
+                def fail_unknown(row):
+                    if row['phase'] == 'unknown' and row['key'] == 'create':
+                        raise OSError('PRIVATE_JOURNAL_FAILURE')
+                    original_event(row)
+                with patch.object(case.journal, 'event', side_effect=fail_unknown):
+                    result = case.execute()
+                self.assertEqual(result['primary_failure'], 'auth_failure_http_unknown')
+                self.assertEqual(result['primary_failure_detail'], {
+                    'operation': 'create', 'phase': 'http_dispatch', 'error_class': 'UnknownOutcome'})
+                self.assertEqual(result['journal_failures'], [{
+                    'operation': 'create', 'phase': 'http_unknown_receipt', 'error_class': 'OSError',
+                    'secondary_to_http': True}])
+                self.assertFalse(result['journal_complete'])
+                self.assertFalse(result['claim_released'])
+                self.assertFalse(result['component_case_pass'])
+                self.assertEqual(result['execution_status'], 'NO_GO')
+                self.assertEqual(result['refunds'], 0)
+                prepaid = [e for e in case.journal.entries if e['phase'] == 'before_dispatch']
+                self.assertEqual(sum(e['units'] for e in prepaid), result['prepaid_consumed'])
+                self.assertEqual([e['units'] for e in prepaid if e['key'] == 'create'], [10])
+                self.assertEqual(sum(path == '/admin/users' for _, path in backend.calls), 1)
+                self.assertNotIn('PRIVATE_JOURNAL_FAILURE', json.dumps(result))
+                saved = json.loads((case.journal.folder / 'result.json').read_text())
+                self.assertEqual(saved['journal_failures'], result['journal_failures'])
+                self.assertFalse(saved['claim_released'])
+                self.assertFalse(af.reconcile_retained(case)['reconciliation_confirmed'])
+
     def test_http_failure_survives_secondary_difference_failure(self):
         backend = FakeBackend()
         def difference(before, after):

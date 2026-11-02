@@ -1,0 +1,8 @@
+{
+  "name": "fmz-cli-predispatch",
+  "private": true,
+  "version": "0.0.0",
+  "type": "commonjs",
+  "scripts": {"test": "node --test test_*.cjs"},
+  "dependencies": {"pg": "8.23.0", "@libpg-query/parser": "17.6.10"}
+}

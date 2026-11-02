@@ -1,11 +1,8 @@
-"""Source-bound failure selection; only three step-zero hooks exist today.
+"""New local component entry and read-only historical coverage validation.
 
-Never a hosted retry. The normal receipt remains untouched. Each case resets
-only its disposable CI database and writes a separate evidence namespace.
-Default run() blocks BEFORE reset/SQL while owner-required hooks are missing.
-Explicit diagnostic_only=True may exercise the legacy subset, but still raises
-FailureCoverageBlocked after saving its incomplete coverage. Unit tests of this
-validator are not real PG/GoTrue failure evidence.
+The October runner/reset paths are disabled, including explicit diagnostics.
+Legacy metadata remains readable; it cannot activate the historical run UUID.
+run() delegates to real native component boundaries, without WAL admission.
 """
 import copy,hashlib,importlib.util,json,os,pathlib,re,uuid
 from closure import RUN_ID,PURPOSE,allowance
@@ -16,8 +13,7 @@ ROOT=HERE.parents[2]
 PREFIX='_offline/phase6e11/endchain_v1/'
 FORMAT='fmz-integral-failure-selection-v1'
 LEGACY=('before_call','after_commit','after_snapshot')
-REQUIRED=('normal','pre_migration','post_migration','mid_auth','mid_controller','mid_route_a',
-          'mid_route_b','mid_restore','lost_reply','duplicate','timeout','partial_cleanup')
+from integral_failure_runtime import REQUIRED
 BOUNDS={'cases':3,'registered_commands_per_case':2349,'diagnostic_selects_per_case':1,
         'worker_seconds':180,'worker_messages':200,'workflow_seconds':125,
         'sql_seconds':5,'lock_seconds':1,'files':2200,'bytes':80000000,'file_bytes':2000000}
@@ -25,7 +21,7 @@ BOUNDS={'cases':3,'registered_commands_per_case':2349,'diagnostic_selects_per_ca
 REPORT_FILES=3
 REPORT_BYTES=REPORT_FILES*BOUNDS['file_bytes']
 SOURCE_FILES=tuple(PREFIX+n for n in (
-    'integral_failures.py','test_integral_failures.py','integral_ci.py',
+    'integral_failures.py','test_integral_failures.py','integral_failure_runtime.py','integral_ci.py',
     'metered_composition.py','runtime_budget.py','lifecycle_gates.py','complete_register.py',
     'registered_runner.py','registered_lifecycle.py','safety_auth.py','safety_auth_native.py',
     'safety_auth_budget.py','auth_evidence.py','scenario.py','integral_auth.mjs',
@@ -83,6 +79,12 @@ def scenario_register():
          'actual bounded worker/driver timeout; terminated worker and original failure retained'),
         ('partial_cleanup','E','registered_lifecycle.py','close_temporary',
          'one confirmed removal and one attempted/unconfirmed removal; no repeated delete'),
+        ('cleanup_failure','E','registered_lifecycle.py','close_temporary',
+         'actual cleanup dispatch boundary; original failure and retained claims survive cleanup error'),
+        ('final_check_failure','main','integral_ci.py','final_post preservation',
+         'actual independent final check fails without replacing the original failure'),
+        ('closure_failure','main','integral_ci.py','close_receipt/confirm_closure',
+         'actual closure boundary fails; terminal completeness remains false'),
     )
     for case,owner,file,method,event in missing:
         rows.append({'id':case,'implemented':False,'backend_fault':None,'step':None,
@@ -321,7 +323,13 @@ def check_auth_zero(row,composition):
         raise RuntimeError('ci_failure_auth_zero_unconfirmed')
 
 def already_present(gate):
-    """Prove the second allowed entry state without a second migration apply."""
+    """Historical October replay is no longer authorized, even in disposable CI."""
+    raise FailureCoverageBlocked({'status':'BLOCKED','reason':'historical_binding_read_only_reference',
+        'mutation_started':False,'full_chain_admission':False})
+
+
+def _historical_already_present_disabled(gate):
+    raise FailureCoverageBlocked({'status':'BLOCKED','reason':'historical_binding_read_only_reference'})
     if os.environ.get('GITHUB_REPOSITORY')!='Yourizorge/fitmetzorge-staging':raise RuntimeError('ci_only')
     from metered_composition import MeteredComposition
     import audit,auth_arm
@@ -348,6 +356,15 @@ def already_present(gate):
         gate.final_dry_run=original_dry
 
 def run(gate,*,selection=None,diagnostic_only=False,artifact_reserve=None):
+    from integral_failure_runtime import run as component_run
+    if artifact_reserve is not None:
+        raise ValueError('component_reservation_belongs_in_source_bound_driver')
+    return component_run(gate,selection=selection,diagnostic_only=diagnostic_only)
+
+
+def _historical_run_disabled(gate,*,selection=None,diagnostic_only=False,artifact_reserve=None):
+    raise FailureCoverageBlocked({'status':'BLOCKED','reason':'historical_binding_read_only_reference',
+        'mutation_started':False,'full_chain_admission':False})
     plan=prepare(gate,selection,diagnostic_only,artifact_reserve)
     _validate_plan(plan)
     gate.save('integral-failure-preflight.json',plan)
