@@ -1,0 +1,7 @@
+{
+  "exitcode": 1,
+  "phase": "regressions",
+  "seconds": 0.133,
+  "stderr": "Traceback (most recent call last):\n  File \"/home/runner/work/_temp/fmz-db41-sources/_offline/phase6e_server_v1/test_release_security.py\", line 16, in <module>\n    from pglast import ast, parse_sql\nModuleNotFoundError: No module named 'pglast'\n",
+  "stdout": ""
+}

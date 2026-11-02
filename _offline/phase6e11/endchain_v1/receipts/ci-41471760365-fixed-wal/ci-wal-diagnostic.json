@@ -1,0 +1,1082 @@
+{
+  "automatic_retries": 0,
+  "causal_attribution": false,
+  "command_cap": 80,
+  "command_ledger": [
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "bootstrap",
+      "number": 1,
+      "phase": "preflight",
+      "sql_sha256": "3eeb98eaca118b1d378aa1e55d994e87ff9a6509761e28612dedfe46a4b5ccb4"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "bootstrap",
+      "number": 2,
+      "phase": "extension_install",
+      "sql_sha256": "4012e6c2b1d0775f91c383183a0ec5c6e1d0981a2dc40dfdeb0410baafd2d95f"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "bootstrap",
+      "number": 3,
+      "phase": "stats_reader_binding",
+      "sql_sha256": "eacaaa29635d84b91e75c7191ead4cc98474992f8e69f9db6d591aede6a72e96"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "access",
+      "number": 4,
+      "phase": "query_binding",
+      "sql_sha256": "7c38ed0cea21a5236832a7399ca313b944d9a0e84d4b13ae5576447c3888f34d"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "access",
+      "number": 5,
+      "phase": "stats_before",
+      "sql_sha256": "8b89d9f1137dbd104c445e0923075a299f54aa7b3a34b1e547d2b61320a691bd"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "access",
+      "number": 6,
+      "phase": "begin",
+      "sql_sha256": "3eb12e5bafe877f825399d2905523e26201831b46d6ebc54e734cdb0961a8fd5"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "access",
+      "number": 7,
+      "phase": "start",
+      "sql_sha256": "82f99beb6965577a08df11164cac20e21a1c1b43566c839ca363f300eb1a2505"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "access",
+      "number": 8,
+      "phase": "measured_query",
+      "sql_sha256": "bea8768a6b2019ac8ec7c528e873827db1abc68211a57a52c5c529672ae10c86"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "access",
+      "number": 9,
+      "phase": "end",
+      "sql_sha256": "7d2150c8026d309d4646e3322b44a3cdc4545edc937469187372caccf023993d"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "access",
+      "number": 10,
+      "phase": "rollback",
+      "sql_sha256": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "access",
+      "number": 11,
+      "phase": "stats_after",
+      "sql_sha256": "8b89d9f1137dbd104c445e0923075a299f54aa7b3a34b1e547d2b61320a691bd"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "access",
+      "number": 12,
+      "phase": "coverage",
+      "sql_sha256": "bddd13c9dff6f7154b5538ecfdb6081f080d3c406e1d3c584d70204f5f146162"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "access",
+      "number": 13,
+      "phase": "coverage_wait_outside_transaction",
+      "sql_sha256": "5ddaf3947ab5ec7185fdc1481d32c09179319dad9a89fbc5f68093fb706a0fcf"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "access",
+      "number": 14,
+      "phase": "coverage_after_wait",
+      "sql_sha256": "bddd13c9dff6f7154b5538ecfdb6081f080d3c406e1d3c584d70204f5f146162"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "access",
+      "number": 15,
+      "phase": "classify_fixed_interval",
+      "sql_sha256": "fc8280b2b92c8966870e88101d5d3945a9a8fe00d0953118d11da4c838a66441"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "migrations",
+      "number": 16,
+      "phase": "query_binding",
+      "sql_sha256": "7831789520a4b6399b38706b38d8f1e7d7b6fd585f26b15d3d47f78d2d348579"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "migrations",
+      "number": 17,
+      "phase": "stats_before",
+      "sql_sha256": "8b89d9f1137dbd104c445e0923075a299f54aa7b3a34b1e547d2b61320a691bd"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "migrations",
+      "number": 18,
+      "phase": "begin",
+      "sql_sha256": "3eb12e5bafe877f825399d2905523e26201831b46d6ebc54e734cdb0961a8fd5"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "migrations",
+      "number": 19,
+      "phase": "start",
+      "sql_sha256": "82f99beb6965577a08df11164cac20e21a1c1b43566c839ca363f300eb1a2505"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "migrations",
+      "number": 20,
+      "phase": "measured_query",
+      "sql_sha256": "c1b191e76b2023233a8ef5feef5da7cc838116790669bb55e5db23cce0b36ffd"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "migrations",
+      "number": 21,
+      "phase": "end",
+      "sql_sha256": "7d2150c8026d309d4646e3322b44a3cdc4545edc937469187372caccf023993d"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "migrations",
+      "number": 22,
+      "phase": "rollback",
+      "sql_sha256": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "migrations",
+      "number": 23,
+      "phase": "stats_after",
+      "sql_sha256": "8b89d9f1137dbd104c445e0923075a299f54aa7b3a34b1e547d2b61320a691bd"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "migrations",
+      "number": 24,
+      "phase": "coverage",
+      "sql_sha256": "bddd13c9dff6f7154b5538ecfdb6081f080d3c406e1d3c584d70204f5f146162"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "catalog",
+      "number": 25,
+      "phase": "query_binding",
+      "sql_sha256": "830ced338ab9927ac03ce4304e447f0040c41e7b9894d1e6a07d3f47511669e4"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "catalog",
+      "number": 26,
+      "phase": "stats_before",
+      "sql_sha256": "8b89d9f1137dbd104c445e0923075a299f54aa7b3a34b1e547d2b61320a691bd"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "catalog",
+      "number": 27,
+      "phase": "begin",
+      "sql_sha256": "3eb12e5bafe877f825399d2905523e26201831b46d6ebc54e734cdb0961a8fd5"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "catalog",
+      "number": 28,
+      "phase": "start",
+      "sql_sha256": "82f99beb6965577a08df11164cac20e21a1c1b43566c839ca363f300eb1a2505"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "catalog",
+      "number": 29,
+      "phase": "measured_query",
+      "sql_sha256": "3357ad5f74b35dda59ada4a307389351e6a873ebf66973aa80340588046d6888"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "catalog",
+      "number": 30,
+      "phase": "end",
+      "sql_sha256": "7d2150c8026d309d4646e3322b44a3cdc4545edc937469187372caccf023993d"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "catalog",
+      "number": 31,
+      "phase": "rollback",
+      "sql_sha256": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "catalog",
+      "number": 32,
+      "phase": "stats_after",
+      "sql_sha256": "8b89d9f1137dbd104c445e0923075a299f54aa7b3a34b1e547d2b61320a691bd"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "catalog",
+      "number": 33,
+      "phase": "coverage",
+      "sql_sha256": "bddd13c9dff6f7154b5538ecfdb6081f080d3c406e1d3c584d70204f5f146162"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "catalog",
+      "number": 34,
+      "phase": "coverage_wait_outside_transaction",
+      "sql_sha256": "5ddaf3947ab5ec7185fdc1481d32c09179319dad9a89fbc5f68093fb706a0fcf"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "catalog",
+      "number": 35,
+      "phase": "coverage_after_wait",
+      "sql_sha256": "bddd13c9dff6f7154b5538ecfdb6081f080d3c406e1d3c584d70204f5f146162"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "absence",
+      "number": 36,
+      "phase": "query_binding",
+      "sql_sha256": "d4bd0d2ee2d00902bbe096ab941349dbd24af35a577cce448e5957d2756377b2"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "absence",
+      "number": 37,
+      "phase": "stats_before",
+      "sql_sha256": "8b89d9f1137dbd104c445e0923075a299f54aa7b3a34b1e547d2b61320a691bd"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "absence",
+      "number": 38,
+      "phase": "begin",
+      "sql_sha256": "3eb12e5bafe877f825399d2905523e26201831b46d6ebc54e734cdb0961a8fd5"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "absence",
+      "number": 39,
+      "phase": "start",
+      "sql_sha256": "82f99beb6965577a08df11164cac20e21a1c1b43566c839ca363f300eb1a2505"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "absence",
+      "number": 40,
+      "phase": "measured_query",
+      "sql_sha256": "41e542f9a207337613790f7f4ad386373aaf405291d616ccd8e4189d8b074aa0"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "absence",
+      "number": 41,
+      "phase": "end",
+      "sql_sha256": "7d2150c8026d309d4646e3322b44a3cdc4545edc937469187372caccf023993d"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "absence",
+      "number": 42,
+      "phase": "rollback",
+      "sql_sha256": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "absence",
+      "number": 43,
+      "phase": "stats_after",
+      "sql_sha256": "8b89d9f1137dbd104c445e0923075a299f54aa7b3a34b1e547d2b61320a691bd"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "absence",
+      "number": 44,
+      "phase": "coverage",
+      "sql_sha256": "bddd13c9dff6f7154b5538ecfdb6081f080d3c406e1d3c584d70204f5f146162"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "absence",
+      "number": 45,
+      "phase": "coverage_wait_outside_transaction",
+      "sql_sha256": "5ddaf3947ab5ec7185fdc1481d32c09179319dad9a89fbc5f68093fb706a0fcf"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "absence",
+      "number": 46,
+      "phase": "coverage_after_wait",
+      "sql_sha256": "bddd13c9dff6f7154b5538ecfdb6081f080d3c406e1d3c584d70204f5f146162"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "snapshot",
+      "number": 47,
+      "phase": "query_binding",
+      "sql_sha256": "05ed30507c4e2ef05b8335fb3dbcd09cdcf90ad76c0c379812445c84ad4413e2"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "snapshot",
+      "number": 48,
+      "phase": "stats_before",
+      "sql_sha256": "8b89d9f1137dbd104c445e0923075a299f54aa7b3a34b1e547d2b61320a691bd"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "snapshot",
+      "number": 49,
+      "phase": "begin",
+      "sql_sha256": "3eb12e5bafe877f825399d2905523e26201831b46d6ebc54e734cdb0961a8fd5"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "snapshot",
+      "number": 50,
+      "phase": "start",
+      "sql_sha256": "82f99beb6965577a08df11164cac20e21a1c1b43566c839ca363f300eb1a2505"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "snapshot",
+      "number": 51,
+      "phase": "measured_query",
+      "sql_sha256": "da1a69cb0ca3aed65b529cc5fef7174db7bf83924b4c338ce8c9c054d0545f95"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "snapshot",
+      "number": 52,
+      "phase": "end",
+      "sql_sha256": "7d2150c8026d309d4646e3322b44a3cdc4545edc937469187372caccf023993d"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "snapshot",
+      "number": 53,
+      "phase": "rollback",
+      "sql_sha256": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "snapshot",
+      "number": 54,
+      "phase": "stats_after",
+      "sql_sha256": "8b89d9f1137dbd104c445e0923075a299f54aa7b3a34b1e547d2b61320a691bd"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "snapshot",
+      "number": 55,
+      "phase": "coverage",
+      "sql_sha256": "bddd13c9dff6f7154b5538ecfdb6081f080d3c406e1d3c584d70204f5f146162"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "snapshot",
+      "number": 56,
+      "phase": "coverage_wait_outside_transaction",
+      "sql_sha256": "5ddaf3947ab5ec7185fdc1481d32c09179319dad9a89fbc5f68093fb706a0fcf"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "snapshot",
+      "number": 57,
+      "phase": "coverage_after_wait",
+      "sql_sha256": "bddd13c9dff6f7154b5538ecfdb6081f080d3c406e1d3c584d70204f5f146162"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "rowhash",
+      "number": 58,
+      "phase": "query_binding",
+      "sql_sha256": "355fbd0129fd0838b47d45b452547ec3e8f7bb747831a75ee3c68b75b3d5e86a"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "rowhash",
+      "number": 59,
+      "phase": "stats_before",
+      "sql_sha256": "8b89d9f1137dbd104c445e0923075a299f54aa7b3a34b1e547d2b61320a691bd"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "rowhash",
+      "number": 60,
+      "phase": "begin",
+      "sql_sha256": "3eb12e5bafe877f825399d2905523e26201831b46d6ebc54e734cdb0961a8fd5"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "rowhash",
+      "number": 61,
+      "phase": "rowhash_configuration_outside_interval",
+      "sql_sha256": "7d10b9ef765a9886d89e423ac8a6def20e8589493a8958af253431c52c1d2183"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "rowhash",
+      "number": 62,
+      "phase": "start",
+      "sql_sha256": "82f99beb6965577a08df11164cac20e21a1c1b43566c839ca363f300eb1a2505"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "rowhash",
+      "number": 63,
+      "phase": "measured_query",
+      "sql_sha256": "bf4bcb6c3f269c6f41bd5f8ee08cf5e5c5ef5437462f4b5baa7446c665a04ac7"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "rowhash",
+      "number": 64,
+      "phase": "end",
+      "sql_sha256": "7d2150c8026d309d4646e3322b44a3cdc4545edc937469187372caccf023993d"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "rowhash",
+      "number": 65,
+      "phase": "rollback",
+      "sql_sha256": "587fa628a9fe4642ac0e22825a97e81d388af674f7251a9fb699f96901dcb710"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "rowhash",
+      "number": 66,
+      "phase": "stats_after",
+      "sql_sha256": "8b89d9f1137dbd104c445e0923075a299f54aa7b3a34b1e547d2b61320a691bd"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "rowhash",
+      "number": 67,
+      "phase": "coverage",
+      "sql_sha256": "bddd13c9dff6f7154b5538ecfdb6081f080d3c406e1d3c584d70204f5f146162"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "rowhash",
+      "number": 68,
+      "phase": "coverage_wait_outside_transaction",
+      "sql_sha256": "5ddaf3947ab5ec7185fdc1481d32c09179319dad9a89fbc5f68093fb706a0fcf"
+    },
+    {
+      "commands": 1,
+      "confirmed": true,
+      "family": "rowhash",
+      "number": 69,
+      "phase": "coverage_after_wait",
+      "sql_sha256": "bddd13c9dff6f7154b5538ecfdb6081f080d3c406e1d3c584d70204f5f146162"
+    }
+  ],
+  "commands": 69,
+  "diagnostic_complete": false,
+  "extension_installed": true,
+  "families": [
+    "access",
+    "migrations",
+    "catalog",
+    "absence",
+    "snapshot",
+    "rowhash"
+  ],
+  "fsync_attested": true,
+  "full_chain_admission": false,
+  "historical_cause": "UNKNOWN",
+  "hosted_read_wal_limit_unchanged": 0,
+  "intervals_complete": false,
+  "last_coverage": {
+    "command_number": 69,
+    "family": "rowhash",
+    "flush_lsn": "0/2819C08",
+    "phase": "coverage_after_wait"
+  },
+  "limitations": [
+    "access:record_owner_attribution_unproven",
+    "catalog:wal_not_flushed_through_fixed_end",
+    "absence:wal_not_flushed_through_fixed_end",
+    "snapshot:wal_not_flushed_through_fixed_end",
+    "rowhash:wal_not_flushed_through_fixed_end"
+  ],
+  "max_total_wait_ms": 1800,
+  "max_wait_ms_per_query": 300,
+  "measured_executions_per_family": 1,
+  "outcome": "INCOMPLETE",
+  "planning": "counted_explain_without_analyze_before_first_execution",
+  "queries": [
+    {
+      "classification_attempted": true,
+      "classification_command_number": 15,
+      "classification_mode": "immediate",
+      "complete": true,
+      "coverage_checks": [
+        {
+          "command_number": 12,
+          "covers_end": false,
+          "family": "access",
+          "flush_lsn": "0/2818B98",
+          "phase": "coverage"
+        },
+        {
+          "command_number": 14,
+          "covers_end": true,
+          "family": "access",
+          "flush_lsn": "0/2819BA8",
+          "phase": "coverage_after_wait"
+        }
+      ],
+      "coverage_complete": true,
+      "duration_ms": 2,
+      "end_lsn": "0/2818C90",
+      "flush_lsn": "0/2819BA8",
+      "limitations": [
+        "record_owner_attribution_unproven"
+      ],
+      "name": "access",
+      "outcome": "INCOMPLETE",
+      "query_family_wal_nonzero": true,
+      "query_stats": {
+        "after_counters": {
+          "calls": 1,
+          "temp_read": 0,
+          "temp_written": 0,
+          "wal_bytes": 192,
+          "wal_fpi": 0,
+          "wal_records": 3
+        },
+        "after_sha256": "51b3875ae223bf9de720352068f346f46118fa8a5a2adb4dc93cf4edf4efa62a",
+        "background_temp_bytes": 0,
+        "baseline_absent": true,
+        "before_counters": {
+          "calls": 0,
+          "temp_read": 0,
+          "temp_written": 0,
+          "wal_bytes": 0,
+          "wal_fpi": 0,
+          "wal_records": 0
+        },
+        "before_sha256": "1184cddccf5f0135f6a748acfb76c8ef4c31c68f29084249fe6aacc043352581",
+        "continuous_background_observation": false,
+        "dealloc": 0,
+        "delta": {
+          "calls": 1,
+          "temp_read": 0,
+          "temp_written": 0,
+          "wal_bytes": 192,
+          "wal_fpi": 0,
+          "wal_records": 3
+        },
+        "entry_since_sha256": "27a07dca40450376f43f81463a4312d6b6439286f36d221bb0ae7d0dcbc3b545",
+        "other_active_after": 0,
+        "other_active_before": 0,
+        "queryid": "-7235187482350970179",
+        "reliable": true,
+        "scope": "same_database_user_toplevel_query_fingerprint_not_backend",
+        "stats_reset_sha256": "6b0287fe8f920da8fbe4ac4fb78a55169e0bf2d442133195f5f15bcb4e16b5d7",
+        "track": "top"
+      },
+      "resolved_limitations": [],
+      "rollback_confirmed": true,
+      "source_sha256": "ad5ff4effb3cdfc8647f1bfa24815040cf3b1b20537b36d4f163ee36ccc8cb23",
+      "span_bytes": 192,
+      "start_lsn": "0/2818BD0",
+      "technical": {
+        "block_count": 3,
+        "first_lsn": "0/2818BD0",
+        "groups": [
+          {
+            "record_type": "PRUNE_ON_ACCESS",
+            "records": 3,
+            "rmgr": "Heap2"
+          }
+        ],
+        "last_lsn": "0/2818C90",
+        "object_classes": [
+          {
+            "blocks": 3,
+            "object_class": "current_pg_catalog"
+          }
+        ],
+        "object_mapping_scope": "inspection_time_catalog_not_interval_object_proof",
+        "outside_blocks": 0,
+        "outside_records": 0,
+        "record_count": 3,
+        "record_owner_attribution": false
+      },
+      "wait_ms": 300
+    },
+    {
+      "classification_attempted": false,
+      "complete": true,
+      "coverage_checks": [
+        {
+          "command_number": 24,
+          "covers_end": true,
+          "family": "migrations",
+          "flush_lsn": "0/2819BA8",
+          "phase": "coverage"
+        }
+      ],
+      "coverage_complete": true,
+      "duration_ms": 3,
+      "end_lsn": "0/2819BA8",
+      "flush_lsn": "0/2819BA8",
+      "limitations": [],
+      "name": "migrations",
+      "outcome": "WAL_ZERO",
+      "query_family_wal_nonzero": false,
+      "query_stats": {
+        "after_counters": {
+          "calls": 1,
+          "temp_read": 0,
+          "temp_written": 0,
+          "wal_bytes": 0,
+          "wal_fpi": 0,
+          "wal_records": 0
+        },
+        "after_sha256": "0152d9ff911cc40e5e3fe258cc86cf81664f4cdce6b06b347832ead3044eaf0d",
+        "background_temp_bytes": 0,
+        "baseline_absent": true,
+        "before_counters": {
+          "calls": 0,
+          "temp_read": 0,
+          "temp_written": 0,
+          "wal_bytes": 0,
+          "wal_fpi": 0,
+          "wal_records": 0
+        },
+        "before_sha256": "1184cddccf5f0135f6a748acfb76c8ef4c31c68f29084249fe6aacc043352581",
+        "continuous_background_observation": false,
+        "dealloc": 0,
+        "delta": {
+          "calls": 1,
+          "temp_read": 0,
+          "temp_written": 0,
+          "wal_bytes": 0,
+          "wal_fpi": 0,
+          "wal_records": 0
+        },
+        "entry_since_sha256": "71d8707afc1f5628f405247da03b367e3e3a0e134206d0a76ba4ccaf84dca455",
+        "other_active_after": 0,
+        "other_active_before": 0,
+        "queryid": "-4148709080900451930",
+        "reliable": true,
+        "scope": "same_database_user_toplevel_query_fingerprint_not_backend",
+        "stats_reset_sha256": "6b0287fe8f920da8fbe4ac4fb78a55169e0bf2d442133195f5f15bcb4e16b5d7",
+        "track": "top"
+      },
+      "resolved_limitations": [],
+      "rollback_confirmed": true,
+      "source_sha256": "c1b191e76b2023233a8ef5feef5da7cc838116790669bb55e5db23cce0b36ffd",
+      "span_bytes": 0,
+      "start_lsn": "0/2819BA8",
+      "technical": {
+        "block_count": 0,
+        "groups": [],
+        "object_classes": [],
+        "record_count": 0,
+        "record_owner_attribution": false
+      },
+      "wait_ms": 0
+    },
+    {
+      "classification_attempted": false,
+      "complete": false,
+      "coverage_checks": [
+        {
+          "command_number": 33,
+          "covers_end": false,
+          "family": "catalog",
+          "flush_lsn": "0/2819C08",
+          "phase": "coverage"
+        },
+        {
+          "command_number": 35,
+          "covers_end": false,
+          "family": "catalog",
+          "flush_lsn": "0/2819C08",
+          "phase": "coverage_after_wait"
+        }
+      ],
+      "coverage_complete": false,
+      "duration_ms": 42,
+      "end_lsn": "0/2819D30",
+      "flush_lsn": "0/2819C08",
+      "limitations": [
+        "wal_not_flushed_through_fixed_end"
+      ],
+      "name": "catalog",
+      "outcome": "INCOMPLETE",
+      "query_stats": {
+        "after_counters": {
+          "calls": 1,
+          "temp_read": 0,
+          "temp_written": 0,
+          "wal_bytes": 284,
+          "wal_fpi": 0,
+          "wal_records": 5
+        },
+        "after_sha256": "5f86c15f6314a093db7fa192570982c9908febb52f1cb11a268eb3d7f84709a2",
+        "background_temp_bytes": 0,
+        "baseline_absent": true,
+        "before_counters": {
+          "calls": 0,
+          "temp_read": 0,
+          "temp_written": 0,
+          "wal_bytes": 0,
+          "wal_fpi": 0,
+          "wal_records": 0
+        },
+        "before_sha256": "1184cddccf5f0135f6a748acfb76c8ef4c31c68f29084249fe6aacc043352581",
+        "continuous_background_observation": false,
+        "dealloc": 0,
+        "delta": {
+          "calls": 1,
+          "temp_read": 0,
+          "temp_written": 0,
+          "wal_bytes": 284,
+          "wal_fpi": 0,
+          "wal_records": 5
+        },
+        "entry_since_sha256": "d9491dd4c46e23e10c63b354da233ee45af3c4fb02af73c35bc1b667c26d99a5",
+        "other_active_after": 0,
+        "other_active_before": 0,
+        "queryid": "3362593521169571211",
+        "reliable": true,
+        "scope": "same_database_user_toplevel_query_fingerprint_not_backend",
+        "stats_reset_sha256": "6b0287fe8f920da8fbe4ac4fb78a55169e0bf2d442133195f5f15bcb4e16b5d7",
+        "track": "top"
+      },
+      "resolved_limitations": [],
+      "rollback_confirmed": true,
+      "source_sha256": "5e3cce093162da75aa5133f845bcb11396d67126a4ddec3b0345711dedb950ec",
+      "span_bytes": 296,
+      "start_lsn": "0/2819C08",
+      "wait_ms": 300
+    },
+    {
+      "classification_attempted": false,
+      "complete": false,
+      "coverage_checks": [
+        {
+          "command_number": 44,
+          "covers_end": false,
+          "family": "absence",
+          "flush_lsn": "0/2819C08",
+          "phase": "coverage"
+        },
+        {
+          "command_number": 46,
+          "covers_end": false,
+          "family": "absence",
+          "flush_lsn": "0/2819C08",
+          "phase": "coverage_after_wait"
+        }
+      ],
+      "coverage_complete": false,
+      "duration_ms": 1,
+      "end_lsn": "0/2819D30",
+      "flush_lsn": "0/2819C08",
+      "limitations": [
+        "wal_not_flushed_through_fixed_end"
+      ],
+      "name": "absence",
+      "outcome": "INCOMPLETE",
+      "query_stats": {
+        "after_counters": {
+          "calls": 1,
+          "temp_read": 0,
+          "temp_written": 0,
+          "wal_bytes": 0,
+          "wal_fpi": 0,
+          "wal_records": 0
+        },
+        "after_sha256": "b9d1ad0bf19fd3a3ede187e86ad9f4531b405f01943c3839b717d8183a208661",
+        "background_temp_bytes": 0,
+        "baseline_absent": true,
+        "before_counters": {
+          "calls": 0,
+          "temp_read": 0,
+          "temp_written": 0,
+          "wal_bytes": 0,
+          "wal_fpi": 0,
+          "wal_records": 0
+        },
+        "before_sha256": "1184cddccf5f0135f6a748acfb76c8ef4c31c68f29084249fe6aacc043352581",
+        "continuous_background_observation": false,
+        "dealloc": 0,
+        "delta": {
+          "calls": 1,
+          "temp_read": 0,
+          "temp_written": 0,
+          "wal_bytes": 0,
+          "wal_fpi": 0,
+          "wal_records": 0
+        },
+        "entry_since_sha256": "ea75444f3ab564a4a69dc385fa0ee89af6b642e6b07455f3ee3425a6be5fb271",
+        "other_active_after": 0,
+        "other_active_before": 0,
+        "queryid": "5166041404679812096",
+        "reliable": true,
+        "scope": "same_database_user_toplevel_query_fingerprint_not_backend",
+        "stats_reset_sha256": "6b0287fe8f920da8fbe4ac4fb78a55169e0bf2d442133195f5f15bcb4e16b5d7",
+        "track": "top"
+      },
+      "resolved_limitations": [],
+      "rollback_confirmed": true,
+      "source_sha256": "8941af7a96d93dfd60aaad325f075dbab6565fef1f8f316914a18b528786f769",
+      "span_bytes": 0,
+      "start_lsn": "0/2819D30",
+      "wait_ms": 300
+    },
+    {
+      "classification_attempted": false,
+      "complete": false,
+      "coverage_checks": [
+        {
+          "command_number": 55,
+          "covers_end": false,
+          "family": "snapshot",
+          "flush_lsn": "0/2819C08",
+          "phase": "coverage"
+        },
+        {
+          "command_number": 57,
+          "covers_end": false,
+          "family": "snapshot",
+          "flush_lsn": "0/2819C08",
+          "phase": "coverage_after_wait"
+        }
+      ],
+      "coverage_complete": false,
+      "duration_ms": 3,
+      "end_lsn": "0/2819D30",
+      "flush_lsn": "0/2819C08",
+      "limitations": [
+        "wal_not_flushed_through_fixed_end"
+      ],
+      "name": "snapshot",
+      "outcome": "INCOMPLETE",
+      "query_stats": {
+        "after_counters": {
+          "calls": 1,
+          "temp_read": 0,
+          "temp_written": 0,
+          "wal_bytes": 0,
+          "wal_fpi": 0,
+          "wal_records": 0
+        },
+        "after_sha256": "88f9644b1c9a7a3a698037c5037dc331495a52258fc23e9b223bd43f7b6a2a4a",
+        "background_temp_bytes": 0,
+        "baseline_absent": true,
+        "before_counters": {
+          "calls": 0,
+          "temp_read": 0,
+          "temp_written": 0,
+          "wal_bytes": 0,
+          "wal_fpi": 0,
+          "wal_records": 0
+        },
+        "before_sha256": "1184cddccf5f0135f6a748acfb76c8ef4c31c68f29084249fe6aacc043352581",
+        "continuous_background_observation": false,
+        "dealloc": 0,
+        "delta": {
+          "calls": 1,
+          "temp_read": 0,
+          "temp_written": 0,
+          "wal_bytes": 0,
+          "wal_fpi": 0,
+          "wal_records": 0
+        },
+        "entry_since_sha256": "0b7f80749fd0e7050c75745b710cb85ae716da50d8482313fd4fc346d2ac4677",
+        "other_active_after": 0,
+        "other_active_before": 0,
+        "queryid": "-6647076033600343782",
+        "reliable": true,
+        "scope": "same_database_user_toplevel_query_fingerprint_not_backend",
+        "stats_reset_sha256": "6b0287fe8f920da8fbe4ac4fb78a55169e0bf2d442133195f5f15bcb4e16b5d7",
+        "track": "top"
+      },
+      "resolved_limitations": [],
+      "rollback_confirmed": true,
+      "source_sha256": "3d8a5a0790efdcdf086ba95dd4bd28daca3ac5de148856b5c2b63f89f1191cdf",
+      "span_bytes": 0,
+      "start_lsn": "0/2819D30",
+      "wait_ms": 300
+    },
+    {
+      "classification_attempted": false,
+      "complete": false,
+      "coverage_checks": [
+        {
+          "command_number": 67,
+          "covers_end": false,
+          "family": "rowhash",
+          "flush_lsn": "0/2819C08",
+          "phase": "coverage"
+        },
+        {
+          "command_number": 69,
+          "covers_end": false,
+          "family": "rowhash",
+          "flush_lsn": "0/2819C08",
+          "phase": "coverage_after_wait"
+        }
+      ],
+      "coverage_complete": false,
+      "duration_ms": 6,
+      "end_lsn": "0/2819D30",
+      "flush_lsn": "0/2819C08",
+      "hash_rows_discarded": 45,
+      "limitations": [
+        "wal_not_flushed_through_fixed_end"
+      ],
+      "name": "rowhash",
+      "outcome": "INCOMPLETE",
+      "query_stats": {
+        "after_counters": {
+          "calls": 1,
+          "temp_read": 0,
+          "temp_written": 0,
+          "wal_bytes": 0,
+          "wal_fpi": 0,
+          "wal_records": 0
+        },
+        "after_sha256": "6365a1aa107965b7a21c4a7908b44e3f2dbb4ccf86ec53e703960964efb652ad",
+        "background_temp_bytes": 0,
+        "baseline_absent": true,
+        "before_counters": {
+          "calls": 0,
+          "temp_read": 0,
+          "temp_written": 0,
+          "wal_bytes": 0,
+          "wal_fpi": 0,
+          "wal_records": 0
+        },
+        "before_sha256": "1184cddccf5f0135f6a748acfb76c8ef4c31c68f29084249fe6aacc043352581",
+        "continuous_background_observation": false,
+        "dealloc": 0,
+        "delta": {
+          "calls": 1,
+          "temp_read": 0,
+          "temp_written": 0,
+          "wal_bytes": 0,
+          "wal_fpi": 0,
+          "wal_records": 0
+        },
+        "entry_since_sha256": "6f71f29b6a234ed3751e00df385e0bc0a383d017a1184565e46987892b9a35b5",
+        "other_active_after": 0,
+        "other_active_before": 0,
+        "queryid": "1600497411439587333",
+        "reliable": true,
+        "scope": "same_database_user_toplevel_query_fingerprint_not_backend",
+        "stats_reset_sha256": "6b0287fe8f920da8fbe4ac4fb78a55169e0bf2d442133195f5f15bcb4e16b5d7",
+        "track": "top"
+      },
+      "resolved_limitations": [],
+      "rollback_confirmed": true,
+      "source_sha256": "bf4bcb6c3f269c6f41bd5f8ee08cf5e5c5ef5437462f4b5baa7446c665a04ac7",
+      "span_bytes": 0,
+      "start_lsn": "0/2819D30",
+      "wait_ms": 300
+    }
+  ],
+  "query_text_exported": false,
+  "resolved_limitations": [],
+  "rollback_confirmed": true,
+  "row_contents_exported": false,
+  "rowhash_scope": "bounded_migration_history_expression_not_full_cursor_cycle",
+  "scope": "fixed_cluster_intervals_and_separate_query_fingerprint_counters",
+  "status": "DIAGNOSTIC_ONLY",
+  "version": 2,
+  "wait_ms": 1500,
+  "wal_zero_pass": false,
+  "warmup_executions": 0
+}

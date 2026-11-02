@@ -1,0 +1,13 @@
+{
+  "auth_image": "supabase/gotrue:v2.197.0",
+  "checks": [
+    "real_password_relogin_same_subject",
+    "global_logout_deletes_sessions",
+    "revoked_token_denied",
+    "revoked_token_denied"
+  ],
+  "image_digests": [
+    "supabase/gotrue@sha256:1736a63078f5922b198c4cbe50f80ab9a2d3b54fe8b7b6cfb2e9dc5dbbc12c6b"
+  ],
+  "secrets_exported": false
+}

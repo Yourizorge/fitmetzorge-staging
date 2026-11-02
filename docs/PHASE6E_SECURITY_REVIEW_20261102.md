@@ -1,9 +1,10 @@
 # Phase 6E security review checkpoint, 2 November 2026
 
-Status: E1/E2 fixes and E3 CI inclusion VERIFIED LOCALLY; no fullchain or hosted GO.
-Replacement Role E, updated after main's explicit re-review request.
-Main is preparing two diagnostic-only runs and app CI. Those results are not
-available to this checkpoint and must be bound to the final source separately.
+Status: app CI41474475311 CLEAN_CI_PASS verified from retained artifacts;
+security18 executed PASS on the corrected dependency target. E1-E3 are closed
+for this source-bound disposable app CI. Advisors: 211 INFO, 117 WARN, 0 ERROR,
+not zero findings. No fullchain/hosted GO. Replacement Role E; no DB calls or
+implementation changes made by E.
 
 ## Scope and source identity
 
@@ -51,9 +52,9 @@ successfully: only the initial loopback request is observed, then Denied.
 A supplemental in-memory check supplied hostile proxy environment values and
 made ambient proxy discovery fail if called; the request remained direct to
 loopback and succeeded through the mock handler. No sockets were opened.
-E1 is closed at source/offline-test level. Fresh real local GoTrue login/logout
-in app CI must still be bound to the corrected bytes; no such new run is claimed
-in this report.
+E1 was first closed at source/offline-test level. App CI41474475311 now supplies
+the executed security regression and separate real local GoTrue evidence bound
+to the corrected bytes; see the final CI section below.
 
 ### E2 / original P1: effective database address fixed and verified locally
 
@@ -71,10 +72,12 @@ connect itself is mocked and no database connection is made. Main rejects
 explicit/environment hostaddr values other than exactly 127.0.0.1 and passes
 hostaddr='127.0.0.1' explicitly to psycopg.connect. A supplemental mocked-connect
 check confirms that pin survives a PGHOSTADDR change after Store construction.
-E2 is closed at source/offline-test level. A successful real local TLS connection
-remains part of fresh app CI, not this offline result. No hosted probe is needed.
+E2 was first closed at source/offline-test level. App CI41474475311 now supplies
+successful actual local adapter/database execution with these same corrected
+bytes. The offline mocked-connect result alone did not establish that. No hosted
+probe was made.
 
-### E3 / original P1 evidence gap: CI inclusion fixed and verified in source
+### E3 / original P1 evidence gap: dependency fix now executed in app CI
 
 At the original checkpoint `_offline/phase6e_server_v1/ci.py:12-33` omitted
 `test_release_security.py` and did not invoke it. That historical CI coverage
@@ -88,6 +91,59 @@ all 18 tests locally with pglast/psycopg. Main reports combined 42 PASS (securit
 results as independently executed. Fresh CI must retain the release-security
 result and verify candidate source binding before/after. No E edit to the CI
 assembler was made. Diagnostics are not app Auth/RLS or fullchain evidence.
+
+Subsequent actual run [app CI41471744180](https://github.com/Yourizorge/fitmetzorge-staging/actions/runs/41471744180)
+reached clean47/47 and SQL/Auth/database tests, then stopped at release-security
+with missing pglast before test execution, as reported by main. No retained
+receipt for this run was present in the app receipts directory at this inspection;
+these run facts are main-supplied, not independently downloaded or hash-verified
+by E. Do not infer exact suite counts, completed final source binding, advisors,
+final dry-run or whole-app PASS from that partial progress.
+
+The source explains the failure: Gate.install installs pglast==7.20 and
+psycopg[binary]==3.2.10 into self.sources/supabase/.temp/phase6e11-pg17-parser and
+adds that directory to the parent sys.path. A new Python child does not inherit
+sys.path. The reviewed release-security command lacked an explicit PYTHONPATH
+for that directory, unlike adjacent dependency-bearing test commands. E's prior
+local run supplied PYTHONPATH explicitly; the inclusion review missed this child
+environment gap. E3 is reopened for executable CI evidence, not for omission of
+the test file. The original 18/18 local result remains valid within its stated
+environment and cannot turn this CI import failure into PASS.
+
+Role D's subsequent fix is now independently inspected. ci.py:211-212 invokes
+release-security via env with PYTHONPATH set to exactly the pinned install
+target, followed by sys.executable, -B and the candidate-folder test file. The
+existing command wrapper still raises on a nonzero exit and retains sanitized
+stdout/stderr. No package version, network operation, timeout, test skip or
+acceptance threshold was added by this invocation change.
+
+E independently ran D's new
+test_release_train.ReleaseTrainTests.test_ci_release_security_uses_the_actual_pinned_install_target:
+1 test PASS (4.428 seconds). It AST-checks that the installer includes both pinned
+dependencies and that the child uses that exact target, candidate test file and
+default failure propagation. It is a source regression, not an executed Linux
+CI subprocess or import/integration proof.
+
+A fresh local subprocess with only the proposed target on PYTHONPATH imported
+pglast but stopped on missing psycopg, before test execution. The existing local
+layout has psycopg in the separate phase6e-server-deps directory; CI's reviewed
+installer puts both dependencies in phase6e11-pg17-parser. E did not install or
+copy packages to disguise this local layout difference. The earlier 18/18 PASS
+used both local directories. The new source fix is consistent with CI's actual
+pinned installation and has no remaining source blocker identified by E for
+main's appCI dispatch. A successful new source-bound CI security step is still
+required; this review does not retroactively pass run41471744180 or grant any
+fullchain/hosted admission. No E edits to D's files.
+
+The pending-CI statements above describe the earlier review checkpoint. The
+subsequent app CI41474475311 executed security18 successfully and closes this
+dependency-execution gap for its exact source. CI41471744180 remains failed;
+the successful later run does not rewrite that history.
+
+Reviewed D-patch raw SHA256, also matched in app3 source-binding receipts:
+
+- ci.py: 2938d2ff55b3bb4b55d3a01a7d5a824e4ae92a94ad9fc318f5bad41d8e978b0a.
+- test_release_train.py: 93856e6ef796ab84f4e27425a61e30137000566214fea988b8d27dab670433e5.
 
 ### E4 / existing scope observation: inherited public SECURITY DEFINER endpoints
 
@@ -205,10 +261,144 @@ attestation or a complete table-by-table audit of every legacy product table.
 | Original E-suite attempt | Originally stopped at import because pglast/psycopg were not on the runtime path. This historical attempt remains unsuccessful; no dependency install/download was made. |
 | Original isolated Auth regression | Pre-fix LocalAuth/Denied and the existing test method were AST-extracted unchanged. One test FAILED (Denied not raised); a separate mock trace confirmed Authorization on the redirected request. This failure remains historical evidence. |
 | Current E-suite rerun | Independently executed all 18 unchanged tests: PASS, exit 0, 1.751 seconds reported by unittest. Real pglast parsing and psycopg conninfo parsing; mocked HTTP/database I/O. No SQL, real GoTrue or network execution. |
+| Actual app CI41471744180 | Main reports clean47/47 plus SQL/Auth/database progress, then missing pglast at release-security before any of its test methods ran. Overall run failed; no 18-test security CI PASS. Local receipt/source/archive verification pending. |
+| D dependency fix review, historical checkpoint | Correct target/candidate invocation inspected; focused AST regression 1/1 PASS. One-target local import probe stopped on psycopg because local dependencies are split. That probe remains unsuccessful; later CI execution is separate evidence. |
+| Actual app CI41474475311 | Independently checked 619/619 manifest-listed file hashes. CLEAN_CI_PASS at 5c6ca4aa57621a15c71afde006c90b0063eac138; clean47/47, EMPTY dry-run, security18 actually ran and passed. Both source-binding receipts PASS. See final CI/advisor section for precise limits. |
 | Current supplemental checks | Hostile ambient proxies ignored; connect address remains pinned after environment change. Both PASS with sockets blocked and connect mocked. These two checks are separate from the 18-test suite and main's reported combined 42, not extra CI tests. |
 | RLS/function review | Source inspection plus the now-passing SQL AST/static assertions. SQL parsing does not execute policies or establish fresh live RLS results. |
-| Fresh advisors | Not run: this role forbids SQL/connections and no Supabase CLI was found on PATH. Existing CI source runs hash-pinned Splinter plus local db lint; this is not a newly executed CLI-advisors result. |
+| Actual CI advisors | app3 advisors.json records hash-pinned Splinter execution on disposable PostgreSQL: 211 INFO, 117 WARN, 0 ERROR. E read/hash-verified the receipt and did not execute SQL or advisors. Separate db lint exited 0 with warnings. Neither result is zero findings or hosted Auth configuration evidence. |
 | Endchain/WAL | Prior CI40354914899 stopped before Auth/workflow. Earlier incomplete diagnostic intervals remain INCOMPLETE. No new causal/WAL-zero claim. |
+
+### What the security tests actually assert
+
+`test_release_security.py` has 12 SqlSecurity tests and 6 LocalBoundary tests.
+SqlSecurity uses pglast to parse migration files and inspects AST nodes/rendered
+SQL or function-body substrings. Its six-table RLS check proves ENABLE RLS
+statements exist in source; it does not query pg_class or execute an RLS policy.
+Policy targets, USING/WITH CHECK presence, grants, invoker declarations, fixed
+search paths and principal/replay fragments are similarly source assertions.
+The suite does not prove every predicate is semantically correct or all migration
+effects compose into the expected effective database catalog.
+
+LocalBoundary blocks sockets and mocks psycopg.connect. Its live-session case
+uses a fake execute/fetchone result, and its redirect case uses an in-memory
+HTTP handler. Real conninfo parsing is not a real database connection. None of
+these 18 tests supplies actual Auth issuance, live RLS, SQL execution or hosted
+admission evidence. Do not label their PASS as an RLS integration PASS.
+
+Separate `_offline/phase6e_server_v1/database_tests.py:163-173` does execute
+database checks when run by its real integration caller: after Store.bind it
+queries another member's workspace under the restricted server role and asserts
+zero rows (`RLS_cross_member_zero`). It also SET ROLEs anon/authenticated/
+service_role and requires SQLSTATE 42501 for private-workspace access. Those
+three denials demonstrate ACL/schema exclusion, not independently each table's
+RLS behavior. Other adapter denials can originate from domain/application checks;
+their success must not all be attributed to PostgreSQL RLS. The suite is not an
+exhaustive live six-table by all-role/mutation matrix. Its caller in ci.py uses
+real_local_GoTrue, while the shared test module can also receive mock-local Auth.
+Attribute any executed result to its actual caller, source hash and receipt.
+Historical app CI40354972820 and the new failed run remain separate evidence.
+
+## Final app3 CI and advisor disposition
+
+Inspected the user-designated app3 evidence, physically present at
+`supabase/.temp/phase6e-server-ci-3e7589b8931c46698ff10d5040c979a0/verified-41474475311`
+under the sole repository (no intervening app3 subdirectory on disk).
+[App CI41474475311](https://github.com/Yourizorge/fitmetzorge-staging/actions/runs/41474475311)
+result.json records CLEAN_CI_PASS at commit
+`5c6ca4aa57621a15c71afde006c90b0063eac138`, candidate SHA256
+`ca8b724de035bcce8fbd34cc218414827afb8c72db8208570dc3b1f4853b7e71`.
+E independently recomputed all 619 manifest-listed hashes: 619 match, none
+missing/mismatched. The collection records archive SHA256
+`3620e0b1716b625f5bec8dbc158fdacb862a8dabef127e542514e71df7c16842`;
+E did not redownload or rehash the original archive or query GitHub live.
+
+`365-release-security.json` has exitcode 0 and explicitly reports 18 tests run,
+OK (0.251 seconds unittest time, 0.481 seconds process time). This resolves the
+actual missing-pglast execution failure from CI41471744180. The test file remains
+unchanged. Both loaded-source-preflight.json and loaded-source-final.json say
+ALL_PYTHON_SOURCE_BINDING_PASS; the final receipt lists 210 sources and matches
+the reviewed ci.py, store.py, test_release_security.py and test_release_train.py
+hashes. This is evidence for that commit/candidate, not arbitrary later changes.
+
+Result.json also records clean47/47, all 12 planned SQL regressions, 74 integrated
+database tests, 4 integrated Auth tests, 209 integration browser checks and an
+EMPTY local final dry-run. Groups are distinct and are not summed. The inspected
+integration-database.json explicitly names real_local_GoTrue and successful
+RLS_cross_member_zero plus private_denied_anon/authenticated/service_role cases.
+integration-auth.json records actual password re-login, session deletion on
+global logout and both revoked-token denials. Therefore actual local Auth and
+the named live RLS/ACL checks have evidence separate from security18's AST/mocks;
+this still is not an exhaustive live six-table/all-role policy matrix.
+
+### Actual advisor totals
+
+E parsed every row of the retained advisors.json output, rather than inferring
+an empty report from CLEAN_CI_PASS:
+
+| Severity | Check | Count |
+|---|---|---:|
+| WARN | auth_rls_initplan | 49 |
+| WARN | authenticated_security_definer_function_executable | 67 |
+| WARN | function_search_path_mutable | 1 |
+| INFO | rls_enabled_no_policy | 76 |
+| INFO | unindexed_foreign_keys | 25 |
+| INFO | unused_index | 110 |
+| ERROR | All checks | 0 |
+
+Totals: 328 findings = 211 INFO + 117 WARN + 0 ERROR. All 67 authenticated-definer
+warnings name functions in public; none names the app candidate's private schema.
+Do not describe these as 328 vulnerabilities, universally harmless findings, or
+a zero-advisor result. They remain review/maintenance findings under existing
+scope. The pinned advisor source is Supabase Splinter commit
+`e74a9e36cb12258cb67d1464bc1cb196e9cd8446`, source SHA256
+`d8d558baad3e03832e521c527907fa50a9a172fabd899dd0f5c2504a5a0e9349`, executed SQL SHA256
+`8ed8cd1eb6ece2c5582fc89a1b1a52eb130170570f8d587993ec2a244e700ffc`.
+Scope is local database security/performance, not hosted Auth configuration.
+
+The bound runner rejects advisor ERRORs and specifically WARNs involving
+fmz6e11_workflow_audit; it does not require zero WARNs globally. That explains
+why this actual CI PASS coexists with warnings and does not waive them. The
+separate `374-cli-db.json` is db lint, exit 0 with issues on 28 functions, none
+named fmz6e_integration_private.*. Do not confuse lint output with advisor totals.
+
+### Mutable path and candidate findings
+
+The single mutable-path warning is `public.touch_updated_at()`. Its definition
+is in the original `20260812000000_legacy_phase1_3_source_baseline.sql:346`.
+It returns trigger, has no SECURITY DEFINER declaration (default invoker), and
+its body only assigns `new.updated_at = now()` and returns NEW. It has no fixed
+search_path, so the advisor finding is real; it is not introduced by candidates
+45/46/47 or the dependency fix. No later definition/ALTER for this exact function
+was found in the reviewed migrations. No concrete new privilege-escalation path
+was established here; mutable path remains legacy hardening debt, not a request
+to rewrite frozen SQL or a newly demonstrated candidate security blocker.
+
+The baseline file's local hash matches the app3 candidate hash
+`ae06ca53771d90baa12c12af8d8b43e3bd0464d926d8795197859c4a8b8ae26b`.
+All 47 migration hashes in app3's candidate manifest equal their entries in
+historical app CI40354972820's candidate manifest. This proves unchanged source,
+not equality of all historical advisor outputs or current hosted catalog state.
+
+Exactly six advisor findings name fmz6e_integration_private:
+
+- WARN auth_rls_initplan on subjects.subject_self and audit.audit_insert: repeated
+  current_setting/auth evaluation is a performance concern; it is not itself
+  evidence of an ownership bypass. These policies belong to the existing private
+  candidate source, unchanged from the previous app CI.
+- INFO unindexed_foreign_keys on requests_workspace_id_version_fkey and the
+  workspaces member_id, owner_id and trainer_id foreign keys. These are index/
+  performance findings, not missing authorization checks. No index change made.
+
+No mutable-path or authenticated-definer advisor warning names this private
+candidate. integration-security.json independently records its actor, observe
+and outbox_append functions as invoker with search_path=pg_catalog, pg_temp and
+the server role as non-login/non-superuser/non-bypassrls. E found no new concrete
+candidate security blocker in these six findings. This scoped disposition does
+not certify performance at arbitrary scale, dismiss all legacy warnings, or
+override the fullchain WAL/IO/budget gates. Official
+[advisor guidance](https://supabase.com/docs/guides/observability/advisors)
+also calls for evaluating findings against the intended schema/access model.
 
 Pre-fix reviewed file SHA256 values (raw on-disk bytes; retained as history):
 
@@ -270,15 +460,17 @@ endpoint was unsupported by the web reader, so the official HTML index was used.
 
 ## Handoff and limits
 
-E1/E2 implementation and E3 CI inclusion are now verified at the local source/test
-level against the hashes above. The remaining evidence task is main's fresh
-source-bound app CI, including real GoTrue, RLS and TLS-connection behavior.
-No new local implementation blocker was found in these two fixes or CI inclusion.
+E1-E3 now have source-bound app CI41474475311 execution evidence, including the
+18 security tests and separate real local Auth/database checks. CI41471744180
+remains a historical failed attempt. Advisors are explicitly 211 INFO/117 WARN/
+0 ERROR; no new concrete security blocker was established in the single legacy
+mutable-path function or the six private-candidate findings. The remaining
+fullchain/hosted gates are not replaced by this disposable app CI PASS.
 Reviewer F retains the complete evidence review; the documented audit-insert
 trust boundary is not a new untrusted direct-SQL capability. E4 remains existing
 scope, and no support-role expansion, frozen SQL or public runtime edit is requested.
 
-Two diagnostic-only runs plus app CI do not establish the complete endchain.
+The diagnostic-only runs plus app CI do not establish the complete endchain.
 Fullchain GO still requires the real complete gates, independently classified
 durable WAL interval, exact migration/source binding, complete command accounting
 and cleanup reserve. Maximum 2349 SQL commands, strict existing read-WAL limit
@@ -295,4 +487,4 @@ consumed by Role E. Package21 and real-member AI remain off.
 - JIT mappings after review: not remeasured; none opened or changed by E.
 - Synthetic fixtures remaining: not remeasured; none created by E.
 - Owner phone test: NO-GO at this checkpoint.
-- Definitive remote HEAD: owner/main-confirmed 9715ac8600bad89ff813ad399e745360028ce48a; not queried live by E.
+- Initial remote HEAD: owner/main-confirmed 9715ac8600bad89ff813ad399e745360028ce48a; not queried live by E. Current app CI source is 5c6ca4aa57621a15c71afde006c90b0063eac138; Main reports the definitive delivery HEAD separately.

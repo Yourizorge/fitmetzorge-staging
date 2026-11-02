@@ -1,0 +1,35 @@
+{
+  "endchain_capacity_used": false,
+  "hosted_calls": 0,
+  "invocations": [
+    {
+      "index": 0,
+      "observer_commands": 8,
+      "profile": "local_app",
+      "protocol_commands": 47,
+      "step": "app_schema"
+    },
+    {
+      "index": 1,
+      "observer_commands": 8,
+      "profile": "local_app",
+      "protocol_commands": 2,
+      "step": "minimal_dry_run"
+    },
+    {
+      "index": 2,
+      "observer_commands": 8,
+      "profile": "local_app",
+      "protocol_commands": 22,
+      "step": "app_outbox"
+    },
+    {
+      "index": 3,
+      "observer_commands": 8,
+      "profile": "local_app",
+      "protocol_commands": 2,
+      "step": "final_dry_run"
+    }
+  ],
+  "profile": "local_app"
+}
