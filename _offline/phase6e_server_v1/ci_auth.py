@@ -10,8 +10,9 @@ IMAGE='supabase/gotrue:v2.197.0'
 NAME='fmz-integration-auth-ci'
 
 @contextlib.contextmanager
-def environment(gate,roles=('a','trainer','b','owner','outsider')):
+def environment(gate,roles=('a','trainer','b','owner','outsider'),*,include_test_admin=False):
     if os.environ.get('GITHUB_REPOSITORY')!='Yourizorge/fitmetzorge-staging':raise RuntimeError('ci_only')
+    if type(include_test_admin) is not bool:raise ValueError('ci_admin_option')
     def private(args,**kw):
         p=subprocess.run(args,capture_output=True,text=True,timeout=30,**kw)
         if p.returncode:raise RuntimeError('local_auth_container')
@@ -66,8 +67,11 @@ def environment(gate,roles=('a','trainer','b','owner','outsider')):
                 tokens[role]=issued['access_token'];claims[role]=auth.verify(tokens[role]);accounts[role]={'email':email,'password':pw}
                 if claims[role]['sub']!=user['id']:raise RuntimeError('local_auth_subject')
             ctx={'dsn':dsn,'auth':auth,'tokens':tokens,'claims':claims,'admin':admin,'accounts':accounts,'image':IMAGE,'digests':digests}
+            # Private disposable test capability; never serialize ctx or this value.
+            if include_test_admin:ctx['test_admin_token']=admin_token
             try:yield ctx
             finally:
+                ctx.pop('test_admin_token',None)
                 primary=sys.exception()
                 try:
                     admin.operation='numeric_final_observers'

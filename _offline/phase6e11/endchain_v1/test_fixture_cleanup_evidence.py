@@ -2,6 +2,7 @@
 import copy,json,unittest
 from unittest.mock import Mock
 import fixture_cleanup_evidence as cleanup
+from fixture_cleanup_runtime_test import CleanupRuntimeTests
 
 CONTEXT={name:'69000000-0000-4000-8000-%012d'%i for i,name in enumerate(('window','a','b'),1)}
 

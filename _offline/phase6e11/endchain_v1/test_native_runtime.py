@@ -1,4 +1,4 @@
-import pathlib,sys,tempfile,types,unittest
+import os,pathlib,sys,tempfile,types,unittest
 from unittest.mock import patch
 from native_runtime import NativeRuntime,ALIASES
 
@@ -20,6 +20,7 @@ class NativeRuntimeTests(unittest.TestCase):
         self.assertNotIn('password',str(c));self.assertNotIn('synthetic-only',repr(r))
         r.connect();self.assertEqual(len(self.calls),1)
         self.assertEqual(self.calls[0]['sslmode'],'verify-full')
+        self.assertEqual(self.calls[0]['hostaddr'],'127.0.0.1')
         self.assertTrue(self.calls[0]['autocommit']);self.assertIsNone(self.calls[0]['prepare_threshold'])
     def test_fail_closed_modes_tls_and_limits(self):
         changes=[('sslmode','require'),('sslrootcert','absent'),('connect_timeout',10),('dbname','other'),('host','example.com')]
@@ -28,10 +29,28 @@ class NativeRuntimeTests(unittest.TestCase):
                 p=self.parameters();p[key]=value
                 with self.assertRaises(ValueError):NativeRuntime(p,'http://127.0.0.1:59999',environment='disposable_ci')
         self.assertEqual(self.calls,[])
+    def test_clear_is_terminal_and_cannot_connect_using_driver_defaults(self):
+        r=NativeRuntime(self.parameters(),'http://127.0.0.1:59999',environment='disposable_ci')
+        r.clear();r.clear()
+        with self.assertRaisesRegex(ValueError,'native_runtime_closed'):r.connect()
+        self.assertEqual(self.calls,[])
     def test_staging_must_use_existing_dashboard_validator(self):
         def validator(connect,token,ca):raise ValueError('dashboard_connect_binding')
         with self.assertRaisesRegex(ValueError,'dashboard_connect_binding'):
             NativeRuntime.staging({},'synthetic',self.ca,validator)
+        self.assertEqual(self.calls,[])
+    def test_disposable_hostaddr_and_service_redirection_are_blocked(self):
+        for key,value in (('hostaddr','192.0.2.10'),('service','untrusted'),('servicefile','untrusted')):
+            with self.subTest(key=key),self.assertRaisesRegex(ValueError,'native_loopback'):
+                NativeRuntime({**self.parameters(),key:value},'http://127.0.0.1:59999',environment='disposable_ci')
+        self.assertEqual(self.calls,[])
+    def test_ambient_redirection_before_creation_or_connect_is_blocked(self):
+        for key in ('PGHOSTADDR','PGSERVICE','PGSERVICEFILE'):
+            r=NativeRuntime(self.parameters(),'http://127.0.0.1:59999',environment='disposable_ci')
+            with patch.dict(os.environ,{key:'untrusted'}):
+                with self.assertRaisesRegex(ValueError,'native_loopback'):r.connect()
+                with self.assertRaisesRegex(ValueError,'native_loopback'):
+                    NativeRuntime(self.parameters(),'http://127.0.0.1:59999',environment='disposable_ci')
         self.assertEqual(self.calls,[])
     def test_explicit_staging_session_options_without_readonly_leak(self):
         p=self.parameters();p.update(host='aws-0-eu-test-1.pooler.supabase.com',user='postgres.mokxyyullfhkfalopbzd',

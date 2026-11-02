@@ -3,7 +3,7 @@
 No connection string is serialized into the Node worker or any receipt. The
 caller owns admission, command accounting, expiry and exact cleanup.
 """
-import json,pathlib,re,subprocess
+import json,os,pathlib,re,subprocess
 
 PROJECT='mokxyyullfhkfalopbzd'
 ALIASES={'a_member':'zorgeyouri+6e9-a-lid@gmail.com','a_trainer':'zorgeyouri+6e9-a-trainer@gmail.com',
@@ -20,12 +20,18 @@ class NativeRuntime:
         if str(p.get('connect_timeout'))!='5' or p.get('dbname')!='postgres':raise ValueError('native_connection_limits')
         expected='http://127.0.0.1:59999' if environment=='disposable_ci' else 'https://'+PROJECT+'.supabase.co/auth/v1'
         if auth_base!=expected:raise ValueError('native_auth_endpoint')
-        if environment=='disposable_ci' and p.get('host')!='127.0.0.1':raise ValueError('native_loopback')
+        if environment=='disposable_ci':
+            if (p.get('host')!='127.0.0.1' or p.get('hostaddr','127.0.0.1')!='127.0.0.1'
+                    or os.environ.get('PGHOSTADDR','127.0.0.1')!='127.0.0.1'
+                    or any(k in p for k in ('service','servicefile'))
+                    or any(os.environ.get(k) for k in ('PGSERVICE','PGSERVICEFILE'))):
+                raise ValueError('native_loopback')
+            p['hostaddr']='127.0.0.1'
         if environment=='staging' and (p.get('user')!='postgres.'+PROJECT or str(p.get('port'))!='5432'
                 or not re.fullmatch(r'aws-[0-9]+-[a-z0-9-]+\.pooler\.supabase\.com',p.get('host',''))
                 or p.get('options')!='-c jit=true -c statement_timeout=5000 -c lock_timeout=1000'):
             raise ValueError('native_session_binding')
-        self.__parameters=p
+        self.__parameters=p;self.__closed=False
         self.__driver=psycopg
         self.__row_factory=dict_row
         self.environment=environment;self.auth_base=auth_base
@@ -33,9 +39,16 @@ class NativeRuntime:
     def __repr__(self):return '<NativeRuntime private parameters>'
 
     def connect(self):
+        if self.__closed:raise ValueError('native_runtime_closed')
+        if self.environment=='disposable_ci' and (
+                os.environ.get('PGHOSTADDR','127.0.0.1')!='127.0.0.1'
+                or any(os.environ.get(k) for k in ('PGSERVICE','PGSERVICEFILE'))):
+            raise ValueError('native_loopback')
         return self.__driver.connect(**self.__parameters,autocommit=True,prepare_threshold=None,row_factory=self.__row_factory)
 
-    def clear(self):self.__parameters.clear()
+    def clear(self):
+        self.__closed=True
+        self.__parameters.clear()
 
     @classmethod
     def disposable(cls,gate):

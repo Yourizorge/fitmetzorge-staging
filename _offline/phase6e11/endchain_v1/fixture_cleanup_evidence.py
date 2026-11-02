@@ -33,6 +33,11 @@ select jsonb_build_object(
 SOURCES=(
     '_offline/phase6e11/endchain_v1/fixture_cleanup_evidence.py',
     '_offline/phase6e11/endchain_v1/test_fixture_cleanup_evidence.py',
+    '_offline/phase6e11/endchain_v1/fixture_cleanup_runtime.py',
+    '_offline/phase6e11/endchain_v1/fixture_cleanup_runtime_sql.py',
+    '_offline/phase6e11/endchain_v1/fixture_cleanup_runtime_ci.py',
+    '_offline/phase6e11/endchain_v1/fixture_cleanup_runtime_test.py',
+    '_offline/phase6e11/endchain_v1/admission_binding.py',
     '_offline/phase6e11/endchain_v1/fixture_lifecycle.py',
     '_offline/phase6e11/endchain_v1/workflow_composition.mjs',
     '_offline/phase6e11/endchain_v1/complete_register.py',
@@ -111,6 +116,13 @@ def source_gaps():
         'inventory_sql_sha256':hashlib.sha256(INVENTORY_SQL.encode()).hexdigest(),
         'new_suffix_command_count':None,'all_prefix_bound_proven':False,
         'runtime_wired':False,'sql_emitted':0,'delete_count':None,'cleanup_proven':False,
+        'local_component':{
+            'entrypoint':'fixture_cleanup_runtime_ci.run(gate)',
+            'prerequisite':'gate.fixture_cleanup_ids: registered local a_member/a_trainer/b_member',
+            'ownership_hooks':'prepare before fixture writes; capture on writer before every COMMIT',
+            'cleanup_protocol_plan':22,'baseline_protocol_plan':4,'capture_per_writer_transaction':1,
+            'actual_pg17_evidence':'pending execution; unit tests are not database evidence',
+            'hosted_wiring':False,'global_prefix_budget_proven':False},
         'hosted_admitted':False,
         'required_integration':[
             'Persist the pre-mutation run/window/workspace ownership journal and baseline absence.',
