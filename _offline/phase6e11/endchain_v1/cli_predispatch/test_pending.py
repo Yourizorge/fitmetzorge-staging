@@ -125,7 +125,7 @@ class PendingTests(unittest.TestCase):
         proof['terminal']['unknown_consumed'] = 1
         with self.assertRaisesRegex(ValueError, 'pending_terminal'): pending.prove_execution(proof, policy)
 
-    def exercise(self, fail=False):
+    def exercise(self, fail=False, boot=False):
         calls = []; compiled = {}; state = {'cleared':False}
         def bounded(argv, **kwargs):
             if argv[-1] == '--version': return 0, b'1.4.1'
@@ -140,6 +140,8 @@ class PendingTests(unittest.TestCase):
                 return 0, json.dumps(p).encode()
             calls.append(argv)
             if fail: raise ValueError('synthetic_timeout')
+            if boot: return 1, b'error: cli_predispatch_history_policy\n'
+            pathlib.Path(kwargs['env']['FMZ_CLI_PREDISPATCH_LEDGER']).touch()
             return 0, b'Applied private candidate migration'
         runtime = SimpleNamespace(clear=lambda:state.update(cleared=True))
         patch.dict(sys.modules, native_runtime=SimpleNamespace(NativeRuntime=SimpleNamespace(disposable=lambda g:runtime)),
@@ -152,8 +154,9 @@ class PendingTests(unittest.TestCase):
         patch.object(pending.common, 'replay', side_effect=lambda *a,**kw:evidence(compiled)).start()
         patch.object(pending.common, 'isolated', side_effect=lambda g,r,m:m()).start()
         target = self.gate.sources/pending.APP/pending.FILES[0]
-        if fail:
-            with self.assertRaisesRegex(ValueError, 'synthetic_timeout'):
+        if fail or boot:
+            expected = 'synthetic_timeout' if fail else 'cli_exit:hook_policy_validation'
+            with self.assertRaisesRegex(ValueError, expected):
                 pending.run_pending(self.gate, ('migration','up','--local'), target)
         else:
             result = pending.run_pending(self.gate, ('migration','up','--local'), target)
@@ -176,6 +179,16 @@ class PendingTests(unittest.TestCase):
         self.exercise(fail=True)
         self.assertFalse(self.gate.cli_protocol[0]['complete'])
         self.assertEqual(self.saved['cli-predispatch-pending-0.json']['reserved_sql_consumed_on_failure'], 64)
+
+    def test_boot_exit_is_preserved_with_no_ledger_no_retry_and_full_reservation(self):
+        self.exercise(boot=True)
+        receipt = self.saved['cli-predispatch-pending-0.json']
+        self.assertEqual(receipt['cli_exit_code'], 1)
+        self.assertFalse(receipt['cli_diagnostic']['ledger_present'])
+        self.assertEqual(receipt['cli_diagnostic']['reason'], 'cli_predispatch_history_policy')
+        self.assertEqual(receipt['reserved_sql_consumed_on_failure'], 64)
+        self.assertFalse(receipt['complete'])
+        self.assertEqual(receipt['observer_commands'], 8)
 
 
 if __name__ == '__main__': unittest.main()

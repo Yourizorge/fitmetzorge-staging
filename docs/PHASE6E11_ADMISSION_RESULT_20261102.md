@@ -45,6 +45,49 @@ moeten exact gebonden blijven; het verwijderen van broncontrole is geen oplossin
 De oorspronkelijke run en bestanden blijven ongewijzigd. Latere correcties
 zijn afzonderlijke bronversies en promoveren deze mislukte poging niet naar PASS.
 
+## Tweede brongebonden poging
+
+Commit `9580e5e207328dda8a180ae36d09409d44605156`, CI
+[41510381749](https://github.com/Yourizorge/fitmetzorge-staging/actions/runs/41510381749).
+Candidate SHA-256 `846b4f8df3d3ce7df610ae2c7e7bc563f2b69b4ba3c7da95751fe4c9b44d2ec1`.
+ZIP SHA-256 `908d332509c327e05b3a12fe50c9e7a7d7e6bdee92d8a5c41080c11826b6cb5f`.
+530 bronnen; 117 bewijsbestanden plus manifest geverifieerd.
+
+Schone canonical opbouw 45/45, pre-/post-migrationgrenscontrole en module-origin
+binding zijn uitgevoerd. Voor private appmigration 46 stopte de instrumentatie:
+CLI-exitcode 1, geen dispatchledger, `FileNotFoundError` bij het uitlezen daarvan.
+Geen migration46-PASS, geen 47/47-PASS, geen nul-dispatchclaim. De volledige
+64-eenhedenreservering blijft verbruikt; de acht disposable-isolatiecommando's
+en bevestigde restauratie staan apart geregistreerd. De concrete CLI-startfout
+is lokaal gereproduceerd: de nieuwe hook accepteerde uitsluitend 14-cijferige
+historyversies en verwierp de bestaande `20260813` en `20260818` voordat de
+ledger werd geopend. Alleen deze twee exacte legacy-identiteiten zijn toegevoegd
+aan beide historycontroles; nieuwe migrationtargets blijven 14-cijferig en de
+volledige history moet exact overeenkomen met de geregistreerde bronlijst.
+Deze run wordt niet heropend.
+
+Dezelfde gepinde CLI-entry met de exacte CI2-policy (45 historyversies en 42
+ASTs) faalde voor de correctie en gaf daarna exit0 bij een help-only start,
+zonder verbinding of SQL. Dit is geen database-applybewijs.
+Before-receipt SHA-256 `ab4eb2e2a8c8dfc9e34d53cbe0f800d73ac3afcfe498f2886b23542e0bced41a`;
+after-receipt SHA-256 `1eb8192525b0849afd9d2baa084a046207a9f8348016978dc6cbf833317e8efa`.
+De geintegreerde CLI-correctie: 47 Python- en 33 Node-tests PASS; dit zijn
+afzonderlijke suites, geen nieuwe volledige-keten-PASS. Een vaste gesanitiseerde
+foutclassificatie bewaart nu de CLI-exitcode voordat de ledger wordt uitgelezen.
+
+Lokale samengevoegde regressie op deze bron: 348 tests, 346 geslaagd en twee
+echte symlinktests overgeslagen vanwege Windows-privilege. Hun Linux-CI-uitvoering
+is op deze run nog niet bereikt. De eerdere kleinere rondes worden niet bij
+dit totaal opgeteld.
+
+Het complete offline register is in negen verliesloze bestanden gegenereerd,
+met bronhashes gelijk aan deze kandidaat. Register-SHA-256:
+`95508987f0aa62606b842a72c5841683a6c23b5f3f88d8e1961d1d89e0cfc0d3`.
+Locatie onder `supabase/.temp/phase6e-server-ci-fec8549bf78c48aba62800df478d3f90/`
+is `offline-budget-73c352cddf7e40cd81f3faea9b344bdd/`.
+Dit is een lokale generatie, niet uitgevoerd CI-bewijs; status
+`NO_GO_INCOMPLETE_BOUND` en `minimal_cap=None` blijven behouden.
+
 ## Budget en harde grenzen
 
 De veertien matrixfasen zijn niet als veertien volledige keten-PASS-resultaten

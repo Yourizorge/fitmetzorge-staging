@@ -190,7 +190,7 @@ def run_pending(gate, args, expected_file):
             receipt['observer_commands'] = len(first) + len(last)
         if password.encode() in output:
             raise ValueError('cli_predispatch_private_output')
-        receipt.update(cli_exit_code=code, output_sha256=common.sha(output))
+        common.check_invocation(receipt, code, output, ledger_file)
         evidence = common.replay(ledger_file)
         receipt.update(evidence)
         rows = prove_execution(evidence, policy)

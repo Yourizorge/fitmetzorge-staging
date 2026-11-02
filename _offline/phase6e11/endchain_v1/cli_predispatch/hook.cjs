@@ -10,6 +10,9 @@ const CAPS = Object.freeze({ quota: 64, pre_auth: 28, final: 28 });
 const MARK = Symbol('fmz-predispatch');
 const sha = value => crypto.createHash('sha256').update(value).digest('hex');
 const fail = code => { throw new Error('cli_predispatch_' + code); };
+// Only the two immutable legacy history identities are shorter than a timestamp.
+const historyVersion = value => typeof value === 'string' &&
+  (/^[0-9]{14}$/.test(value) || value === '20260813' || value === '20260818');
 const cleanAst = value => Array.isArray(value) ? value.map(cleanAst) :
   value && typeof value === 'object' ? Object.fromEntries(Object.keys(value).sort()
     .filter(k => !['location', 'stmt_location', 'stmt_len'].includes(k))
@@ -45,7 +48,7 @@ function validatePolicy(p) {
         m.ast_hashes.some(h => !/^[a-f0-9]{64}$/.test(h))) fail('migration_policy');
   }
   if (p.expected_history_versions !== undefined && (!Array.isArray(p.expected_history_versions) ||
-      p.expected_history_versions.length > 47 || p.expected_history_versions.some(v => !/^[0-9]{14}$/.test(v)) ||
+      p.expected_history_versions.length > 47 || p.expected_history_versions.some(v => !historyVersion(v)) ||
       new Set(p.expected_history_versions).size !== p.expected_history_versions.length ||
       JSON.stringify([...p.expected_history_versions].sort()) !== JSON.stringify(p.expected_history_versions))) fail('history_policy');
   return p;
@@ -242,7 +245,7 @@ function attach(connection, ledger) {
     if (!versions) return;
     const value = message.fields?.[0];
     const version = Buffer.isBuffer(value) ? value.toString('utf8') : value;
-    if (message.fields.length !== 1 || typeof version !== 'string' || !/^[0-9]{14}$/.test(version) || versions.length >= 47) {
+    if (message.fields.length !== 1 || !historyVersion(version) || versions.length >= 47) {
       ledger.stop(); fail('history_row');
     }
     versions.push(version);

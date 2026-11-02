@@ -152,6 +152,41 @@ class ReceiptTests(unittest.TestCase):
             ci.source_binding(self.root)
 
 
+class DiagnosticTests(unittest.TestCase):
+    def test_known_boot_error_does_not_become_missing_ledger(self):
+        with tempfile.TemporaryDirectory() as temp:
+            file = pathlib.Path(temp) / 'absent.jsonl'
+            receipt = {}
+            with self.assertRaisesRegex(ValueError, 'cli_exit:hook_policy_validation'):
+                ci.check_invocation(receipt, 1, b'error: cli_predispatch_history_policy\n', file)
+            self.assertEqual(receipt['cli_exit_code'], 1)
+            self.assertFalse(receipt['cli_diagnostic']['ledger_present'])
+            self.assertEqual(receipt['cli_diagnostic']['reason'], 'cli_predispatch_history_policy')
+
+    def test_unknown_output_and_secret_values_are_not_exported(self):
+        with tempfile.TemporaryDirectory() as temp:
+            raw = b'postgresql://private:password@private.invalid SELECT private_payload'
+            diagnostic = ci.invocation_diagnostic(7, raw, pathlib.Path(temp) / 'absent')
+            self.assertEqual(diagnostic['stage'], 'cli_exit_unclassified')
+            self.assertEqual(diagnostic['cli_exit_code'], 7)
+            self.assertIsNone(diagnostic['reason'])
+            self.assertNotIn('private', json.dumps(diagnostic))
+            self.assertNotIn('password', json.dumps(diagnostic))
+
+    def test_argument_heading_classifies_without_exporting_argument(self):
+        with tempfile.TemporaryDirectory() as temp:
+            diagnostic = ci.invocation_diagnostic(1, b'Error: Unknown argument: --private=secret\n', pathlib.Path(temp) / 'absent')
+            self.assertEqual(diagnostic['stage'], 'cli_argument_parse')
+            self.assertNotIn('secret', json.dumps(diagnostic))
+
+    def test_zero_exit_without_ledger_remains_failure(self):
+        with tempfile.TemporaryDirectory() as temp:
+            receipt = {}
+            with self.assertRaisesRegex(ValueError, 'ledger_missing_after_success'):
+                ci.check_invocation(receipt, 0, b'up to date', pathlib.Path(temp) / 'absent')
+            self.assertEqual(receipt['cli_exit_code'], 0)
+
+
 class ProcessTests(unittest.TestCase):
     def run_child(self, code, **kwargs):
         return ci.bounded([sys.executable, '-B', '-c', code], cwd=HERE, env=os.environ.copy(), **kwargs)

@@ -32,6 +32,43 @@ def sha(raw):
     return hashlib.sha256(raw).hexdigest()
 
 
+def invocation_diagnostic(code, output, ledger_file):
+    """Export only fixed classifications, never an upstream message or argv."""
+    known = {
+        'history_policy': 'hook_policy_validation',
+        'migration_policy': 'hook_policy_validation',
+        'policy': 'hook_policy_validation',
+        'policy_size': 'hook_policy_validation',
+        'environment': 'hook_environment_validation',
+        'pg17': 'hook_parser_validation',
+        'connection_boundary': 'hook_connection_boundary',
+    }
+    text = output.decode('utf-8', errors='replace')
+    stage = 'cli_exit_unclassified' if code else 'cli_returned'
+    reason = None
+    for name, phase in known.items():
+        if re.search(r'(?m)^(?:Error|error): cli_predispatch_' + name + r'\s*$', text):
+            stage, reason = phase, 'cli_predispatch_' + name
+            break
+    if reason is None:
+        # Only stable argument-error headings are classified; values stay private.
+        if re.search(r'(?m)^(?:Error|error): (?:Unknown|Unrecognized) (?:argument|option|flag)(?::| )', text):
+            stage, reason = 'cli_argument_parse', 'unrecognized_argument'
+    return dict(stage=stage, reason=reason, cli_exit_code=code,
+        ledger_present=pathlib.Path(ledger_file).is_file(), output_bytes=len(output),
+        output_sha256=sha(output), raw_output_exported=False,
+        classification_is_admission_evidence=False)
+
+
+def check_invocation(receipt, code, output, ledger_file):
+    receipt.update(cli_exit_code=code, output_sha256=sha(output),
+        cli_diagnostic=invocation_diagnostic(code, output, ledger_file))
+    if code:
+        raise ValueError('cli_predispatch_cli_exit:' + receipt['cli_diagnostic']['stage'])
+    if not receipt['cli_diagnostic']['ledger_present']:
+        raise ValueError('cli_predispatch_ledger_missing_after_success')
+
+
 def bounded(args, *, cwd, env, limit=8192, seconds=45):
     """One child, bounded output while running, no retry; always reap on failure."""
     process = subprocess.Popen(args, cwd=cwd, env=env, stdin=subprocess.DEVNULL,
@@ -290,8 +327,7 @@ def run(gate):
             receipt['observer_commands'] = len(first) + len(last)
         if password.encode() in output:
             raise ValueError('cli_predispatch_private_output')
-        receipt['cli_exit_code'] = code
-        receipt['output_sha256'] = sha(output)
+        check_invocation(receipt, code, output, ledger_file)
         evidence = replay(ledger_file)
         receipt.update(evidence)
         header = evidence['header']

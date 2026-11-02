@@ -33,6 +33,50 @@ function setup(t, p = policy()) {
 }
 function complete(conn, n = 1) { for (let i = 0; i < n; i++) conn.emit('commandComplete', {text: 'SELECT 1'}); }
 
+const canonical45 = ('20260812000000 20260813 20260818 20260819134024 20260819163738 ' +
+  '20260819175756 20260820082018 20260820150513 20260822172635 20260824113551 ' +
+  '20260826143000 20260827125343 20260827152727 20260831145357 20260831150434 ' +
+  '20260831153512 20260901161314 20260901183914 20260901184418 20260901190328 ' +
+  '20260901191328 20260902045834 20260903085454 20260903125150 20260904105918 ' +
+  '20260904230850 20260904235253 20260906080455 20260906092905 20260906134827 ' +
+  '20260907095307 20260908100106 20260909215122 20260915072202 20260915104711 ' +
+  '20260916071416 20260916072203 20260916073923 20260916162120 20260924130052 ' +
+  '20260924155822 20260928120846 20261012104331 20261012185121 20261018070231').split(' ');
+
+test('actual canonical45 history validates both exact legacy identities before migration', t => {
+  assert.equal(canonical45.length, 45);
+  const {conn, ledger} = setup(t, policy({expected_history_versions: canonical45}));
+  conn.query(METADATA[1]);
+  for (const version of canonical45) conn.emit('dataRow', {fields: [Buffer.from(version)]});
+  complete(conn);
+  assert.equal(ledger.historyValidated, true);
+  conn.query('BEGIN'); complete(conn);
+  assert.equal(ledger.rows.length, 2);
+});
+
+test('other short history and nonstring identities remain forbidden', t => {
+  for (const version of ['20260814', '2026081', '202608130', 20260813]) {
+    assert.throws(() => setup(t, policy({expected_history_versions: [version]})), /history_policy/);
+    const {conn} = setup(t, policy({expected_history_versions: []}));
+    conn.query(METADATA[1]);
+    assert.throws(() => conn.emit('dataRow', {fields: [version]}), /history_row/);
+  }
+});
+
+test('allowed short legacy identity must still match the exact preregistered history', t => {
+  const {conn, ledger} = setup(t, policy({expected_history_versions: ['20260813']}));
+  conn.query(METADATA[1]); conn.emit('dataRow', {fields: ['20260818']});
+  assert.throws(() => complete(conn), /history_snapshot_binding/);
+  assert.equal(ledger.historyValidated, false);
+});
+
+test('pending migration target remains fourteen digits even for a legacy history identity', t => {
+  for (const version of ['20260813', '20260818']) {
+    assert.throws(() => setup(t, policy({migrations: [{version, name: 'synthetic',
+      sha256: 'a'.repeat(64), ast_hashes: statements('BEGIN').map(x => x.ast_sha256)}]})), /migration_policy/);
+  }
+});
+
 test('pending migration cannot dispatch before the existing history query is validated', t => {
   const {conn, writes} = setup(t, policy({expected_history_versions: ['20260101000000']}));
   assert.throws(() => conn.query('BEGIN'), /dispatch_denied/);
