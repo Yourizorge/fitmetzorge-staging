@@ -1,0 +1,495 @@
+{
+  "accounting": {
+    "auth_matrix_expected_capacity": 234,
+    "cli_observers_planned": 24,
+    "cli_unknown_reserved_capacity": 120,
+    "warning": "594 Auth capacity and 144 CLI-plus-observer capacity are not new observed counts",
+    "workflow_auth_expected_capacity": 360
+  },
+  "blocking_findings": [
+    {
+      "finding": "Killed child has no parent-owned Auth suffix. Parent removes temporary objects while Auth may remain live.",
+      "id": "C01",
+      "patch_for_main": "In execute.finally, stop and join child, stop further minting, perform a separately metered parent-owned exact-scope Auth revocation/witness before close_temporary. Unknown mint outcomes remain NO_GO. Do not rely on JavaScript catch after kill. Add kill tests during issue/verify/refresh and all workflow phases.",
+      "severity": "blocking",
+      "source": {
+        "file": "_offline/phase6e11/endchain_v1/registered_runner.py",
+        "line": 48,
+        "sha256": "8006e51d6e45d9720b5514e3e9d09a6b345d9188628c98bacdce8779215fc515"
+      }
+    },
+    {
+      "finding": "Lost response from first control_enable leaves enabled=None and skips restore. A lost second-enable response leaves its expected expiry unknown.",
+      "id": "C02",
+      "patch_for_main": "Record both control mutation intents before dispatch with run-bound values including a predetermined expiry; on error inspect exact current ownership and compare-and-restore within the existing four-command safety allocation. Never infer no mutation from a missing reply. Prove both response-loss points and recalculate prefixes.",
+      "severity": "blocking",
+      "source": {
+        "file": "_offline/phase6e11/endchain_v1/integral_ci.py",
+        "line": 443,
+        "sha256": "9124a573e1daeeac512d8a185f045cfc4283076ea31bacf290ace14d94a61001"
+      }
+    },
+    {
+      "finding": "Auth safety revokes only after all three Auth prefixes finish. Mid-Auth failure yields incomplete_auth_mint_outcome_unknown, not confirmed zero.",
+      "id": "C03",
+      "patch_for_main": "Add a parent-owned terminal mint barrier and exact issued-session manifest covering each attempted issue/verify/refresh. Use its evidence to revoke only this run identities/sessions even after an incomplete prefix; retain NO_GO when outcome is unknown. Recompile within the existing 60-command Auth safety allowance; do not raise it.",
+      "severity": "blocking",
+      "source": {
+        "file": "_offline/phase6e11/endchain_v1/safety_auth.py",
+        "line": 40,
+        "sha256": "49c98eff26861e420c81d8f85b379d559feb2f4b236b28156e0812b4e36e3fa0"
+      }
+    },
+    {
+      "finding": "Real failure matrix injects only before_call, after_commit, after_snapshot at workflow step zero.",
+      "id": "C04",
+      "patch_for_main": "Add fresh isolated source-bound CI cases for pre/postmigration, partial Auth, controller, A, B, restore, lost response, duplicate dispatch, hard timeout and partial cleanup. Assert actual protocol/Auth/CLI counts, terminal controls, Auth zero, fixture/delete evidence and retained incomplete pairs per case.",
+      "severity": "blocking",
+      "source": {
+        "file": "_offline/phase6e11/endchain_v1/integral_failures.py",
+        "line": 66,
+        "sha256": "6784efd0af34393da51d8d2058d7450640b5c8e102724b175f32a8979e7268c5"
+      }
+    },
+    {
+      "finding": "Hosted CLI receipt deliberately accepts unknown session command counts; whole-database unattributed calls do not meet the new exact allocation requirement.",
+      "id": "C05",
+      "patch_for_main": "Before admission, require source-bound exact isolated CLI protocol evidence and a proven hosted invocation envelope, or replace the opaque invocation with an approved exact metered adapter. Keep 64/28/28 as reserved bounds, and eight observers per slot separate. Never label 120 slots as emitted SQL; unresolved attribution blocks admission.",
+      "severity": "blocking",
+      "source": {
+        "file": "_offline/phase6e11/endchain_v1/cli_envelope.py",
+        "line": 40,
+        "sha256": "2ddf9046553a2a4da0a9eb2d7eda3674d57068d442e4e2291582b10b28f4ea09"
+      }
+    },
+    {
+      "finding": "Current emergency contract preserves partial fixtures; it does not implement owner-requested complete synthetic cleanup on every stop.",
+      "id": "C06",
+      "patch_for_main": "Add an exact ownership journal and separately measured delete/absence suffix for partially executed fixtures, preserving historical proof. Register every command before first mutation and execute from parent after child termination. Recalculate all prefixes under 2349, retaining initial cleanup/final/closure 731; no blind delete or migration history repair.",
+      "severity": "blocking",
+      "source": {
+        "file": "_offline/phase6e11/endchain_v1/complete_register.py",
+        "line": 352,
+        "sha256": "95809b8f660e56b94f18b4663371a12507eddf365f10d3f89d060655d809cdfe"
+      }
+    },
+    {
+      "finding": "All 360 workflow Auth slots are prepaid, including 130 cleanup slots. Register places Auth slots before individual workflow steps; failed wrapper has no per-dispatch observation.",
+      "id": "C07",
+      "patch_for_main": "Align register and executor ordering explicitly. Keep prepaid capacity separate from emitted/confirmed commands with parent dispatch IDs and unknown outcomes. After worker failure retain the entire bound and a parent-owned remaining cleanup schedule; validate every actual prefix and never refund an unknown call.",
+      "severity": "blocking",
+      "source": {
+        "file": "_offline/phase6e11/endchain_v1/metered_composition.py",
+        "line": 194,
+        "sha256": "b9d39bfb28a62314c8319a2136abd0dde134a850d9922c678a518a6e26276afd"
+      }
+    },
+    {
+      "finding": "Meter validates aggregate phase capacity, not exact registered command identity or unique dispatch IDs. Repeated confirmed action labels are accepted.",
+      "id": "C08",
+      "patch_for_main": "Bind parent-issued dispatch IDs to source-hashed register rows, ordered phase and statement hash before transport. Reject missing/duplicate/out-of-order dispatches; allow a planned duplicate request only as its own registered event with unchanged business effect and separately counted SQL.",
+      "severity": "blocking",
+      "source": {
+        "file": "_offline/phase6e11/endchain_v1/runtime_budget.py",
+        "line": 44,
+        "sha256": "d921c31c014acade987f5881ea88a583d01bd70dc3f400d273e65284bc89b4ce"
+      }
+    },
+    {
+      "finding": "Active run authorization is still the 20261018 binding; latest instruction requests a fresh unique run.",
+      "id": "C09",
+      "patch_for_main": "Main must create the new source-bound authorization and synchronize Python/Node/migration/controller quota references, hashes and CI artifacts without changing historical receipts or raising limits. This Role C audit grants no new run identity.",
+      "severity": "blocking",
+      "source": {
+        "file": "_offline/phase6e11/endchain_v1/authorization.json",
+        "line": 3,
+        "sha256": "ad79d3c4c0dd79879567cee7c20999ba7ae05e2205ddc3c89a6597767286ef7e"
+      }
+    },
+    {
+      "finding": "Preflight is charged only after success. An identity failure dispatches BEGIN/GUARD/ROLLBACK but the runtime meter remains zero. A rollback error also skips connection.close and receipt persistence.",
+      "id": "C10",
+      "patch_for_main": "Pass a pre-dispatch meter hook into lifecycle_gates.preflight; reserve/charge each native command before connection.execute and preserve unknown outcomes on failure. Remove the later aggregate double-charge in admit_preflight. Put rollback inside try/finally that always closes the connection and saves the incomplete trace, including lost-BEGIN replies. Prove all four failure positions within preflight capacity 4 and the existing safety reserve.",
+      "severity": "blocking",
+      "source": {
+        "file": "_offline/phase6e11/endchain_v1/registered_lifecycle.py",
+        "line": 51,
+        "sha256": "739df778e5addcb459dd4b020b223797c241ca7be7872a930543b4addf3b856a"
+      }
+    }
+  ],
+  "boundaries": {
+    "database_changes": 0,
+    "external_ai_calls": 0,
+    "external_ai_cost_eur": 0,
+    "git_commit_push_dispatch": 0,
+    "historical_evidence_changed": false,
+    "hosted_calls": 0,
+    "jit_actions": 0,
+    "owner_phone_test": "NO_GO",
+    "production_touched": false,
+    "real_member_data_access": 0,
+    "runtime_assets_changed": false
+  },
+  "control_lost_response_probes": [
+    {
+      "calls": [
+        "control_enable"
+      ],
+      "config_still_enabled": true,
+      "emitted_sql": 0,
+      "lost_enable": 1,
+      "request_still_enabled": false,
+      "scope": "actual control AST; memory query results"
+    },
+    {
+      "calls": [
+        "control_enable",
+        "control_enable",
+        "safety_control_before",
+        "safety_control_restore",
+        "safety_control_restore",
+        "safety_control_after"
+      ],
+      "config_still_enabled": false,
+      "emitted_sql": 0,
+      "lost_enable": 2,
+      "request_still_enabled": true,
+      "scope": "actual control AST; memory query results"
+    }
+  ],
+  "expected_start_head_owner_confirmed": "9715ac8600bad89ff813ad399e745360028ce48a",
+  "failure_matrix": [
+    {
+      "case": "normal",
+      "emitted_sql": 0,
+      "hosted_admitted": false,
+      "receipt_complete": true,
+      "reserved_used": 2338,
+      "scope": "aggregate meter only; no lifecycle or database PASS"
+    },
+    {
+      "case": "pre_migration",
+      "database_cleanup_proven": false,
+      "dependent_action_denied": true,
+      "emitted_sql": 0,
+      "hosted_admitted": false,
+      "reserve_at_stop": 731,
+      "reserved_before_stop": 1,
+      "reserved_used": 10,
+      "safety_reserved": 9,
+      "scope": "real meter; simulated safety confirmations"
+    },
+    {
+      "case": "post_migration",
+      "database_cleanup_proven": false,
+      "dependent_action_denied": true,
+      "emitted_sql": 0,
+      "hosted_admitted": false,
+      "reserve_at_stop": 731,
+      "reserved_before_stop": 5,
+      "reserved_used": 14,
+      "safety_reserved": 9,
+      "scope": "real meter; simulated safety confirmations"
+    },
+    {
+      "case": "auth",
+      "database_cleanup_proven": false,
+      "dependent_action_denied": true,
+      "emitted_sql": 0,
+      "hosted_admitted": false,
+      "reserve_at_stop": 731,
+      "reserved_before_stop": 240,
+      "reserved_used": 327,
+      "safety_reserved": 87,
+      "scope": "real meter; simulated safety confirmations"
+    },
+    {
+      "case": "controller",
+      "database_cleanup_proven": false,
+      "dependent_action_denied": true,
+      "emitted_sql": 0,
+      "hosted_admitted": false,
+      "reserve_at_stop": 731,
+      "reserved_before_stop": 558,
+      "reserved_used": 647,
+      "safety_reserved": 89,
+      "scope": "real meter; simulated safety confirmations"
+    },
+    {
+      "case": "route_a",
+      "database_cleanup_proven": false,
+      "dependent_action_denied": true,
+      "emitted_sql": 0,
+      "hosted_admitted": false,
+      "reserve_at_stop": 731,
+      "reserved_before_stop": 844,
+      "reserved_used": 933,
+      "safety_reserved": 89,
+      "scope": "real meter; simulated safety confirmations"
+    },
+    {
+      "case": "route_b",
+      "database_cleanup_proven": false,
+      "dependent_action_denied": true,
+      "emitted_sql": 0,
+      "hosted_admitted": false,
+      "reserve_at_stop": 731,
+      "reserved_before_stop": 1035,
+      "reserved_used": 1124,
+      "safety_reserved": 89,
+      "scope": "real meter; simulated safety confirmations"
+    },
+    {
+      "case": "restore",
+      "database_cleanup_proven": false,
+      "dependent_action_denied": true,
+      "emitted_sql": 0,
+      "hosted_admitted": false,
+      "reserve_at_stop": 731,
+      "reserved_before_stop": 1321,
+      "reserved_used": 1410,
+      "safety_reserved": 89,
+      "scope": "real meter; simulated safety confirmations"
+    },
+    {
+      "case": "lost_response",
+      "database_cleanup_proven": false,
+      "dependent_action_denied": true,
+      "emitted_sql": 0,
+      "hosted_admitted": false,
+      "reserve_at_stop": 731,
+      "reserved_before_stop": 844,
+      "reserved_used": 933,
+      "safety_reserved": 89,
+      "scope": "real meter; simulated safety confirmations"
+    },
+    {
+      "case": "duplicate",
+      "database_cleanup_proven": false,
+      "dependent_action_denied": true,
+      "emitted_sql": 0,
+      "hosted_admitted": false,
+      "reserve_at_stop": 731,
+      "reserved_before_stop": 844,
+      "reserved_used": 933,
+      "safety_reserved": 89,
+      "scope": "real meter; simulated safety confirmations"
+    },
+    {
+      "case": "timeout",
+      "database_cleanup_proven": false,
+      "dependent_action_denied": true,
+      "emitted_sql": 0,
+      "hosted_admitted": false,
+      "reserve_at_stop": 731,
+      "reserved_before_stop": 1035,
+      "reserved_used": 1124,
+      "safety_reserved": 89,
+      "scope": "real meter; simulated safety confirmations"
+    },
+    {
+      "case": "partial_cleanup",
+      "database_cleanup_proven": false,
+      "dependent_action_denied": true,
+      "emitted_sql": 0,
+      "hosted_admitted": false,
+      "reserve_at_stop": 730,
+      "reserved_before_stop": 1608,
+      "reserved_used": 1697,
+      "safety_reserved": 89,
+      "scope": "real meter; simulated safety confirmations"
+    }
+  ],
+  "historical_stop": {
+    "classified_trace": {
+      "baseline": 36,
+      "ci_bootstrap": 16
+    },
+    "full_chain_complete": false,
+    "receipt_sha256": "5b5d946ea0ca63fb2aa7fbced63d69a8ac624a5674f1b453b0d1abe5ca04696f",
+    "runtime_booked": 40,
+    "runtime_phases": {
+      "baseline": 36,
+      "preflight": 4
+    },
+    "scope": "historical receipt only; no new execution or current CI claim",
+    "trace_confirmed": 52,
+    "trace_entries": 52
+  },
+  "hosted_admitted": false,
+  "hosted_attempt_consumed": false,
+  "limits": {
+    "automatic_retries": 0,
+    "cleanup_final_closure_reserve": 731,
+    "normal_capacity": 2338,
+    "own_temp_writes": 0,
+    "phase_capacities": {
+      "auth": 318,
+      "baseline": 61,
+      "cleanup": 633,
+      "closure": 1,
+      "controller": 286,
+      "final": 97,
+      "guard": 13,
+      "io": 97,
+      "measurements": 136,
+      "migration": 128,
+      "preflight": 4,
+      "restore": 54,
+      "route_a": 191,
+      "route_b": 286,
+      "setup": 33
+    },
+    "read_wal_limit_changed": false,
+    "worst_case_claimed": 2349,
+    "worst_case_full_executor_proven": false
+  },
+  "preflight_failure_probes": [
+    {
+      "connection_closed": true,
+      "emitted_sql": 0,
+      "memory_driver_dispatches": 3,
+      "receipt_saved": true,
+      "rollback_failure": false,
+      "runtime_booked": 0,
+      "scope": "actual preflight function and call order; memory driver"
+    },
+    {
+      "connection_closed": false,
+      "emitted_sql": 0,
+      "memory_driver_dispatches": 3,
+      "receipt_saved": false,
+      "rollback_failure": true,
+      "runtime_booked": 0,
+      "scope": "actual preflight function and call order; memory driver"
+    }
+  ],
+  "protocol_probes": [
+    {
+      "booked_protocol_statements": 3,
+      "case": "controller",
+      "emitted_sql": 0,
+      "phase_bookings": {
+        "controller": 3
+      }
+    },
+    {
+      "booked_protocol_statements": 3,
+      "case": "route_a",
+      "emitted_sql": 0,
+      "phase_bookings": {
+        "route_a": 3
+      }
+    },
+    {
+      "booked_protocol_statements": 3,
+      "case": "route_b",
+      "emitted_sql": 0,
+      "phase_bookings": {
+        "route_b": 3
+      }
+    },
+    {
+      "booked_protocol_statements": 3,
+      "case": "restore",
+      "emitted_sql": 0,
+      "phase_bookings": {
+        "restore": 3
+      }
+    },
+    {
+      "booked_protocol_statements": 3,
+      "case": "partial_cleanup",
+      "emitted_sql": 0,
+      "phase_bookings": {
+        "cleanup": 3
+      }
+    }
+  ],
+  "required_main_gates": [
+    "fresh unique source/run binding",
+    "one combined GitHub run requiring both endchain CI and app CI PASS on separate real stacks; no combined PASS currently claimed",
+    "complete PG17 plus real Auth composed CI and all real failure paths",
+    "exact per-dispatch protocol/Auth/CLI accounting without unknown outcomes",
+    "parent-owned cleanup and Auth zero after every child termination",
+    "all-prefix executable bound <=2349 and initial cleanup reserve 731",
+    "independent complete WAL classification under unchanged limits",
+    "independent reviewer acceptance"
+  ],
+  "role": "C",
+  "scope": "offline meter/executor probes and source audit; no real SQL/Auth/CLI",
+  "source_binding": {
+    "../auth_metadata_v1/auth_contract.py": "8c3862741ee4748aee822948eda773ee63aa3a1a7ea5b2d4822579b364bb58d6",
+    "../controller_guard_v1/auth_service.py": "acca1eec07d67728d224f1c472d959865de6e1dd9aa9ccc51375e7574e33da86",
+    "../readiness_v1/workflow_audit_v1/workflow_local.py": "3343f906077c766e95e4d06b7cf9b9b7752ada8b0a9805a77a8203644cb27da9",
+    "auth_evidence.py": "b00a89b6512b26b225ef9e5adede4fd0ee50e58858d9e987fcc034e1469a9fb1",
+    "auth_protocol.py": "2dcc1c464ff339925396e724a60616ab16ce8c1b837938ff6da328205c07e617",
+    "authorization.json": "ad79d3c4c0dd79879567cee7c20999ba7ae05e2205ddc3c89a6597767286ef7e",
+    "cli_envelope.py": "2ddf9046553a2a4da0a9eb2d7eda3674d57068d442e4e2291582b10b28f4ea09",
+    "cli_meter.py": "ae1ccff754aaf9950c4ce85ce584831fd01a6e3a41806ce1ae988bf80edc5855",
+    "cli_stat_reader.py": "2c591cf72f6a5bca86baea81300b541e1e43821796312be3d5b3f8f9ff07ad4a",
+    "closure.py": "582ae34616da68c004e42f98fbdf8e0c6cb4c1e1d3b59551ba709b81e1d23e79",
+    "closure_budget.py": "4a2cfa5aa5a1c874cd430647f777e0e9702eabf75ec516892f0f6bfd3a2571f7",
+    "complete_register.py": "95809b8f660e56b94f18b4663371a12507eddf365f10d3f89d060655d809cdfe",
+    "hosted_gate.py": "9046067eb614d0ff27ce31fd50b42e7ff127f7b334a53183f71d5358d5f8e089",
+    "integral_auth.mjs": "e4ebbe504243c706564457d4db9ed49c4a6da7ee12bc8216d813ae426f9c5bc4",
+    "integral_ci.py": "9124a573e1daeeac512d8a185f045cfc4283076ea31bacf290ace14d94a61001",
+    "integral_failures.py": "6784efd0af34393da51d8d2058d7450640b5c8e102724b175f32a8979e7268c5",
+    "integral_stream.py": "4625a55b22e65353947c23867d0f1ce53a3fa9b16a7dc67930c45d0bbdb06d40",
+    "lifecycle_gates.py": "f030556a3c921a5e4b6077199cee84a3a6a1900720179e23a8fcfe791c59d9df",
+    "metered_composition.py": "b9d39bfb28a62314c8319a2136abd0dde134a850d9922c678a518a6e26276afd",
+    "native_runtime.py": "6e0b05650aeccd16196920c7b73b6be2b22840df5e8fcf776af8ed69bca52b6c",
+    "registered_lifecycle.py": "739df778e5addcb459dd4b020b223797c241ca7be7872a930543b4addf3b856a",
+    "registered_runner.py": "8006e51d6e45d9720b5514e3e9d09a6b345d9188628c98bacdce8779215fc515",
+    "runtime_budget.py": "d921c31c014acade987f5881ea88a583d01bd70dc3f400d273e65284bc89b4ce",
+    "safety_auth.mjs": "88e2799a5e0ab80cbadc98a69abd1e146541146a18d627530898cd711a7227fd",
+    "safety_auth.py": "49c98eff26861e420c81d8f85b379d559feb2f4b236b28156e0812b4e36e3fa0",
+    "safety_auth_budget.py": "f0635a129ab150fd5389e88f1408b20c9ba41aa37054c61fa80cadbd87442db6",
+    "safety_auth_native.py": "2ef9dc3c10a6ca3ad7c1070026e9e025e3772f92866c140b36e76e2de274c6e4",
+    "scenario.py": "d33a6ccf8aa8d38e0c6a6e2eaca2d0438e88213c16a0e32b6b325ef867b230ec",
+    "sql_protocol.py": "e9fed4ad8268e051979fc38c19a63aab1ed9f1ce6f82e06183be577e157cfe74",
+    "test_closure_budget.py": "bbcaa5e6cea238dcf872caea51963cb84c99aa6aea48f8bf1d8e02bede4d0e7b"
+  },
+  "source_binding_scope": "audited files, not full release manifest",
+  "status": "NO_GO_FULL_ENDCHAIN_UNPROVEN",
+  "worker_abort_probe": {
+    "auth_maybe_live": true,
+    "emitted_sql": 0,
+    "events": [
+      "kill",
+      "joined",
+      "remove_temporary"
+    ],
+    "parent_auth_suffix_calls": 0,
+    "reserved_used": 11,
+    "scope": "actual parent runner with in-memory worker and lifecycle",
+    "worker_complete": false
+  },
+  "workflow_precharge_probe": {
+    "emitted_sql": 0,
+    "note": "130 cleanup slots are prepaid, not refunded or observed SQL; total bound retains them.",
+    "precharged_cleanup_auth": 130,
+    "precharged_managed_capacity": 360,
+    "reserved_cleanup_after": 601,
+    "reserved_cleanup_before": 731,
+    "scope": "actual workflow wrapper; interrupted memory delegate",
+    "unconfirmed_managed_tickets": 72
+  },
+  "verification": {
+    "command": "python -B -m unittest discover -s _offline/phase6e11/endchain_v1 -p test_closure_budget.py -v",
+    "tests": 26,
+    "result": "PASS",
+    "scope": "offline characterization and accounting tests; no live DB/Auth/CLI or CI execution"
+  },
+  "preservation": {
+    "edited_existing_shared_sources": false,
+    "allowed_new_files": [
+      "closure_budget.py",
+      "test_closure_budget.py",
+      "closure_budget.json"
+    ],
+    "git_status": "Could not obtain worktree status: git reports cannot come back to cwd: Permission denied. No git state was changed.",
+    "remote_head": "Owner-confirmed; not independently fetched by Role C."
+  }
+}

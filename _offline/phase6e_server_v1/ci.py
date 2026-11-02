@@ -21,6 +21,7 @@ NEW=['domain.cjs','domain.test.cjs','presentation.cjs','presentation.test.cjs','
      'sync_contract.cjs','access_policy.cjs','prepared_contracts.test.cjs','work_register.json','check_work_register.py',
      'release_packet.py','test_release_packet.py','outbox.py','test_outbox.py','planning.py','test_planning.py',
      'workday_release.py','test_workday_release.py','receipt_accounting.py','test_receipt_accounting.py',
+     'release_train.py','test_release_train.py','test_release_security.py',
      'release_selection.py','test_release_selection.py','release_selection_http.py','release_matrix.py',
      'registration12.cjs','registration12.test.cjs','workout12.cjs','workout12.test.cjs','registration_store.py','registration_database.py','registration_browser.cjs',
      'registration_release.py','test_registration_release.py',
@@ -42,6 +43,8 @@ while pending:
     if not name.startswith('_offline/phase6e_server_v1/'):EXTRA.add(name)
     for ref in re.findall(r'require\([\"\'](\.[^\"\']+)[\"\']\)',path.read_text()):
         pending.append(path.parent/ref)
+import release_train
+EXTRA|=release_train.input_files(ROOT)
 previous.prior.old.EXTRA|=EXTRA
 
 class Gate(previous.Gate):
@@ -204,6 +207,12 @@ class Gate(previous.Gate):
         self.command('ui-session-regression',['node','--test',str(folder/'ui_session.test.cjs')])
         self.command('work-register',[sys.executable,'-B',str(folder/'check_work_register.py')])
         self.command('workday-release-packets',[sys.executable,'-B',str(folder/'test_workday_release.py')])
+        self.command('release-train',[sys.executable,'-B',str(folder/'test_release_train.py')])
+        self.command('release-security',[sys.executable,'-B',str(folder/'test_release_security.py')])
+        import release_train
+        train=release_train.build(root=self.sources)
+        release_train.verify(train,root=self.sources)
+        self.save('release-train.json',train)
         self.command('release-selection',[sys.executable,'-B',str(folder/'test_release_selection.py')])
         import workday_release
         packets=workday_release.build(root=self.sources,archive=self.sources/'absent-historical-receipts')

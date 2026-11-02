@@ -27,7 +27,16 @@ class MeteredComposition(Composition):
         self.auth_prefix_roles=set();self.auth_terminal_roles=set();self.auth_zero_proof=None
         self.safety_auth_started=False;self.safety_auth_tickets={};self.safety_auth_result=None
         self.auth_zero_scope=None
+        self.preflight_admitted=False
         self.scenario=scenario_source.capture()['workflow_actions']
+
+    def native_runtime(self,gate):
+        runtime=super().native_runtime(gate)
+        bound=getattr(runtime,'preflight_meter',None)
+        if bound is not None and bound is not self.meter:raise ValueError('meter_preflight_runtime_rebound')
+        # The lifecycle already passes this runtime to preflight before admit.
+        runtime.preflight_meter=self.meter
+        return runtime
 
     def admit_ci_prefix(self,preflight,cli):
         if len(preflight['commands'])!=4 or not all(x['confirmed'] for x in preflight['commands']):
@@ -38,10 +47,29 @@ class MeteredComposition(Composition):
             self.meter.confirm(ticket)
 
     def admit_preflight(self,preflight):
-        if len(preflight['commands'])!=4 or not all(x['confirmed'] for x in preflight['commands']):
+        from integral_stream import GUARD
+        from lifecycle_gates import MIGRATIONS
+        from sql_protocol import single
+        expected=[single(sql)['sha256'] for sql in
+            ('BEGIN TRANSACTION READ ONLY',GUARD,MIGRATIONS,'ROLLBACK')]
+        rows=preflight.get('commands',[])
+        if (self.preflight_admitted or self.meter.stopped or self.meter.closed
+                or preflight.get('complete') is not True or preflight.get('metered_before_dispatch') is not True
+                or preflight.get('rollback_confirmed') is not True or preflight.get('connection_closed') is not True
+                or preflight.get('errors')!=[] or len(rows)!=4 or self.meter.phases['preflight']!=4
+                or [r.get('sql_sha256') for r in rows]!=expected):
             raise ValueError('meter_preflight_missing')
-        ticket=self.meter.charge('preflight',4,action='verified_preflight',kind='cli_bound')
-        self.meter.confirm(ticket)
+        tickets=[row.get('meter_ticket') for row in rows]
+        if any(type(t) is not int or not 1<=t<=len(self.meter.events) for t in tickets) or len(set(tickets))!=4:
+            raise ValueError('meter_preflight_ticket_binding')
+        for row,ticket in zip(rows,tickets):
+            event=self.meter.events[ticket-1]
+            if (row.get('confirmed') is not True or row.get('dispatch_attempted') is not True
+                    or row.get('meter_phase')!='preflight' or event['phase']!='preflight'
+                    or event['commands']!=1 or event['kind']!='native' or event['confirmed'] is not True
+                    or event['action']!='preflight_'+row['sql_sha256']):
+                raise ValueError('meter_preflight_ticket_binding')
+        self.preflight_admitted=True
 
     def apply_migration(self,gate):
         ticket=self.meter.charge('migration',CHARGE,action='candidate_quota_migration_aware_cli',kind='cli_reserved',mutation=True)

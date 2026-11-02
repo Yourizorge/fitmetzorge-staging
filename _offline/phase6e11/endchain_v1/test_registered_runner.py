@@ -39,15 +39,21 @@ class Tests(unittest.TestCase):
         with self.assertRaises(ValueError):execute(None,None,None,{'mode':'registered_synthetic','environment':'staging'})
 
 class CompletionTests(unittest.TestCase):
-    def run_worker(self,*,checks=18,exit_code=0,wait_error=None,removed=True):
+    def run_worker(self,*,checks=18,exit_code=0,wait_error=None,removed=True,join_error=None,
+            auth_error=None,remove_error=None,save_error=None):
         saved={};events=[]
         def save(name,value):
+            if name==save_error:raise RuntimeError('private_save_error')
             self.assertNotIn(name,saved)
             saved[name]=json.loads(json.dumps(value))
         gate=types.SimpleNamespace(save=save)
         composition=types.SimpleNamespace(runner='unused.mjs',commands=[],
             confirm_closure=Mock(side_effect=lambda *args:events.append('confirm')),abort=Mock())
-        lifecycle=types.SimpleNamespace(removed=removed,close_temporary=Mock(),dispatch=Mock())
+        lifecycle=types.SimpleNamespace(removed=removed,close_temporary=Mock(side_effect=lambda:events.append('remove')),
+            dispatch=Mock(),own_worker=Mock(),
+            parent_auth_cleanup=Mock(side_effect=lambda **kw:events.append(('parent_auth',kw['worker_terminated']))))
+        if auth_error:lifecycle.parent_auth_cleanup.side_effect=auth_error
+        if remove_error:lifecycle.close_temporary.side_effect=remove_error
         request={'op':'complete','result':{'checks':checks}}
         worker=Mock(stdin=io.StringIO(),stdout=io.StringIO(json.dumps(request)+'\n'),
             returncode=None)
@@ -60,6 +66,7 @@ class CompletionTests(unittest.TestCase):
         worker.wait.side_effect=wait
         worker.poll.side_effect=lambda:worker.returncode
         worker.kill.side_effect=lambda:setattr(worker,'returncode',-9)
+        worker.communicate.side_effect=join_error
         timer=Mock()
         config={'mode':'registered_synthetic','environment':'disposable_ci',
             'identityBinding':{'preexisting':True},'admin':'private-admin','anon':'private-anon'}
@@ -83,6 +90,7 @@ class CompletionTests(unittest.TestCase):
         self.assertFalse(run.saved['registered-incomplete-protocol-trace.json']['complete'])
         run.composition.confirm_closure.assert_not_called()
         run.composition.abort.assert_called_once_with('registered_worker_incomplete')
+        run.lifecycle.parent_auth_cleanup.assert_called_once()
         self.assertNotIn('integral-complete-protocol-trace.json',run.saved)
 
     def test_complete_payload_requires_successful_child_exit(self):
@@ -110,6 +118,14 @@ class CompletionTests(unittest.TestCase):
         self.assert_incomplete(run)
         self.assertEqual(str(run.error),'registered_worker_incomplete')
         run.lifecycle.close_temporary.assert_called_once_with()
+        self.assertLess(run.events.index(('parent_auth',True)),run.events.index('remove'))
+
+    def test_failed_join_does_not_assert_terminal_worker(self):
+        run=self.run_worker(wait_error=subprocess.TimeoutExpired('node',5),
+            join_error=subprocess.TimeoutExpired('node',5))
+        self.assert_incomplete(run)
+        run.lifecycle.parent_auth_cleanup.assert_called_once_with(worker_terminated=False)
+        self.assertFalse(run.saved['registered-worker-terminal.json']['worker_terminated'])
 
     def test_success_confirms_after_wait(self):
         run=self.run_worker()
@@ -120,5 +136,31 @@ class CompletionTests(unittest.TestCase):
         self.assertTrue(run.saved['registered-worker-terminal.json']['complete'])
         self.assertNotIn('registered-incomplete-protocol-trace.json',run.saved)
         run.lifecycle.close_temporary.assert_not_called()
+        run.lifecycle.parent_auth_cleanup.assert_not_called()
+
+    def test_cleanup_errors_preserve_worker_failure_and_terminal_receipt(self):
+        failure=subprocess.TimeoutExpired('node',5)
+        run=self.run_worker(wait_error=failure,removed=False,
+            auth_error=RuntimeError('private_auth_error'),remove_error=RuntimeError('private_remove_error'))
+        self.assert_incomplete(run);self.assertIs(run.error,failure)
+        terminal=run.saved['registered-worker-terminal.json']
+        self.assertEqual([r['stage'] for r in terminal['cleanup_errors']],['parent_auth','temporary_removal'])
+        self.assertNotIn('private_',json.dumps(run.saved))
+
+    def test_incomplete_trace_save_failure_still_attempts_terminal_receipt(self):
+        run=self.run_worker(exit_code=1,save_error='registered-incomplete-protocol-trace.json')
+        self.assertEqual(str(run.error),'registered_worker_incomplete')
+        self.assertFalse(run.saved['registered-worker-terminal.json']['complete'])
+        self.assertEqual(run.saved['registered-worker-terminal.json']['cleanup_errors'][0]['stage'],'incomplete_trace')
+
+    def test_terminal_save_failure_does_not_replace_original_worker_error(self):
+        failure=subprocess.TimeoutExpired('node',5)
+        run=self.run_worker(wait_error=failure,save_error='registered-worker-terminal.json')
+        self.assertIs(run.error,failure)
+        run.lifecycle.parent_auth_cleanup.assert_called_once_with(worker_terminated=True)
+
+    def test_success_requires_terminal_receipt_to_be_saved(self):
+        run=self.run_worker(save_error='registered-worker-terminal.json')
+        self.assertEqual(str(run.error),'registered_worker_cleanup_incomplete')
 
 if __name__=='__main__':unittest.main()

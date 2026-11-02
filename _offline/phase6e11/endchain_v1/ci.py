@@ -30,7 +30,12 @@ NAMES=['authorization.json','test_authorization.py','budget.mjs','budget.test.mj
  'ci_source_binding.py','test_ci_source_binding.py','test_final_gates.py','test_ci_cli_sequence.py','test_control_restore.py','test_candidate_transport.py']
 NAMES += ['safety_auth.mjs','safety_auth.py','safety_auth_native.py','safety_auth_budget.py',
  'auth_zero.py','test_auth_zero.py','test_safety_auth.py','test_safety_auth_meter.py','safety_auth.test.mjs']
+NAMES += ['ops.py','closure_ops.py','test_closure_ops.py','control_recovery.py','test_control_recovery.py']
+NAMES += ['closure_budget.py','closure_budget.json','test_closure_budget.py','test_preflight_failure.py']
+NAMES += ['test_integral_failures.py']
 EXTRA={'_offline/phase6e11/endchain_v1/'+n for n in NAMES}
+EXTRA.add('.github/workflows/phase6e-closure-ci.yml')
+EXTRA.add('_offline/phase6e11/endchain_v1/receipts/ci-40354914899-numeric-stop/registered-incomplete-protocol-trace.json')
 EXTRA|={'_offline/phase6e11/endchain_v1/receipts/reserved-ci-39109482869/'+name for name in
  ['register-prefix-reserves.json']+['register-phase-'+p+'.json' for p in
  ('preflight','migration','baseline','setup','guard','auth','controller','route_a','route_b',

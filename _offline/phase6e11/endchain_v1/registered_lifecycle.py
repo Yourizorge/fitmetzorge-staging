@@ -22,6 +22,51 @@ class RegisteredLifecycle:
             sql=sql,save=gate.save,independent_ci=independent_ci,
             zero_scope=getattr(composition,'auth_zero_scope',None))
         self.safety_auth=SafetyAuth(self)
+        self.worker_owned=False;self.worker_terminated=False
+        self.parent_auth_attempted=False;self.parent_auth_result=None;self.parent_auth_saved=False
+
+    def own_worker(self):
+        if self.worker_owned or self.installed:raise ValueError('registered_worker_ownership')
+        self.worker_owned=True
+
+    def parent_auth_cleanup(self,*,worker_terminated):
+        # Process termination blocks future child dispatch, not already-sent HTTP.
+        # SafetyAuth still requires the original complete, validated mint prefix.
+        if self.parent_auth_attempted:return copy.deepcopy(self.parent_auth_result)
+        self.parent_auth_attempted=True;self.worker_terminated=worker_terminated is True
+        result={'status':'NO_GO','revocation_confirmed':False,'global_zero_claim':False,'safe_to_remove':False,
+            'worker_terminated':self.worker_terminated,'child_mint_barrier':False,'retry':False}
+        removal_barrier=False
+        try:
+            if not self.worker_terminated:
+                result['reason']='worker_termination_unconfirmed'
+            else:
+                owner=getattr(self.lock_query,'__self__',None)
+                from registered_runner import IdentitySession
+                if isinstance(owner,IdentitySession):owner.close()
+                # This stops child dispatch and releases its identity lock. It
+                # does not prove completion of an already-sent Auth request.
+                removal_barrier=True
+                meter=getattr(self.composition,'meter',None)
+                if meter is not None and meter.state.get('auth_maybe_live') is False:
+                    result['reason']='auth_safety_not_required_by_meter'
+                elif self.removed or self.receipt is None or self.metadata_receipt is None:
+                    result['reason']='auth_safety_evidence_unavailable'
+                else:
+                    self.failed=True
+                    result.update(self.safety_auth.parent_finish(worker_terminated=True))
+                    if result.get('revocation_confirmed') is True and not (
+                            meter is not None and meter.state.get('auth_maybe_live') is False):
+                        result.update(revocation_confirmed=False,reason='parent_auth_zero_not_confirmed')
+        except Exception as error:
+            result.update(reason='parent_auth_cleanup_unconfirmed',error_class=type(error).__name__)
+        # Eligibility for exact temporary-object removal is separate from Auth
+        # revocation. Each remover still verifies its own run/object identity.
+        result.update(safe_to_remove=removal_barrier,child_mint_barrier=removal_barrier)
+        self.parent_auth_result=copy.deepcopy(result)
+        self.gate.save('registered-parent-auth-cleanup.json',result)
+        self.parent_auth_saved=True
+        return copy.deepcopy(result)
 
     def dispatch(self,request):
         op=request.get('op')
@@ -71,6 +116,10 @@ class RegisteredLifecycle:
         if not self.installed:raise ValueError('registered_not_installed')
         if op=='remove':
             if request.get('receipt')!=self.receipt:raise ValueError('registered_removal_receipt')
+            if request.get('stopped') and self.worker_owned:
+                # Keep exact evidence until the parent has joined the child and
+                # attempted its one-shot native suffix. No child-owned teardown.
+                return {'removed':False,'deferred_to_parent':True,'commandCount':len(c.commands)}
             if not request.get('stopped'):
                 if self.failed or not self.workflow_complete or any(x.step!=6 for x in self.evidence.contracts.values()):
                     raise ValueError('registered_cleanup_chain_incomplete')
@@ -111,6 +160,11 @@ class RegisteredLifecycle:
     def close_temporary(self):
         # Exact safety removal is separately authorized even after NO-GO.
         # It never deletes fixtures, accounts, historical evidence or sessions.
+        if self.worker_owned and self.failed and (not self.parent_auth_attempted or not self.worker_terminated):
+            raise ValueError('registered_parent_cleanup_pending')
+        if self.worker_owned and self.failed and (not self.parent_auth_saved
+                or not self.parent_auth_result or self.parent_auth_result.get('safe_to_remove') is not True):
+            raise ValueError('registered_parent_cleanup_evidence_pending')
         c=self.composition;c.current_phase='remove';failures=[]
         for name,module,attribute in [('audit',self.audit,'metadata_receipt'),('guard',self.guard,'receipt')]:
             receipt=getattr(self,attribute)

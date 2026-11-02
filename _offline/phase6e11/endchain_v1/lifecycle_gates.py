@@ -125,17 +125,58 @@ def ci_preflight(gate):
     from native_runtime import NativeRuntime
     return preflight(NativeRuntime.disposable(gate),gate.save,getattr(gate,'cli_namespace',''))
 
-def preflight(runtime,save,prefix=''):
+def preflight(runtime,save,prefix='',*,meter=None):
     """Same four-command identity/history gate in CI and exact staging."""
     from integral_stream import GUARD
     from sql_protocol import statements
-    connection=runtime.connect();trace=[];migrations=[];opened=False
+    from runtime_budget import BudgetStop
+    bound=getattr(runtime,'preflight_meter',None)
+    if meter is not None and bound is not None and meter is not bound:
+        raise ValueError('preflight_meter_binding')
+    meter=bound if meter is None else meter
+    if runtime.environment=='staging' and meter is None:
+        raise ValueError('preflight_meter_required')
+    if meter is not None and (meter.closed or meter.stopped or meter.phases['preflight']):
+        raise ValueError('preflight_meter_not_fresh')
+    connection=None;trace=[];migrations=[];begin_attempted=False
+    rollback_confirmed=False;connection_closed=False;errors=[];failure=None
+    def failed(stage,error):
+        nonlocal failure
+        errors.append({'stage':stage,'exception_class':type(error).__name__})
+        if failure is None:failure=error
+        if meter is not None:meter.stop('preflight_'+stage+'_failed')
     def query(sql):
-        trace.append({'sql_sha256':statements(sql)[0]['sha256'],'confirmed':False})
-        started=time.monotonic();cursor=connection.execute(sql);rows=cursor.fetchall() if cursor.description else []
-        trace[-1].update(confirmed=True,duration_ms=round(1000*(time.monotonic()-started)));return rows
+        nonlocal begin_attempted
+        parsed=statements(sql)
+        if len(parsed)!=1:raise ValueError('preflight_single_command')
+        source_sha=parsed[0]['sha256'];ticket=None;safety=False
+        if meter is not None:
+            if sql=='ROLLBACK' and meter.stopped:
+                safety=True;ticket=meter.safety('rollback_reader',1)
+            else:
+                try:ticket=meter.charge('preflight',1,action='preflight_'+source_sha)
+                except BudgetStop:
+                    # A denied ordinary ticket emitted no SQL. The one rollback
+                    # may still use the existing bounded safety window.
+                    if sql!='ROLLBACK':raise
+                    safety=True;ticket=meter.safety('rollback_reader',1)
+        row={'sql_sha256':source_sha,'confirmed':False,'dispatch_attempted':True,
+             'meter_ticket':ticket,'meter_phase':'safety' if safety else 'preflight'}
+        trace.append(row)
+        # A lost BEGIN reply is an unknown open transaction, not an absent one.
+        if sql=='BEGIN TRANSACTION READ ONLY':begin_attempted=True
+        started=time.monotonic()
+        try:
+            cursor=connection.execute(sql);rows=cursor.fetchall() if cursor.description else []
+            if meter is not None:
+                if safety:meter.confirm_safety(ticket)
+                else:meter.confirm(ticket)
+            row['confirmed']=True
+            return rows
+        finally:row['duration_ms']=round(1000*(time.monotonic()-started))
     try:
-        query('BEGIN TRANSACTION READ ONLY');opened=True
+        connection=runtime.connect()
+        query('BEGIN TRANSACTION READ ONLY')
         identity=query(GUARD)[0]
         if identity['ro']!='on' or identity['db']!='postgres' or identity['role']!='postgres' or identity['ssl'] is not True:
             raise ValueError('preflight_identity')
@@ -146,9 +187,21 @@ def preflight(runtime,save,prefix=''):
         validate(migrations,runtime.environment)
         if (len(migrations),migrations[-1]['version']) not in ((44,'20261012185121'),(45,VERSION)):
             raise ValueError('preflight_quota_history')
+    except BaseException as error:failed('query_or_validation',error)
     finally:
-        if opened:query('ROLLBACK')
-        connection.close()
-        value={'commands':trace,'migrations':migrations,'hosted_calls':int(runtime.environment=='staging')}
-        save(prefix+'integral-preflight.json',value)
+        if begin_attempted:
+            try:query('ROLLBACK');rollback_confirmed=True
+            except BaseException as error:failed('rollback',error)
+        if connection is not None:
+            try:connection.close();connection_closed=True
+            except BaseException as error:failed('connection_close',error)
+        value={'commands':trace,'migrations':migrations,'hosted_calls':int(runtime.environment=='staging'),
+            'metered_before_dispatch':meter is not None,'begin_attempted':begin_attempted,
+            'rollback_confirmed':rollback_confirmed,'connection_closed':connection_closed,
+            'errors':errors,'complete':failure is None and rollback_confirmed and connection_closed
+                and (meter is None or not meter.stopped)}
+        try:save(prefix+'integral-preflight.json',value)
+        except BaseException as error:failed('receipt_save',error)
+    if failure is not None:raise failure
+    if not value['complete']:raise ValueError('preflight_incomplete')
     return value

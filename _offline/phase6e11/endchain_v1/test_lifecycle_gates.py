@@ -3,6 +3,11 @@ import lifecycle_gates as g
 from sql_protocol import statements
 
 class LifecycleTests(unittest.TestCase):
+    def test_preflight_queries_keep_four_single_protocol_commands(self):
+        from integral_stream import GUARD
+        for sql in ('BEGIN TRANSACTION READ ONLY',GUARD,g.MIGRATIONS,'ROLLBACK'):
+            self.assertEqual(len(statements(sql)),1)
+
     def test_percent_and_repeated_parameters(self):
         from integral_ci import bind_parameters
         self.assertEqual(bind_parameters("select x like 'pg_%'",[]),("select x like 'pg_%'",None))

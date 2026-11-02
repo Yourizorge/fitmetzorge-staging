@@ -1,0 +1,54 @@
+name: Combined synthetic closure admission
+run-name: "6E closure ${{ inputs.chain_sha256 }} ${{ inputs.app_sha256 }}"
+on:
+  workflow_dispatch:
+    inputs:
+      chain_blob:
+        required: true
+        type: string
+      chain_sha256:
+        required: true
+        type: string
+      app_blob:
+        required: true
+        type: string
+      app_sha256:
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: phase6e-composed-closure
+  cancel-in-progress: false
+jobs:
+  endchain:
+    if: github.repository == 'Yourizorge/fitmetzorge-staging' && github.ref == 'refs/heads/main' && github.run_attempt == 1
+    uses: ./.github/workflows/phase6e11-endchain-ci.yml
+    with:
+      candidate_blob: ${{ inputs.chain_blob }}
+      candidate_sha256: ${{ inputs.chain_sha256 }}
+  application:
+    if: github.repository == 'Yourizorge/fitmetzorge-staging' && github.ref == 'refs/heads/main' && github.run_attempt == 1
+    uses: ./.github/workflows/phase6e-server-local-ci.yml
+    with:
+      candidate_blob: ${{ inputs.app_blob }}
+      candidate_sha256: ${{ inputs.app_sha256 }}
+  combined:
+    needs: [endchain, application]
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    steps:
+      - name: Both complete real stacks must succeed
+        env:
+          ENDCHAIN_RESULT: ${{ needs.endchain.result }}
+          APPLICATION_RESULT: ${{ needs.application.result }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          python3 -B - <<'PY'
+          import os
+          if os.environ['RUN_ATTEMPT'] != '1': raise SystemExit('no_retry')
+          if any(os.environ[name] != 'success' for name in ('ENDCHAIN_RESULT','APPLICATION_RESULT')):
+              raise SystemExit('combined_admission_incomplete')
+          print('COMPOSED_CI_PASS_PENDING_ARTIFACT_AND_INDEPENDENT_REVIEW')
+          PY

@@ -6,7 +6,8 @@ def execute(gate,composition,lifecycle,config):
         raise ValueError('runner_environment')
     if config.get('identityBinding',{}).get('preexisting') is not True:
         raise ValueError('runner_preexisting_required')
-    worker=None;timer=None;candidate=None;result=None;count=0;started=time.monotonic()
+    lifecycle.own_worker()
+    worker=None;timer=None;candidate=None;result=None;failure=None;count=0;started=time.monotonic()
     try:
         worker=subprocess.Popen(['node',str(composition.runner)],stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
@@ -41,22 +42,44 @@ def execute(gate,composition,lifecycle,config):
             'full_chain_admission':False})
         result=candidate
         return result
+    except BaseException as error:
+        failure=error
+        raise
     finally:
         if timer:timer.cancel()
-        if worker and worker.poll() is None:worker.kill();worker.communicate(timeout=5)
-        config['admin']=None;config['anon']=None
-        if result is None and hasattr(composition,'abort'):composition.abort('registered_worker_incomplete')
+        terminated=worker is None;termination_error=None
         try:
-            if not lifecycle.removed:lifecycle.close_temporary()
+            if worker:
+                if worker.poll() is None:worker.kill();worker.communicate(timeout=5)
+                terminated=worker.poll() is not None
+        except Exception as error:termination_error=type(error).__name__
+        finally:config['admin']=None;config['anon']=None
+        if result is not None and not terminated:result=None
+        if result is None and hasattr(composition,'abort'):composition.abort('registered_worker_incomplete')
+        cleanup_errors=[]
+        # Each cleanup/evidence step is independent. Keep the original worker
+        # failure while recording incomplete cleanup; never retry its SQL.
+        def cleanup(stage,action):
+            try:action()
+            except Exception as error:cleanup_errors.append({'stage':stage,'exception_class':type(error).__name__})
+        try:
+            if result is None:
+                lifecycle.failed=True
+                cleanup('parent_auth',lambda:lifecycle.parent_auth_cleanup(worker_terminated=terminated))
+            if not lifecycle.removed:cleanup('temporary_removal',lifecycle.close_temporary)
         finally:
             if result is None:
-                gate.save('registered-incomplete-protocol-trace.json',{'commands':composition.commands,
+                cleanup('incomplete_trace',lambda:gate.save('registered-incomplete-protocol-trace.json',{'commands':composition.commands,
                     'runtime_meter':composition.meter.receipt() if hasattr(composition,'meter') else None,
-                    'complete':False,'automatic_retry':False})
-            gate.save('registered-worker-terminal.json',{'complete':result is not None,
+                    'complete':False,'automatic_retry':False}))
+            cleanup('terminal_receipt',lambda:gate.save('registered-worker-terminal.json',{'complete':result is not None,
                 'guard_audit_removed':lifecycle.removed,'messages':count,
+                'worker_terminated':terminated,'termination_error_class':termination_error,
+                'cleanup_errors':cleanup_errors,
                 'duration_ms':round((time.monotonic()-started)*1000),'automatic_retry':False,
-                'secrets_exported':False})
+                'secrets_exported':False}))
+        if failure is None and (result is None or cleanup_errors):
+            raise RuntimeError('registered_worker_cleanup_incomplete')
 
 class IdentitySession:
     """Exact identity-lock queries over the same verified native driver."""

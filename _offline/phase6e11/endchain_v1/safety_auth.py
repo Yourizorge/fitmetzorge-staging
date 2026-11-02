@@ -18,6 +18,18 @@ class SafetyAuth:
         self.owner=lifecycle;self.started=False;self.admitted=False;self.finished=False
         self.roles=[];self.next=0;self.pending=None;self.failed=False
         self.clone=None;self.mint_terminal=False;self.keys={};self.saved=set()
+        self.result=None
+
+    def parent_finish(self,*,worker_terminated):
+        if worker_terminated is not True:raise ValueError('safety_auth_worker_not_terminal')
+        if self.finished:
+            if self.result is None:raise ValueError('safety_auth_finish_unconfirmed')
+            return copy.deepcopy(self.result)
+        if not self.started:
+            self.dispatch({'stage':'start','receipt':self.owner.receipt})
+        # Never issue or repeat HTTP here. A pending/lost logout can only use the
+        # existing exact-key native fallback, charged to its original allocation.
+        return self.dispatch({'stage':'finish'})
 
     def save(self,name,value):
         name='safety-auth-'+name
@@ -59,9 +71,10 @@ class SafetyAuth:
                 result=native_suffix(r,self.save,self.keys,self.mint_terminal)
             finally:c.safety_label=None
             self.save('result.json',result)
-            c.safety_auth_result=copy.deepcopy(result)
             if result.get('revocation_confirmed') is True:
                 c.confirm_auth_zero(safety_receipt=result)
+            c.safety_auth_result=copy.deepcopy(result)
+            self.result=copy.deepcopy(result)
             return result
         if stage not in ('before','after') or self.failed or self.next>=len(self.roles):
             raise ValueError('safety_auth_sequence')

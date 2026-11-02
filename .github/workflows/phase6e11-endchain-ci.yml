@@ -1,6 +1,14 @@
 name: 6E-11 one-run budget and adapter CI
 run-name: "6E-11 endchain CI ${{ inputs.candidate_sha256 }}"
 on:
+  workflow_call:
+    inputs:
+      candidate_blob:
+        required: true
+        type: string
+      candidate_sha256:
+        required: true
+        type: string
   workflow_dispatch:
     inputs:
       candidate_blob:

@@ -15,6 +15,11 @@ class Denied(Exception):
     pass
 
 
+class NoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self,req,fp,code,msg,headers,newurl):
+        raise Denied('local_auth_redirect')
+
+
 def identifier(value):
     try:
         if str(uuid.UUID(value))!=value:raise ValueError()
@@ -47,7 +52,8 @@ class LocalAuth:
         req=urllib.request.Request(self.url+path,headers=headers,
             data=None if data is None else json.dumps(data).encode(),method=method)
         try:
-            with urllib.request.urlopen(req,timeout=5) as response:
+            opener=urllib.request.build_opener(urllib.request.ProxyHandler({}),NoRedirect())
+            with opener.open(req,timeout=5) as response:
                 raw=response.read(65536)
                 return json.loads(raw) if raw else {}
         except (OSError,ValueError):raise Denied('auth_denied') from None
@@ -68,10 +74,12 @@ class Store:
         settings=conninfo_to_dict(dsn)
         if settings.get('host') not in ('127.0.0.1','localhost') or settings.get('sslmode')!='verify-full':
             raise Denied('local_database_boundary')
+        if settings.get('hostaddr','127.0.0.1')!='127.0.0.1' or os.environ.get('PGHOSTADDR','127.0.0.1')!='127.0.0.1':
+            raise Denied('local_database_boundary')
         if not pathlib.Path(settings.get('sslrootcert','')).is_file():raise Denied('local_ca_missing')
         self.dsn=dsn;self.auth=auth;self.observer=observer;self.full_day21=full_day21 is True
     def connect(self):
-        return psycopg.connect(self.dsn,autocommit=True,row_factory=dict_row,
+        return psycopg.connect(self.dsn,hostaddr='127.0.0.1',autocommit=True,row_factory=dict_row,
             prepare_threshold=None,connect_timeout=5,
             options='-c statement_timeout=5000 -c lock_timeout=1000')
     def bind(self,db,claims,request):

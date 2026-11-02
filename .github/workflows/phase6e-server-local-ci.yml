@@ -1,6 +1,14 @@
 name: Synthetic server integration local CI
 run-name: "6E local server CI ${{ inputs.candidate_sha256 }}"
 on:
+  workflow_call:
+    inputs:
+      candidate_blob:
+        required: true
+        type: string
+      candidate_sha256:
+        required: true
+        type: string
   workflow_dispatch:
     inputs:
       candidate_blob:
@@ -24,7 +32,7 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 1
-      - name: Clean 44 preserved plus local candidate, actual GoTrue, RLS and browser
+      - name: Clean canonical45 plus private46-47, actual GoTrue, RLS and browser
         env:
           CANDIDATE_BLOB: ${{ inputs.candidate_blob }}
           CANDIDATE_SHA256: ${{ inputs.candidate_sha256 }}

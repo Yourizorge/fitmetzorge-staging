@@ -76,6 +76,101 @@ class SafetyProtocolTests(unittest.TestCase):
         self.assertTrue(r.failed)
         with self.assertRaisesRegex(ValueError,'registered_stopped'):r.dispatch({'op':'workflow'})
 
+    def test_parent_uses_only_existing_native_fallback_after_terminal_prefix(self):
+        r=self.make()
+        result={'status':'NO_GO','revocation_confirmed':False,'native_commands':9}
+        with patch('safety_auth.native_suffix',return_value=result) as native:
+            actual=r.safety_auth.parent_finish(worker_terminated=True)
+        self.assertEqual(actual,result)
+        self.assertEqual(native.call_args.args[2:],(KEYS,True))
+        self.assertEqual(self.charges,[])
+        self.assertEqual(self.original,{k:vars(v) for k,v in r.evidence.contracts.items()})
+
+    def test_parent_termination_does_not_make_partial_mint_terminal(self):
+        for operation,step in (('issue',0),('verify',1),('refresh',3)):
+            with self.subTest(operation=operation):
+                r=self.make(step);r.evidence.active={'operation':operation}
+                with patch('safety_auth.native_suffix',return_value={'status':'NO_GO','revocation_confirmed':False}) as native:
+                    result=r.safety_auth.parent_finish(worker_terminated=True)
+                self.assertEqual(native.call_args.args[2:],({},False))
+                self.assertFalse(result['revocation_confirmed']);self.assertEqual(self.charges,[])
+
+    def test_parent_requires_process_barrier_before_native_dispatch(self):
+        r=self.make()
+        with patch('safety_auth.native_suffix') as native:
+            with self.assertRaisesRegex(ValueError,'worker_not_terminal'):
+                r.safety_auth.parent_finish(worker_terminated=False)
+        native.assert_not_called();self.assertFalse(r.safety_auth.started)
+
+    def test_parent_reuses_finished_child_suffix_without_retry_or_extra_budget(self):
+        r=self.make();s=r.safety_auth
+        s.dispatch({'stage':'start','receipt':r.receipt})
+        result={'status':'NO_GO','revocation_confirmed':False,'native_commands':8,'commit_confirmed':False}
+        with patch('safety_auth.native_suffix',return_value=result) as native:
+            s.dispatch({'stage':'finish'})
+            self.assertEqual(s.parent_finish(worker_terminated=True),result)
+        native.assert_called_once();self.assertEqual(self.charges,[])
+
+    def test_parent_does_not_repeat_native_suffix_after_exception(self):
+        r=self.make()
+        with patch('safety_auth.native_suffix',side_effect=ValueError('native_unknown')) as native:
+            with self.assertRaisesRegex(ValueError,'native_unknown'):
+                r.safety_auth.parent_finish(worker_terminated=True)
+            with self.assertRaisesRegex(ValueError,'finish_unconfirmed'):
+                r.safety_auth.parent_finish(worker_terminated=True)
+        native.assert_called_once()
+
+    def test_parent_never_reuses_unvalidated_native_success(self):
+        r=self.make()
+        r.composition.confirm_auth_zero=lambda **kw:(_ for _ in ()).throw(ValueError('unconfirmed_zero'))
+        with patch('safety_auth.native_suffix',return_value={'status':'NO_GO','revocation_confirmed':True}) as native:
+            with self.assertRaisesRegex(ValueError,'unconfirmed_zero'):
+                r.safety_auth.parent_finish(worker_terminated=True)
+            with self.assertRaisesRegex(ValueError,'finish_unconfirmed'):
+                r.safety_auth.parent_finish(worker_terminated=True)
+        native.assert_called_once();self.assertIsNone(r.safety_auth.result)
+
+    def test_parent_lifecycle_native_suffix_and_meter_compose_without_unknown_zero(self):
+        from metered_composition import MeteredComposition
+        cases=((None,4,None,9,True),('COMMIT',4,None,8,False),
+               (None,0,'issue',2,False),(None,1,'verify',2,False),(None,3,'refresh',2,False))
+        for failure,step,active,expected,confirmed in cases:
+            with self.subTest(failure=failure,active=active):
+                r=self.make(step);fixture=NativeSuffixTests();fixture.make(fail=failure)
+                r.audit=fixture.r.audit;r.expiry=fixture.r.expiry
+                r.worker_owned=True;r.install_attempted={'guard':True,'audit':True}
+                r.evidence.active={'operation':active} if active else None
+                c=MeteredComposition();r.composition=c;c.bind_auth_scope(RUN,IDS)
+                if active:
+                    # Even a zero-row observation cannot settle an in-flight mint.
+                    fixture.snapshots[0]['rows']=[]
+                    c.auth_before('a_member','issue')
+                else:
+                    for role in ROLES:
+                        for operation in ('issue','verify','getUser','refresh'):
+                            c.auth_before(role,operation);c.auth_after(operation)
+                c.abort('original_worker_stop');used=c.meter.used
+                def metered(text):
+                    c.before_sql(c.current_phase,text)
+                    value=fixture.r.sql(text)
+                    c.after_sql(c.current_phase,text);return value
+                r.sql=metered
+                result=r.parent_auth_cleanup(worker_terminated=True)
+                self.assertEqual(result['revocation_confirmed'],confirmed)
+                self.assertTrue(result['safe_to_remove'])
+                self.assertTrue(result['child_mint_barrier'])
+                self.assertTrue(r.parent_auth_saved)
+                self.assertEqual(len(fixture.calls),expected)
+                self.assertEqual(c.meter.used-used,expected)
+                self.assertEqual(c.meter.safety_spent['auth_native_fallback'],expected)
+                self.assertLessEqual(expected,12);self.assertEqual(RESERVE,60)
+                self.assertLessEqual(c.meter.used,2349)
+                self.assertEqual(c.meter.state['auth_maybe_live'],not confirmed)
+                self.assertEqual(c.meter.stop_reason,'original_worker_stop')
+                self.assertEqual(r.parent_auth_cleanup(worker_terminated=True),result)
+                self.assertEqual(len(fixture.calls),expected)
+                if active:self.assertFalse(any(q.startswith(('BEGIN','DO ')) for q in fixture.calls))
+
     def test_meter_missing_fails_closed_before_http(self):
         r=self.make();del r.composition.authorize_safety_auth
         with self.assertRaisesRegex(ValueError,'meter_not_wired'):

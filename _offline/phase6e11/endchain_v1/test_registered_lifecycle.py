@@ -1,4 +1,5 @@
 import copy,json,types,unittest
+from unittest.mock import patch
 from registered_lifecycle import RegisteredLifecycle
 
 class RegisteredLifecycleTests(unittest.TestCase):
@@ -78,5 +79,114 @@ class RegisteredLifecycleTests(unittest.TestCase):
         for op in ['signup','create_account','cleanup_all','admin_delete']:
             with self.assertRaisesRegex(ValueError,'operation_denied'):r.dispatch({'op':op})
         self.assertEqual(self.calls,[])
+
+    def test_stopped_worker_cannot_remove_parent_auth_evidence(self):
+        r=self.make();r.own_worker();receipt=r.dispatch({'op':'install','ids':self.ids})
+        r.failed=True
+        result=r.dispatch({'op':'remove','receipt':receipt,'stopped':True})
+        self.assertTrue(result['deferred_to_parent']);self.assertFalse(result['removed'])
+        with self.assertRaisesRegex(ValueError,'parent_cleanup_pending'):r.close_temporary()
+        self.assertNotIn('audit_remove',self.calls)
+        with patch.object(r.safety_auth,'parent_finish',return_value={'status':'NO_GO','revocation_confirmed':False}):
+            r.parent_auth_cleanup(worker_terminated=True)
+        self.assertFalse(r.parent_auth_result['revocation_confirmed'])
+        self.assertEqual(r.parent_auth_result['status'],'NO_GO')
+        r.close_temporary()
+        self.assertEqual(self.calls[-2:],['audit_remove','guard_remove'])
+        self.assertTrue(r.removed)
+
+    def test_unconfirmed_worker_cannot_revoke_or_remove(self):
+        r=self.make();r.own_worker();r.dispatch({'op':'install','ids':self.ids});r.failed=True
+        with patch.object(r.safety_auth,'parent_finish') as finish:
+            result=r.parent_auth_cleanup(worker_terminated=False)
+        finish.assert_not_called();self.assertFalse(result['revocation_confirmed'])
+        self.assertEqual(result['reason'],'worker_termination_unconfirmed')
+        with self.assertRaisesRegex(ValueError,'parent_cleanup_pending'):r.close_temporary()
+
+    def test_parent_cleanup_is_one_shot_even_when_native_result_unknown(self):
+        r=self.make();r.own_worker();r.dispatch({'op':'install','ids':self.ids});r.failed=True
+        with patch.object(r.safety_auth,'parent_finish',side_effect=ValueError('lost_native_reply')) as finish:
+            first=r.parent_auth_cleanup(worker_terminated=True)
+            second=r.parent_auth_cleanup(worker_terminated=True)
+        finish.assert_called_once_with(worker_terminated=True)
+        self.assertEqual(first,second);self.assertFalse(first['revocation_confirmed'])
+        self.assertFalse(first['global_zero_claim'])
+
+    def test_proven_inactive_meter_does_not_claim_a_new_auth_zero(self):
+        r=self.make();r.own_worker()
+        r.composition.meter=types.SimpleNamespace(state={'auth_maybe_live':False})
+        with patch.object(r.safety_auth,'parent_finish') as finish:
+            result=r.parent_auth_cleanup(worker_terminated=True)
+        finish.assert_not_called()
+        self.assertEqual(result['reason'],'auth_safety_not_required_by_meter')
+        self.assertFalse(result['revocation_confirmed'])
+        self.assertTrue(result['safe_to_remove'])
+
+    def test_parent_removes_after_confirmed_revocation_is_saved(self):
+        r=self.make();r.own_worker();r.dispatch({'op':'install','ids':self.ids});r.failed=True
+        r.composition.meter=types.SimpleNamespace(state={'auth_maybe_live':True})
+        def revoke(**kw):
+            self.calls.append('parent_native_revoke')
+            r.composition.meter.state['auth_maybe_live']=False
+            return {'status':'NO_GO','revocation_confirmed':True}
+        with patch.object(r.safety_auth,'parent_finish',side_effect=revoke) as finish:
+            result=r.parent_auth_cleanup(worker_terminated=True)
+            r.parent_auth_cleanup(worker_terminated=True)
+        finish.assert_called_once();self.assertTrue(result['safe_to_remove'])
+        self.assertTrue(r.parent_auth_saved)
+        r.close_temporary()
+        self.assertEqual(self.calls[-3:],['parent_native_revoke','audit_remove','guard_remove'])
+
+    def test_native_claim_without_meter_confirmation_stays_unknown_but_removes_owned_guards(self):
+        r=self.make();r.own_worker();r.dispatch({'op':'install','ids':self.ids});r.failed=True
+        r.composition.meter=types.SimpleNamespace(state={'auth_maybe_live':True})
+        with patch.object(r.safety_auth,'parent_finish',return_value={'revocation_confirmed':True}):
+            result=r.parent_auth_cleanup(worker_terminated=True)
+        self.assertFalse(result['revocation_confirmed']);self.assertTrue(result['safe_to_remove'])
+        r.close_temporary()
+        self.assertEqual(self.calls[-2:],['audit_remove','guard_remove'])
+        self.assertTrue(r.composition.meter.state['auth_maybe_live'])
+
+    def test_parent_receipt_save_failure_keeps_guards_and_never_retries_suffix(self):
+        r=self.make();r.own_worker();r.dispatch({'op':'install','ids':self.ids});r.failed=True
+        r.composition.meter=types.SimpleNamespace(state={'auth_maybe_live':False})
+        with patch.object(r.gate,'save',side_effect=RuntimeError('offline_save_failure')):
+            with self.assertRaises(RuntimeError):r.parent_auth_cleanup(worker_terminated=True)
+        self.assertFalse(r.parent_auth_saved)
+        with self.assertRaisesRegex(ValueError,'parent_cleanup_evidence_pending'):r.close_temporary()
+
+    def test_identity_lock_close_failure_blocks_exact_removal(self):
+        from registered_runner import IdentitySession
+        r=self.make();r.own_worker();r.dispatch({'op':'install','ids':self.ids});r.failed=True
+        r.lock_query=object.__new__(IdentitySession).query
+        with patch.object(IdentitySession,'close',side_effect=RuntimeError('lock_close_unknown')), \
+             patch.object(r.safety_auth,'parent_finish') as finish:
+            result=r.parent_auth_cleanup(worker_terminated=True)
+        finish.assert_not_called();self.assertFalse(result['child_mint_barrier'])
+        with self.assertRaisesRegex(ValueError,'parent_cleanup_evidence_pending'):r.close_temporary()
+        self.assertNotIn('audit_remove',self.calls)
+
+    def test_unknown_auth_does_not_bypass_exact_removal_identity_or_retry(self):
+        r=self.make();r.own_worker();r.dispatch({'op':'install','ids':self.ids});r.failed=True
+        with patch.object(r.safety_auth,'parent_finish',return_value={'status':'NO_GO','revocation_confirmed':False}):
+            result=r.parent_auth_cleanup(worker_terminated=True)
+        self.assertTrue(result['safe_to_remove']);self.assertTrue(r.parent_auth_saved)
+        with patch.object(r.audit,'remove',side_effect=ValueError('metadata_removal_mismatch')) as remove:
+            with self.assertRaisesRegex(ValueError,'removal_unconfirmed'):r.close_temporary()
+            r.close_temporary()
+        remove.assert_called_once();self.assertFalse(r.removed)
+        self.assertNotIn('audit_remove',self.calls);self.assertEqual(self.calls.count('guard_remove'),1)
+        self.assertFalse(result['revocation_confirmed'])
+
+    def test_parent_closes_real_identity_session_before_native_cleanup(self):
+        from registered_runner import IdentitySession
+        r=self.make();r.own_worker();r.dispatch({'op':'install','ids':self.ids});r.failed=True
+        r.composition.meter=types.SimpleNamespace(state={'auth_maybe_live':True})
+        session=object.__new__(IdentitySession)
+        r.lock_query=session.query
+        with patch.object(IdentitySession,'close',side_effect=lambda:self.calls.append('lock_closed')), \
+             patch.object(r.safety_auth,'parent_finish',side_effect=lambda **kw:self.calls.append('native') or {'revocation_confirmed':False}):
+            r.parent_auth_cleanup(worker_terminated=True)
+        self.assertEqual(self.calls[-2:],['lock_closed','native'])
 
 if __name__=='__main__':unittest.main()

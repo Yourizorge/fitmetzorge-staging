@@ -299,7 +299,7 @@ class Composition:
             result=raw_query(channel,phase,text,values)
             if qid is not None:monitor.executed(qid)
             return result
-        process=None;timer=None;result=None;enabled=None;controls=None;restored=None
+        process=None;timer=None;result=None;enabled=None;controls=None;restored=None;enable_attempted=False
         try:
             def start_reader():
                 nonlocal monitor
@@ -324,16 +324,20 @@ class Composition:
             with urllib.request.urlopen(req,timeout=5) as response:user=json.loads(response.read(20000))
             claims=json.loads(base64.urlsafe_b64decode(token.split('.')[1]+'==='))
             if user['id']!=ids['a_trainer'] or claims['sub']!=user['id']:raise RuntimeError('ci_auth_identity')
-            headers={'x-fmz6e11-proof':'synthetic-only-local-proof'}
-            control_sql="select jsonb_build_object('config',(select to_jsonb(c) from fmz6e11_private.config c where id),'request',(select to_jsonb(c) from fmz6e11_request_private.control c where id)) value"
-            controls=query('reader','control_before',control_sql)[0]['value']
-            if controls!={'config':{'id':True,'enabled':False,'proof_hash':None},'request':{'id':True,'enabled':False,'expires_at':None}}:
-                raise RuntimeError('ci_control_not_closed')
-            if query('setup','control_enable',"update fmz6e11_private.config set enabled=true,proof_hash=encode(sha256(convert_to($1,'UTF8')),'hex') where id and not enabled and proof_hash is null returning id",['synthetic-only-local-proof'])!=[{'id':True}]:raise RuntimeError('ci_control_enable_count')
-            enabled={'config':{'id':True,'enabled':True,'proof_hash':hashlib.sha256(b'synthetic-only-local-proof').hexdigest()},'request':controls['request']}
-            if query('setup','control_enable',"update fmz6e11_request_private.control set enabled=true,expires_at=clock_timestamp()+interval '3 minutes' where id and not enabled and expires_at is null returning id")!=[{'id':True}]:raise RuntimeError('ci_bridge_enable_count')
-            enabled=query('reader','control_after',control_sql)[0]['value']
-            if not enabled['config']['enabled'] or not enabled['request']['enabled']:raise RuntimeError('ci_controls_not_enabled')
+            from control_recovery import CONTROL_SQL,BEFORE_SQL,intent
+            control_sql=CONTROL_SQL
+            control_before=query('reader','control_before',BEFORE_SQL)[0]
+            controls=control_before['value']
+            # Persist ownership before either mutation, including a lost response.
+            proof,enabled=intent(controls,run_id,control_before['expires_at'])
+            gate.save('integral-control-intent.json',{'run_id':run_id,'expected':enabled,
+                'before_sha':hashlib.sha256(json.dumps(controls,sort_keys=True).encode()).hexdigest()})
+            headers={'x-fmz6e11-proof':proof}
+            enable_attempted=True
+            if query('setup','control_enable',"update fmz6e11_private.config set enabled=true,proof_hash=encode(sha256(convert_to($1,'UTF8')),'hex') where id and not enabled and proof_hash is null returning id",[proof])!=[{'id':True}]:raise RuntimeError('ci_control_enable_count')
+            if query('setup','control_enable',"update fmz6e11_request_private.control set enabled=true,expires_at=$1::timestamptz where id and not enabled and expires_at is null returning id",[enabled['request']['expires_at']])!=[{'id':True}]:raise RuntimeError('ci_bridge_enable_count')
+            observed=query('reader','control_after',control_sql)[0]['value']
+            if observed!=enabled:raise RuntimeError('ci_controls_not_enabled')
             gate.save('integral-control-enable-pair.json',{'before_sha':hashlib.sha256(json.dumps(controls,sort_keys=True).encode()).hexdigest(),
                 'after_sha':hashlib.sha256(json.dumps(enabled,sort_keys=True).encode()).hexdigest(),'expected_updates':2,'actual_updates':2})
             times=query('reader','fixture_times',"select clock_timestamp()-interval '10 seconds' starts_at,clock_timestamp()+interval '3 minutes' ends_at")[0]
@@ -357,7 +361,7 @@ class Composition:
             if active.get('revision')!=2 or active.get('http_status',200)!=200:raise RuntimeError('ci_activation_denied')
             end_reader('fixture_setup')
             payload={**runtime.context(ids),'tokens':request['tokens'],
-                'key':request['anon'],'proof':'synthetic-only-local-proof','ids':roles,'window':window,
+                'key':request['anon'],'proof':proof,'ids':roles,'window':window,
                 'a':by_route['A'],'b':by_route['B'],'initialRevision':active['revision'],
                 'scenario':capture()['workflow_actions'],'sourceSha':gate.result['head'] if 'head' in gate.result else os.environ['GITHUB_SHA'],
                 'commandCount':0}
@@ -440,14 +444,10 @@ class Composition:
                         query(channel,'safety_rollback','ROLLBACK')
                     except Exception:pass
                     finally:self.safety_label=None
-            if enabled is not None and restored!=controls:
+            if enable_attempted and enabled is not None and restored!=controls:
                 try:
-                    before=raw_query('setup','safety_control_before',control_sql)[0]['value']
-                    raw_query('setup','safety_control_restore',"update fmz6e11_request_private.control set enabled=false,expires_at=null where id and enabled and expires_at=$1::timestamptz",[enabled['request']['expires_at']])
-                    raw_query('setup','safety_control_restore',"update fmz6e11_private.config set enabled=false,proof_hash=null where id and enabled and proof_hash=$1",[enabled['config']['proof_hash']])
-                    after=raw_query('setup','safety_control_after',control_sql)[0]['value']
-                    gate.save('integral-safety-control-pair.json',{'before_sha':hashlib.sha256(json.dumps(before,sort_keys=True).encode()).hexdigest(),
-                        'after_sha':hashlib.sha256(json.dumps(after,sort_keys=True).encode()).hexdigest(),'original_restored':after==controls})
+                    from control_recovery import recover
+                    gate.save('integral-safety-control-pair.json',recover(raw_query,controls,enabled))
                 except Exception as error:
                     gate.save('integral-safety-control-stop.json',{'exception_class':type(error).__name__,'retry':False})
             for connection in connections.values():
