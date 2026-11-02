@@ -80,4 +80,24 @@ class Tests(unittest.TestCase):
                 (p/n).write_text(json.dumps(v))
             with self.assertRaisesRegex(ValueError,'full_ci_missing'):admission(p)
 
+    def test_direct_admission_requires_archive_members_before_receipt_claims(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            p=pathlib.Path(tmp)
+            result=dict(status='CLEAN_CI_PASS',full_chain_admission=True,
+                        migrations_applied=45,quota_present_chain_pass=True)
+            for n,v in [('result.json',result),('collection.json',{}),('candidate.json',{'sources':{}})]:
+                (p/n).write_text(json.dumps(v))
+            with patch('closure_ops.verify_archive',side_effect=ValueError('closure_chain_evidence_changed')) as check:
+                with self.assertRaisesRegex(ValueError,'closure_chain_evidence_changed'):admission(p)
+            check.assert_called_once_with(p,'chain')
+
+    def test_direct_admission_rejects_missing_original_archive(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            p=pathlib.Path(tmp)
+            result=dict(status='CLEAN_CI_PASS',full_chain_admission=True,
+                        migrations_applied=45,quota_present_chain_pass=True)
+            for n,v in [('result.json',result),('collection.json',{}),('candidate.json',{'sources':{}})]:
+                (p/n).write_text(json.dumps(v))
+            with self.assertRaisesRegex(ValueError,'closure_evidence_missing'):admission(p)
+
 if __name__=='__main__':unittest.main()

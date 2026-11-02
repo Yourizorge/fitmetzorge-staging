@@ -36,6 +36,9 @@ def admission(folder,root=ROOT):
     result=read('result.json');collection=read('collection.json');sources=read('candidate.json')['sources']
     if result.get('status')!='CLEAN_CI_PASS' or result.get('full_chain_admission') is not True or result.get('migrations_applied')!=45 or result.get('quota_present_chain_pass') is not True:
         raise ValueError('hosted_full_ci_missing')
+    # Direct admission must bind unpacked receipts to the original archive too.
+    from closure_ops import verify_archive
+    verify_archive(folder,'chain')
     if collection.get('all_file_hashes_valid') is not True or collection.get('head')!=result['commit'] or str(collection['run'])!=str(result['run_id']):
         raise ValueError('hosted_archive_binding')
     raw=disk(folder/'evidence.zip').read_bytes()
@@ -49,7 +52,7 @@ def admission(folder,root=ROOT):
         if not path.is_relative_to(root.resolve()) or hashlib.sha256(disk(path).read_bytes()).hexdigest()!=h:
             raise ValueError('hosted_composition_changed')
     required={'_offline/phase6e11/endchain_v1/'+n for n in
-              ('hosted_gate.py','authorization.json','budget.mjs','closure.py','metered_composition.py',
+              ('hosted_gate.py','closure_ops.py','authorization.json','budget.mjs','closure.py','metered_composition.py',
                'complete_register.py','runtime_budget.py','integral_stream.py','migration_boundary.py','quota_boundary.py','cli_envelope.py')}
     numeric=AUTHORIZATION['numeric_evidence']['result']
     required|={'supabase/migrations/'+FILE,numeric,str(pathlib.PurePosixPath(numeric).with_name('MANIFEST.json'))}

@@ -1,4 +1,5 @@
 """Local source/contract tests. No sockets, processes, credentials or DB fixtures."""
+import ast
 import contextlib
 import copy
 import io
@@ -56,6 +57,35 @@ class ReleaseTrainTests(unittest.TestCase):
     def test_stable_input_packaging(self):
         with patch.object(train, 'build', return_value=self.document):
             self.assertEqual(train.input_files(), set(self.document['source_hashes']))
+
+    def test_ci_release_security_uses_the_actual_pinned_install_target(self):
+        tree = ast.parse(train.raw(train.ROOT / (train.PREFIX + 'ci.py')))
+        gate = next(n for n in tree.body if isinstance(n, ast.ClassDef) and n.name == 'Gate')
+        methods = {n.name: n for n in gate.body if isinstance(n, ast.FunctionDef)}
+
+        def command(method, label):
+            calls = [n.value for n in methods[method].body if isinstance(n, ast.Expr)
+                     and isinstance(n.value, ast.Call) and isinstance(n.value.func, ast.Attribute)
+                     and isinstance(n.value.func.value, ast.Name) and n.value.func.value.id == 'self'
+                     and n.value.func.attr == 'command' and n.value.args
+                     and isinstance(n.value.args[0], ast.Constant) and n.value.args[0].value == label]
+            self.assertEqual(len(calls), 1, label)
+            source = pathlib.Path('/candidate')
+            namespace = {'self': type('GateStub', (), {'sources': source})(), 'sys': train.sys,
+                         'str': str, 'folder': source / train.PREFIX}
+            return calls[0], eval(compile(ast.Expression(calls[0].args[1]), '<ci-command>', 'eval'),
+                                  {'__builtins__': {}}, namespace)
+
+        _, install = command('install', 'pg17-parser-install')
+        self.assertIn('pglast==7.20', install)
+        self.assertIn('psycopg[binary]==3.2.10', install)
+        self.assertIn('--only-binary=:all:', install)
+        target = install[install.index('--target') + 1]
+        call, security = command('regressions', 'release-security')
+        self.assertEqual(security, ['env', 'PYTHONPATH=' + target, train.sys.executable, '-B',
+                                    str(pathlib.Path('/candidate') / train.PREFIX / 'test_release_security.py')])
+        self.assertEqual(len(call.args), 2)
+        self.assertEqual(call.keywords, [])
 
     def test_large_frozen_bodies_are_checked_but_not_uploaded(self):
         sources = self.document['source_hashes']

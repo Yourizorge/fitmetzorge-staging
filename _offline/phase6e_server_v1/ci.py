@@ -208,7 +208,8 @@ class Gate(previous.Gate):
         self.command('work-register',[sys.executable,'-B',str(folder/'check_work_register.py')])
         self.command('workday-release-packets',[sys.executable,'-B',str(folder/'test_workday_release.py')])
         self.command('release-train',[sys.executable,'-B',str(ROOT/'_offline/phase6e_server_v1/test_release_train.py')])
-        self.command('release-security',[sys.executable,'-B',str(folder/'test_release_security.py')])
+        self.command('release-security',['env','PYTHONPATH='+str(self.sources/'supabase/.temp/phase6e11-pg17-parser'),
+            sys.executable,'-B',str(folder/'test_release_security.py')])
         import release_train
         train=release_train.build(root=self.sources,frozen_root=ROOT)
         release_train.verify(train,root=self.sources,frozen_root=ROOT)
