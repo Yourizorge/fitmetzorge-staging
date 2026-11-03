@@ -20,8 +20,10 @@ import re
 import subprocess
 import threading
 import time
+import types
 import uuid
 
+import admission_module_binding as module_binding
 import integral_failure_runtime as rt
 
 HERE = pathlib.Path(__file__).resolve().parent
@@ -31,7 +33,8 @@ SOURCES = tuple(PREFIX + x for x in (
     'integral_failure_runtime_workflow.py', 'integral_failure_runtime_worker.mjs',
     'auth_failure.py', 'auth_failure_transport.py', 'auth_protocol.py',
     'fixture_lifecycle.py', 'fixture_cleanup_runtime.py', 'fixture_cleanup_runtime_sql.py',
-    'fixture_cleanup_evidence.py', 'scenario.py', 'native_store.mjs', 'budget.mjs')) + (
+    'fixture_cleanup_evidence.py', 'scenario.py', 'native_store.mjs', 'budget.mjs',
+    'admission_module_binding.py')) + (
     '_offline/phase6e11/controller_v1/core.mjs', '_offline/phase6e11/controller_v1/store.mjs',
     '_offline/phase6e11/edge/core.mjs', '_offline/phase6e11/edge/frozen.mjs',
     '_offline/phase6e11/readiness_v1/workflow_audit_v1/workflow_local.py',
@@ -53,6 +56,79 @@ CONTROL = """select
  (select count(*) from fmz6e11_private.config where enabled)::integer enabled,
  (select count(*) from fmz6e11_request_private.control where enabled)::integer bridge,
  (select count(*) from supabase_migrations.schema_migrations)::integer migrations"""
+SCENARIO_SOURCES = {
+    'scenario': PREFIX + 'scenario.py',
+    'workflow': '_offline/phase6e11/readiness_v1/workflow_audit_v1/workflow_local.py',
+}
+WORKFLOW_CASES = set(SUPPORTED) - {'timeout', 'mid_controller', 'closure_failure', 'mid_auth', 'lost_reply'}
+
+
+class WorkflowSourceError(rt.Blocked):
+    def __init__(self, reason, dependency):
+        self.reason, self.dependency = reason, dependency
+        super().__init__('failure_workflow_source_' + reason)
+
+
+def candidate_workflow_actions(gate):
+    """Compile exact candidate bytes privately; never reuse/replace cached scenario."""
+    try:
+        root = module_binding.checked_path(gate.sources)
+        manifest_path = module_binding.checked_path(pathlib.Path(gate.out) / 'candidate.json')
+        manifest_raw = manifest_path.read_bytes()
+        manifest = json.loads(manifest_raw, object_pairs_hook=module_binding.unique_object)
+        sources = manifest['sources']
+        if not isinstance(sources, dict):
+            raise ValueError('sources')
+    except (OSError, ValueError, TypeError, KeyError, AttributeError):
+        raise WorkflowSourceError('manifest_invalid', 'manifest') from None
+    paths, raw, hashes = {}, {}, {}
+    for dependency, name in SCENARIO_SOURCES.items():
+        expected = sources.get(name)
+        if not isinstance(expected, str) or not re.fullmatch('[a-f0-9]{64}', expected):
+            raise WorkflowSourceError('not_registered', dependency)
+        try:
+            path = module_binding.checked_path(root / name)
+            if not path.is_relative_to(root) or not path.is_file():
+                raise module_binding.ModuleBindingError('path')
+            data = path.read_bytes()
+        except FileNotFoundError:
+            raise WorkflowSourceError('missing', dependency) from None
+        except (OSError, ValueError):
+            raise WorkflowSourceError('path_invalid', dependency) from None
+        if hashlib.sha256(data).hexdigest() != expected:
+            raise WorkflowSourceError('hash_mismatch', dependency)
+        paths[dependency], raw[dependency], hashes[name] = path, data, expected
+    module = types.ModuleType('_integral_candidate_scenario')
+    module.__file__ = str(paths['scenario'])
+    try:
+        # No loader/pyc cache or sys.path lookup may choose these source bytes.
+        exec(compile(raw['scenario'], module.__file__, 'exec'), module.__dict__)
+        if module.ROOT != root or module.SOURCE != paths['workflow']:
+            raise WorkflowSourceError('origin_mismatch', 'scenario')
+        captured = module.capture()
+    except WorkflowSourceError:
+        raise
+    except Exception:
+        raise WorkflowSourceError('capture_failed', 'scenario') from None
+    try:
+        unchanged = manifest_path.read_bytes() == manifest_raw and all(
+            module_binding.checked_path(root / SCENARIO_SOURCES[key]) == paths[key]
+            and paths[key].read_bytes() == data for key, data in raw.items())
+    except (OSError, ValueError):
+        unchanged = False
+    if not unchanged:
+        raise WorkflowSourceError('changed_during_capture', 'manifest')
+    if (not isinstance(captured, dict) or captured.get('status') != 'OFFLINE_SCENARIO_CAPTURE_ONLY'
+            or captured.get('placeholder_only') is not True or captured.get('hosted_calls') != 0
+            or captured.get('source_sha256') != hashes[SCENARIO_SOURCES['workflow']]
+            or not isinstance(captured.get('workflow_actions'), list)
+            or len(captured['workflow_actions']) != 45):
+        raise WorkflowSourceError('capture_contract', 'scenario')
+    receipt = {'status': 'CANDIDATE_SCENARIO_BOUND', 'origin': 'gate.sources',
+               'sources': hashes, 'candidate_manifest_sha256': hashlib.sha256(manifest_raw).hexdigest(),
+               'action_count': 45, 'cached_scenario_used': False, 'sql_dispatches': 0,
+               'hosted_admitted': False, 'full_chain_admission': False}
+    return copy.deepcopy(captured['workflow_actions']), receipt
 
 
 class DeadlineBackend:
@@ -155,8 +231,8 @@ class WorkflowDriver:
         return {'preparation_run': rt.NEW_RUN, 'environment': 'disposable_ci',
                 'reuse_existing_stack': True, 'historical_registry_read_only': True,
                 'sources': list(SOURCES), 'cases': cases,
-                'bootstrap_artifact_files': 200 if not missing else 0,
-                'bootstrap_artifact_bytes': 1048576 if not missing else 0,
+                'bootstrap_artifact_files': 201 if not missing else 0,
+                'bootstrap_artifact_bytes': 1048576 + 4096 if not missing else 0,
                 'prerequisite_details': missing,
                 'blocked': {'pre_migration': 'clean47_already_applied_no_reset_or_reapply',
                             'post_migration': 'need_C_actual_migration_dispatch_receipt_no_replay'}}
@@ -164,6 +240,18 @@ class WorkflowDriver:
     def open(self, runtime, selection):
         if not self.local_component_authorized or runtime.environment != 'disposable_ci':
             raise rt.Blocked('failure_explicit_local_component_authorization_required')
+        if WORKFLOW_CASES.intersection(selection):
+            try:
+                _, source_receipt = candidate_workflow_actions(self.gate)
+            except WorkflowSourceError as error:
+                try:
+                    self.gate.save('integral-component-workflow-source.json', {
+                        'status': 'BLOCKED', 'reason': error.reason, 'dependency': error.dependency,
+                        'sql_dispatches': 0, 'hosted_admitted': False, 'full_chain_admission': False})
+                except BaseException as storage_error:
+                    error.add_note('secondary_source_receipt_failure:' + type(storage_error).__name__)
+                raise
+            self.gate.save('integral-component-workflow-source.json', source_receipt)
         self.opened = True
         if not set(selection) - {'timeout', 'mid_controller', 'closure_failure'}:
             return
@@ -324,7 +412,7 @@ class WorkflowDriver:
 
     def prepare_workflow(self, session):
         from fixture_lifecycle import SEED
-        from scenario import capture
+        actions, _ = candidate_workflow_actions(self.gate)
         session.writer = session.connect()
         session.query(session.writer, 'workflow_begin', 'BEGIN')
         limits = session.query(session.writer, 'workflow_limits', rt.CHECK)[0]
@@ -365,7 +453,7 @@ class WorkflowDriver:
             raise rt.Blocked('failure_actual_fixture_seed')
         self.api(session, 'trainer', {'op': 'command', 'window': c['window'], 'workspace': None,
             'key': str(uuid.uuid4()), 'expected': 1, 'action': 'activate', 'data': {}})
-        session.actions = capture()['workflow_actions']
+        session.actions = actions
 
     def bind(self, session, role):
         actor = self.actors[role]

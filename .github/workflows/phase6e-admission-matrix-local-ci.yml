@@ -1,0 +1,66 @@
+name: Offline isolated admission matrix
+run-name: "6E isolated admission ${{ inputs.candidate_sha256 }}"
+on:
+  workflow_dispatch:
+    inputs:
+      candidate_blob:
+        required: true
+        type: string
+      candidate_sha256:
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: phase6e-composed-closure
+  cancel-in-progress: false
+jobs:
+  isolated:
+    if: github.repository == 'Yourizorge/fitmetzorge-staging' && github.ref == 'refs/heads/main' && github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        case: [application, normal, pre_migration, post_migration, mid_auth, controller, route_a, route_b, restore, lost_response, duplicate, timeout, partial_fixture_cleanup, cleanup_failure, final_check_failure, closure_failure]
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - name: One fresh database and one source-bound case
+        env:
+          CANDIDATE_BLOB: ${{ inputs.candidate_blob }}
+          CANDIDATE_SHA256: ${{ inputs.candidate_sha256 }}
+          GH_READ_TOKEN: ${{ github.token }}
+          CASE_NAME: ${{ matrix.case }}
+        run: python3 -B _offline/phase6e11/endchain_v1/admission_matrix_ci.py
+      - name: Hash sanitized evidence including incomplete results
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,pathlib
+          root=pathlib.Path(os.environ['RUNNER_TEMP'])/'fmz-db41-evidence'
+          root.mkdir(exist_ok=True)
+          manifest={}
+          for p in sorted(root.glob('*')):
+              if p.is_file() and p.suffix in ('.json','.txt','.png'):
+                  raw=p.read_bytes()
+                  if len(raw)>2000000:raise SystemExit('evidence_size')
+                  manifest[p.name]=hashlib.sha256(raw).hexdigest()
+          if not manifest:raise SystemExit('missing_case_evidence')
+          with (root/'artifact-manifest.json').open('x') as f:json.dump(manifest,f,sort_keys=True)
+          print(json.dumps({'files':len(manifest)}))
+          PY
+      - name: Retain this isolated case
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: phase6e-admission-${{ github.run_id }}-${{ matrix.case }}-1
+          path: |
+            ${{ runner.temp }}/fmz-db41-evidence/*.json
+            ${{ runner.temp }}/fmz-db41-evidence/*.txt
+            ${{ runner.temp }}/fmz-db41-evidence/*.png
+          retention-days: 1
+          if-no-files-found: error

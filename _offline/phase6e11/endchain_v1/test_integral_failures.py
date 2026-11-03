@@ -9,10 +9,12 @@ import json
 import os
 import pathlib
 import sys
+import tempfile
 import time
+import types
 import unittest
 from types import SimpleNamespace
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 import integral_failures as f
 import integral_failure_runtime as rt
@@ -569,6 +571,197 @@ class NativeFaultBoundaryUnitTests(unittest.TestCase):
         with patch.object(workflow.subprocess,'Popen',return_value=process), self.assertRaises(workflow.subprocess.TimeoutExpired):
             workflow.WorkflowDriver(SimpleNamespace()).worker(s,{'op':'controller'})
         self.assertEqual(calls,['wait','kill','wait'])
+
+
+class CandidateWorkflowSourceTests(unittest.TestCase):
+    """Real candidate capture and poisoned import-cache regression; no database."""
+    def setUp(self):
+        folder = tempfile.TemporaryDirectory()
+        self.addCleanup(folder.cleanup)
+        self.root = pathlib.Path(folder.name)
+        self.sources = self.root / 'candidate'
+        self.out = self.root / 'out'
+        self.out.mkdir()
+        self.files = {}
+        for key, relative in workflow.SCENARIO_SOURCES.items():
+            target = self.sources / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes((workflow.HERE.parents[2] / relative).read_bytes())
+            self.files[key] = target
+        self.manifest = self.out / 'candidate.json'
+        self.register()
+        self.saved = {}
+        self.gate = SimpleNamespace(sources=self.sources, out=self.out,
+                                    save=lambda name, value: self.saved.setdefault(name, value))
+
+    def register(self):
+        self.manifest.write_text(json.dumps({'sources': {
+            relative: hashlib.sha256(self.files[key].read_bytes()).hexdigest()
+            for key, relative in workflow.SCENARIO_SOURCES.items()}}))
+
+    def cached_checkout(self):
+        module = types.ModuleType('scenario')
+        module.__file__ = str(self.root / 'checkout' / workflow.SCENARIO_SOURCES['scenario'])
+        exec(compile(self.files['scenario'].read_bytes(), module.__file__, 'exec'), module.__dict__)
+        return module
+
+    def test_reproduces_cached_checkout_missing_file_then_uses_real_candidate_capture(self):
+        cached = self.cached_checkout()
+        with patch.dict(sys.modules, scenario=cached):
+            from scenario import capture
+            with self.assertRaises(FileNotFoundError):
+                capture()
+            actions, receipt = workflow.candidate_workflow_actions(self.gate)
+            self.assertIs(sys.modules['scenario'], cached)
+            self.assertEqual(cached.SOURCE, pathlib.Path(cached.__file__).parents[3] /
+                             workflow.SCENARIO_SOURCES['workflow'])
+        self.assertEqual(len(actions), 45)
+        self.assertEqual(actions[0]['request']['action'], 'source_append')
+        self.assertEqual(receipt['origin'], 'gate.sources')
+        self.assertFalse(receipt['cached_scenario_used'])
+        self.assertEqual(set(receipt['sources']), set(workflow.SCENARIO_SOURCES.values()))
+        self.assertEqual(receipt['sql_dispatches'], 0)
+
+    def test_prepare_uses_candidate_before_first_connection_not_after_activation(self):
+        calls = []
+        def query(connection, phase, text, args=None):
+            calls.append(phase)
+            if phase == 'workflow_limits':
+                return [dict.fromkeys(('pg17', 'bounded_statement', 'bounded_lock', 'tls'), True)]
+            if phase == 'workflow_baseline':
+                return [dict(identities=0, running=0, enabled=0, bridge=0, migrations=47)]
+            if phase == 'existing_fixture_seed':
+                return [{'value': {'revision': 1}}]
+            return [{'value': {}}]
+        session = SimpleNamespace(connect=Mock(side_effect=lambda: calls.append('connect')),
+                                  query=query, claims=set(), case_id='unit-case')
+        driver = workflow.WorkflowDriver(self.gate)
+        driver.actors = {r: SimpleNamespace(actor=r, email='unit@example.invalid', session_ids=['unit'])
+                         for r in ('member', 'trainer', 'b')}
+        original = workflow.candidate_workflow_actions
+        def capture(gate):
+            calls.append('candidate_capture')
+            return original(gate)
+        with patch.dict(sys.modules, scenario=self.cached_checkout()), \
+                patch.object(workflow, 'candidate_workflow_actions', side_effect=capture):
+            driver.prepare_workflow(session)
+        self.assertEqual(calls[:2], ['candidate_capture', 'connect'])
+        self.assertEqual(calls[-1], 'existing_product_call')
+        self.assertEqual(len(session.actions), 45)
+
+    def test_unregistered_dependency_blocks_before_connect(self):
+        for dependency in workflow.SCENARIO_SOURCES:
+            self.register()
+            value = json.loads(self.manifest.read_text())
+            del value['sources'][workflow.SCENARIO_SOURCES[dependency]]
+            self.manifest.write_text(json.dumps(value))
+            session = SimpleNamespace(connect=Mock())
+            with self.subTest(dependency=dependency), self.assertRaises(workflow.WorkflowSourceError) as caught:
+                workflow.WorkflowDriver(self.gate).prepare_workflow(session)
+            self.assertEqual(caught.exception.reason, 'not_registered')
+            self.assertEqual(caught.exception.dependency, dependency)
+            session.connect.assert_not_called()
+
+    def test_missing_candidate_does_not_fallback_to_available_checkout(self):
+        self.files['workflow'].unlink()
+        with self.assertRaises(workflow.WorkflowSourceError) as caught:
+            workflow.candidate_workflow_actions(self.gate)
+        self.assertEqual((caught.exception.reason, caught.exception.dependency), ('missing', 'workflow'))
+
+    def test_hash_tampering_both_sources(self):
+        for key, path in self.files.items():
+            before = path.read_bytes()
+            path.write_bytes(before + b'\n# changed\n')
+            with self.subTest(key=key), self.assertRaises(workflow.WorkflowSourceError) as caught:
+                workflow.candidate_workflow_actions(self.gate)
+            self.assertEqual((caught.exception.reason, caught.exception.dependency), ('hash_mismatch', key))
+            path.write_bytes(before)
+
+    def test_duplicate_manifest_key_rejected(self):
+        self.manifest.write_text('{"sources":{},"sources":{}}')
+        with self.assertRaisesRegex(workflow.WorkflowSourceError, 'manifest_invalid'):
+            workflow.candidate_workflow_actions(self.gate)
+
+    def test_source_symlink_rejected(self):
+        target = self.files['workflow']
+        outside = self.root / 'outside.py'
+        target.replace(outside)
+        try:
+            target.symlink_to(outside)
+        except OSError as error:
+            self.skipTest('symlink unavailable: ' + type(error).__name__)
+        with self.assertRaisesRegex(workflow.WorkflowSourceError, 'path_invalid'):
+            workflow.candidate_workflow_actions(self.gate)
+
+    def test_candidate_module_cannot_redirect_workflow_origin(self):
+        path = self.files['scenario']
+        path.write_bytes(path.read_bytes() + b'\nSOURCE=ROOT / "outside.py"\n')
+        self.register()
+        with self.assertRaisesRegex(workflow.WorkflowSourceError, 'origin_mismatch'):
+            workflow.candidate_workflow_actions(self.gate)
+
+    def test_changed_workflow_during_capture_rejected(self):
+        path = self.files['scenario']
+        path.write_bytes(path.read_bytes() + b'\n_original=capture\ndef capture():\n'
+            b' value=_original()\n SOURCE.write_bytes(SOURCE.read_bytes()+b"\\n")\n return value\n')
+        self.register()
+        with self.assertRaisesRegex(workflow.WorkflowSourceError, 'changed_during_capture'):
+            workflow.candidate_workflow_actions(self.gate)
+
+    def test_wrong_capture_digest_rejected(self):
+        path = self.files['scenario']
+        path.write_bytes(path.read_bytes() + b'\n_original=capture\ndef capture():\n'
+            b' value=_original()\n value["source_sha256"]="0"*64\n return value\n')
+        self.register()
+        with self.assertRaisesRegex(workflow.WorkflowSourceError, 'capture_contract'):
+            workflow.candidate_workflow_actions(self.gate)
+
+    def test_open_diagnostic_precedes_any_auth_backend_or_runtime_connect(self):
+        value = json.loads(self.manifest.read_text())
+        del value['sources'][workflow.SCENARIO_SOURCES['workflow']]
+        self.manifest.write_text(json.dumps(value))
+        runtime = SimpleNamespace(environment='disposable_ci', connect=Mock())
+        driver = workflow.WorkflowDriver(self.gate, local_component_authorized=True)
+        with patch('auth_failure.RealBackend') as backend, self.assertRaises(workflow.WorkflowSourceError):
+            driver.open(runtime, ['mid_route_a'])
+        backend.assert_not_called()
+        runtime.connect.assert_not_called()
+        self.assertFalse(driver.opened)
+        receipt = self.saved['integral-component-workflow-source.json']
+        self.assertEqual(receipt['status'], 'BLOCKED')
+        self.assertEqual(receipt['reason'], 'not_registered')
+        self.assertEqual(receipt['dependency'], 'workflow')
+        self.assertEqual(receipt['sql_dispatches'], 0)
+
+    def test_receipt_storage_failure_stops_before_auth_backend(self):
+        self.gate.save = Mock(side_effect=OSError('storage'))
+        driver = workflow.WorkflowDriver(self.gate, local_component_authorized=True)
+        with patch('auth_failure.RealBackend') as backend, self.assertRaises(OSError):
+            driver.open(SimpleNamespace(environment='disposable_ci'), ['mid_route_a'])
+        backend.assert_not_called()
+        self.assertFalse(driver.opened)
+
+    def test_primary_binding_error_survives_receipt_storage_failure(self):
+        self.files['workflow'].unlink()
+        self.gate.save = Mock(side_effect=OSError('storage'))
+        driver = workflow.WorkflowDriver(self.gate, local_component_authorized=True)
+        with patch('auth_failure.RealBackend') as backend, self.assertRaises(workflow.WorkflowSourceError) as caught:
+            driver.open(SimpleNamespace(environment='disposable_ci'), ['mid_route_a'])
+        backend.assert_not_called()
+        self.assertEqual(caught.exception.reason, 'missing')
+        self.assertEqual(caught.exception.__notes__, ['secondary_source_receipt_failure:OSError'])
+
+    def test_source_receipt_is_prepaid_without_changing_case_command_caps(self):
+        self.gate.auth_failure_context = {
+            'dsn':'unit-only', 'auth_url':'http://127.0.0.1:59999', 'admin_token':'unit-only',
+            'run_id':rt.NEW_RUN, 'managed_costs':dict.fromkeys(('create','login','logout','delete'),10),
+            'environment':'disposable_ci', 'exclusive_local_auth':True}
+        plan = workflow.WorkflowDriver(self.gate, local_component_authorized=True).describe()
+        self.assertEqual(plan['bootstrap_artifact_files'], 201)
+        self.assertEqual(plan['bootstrap_artifact_bytes'], 1048576 + 4096)
+        self.assertTrue(all(c['limit'] == 128 and c['cleanup_reserve'] == 16 for c in plan['cases'].values()))
+        self.assertTrue(set(workflow.SCENARIO_SOURCES.values()) <= set(plan['sources']))
+        self.assertIn(workflow.PREFIX + 'admission_module_binding.py', plan['sources'])
 
 
 if __name__=='__main__':unittest.main()

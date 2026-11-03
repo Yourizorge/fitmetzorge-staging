@@ -113,6 +113,26 @@ class Tests(unittest.TestCase):
         self.assertEqual(receipt['status'], 'NO_GO')
         self.assertFalse(receipt['automatic_retry'])
 
+    def test_unanswered_begin_still_rolls_back_without_retry(self):
+        for statement in ('BEGIN', 'BEGIN TRANSACTION READ ONLY'):
+            with self.subTest(statement=statement):
+                runtime = Runtime()
+                original = runtime.execute
+                def execute(sql, args=None):
+                    result = original(sql, args)
+                    if sql == statement:
+                        raise ConnectionError('synthetic-unanswered-begin')
+                    return result
+                runtime.execute = execute
+                with self.assertRaisesRegex(ConnectionError, 'unanswered-begin'):
+                    self.execute(runtime)
+                self.assertEqual(runtime.commands.count(statement), 1)
+                self.assertEqual(runtime.commands[-1], 'ROLLBACK')
+                receipt = self.receipts['admission-fixture-bootstrap.json']
+                self.assertEqual(receipt['status'], 'NO_GO')
+                self.assertEqual(receipt['dispatches'][-1]['label'], 'safety_rollback')
+                self.assertTrue(runtime.cleared)
+
     def test_duplicate_actor_is_rejected_before_runtime(self):
         with patch.object(b.NativeRuntime, 'disposable') as create:
             with self.assertRaises(ValueError):

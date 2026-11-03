@@ -50,8 +50,9 @@ def run(gate, ctx, *, runtime=None):
     committed = False
     try:
         db = runtime.connect()
-        query(db, 'begin', 'BEGIN')
+        # An unanswered BEGIN may already have opened the transaction.
         open_tx = True
+        query(db, 'begin', 'BEGIN')
         before = query(db, 'empty_registry', "select (select count(*) from fmz6e11_private.identities) identities,(select count(*) from fmz6e11_private.operators) operators")[0]
         if before != {'identities': 0, 'operators': 0}:
             raise ValueError('admission_fixture_existing_registry_preserved')
@@ -69,8 +70,8 @@ def run(gate, ctx, *, runtime=None):
         open_tx = False
         committed = True
         db.close(); db = runtime.connect()
-        query(db, 'after_begin', 'BEGIN TRANSACTION READ ONLY')
         open_tx = True
+        query(db, 'after_begin', 'BEGIN TRANSACTION READ ONLY')
         check = query(db, 'after_readonly', "select current_setting('transaction_read_only')='on' readonly")[0]
         if check != {'readonly': True}:
             raise ValueError('admission_fixture_readonly')

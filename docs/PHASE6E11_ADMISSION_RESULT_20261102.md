@@ -385,6 +385,63 @@ en zeven private probes 404. Nul Supabase-calls tijdens deze controle.
 
 ## Grenzen voor de eigenaar
 
+### Zevende brongebonden CI-controle
+
+CI-run `41641017988` op commit
+`3e64988aede9f56192da2a22e1b226fa6677b369` is NO-GO, niet opnieuw als PASS
+geclassificeerd. Candidate SHA-256:
+`a5cc54ff2463c59d479201038cd804d848a9f15c0f91a5e683b954f79ab9538a`.
+Het gevalideerde ZIP-artifact heeft SHA-256
+`f01bc37dd3318e8e2528f21fbabed3d2a8c8dc813a712abd548d764f094f5f68`
+en 618 bestanden. De oorspronkelijke bewijsbestanden blijven ongewijzigd.
+
+De schone 47/47-opbouw slaagt. Afzonderlijke appresultaten: 74 databasechecks,
+46 domeintests, 4 Auth-tests, 209 browserchecks, 191 samengestelde browserchecks,
+79 accountbrowserchecks en 73 offline-shellchecks. Dit zijn overlappende
+suites; er wordt geen gecombineerd succesgetal van gemaakt. De browserstop
+uit CI6 treedt in deze uitvoering niet op. Dat bewijst geen historische oorzaak.
+
+De echte lokale Auth-foutcomponent geeft `LOCAL_AUTH_FAILURE_COMPONENT_PASS`.
+De oude workflowcomponentmatrix bereikt vijf van twaalf geselecteerde
+foutgrenzen. Zeven gevallen stoppen met `FileNotFoundError` voor de bedoelde
+injectie; bij Route A volgt dit na het zestiende SQL-commando, tijdens de
+voorbereiding van de scenarioacties. De afzonderlijke componentactors zijn
+volgens hun eigen receipt verwijderd. Dit is geen globale Auth-cleanupclaim:
+de parent-finalizer blokkeert omdat de fixturefase nog niet is begonnen.
+
+De dependencybinding en een expliciet pre-fixture-afsluitpad worden gericht
+hersteld. De vijftien afzonderlijke volledige-ketenproeven blijven nog
+onbewezen. Er is geen hosted verbinding, fixturehandeling of WAL-herhaling
+uitgevoerd en geen gebruikte poging opnieuw geopend.
+
+De bronkoppelfout is offline gereproduceerd: `scenario` kon reeds uit de
+checkoutcache zijn geladen, terwijl de bijbehorende niet-gecommitteerde
+workflowbron alleen in de kandidaatbundel aanwezig was. De correctie compileert
+de exacte kandidaatbytes in een eigen module, controleert beide bronhashes en
+de capture-digest voor de eerste mutatie en wijzigt de globale modulecache niet.
+Een nieuwe echte PG-uitvoering is nog nodig om het oorspronkelijke stoppunt
+voorbij te bewijzen.
+
+Nieuwe lokale regressieronde: 157 tests uitgevoerd, 156 PASS en een expliciete
+Windows-symlink-SKIP. Deze ronde omvat de stackfinalisatie, hoofdaansluiting,
+fixturebootstrap en workflowfoutpaden met lokale testdoubles; het is geen nieuwe
+PG-/GoTrue-toelating. Een onbekend BEGIN-antwoord leidt nu ook bij de
+fixturebootstrap tot een getelde veiligheidsrollback, zonder herhaling.
+
+De afzonderlijke matrix-artifactcontrole heeft 23 tests PASS, onafhankelijk
+herhaald. Drie reviewbevindingen zijn gesloten: exacte bronmapvergelijking tegen
+de gehashte voorbereide bundel, uniek PostgreSQL-cluster-ID los van database-OID,
+en gesanitiseerde foutuitvoer wanneer receiptopslag zelf faalt. Dit bewijst de
+controlecode, niet de nog uit te voeren vijftien ketencases.
+
+Pages-controle op `3e64988aede9f56192da2a22e1b226fa6677b369`: run
+`41640749083`, artifact `13233191332`, SHA-256
+`90160959d22ff1c7d1f4a1545d7a14656c0b94de0510c91f77ed15edac469240`.
+Alle 152 runtime-assets ongewijzigd, 817 entries, private roots afwezig,
+zeven gecontroleerde paden HTTP 404, nul Supabase-calls. De nieuwe lokale
+behoudcontrole vindt opnieuw nul onverwachte afwijkingen in 1376 bestanden;
+dezelfde vier eerdere toegestane verschillen blijven afzonderlijk benoemd.
+
 Geen hosted poging vrijgeven op basis van losse componentresultaten.
 Volledige same-source toelating, zelfstandig beoordeelde cleanup/prefixbudgetten
 en de ongewijzigde WAL-voorwaarde moeten eerst slagen. Tot die tijd blijft de
