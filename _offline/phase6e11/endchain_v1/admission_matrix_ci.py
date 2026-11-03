@@ -13,6 +13,8 @@ WORKFLOW = 'phase6e-admission-matrix-local-ci.yml'
 SELF_SOURCES = ('_offline/phase6e11/endchain_v1/admission_matrix_ci.py',
     '_offline/phase6e11/endchain_v1/admission_matrix_ops.py',
     '_offline/phase6e11/endchain_v1/test_admission_matrix.py',
+    '_offline/phase6e11/endchain_v1/admission_matrix_bootstrap.py',
+    '_offline/phase6e11/endchain_v1/test_admission_matrix_bootstrap.py',
     '.github/workflows/' + WORKFLOW)
 
 

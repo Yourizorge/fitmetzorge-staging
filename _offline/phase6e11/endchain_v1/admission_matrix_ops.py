@@ -59,7 +59,7 @@ def prepared_sources(raw, candidate):
     return source_map(expected)
 
 
-def verify_archive(raw, *, name, head, candidate, run, expected_sources):
+def verify_archive(raw, *, name, head, candidate, run, expected_sources, trusted_root=None):
     source_map(expected_sources)
     require(name in matrix.NAMES and len(raw) <= MAX_ARCHIVE, 'matrix_archive_scope')
     with zipfile.ZipFile(io.BytesIO(raw)) as archive:
@@ -97,7 +97,14 @@ def verify_archive(raw, *, name, head, candidate, run, expected_sources):
         require(result.get('hosted_admitted') is not True and result.get('full_chain_admission') is not True,
                 'matrix_unreviewed_admission')
         payloads['artifact-manifest.json'] = archive.read('artifact-manifest.json')
-        return {'result': result, 'case': case, 'payloads': payloads,
+        bootstrap = None
+        if name in ('pre_migration', 'post_migration') and result.get('status') == 'CASE_PASS':
+            require(trusted_root is not None, 'matrix_bootstrap_trusted_sources_required')
+            from admission_matrix_bootstrap import verify_bootstrap_case
+            bootstrap = verify_bootstrap_case(payloads, case_name=name, source_commit=head,
+                ci_run=str(run), candidate_sha256=candidate, expected_sources=expected_sources,
+                trusted_root=trusted_root)
+        return {'result': result, 'case': case, 'payloads': payloads, 'bootstrap_verified': bootstrap,
             'manifest_sha256': hashlib.sha256(archive.read('artifact-manifest.json')).hexdigest(),
             'source_manifest_sha256': hashlib.sha256(payloads['candidate.json']).hexdigest(),
             'archive_sha256': hashlib.sha256(raw).hexdigest(), 'files': len(manifest)}
@@ -127,23 +134,40 @@ def aggregate(verified, *, run_conclusion):
         identity = (isolation.get('pg_system_identifier'), isolation.get('database_oid'))
         container = isolation.get('pg_container')
         auth_container = isolation.get('auth_container')
+        early = name in ('pre_migration', 'post_migration')
         run_id = isolation.get('run_id')
         target = isolation.get('db_target_sha256')
         require(isinstance(identity[0], str) and re.fullmatch('[1-9][0-9]{0,19}', identity[0])
                 and type(identity[1]) is int and identity[1] > 0
                 and isinstance(container, str) and re.fullmatch('[a-f0-9]{64}', container)
-                and isinstance(auth_container, str) and re.fullmatch('[a-f0-9]{64}', auth_container)
+                and (early or isinstance(auth_container, str) and re.fullmatch('[a-f0-9]{64}', auth_container))
                 and isinstance(run_id, str) and re.fullmatch('[a-f0-9]{8}-(?:[a-f0-9]{4}-){3}[a-f0-9]{12}', run_id)
                 and isinstance(target, str) and re.fullmatch('[a-f0-9]{64}', target),
                 'matrix_isolation_identity')
         require(identity not in databases and identity[0] not in clusters and container not in containers
-                and auth_container not in auth_containers and run_id not in identities,
+                and (early or auth_container not in auth_containers) and run_id not in identities,
                 'matrix_database_reuse')
-        require(isolation.get('reused') is False and isolation.get('auth_database_bound') is True
-                and auth_container != container and isolation.get('auth_target_sha256') == target,
-                'matrix_auth_database_isolation')
+        if early:
+            proof = value.get('bootstrap_verified')
+            require(isinstance(proof, dict) and proof.get('status') == 'BOOTSTRAP_ABSENCE_VERIFIED'
+                    and proof.get('case_name') == name and proof.get('run_id') == run_id
+                    and proof.get('pg_container') == container
+                    and proof.get('pg_system_identifier') == identity[0]
+                    and proof.get('database_oid') == identity[1]
+                    and proof.get('db_target_sha256') == target
+                    and proof.get('isolation_sha256') == hashlib.sha256(json.dumps(isolation,
+                        sort_keys=True, separators=(',', ':'), allow_nan=False).encode()).hexdigest()
+                    and isolation.get('auth_state') == 'not_started' and auth_container is None
+                    and isolation.get('auth_database_bound') is False
+                    and isolation.get('auth_target_sha256') is None and isolation.get('reused') is False,
+                    'matrix_bootstrap_absence_unverified')
+        else:
+            require(isolation.get('reused') is False and isolation.get('auth_database_bound') is True
+                    and auth_container != container and isolation.get('auth_target_sha256') == target,
+                    'matrix_auth_database_isolation')
         databases.add(identity); clusters.add(identity[0]); containers.add(container)
-        auth_containers.add(auth_container); identities.add(run_id)
+        if not early: auth_containers.add(auth_container)
+        identities.add(run_id)
     return {'status': 'NO_GO' if blockers else 'LOCAL_MATRIX_VERIFIED_PENDING_REVIEW',
         'blockers': blockers, 'cases': {name: {'status': v['result'].get('status'),
             'archive_sha256': v['archive_sha256'], 'manifest_sha256': v['manifest_sha256'],
@@ -181,7 +205,7 @@ def collect(folder, run):
         # Invalid ZIP remains historical evidence, never retried or overwritten.
         try:
             checked = verify_archive(raw, name=name, head=head, candidate=blob['sha256'], run=run,
-                                     expected_sources=expected_sources)
+                                     expected_sources=expected_sources, trusted_root=ops.ROOT)
         except Exception as error:
             failures[name] = {'error_class': type(error).__name__, 'archive_sha256': digest}
             ops.g.write(path/'incomplete-collection.json', failures[name])

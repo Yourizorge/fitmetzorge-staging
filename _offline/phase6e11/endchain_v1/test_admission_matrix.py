@@ -126,6 +126,33 @@ class AggregateTests(unittest.TestCase):
                     'database_oid':5,'pg_container':str(i).zfill(64),'auth_container':str(100+i).zfill(64),
                     'run_id':str(uuid.UUID(int=i+1)),'db_target_sha256':'d'*64,'auth_target_sha256':'d'*64,
                     'reused':False,'auth_database_bound':True}}}
+        for name in ('pre_migration', 'post_migration'):
+            item = self.values[name]
+            isolation = item['case']['isolation']
+            isolation.update(auth_state='not_started', auth_container=None,
+                auth_database_bound=False, auth_target_sha256=None)
+            item['bootstrap_verified'] = {k: isolation[k] for k in ('run_id', 'pg_container',
+                'pg_system_identifier', 'database_oid', 'db_target_sha256')}
+            item['bootstrap_verified'].update(status='BOOTSTRAP_ABSENCE_VERIFIED', case_name=name,
+                isolation_sha256=hashlib.sha256(json.dumps(isolation,sort_keys=True,
+                    separators=(',', ':'),allow_nan=False).encode()).hexdigest())
+
+    def test_early_no_auth_requires_independent_verified_witness(self):
+        for name in ('pre_migration', 'post_migration'):
+            value = copy.deepcopy(self.values)
+            value[name].pop('bootstrap_verified')
+            with self.assertRaisesRegex(ValueError, 'bootstrap_absence_unverified'):
+                ops.aggregate(value, run_conclusion='success')
+
+    def test_changed_early_isolation_rejected_after_verification(self):
+        self.values['pre_migration']['case']['isolation']['extra'] = 'changed'
+        with self.assertRaisesRegex(ValueError, 'bootstrap_absence_unverified'):
+            ops.aggregate(self.values, run_conclusion='success')
+
+    def test_later_case_cannot_claim_bootstrap_exception(self):
+        self.values['mid_auth']['case']['isolation']['auth_container'] = None
+        with self.assertRaisesRegex(ValueError, 'isolation_identity'):
+            ops.aggregate(self.values, run_conclusion='success')
 
     def test_complete_matrix_is_still_not_hosted_authority(self):
         result=ops.aggregate(self.values, run_conclusion='success')

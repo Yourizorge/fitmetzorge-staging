@@ -536,3 +536,30 @@ eerder toegestane verschillen, nul nieuwe onverwachte afwijkingen.
 External AI calls/cost: 0 / EUR 0,00.
 Real-member AI enabled: NO.
 Production touched: NO.
+
+### Checkpoint: kandidaatverpakking en vroege foutafsluiting
+
+Commit `e6958539ed10887d1be873510db43d6a3b19aa8f` bevat uitsluitend de
+beoordeelde CI-verpakkingscorrectie en rapportage. Nieuwe disposable CI-run
+`41656238735` gebruikt kandidaat
+`cb4f401a7e808874b78c49f7da6b060a1591a7dc943e2589aab1b491c01fe451`
+(556 bronbestanden). Een lopende run is geen nieuwe integrale PASS.
+
+Pages-run `41655931750`, artifact `13240340691`, SHA-256
+`a8dfbd0a666069ae105b65bc198380b49142674a32e84016803ad4d5cdc532c7`:
+817 entries, alle 152 runtime-assets ongewijzigd, private roots afwezig en
+zeven gecontroleerde private paden HTTP 404. Nul Supabase-calls. Lokale
+behoudcontrole: 1376 bestanden, 1372 byte-identiek en uitsluitend dezelfde
+vier eerder toegestane documentatie/attributes-afwijkingen. Geen nulmeting
+overschreven; dit is geen hosted databehoudsmeting.
+
+De nieuwe matrixcollector valideert voor uitsluitend `pre_migration` en
+`post_migration` de oorspronkelijke brongebonden afwezigheidsreceipts.
+Ontbrekende Auth is daar geen algemene uitzondering: exacte Docker-inventaris,
+vier afsluitcommando's, PostgreSQL-identiteit, migratiegrens en gepinde bronnen
+blijven vereist. De overige dertien cases vereisen echte lokale Auth. De
+collector importeert geen code uit artifacts en controleert per case een
+unieke databaseclusteridentiteit. De voorlopige bron en tests zijn nog geen
+uitgevoerde vijftien-case matrix. Gerichte matrixregressies: 28 PASS; aparte
+synthetische receipt-tamperingtests: 25 PASS (87,137 seconden). Onafhankelijke
+review en daadwerkelijke integrale uitvoering blijven afzonderlijke gates.
