@@ -615,6 +615,17 @@ De verpakkingstest gebruikt nu eerst de bestaande versiegebonden loader,
 zonder nieuwe fallback of afhankelijkheid. Dit is een testharnesscorrectie,
 geen bewijs dat de FileNotFoundError uit CI9 daarmee is verklaard.
 
+De onafhankelijke hercontrole vond dat import-only checks geen parser nodig
+hebben. De loader is daarom uitsluitend aan de budgetoperatie gekoppeld.
+Beide relevante tests samen slagen in een vers proces: 2 PASS, 94,857 s.
+Voorbereide kandidaat `4981c09de499d553f6dc1cff001875f5f418990efe4d85262f3996430c02099a`
+blijft ongebruikt en ongewijzigd; zij is niet als CI-run gestart.
+Pages op checkpoint `83665d9e238b4f6cb7d9db856f8ce3da181f1ab9`:
+run `41663389407`, artifact `13243706356`, SHA-256
+`f9daab5627969e062f0587946a9fd9b79b797bbcc81e718e8f64236d6e3a5da2`.
+152 runtime-assets byte-identiek; 817 entries; private roots afwezig,
+zeven private HTTP-paden 404; geen Supabase-calls.
+
 Hosted blijft NO-GO; historische incomplete meetparen blijven incompleet.
 External AI calls/cost: 0 / EUR 0,00. Real-member AI enabled: NO.
 Production touched: NO.

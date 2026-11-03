@@ -66,8 +66,9 @@ class PackagingTests(unittest.TestCase):
             GITHUB_REPOSITORY='Yourizorge/fitmetzorge-staging', GITHUB_REF='refs/heads/main',
             GITHUB_WORKSPACE=str(CHECKOUT))
         env.update(overrides or {})
-        from sql_protocol import parser
-        parser()  # Load the existing pinned PG17 parser before locating its dependency directory.
+        if operation == 'budget':
+            from sql_protocol import parser
+            parser()  # Import-only checks do not need the PG17 dependency.
         spec = importlib.util.find_spec('pglast')
         dependencies = [str(pathlib.Path(spec.origin).parent.parent)] if spec else []
         result = subprocess.run([sys.executable, '-I', '-B', '-c', IMPORT, str(self.copy),
