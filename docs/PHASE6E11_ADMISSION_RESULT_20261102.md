@@ -681,3 +681,21 @@ die vervolgmatrix; geen verplichte check is verwijderd. De gerichte
 orchestration-suite na deze volgordewijziging: 13 PASS, 0,147 s.
 Dit voorkomt herhaling van dure, ongewijzigde suites bij een reeds bekende
 vroege blokkade. Het vervangt geen same-source volledige CI-toelating.
+
+### Kandidaatstart voor database-installatie afgeschermd
+
+De entry gebruikt een gehashte, exclusief opgeslagen pre-databasehandoff en
+een verse `-B -I`-interpreter vanuit de kandidaat. Zij controleert bronnen
+opnieuw en maakt eenmaal de prepared-owner; dezelfde ledger moet naar de
+platforminstallatie en de case gaan. Geen tweede fetch, UUID of ledger-open.
+De platforminstaller ontbreekt nog in de volledige samenstelling: daarom
+blijft de entry gesloten en is geen matrixdatabase gestart.
+
+Agenttest 18 PASS; onafhankelijke review 18 PASS (3,038 s), geen P1/P2;
+na integratie 18 PASS (1,642 s). Dit is dezelfde suite, niet 54 unieke tests.
+Main behoudt CRLF; de inhoud is na LF-normalisatie exact de beoordeelde
+levering. Raw SHA-256 van `case_stack_v1/ci.py`:
+`6bf681fc68b0ea47bb91a0f17c522553f8e0a9955432fadd669d17c6ac494432`;
+`case_stack_v1/test_ci.py`:
+`ea28e946074249e3ea8b8ed26446463821b8acd4b622b3c72e914e753ed82168`.
+Geen PG-, GoTrue-, volledige-keten- of hosted-PASS uit deze tests afgeleid.
