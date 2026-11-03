@@ -4,6 +4,7 @@ import hashlib
 import json
 import os
 import pathlib
+import sqlite3
 import tempfile
 import types
 import unittest
@@ -121,6 +122,43 @@ class CatalogTests(unittest.TestCase):
         f=next(f for f in self.data['functions'] if f['nargs'])
         f['argument_types'][0]['name']='text_not_jsonb'
         with self.assertRaisesRegex(Blocked,'changed_function'): self.validate()
+    def catalog_argument(self, oid):
+        # Execute the actual parsed projection predicates against PG17 type rows.
+        # SQLite is only an in-memory expression harness, not PostgreSQL evidence.
+        query = m.parser().parse_sql(m.FUNCTIONS)[0].stmt
+        from pglast.stream import RawStream
+        arguments = next(t.val.subselect for t in query.targetList if t.name == 'argument_types')
+        array_flag = RawStream()(arguments.targetList[0].val.args[-1])
+        element_join = RawStream()(arguments.fromClause[0].larg.quals)
+        connection = sqlite3.connect(':memory:')
+        try:
+            connection.execute('create table pg_type(oid integer primary key,typname text,typelem integer,typarray integer)')
+            # Scalar name has typelem=char, but char.typarray is NOT name's OID.
+            connection.executemany('insert into pg_type values(?,?,?,?)',
+                [(18,'char',0,1002),(19,'name',18,1003),(1003,'_name',19,0)])
+            rows = connection.execute('select at.typname, '+array_flag+
+                ' from pg_type t join pg_type at on '+element_join+' where t.oid=?', (oid,)).fetchall()
+            self.assertEqual(len(rows),1)
+            self.assertIn(rows[0][1],(0,1))
+            return {'schema':'pg_catalog','name':rows[0][0],'array':bool(rows[0][1])}
+        finally:
+            connection.close()
+    def test_catalog_scalar_name_matches_bound_attach_contract(self):
+        argument = self.catalog_argument(19)
+        self.assertEqual(argument,{'schema':'pg_catalog','name':'name','array':False})
+        function = next(f for f in self.data['functions']
+                        if f['schema']=='fmz6e11_audit_private' and f['name']=='attach')
+        self.assertEqual(function['argument_types'][1:],[argument,argument])
+        function['argument_types'][1:] = [argument,argument]
+        self.validate()
+    def test_catalog_name_array_matches_bound_project_key_contract(self):
+        argument = self.catalog_argument(1003)
+        self.assertEqual(argument,{'schema':'pg_catalog','name':'name','array':True})
+        function = next(f for f in self.data['functions']
+                        if f['schema']=='fmz6e11_audit_private' and f['name']=='project_key')
+        self.assertEqual(function['argument_types'][1],argument)
+        function['argument_types'][1] = argument
+        self.validate()
     def test_auth_callable_definer_not_whitelisted_by_source_hash_alone(self):
         next(f for f in self.data['functions'] if f['schema']==m.SCHEMA)['auth_execute'] = True
         with self.assertRaisesRegex(Blocked,'auth_callable'): self.validate()

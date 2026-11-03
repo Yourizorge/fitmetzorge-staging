@@ -90,9 +90,10 @@ TRIGGERS = REACHABLE + """select n.nspname schema,c.relname relation,t.tgname na
  join pg_namespace pn on pn.oid=p.pronamespace
  where not t.tgisinternal limit 257"""
 FUNCTIONS = REACHABLE + """select n.nspname schema,p.proname name,p.pronargs nargs,
- array(select jsonb_build_object('schema',an.nspname,'name',at.typname,'array',t.typelem<>0)
+ array(select jsonb_build_object('schema',an.nspname,'name',at.typname,'array',at.typarray=t.oid)
  from unnest(p.proargtypes) with ordinality v(oid,ord) join pg_type t on t.oid=v.oid
- join pg_type at on at.oid=case when t.typelem<>0 then t.typelem else t.oid end
+ join pg_type at on at.oid=case when t.oid=(select e.typarray from pg_type e where e.oid=t.typelem)
+ then t.typelem else t.oid end
  join pg_namespace an on an.oid=at.typnamespace order by v.ord) argument_types,
  l.lanname language,p.prosecdef definer,p.proconfig config,pg_get_userbyid(p.proowner) owner,
  encode(sha256(convert_to(replace(p.prosrc,chr(13)||chr(10),chr(10)),'UTF8')),'hex') body_sha256,

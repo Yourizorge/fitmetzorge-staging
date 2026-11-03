@@ -480,6 +480,20 @@ Checkpoint `0bdf53a967ac1e56e1ef2b5f5e00b85d4de078fa`: Pages-run
 817 entries, 152 runtime-assets byte-identiek, private roots afwezig en zeven
 private HTTP-paden 404. Dit is publicatiebewijs, geen hosted databasebewijs.
 
+### PG17-cataloguscorrectie voor de volgende CI
+
+De voorcontrole vond een bronfout voordat een nieuwe CI-run werd gestart:
+`pg_type.typelem <> 0` betekent niet uitsluitend SQL-array. Ook scalar `name`
+heeft een elementtype. De eerdere query zou daardoor `attach(regclass,name,name)`
+verkeerd vergelijken als twee `char[]`-argumenten en de bootstrap blokkeren.
+De query gebruikt nu de wederkerige relatie `element.typarray = type.oid`,
+zowel voor elementkeuze als voor het arraykenmerk. De echte geparste SQL-
+expressies zijn getest met de PG17-cataloguswaarden voor `name` en `name[]`;
+de in-memory expressietest is uitdrukkelijk geen echte PostgreSQL-uitvoering.
+24/24 tests PASS, apart herhaald door hoofdworker en onafhankelijke reviewer.
+De vooraf voorbereide bundel `e61a8334ee27aa3280504e0c24312f9903c160d94b776a711c8abd165a1d0c89`
+blijft ongewijzigd en ongebruikt; een nieuwe bundel moet de correctie bevatten.
+
 External AI calls/cost: 0 / EUR 0,00.
 Real-member AI enabled: NO.
 Production touched: NO.
