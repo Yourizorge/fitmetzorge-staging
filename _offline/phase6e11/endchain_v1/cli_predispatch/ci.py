@@ -32,6 +32,20 @@ def sha(raw):
     return hashlib.sha256(raw).hexdigest()
 
 
+def tracking_evidence(before, after):
+    # cli_stat_reader.SQL explicitly selects toplevel. Both modes retain those
+    # statements; nested server work is not claimed by this protocol comparison.
+    modes = [s.get('track') if s.get('track') in ('none', 'top', 'all') else 'UNKNOWN'
+             for s in (before, after)]
+    utility = [s.get('track_utility') if s.get('track_utility') in ('on', 'off') else 'UNKNOWN'
+               for s in (before, after)]
+    return {'before': modes[0], 'after': modes[1], 'utility_before': utility[0],
+            'utility_after': utility[1], 'scope': 'toplevel_protocol_commands_only',
+            'nested_server_work_proven': False,
+            'valid': modes[0] in ('top', 'all') and modes[0] == modes[1]
+                     and utility == ['on', 'on']}
+
+
 def invocation_diagnostic(code, output, ledger_file):
     """Export only fixed classifications, never an upstream message or argv."""
     known = {
@@ -327,6 +341,7 @@ def run(gate):
             receipt['observer_commands'] = len(first) + len(last)
         if password.encode() in output:
             raise ValueError('cli_predispatch_private_output')
+        receipt['tracking'] = tracking_evidence(before, after)
         check_invocation(receipt, code, output, ledger_file)
         evidence = replay(ledger_file)
         receipt.update(evidence)
@@ -334,7 +349,7 @@ def run(gate):
         if header['source_commit'] != commit or header['candidate_sha256'] != candidate or \
                 header['invocation_id'] != policy['invocation_id'] or \
                 header['policy_sha256'] != sha(json.dumps(policy, separators=(',', ':')).encode()) or \
-                receipt['observer_commands'] != 8 or before['track'] != 'all' or after['track'] != 'all':
+                receipt['observer_commands'] != 8 or receipt['tracking']['valid'] is not True:
             raise ValueError('cli_predispatch_runtime_binding')
         numeric = compare(before, after, evidence['terminal']['sql_dispatches'], between=3)
         receipt['numeric_coverage'] = numeric

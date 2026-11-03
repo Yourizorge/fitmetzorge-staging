@@ -16,6 +16,31 @@ spec.loader.exec_module(ci)
 
 
 class ReceiptTests(unittest.TestCase):
+    def test_stable_top_and_all_have_same_toplevel_protocol_scope(self):
+        for mode in ('top', 'all'):
+            sample = {'track': mode, 'track_utility': 'on'}
+            result = ci.tracking_evidence(sample, sample)
+            self.assertTrue(result['valid'])
+            self.assertEqual(result['before'], mode)
+            self.assertFalse(result['nested_server_work_proven'])
+
+    def test_tracking_disabled_changed_or_unknown_remains_blocked(self):
+        before = {'track': 'top', 'track_utility': 'on'}
+        for after in ({'track': 'all', 'track_utility': 'on'},
+                      {'track': 'none', 'track_utility': 'on'},
+                      {'track': 'top', 'track_utility': 'off'}, {},
+                      {'track': 'private-value', 'track_utility': 'private-value'}):
+            result = ci.tracking_evidence(before, after)
+            self.assertFalse(result['valid'])
+            self.assertNotIn('private-value', json.dumps(result))
+
+    def test_numeric_reader_still_explicitly_excludes_nested_statements(self):
+        root = HERE.parents[0]
+        spec = importlib.util.spec_from_file_location('actual_cli_stat_reader', root/'cli_stat_reader.py')
+        reader = importlib.util.module_from_spec(spec); spec.loader.exec_module(reader)
+        self.assertIn('and toplevel)', reader.SQL)
+        self.assertIn('pg_stat_statements(false)', reader.SQL)
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(prefix='cli-predispatch-test-')
         self.addCleanup(self.temp.cleanup)

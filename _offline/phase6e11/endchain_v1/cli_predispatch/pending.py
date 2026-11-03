@@ -190,6 +190,7 @@ def run_pending(gate, args, expected_file):
             receipt['observer_commands'] = len(first) + len(last)
         if password.encode() in output:
             raise ValueError('cli_predispatch_private_output')
+        receipt['tracking'] = common.tracking_evidence(before, after)
         common.check_invocation(receipt, code, output, ledger_file)
         evidence = common.replay(ledger_file)
         receipt.update(evidence)
@@ -197,7 +198,7 @@ def run_pending(gate, args, expected_file):
         receipt['actual_migration_execution'] = True
         numeric = compare(before, after, len(rows), between=3)
         receipt['numeric_coverage'] = numeric
-        if code or receipt['observer_commands'] != 8 or before['track'] != 'all' or after['track'] != 'all' or \
+        if code or receipt['observer_commands'] != 8 or receipt['tracking']['valid'] is not True or \
                 numeric['all_protocol_visible'] is not True or numeric['temp_written'] != 0:
             raise ValueError('cli_predispatch_pending_numeric')
         receipt['complete'] = True

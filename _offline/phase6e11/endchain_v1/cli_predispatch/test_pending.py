@@ -145,7 +145,7 @@ class PendingTests(unittest.TestCase):
             return 0, b'Applied private candidate migration'
         runtime = SimpleNamespace(clear=lambda:state.update(cleared=True))
         patch.dict(sys.modules, native_runtime=SimpleNamespace(NativeRuntime=SimpleNamespace(disposable=lambda g:runtime)),
-            cli_stat_reader=SimpleNamespace(snapshot=lambda r:({'track':'all'},[dict(confirmed=True, protocol_commands=1)]*4),
+            cli_stat_reader=SimpleNamespace(snapshot=lambda r:({'track':'all','track_utility':'on'},[dict(confirmed=True, protocol_commands=1)]*4),
                 compare=lambda *a,**kw:dict(all_protocol_visible=True,temp_written=0))).start()
         patch.dict('os.environ', GITHUB_REPOSITORY='Yourizorge/fitmetzorge-staging', FMZ_CLI_PREDISPATCH_UPSTREAM=str(HERE)).start()
         patch.object(pending.common, 'source_binding', return_value={}).start()

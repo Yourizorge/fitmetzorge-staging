@@ -88,6 +88,26 @@ is `offline-budget-73c352cddf7e40cd81f3faea9b344bdd/`.
 Dit is een lokale generatie, niet uitgevoerd CI-bewijs; status
 `NO_GO_INCOMPLETE_BOUND` en `minimal_cap=None` blijven behouden.
 
+## Derde brongebonden CI en gerichte meetcorrectie
+
+CI [41513763310](https://github.com/Yourizorge/fitmetzorge-staging/actions/runs/41513763310)
+op `32cbb1518a46bd65511187ae99b53d68c3446448` blijft NO_GO.
+Candidate SHA-256 `df74adf2a99707daa3058ebc5157394be2cf0c3b85dd27d92cbf8cf9e01ffeda`;
+ZIP SHA-256 `6d5c7833857e5c549b8cb99a58380937c672e232ded4bf3eea05b9d3dd6e0681`.
+117 bewijsbestanden plus manifest zijn behouden. De instrumentatie voerde de
+private appmigration daadwerkelijk uit: exit0, 47 bevestigde SQL-dispatches,
+47 numeriek waargenomen top-level opdrachten, nul eigen tijdelijke writes.
+De keten stopte daarna op `cli_predispatch_pending_numeric`: de toelatingscode
+vereiste uitsluitend track=all terwijl de reader expliciet alleen toplevel
+selecteert. De feitelijke trackingmodes werden in deze receipt niet opgeslagen;
+deze run wordt daarom niet achteraf als PASS verklaard, ook niet als 47/47.
+
+De correctie accepteert uitsluitend een onveranderde top/top of all/all met
+utility on/on en registreert die instellingen expliciet. Onbekende, uitgeschakelde
+of veranderde instellingen blijven geblokkeerd. Dit bewijst geen nested workload.
+Onafhankelijke bronreview: geen P1/P2-blokker voor een nieuwe disposable CI.
+WAL-, IO-, tijd-, Auth- en hosted grenzen zijn niet gewijzigd.
+
 ## Budget en harde grenzen
 
 De veertien matrixfasen zijn niet als veertien volledige keten-PASS-resultaten
