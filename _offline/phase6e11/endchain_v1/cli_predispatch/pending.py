@@ -1,4 +1,4 @@
-"""Instrument the parent's existing private app apply exactly once, not M48."""
+"""One shared apply runner for exact disposable canonical/app migrations."""
 import importlib.util
 import json
 import os
@@ -16,18 +16,104 @@ spec.loader.exec_module(common)
 APP = '_offline/phase6e_server_v1/supabase/migrations/'
 FILES = ('20261014105919_phase6e_synthetic_server_candidate.sql',
          '20261014160019_phase6e_local_outbox.sql')
+CANONICAL = 'supabase/migrations/20261018070231_phase6e11_recovery_run_quota.sql'
+CANONICAL_SHA = '64498fa910966497e92705dcf66b76f40c40f01c006aed98c191ce109dd88635'
+CANONICAL_RECEIPT = 'cli-predispatch-canonical-45.json'
+CANONICAL_ISOLATION = 'canonical-45-cli-predispatch-cli-isolation-0.json'
+CANONICAL_LEDGER = 'cli-predispatch-canonical-45.ledger.txt'
+CANONICAL_POLICY = 'cli-predispatch-canonical-45.policy.json'
+
+
+def bounded_raw(path, limit):
+    if path.is_symlink() or not path.is_file():
+        raise ValueError('cli_predispatch_raw_source')
+    with path.open('rb') as stream:
+        raw = stream.read(limit + 1)
+    if len(raw) > limit:
+        raise ValueError('cli_predispatch_raw_bound')
+    return raw
+
+
+def exclusive_raw(root, name, raw, limit):
+    root = pathlib.Path(root).resolve()
+    path = root / name
+    if pathlib.Path(name).name != name or path.parent != root or len(raw) > limit:
+        raise ValueError('cli_predispatch_raw_destination')
+    # Keep original serialization, including a truncated final ledger record.
+    with path.open('xb') as stream:
+        if stream.write(raw) != len(raw):
+            raise ValueError('cli_predispatch_raw_short_write')
+        stream.flush()
+        os.fsync(stream.fileno())
+    if bounded_raw(path, limit) != raw:
+        raise ValueError('cli_predispatch_raw_copy_mismatch')
+    return dict(path=name, sha256=common.sha(raw))
+
+
+def save_canonical(gate, receipt, policy_file, policy_raw, ledger_file, primary):
+    errors = []
+    for artifact in ('policy', 'ledger'):
+        try:
+            if artifact == 'policy':
+                receipt['policy_ref'] = exclusive_raw(gate.out, CANONICAL_POLICY, policy_raw, 16384)
+                receipt['policy_file_unchanged'] = bounded_raw(policy_file, 16384) == policy_raw
+                if not receipt['policy_file_unchanged']:
+                    raise ValueError('cli_predispatch_raw_policy_changed')
+            else:
+                raw = bounded_raw(ledger_file, 262144)
+                receipt['ledger_ref'] = exclusive_raw(gate.out, CANONICAL_LEDGER, raw, 262144)
+        except Exception as error:
+            errors.append(dict(artifact=artifact, error_class=type(error).__name__))
+    if getattr(gate, 'cli_protocol', []):
+        errors.append(dict(artifact='app_profile', error_class='ValueError'))
+    if errors:
+        receipt.update(complete=False, reserved_sql_consumed_on_failure=64, durability_errors=errors)
+    try:
+        raw = json.dumps(receipt, sort_keys=True, indent=2).encode('utf-8')
+        exclusive_raw(gate.out, CANONICAL_RECEIPT, raw, 524288)
+    except Exception as error:
+        errors.append(dict(artifact='receipt', error_class=type(error).__name__))
+    if errors:
+        # A storage failure must not replace the original execution failure.
+        if primary is not None:
+            primary.add_note('cli_predispatch_canonical_durability_secondary:' +
+                             ','.join(row['artifact'] for row in errors))
+        else:
+            raise ValueError('cli_predispatch_canonical_evidence_durability') from None
 
 
 def plan_pending(gate, args, expected_file):
+    return plan_apply(gate, args, expected_file, canonical_apply=False)
+
+
+def plan_canonical(gate, args, expected_file):
+    return plan_apply(gate, args, expected_file, canonical_apply=True)
+
+
+def plan_apply(gate, args, expected_file, *, canonical_apply):
     import ci_profile
     from cli_meter import source_commit
     index = len(getattr(gate, 'cli_protocol', []))
     phase = gate.result.get('phase')
-    if getattr(gate, 'cli_profile', None) != 'local_app' or index not in (0, 2) or \
-            phase != ('local_app_schema' if index == 0 else 'local_app_outbox'):
+    if getattr(gate, 'cli_profile', None) != 'local_app':
         raise ValueError('cli_predispatch_pending_slot')
-    logical = ci_profile.cli_arguments(tuple(args), phase, index)
-    target = gate.sources / APP / FILES[index // 2]
+    if canonical_apply:
+        if phase != 'migration_45' or type(gate.result.get('migrations_applied')) is not int or \
+                gate.result['migrations_applied'] != 44 or index != 0 or \
+                tuple(args) != ('migration', 'up', '--local'):
+            raise ValueError('cli_predispatch_canonical_clean44')
+        if hasattr(gate, '_cli_predispatch_canonical_attempted') or any((gate.out / name).exists()
+                for name in (CANONICAL_RECEIPT, 'cli-predispatch-canonical-45-preregister.json',
+                             CANONICAL_ISOLATION, CANONICAL_LEDGER, CANONICAL_POLICY)):
+            raise ValueError('cli_predispatch_canonical_reuse')
+        logical = tuple(args)
+        index = None
+        target = gate.sources / CANONICAL
+    else:
+        if index not in (0, 2) or phase != ('local_app_schema' if index == 0 else 'local_app_outbox'):
+            raise ValueError('cli_predispatch_pending_slot')
+        logical = ci_profile.cli_arguments(tuple(args), phase, index)
+        target = gate.sources / APP / FILES[index // 2]
     if pathlib.Path(expected_file).resolve() != target.resolve():
         raise ValueError('cli_predispatch_pending_target')
     commit = source_commit(gate.result)
@@ -39,7 +125,9 @@ def plan_pending(gate, args, expected_file):
         raise ValueError('cli_predispatch_pending_source')
     canonical = ci_profile.canonical([p.relative_to(gate.sources).as_posix()
         for p in (gate.sources / 'supabase/migrations').glob('*.sql')])
-    relative = canonical + [APP + name for name in FILES[:index // 2 + 1]]
+    relative = canonical if canonical_apply else canonical + [APP + name for name in FILES[:index // 2 + 1]]
+    if canonical_apply and (canonical[-1] != CANONICAL or manifest['sources'].get(CANONICAL) != CANONICAL_SHA):
+        raise ValueError('cli_predispatch_canonical_immutable')
     files = sorted((gate.work / 'supabase/migrations').glob('*.sql'))
     if {p.name for p in files} != {pathlib.PurePosixPath(p).name for p in relative}:
         raise ValueError('cli_predispatch_pending_inventory')
@@ -52,9 +140,11 @@ def plan_pending(gate, args, expected_file):
             raise ValueError('cli_predispatch_pending_bytes')
         hashes[name] = digest
     history = sorted(pathlib.PurePosixPath(p).name.split('_')[0] for p in relative[:-1])
-    return dict(index=index, phase=phase, requested_arguments=list(args), logical_arguments=list(logical),
+    return dict(index=index, phase=phase, canonical_apply=canonical_apply,
+        requested_arguments=list(args), logical_arguments=list(logical),
         source_commit=commit, candidate_sha256=candidate, files=files, migration_sources=hashes,
-        target=target, expected_history_versions=history, target_sha256=hashes[APP + target.name])
+        target=target, expected_history_versions=history,
+        target_sha256=hashes[target.relative_to(gate.sources).as_posix()])
 
 
 def prove_execution(evidence, policy):
@@ -104,14 +194,30 @@ def app_receipt(plan, receipt):
 
 
 def run_pending(gate, args, expected_file):
+    return run_apply(gate, args, plan_pending(gate, args, expected_file))
+
+
+def run_canonical(gate, args, expected_file):
+    plan = plan_canonical(gate, args, expected_file)
+    if os.environ.get('GITHUB_ACTIONS') != 'true' or os.environ.get('GITHUB_REF') != 'refs/heads/main' or \
+            os.environ.get('GITHUB_RUN_ATTEMPT') != '1' or os.environ.get('GITHUB_SHA') != plan['source_commit']:
+        raise ValueError('cli_predispatch_canonical_source_scope')
+    # Consumed on any subsequent setup/transport failure; never retry into a pass.
+    gate._cli_predispatch_canonical_attempted = True
+    return run_apply(gate, args, plan)
+
+
+def run_apply(gate, args, plan):
     if os.environ.get('GITHUB_REPOSITORY') != 'Yourizorge/fitmetzorge-staging' or \
             gate.container != 'supabase_db_fmz-db41-ci':
         raise ValueError('cli_predispatch_disposable_only')
     from cli_stat_reader import snapshot, compare
     from native_runtime import NativeRuntime
     import ci_profile
-    plan = plan_pending(gate, args, expected_file)
     index = plan['index']
+    canonical_apply = plan['canonical_apply']
+    tag = 'canonical-45' if canonical_apply else 'pending-' + str(index)
+    receipt_name = 'cli-predispatch-' + tag + '.json'
     upstream = pathlib.Path(os.environ['FMZ_CLI_PREDISPATCH_UPSTREAM']).resolve()
     build = common.source_binding(upstream)
     bun = shutil.which(os.environ.get('FMZ_BUN', 'bun'))
@@ -156,12 +262,21 @@ def run_pending(gate, args, expected_file):
         raise ValueError('cli_predispatch_pending_policy_binding')
     policy_file = work / 'policy.json'
     policy_file.write_text(json.dumps(policy))
+    policy_raw = bounded_raw(policy_file, 16384) if canonical_apply else None
     ledger_file = work / 'ledger.jsonl'
     receipt = dict(scope='DISPOSABLE_CI_ONLY', hosted_admission=False, complete=False,
         source_commit=plan['source_commit'], candidate_sha256=plan['candidate_sha256'], build=build,
         phase=plan['phase'], app_index=index, migration_sources=plan['migration_sources'], policy=policy,
         actual_migration_execution=False, query_ms=5000, cli_seconds=45, output_max_bytes=8192)
-    gate.save('cli-predispatch-pending-' + str(index) + '-preregister.json', receipt)
+    if canonical_apply:
+        receipt.update(profile='canonical_45', invocation_id=policy['invocation_id'],
+            expected_migration=CANONICAL, expected_migration_sha256=CANONICAL_SHA,
+            requested_arguments=list(args), execution_mode='source_instrumented_db_url',
+            executed_argument_shape=['db', 'push', '--db-url', '<private-loopback-verify-full>',
+                '--skip-vault', '--yes', '--include-all', '--output-format', 'json'],
+            app_profile_mutated=False, application_run_started=False,
+            isolation_receipt=CANONICAL_ISOLATION)
+    gate.save('cli-predispatch-' + tag + '-preregister.json', receipt)
     password = private(['docker', 'exec', gate.container, 'sh', '-c', 'printf %s "$POSTGRES_PASSWORD"'])
     if not password or password.startswith('sbp_'):
         raise ValueError('cli_predispatch_private_password')
@@ -177,8 +292,8 @@ def run_pending(gate, args, expected_file):
     class View:
         container = gate.container
         def rows(self, sql): return gate.rows(sql)
-        def command(self, label, *a, **kw): return gate.command('pending-' + str(index) + '-' + label, *a, **kw)
-        def save(self, name, value): return gate.save('pending-' + str(index) + '-' + name, value)
+        def command(self, label, *a, **kw): return gate.command(tag + '-' + label, *a, **kw)
+        def save(self, name, value): return gate.save(tag + '-' + name, value)
     def measure():
         before, first = snapshot(runtime)
         try:
@@ -203,11 +318,21 @@ def run_pending(gate, args, expected_file):
             raise ValueError('cli_predispatch_pending_numeric')
         receipt['complete'] = True
         return receipt
+    primary = None
     try:
         common.isolated(View(), receipt, measure)
-        ci_profile.cli_receipt(app_receipt(plan, receipt), index)
-        return subprocess.CompletedProcess(list(args), 0, stdout='', stderr='')
+        if canonical_apply:
+            raw = (gate.out / CANONICAL_ISOLATION).read_bytes()
+            isolation = json.loads(raw)
+            if isolation['restored'] is not True or isolation['commands'] != receipt['ci_bootstrap_sql_commands'] or \
+                    isolation['commands'] not in (4, 8) or len(isolation['protocol']) != isolation['commands'] or \
+                    not all(row['confirmed'] is True for row in isolation['protocol']):
+                raise ValueError('cli_predispatch_canonical_isolation')
+            receipt['isolation_receipt_sha256'] = common.sha(raw)
+        else:
+            ci_profile.cli_receipt(app_receipt(plan, receipt), index)
     except Exception as error:
+        primary = error
         receipt.update(complete=False, failure_class=type(error).__name__, reserved_sql_consumed_on_failure=64)
         try: receipt['failure_ledger'] = common.replay(ledger_file, allow_incomplete=True)
         except (OSError, ValueError, KeyError, TypeError): receipt['failure_ledger_unverifiable'] = True
@@ -216,10 +341,16 @@ def run_pending(gate, args, expected_file):
         env.pop('PGPASSWORD', None)
         password = None
         runtime.clear()
-        if not hasattr(gate, 'cli_protocol'): gate.cli_protocol = []
-        if len(gate.cli_protocol) != index:
-            raise ValueError('cli_predispatch_concurrent_profile')
-        compatible = app_receipt(plan, receipt)
-        gate.cli_protocol.append(compatible)
-        gate.save(getattr(gate, 'cli_namespace', '') + 'cli-protocol-' + str(index) + '.json', compatible)
-        gate.save('cli-predispatch-pending-' + str(index) + '.json', receipt)
+        if canonical_apply:
+            save_canonical(gate, receipt, policy_file, policy_raw, ledger_file, primary)
+        else:
+            if not hasattr(gate, 'cli_protocol'): gate.cli_protocol = []
+            if len(gate.cli_protocol) != index:
+                raise ValueError('cli_predispatch_concurrent_profile')
+            compatible = app_receipt(plan, receipt)
+            gate.cli_protocol.append(compatible)
+            gate.save(getattr(gate, 'cli_namespace', '') + 'cli-protocol-' + str(index) + '.json', compatible)
+            gate.save(receipt_name, receipt)
+    if canonical_apply:
+        return dict(instrumented_receipt=receipt_name, sha256=common.sha((gate.out / receipt_name).read_bytes()))
+    return subprocess.CompletedProcess(list(args), 0, stdout='', stderr='')

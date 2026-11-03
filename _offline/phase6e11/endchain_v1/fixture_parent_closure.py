@@ -3,6 +3,7 @@
 Main must bind this module and its project imports before calling:
     run(gate, contexts={case_uuid: original_context}, barrier={path, sha256})
 Call AFTER fixture journal packaging, with the original gate.save restored.
+Omit contexts to load the new immutable parent-setup records from that journal.
 contexts are original window/a/b UUIDs, checked against the original scope hash;
 do not reconstruct ownership from current rows. A missing context blocks its case.
 The separately persisted parent/B barrier must bind NEW_RUN, actor_hashes and
@@ -14,6 +15,9 @@ Only confirmed original rollback or previously undispatched cleanup may get a
 new suffix. Unknown COMMIT is never replayed. Registry deletion requires every
 case resolved plus the exact committed bootstrap. All charges are additional
 local diagnostic protocol commands, never an expansion of the 2349 run budget.
+The deliberate foreign_row control additionally requires its separate parent
+intent, writer rowversions and post-case unchanged witness; the testcase itself
+remains unowned/NO_GO. Older receipts without that chain remain blocked.
 """
 import copy
 import hashlib

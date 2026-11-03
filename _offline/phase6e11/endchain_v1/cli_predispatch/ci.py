@@ -28,6 +28,14 @@ def run_pending(gate, args, expected_file):
     return pending.run_pending(gate, args, expected_file)
 
 
+def run_canonical(gate, args, expected_file):
+    """One disposable canonical M45 apply; never consumes an app CLI index."""
+    spec = importlib.util.spec_from_file_location('fmz_cli_predispatch_canonical', HERE / 'pending.py')
+    pending = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(pending)
+    return pending.run_canonical(gate, args, expected_file)
+
+
 def sha(raw):
     return hashlib.sha256(raw).hexdigest()
 

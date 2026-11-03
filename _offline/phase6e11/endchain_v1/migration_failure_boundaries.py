@@ -13,6 +13,7 @@ a failed full-chain run, migration rollback, strict-WAL proof or admission.
 No migration, fixture, Auth or quota mutation is issued by this module.
 """
 import inspect
+import importlib.util
 import json
 import os
 import pathlib
@@ -75,6 +76,9 @@ class Boundary:
         self.serial = gate.serial
         self.sample = None
         self.consumed = False
+        manifest = pathlib.Path(gate.out) / 'candidate.json'
+        self.instrumented_manifest_sha = sha(manifest.read_bytes()) if manifest.is_file() else None
+        self.instrumented_preexisting = (pathlib.Path(gate.out) / CANONICAL_RECEIPT).exists()
 
 
 def byte_binding(checkout, candidate, expected, *, historical):
@@ -303,7 +307,229 @@ def before(gate):
     return token
 
 
+
+CANONICAL_RECEIPT = 'cli-predispatch-canonical-45.json'
+INSTRUMENTED_PREFIX = rt.PREFIX + 'cli_predispatch/'
+
+
+def instrumented_artifact(gate, reference, *, name=None, limit=262144):
+    if type(reference) is not dict or set(reference) != {'path', 'sha256'}:
+        raise rt.Blocked('migration_boundary_instrumented_reference')
+    value, digest = reference['path'], reference['sha256']
+    if not isinstance(value, str) or not isinstance(digest, str) or not re.fullmatch('[a-f0-9]{64}', digest):
+        raise rt.Blocked('migration_boundary_instrumented_reference')
+    root = pathlib.Path(gate.out).resolve()
+    path = pathlib.Path(value)
+    path = path if path.is_absolute() else root / path
+    if (path.parent.resolve() != root or path.is_symlink() or not path.is_file() or
+            name is not None and path.name != name or not 0 < path.stat().st_size <= limit):
+        raise rt.Blocked('migration_boundary_instrumented_path')
+    raw = path.read_bytes()
+    if sha(raw) != digest:
+        raise rt.Blocked('migration_boundary_instrumented_hash')
+    return path, raw
+
+
+def instrumented_modules(gate, token):
+    manifest_path = pathlib.Path(gate.out) / 'candidate.json'
+    raw = manifest_path.read_bytes()
+    if token.instrumented_manifest_sha is None or sha(raw) != token.instrumented_manifest_sha:
+        raise rt.Blocked('migration_boundary_instrumented_manifest')
+    manifest = json.loads(raw)
+    if manifest['sha256'] != token.binding['candidate_sha256']:
+        raise rt.Blocked('migration_boundary_instrumented_manifest')
+    checkout = pathlib.Path(os.environ['GITHUB_WORKSPACE']).resolve()
+    names = [INSTRUMENTED_PREFIX + name for name in (
+        'ci.py', 'pending.py', 'prepare.py', 'policy.cjs', 'hook.cjs', 'entry.mjs',
+        'package.json', 'pnpm-lock.yaml', 'pnpm-workspace.yaml')]
+    names += [rt.PREFIX+'cli_stat_reader.py', rt.PREFIX+'sql_protocol.py',
+              '_offline/phase6e_server_v1/cli_isolation.py']
+    for name in names:
+        expected = manifest['sources'].get(name)
+        for root in (checkout, pathlib.Path(gate.sources).resolve()):
+            path = root / name
+            if (path.is_symlink() or not path.resolve().is_relative_to(root) or
+                    not path.is_file() or sha(path.read_bytes()) != expected):
+                raise rt.Blocked('migration_boundary_instrumented_source')
+    def load(name, relative):
+        spec = importlib.util.spec_from_file_location(name, pathlib.Path(gate.sources)/relative)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        return module
+    pending = load('boundary_instrumented_pending', INSTRUMENTED_PREFIX+'pending.py')
+    prepare = load('boundary_instrumented_prepare', INSTRUMENTED_PREFIX+'prepare.py')
+    reader = load('boundary_instrumented_reader', rt.PREFIX+'cli_stat_reader.py')
+    protocol = load('boundary_instrumented_protocol', rt.PREFIX+'sql_protocol.py')
+    isolation = load('boundary_instrumented_isolation', '_offline/phase6e_server_v1/cli_isolation.py')
+    return pending, prepare, reader, protocol, isolation, manifest
+
+
+def instrumented_confirmation(gate, token, result):
+    if set(result) != {'instrumented_receipt', 'sha256'} or token.instrumented_preexisting:
+        raise rt.Blocked('migration_boundary_instrumented_result')
+    path, raw = instrumented_artifact(gate, {'path':result['instrumented_receipt'],
+        'sha256':result['sha256']}, name=CANONICAL_RECEIPT, limit=524288)
+    receipt = json.loads(raw)
+    pending, prepare, reader, protocol, isolation, manifest = instrumented_modules(gate, token)
+    if (receipt.get('scope') != 'DISPOSABLE_CI_ONLY' or receipt.get('phase') != 'migration_45' or
+            receipt.get('profile') != 'canonical_45' or receipt.get('expected_migration') != M45 or
+            receipt.get('expected_migration_sha256') != PRESERVED[M45] or
+            receipt.get('requested_arguments') != ['migration','up','--local'] or
+            receipt.get('execution_mode') != 'source_instrumented_db_url' or
+            receipt.get('executed_argument_shape') != ['db','push','--db-url','<private-loopback-verify-full>',
+                '--skip-vault','--yes','--include-all','--output-format','json'] or
+            receipt.get('app_profile_mutated') is not False or receipt.get('application_run_started') is not False or
+            receipt.get('hosted_admission') is not False or receipt.get('complete') is not True or
+            receipt.get('actual_migration_execution') is not True or
+            type(receipt.get('cli_exit_code')) is not int or receipt['cli_exit_code'] != 0 or
+            receipt.get('source_commit') != token.binding['source_commit'] or
+            receipt.get('candidate_sha256') != token.binding['candidate_sha256'] or
+            receipt.get('query_ms') != 5000 or receipt.get('cli_seconds') != 45 or
+            receipt.get('output_max_bytes') != 8192):
+        raise rt.Blocked('migration_boundary_instrumented_terminal')
+    expected = {name:digest for name,digest in token.binding['sources'].items()
+                if name.startswith('supabase/migrations/')}
+    if (len(expected) != 45 or expected.get(M45) != PRESERVED[M45] or
+            receipt.get('migration_sources') != expected or
+            any(manifest['sources'].get(name) != digest for name,digest in expected.items())):
+        raise rt.Blocked('migration_boundary_instrumented_migrations')
+    ledger_path, ledger_raw = instrumented_artifact(gate, receipt['ledger_ref'])
+    policy_path, policy_raw = instrumented_artifact(gate, receipt['policy_ref'], limit=16384)
+    isolation_path, isolation_raw = instrumented_artifact(gate,
+        {'path':receipt['isolation_receipt'],'sha256':receipt['isolation_receipt_sha256']},
+        name='canonical-45-cli-predispatch-cli-isolation-0.json', limit=16384)
+    if len({p.name for p in (path, ledger_path, policy_path, isolation_path)}) != 4:
+        raise rt.Blocked('migration_boundary_instrumented_reference_alias')
+    policy = json.loads(policy_raw)
+    evidence = pending.common.replay(ledger_path)
+    if any(receipt.get(key) != value for key,value in evidence.items()):
+        raise rt.Blocked('migration_boundary_instrumented_replay')
+    header, terminal = evidence['header'], evidence['terminal']
+    if policy != receipt.get('policy') or receipt.get('invocation_id') != policy.get('invocation_id'):
+        raise rt.Blocked('migration_boundary_instrumented_policy')
+    required = dict(version=1, environment='disposable_ci', upstream_commit=pending.common.UPSTREAM,
+        source_commit=token.binding['source_commit'], candidate_sha256=token.binding['candidate_sha256'],
+        slot='quota', cap=64, closure_reserve=1, dry_run=False, host='127.0.0.1',
+        database='postgres', user='postgres', expected_history_versions=token.history[:-1])
+    if (any(type(policy.get(k)) is not type(v) or policy[k] != v for k,v in required.items()) or
+            type(policy.get('port')) is not int or not 1024 <= policy['port'] <= 65535 or
+            not re.fullmatch('[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}',
+                             str(policy.get('invocation_id'))) or
+            policy['invocation_id'] in (rt.OLD_RUN, rt.NEW_RUN) or
+            policy.get('ca_sha256') != sha((pathlib.Path(gate.work)/'fmz-ci-ca.crt').read_bytes())):
+        raise rt.Blocked('migration_boundary_instrumented_policy')
+    for key in ('source_commit','candidate_sha256','upstream_commit','invocation_id',
+                'environment','slot','cap','closure_reserve','dry_run'):
+        if type(header.get(key)) is not type(policy[key]) or header[key] != policy[key]:
+            raise rt.Blocked('migration_boundary_instrumented_header')
+    if (type(header.get('observer_commands_reserved')) is not int or header['observer_commands_reserved'] != 8 or
+            terminal.get('complete') is not True or type(terminal.get('unknown_consumed')) is not int or
+            terminal['unknown_consumed'] != 0 or type(terminal.get('connection_attempts')) is not int or
+            terminal['connection_attempts'] != 1 or
+            terminal['frontend_frames_by_type'] != terminal['frontend_write_returned_by_type']):
+        raise rt.Blocked('migration_boundary_instrumented_unknown')
+    build = receipt.get('build', {})
+    if (build.get('upstream_commit') != prepare.UPSTREAM or build.get('source_before_lf') != prepare.PINS or
+            build.get('hosted_admission') is not False or
+            build.get('entry_sha256') != sha(prepare.PATCHED_ENTRY.encode()) or
+            build.get('hook_sources') != {n:manifest['sources'][INSTRUMENTED_PREFIX+n] for n in prepare.COPY}):
+        raise rt.Blocked('migration_boundary_instrumented_build')
+    # Same PostgreSQL 17 normalized AST as hook.cjs, independently from frozen M45.
+    migration_raw = (pathlib.Path(gate.sources)/M45).read_bytes()
+    if sha(migration_raw) != PRESERVED[M45]:
+        raise rt.Blocked('migration_boundary_instrumented_m45')
+    def clean(value):
+        if isinstance(value, list):
+            return [clean(v) for v in value]
+        if isinstance(value, dict):
+            return {k:clean(value[k]) for k in sorted(value)
+                    if k not in ('location','stmt_location','stmt_len')}
+        return value
+    tree = json.loads(protocol.parser().parser.parse_sql_json(migration_raw.decode('utf-8')))
+    ast = [sha(json.dumps(clean(row['stmt']),separators=(',', ':'),ensure_ascii=False).encode())
+           for row in tree['stmts']]
+    target = dict(version=VERSION, name=pathlib.PurePosixPath(M45).stem.split('_',1)[1],
+                  sha256=PRESERVED[M45], ast_hashes=ast)
+    if policy.get('migrations') != [target]:
+        raise rt.Blocked('migration_boundary_instrumented_m45_ast')
+    dispatches = pending.prove_execution(evidence, policy)
+    count = len(dispatches)
+    frames = [e for e in evidence['events'] if e['event'] == 'frontend_frame']
+    allowed_events = {'preregister','connect_attempt','frontend_frame','frontend_write_returned',
+                      'dispatch','outcome','history_bind','history_snapshot','terminal'}
+    if (any(e['event'] not in allowed_events for e in evidence['events']) or
+            any(type(e.get('sequence')) is not int for e in evidence['events']) or
+            any(type(e.get('id')) is not int for e in evidence['events']
+                if e['event'] in ('dispatch','outcome','connect_attempt')) or
+            any(type(i) is not int for frame in frames for i in frame['sql_ids']) or
+            {i for frame in frames for i in frame['sql_ids']} != set(range(1,count+1)) or
+            terminal['frontend_frames_by_type'].get('SSLRequest') != 1 or
+            terminal['frontend_frames_by_type'].get('StartupMessage') != 1):
+        raise rt.Blocked('migration_boundary_instrumented_frames')
+    if (type(terminal['sql_dispatches']) is not int or type(terminal['confirmed_sql']) is not int or
+            terminal['sql_dispatches'] != count or terminal['confirmed_sql'] != count):
+        raise rt.Blocked('migration_boundary_instrumented_counts')
+    observer_sql = ['BEGIN TRANSACTION READ ONLY',
+        "select current_setting('transaction_read_only')='on' readonly", reader.SQL, 'ROLLBACK']
+    observers = [dict(sha256=protocol.single(sql)['sha256'], kind='numeric_observer',
+                      protocol_commands=1, confirmed=True) for sql in observer_sql]*2
+    if (type(receipt.get('observer_commands')) is not int or receipt['observer_commands'] != 8 or
+            receipt.get('observer_trace') != observers or
+            any(type(row.get('protocol_commands')) is not int or row.get('confirmed') is not True
+                for row in receipt['observer_trace'])):
+        raise rt.Blocked('migration_boundary_instrumented_observers')
+    numeric = receipt.get('numeric_coverage', {})
+    rows = numeric.get('statements')
+    if (numeric.get('all_protocol_visible') is not True or numeric.get('query_text_read') is not False or
+            type(numeric.get('protocol_commands')) is not int or numeric['protocol_commands'] != count or
+            type(numeric.get('numeric_calls_minus_reader')) is not int or numeric['numeric_calls_minus_reader'] != count or
+            type(numeric.get('temp_written')) is not int or numeric['temp_written'] != 0 or
+            not isinstance(rows, list) or not rows or
+            any(type(r.get(k)) is not int or r[k] < (1 if k == 'calls' else 0)
+                for r in rows for k in ('calls','temp_written','wal')) or
+            any(not isinstance(r.get('queryid'),str) or not re.fullmatch('-?[0-9]{1,20}',r['queryid']) for r in rows) or
+            len({r['queryid'] for r in rows}) != len(rows) or
+            sum(r['calls'] for r in rows)-4 != count or sum(r['temp_written'] for r in rows) != 0):
+        raise rt.Blocked('migration_boundary_instrumented_numeric')
+    tracking = receipt.get('tracking', {})
+    if (tracking.get('valid') is not True or tracking.get('before') not in ('top','all') or
+            tracking.get('after') != tracking['before'] or
+            tracking.get('utility_before') != 'on' or tracking.get('utility_after') != 'on'):
+        raise rt.Blocked('migration_boundary_instrumented_tracking')
+    restored = json.loads(isolation_raw)
+    original = restored.get('original')
+    trace = [isolation.SETTING]
+    if original == 'on':
+        trace += ["alter system set cron.launch_active_jobs='off'", 'select pg_reload_conf()']
+    trace += [isolation.SETTING, isolation.ACTIVE]
+    if original == 'on':
+        trace += ["alter system set cron.launch_active_jobs='on'", 'select pg_reload_conf()']
+    trace += [isolation.SETTING]
+    expected_trace = [dict(statement_sha256=sha(sql.encode()), confirmed=True) for sql in trace]
+    if (original not in ('on','off') or restored.get('restored') is not True or
+            restored.get('primary_error_class') is not None or restored.get('protocol') != expected_trace or
+            any(row.get('confirmed') is not True for row in restored['protocol']) or
+            type(restored.get('commands')) is not int or restored['commands'] != len(trace) or
+            receipt.get('ci_cron_restored') is not True or
+            type(receipt.get('ci_bootstrap_sql_commands')) is not int or
+            receipt['ci_bootstrap_sql_commands'] != len(trace) or gate.serial != token.serial+len(trace)):
+        raise rt.Blocked('migration_boundary_instrumented_isolation')
+    if not re.fullmatch('[a-f0-9]{64}',str(receipt.get('output_sha256'))):
+        raise rt.Blocked('migration_boundary_instrumented_output')
+    return dict(receipt=path.name, receipt_sha256=sha(raw), returncode=0,
+        execution_mode='source_instrumented_db_url', parent_bootstrap_dispatches=1,
+        invocation_id=policy['invocation_id'], output_sha256=receipt['output_sha256'],
+        protocol_commands=count, observer_commands=8, isolation_commands=len(trace),
+        ledger_sha256=sha(ledger_raw), policy_file_sha256=sha(policy_raw),
+        isolation_receipt_sha256=sha(isolation_raw))
+
+
 def confirmed_result(gate, token, result):
+    if type(result) is dict:
+        try:
+            return instrumented_confirmation(gate, token, result)
+        except (KeyError, TypeError, ValueError, OSError):
+            raise rt.Blocked('migration_boundary_instrumented_evidence_invalid') from None
     expected = [str(gate.binary), '--workdir', str(gate.work), 'migration', 'up', '--local']
     if (type(result) is not subprocess.CompletedProcess or type(result.returncode) is not int or
             result.returncode != 0 or result.args != expected or gate.serial != token.serial + 1):

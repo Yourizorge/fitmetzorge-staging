@@ -31,11 +31,12 @@ LOCAL_SOURCES = ('admission_ci.py', 'admission_ops.py', 'admission_binding.py',
     'fixture_cleanup_evidence.py', 'test_fixture_cleanup_evidence.py',
     'fixture_cleanup_runtime.py', 'fixture_cleanup_runtime_sql.py',
     'fixture_cleanup_runtime_ci.py', 'fixture_cleanup_runtime_test.py',
-    'fixture_parent_closure.py', 'test_fixture_parent_closure.py')
+    'fixture_parent_closure.py', 'test_fixture_parent_closure.py',
+    'fixture_control_ownership.py', 'test_fixture_control_ownership.py')
 EXTRA = {'_offline/phase6e11/endchain_v1/' + name for name in LOCAL_SOURCES}
 EXTRA |= {'_offline/phase6e11/endchain_v1/cli_predispatch/'+name for name in (
     'ci.py','entry.mjs','hook.cjs','package.json','pnpm-lock.yaml','pnpm-workspace.yaml',
-    'policy.cjs','prepare.py','README.md','smoke.py','test_ci.py','test_hook.cjs','test_policy.cjs')}
+    'policy.cjs','prepare.py','README.md','smoke.py','test_ci.py','test_canonical.py','test_hook.cjs','test_policy.cjs')}
 EXTRA |= {'_offline/phase6e11/endchain_v1/cli_predispatch/'+name for name in ('pending.py','test_pending.py')}
 EXTRA.add('.github/workflows/phase6e-admission-local-ci.yml')
 EXTRA.add('_offline/phase6e_server_v1/ops.py')
@@ -70,7 +71,7 @@ class Gate(app.Gate):
             import migration_failure_boundaries as boundary
             self.bind_modules(boundary, boundary.rt)
             token=boundary.before(self)
-            result=super().cli(*args,timeout=timeout)
+            result=self.instrumented_cli().run_canonical(self,args,self.sources/boundary.M45)
             boundary.after(self,token,result)
             return result
         return super().cli(*args,timeout=timeout)
@@ -119,7 +120,8 @@ class Gate(app.Gate):
                      'test_admission_module_binding.py',
                      'test_admission_quota_readonly.py','admission_budget_test.py',
                      'admission_budget_register_test.py','admission_budget_receipts_test.py','test_integral_failures.py',
-                     'test_migration_failure_boundaries.py','test_fixture_parent_closure.py'):
+                     'test_migration_failure_boundaries.py','test_fixture_parent_closure.py',
+                     'test_fixture_control_ownership.py'):
             self.command('admission-'+name[:-3],['python3','-B',str(folder/name)])
         self.result['admission_components']['binding'] = 'OFFLINE_TESTED_NOT_AUTHORITY'
         try:
@@ -153,13 +155,14 @@ class Gate(app.Gate):
         import fixture_cleanup_runtime
         import fixture_cleanup_runtime_sql
         import fixture_cleanup_evidence
+        import fixture_control_ownership
         import sql_protocol
         import admission_binding
         self.bind_modules(auth_failure, admission_fixture_context, fixture_cleanup_runtime_ci,
             admission_journal, admission_failure, integral_failure_runtime,
             integral_failure_runtime_workflow, ci_auth, native_runtime,
             auth_failure_transport, fixture_cleanup_runtime, fixture_cleanup_runtime_sql,
-            fixture_cleanup_evidence, sql_protocol, admission_binding)
+            fixture_cleanup_evidence, fixture_control_ownership, sql_protocol, admission_binding)
         original_save = self.save
         self.save = lambda name, value: original_save('admission-auth-' + name, value)
         try:

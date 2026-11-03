@@ -13,12 +13,14 @@ import uuid
 from admission_binding import NEW_RUN
 from fixture_cleanup_runtime import Blocked, Cleanup, Protocol, digest
 from native_runtime import NativeRuntime
+from fixture_control_ownership import NegativeControl, retain_context
 import fixture_cleanup_runtime_sql as sql
 
 HERE = pathlib.Path(__file__).resolve().parent
 FILES = ('fixture_cleanup_runtime.py', 'fixture_cleanup_runtime_sql.py',
          'fixture_cleanup_runtime_ci.py', 'fixture_cleanup_runtime_test.py',
-         'fixture_cleanup_evidence.py', 'admission_binding.py', 'sql_protocol.py', 'native_runtime.py')
+         'fixture_cleanup_evidence.py', 'fixture_control_ownership.py',
+         'admission_binding.py', 'sql_protocol.py', 'native_runtime.py')
 ROLES = ('a_member', 'a_trainer', 'b_member')
 REGISTRY = """select role,user_id::text id from fmz6e11_private.identities i where enabled
  and user_id=any($1::uuid[]) and (role<>'a_trainer' or exists(
@@ -161,6 +163,7 @@ def run(gate):
         finally:
             connection.close()
         # Each failed case is retained; it is never recycled into a successful run.
+        gate.fixture_parent_contexts = {}
         for name in ('full', 'partial', 'parent_only', 'dependent_without_workspace', 'zero', 'lost_writer_commit',
                      'missing_barrier', 'foreign_row', 'lost_commit', 'interrupted_delete', 'lock_timeout'):
             context = {k: str(uuid.uuid4()) for k in ('window', 'a', 'b')}
@@ -171,6 +174,9 @@ def run(gate):
                 commands[:1] if name == 'parent_only' else
                 [commands[0], commands[-1]] if name == 'dependent_without_workspace' else
                 commands[:3] if name == 'partial' else [])
+            intent = retain_context(cleanup, name, selected, ids)
+            gate.fixture_parent_contexts[cleanup.case] = copy.deepcopy(context)
+            negative = NegativeControl(cleanup, intent) if name == 'foreign_row' else None
             if selected:
                 writer = runtime.connect()
                 try:
@@ -179,6 +185,7 @@ def run(gate):
                         result['fixture_mutation_attempted'] = True
                         execute(writer, name + '_insert_' + table, text, args)
                     if name != 'foreign_row': cleanup.capture(writer)
+                    else: negative.capture(writer, execute)
                     if name == 'lost_writer_commit':
                         # The same real writer connection executes COMMIT once;
                         # only delivery of its response is fault-injected.
@@ -213,6 +220,7 @@ def run(gate):
                     if receipt['status'] != 'NO_GO': raise Blocked('cleanup_expected_fault_no_go')
                     if name == 'foreign_row' and receipt.get('reason') != 'cleanup_unowned_or_changed_row':
                         raise Blocked('cleanup_foreign_rejection_reason')
+                    if name == 'foreign_row': negative.check_after_case(receipt, execute)
                     if name == 'lost_commit' and not (receipt['commit_unknown'] and receipt['absence_confirmed']):
                         raise Blocked('cleanup_lost_commit_witness')
                     if name in ('interrupted_delete', 'lock_timeout') and not receipt.get('rollback_confirmed'):

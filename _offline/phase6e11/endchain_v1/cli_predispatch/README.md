@@ -160,3 +160,78 @@ The parent's existing hash-pinned admission_tools installation remains the tool
 authority. This delta does not replace its Bun/pnpm artifacts or installer.
 Actual pending-apply PG receipts remain pending parent CI; offline adapter tests
 are not presented as actual database execution.
+
+## Canonical M45 Apply
+
+`run_canonical(gate, args, expected_file)` uses the same apply implementation as
+`run_pending`. It requires `local_app`, exact phase `migration_45`, 44 already
+applied canonical migrations, no app CLI receipts, and the unchanged canonical
+file `supabase/migrations/20261018070231_phase6e11_recovery_run_quota.sql`, SHA256
+`64498fa910966497e92705dcf66b76f40c40f01c006aed98c191ce109dd88635`.
+The existing history SELECT must match exactly the 44 prior source versions
+before any mutation. The migration's historical UUIDs are not invoked as runs.
+
+Parent wiring, replacing only the existing canonical apply inside its boundary:
+
+```python
+token = boundary.before(self)
+result = self.instrumented_cli().run_canonical(
+    self, args, self.sources / 'supabase/migrations/20261018070231_phase6e11_recovery_run_quota.sql')
+boundary.after(self, token, result)
+return result
+```
+
+Do not call the base apply as well. D must first add its strict instrumented-result
+branch: the old `CompletedProcess`/release-binary argv/`serial + 1` contract does
+not describe this execution. The fixed result is a dictionary containing only
+`instrumented_receipt: "cli-predispatch-canonical-45.json"` and `sha256`, the hash
+of that saved file. No legacy receipt or counter adjustment is synthesized.
+The inherited rebuild caller ignores the return value and updates its applied
+count only after this call returns; phase and migrations_applied stay unchanged
+inside this helper and through the parent's after-hook.
+
+The canonical receipt includes source/candidate/build binding, exact migration
+hash, policy/history44, invocation ID, ledger events/terminal, numeric coverage,
+tracking settings, eight observer commands, and an isolation-receipt reference
+with its hash. It never appends to `gate.cli_protocol`, so app_0/1/2/3 remain free.
+One process-local attempt plus existing artifact checks prevent reuse; unknown
+execution failures retain all 64 reserved credits. SQL cap64 includes the one
+rollback credit; query/connect5s, CLI45s and output8KiB remain unchanged.
+
+New fixed artifacts are `cli-predispatch-canonical-45-preregister.json`,
+`cli-predispatch-canonical-45.json` and
+`canonical-45-cli-predispatch-cli-isolation-0.json`, plus original-byte sidecars
+`cli-predispatch-canonical-45.ledger.txt` and
+`cli-predispatch-canonical-45.policy.json`. Cron isolation contributes
+4 or 8 separately counted bootstrap SQL/numbered receipts. Observer SQL stays
+eight, not part of the CLI ledger. The old numbered canonical CLI receipt is
+absent: relative to that one old receipt, this adds 8 or 12 artifact files.
+These are disposable CI costs, not a changed hosted/global allowance.
+
+The canonical receipt's `ledger_ref` and `policy_ref` each contain exactly
+`path` (the direct basename) and `sha256` (the original bytes' hash), matching D's
+explicit instrumented confirmation branch. No JSON re-encoding or sorting is
+performed on either sidecar. The policy bytes are captured before dispatch and
+checked unchanged after restoration. The ledger is copied after restoration,
+including an original truncated final record on failure. Missing/oversize input
+is reported, not reconstructed or truncated. Bounds are ledger262144,
+policy16384 and canonical receipt524288 bytes. No raw SQL, URL or credential is
+added: the source-bound hook emits only the existing safe metadata ledger.
+
+Sidecars and the final receipt use exclusive creation, file fsync, and exact-byte
+readback. A short write/hash mismatch/storage failure cannot produce a success
+dictionary or a false reference. An existing execution failure remains primary;
+durability failures are recorded secondarily (or attached as a safe exception
+note when the final receipt cannot be persisted). Unknown execution still
+consumes64, with no retry. The private originals and any partial copy remain
+untouched for local diagnosis. This adds two files and zero SQL/processes.
+
+Include `test_canonical.py` in the parent's candidate source inventory. The
+integrated test finds source migrations in its candidate root. For an isolated
+delivery, set `FMZ_CLI_TEST_SOURCE_ROOT` to the current source checkout and put
+its `_offline/phase6e_server_v1` on `PYTHONPATH`. The unchanged test_ci.py also
+expects the existing cli_stat_reader.py beside this component's directory.
+Run `python3 -B -m unittest discover -s "$COMPONENT" -p 'test_*.py'`.
+All new execution tests mock transport; no canonical CLI or DB invocation is
+authorized by running these tests. Actual canonical numeric/frame evidence must
+come from the parent's new source-bound CI. Hosted admission remains false.
