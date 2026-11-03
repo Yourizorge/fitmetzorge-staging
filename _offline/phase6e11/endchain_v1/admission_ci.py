@@ -14,7 +14,7 @@ spec.loader.exec_module(app)
 
 # Explicit source list; never ship unrelated dirty or historical evidence files.
 LOCAL_SOURCES = ('admission_ci.py', 'admission_ops.py', 'admission_binding.py',
-    'test_admission_binding.py', 'test_admission_ci.py', 'auth_failure.py',
+    'test_admission_binding.py', 'test_admission_ci.py', 'test_admission_packaging.py', 'auth_failure.py',
     'auth_failure_transport.py', 'auth_failure_test.py', 'auth_failure_contract.md',
     'auth_failure_tracked.py', 'auth_failure_tracked_test.py',
     'auth_failure_parent_finalizer.py', 'auth_failure_parent_finalizer_test.py',
@@ -48,6 +48,14 @@ EXTRA |= {'_offline/phase6e11/endchain_v1/cli_predispatch/'+name for name in ('p
 EXTRA.add('.github/workflows/phase6e-admission-local-ci.yml')
 EXTRA.add('_offline/phase6e_server_v1/ops.py')
 EXTRA.add('_offline/phase6e_server_v1/offline_shell_browser.test.cjs')
+CI_INHERITANCE_SOURCES = (
+    '_offline/phase6e11/controller_v1/ci.py',
+    '_offline/phase6e11/ci42/runner.py',
+    '_offline/phase6e11/ci42/fixture_calendar.py',
+    '_offline/phase6e11/ci41/runner.py',
+    '_offline/phase6e11/ci41/fixture_compat.py',
+)
+EXTRA.update(CI_INHERITANCE_SOURCES)
 EXTRA.add('docs/PHASE6E11_ADMISSION_PREREGISTRATION_20261102.md')
 EXTRA.add('_offline/phase6e11/endchain_v1/receipts/reserved-ci-39109482869/complete-command-register.json')
 app.previous.prior.old.EXTRA |= EXTRA
@@ -115,6 +123,7 @@ class Gate(app.Gate):
 
     def admission_units(self):
         folder = self.sources/'_offline/phase6e11/endchain_v1'
+        self.command('admission-packaging-unit', ['python3', '-B', str(folder/'test_admission_packaging.py')])
         self.command('admission-browser-bootstrap-unit', ['node','--test',
             str(self.sources/'_offline/phase6e_server_v1/offline_shell_browser.test.cjs')])
         self.command('admission-binding-unit', ['python3', '-B', '-m', 'unittest',

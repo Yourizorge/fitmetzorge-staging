@@ -1,5 +1,5 @@
 """Clean canonical45 plus two actual isolated app migrations; zero hosted access."""
-import hashlib,importlib.util,json,pathlib,re,shutil,sys
+import hashlib,importlib.util,json,os,pathlib,re,shutil,sys
 HERE=pathlib.Path(__file__).resolve().parent
 ROOT=HERE.parents[1]
 sys.path.insert(0,str(HERE))
@@ -44,7 +44,15 @@ while pending:
     for ref in re.findall(r'require\([\"\'](\.[^\"\']+)[\"\']\)',path.read_text()):
         pending.append(path.parent/ref)
 import release_train
-EXTRA|=release_train.input_files(ROOT)
+# Frozen bodies are deliberately not transported in the candidate. Their pinned
+# bytes remain in the same-source checkout, including when this gate is imported
+# by an isolated candidate test process.
+frozen_root = ROOT
+if (os.environ.get('GITHUB_ACTIONS') == 'true'
+        and os.environ.get('GITHUB_REPOSITORY') == 'Yourizorge/fitmetzorge-staging'
+        and os.environ.get('GITHUB_REF') == 'refs/heads/main'):
+    frozen_root = pathlib.Path(os.environ['GITHUB_WORKSPACE']).resolve(strict=True)
+EXTRA|=release_train.input_files(ROOT, frozen_root=frozen_root)
 previous.prior.old.EXTRA|=EXTRA
 
 class Gate(previous.Gate):

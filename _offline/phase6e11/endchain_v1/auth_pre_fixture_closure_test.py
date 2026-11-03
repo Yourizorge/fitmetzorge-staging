@@ -30,7 +30,7 @@ def catalog_fixture(test):
     files += list((root / 'supabase/migrations').glob('*.sql'))
     test.publish('candidate.json', {'sources': {
         p.relative_to(root).as_posix(): module.durable.sha(p.read_bytes()) for p in files}})
-    env = patch.dict(os.environ, {'GITHUB_WORKSPACE': str(root)})
+    env = patch.dict(os.environ, {'GITHUB_WORKSPACE': os.environ.get('GITHUB_WORKSPACE', str(root))})
     env.start(); test.addCleanup(env.stop)
     test.catalog_contract = producer.source_contract(test.gate)
     test.catalog_wire = catalog_tests.Wire(catalog_tests.samples(test.catalog_contract))

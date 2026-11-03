@@ -494,6 +494,45 @@ de in-memory expressietest is uitdrukkelijk geen echte PostgreSQL-uitvoering.
 De vooraf voorbereide bundel `e61a8334ee27aa3280504e0c24312f9903c160d94b776a711c8abd165a1d0c89`
 blijft ongewijzigd en ongebruikt; een nieuwe bundel moet de correctie bevatten.
 
+### Achtste brongebonden CI-controle
+
+Run `41650754444`, commit `8293ed4ee8838e43b8e85d9ea2bf75d49979df11`:
+schone 47/47-opbouw PASS, totale toelating NO-GO. Candidate SHA-256
+`40b27c6484e7a266e261a6a67a345d79a5eb80fe3f33251af109ad6bd046f10d`
+(550 bestanden); gevalideerd ZIP-artifact SHA-256
+`f920c5884a769c6449d8e44dfe98af18e1e80eb5a8c8e13b580077ae6eee0f17`
+met 365 bewijsbestanden plus manifest. De run is niet heropend.
+
+Stop: `admission-auth-prefixture-unit_exit_1`. Vijf van 64 tests konden de
+werkelijke Gate niet importeren uit de kandidaat: de geerfde module
+`controller_v1/ci.py` ontbrak daar. De checkout bevatte deze module wel, waardoor
+de eerdere lokale tests dit distributieverschil niet zagen. Geen nieuwe
+Auth-/fixturecomponent-PASS en geen same-source app-PASS voor deze run.
+
+De correctie registreert de volledige bestaande CI-overervingsketen expliciet.
+Een nieuwe subprocessregressie importeert de zeven echte Gate-klassen uitsluitend
+uit een geisoleerde kopie van de gedeclareerde kandidaat; netwerk is geblokkeerd.
+Daarbij werd tevens gevonden dat de releasecompiler de bewust niet-vervoerde
+frozen bodies in de kandidaat zocht. Alleen in de exacte staging/main-CI-context
+wordt nu het bestaande `frozen_root`-argument op de checkout gericht; alle
+bestaande inhoudshashes blijven vereist en deze bytes worden niet toegevoegd
+aan de kandidaattransportbundel. Ontbrekende bodies en vreemde CI-scope blijven
+geblokkeerd. De definitieve import- en bestaande CI-contracttests: 18 PASS in
+20,913 seconden. De vijf eerder falende Auth-tests slagen afzonderlijk vanuit
+de geisoleerde kandidaat (35,325 seconden); hun lokale HTTP-testserver is geen
+GoTrue-/PostgreSQL-bewijs. Onafhankelijke bronreview van de vier codebestanden:
+geen resterende P1/P2; zes packagingtests onafhankelijk PASS in 42,359 seconden.
+Ook geneste testhelpers behouden nu de oorspronkelijke checkoutbinding, zonder
+een fallback naar niet-geregistreerde code of ongepinde frozen bodies.
+Dit is geen echte PG-verificatie van de nog niet bereikte samengestelde cleanup.
+
+Pages op `03123625b59d0e9d4491b90f8c73f415042aad97`: run `41649138706`,
+artifact `13236946553`, SHA-256
+`18b7d37deccdaa45e34bd254c727ac5913646b3b3d0412600d73727e92384e79`.
+152 runtime-assets ongewijzigd, 817 entries, zeven private paden 404 en
+geen Supabase-calls. Nieuwe behoudcontrole: 1376 bestanden, dezelfde vier
+eerder toegestane verschillen, nul nieuwe onverwachte afwijkingen.
+
 External AI calls/cost: 0 / EUR 0,00.
 Real-member AI enabled: NO.
 Production touched: NO.
