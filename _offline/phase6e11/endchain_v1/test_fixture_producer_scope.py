@@ -91,6 +91,25 @@ class CatalogTests(unittest.TestCase):
                 self.data = samples(self.contract)
                 self.data['privileges'][0][flag] = True
                 with self.assertRaisesRegex(Blocked,'unexpected_privilege'): self.validate()
+    def test_createrole_remains_nogo_with_exact_safe_flag(self):
+        self.data['privileges'][0]['createrole'] = True
+        self.data['privileges'][0]['private_transport_value'] = 'DO_NOT_EXPORT'
+        with self.assertRaises(m.PrivilegeViolation) as caught: self.validate()
+        self.assertEqual(caught.exception.diagnostics,[{
+            'role':'supabase_auth_admin','flags':{'createrole':'true'}}])
+        self.assertEqual(str(caught.exception),'producer_unexpected_privilege')
+        self.assertNotIn('DO_NOT_EXPORT',json.dumps(caught.exception.diagnostics))
+    def test_missing_or_non_boolean_flags_are_not_coerced_or_exported(self):
+        self.data['privileges'][0]['direct_write'] = 'DO_NOT_EXPORT'
+        del self.data['privileges'][1]['createrole']
+        with self.assertRaises(m.PrivilegeViolation) as caught: self.validate()
+        self.assertEqual(caught.exception.diagnostics,[
+            {'role':'supabase_auth_admin','flags':{'direct_write':'missing_or_non_boolean'}},
+            {'role':'anon','flags':{'createrole':'missing_or_non_boolean'}}])
+    def test_unknown_role_is_rejected_before_diagnostic_export(self):
+        self.data['privileges'][0]['role'] = 'DO_NOT_EXPORT'
+        with self.assertRaisesRegex(Blocked,'role_set') as caught: self.validate()
+        self.assertNotIsInstance(caught.exception,m.PrivilegeViolation)
     def test_missing_or_extra_table_cannot_be_thirteen_scope(self):
         self.data['relations'][0]['name'] = 'foreign'
         with self.assertRaisesRegex(Blocked,'exact_thirteen'): self.validate()
@@ -201,6 +220,30 @@ class ExecutionTests(unittest.TestCase):
         self.assertEqual((result['admitted_attempts'],result['emitted_attempts']),(10,10))
         self.assertFalse(result['mutation_admitted']); self.assertFalse(result['physical_exclusion_held'])
         self.assertEqual(self.wire.calls[-1],'ROLLBACK')
+    def test_privilege_failure_receipt_keeps_nogo_ten_commands_and_rollback(self):
+        self.wire.data['privileges'][0]['createrole'] = True
+        self.wire.data['privileges'][2]['direct_write'] = True
+        with self.assertRaises(m.PrivilegeViolation): self.scope.before_bootstrap()
+        result=self.saved['fixture-producer-scope-before-result.json']
+        self.assertEqual(result['privilege_violations'],[
+            {'role':'supabase_auth_admin','flags':{'createrole':'true'}},
+            {'role':'authenticated','flags':{'direct_write':'true'}}])
+        self.assertEqual(result['status'],'NO_GO')
+        self.assertEqual(result['reason'],'producer_unexpected_privilege')
+        self.assertEqual((result['admitted_attempts'],result['emitted_attempts']),(10,10))
+        self.assertTrue(all(row['confirmed'] for row in result['protocol']))
+        self.assertEqual(self.wire.calls[-1],'ROLLBACK')
+        self.assertIsNone(self.scope.baseline)
+        self.assertFalse(result['mutation_admitted'])
+    def test_secondary_rollback_error_preserves_privilege_evidence(self):
+        self.wire.data['privileges'][0]['createrole'] = True
+        self.wire.failure='ROLLBACK'
+        with self.assertRaises(m.PrivilegeViolation) as caught: self.scope.before_bootstrap()
+        self.assertTrue(any('TimeoutError' in note for note in caught.exception.__notes__))
+        result=self.saved['fixture-producer-scope-before-result.json']
+        self.assertEqual(result['privilege_violations'][0]['flags'],{'createrole':'true'})
+        self.assertFalse(result['protocol'][-1]['confirmed'])
+        self.assertEqual(result['status'],'NO_GO')
     def test_every_query_failure_rolls_back_no_retry_preserves_primary(self):
         for phase,_ in m.QUERIES:
             with self.subTest(phase=phase):

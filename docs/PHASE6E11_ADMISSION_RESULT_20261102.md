@@ -563,3 +563,58 @@ unieke databaseclusteridentiteit. De voorlopige bron en tests zijn nog geen
 uitgevoerde vijftien-case matrix. Gerichte matrixregressies: 28 PASS; aparte
 synthetische receipt-tamperingtests: 25 PASS (87,137 seconden). Onafhankelijke
 review en daadwerkelijke integrale uitvoering blijven afzonderlijke gates.
+
+### Negende CI: componentresultaten en behouden foutregistratie
+
+Run `41656238735` is afgesloten met NO-GO op commit
+`e6958539ed10887d1be873510db43d6a3b19aa8f`. Het oorspronkelijke ZIP-artifact
+is gevalideerd: SHA-256
+`17f824dfeffaae153de80b8c70075fa55eedac25f0770e5105f1e68c746b0ab1`,
+634 bewijsbestanden plus manifest. De kandidaat is ongewijzigd:
+`cb4f401a7e808874b78c49f7da6b060a1591a7dc943e2589aab1b491c01fe451`.
+
+Schone lokale 47/47-opbouw, controller-/requestbeveiliging en appcontroles
+slagen. Afzonderlijke suites: app 74 database/46 domein/4 Auth/209 browser;
+composed-browser 191; account 79; offline-shell 73; registratie-12 25;
+transport 4 Auth/46 database; release 359 controles, acht slices en 27 HTTP;
+SQL 12; numeriek 4; filters 36. Deze overlappende suites worden niet opgeteld.
+Geen package 21, echte leden-AI of hosted Supabase-uitvoering.
+
+Alle twaalf uitgevoerde component-foutscenario's bereikten hun bedoelde
+fase. Hun eigen Auth-cleanup werd bevestigd. De componentmeter registreert
+2105 vooraf gereserveerde diagnostische eenheden, 313 native dispatches en
+175 waargenomen managed SQL-commando's. Dit zijn verschillende teldefinities,
+geen optelbare volledige eindketen. De normale case en twee migration-cases,
+de integrale reserves, WAL-toelating en onafhankelijke eindreview ontbreken
+nog. `diagnostic_subset_verified` is geen volledige vijftien-case PASS.
+
+De samengestelde fixturevoorcontrole stopte bij
+`producer_unexpected_privilege`. Alle tien commando's inclusief ROLLBACK
+zijn bevestigd; de betreffende voorcontrole liet geen fixturemutatie toe.
+De oude receipt bewaart niet welke rol/flag afweek. De officiële
+Supabase-initbron noemt CREATEROLE voor Auth, maar dat is geen bewijs welke
+flag in deze run faalde en geen reden om de controle te versoepelen.
+De nieuwe diagnostische patch bewaart uitsluitend vaste rol-/flag-enums.
+De acht metadataqueries blijven byte-identiek; geen extra SQL. Gerichte
+lokale controle: 29/29 PASS. Het oude artifact blijft ongewijzigd.
+
+Daarnaast faalde budgetpublicatie met `FileNotFoundError`. De fout is niet
+gereproduceerd bij assemble in een volledig geisoleerde kandidaat of bij
+het read-only verwerken van het bewaarde artifact. De precieze oorzaak is
+daarom nog ONBEKEND. Nieuwe foutregistratie bewaart vaste budgetstappen en
+allowlisted bronbestandsnaam/regelnummers, nooit exceptiontekst, locals,
+OS-paden of credentials. Zes gerichte fouttests PASS na correctie van de
+test zelf: unittest wist de traceback voordat de diagnose werd aangeroepen.
+De overige 57 budget-/verpakkingstests slaagden in de voorafgaande suite.
+Geen veiligheidsgrens of hosted poging is hierdoor gewijzigd.
+
+Onafhankelijke review bevestigt de rechtenpatch (29 PASS) en de zes
+foutregistratietests. Zij vond daarnaast een testvolgorde-afhankelijkheid:
+in een vers lokaal proces was de reeds gepinde PG17-parser nog niet geladen.
+De verpakkingstest gebruikt nu eerst de bestaande versiegebonden loader,
+zonder nieuwe fallback of afhankelijkheid. Dit is een testharnesscorrectie,
+geen bewijs dat de FileNotFoundError uit CI9 daarmee is verklaard.
+
+Hosted blijft NO-GO; historische incomplete meetparen blijven incompleet.
+External AI calls/cost: 0 / EUR 0,00. Real-member AI enabled: NO.
+Production touched: NO.

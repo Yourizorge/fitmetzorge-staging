@@ -1,12 +1,43 @@
 import types
 import unittest
-from admission_failure import save_final, package_journal
+import json
+from unittest.mock import patch
+from admission_failure import save_final, package_journal, secondary
 
 
 def fail(*args):raise OSError('synthetic-write-error')
 
 
 class Tests(unittest.TestCase):
+    def test_budget_failure_preserves_stage_and_original_without_secret(self):
+        import admission_budget_receipts as receipts
+        secret = 'DO_NOT_PUBLISH_password_connection_string'
+        original = RuntimeError('original-' + secret)
+        failure = FileNotFoundError(secret)
+        gate = types.SimpleNamespace(result={})
+        with patch.object(receipts, 'assemble', side_effect=failure):
+            try:
+                receipts.run(gate)
+            except FileNotFoundError as raised:
+                self.assertIs(raised, failure)
+                secondary(gate, 'budget_packaging', raised, original)
+            else:
+                self.fail('the original exception was suppressed')
+        result = gate.result['admission_secondary_failures'][0]
+        self.assertEqual(result['diagnostic']['stage'], 'assemble')
+        self.assertTrue(result['diagnostic']['source_frames'])
+        self.assertNotIn(secret, json.dumps(result))
+        self.assertNotIn('filename', json.dumps(result))
+        self.assertIs(original.admission_secondary_failures[0], result)
+
+    def test_budget_diagnostic_rejects_unregistered_stage(self):
+        error = ValueError('secret')
+        error.admission_budget_stage = 'secret'
+        gate = types.SimpleNamespace(result={})
+        secondary(gate, 'budget_packaging', error, None)
+        self.assertEqual(gate.result['admission_secondary_failures'][0]['diagnostic'],
+                         {'stage': 'unclassified', 'source_frames': []})
+
     def test_storage_error_does_not_replace_original(self):
         gate=types.SimpleNamespace(save=fail,result={});original=ConnectionError('synthetic')
         save_final(gate,'final.json',{},original)

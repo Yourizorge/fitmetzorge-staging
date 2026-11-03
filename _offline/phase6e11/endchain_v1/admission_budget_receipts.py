@@ -602,10 +602,18 @@ def run(gate):
     CI_FILES plus REFERENCE_FILES and their existing imported source dependencies.
     Reference files are retained read-only, not executed or copied in bulk.
     """
-    report = assemble()
-    report["actual_component_evidence"] = actual_receipts(gate.out)
-    report["normal_reconciliation"] = reconcile_folder(report, gate.out)
-    report["current_plan_reconciliation"] = reconcile_current_folder(report, gate.out)
+    def stage(name, action):
+        try:
+            return action()
+        except Exception as error:
+            # Preserve the original exception; record a fixed stage, never its message.
+            error.admission_budget_stage = name
+            raise
+
+    report = stage("assemble", assemble)
+    report["actual_component_evidence"] = stage("actual_receipts", lambda: actual_receipts(gate.out))
+    report["normal_reconciliation"] = stage("normal_reconciliation", lambda: reconcile_folder(report, gate.out))
+    report["current_plan_reconciliation"] = stage("current_reconciliation", lambda: reconcile_current_folder(report, gate.out))
     for evidence in report["actual_component_evidence"].values():
         hashes = evidence.get("source_hashes", {})
         evidence["source_hashes_match_current"] = (all(report["source_hashes"].get(k) == v
@@ -618,8 +626,8 @@ def run(gate):
             for field, parent_field in (("source_commit", "commit"), ("candidate_sha256", "candidate_sha256")):
                 expected = parent_result.get(parent_field)
                 evidence[field + "_matches_parent"] = evidence.get(field) == expected if expected is not None else None
-    members = package(report)
+    members = stage("package", lambda: package(report))
     require(all(not (pathlib.Path(gate.out) / name).exists() for name in members), "budget_existing_receipts_preserved")
     for name, value in members.items():
-        gate.save(name, value)
+        stage("save", lambda: gate.save(name, value))
     return members[INDEX]

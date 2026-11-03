@@ -1,4 +1,5 @@
 """Candidate-only import tests; no database, network or CI admission claim."""
+import importlib.util
 import json
 import os
 import pathlib
@@ -20,8 +21,15 @@ def denied(*args,**kwargs):
 socket.create_connection=denied
 socket.socket.connect=denied
 sys.path.insert(0,str(root/'_offline/phase6e11/endchain_v1'))
+for dependency in json.loads(sys.argv[3]):sys.path.append(dependency)
 try:
     import admission_ci
+    if sys.argv[2]=='budget':
+        import admission_budget_register
+        report=admission_budget_register.assemble()
+        print(json.dumps({'status':'ASSEMBLED_NOT_ADMITTED',
+            'hosted_admitted':report['hosted_admitted']}))
+        sys.exit(0)
     paths=[]
     for cls in admission_ci.Gate.__mro__:
         if cls is object:continue
@@ -53,13 +61,18 @@ class PackagingTests(unittest.TestCase):
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(source, target)
 
-    def execute(self, overrides=None):
+    def execute(self, overrides=None, *, operation='import'):
         env = dict(os.environ, GITHUB_ACTIONS='true',
             GITHUB_REPOSITORY='Yourizorge/fitmetzorge-staging', GITHUB_REF='refs/heads/main',
             GITHUB_WORKSPACE=str(CHECKOUT))
         env.update(overrides or {})
-        result = subprocess.run([sys.executable, '-I', '-B', '-c', IMPORT, str(self.copy)],
-            cwd=self.copy, env=env, text=True, capture_output=True, timeout=30, check=False)
+        from sql_protocol import parser
+        parser()  # Load the existing pinned PG17 parser before locating its dependency directory.
+        spec = importlib.util.find_spec('pglast')
+        dependencies = [str(pathlib.Path(spec.origin).parent.parent)] if spec else []
+        result = subprocess.run([sys.executable, '-I', '-B', '-c', IMPORT, str(self.copy),
+            operation, json.dumps(dependencies)],
+            cwd=self.copy, env=env, text=True, capture_output=True, timeout=60, check=False)
         self.assertEqual(result.stderr, '')
         return result.returncode, json.loads(result.stdout)
 
@@ -79,6 +92,11 @@ class PackagingTests(unittest.TestCase):
         self.assertEqual(value['classes'], 7)
         self.assertEqual(len(set(value['paths'])), 7)
         self.assertTrue(set(value['paths']) <= self.paths)
+
+    def test_budget_assembly_has_complete_explicit_candidate_sources(self):
+        code, value = self.execute(operation='budget')
+        self.assertEqual(code, 0, value)
+        self.assertEqual(value, {'status':'ASSEMBLED_NOT_ADMITTED','hosted_admitted':False})
 
     def test_missing_pinned_frozen_bodies_do_not_fall_back_to_actual_checkout(self):
         code, value = self.execute({'GITHUB_WORKSPACE': str(self.copy)})

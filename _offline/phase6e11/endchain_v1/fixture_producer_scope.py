@@ -128,6 +128,18 @@ ACTIVITY = """select pid,backend_start::text backend_start,usename,backend_type,
 QUERIES = (('session', SESSION), ('relations', RELATIONS), ('privileges', PRIVILEGES),
            ('functions', FUNCTIONS), ('triggers', TRIGGERS), ('fks', FKS), ('gates', GATES), ('activity', ACTIVITY))
 SAFE_AUTH_FUNCTIONS = {('public', 'fmz_handle_new_auth_user', 0), ('public', 'touch_updated_at', 0)}
+PRIVILEGE_FLAGS = ('superuser','createrole','elevated_membership','schema_create',
+                   'direct_write','private_execute','set_role_write','set_role_indirect_write')
+
+
+class PrivilegeViolation(Blocked):
+    """Only fixed role/flag enums escape; never persist raw catalog rows."""
+    def __init__(self, roles):
+        super().__init__('producer_unexpected_privilege')
+        self.diagnostics = [{'role': row['role'], 'flags': {
+            flag: 'true' if row.get(flag) is True else 'missing_or_non_boolean'
+            for flag in PRIVILEGE_FLAGS if row.get(flag) is not False}}
+            for row in roles if any(row.get(flag) is not False for flag in PRIVILEGE_FLAGS)]
 
 
 def source_contract(gate):
@@ -219,10 +231,8 @@ def validate(samples, contract, *, before):
     roles = samples['privileges']
     if len(roles) != 4 or {r['role'] for r in roles} != {'supabase_auth_admin','anon','authenticated','service_role'}:
         raise Blocked('producer_role_set')
-    for r in roles:
-        if any(r.get(k) is not False for k in ('superuser','createrole','elevated_membership',
-                'schema_create','direct_write','private_execute','set_role_write','set_role_indirect_write')):
-            raise Blocked('producer_unexpected_privilege')
+    if any(r.get(k) is not False for r in roles for k in PRIVILEGE_FLAGS):
+        raise PrivilegeViolation(roles)
     if sorted(map(digest, samples['fks'])) != sorted(map(digest, contract['fks'])):
         raise Blocked('producer_fk_contract')
     seen = set()
@@ -347,6 +357,8 @@ class Scope:
         if error is not None:
             result.update(reason=str(error) if isinstance(error,Blocked) else 'producer_observation_failed',
                           error_class=type(error).__name__)
+            if isinstance(error,PrivilegeViolation):
+                result['privilege_violations'] = copy.deepcopy(error.diagnostics)
         else: result['status'] = 'SCOPE_METADATA_CONFIRMED_NOT_A_BARRIER'
         self.gate.save(prefix+'-result.json',result)
         if error is not None: raise error
