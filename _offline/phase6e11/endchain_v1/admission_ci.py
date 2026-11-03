@@ -151,19 +151,25 @@ class Gate(app.Gate):
     def regressions(self):
         # Reject cheap local contract errors before the slower app/browser matrix.
         self.admission_units()
-        super().regressions()
         try:
             self.run_components()
         finally:
             primary = sys.exc_info()[1]
             try:
                 import admission_budget
+                import admission_budget_register
+                import admission_budget_receipts
+                import admission_budget_graph
+                self.bind_modules(admission_budget, admission_budget_register,
+                                  admission_budget_receipts, admission_budget_graph)
                 budget = admission_budget.run(self)
                 self.result['admission_components']['command_budget'] = budget['status']
             except Exception as error:
                 from admission_failure import secondary
                 secondary(self,'budget_packaging',error,primary)
                 if primary is None:raise
+        # The unchanged application matrix follows successful component closure.
+        super().regressions()
 
     def run_components(self):
         # This local diagnostic prepayment is not an observed hosted Auth cost.

@@ -629,3 +629,55 @@ zeven private HTTP-paden 404; geen Supabase-calls.
 Hosted blijft NO-GO; historische incomplete meetparen blijven incompleet.
 External AI calls/cost: 0 / EUR 0,00. Real-member AI enabled: NO.
 Production touched: NO.
+
+### Tiende CI: twee concrete oorzaken, geen hosted toelating
+
+Run `41664912809`, broncommit `6b9126471c4f4bea7be7e2e5f7405ce9f743f99d`,
+kandidaat `ffef0563862272cdb6293150d1d7011bd07cf95fdb56d795d1310a6d1a89dec7`
+(556 bestanden). Het oorspronkelijke, geverifieerde ZIP-artifact:
+`1b038f458841557fea1fb06f75f38fa0a815cfab1fa662ff8d972f9a45132d75`,
+634 bewijsbestanden plus manifest. Resultaat NO-GO; deze run is niet heropend.
+Schone 47/47-opbouw en twaalf component-foutpaden zijn opnieuw bevestigd.
+De laatste leveren 2105 prepaid eenheden, 313 native dispatches en 175
+waargenomen managed SQL-commando's; geen nieuwe volledige ketenclaim.
+
+De gesanitiseerde rechtenreceipt identificeert nu uitsluitend
+`supabase_auth_admin.createrole=true`. De overige getoetste vlaggen en rollen
+zijn niet als afwijkend gemeld. De tien read-only commando's inclusief
+ROLLBACK zijn bevestigd. Er is geen uitzondering aan de validator toegevoegd.
+Een eventuele strengere disposable Auth-runtimeconfiguratie moet afzonderlijk
+worden gebouwd, brongebonden getest en als NIET-hosted-equivalent worden
+herkend; een lokaal beperkt recht bewijst geen gelijke hosted configuratie.
+
+De budgetfout is gelokaliseerd op `workflow_component` bij het laden van
+`scenario.capture()`. `scenario.py` staat in Git; de originele
+`workflow_local.py` zit wel in de expliciete kandidaatbundel, maar niet in
+de checkout. Hergebruik van het eerder geladen checkoutmodule kan daarom
+een ontbrekend pad opleveren. De regressie reproduceert die FileNotFoundError.
+De correctie compileert de twee bronbestanden uit dezelfde bronroot, zonder
+modulecache/pyc-fallback, en controleert oorsprong en bytes na capture opnieuw.
+Beide bronhashes staan expliciet in het budgetmanifest. Ontbrekende of tijdens
+capture gewijzigde bronnen blijven fouten. Alle vier budgetmodules worden
+voor publicatie tevens door de bestaande kandidaatbroncontrole geverifieerd.
+Gerichte suites: 105 budget-/receipttests PASS (166,808 s); orchestration en
+modulebinding 25 PASS, twee platformafhankelijke tests overgeslagen. Dit is
+lokale regressiecontrole, nog geen CI-bevestiging van deze laatste correctie.
+
+De actuele officiele changelog is read-only geraadpleegd. De
+[17.11-releasewaarschuwing](https://supabase.com/changelog/postgres-15-19-17-11-breaking-changes)
+noemt beveiligings- en extensiewijzigingen sinds 17.6. De gepinde 17.6-image
+blijft hier uitsluitend reproduceerbaar, geisoleerd synthetisch testbewijs;
+geen claim dat deze de actuele veilige hosted runtimeversie is. De pin is
+niet stilzwijgend vervangen. [Auth-URL-wijzigingen](https://supabase.com/changelog/47093-self-hosted-supabase-api-external-url-to-include-auth-v1)
+en [HTTP TLS-cipheruitfasering](https://supabase.com/changelog/cbc-tls-ciphers-deprecated)
+geven geen aanleiding voor een beveiligingsverlaging of hosted aanpassing.
+Geen hosted verbinding, migration, JIT, fixturecleanup of owner-testvenster.
+
+Onafhankelijke bronreview van de vier correctiebestanden: geen P1/P2.
+Drie scenario-bronregressies PASS; twee gerichte volgordecontroles PASS.
+De gewijzigde componenten en hun budgetregistratie draaien nu voor de
+onaangeraakte app-/browsermatrix. Een component- of budgetexception stopt
+die vervolgmatrix; geen verplichte check is verwijderd. De gerichte
+orchestration-suite na deze volgordewijziging: 13 PASS, 0,147 s.
+Dit voorkomt herhaling van dure, ongewijzigde suites bij een reeds bekende
+vroege blokkade. Het vervangt geen same-source volledige CI-toelating.

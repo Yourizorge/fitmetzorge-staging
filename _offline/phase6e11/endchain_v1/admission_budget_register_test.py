@@ -4,11 +4,54 @@ import collections
 import time
 import unittest
 import uuid
-from types import SimpleNamespace
+import sys
+import pathlib
+import tempfile
+from types import SimpleNamespace, ModuleType
 from unittest.mock import patch
 
 import admission_budget_register as register
 from admission_budget import PHASE_BUDGETS
+
+
+class ScenarioSourceTests(unittest.TestCase):
+    def test_cached_checkout_scenario_cannot_replace_candidate_source(self):
+        cached = ModuleType('scenario')
+        calls = []
+        def unavailable():
+            calls.append('cached_checkout')
+            raise FileNotFoundError('workflow_only_exists_in_candidate')
+        cached.capture = unavailable
+        with patch.dict(sys.modules, {'scenario': cached}):
+            value = register.workflow_component(register.auth_component())
+        self.assertEqual(calls, [])
+        self.assertEqual(len(value['cases']), 12)
+        expected = register.HERE.parents[2] / '_offline/phase6e11/readiness_v1/workflow_audit_v1/workflow_local.py'
+        self.assertEqual(value['scenario_source_sha256'], register.digest(expected))
+
+    def test_missing_workflow_source_never_falls_back_to_checkout(self):
+        raw = (register.HERE / 'scenario.py').read_bytes()
+        with tempfile.TemporaryDirectory() as directory:
+            here = pathlib.Path(directory) / '_offline/phase6e11/endchain_v1'
+            here.mkdir(parents=True)
+            (here / 'scenario.py').write_bytes(raw)
+            with patch.object(register, 'HERE', here), self.assertRaises(FileNotFoundError):
+                register.workflow_capture()
+
+    def test_source_change_during_capture_is_rejected(self):
+        workflow = register.HERE.parents[2] / '_offline/phase6e11/readiness_v1/workflow_audit_v1/workflow_local.py'
+        read = pathlib.Path.read_bytes
+        seen = []
+        def changing(path):
+            value = read(path)
+            if path == workflow:
+                seen.append(path)
+                if len(seen) == 3:
+                    return value + b'\n'
+            return value
+        with patch.object(pathlib.Path, 'read_bytes', changing):
+            with self.assertRaisesRegex(ValueError, 'budget_scenario_changed_during_capture'):
+                register.workflow_capture()
 
 
 class ConcreteRegisterTests(unittest.TestCase):

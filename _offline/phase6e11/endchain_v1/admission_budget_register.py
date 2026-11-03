@@ -11,6 +11,7 @@ import copy
 import hashlib
 import json
 import pathlib
+import types
 import uuid
 
 from admission_binding import NEW_RUN
@@ -466,6 +467,29 @@ def timeout_component():
                 release_bound_proven=False, scope="standalone local timeout, not full workflow timeout")
 
 
+def workflow_capture():
+    """Load this register's source pair without a cached checkout module or pyc."""
+    root = HERE.resolve().parents[2]
+    paths = (HERE / 'scenario.py', root / '_offline/phase6e11/readiness_v1/workflow_audit_v1/workflow_local.py')
+    from admission_module_binding import checked_path
+    for path in paths:
+        require(checked_path(path).is_relative_to(root), 'budget_scenario_path')
+    before = [path.read_bytes() for path in paths]
+    module = types.ModuleType('_budget_bound_scenario')
+    module.__file__ = str(paths[0])
+    exec(compile(before[0], module.__file__, 'exec'), module.__dict__)
+    require(module.ROOT == root and module.SOURCE == paths[1], 'budget_scenario_origin')
+    value = module.capture()
+    require(all(path.read_bytes() == raw for path, raw in zip(paths, before)),
+            'budget_scenario_changed_during_capture')
+    require(value.get('status') == 'OFFLINE_SCENARIO_CAPTURE_ONLY'
+            and value.get('placeholder_only') is True and value.get('hosted_calls') == 0
+            and len(value.get('workflow_actions', [])) == 45
+            and value.get('source_sha256') == hashlib.sha256(before[1]).hexdigest(),
+            'budget_scenario_contract')
+    return value
+
+
 def workflow_component(auth):
     """Compile the newly supplied rollback-isolated driver's named call sites.
 
@@ -475,8 +499,7 @@ def workflow_component(auth):
     """
     import integral_failure_runtime as rt
     import integral_failure_runtime_workflow as workflow
-    from scenario import capture
-    scenario = capture()
+    scenario = workflow_capture()
     actions = scenario["workflow_actions"]
     binding = source("integral_failure_runtime_workflow.py", "WorkflowDriver")
 
@@ -1231,7 +1254,7 @@ def assemble(folder=REFERENCE):
     ]
     prefixes, safety_paths = prefix_register(normal)
     sources = {name: digest(HERE / name) for name in (
-        "admission_budget.py", "admission_budget_register.py", "admission_binding.py",
+        "admission_budget.py", "admission_budget_register.py", "admission_binding.py", "scenario.py",
         "complete_register.py", "metered_composition.py", "registered_lifecycle.py", "integral_ci.py", "integral_io.py",
         "lifecycle_gates.py", "cli_envelope.py", "cli_meter.py", "cli_stat_reader.py", "auth_failure.py",
         "auth_failure_transport.py", "fixture_cleanup_runtime.py", "fixture_cleanup_runtime_sql.py",
@@ -1261,6 +1284,8 @@ def assemble(folder=REFERENCE):
         binding = source(filename, "remove")
         sources[binding["path"]] = binding["sha256"]
     sources["_offline/phase6e_server_v1/ci_auth.py"] = digest(HERE.parents[1] / "phase6e_server_v1" / "ci_auth.py")
+    sources["_offline/phase6e11/readiness_v1/workflow_audit_v1/workflow_local.py"] = digest(
+        HERE.parents[2] / "_offline/phase6e11/readiness_v1/workflow_audit_v1/workflow_local.py")
     report = dict(status="NO_GO_INCOMPLETE_BOUND", preparation_run_id=NEW_RUN,
                 source_hashes=sources, approved_limit=APPROVED, minimal_cap=None,
                 normal_register=normal, fault_prefixes=prefixes, reference_safety_paths=safety_paths,

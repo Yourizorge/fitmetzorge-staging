@@ -67,6 +67,24 @@ class AdmissionCIContract(unittest.TestCase):
         calls = [ast.unparse(n.value.func) for n in method.body
                  if isinstance(n, ast.Expr) and isinstance(n.value, ast.Call)]
         self.assertEqual(calls[:2], ['self.admission_units', 'super().regressions'])
+        nested = [n for n in ast.walk(method) if isinstance(n, ast.Call)]
+        component = next(n for n in nested if ast.unparse(n.func) == 'self.run_components')
+        budget = next(n for n in nested if ast.unparse(n.func) == 'admission_budget.run')
+        application = next(n for n in nested if ast.unparse(n.func) == 'super().regressions')
+        self.assertLess(component.lineno, budget.lineno)
+        self.assertLess(budget.lineno, application.lineno)
+
+    def test_budget_modules_are_verified_before_publication(self):
+        tree = ast.parse((HERE/'admission_ci.py').read_text())
+        method = next(n for n in ast.walk(tree) if isinstance(n, ast.FunctionDef)
+                      and n.name == 'regressions')
+        calls = [n for n in ast.walk(method) if isinstance(n, ast.Call)]
+        binding = next(n for n in calls if ast.unparse(n.func) == 'self.bind_modules')
+        publish = next(n for n in calls if ast.unparse(n.func) == 'admission_budget.run')
+        self.assertLess(binding.lineno, publish.lineno)
+        self.assertEqual([ast.unparse(arg) for arg in binding.args],
+                         ['admission_budget', 'admission_budget_register',
+                          'admission_budget_receipts', 'admission_budget_graph'])
 
     def test_new_workflow_is_main_only_disposable_without_hosted_secrets(self):
         text = (ROOT/'.github/workflows/phase6e-admission-local-ci.yml').read_text()
