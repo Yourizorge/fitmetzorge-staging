@@ -3,6 +3,8 @@
 An unknown historical commit never becomes confirmed. The optional physical
 zero suffix permits only new, separately evidenced registry/Auth cleanup.
 """
+import sys
+import auth_pre_fixture_closure
 import fixture_db_terminality as db
 import fixture_producer_scope as producer
 import fixture_parent_physical_zero as physical
@@ -21,6 +23,12 @@ class Closure:
         self.gate, self.save = gate, save
         self.scope = self.tracked = self.terminal_ref = None
         self.started = self.finalized = False
+        self.fixture_mutation_started = False
+        self.pre_fixture = auth_pre_fixture_closure.Guard(self)
+
+    def before_bootstrap_write(self):
+        self.pre_fixture.before_bootstrap_write()
+        self.fixture_mutation_started = True
 
     def begin(self, ctx):
         if self.started:
@@ -47,6 +55,15 @@ class Closure:
         if self.finalized:
             raise Blocked('composition_duplicate_finalizer')
         self.finalized = True
+        primary = sys.exception()
+        if self.tracked is None and not self.fixture_mutation_started and primary is not None:
+            previous_save = self.gate.save
+            self.gate.save = self.save
+            try:
+                return auth_pre_fixture_closure.cleanup(self, ctx, auth, seal,
+                    primary=primary, delete_costs={'a': 128, 'trainer': 128, 'b': 128})
+            finally:
+                self.gate.save = previous_save
         if (self.tracked is None or self.scope is None or self.terminal_ref is None
                 or not auth.registry.valid_proof(seal)):
             raise Blocked('composition_incomplete_fixture_or_auth_proof')

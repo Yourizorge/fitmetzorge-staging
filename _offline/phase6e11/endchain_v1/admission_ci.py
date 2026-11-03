@@ -18,6 +18,7 @@ LOCAL_SOURCES = ('admission_ci.py', 'admission_ops.py', 'admission_binding.py',
     'auth_failure_transport.py', 'auth_failure_test.py', 'auth_failure_contract.md',
     'auth_failure_tracked.py', 'auth_failure_tracked_test.py',
     'auth_failure_parent_finalizer.py', 'auth_failure_parent_finalizer_test.py',
+    'auth_pre_fixture_closure.py', 'auth_pre_fixture_closure_test.py',
     'admission_cleanup_composition.py', 'test_admission_cleanup_composition.py',
     'admission_fixture_context.py', 'test_admission_fixture_context.py',
     'admission_journal.py', 'test_admission_journal.py',
@@ -123,6 +124,7 @@ class Gate(app.Gate):
         self.command('admission-auth-unit', ['python3', '-B', str(folder/'auth_failure_test.py')])
         self.command('admission-auth-tracked-unit', ['python3', '-B', str(folder/'auth_failure_tracked_test.py')])
         self.command('admission-auth-parent-unit', ['python3', '-B', str(folder/'auth_failure_parent_finalizer_test.py')])
+        self.command('admission-auth-prefixture-unit', ['python3', '-B', str(folder/'auth_pre_fixture_closure_test.py')])
         self.command('admission-fixture-bootstrap-unit', ['python3', '-B', str(folder/'test_admission_fixture_context.py')])
         self.command('admission-journal-unit', ['python3', '-B', str(folder/'test_admission_journal.py')])
         self.command('admission-fixture-unit', ['python3', '-B', str(folder/'fixture_cleanup_runtime_test.py')])
@@ -225,6 +227,7 @@ class Gate(app.Gate):
                         raise RuntimeError('admission_fault_component_failed')
                     tracked = closure.begin(ctx)
                     try:
+                        closure.before_bootstrap_write()
                         admission_fixture_context.run(self, ctx, runtime=tracked)
                         fixture_save = self.save
                         journal = Journal(self.out/'admission-fixture-private-journal', original_save,

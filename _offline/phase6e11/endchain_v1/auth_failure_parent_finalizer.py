@@ -14,7 +14,10 @@ The separate fixture-parent-physical-zero-private/result.json route requires its
 sealed journal, original fixture journal and complete case set, matching producer
 observations/source bindings, native terminal/zero protocols and C.protocol_plan
 (N,E). Original fixture COMMITs remain unknown and their claims remain held.
-Neither route admits the before-fixture/partial-bootstrap case without C proof.
+Neither C route admits the before-fixture/partial-bootstrap case without C proof.
+The explicit pre_fixture_proof keyword instead accepts only a live, issued,
+one-use auth_pre_fixture_closure.Prerequisite with no C receipt. It uses this
+same observer/delete engine; partial bootstrap remains inadmissible.
 
 At explicitly preregistered 128/delete, the separate maximum is402: 3 deletes,
 18 observers (boundary1, scoped FK2, ownership3, stats6, per-delete absence3,
@@ -409,7 +412,7 @@ class PhysicalCProof(CProof):
         return value
 
 
-def finalize(gate, ctx, auth, seal, c_receipt_ref, *, delete_costs):
+def finalize(gate, ctx, auth, seal, c_receipt_ref, *, delete_costs, pre_fixture_proof=None):
     """Return scoped confirmation; on ANY failure persist NO_GO then raise primary."""
     require(os.environ.get('GITHUB_ACTIONS') == 'true'
             and os.environ.get('GITHUB_REPOSITORY') == 'Yourizorge/fitmetzorge-staging'
@@ -461,13 +464,25 @@ def finalize(gate, ctx, auth, seal, c_receipt_ref, *, delete_costs):
         owned = owners(ctx, auth, seal)
         result['owner_hashes'] = {r: {'subject': tracked.sha(v['actor'].encode()),
                                     'email': tracked.sha(v['email'].encode())} for r, v in owned.items()}
-        phase = 'c_closure'
-        proof_type = PhysicalCProof if isinstance(c_receipt_ref, dict) and c_receipt_ref.get('path') == (
-            'fixture-parent-physical-zero-private/result.json') else CProof
-        proof = proof_type(gate, c_receipt_ref, owned, auth, seal)
+        if pre_fixture_proof is not None:
+            phase = 'pre_fixture_prerequisite'
+            import auth_pre_fixture_closure as pre_fixture
+            require(c_receipt_ref is None and type(pre_fixture_proof) is pre_fixture.Prerequisite,
+                    'exclusive_live_pre_fixture_proof_required')
+            pre_fixture_proof.consume(gate, ctx, auth, seal, owned)
+            proof = pre_fixture_proof
+            result['prerequisite_kind'] = 'LIVE_PRE_FIXTURE_NO_DISPATCH'
+            result['original_component_error_class'] = proof.original_error_class
+            binding_name = 'pre-fixture-binding.json'
+        else:
+            phase = 'c_closure'
+            proof_type = PhysicalCProof if isinstance(c_receipt_ref, dict) and c_receipt_ref.get('path') == (
+                'fixture-parent-physical-zero-private/result.json') else CProof
+            proof = proof_type(gate, c_receipt_ref, owned, auth, seal)
+            binding_name = 'c-binding.json'
         result['original_fixture_commit_unknown'] = getattr(proof, 'original_commit_unknown', False)
         result['original_commit_reclassified'] = False
-        ledger.write('c-binding.json', {'original_hashes': proof.hashes, 'owners': result['owner_hashes']})
+        ledger.write(binding_name, {'original_hashes': proof.hashes, 'owners': result['owner_hashes']})
         phase = 'local_observer'
         require(ctx.get('test_admin_token') and auth.url in af.ORIGINS, 'private_local_context')
         backend = af.RealBackend({'dsn': ctx['dsn'], 'auth_url': auth.url, 'admin_token': ctx['test_admin_token']})

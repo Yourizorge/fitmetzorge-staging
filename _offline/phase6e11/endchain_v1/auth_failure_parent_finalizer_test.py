@@ -265,6 +265,35 @@ class Tests(unittest.TestCase):
         self.assertEqual(self.server.count, 9)
         self.assertEqual(self.result()['native_dispatches'], 2)
 
+    def test_pre_fixture_dict_is_not_a_live_capability(self):
+        with patch.object(af, 'RealBackend') as backend:
+            with self.assertRaises(Exception):
+                finalizer.finalize(self.gate, self.ctx, self.auth, self.seal, None,
+                    delete_costs=self.costs, pre_fixture_proof={'closed': True})
+            backend.assert_not_called()
+        self.assertEqual(self.server.count, 9)
+
+    def test_unissued_exact_class_is_not_a_capability(self):
+        import auth_pre_fixture_closure as pre
+        fake = object.__new__(pre.Prerequisite)
+        with patch.object(af, 'RealBackend') as backend:
+            with self.assertRaises(Exception):
+                finalizer.finalize(self.gate, self.ctx, self.auth, self.seal, None,
+                    delete_costs=self.costs, pre_fixture_proof=fake)
+            backend.assert_not_called()
+        self.assertEqual(self.server.count, 9)
+
+    def test_c_receipt_and_pre_fixture_cannot_be_combined(self):
+        import auth_pre_fixture_closure as pre
+        fake = object.__new__(pre.Prerequisite)
+        ref = self.c_receipts()
+        with patch.object(af, 'RealBackend') as backend:
+            with self.assertRaises(Exception):
+                finalizer.finalize(self.gate, self.ctx, self.auth, self.seal, ref,
+                    delete_costs=self.costs, pre_fixture_proof=fake)
+            backend.assert_not_called()
+        self.assertEqual(self.server.count, 9)
+
     def test_real_truncated_delete_stops_further_deletes_no_replay_or_ack(self):
         ref = self.c_receipts()
         self.server.truncate_at = 10

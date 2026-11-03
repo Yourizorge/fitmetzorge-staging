@@ -128,5 +128,35 @@ class Composition(unittest.TestCase):
         with self.assertRaisesRegex(m.Blocked, 'parent_receipt_path'):
             m.file_ref(self.out, '../outside.json')
 
+    def test_pre_fixture_failure_uses_distinct_live_prerequisite_path(self):
+        original = ValueError('synthetic-component-failure')
+        previous = Mock(); self.gate.save = previous
+        with patch.object(m.auth_pre_fixture_closure, 'cleanup', return_value={'status': 'NO_GO'}) as finish, \
+                patch.object(m.physical, 'run') as physical:
+            try:
+                raise original
+            except ValueError:
+                result = self.closure.finalize(self.ctx, Mock(), Mock())
+            self.assertEqual(result['status'], 'NO_GO')
+            self.assertIs(finish.call_args.kwargs['primary'], original)
+            physical.assert_not_called()
+        self.assertIs(self.gate.save, previous)
+
+    def test_pre_fixture_failure_never_adopts_issued_factory(self):
+        self.closure.tracked = Mock()
+        with patch.object(m.auth_pre_fixture_closure, 'cleanup') as finish:
+            try:
+                raise ValueError('synthetic-component-failure')
+            except ValueError:
+                with self.assertRaisesRegex(m.Blocked, 'incomplete_fixture'):
+                    self.closure.finalize(self.ctx, Mock(), Mock())
+            finish.assert_not_called()
+
+    def test_bootstrap_hook_is_one_shot_and_keeps_write_marker(self):
+        self.closure.before_bootstrap_write()
+        self.assertTrue(self.closure.fixture_mutation_started)
+        with self.assertRaisesRegex(m.auth_parent.tracked.Blocked, 'write_closed_or_repeated'):
+            self.closure.before_bootstrap_write()
+
 
 if __name__ == '__main__': unittest.main()

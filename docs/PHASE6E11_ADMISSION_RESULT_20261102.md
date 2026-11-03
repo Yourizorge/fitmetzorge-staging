@@ -448,6 +448,38 @@ en de ongewijzigde WAL-voorwaarde moeten eerst slagen. Tot die tijd blijft de
 voorbereidingsbinding niet-uitvoerbaar. Er wordt nu geen nieuwe hosted
 toestemming gevraagd en geen ownervenster geopend.
 
+### Offline vervolg: pre-fixture Auth-afsluiting
+
+De onafhankelijke review reproduceerde dat het ontbreken van een fixture-runtime
+op zichzelf geen bewijs is dat Auth-deletes geen onverwachte trigger- of
+cascadegevolgen hebben. Het nieuwe afsluitpad hergebruikt daarom de bestaande
+producer-scopevalidator: tien vooraf getelde read-only protocolcommando's,
+inclusief rollback, met twaalf duurzame intent-/charge-/resultaatrecords.
+Een eerdere mislukte scopepoging wordt niet herhaald en staat geen deletes toe.
+De actuele bronbinding, catalogusuitkomst en oorspronkelijke recordhashes worden
+opnieuw gecontroleerd voordat de bestaande Auth-delete-engine wordt toegelaten.
+
+Dit afzonderlijke lokale diagnostische pad reserveert 412 eenheden: tien voor
+de cataloguscontrole en 402 voor de bestaande observer/delete-engine. Dit is
+geen verhoging of bewijs van voldoende ruimte binnen het globale maximum 2349.
+De oorspronkelijke fout, onzekere uitkomst en claims blijven NO-GO; succesvolle
+gerichte cleanup maakt de oorspronkelijke proef niet alsnog geslaagd.
+Agent B rapporteert 122/122 lokale tests; de onafhankelijke C-review 18/18.
+De hoofdworker herhaalde de 122 tests: PASS in 334,301 seconden.
+Deze aantallen overlappen en gebruiken SQL-testdoubles. Echte PG-/GoTrue-
+verificatie van dit nieuwe samengestelde afsluitpad blijft afzonderlijk vereist.
+
+De matrixcollector eist naast positieve artifactreceipts ook een daadwerkelijk
+geslaagde GitHub-run. Een opgeslagen PASS gevolgd door een fout bij duurzame
+opslag kan daardoor geen positieve eindtoelating opleveren. De gerichte suite
+heeft 25 PASS, onafhankelijk herhaald; dit is geen uitgevoerde foutpadmatrix.
+
+Checkpoint `0bdf53a967ac1e56e1ef2b5f5e00b85d4de078fa`: Pages-run
+`41646273660`, artifact `13234044527`, SHA-256
+`5ffb3275445bf6548b4aaa9bb9330c6b6ae34e7210dc28caff6b5c98324cfccf`.
+817 entries, 152 runtime-assets byte-identiek, private roots afwezig en zeven
+private HTTP-paden 404. Dit is publicatiebewijs, geen hosted databasebewijs.
+
 External AI calls/cost: 0 / EUR 0,00.
 Real-member AI enabled: NO.
 Production touched: NO.
