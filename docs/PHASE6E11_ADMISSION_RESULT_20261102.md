@@ -218,6 +218,8 @@ aan: 14 bevestigde protocolcommando's, 14 numerieke waarnemingen, nul onbekende
 dispatches en nul eigen temp writes. Acht observer- en acht lokale
 isolatiecommando's zijn afzonderlijk verantwoord. Dit is disposable CI-bewijs,
 geen hosted uitvoering of bewijs van volledige fysieke WAL0.
+De post-migrationreceipt bewijst `component_verified=true`, maar behoudt
+`terminal_complete=false`: geen volledige eindketenafsluiting.
 Oorspronkelijke ledger-SHA-256:
 `422017bf1dcfc5769f664f85b36fc79f60c03ba51f208131cba05ed4ed34c0cb`;
 policy-SHA-256:
@@ -228,7 +230,52 @@ De app-integratie bereikte opnieuw 209 browsercontroles, 46 domeintests en
 CI-totalen opgeteld. De run stopte daarna op `offline_shell_browser`.
 De nieuwe Auth-, integrale foutpad- en fixturecomponenten zijn op deze bron dus
 nog niet uitgevoerd. Status blijft NO_GO; geen automatische herhaling en geen
-hosted toegang. De browserfout wordt afzonderlijk onderzocht.
+hosted toegang. Check 66 lokaliseert de browserfout bij de tweede B-login na
+offline herladen. De oorspronkelijke oorzaak blijft UNKNOWN: de bewaarde
+metadata bevat geen HTTP-status of responsevolgorde van die login.
+
+Afzonderlijk is een race gereproduceerd waarbij de nog lopende anonieme
+bootstrap een reeds ingevuld testformulier wist. De test wacht nu op de
+bestaande GET/403 en verwerkte sessiestatus voordat velden worden ingevuld.
+Geen runtimewijziging, extra request, retry of verhoogde timeout. De test
+bewaart uitsluitend begrensde fase-/methode-/statuscategorieen, zonder headers,
+body, URL-query, credentials of foutinhoud. 88 gerichte Node-tests PASS;
+Chromium/GoTrue-verificatie van deze correctie blijft apart vereist.
+Een aanvullende onafhankelijke review wees op vrije Playwright-fouttekst in
+de buitenste NO_GO-envelope. Die is vervangen door vaste foutcategorieen.
+Drie extra sentineltests bewijzen dat foutnaam, message, stack en cause niet
+worden gepubliceerd. De gerichte browser-testsuite omvat nu 15 tests PASS;
+dit is geen nieuwe fysieke telefoontest.
+
+## Checkpoint: geregistreerde producers
+
+Commit `3969f0bd15bef864c665ef55da0fc25d300a2665` voegt uitsluitend opt-in
+disposable CI-instrumentatie toe. Auth-aanvragen krijgen vooraf een duurzame
+registratie en reserveringsreferentie. Onzekere verzending wordt niet
+terugbetaald. De journal controleert volledige writes, fsync/readback en de
+oorspronkelijke hashes van alle records voor afsluiting, bewijsgebruik en export.
+De onafhankelijke review vond en liet twee opslagfouten herstellen voordat
+deze bron werd opgenomen. Default app/Auth-gedrag blijft ongewijzigd.
+
+De fixturefactory registreert werkelijke backendidentiteit voor de eerste
+fixturequery. Bootstrap en fixturetests delen deze factory. Afsluiting wordt
+gevolgd door een afzonderlijke serverwaarneming van geregistreerde backends.
+Dit bewijst niet automatisch afwezigheid van andere producers of volledige
+Auth-cleanup; die aansluitingen blijven afzonderlijke vereisten.
+
+Lokale verificatie: 122 Auth-/wiringtests, 105 fixturetests en 16 gerichte
+orchestratie-/bootstraptests PASS. Deze overlappende suites worden niet
+opgeteld. Daadwerkelijke GoTrue/PG17-uitvoering van deze nieuwe opt-in
+samenstelling is nog niet bewezen. De hoofdstatus blijft NO_GO.
+
+Een afzonderlijke parent-Auth-finalizer is voorbereid voor exact de drie
+oorspronkelijk geregistreerde fictieve accounts. Zij vereist de gehashte,
+verzegelde C-closurereceipt voordat een obserververbinding of delete is
+toegestaan. De review vond en sloot een ontbrekende hashvereiste. 27 tests
+PASS met echte localhost-HTTP en gemockte SQL/C-bewijzen. De reservering is
+402 lokale diagnostische eenheden (18 observers plus drie maal 128 voor
+delete); dit is geen waargenomen hosted bovengrens en geen toevoeging aan
+de toegestane 2349. Werkelijke gezamenlijke afsluiting blijft te bewijzen.
 
 ## Budget en harde grenzen
 
@@ -278,6 +325,12 @@ Historische autorisatie SHA-256:
 Pages op 373fce1: run 41507249344 geslaagd, 152 runtime-assets byte-identiek,
 private roots ontbreken in het deployartifact en zeven private HTTP-probes 404.
 Dit bewijst publicatiebehoud, geen hosted databasebehoud.
+
+Checkpoint 3969f0b: Pages-run 41633708684 geslaagd; artifact 13228952662,
+SHA-256 `678ef03475ccbf4fc21171dbe2d593c1c981786199d42421622dcfe7ecc4a534`.
+Alle 152 runtime-assets byte-identiek, private roots afwezig, zeven private
+HTTP-probes 404. De eerste controle vond nog geen geslaagde publicatie van de
+nieuwe commit en gaf daarom geen PASS; de latere controle is apart opgeslagen.
 
 ## Grenzen voor de eigenaar
 

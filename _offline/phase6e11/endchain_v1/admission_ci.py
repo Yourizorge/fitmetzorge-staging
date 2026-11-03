@@ -17,6 +17,7 @@ LOCAL_SOURCES = ('admission_ci.py', 'admission_ops.py', 'admission_binding.py',
     'test_admission_binding.py', 'test_admission_ci.py', 'auth_failure.py',
     'auth_failure_transport.py', 'auth_failure_test.py', 'auth_failure_contract.md',
     'auth_failure_tracked.py', 'auth_failure_tracked_test.py',
+    'auth_failure_parent_finalizer.py', 'auth_failure_parent_finalizer_test.py',
     'admission_fixture_context.py', 'test_admission_fixture_context.py',
     'admission_journal.py', 'test_admission_journal.py',
     'admission_failure.py', 'test_admission_failure.py',
@@ -42,6 +43,7 @@ EXTRA |= {'_offline/phase6e11/endchain_v1/cli_predispatch/'+name for name in (
 EXTRA |= {'_offline/phase6e11/endchain_v1/cli_predispatch/'+name for name in ('pending.py','test_pending.py')}
 EXTRA.add('.github/workflows/phase6e-admission-local-ci.yml')
 EXTRA.add('_offline/phase6e_server_v1/ops.py')
+EXTRA.add('_offline/phase6e_server_v1/offline_shell_browser.test.cjs')
 EXTRA.add('docs/PHASE6E11_ADMISSION_PREREGISTRATION_20261102.md')
 EXTRA.add('_offline/phase6e11/endchain_v1/receipts/reserved-ci-39109482869/complete-command-register.json')
 app.previous.prior.old.EXTRA |= EXTRA
@@ -107,15 +109,17 @@ class Gate(app.Gate):
         self.result['admission_components'] = {}
         return migrations
 
-    def regressions(self):
-        super().regressions()
+    def admission_units(self):
         folder = self.sources/'_offline/phase6e11/endchain_v1'
+        self.command('admission-browser-bootstrap-unit', ['node','--test',
+            str(self.sources/'_offline/phase6e_server_v1/offline_shell_browser.test.cjs')])
         self.command('admission-binding-unit', ['python3', '-B', '-m', 'unittest',
             'discover', '-s', str(folder), '-p', 'test_admission_binding.py'])
         self.command('admission-ci-unit', ['python3', '-B', '-m', 'unittest',
             'discover', '-s', str(folder), '-p', 'test_admission_ci.py'])
         self.command('admission-auth-unit', ['python3', '-B', str(folder/'auth_failure_test.py')])
         self.command('admission-auth-tracked-unit', ['python3', '-B', str(folder/'auth_failure_tracked_test.py')])
+        self.command('admission-auth-parent-unit', ['python3', '-B', str(folder/'auth_failure_parent_finalizer_test.py')])
         self.command('admission-fixture-bootstrap-unit', ['python3', '-B', str(folder/'test_admission_fixture_context.py')])
         self.command('admission-journal-unit', ['python3', '-B', str(folder/'test_admission_journal.py')])
         self.command('admission-fixture-unit', ['python3', '-B', str(folder/'fixture_cleanup_runtime_test.py')])
@@ -127,6 +131,11 @@ class Gate(app.Gate):
                      'test_fixture_control_ownership.py','test_fixture_db_terminality.py'):
             self.command('admission-'+name[:-3],['python3','-B',str(folder/name)])
         self.result['admission_components']['binding'] = 'OFFLINE_TESTED_NOT_AUTHORITY'
+
+    def regressions(self):
+        # Reject cheap local contract errors before the slower app/browser matrix.
+        self.admission_units()
+        super().regressions()
         try:
             self.run_components()
         finally:

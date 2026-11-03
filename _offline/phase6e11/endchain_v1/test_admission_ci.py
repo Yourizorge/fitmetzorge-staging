@@ -8,6 +8,14 @@ ROOT = HERE.parents[2]
 
 
 class AdmissionCIContract(unittest.TestCase):
+    def test_local_contracts_precede_expensive_app_matrix(self):
+        tree = ast.parse((HERE/'admission_ci.py').read_text())
+        method = next(n for n in ast.walk(tree) if isinstance(n, ast.FunctionDef)
+                      and n.name == 'regressions')
+        calls = [ast.unparse(n.value.func) for n in method.body
+                 if isinstance(n, ast.Expr) and isinstance(n.value, ast.Call)]
+        self.assertEqual(calls[:2], ['self.admission_units', 'super().regressions'])
+
     def test_new_workflow_is_main_only_disposable_without_hosted_secrets(self):
         text = (ROOT/'.github/workflows/phase6e-admission-local-ci.yml').read_text()
         for value in ("github.repository == 'Yourizorge/fitmetzorge-staging'",

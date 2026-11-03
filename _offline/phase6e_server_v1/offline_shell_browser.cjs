@@ -93,12 +93,62 @@ async function shellChecks(browser,c,ok){
   return screenshots;
  }finally{await context.close();}
 }
+async function anonymousNavigation(page,url,navigate){
+ // A visible form can still be reset by the pending anonymous bootstrap.
+ const response=page.waitForResponse(r=>r.url()===url+'/api/today'&&r.request().method()==='GET');
+ const [bootstrap]=await Promise.all([response,navigate()]);
+ if(bootstrap.status()!==403)throw Error('anonymous_bootstrap_status');
+ await page.waitForFunction(()=>globalThis.FMZQueueSession?.epoch()>0&&!authInFlight&&!busy&&current===null);
+ await page.locator('#login').waitFor();
+}
+const authPhases=['initial_login','cold_reload','relogin','logout','unmapped_login','actor_relogin','verify_recovery','final_logout'];
+function authDiagnostics(page,origin){
+ if(!/^http:\/\/127\.0\.0\.1:\d+$/.test(origin))throw Error('diagnostic_origin');
+ let phase='initial_login',saturated=false;
+ const pending=new WeakMap(),rows=new Map(),limit=1000;
+ const categories=['http_1xx','http_2xx','http_3xx','unauthorized','forbidden','http_4xx','http_5xx','invalid'];
+ function increment(object,key){if(object[key]<limit)object[key]++;else saturated=true;}
+ function request(req){
+  try{
+   const url=new URL(req.url()),method=req.method();
+   if(url.origin!==origin||url.username||url.password)return;
+   const endpoint=url.pathname==='/api/login'&&method==='POST'?'login':
+    url.pathname==='/api/today'&&method==='GET'?'today':null;
+   if(!endpoint)return;
+   const key=phase+':'+endpoint;
+   if(!rows.has(key))rows.set(key,{phase,path:endpoint,method,requests:0,failed:0,
+    responses:Object.fromEntries(categories.map(key=>[key,0]))});
+   const row=rows.get(key);pending.set(req,row);increment(row,'requests');
+  }catch(_){/* Diagnostic collection never exports exceptions or changes test flow. */}
+ }
+ function response(res){
+  try{
+   const req=res.request(),row=pending.get(req);if(!row)return;
+   pending.delete(req);
+   const status=res.status();
+   const category=!Number.isInteger(status)||status<100||status>599?'invalid':
+    status===401?'unauthorized':status===403?'forbidden':'http_'+Math.floor(status/100)+'xx';
+   increment(row.responses,category);
+  }catch(_){}
+ }
+ function failed(req){
+  const row=pending.get(req);if(row){pending.delete(req);increment(row,'failed');}
+ }
+ page.on('request',request);page.on('response',response);page.on('requestfailed',failed);
+ return {
+  phase(value){if(!authPhases.includes(value))throw Error('diagnostic_phase');phase=value;},
+  snapshot(){return {phase,counter_limit:limit,saturated,response_counts:Array.from(rows.values(),
+   row=>({...row,responses:{...row.responses}}))};},
+  close(){page.off('request',request);page.off('response',response);page.off('requestfailed',failed);}
+ };
+}
 async function authChecks(browser,c,ok){
  const context=await browser.newContext(),page=await context.newPage();let actions=0;
+ const diagnostic=authDiagnostics(page,c.url);
  context.on('request',r=>{if(new URL(r.url()).pathname==='/api/action')actions++;});
  await context.route('**/*',r=>new URL(r.request().url()).origin===c.url?r.continue():r.abort());
  try{
-  await page.goto(c.url);await page.locator('[name=email]').fill(c.accounts.b.email);await page.locator('[name=password]').fill(c.accounts.b.password);await page.locator('#login button').click();await page.locator('#app').waitFor();
+  await anonymousNavigation(page,c.url,()=>page.goto(c.url));await page.locator('[name=email]').fill(c.accounts.b.email);await page.locator('[name=password]').fill(c.accounts.b.password);await page.locator('#login button').click();await page.locator('#app').waitFor();
   await page.waitForFunction(()=>current&&queueVerified.has(current));
   const state=await page.evaluate(()=>fetch('/api/today').then(r=>r.json()));
   const revoked=state.views.find(v=>!v.capabilities.registration12&&v.state.consent===false);
@@ -112,38 +162,54 @@ async function authChecks(browser,c,ok){
   },revoked);
   await page.locator('[data-queue-submit]').waitFor();ok(await page.locator('[data-queue-submit]').isDisabled(),'verified_revocation_blocks_submit');
   await page.evaluate(()=>navigator.serviceWorker.ready.then(()=>true));await page.waitForFunction(()=>navigator.serviceWorker.controller!==null);
+  diagnostic.phase('cold_reload');
   await context.setOffline(true);await coldShell(page,await page.reload(),'authenticated_cold_reload');
   ok(await page.locator('#app,#queued,input').count()===0,'authenticated_cold_start_hides_account');
-  await context.setOffline(false);await context.clearCookies();await page.locator('#shell-reconnect').click();await page.locator('#login').waitFor();
+  diagnostic.phase('relogin');
+  await context.setOffline(false);await context.clearCookies();await anonymousNavigation(page,c.url,()=>page.locator('#shell-reconnect').click());
   ok(await page.locator('#queued').isHidden(),'expired_session_cannot_recover_drafts');
   await page.locator('[name=email]').fill(c.accounts.b.email);await page.locator('[name=password]').fill(c.accounts.b.password);await page.locator('#login button').click();await page.locator('#app').waitFor();
   await page.locator('#workspace').selectOption(revoked.workspace);await page.locator('[data-queue-submit]').waitFor();
+  diagnostic.phase('logout');
   const [signedOut]=await Promise.all([page.waitForResponse(r=>new URL(r.url()).pathname==='/api/logout'&&r.request().method()==='POST'),page.locator('#logout').click()]);
   ok(signedOut.status()===200,'logout_confirmed');await page.waitForFunction(()=>!authInFlight&&!busy);await page.locator('#login').waitFor();
   ok(await page.locator('#queued').isHidden()&&await page.locator('#content').innerText()==='','logout_clears_account_and_draft_ui');
+  diagnostic.phase('unmapped_login');
   await page.locator('[name=email]').fill(c.accounts.trainer.email);await page.locator('[name=password]').fill(c.accounts.trainer.password);await page.locator('#login button').click();
   await page.waitForFunction(()=>document.querySelector('#message').textContent.length>0);
   await page.waitForFunction(()=>!authInFlight&&!busy);
   ok(await page.locator('#app').isHidden()&&await page.locator('#queued').isHidden(),'unmapped_account_cannot_recover_drafts');
+  diagnostic.phase('actor_relogin');
   await page.locator('[name=email]').fill(c.accounts.b.email);await page.locator('[name=password]').fill(c.accounts.b.password);await page.locator('#login button').click();await page.locator('#app').waitFor();
   await page.locator('#workspace').selectOption(revoked.workspace);await page.locator('[data-queue-submit]').waitFor();
   ok(await page.locator('[data-queue-submit]').isDisabled(),'exact_actor_relogin_recovers_revoked_draft');
+  diagnostic.phase('verify_recovery');
   await page.locator('[data-queue-discard]').click();await page.waitForFunction(()=>!busy&&document.querySelector('#queued').hidden);
   const after=await page.evaluate(()=>fetch('/api/today').then(r=>r.json()));
   ok(state.views.every(v=>after.views.find(x=>x.workspace===v.workspace)?.version===v.version),'no_server_version_changes');
   ok(actions===0,'revoked_recovery_no_action_posts');
+  diagnostic.phase('final_logout');
   const [closed]=await Promise.all([page.waitForResponse(r=>new URL(r.url()).pathname==='/api/logout'&&r.request().method()==='POST'),page.locator('#logout').click()]);
   ok(closed.status()===200,'final_logout_confirmed');await page.waitForFunction(()=>!authInFlight&&!busy);await page.locator('#login').waitFor();
- }finally{await context.close();}
+  return diagnostic.snapshot();
+ }catch(e){e.auth_diagnostic=diagnostic.snapshot();throw e;}
+ finally{diagnostic.close();await context.close();}
+}
+function failureReceipt(error,stage,checks){
+ return {status:'NO_GO',stage:['shell','real_auth'].includes(stage)?stage:'setup',
+  checks:Number.isSafeInteger(checks)&&checks>=0?checks:0,
+  error:error?.name==='TimeoutError'?'timeout':'browser_check_failed',
+  ...(error.cold_diagnostic?{cold_diagnostic:error.cold_diagnostic}:{}),
+  ...(error.auth_diagnostic?{auth_diagnostic:error.auth_diagnostic}:{})};
 }
 async function main(){
  let raw='';for await(const chunk of process.stdin)raw+=chunk;const c=JSON.parse(raw);
  if(!/^http:\/\/127\.0\.0\.1:\d+$/.test(c.url))throw Error('loopback');
  const browser=await require(c.playwright).chromium.launch({headless:true});let checks=0,stage='shell';
  const ok=(value,label)=>{if(!value)throw Error(label);checks++;};
- try{const screenshots=await shellChecks(browser,c,ok);stage='real_auth';await authChecks(browser,c,ok);console.log(JSON.stringify({status:'PASS',checks,screenshots,real_local_auth:true,database_writes:0,hosted_calls:0,physical_phone_test:false}));}
- catch(e){console.log(JSON.stringify({status:'NO_GO',stage,checks,error:e.message.slice(0,160),...(e.cold_diagnostic?{cold_diagnostic:e.cold_diagnostic}:{})}));process.exitCode=2;}
+ try{const screenshots=await shellChecks(browser,c,ok);stage='real_auth';const auth_diagnostic=await authChecks(browser,c,ok);console.log(JSON.stringify({status:'PASS',checks,screenshots,auth_diagnostic,real_local_auth:true,database_writes:0,hosted_calls:0,physical_phone_test:false}));}
+ catch(e){console.log(JSON.stringify(failureReceipt(e,stage,checks)));process.exitCode=2;}
  finally{await browser.close();}
 }
-module.exports={shellChecks,storageChecks,authChecks,coldShell};
+module.exports={shellChecks,storageChecks,authChecks,coldShell,anonymousNavigation,authDiagnostics,failureReceipt};
 if(require.main===module)main().catch(()=>{console.log(JSON.stringify({status:'NO_GO',stage:'setup'}));process.exitCode=2;});
