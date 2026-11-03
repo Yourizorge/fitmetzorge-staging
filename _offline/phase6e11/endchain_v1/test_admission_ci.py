@@ -1,13 +1,65 @@
 """Offline orchestration boundaries, not real PG17/GoTrue proof."""
 import ast
+import contextlib
 import pathlib
+import sys
+import types
 import unittest
+from unittest.mock import Mock
 
 HERE = pathlib.Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
 
 
 class AdmissionCIContract(unittest.TestCase):
+    def suspended_admin(self, connection, reconnect, tracked=True):
+        # Execute the actual nested context-manager body, not a copied model.
+        tree = ast.parse((ROOT/'_offline/phase6e_server_v1/ci_auth.py').read_text())
+        function = next(n for n in ast.walk(tree) if isinstance(n, ast.FunctionDef)
+                        and n.name == 'suspend_admin')
+        wrapper = ast.parse('def factory(admin, connect_admin, tracked_auth_factory):\n'
+                            '    suspended = False\n').body[0]
+        wrapper.body += [function, ast.Return(ast.Name(id='suspend_admin', ctx=ast.Load()))]
+        module = ast.fix_missing_locations(ast.Module(body=[wrapper], type_ignores=[]))
+        namespace = {'contextlib': contextlib, 'sys': sys}
+        exec(compile(module, '<actual-ci-admin-context>', 'exec'), namespace)
+        admin = types.SimpleNamespace(connection=connection)
+        return admin, namespace['factory'](admin, reconnect, object() if tracked else None)
+
+    def test_admin_is_closed_during_scope_check_and_reconnected_once(self):
+        old = Mock(closed=False)
+        old.close.side_effect = lambda: setattr(old, 'closed', True)
+        new = Mock(closed=False); reconnect = Mock(return_value=new)
+        admin, suspend = self.suspended_admin(old, reconnect)
+        with suspend():
+            self.assertTrue(old.closed)
+            reconnect.assert_not_called()
+            with self.assertRaisesRegex(RuntimeError, 'suspend_scope'):
+                with suspend(): pass
+        reconnect.assert_called_once_with()
+        self.assertIs(admin.connection, new)
+
+    def test_scope_error_survives_failed_admin_reconnect(self):
+        old = Mock(closed=False)
+        old.close.side_effect = lambda: setattr(old, 'closed', True)
+        _, suspend = self.suspended_admin(old, Mock(side_effect=OSError('private detail')))
+        with self.assertRaisesRegex(ValueError, 'scope failure') as caught:
+            with suspend(): raise ValueError('scope failure')
+        self.assertEqual(caught.exception.__notes__, ['secondary_admin_reconnect_failure:OSError'])
+
+    def test_admin_suspend_never_available_to_default_auth_flow(self):
+        old = Mock(closed=False); reconnect = Mock()
+        _, suspend = self.suspended_admin(old, reconnect, tracked=False)
+        with self.assertRaisesRegex(RuntimeError, 'suspend_scope'):
+            with suspend(): pass
+        old.close.assert_not_called(); reconnect.assert_not_called()
+
+    def test_reconnected_admin_is_owned_by_exitstack(self):
+        text = (ROOT/'_offline/phase6e_server_v1/ci_auth.py').read_text()
+        self.assertIn('with contextlib.ExitStack() as connections:', text)
+        self.assertIn('return connections.enter_context(psycopg.connect(dsn,autocommit=True,', text)
+        self.assertIn("ctx.pop('suspend_admin',None)", text)
+
     def test_local_contracts_precede_expensive_app_matrix(self):
         tree = ast.parse((HERE/'admission_ci.py').read_text())
         method = next(n for n in ast.walk(tree) if isinstance(n, ast.FunctionDef)

@@ -56,8 +56,30 @@ def environment(gate,roles=('a','trainer','b','owner','outsider'),*,include_test
         tokens={};claims={};accounts={};admin_token=jwt('service_role')
         auth=(LocalAuth('http://127.0.0.1:59999') if tracked_auth_factory is None else
               tracked_auth_factory('http://127.0.0.1:59999',LocalAuth,admin_token,Denied))
-        with psycopg.connect(dsn,autocommit=True,prepare_threshold=None,row_factory=dict_row) as connection:
+        with contextlib.ExitStack() as connections:
+            def connect_admin():
+                return connections.enter_context(psycopg.connect(dsn,autocommit=True,
+                    prepare_threshold=None,row_factory=dict_row))
+            connection=connect_admin()
             events=[];admin=Session(connection,events.append,'fixture_admin')
+            suspended=False
+            @contextlib.contextmanager
+            def suspend_admin():
+                nonlocal suspended
+                if tracked_auth_factory is None or suspended or admin.connection.closed:
+                    raise RuntimeError('ci_admin_suspend_scope')
+                suspended=True
+                try:
+                    admin.connection.close()
+                    if not admin.connection.closed:raise RuntimeError('ci_admin_close_unconfirmed')
+                    yield
+                finally:
+                    primary=sys.exception()
+                    try:admin.connection=connect_admin()
+                    except BaseException as error:
+                        if primary is None:raise
+                        primary.add_note('secondary_admin_reconnect_failure:'+type(error).__name__)
+                    finally:suspended=False
             from auth_protocol import STATS,difference
             before=admin.execute('select '+STATS+' value').fetchone()['value']
             measured_roles=('postgres','fmz6e_integration_server')
@@ -75,6 +97,7 @@ def environment(gate,roles=('a','trainer','b','owner','outsider'),*,include_test
             # Private disposable test capability; never serialize ctx or this value.
             if include_test_admin:ctx['test_admin_token']=admin_token
             if tracked_auth_factory is not None:ctx['auth_request_registry']=auth.registry
+            if tracked_auth_factory is not None:ctx['suspend_admin']=suspend_admin
             try:yield ctx
             finally:
                 primary=sys.exception();tracking_error=None
@@ -96,6 +119,7 @@ def environment(gate,roles=('a','trainer','b','owner','outsider'),*,include_test
                         if primary is None:tracking_error=error;primary=error
                         else:primary.add_note('secondary_tracked_artifact_failure:'+type(error).__name__)
                 ctx.pop('test_admin_token',None)
+                ctx.pop('suspend_admin',None)
                 try:
                     admin.operation='numeric_final_observers'
                     after=admin.execute('select '+STATS+' value').fetchone()['value']

@@ -279,6 +279,42 @@ de toegestane 2349. Werkelijke gezamenlijke afsluiting blijft te bewijzen.
 
 ## Budget en harde grenzen
 
+### Nieuwe lokale opruimkoppeling, nog geen PG/Auth-PASS
+
+De nieuwe opt-in samenstelling houdt een metadatawaarneming, een fysieke
+schrijfuitsluiting en de Auth-afsluiting apart. De scopelezer controleert de
+dertien tabellen, versiegebonden functies/triggers, foreign keys, effectieve
+rechten en gesloten RPC-grenzen. Een lege activitylijst is geen globale
+writerbarrier. De registry-suffix houdt locks over de scopecontrole, actuele
+afwezigheidscontrole en exacte registry-deletes; een tweede verbinding bewijst
+daarna afwezigheid. Verloren historische COMMIT-antwoorden blijven NO_GO.
+
+De admin-obserververbinding wordt tijdens de scopewaarneming daadwerkelijk
+gesloten; een ExitStack bezit ook de opnieuw geopende verbinding. Dezelfde
+protocolledger blijft in gebruik. De Auth-finalizer mag pas volgen op de
+verzegelde fysieke-closurereceipt met exacte bron- en actorbinding.
+
+154 gerichte lokale fixture/journal/orchestratieregressies PASS; daarna 21
+gerichte orchestratiecontroles PASS na hergebruik van de bestaande strikte
+receiptlezer. Deze suites overlappen en worden niet opgeteld. Het zijn deels
+gemockte tests, geen nieuwe echte PG17-/GoTrue-cleanupclaim. De werkelijke
+gezamenlijke uitvoering en het volledige foutpadregister blijven vereist.
+
+De nieuwe PhysicalCProof-consumer en compositie hebben aanvullend 52 tests
+PASS (43 Auth-finalizer en negen compositiecontroles; 94,308 seconden).
+Onafhankelijke source-review: geen blokkerende P1/P2 in C, Main-wiring of
+PhysicalCProof. Deze review is geen werkelijke PG/GoTrue-uitvoering.
+
+Actuele documentatiecontrole: de Supabase-changelog noemt een aanstaande
+uitfasering van oude HTTP TLS1.2-ciphers op 10 november 2026 en een tzdata-fix
+voor drie tijdzones. Dit is geen reden om de gepinde disposable stack of
+stagingconfiguratie stilzwijgend te veranderen. De officiële Auth-documentatie
+behoudt de koppeling van session_id aan auth.sessions; rijverwijdering wordt
+niet als onmiddellijke intrekking van iedere stateless JWT voorgesteld.
+Bronnen: [changelog](https://supabase.com/changelog),
+[Auth-sessies](https://supabase.com/docs/guides/auth/sessions),
+[PG17-locks](https://www.postgresql.org/docs/17/explicit-locking.html).
+
 De veertien matrixfasen zijn niet als veertien volledige keten-PASS-resultaten
 geregistreerd. De uitvoerbare componentgrenzen zijn:
 
@@ -331,6 +367,12 @@ SHA-256 `678ef03475ccbf4fc21171dbe2d593c1c981786199d42421622dcfe7ecc4a534`.
 Alle 152 runtime-assets byte-identiek, private roots afwezig, zeven private
 HTTP-probes 404. De eerste controle vond nog geen geslaagde publicatie van de
 nieuwe commit en gaf daarom geen PASS; de latere controle is apart opgeslagen.
+
+Checkpoint 263cc2b472f9e1d40a7fc926342c3b55a733b441: Pages-run 41636776559,
+artifact 13230273606, SHA-256
+`b8cb0b85d1104597c3d0a9dd33cb35fb263d06d95957d038781613d8b26c07d0`.
+817 artifactentries, 152 ongewijzigde runtime-assets, private roots afwezig
+en zeven private probes 404. Nul Supabase-calls tijdens deze controle.
 
 ## Grenzen voor de eigenaar
 

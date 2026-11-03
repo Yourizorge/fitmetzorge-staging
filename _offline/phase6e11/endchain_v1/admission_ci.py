@@ -18,6 +18,7 @@ LOCAL_SOURCES = ('admission_ci.py', 'admission_ops.py', 'admission_binding.py',
     'auth_failure_transport.py', 'auth_failure_test.py', 'auth_failure_contract.md',
     'auth_failure_tracked.py', 'auth_failure_tracked_test.py',
     'auth_failure_parent_finalizer.py', 'auth_failure_parent_finalizer_test.py',
+    'admission_cleanup_composition.py', 'test_admission_cleanup_composition.py',
     'admission_fixture_context.py', 'test_admission_fixture_context.py',
     'admission_journal.py', 'test_admission_journal.py',
     'admission_failure.py', 'test_admission_failure.py',
@@ -35,6 +36,8 @@ LOCAL_SOURCES = ('admission_ci.py', 'admission_ops.py', 'admission_binding.py',
     'fixture_cleanup_runtime_ci.py', 'fixture_cleanup_runtime_test.py',
     'fixture_parent_closure.py', 'test_fixture_parent_closure.py',
     'fixture_db_terminality.py', 'test_fixture_db_terminality.py',
+    'fixture_producer_scope.py', 'test_fixture_producer_scope.py',
+    'fixture_parent_physical_zero.py', 'test_fixture_parent_physical_zero.py',
     'fixture_control_ownership.py', 'test_fixture_control_ownership.py')
 EXTRA = {'_offline/phase6e11/endchain_v1/' + name for name in LOCAL_SOURCES}
 EXTRA |= {'_offline/phase6e11/endchain_v1/cli_predispatch/'+name for name in (
@@ -128,7 +131,9 @@ class Gate(app.Gate):
                      'test_admission_quota_readonly.py','admission_budget_test.py',
                      'admission_budget_register_test.py','admission_budget_receipts_test.py','test_integral_failures.py',
                      'test_migration_failure_boundaries.py','test_fixture_parent_closure.py',
-                     'test_fixture_control_ownership.py','test_fixture_db_terminality.py'):
+                     'test_fixture_control_ownership.py','test_fixture_db_terminality.py',
+                     'test_fixture_producer_scope.py','test_fixture_parent_physical_zero.py',
+                     'test_admission_cleanup_composition.py'):
             self.command('admission-'+name[:-3],['python3','-B',str(folder/name)])
         self.result['admission_components']['binding'] = 'OFFLINE_TESTED_NOT_AUTHORITY'
 
@@ -171,6 +176,10 @@ class Gate(app.Gate):
         import fixture_control_ownership
         import fixture_db_terminality
         import fixture_parent_closure
+        import fixture_producer_scope
+        import fixture_parent_physical_zero
+        import auth_failure_parent_finalizer
+        import admission_cleanup_composition
         import sql_protocol
         import admission_binding
         self.bind_modules(auth_failure, admission_fixture_context, fixture_cleanup_runtime_ci,
@@ -178,8 +187,11 @@ class Gate(app.Gate):
             integral_failure_runtime_workflow, ci_auth, native_runtime,
             auth_failure_transport, auth_failure_tracked, fixture_cleanup_runtime, fixture_cleanup_runtime_sql,
             fixture_cleanup_evidence, fixture_control_ownership, fixture_db_terminality,
-            fixture_parent_closure, sql_protocol, admission_binding)
+            fixture_parent_closure, fixture_producer_scope, fixture_parent_physical_zero,
+            auth_failure_parent_finalizer, admission_cleanup_composition,
+            sql_protocol, admission_binding)
         original_save = self.save
+        closure = admission_cleanup_composition.Closure(self, original_save)
         request_registry = auth_failure_tracked.Registry(self.out/'admission-auth-request-registry', run_id=NEW_RUN)
         bootstrap_plan = [entry for _ in range(3) for entry in (
             {'method':'POST','route':'/admin/users','units':128},
@@ -187,7 +199,8 @@ class Gate(app.Gate):
             {'method':'GET','route':'/user','units':128})]
         parent_budget = auth_failure_tracked.ParentBudget(self.out/'admission-auth-parent-budget',
             bootstrap_plan,run_id=NEW_RUN)
-        tracked_auth = auth_failure_tracked.Factory(request_registry,parent_budget)
+        tracked_auth = auth_failure_tracked.Factory(request_registry,parent_budget,
+            finalizer=closure.finalize)
         self.save = lambda name, value: original_save('admission-auth-' + name, value)
         try:
             with ci_auth.environment(self, roles=('a','trainer','b'), include_test_admin=True,
@@ -210,7 +223,7 @@ class Gate(app.Gate):
                     if (matrix.get('bootstrap_or_runner_failure')
                             or matrix.get('diagnostic_subset_verified') is not True):
                         raise RuntimeError('admission_fault_component_failed')
-                    tracked = fixture_db_terminality.TrackedRuntime.disposable(self, original_save)
+                    tracked = closure.begin(ctx)
                     try:
                         admission_fixture_context.run(self, ctx, runtime=tracked)
                         fixture_save = self.save
@@ -232,6 +245,7 @@ class Gate(app.Gate):
                     self.result['admission_components']['fixture_cleanup'] = fixture_receipt['status']
                     if fixture_receipt['status'] != 'COMPONENT_PASS':
                         raise RuntimeError('admission_fixture_component_failed')
+                    closure.bind_terminal()
                 finally:
                     self.auth_failure_context.clear()
                     self.save = lambda name, value: original_save('admission-auth-' + name, value)
