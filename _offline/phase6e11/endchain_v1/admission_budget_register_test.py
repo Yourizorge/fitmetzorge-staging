@@ -1,7 +1,10 @@
 """Concrete assembly tests, not database or real Auth evidence."""
 import copy
+import collections
+import time
 import unittest
 import uuid
+from types import SimpleNamespace
 from unittest.mock import patch
 
 import admission_budget_register as register
@@ -14,6 +17,220 @@ class ConcreteRegisterTests(unittest.TestCase):
         cls.report = register.assemble()
         cls.normal = cls.report["normal_register"]
         cls.rows = cls.normal["rows"]
+        cls.prefixes = {(p["node"], p["outcome"]): p for p in cls.report["fault_prefixes"]}
+
+    def prefix(self, node, outcome="confirmed"):
+        return self.prefixes[node, outcome]
+
+    def safety_actions(self, prefix):
+        return {r["action"] for r in self.report["reference_safety_paths"][prefix["safety_path"]]["commands"]}
+
+    def test_precharge_rejection_and_transport_rejection_have_distinct_consumption(self):
+        for group, capacity in (("cli_quota", 72), ("cli_pre_auth", 36), ("cli_final", 36),
+                                ("guard_install", 7), ("metadata_install", 6), ("remove_0", 5), ("remove_1", 5)):
+            with self.subTest(group=group):
+                before = self.prefix("precharge:" + group, "rejected")
+                paid = self.prefix("precharge:" + group)
+                self.assertEqual(paid["consumed_capacity"] - before["consumed_capacity"], capacity)
+                for ident in self.normal["charge_groups"][group]["nodes"]:
+                    for outcome in ("confirmed", "before_send", "duplicate_rejected", "lost_response", "timeout"):
+                        fault = self.prefix(ident, outcome)
+                        self.assertEqual(fault["consumed_capacity"], paid["consumed_capacity"])
+                        self.assertFalse(fault["unknown_dispatch_refunded"])
+                        edge = self.report["command_graph"]["nodes"][ident]["next"][outcome]
+                        self.assertEqual(edge["charge"], 0)
+
+    def test_removal_attempt_is_recorded_at_first_charge_and_never_replayed(self):
+        for group, name in (("remove_0", "observer"), ("remove_1", "guard")):
+            with self.subTest(object=name):
+                flag, action = name + "_remove_attempted", name + "_exact_remove"
+                rejected = self.prefix("precharge:" + group, "rejected")
+                self.assertFalse(rejected["state"][flag])
+                self.assertIn(action, self.safety_actions(rejected))
+                paid = self.prefix("precharge:" + group)
+                self.assertTrue(paid["state"][flag])
+                self.assertNotIn(action, self.safety_actions(paid))
+                self.assertIn(name + "_inspect", self.safety_actions(paid))
+                self.assertIn(name + "_absent", self.safety_actions(paid))
+                for ident in self.normal["charge_groups"][group]["nodes"]:
+                    for outcome in ("confirmed", "before_send", "duplicate_rejected", "lost_response", "timeout"):
+                        prefix = self.prefix(ident, outcome)
+                        self.assertTrue(prefix["state"][flag])
+                        self.assertNotIn(action, self.safety_actions(prefix))
+                        self.assertEqual(prefix["consumed_capacity"], paid["consumed_capacity"])
+        first = self.prefix("precharge:remove_0")
+        self.assertIn("guard_exact_remove", self.safety_actions(first))
+
+    def test_sql_confirmation_does_not_release_controls_or_temporary_obligations(self):
+        for action, flags in (("control_restored", ("controls",)),
+                              ("gates_final_post_metadata", ("guard", "observer"))):
+            with self.subTest(action=action):
+                row = next(r for r in self.rows if r["action"] == action)
+                sql = self.prefix(row["id"])
+                validation = "validate:" + row["id"]
+                self.assertTrue(all(sql["state"][f] for f in flags))
+                self.assertEqual(self.report["command_graph"]["nodes"][row["id"]]["next"]["confirmed"]["to"], validation)
+                for outcome in ("rejected", "interrupted"):
+                    prefix = self.prefix(validation, outcome)
+                    self.assertEqual(prefix["state"], sql["state"])
+                    self.assertEqual(prefix["consumed_capacity"], sql["consumed_capacity"])
+                validated = self.prefix(validation)
+                self.assertTrue(all(not validated["state"][f] for f in flags))
+                self.assertEqual(validated["consumed_capacity"], sql["consumed_capacity"])
+                # The durable run claim has no validated release contract in this register.
+                self.assertEqual(validated["state"]["claimed"], sql["state"]["claimed"])
+
+    def test_later_io_failure_does_not_reactivate_validated_temporary_absence(self):
+        index = next(i for i, r in enumerate(self.rows) if r["action"] == "gates_final_post_metadata")
+        row = self.rows[index + 1]
+        self.assertEqual(row["action"], "gates_final_post_io_sample")
+        for outcome in ("before_send", "lost_response", "timeout"):
+            prefix = self.prefix(row["id"], outcome)
+            self.assertFalse(prefix["state"]["guard"])
+            self.assertFalse(prefix["state"]["observer"])
+            self.assertTrue(prefix["state"]["claimed"])
+            self.assertIn("close_stopped_run", self.safety_actions(prefix))
+
+    def test_upfront_workflow_rows_are_local_reservations_not_http_dispatches(self):
+        events = register.normal_events(self.normal)
+        prepaid = [e for e in events if e.get("workflow_prepaid")]
+        checkpoints = [e for e in events if e.get("event_kind") == "local_reservation_checkpoint"]
+        self.assertEqual(len(prepaid), 72)
+        self.assertEqual(sum(e["cost"] for e in prepaid), 360)
+        self.assertEqual(len(checkpoints), 72)
+        self.assertTrue(all(e["cost"] == 0 and "before_send" not in e["outcomes"] for e in checkpoints))
+        for index, event in enumerate(prepaid):
+            self.assertFalse(event["dispatch_attempted"])
+            self.assertEqual(self.prefix(event["id"], "rejected")["workflow_prepaid_consumed"], index * 5)
+            self.assertEqual(self.prefix(event["id"])["workflow_prepaid_consumed"], (index + 1) * 5)
+
+    def test_real_workflow_precharge_survives_failure_before_any_transport(self):
+        from integral_ci import Composition
+        from metered_composition import MeteredComposition
+        from scenario import capture
+        charged, confirmed = [], []
+
+        def charge(phase, count, **kwargs):
+            charged.append(dict(phase=phase, cost=count, **kwargs))
+            return len(charged)
+
+        instance = MeteredComposition.__new__(MeteredComposition)
+        instance.meter = SimpleNamespace(charge=charge, confirm=lambda *a, **k: confirmed.append(a))
+        instance.scenario = capture()["workflow_actions"]
+        # No constructor, frozen authorization, database or historical run is invoked.
+        with patch.object(Composition, "workflow", side_effect=RuntimeError("offline pre-transport failure")):
+            with self.assertRaisesRegex(RuntimeError, "offline pre-transport"):
+                instance.workflow()
+        self.assertEqual(len(charged), 72)
+        self.assertEqual(sum(r["cost"] for r in charged), 360)
+        self.assertEqual(confirmed, [])
+        expected = collections.Counter()
+        for event in register.normal_events(self.normal):
+            if event.get("workflow_prepaid"):
+                expected[event["phase"]] += event["cost"]
+        actual = collections.Counter()
+        for row in charged:
+            actual[row["phase"]] += row["cost"]
+        self.assertEqual(actual, expected)
+
+    def test_real_cli_adapter_refusal_retains_prepaid_envelope(self):
+        from metered_composition import MeteredComposition
+        for method, capacity in (("apply_migration", 72), ("pre_auth_dry_run", 36)):
+            charged = []
+            instance = MeteredComposition.__new__(MeteredComposition)
+            instance.meter = SimpleNamespace(charge=lambda phase, count, **kwargs: charged.append(count))
+
+            def refusal(*args, **kwargs):
+                raise RuntimeError("offline adapter refusal, no transport")
+
+            gate = SimpleNamespace(apply_endchain_migration=refusal, cli=refusal)
+            with self.assertRaisesRegex(RuntimeError, "no transport"):
+                getattr(instance, method)(gate)
+            self.assertEqual(charged, [capacity])
+
+    def test_real_removal_hook_sets_attempt_before_sql_dispatch_and_rejects_replay(self):
+        from metered_composition import MeteredComposition
+        for name in ("observer", "guard"):
+            instance = MeteredComposition.__new__(MeteredComposition)
+            state = {name + "_remove_attempted": False}
+            charges = []
+
+            def charge(phase, count, **kwargs):
+                charges.append(count)
+                state.update(kwargs.get("state_after", {}))
+                return len(charges)
+
+            instance.meter = SimpleNamespace(state=state, charge=charge, stopped=False)
+            instance.safety_label = name + "_exact_remove"
+            instance.closing_receipt = None
+            instance.action = None
+            instance.scenario = []
+            instance.commands, instance.pending, instance.meter_stack = [], [], []
+            instance.started = time.monotonic()
+            text = "SELECT 1; SELECT 2; SELECT 3; SELECT 4; SELECT 5"
+            instance.before_sql("remove", text)
+            self.assertEqual(charges, [5])
+            self.assertTrue(state[name + "_remove_attempted"])
+            self.assertTrue(all(not c["confirmed"] for c in instance.commands))
+            with self.assertRaisesRegex(ValueError, "removal_replay"):
+                instance.before_sql("remove", text)
+            self.assertEqual(charges, [5])
+
+    def test_real_control_validator_does_not_accept_sql_confirmation_alone(self):
+        from metered_composition import MeteredComposition
+        released = []
+        instance = MeteredComposition.__new__(MeteredComposition)
+        instance.commands = [dict(phase="control_restored", confirmed=True)]
+        instance.meter = SimpleNamespace(confirm_controls_restored=lambda: released.append(True))
+        with self.assertRaisesRegex(RuntimeError, "control_restore_mismatch"):
+            instance.confirm_controls_restored({"enabled": True}, {"enabled": False})
+        self.assertEqual(released, [])
+        self.assertNotIn("controls_restored_validated", instance.commands[-1])
+        instance.confirm_controls_restored({"enabled": False}, {"enabled": False})
+        self.assertEqual(released, [True])
+        self.assertTrue(instance.commands[-1]["controls_restored_validated"])
+
+    def test_real_post_metadata_releases_only_after_validation_even_if_later_io_fails(self):
+        from metered_composition import MeteredComposition
+        for failure in ("history", "metadata", "later_io"):
+            with self.subTest(failure=failure):
+                trace = []
+                instance = MeteredComposition.__new__(MeteredComposition)
+                instance.fixture_context, instance.gate_baseline = {}, {}
+                instance.commands = []
+                instance.native_runtime = lambda gate: SimpleNamespace(environment="disposable_ci")
+                instance.meter = SimpleNamespace(confirm_temporary_absence=lambda: trace.append("released"))
+
+                def query(phase, text, args=()):
+                    instance.commands.append(dict(phase=phase, confirmed=True))
+                    return [dict(value=dict(migrations=[]))]
+
+                def validate(label):
+                    def check(*args, **kwargs):
+                        trace.append(label)
+                        if failure == label:
+                            raise ValueError("offline rejected " + label)
+                    return check
+
+                def close():
+                    trace.append("later_io")
+                    raise ValueError("offline rejected later_io")
+
+                monitor = SimpleNamespace(start=lambda: None, bind=lambda *a, **k: 1,
+                                          executed=lambda qid: trace.append("sql_confirmed"), close=close)
+                gate = SimpleNamespace(sources={}, save=lambda *a: None)
+                with patch("integral_io.QueryIO", return_value=monitor), \
+                     patch("lifecycle_gates.final_parameters", return_value=([], None, None, {})), \
+                     patch("history_pin.validate", side_effect=validate("history")), \
+                     patch("lifecycle_gates.check_final", side_effect=validate("metadata")):
+                    with self.assertRaisesRegex(ValueError, "offline rejected " + failure):
+                        instance.final_metadata(gate, {}, "post", query)
+                self.assertEqual(trace[0], "sql_confirmed")
+                self.assertEqual("released" in trace, failure == "later_io")
+                self.assertEqual(instance.commands[-1].get("temporary_absence_validated", False),
+                                 failure == "later_io")
+                if failure == "later_io":
+                    self.assertEqual(trace, ["sql_confirmed", "history", "metadata", "released", "later_io"])
 
     def test_all_2338_retained_capacity_rows_accounted_once(self):
         ids = [i for row in self.rows for i in row["retained_ids"]]
@@ -38,7 +255,7 @@ class ConcreteRegisterTests(unittest.TestCase):
 
     def test_cli_whole_envelope_is_consumed_on_first_unknown_observer(self):
         prefixes = self.report["fault_prefixes"]
-        before = next(p for p in prefixes if p["node"] == "cli_quota_before_0" and p["outcome"] == "before_send")
+        before = next(p for p in prefixes if p["node"] == "precharge:cli_quota" and p["outcome"] == "rejected")
         unknown = next(p for p in prefixes if p["node"] == "cli_quota_before_0" and p["outcome"] == "lost_response")
         self.assertEqual(unknown["consumed_capacity"] - before["consumed_capacity"], 72)
         after = next(p for p in prefixes if p["node"] == "cli_quota_after_3" and p["outcome"] == "confirmed")
@@ -50,7 +267,10 @@ class ConcreteRegisterTests(unittest.TestCase):
                          [7, 6, 5, 5])
         first = groups["guard_install"]["nodes"][0]
         p = {r["outcome"]: r for r in self.report["fault_prefixes"] if r["node"] == first}
-        self.assertEqual(p["timeout"]["consumed_capacity"] - p["before_send"]["consumed_capacity"], 7)
+        self.assertEqual(p["timeout"]["consumed_capacity"], p["before_send"]["consumed_capacity"])
+        before_charge = next(p for p in self.report["fault_prefixes"]
+                             if p["node"] == "precharge:guard_install" and p["outcome"] == "rejected")
+        self.assertEqual(p["timeout"]["consumed_capacity"] - before_charge["consumed_capacity"], 7)
 
     def test_upfront_workflow_precharge_matches_current_executor_not_old_row_order(self):
         reader = next(i for i, r in enumerate(self.rows) if r["action"] == "lifecycle_reader_begin")
@@ -75,9 +295,12 @@ class ConcreteRegisterTests(unittest.TestCase):
         self.assertEqual(self.rows[-1]["action"], "final_closure")
 
     def test_every_dispatch_boundary_has_all_five_outcomes(self):
-        self.assertEqual(len(self.report["fault_prefixes"]), 1 + 5 * len(self.rows))
-        for outcome in ("confirmed", "before_send", "lost_response", "timeout", "duplicate_rejected"):
-            self.assertEqual(sum(p["outcome"] == outcome for p in self.report["fault_prefixes"]), len(self.rows))
+        events = register.normal_events(self.normal)
+        self.assertEqual(len(self.report["fault_prefixes"]), 1 + sum(len(e["outcomes"]) for e in events))
+        prefixes = {(p["node"], p["outcome"]) for p in self.report["fault_prefixes"]}
+        for event in events:
+            for outcome in event["outcomes"]:
+                self.assertIn((event["id"], outcome), prefixes)
 
     def test_unknown_full_bounds_never_admit_mutation_or_publish_minimum(self):
         self.assertIsNone(self.report["minimal_cap"])

@@ -249,16 +249,19 @@ class ReceiptTests(unittest.TestCase):
             self.assertEqual(consumed, edge["consumed_capacity"])
             current = edge["to"]
         self.assertEqual(consumed, 2338)
-        self.assertEqual(len(visited), 1717)
+        self.assertEqual(sum(graph["nodes"][n]["stage"] == "normal" for n in visited), 1717)
+        self.assertEqual(sum(graph["nodes"][n]["stage"] == "precharge" for n in visited),
+                         len(self.report["normal_register"]["charge_groups"]))
+        self.assertEqual(sum(graph["nodes"][n]["stage"] == "validation" for n in visited), 2)
         self.assertIsNone(graph["nodes"][current]["cost"])
         self.assertEqual(graph["closing_reserve"], 731)
 
     def test_every_normal_fault_edge_stops_at_explicit_unbounded_recovery(self):
         graph = self.report["command_graph"]
         for node in graph["nodes"].values():
-            if node["stage"] != "normal":
+            if node["stage"] not in ("normal", "precharge", "validation"):
                 continue
-            for outcome in budget.OUTCOMES:
+            for outcome in node["next"]:
                 if outcome == "confirmed":
                     continue
                 edge = node["next"][outcome]

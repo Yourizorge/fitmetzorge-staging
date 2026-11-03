@@ -433,6 +433,60 @@ class StateTests(unittest.TestCase):
         self.assertFalse(suffix['reconciliation_confirmed'])
         self.assertEqual(suffix['http_dispatches'], 0)
 
+    def test_reconciliation_receipt_failure_never_confirms_cleanup(self):
+        for phase in ('confirmed', 'managed_observed'):
+            with self.subTest(phase=phase):
+                case = af.Case(FakeBackend(), self.root / phase, str(uuid.uuid4()),
+                               'cleanup_interrupted', COSTS)
+                case.execute()
+                raw = (case.journal.folder / 'result.json').read_bytes()
+                original_event = af.ReconciliationJournal.event
+                def fail(journal, row):
+                    if row['phase'] == phase and row.get('key') == 'delete':
+                        raise OSError('PRIVATE_RECEIPT_ERROR')
+                    original_event(journal, row)
+                with patch.object(af.ReconciliationJournal, 'event', fail):
+                    suffix = af.reconcile_retained(case)
+                self.assertFalse(suffix['reconciliation_confirmed'])
+                self.assertEqual(suffix['status'], 'BLOCKED')
+                self.assertEqual(suffix['refunds'], 0)
+                self.assertEqual(suffix['prepaid_consumed'], 14)
+                self.assertEqual((case.journal.folder / 'result.json').read_bytes(), raw)
+                self.assertNotIn('PRIVATE_RECEIPT_ERROR', json.dumps(suffix))
+
+    def test_incomplete_final_snapshot_never_releases_claim(self):
+        case = self.case('partial_user')
+        original_snapshot = case.backend.snapshot
+        def incomplete(*args):
+            value = original_snapshot(*args)
+            if any(method == 'DELETE' for method, _ in case.backend.calls):
+                del value['counts']['refresh_tokens']
+            return value
+        case.backend.snapshot = incomplete
+        result = case.execute()
+        self.assertFalse(result['claim_released'])
+        self.assertFalse(result['component_case_pass'])
+
+    def test_reconciliation_incomplete_or_inconsistent_zero_never_confirms(self):
+        for mode in ('missing_counter', 'remaining_session'):
+            with self.subTest(mode=mode):
+                case = af.Case(FakeBackend(), self.root / mode, str(uuid.uuid4()),
+                               'cleanup_interrupted', COSTS)
+                case.execute()
+                original_snapshot = case.backend.snapshot
+                def invalid(*args):
+                    value = original_snapshot(*args)
+                    if case.backend.user is None:
+                        if mode == 'missing_counter':
+                            del value['counts']['refresh_tokens']
+                        else:
+                            value['session_ids'] = [str(uuid.uuid4())]
+                    return value
+                case.backend.snapshot = invalid
+                suffix = af.reconcile_retained(case)
+                self.assertFalse(suffix['reconciliation_confirmed'])
+                self.assertEqual(suffix['refunds'], 0)
+
     def test_reconciliation_insufficient_reserve_stops_before_observation(self):
         case = self.case('cleanup_interrupted')
         case.execute()

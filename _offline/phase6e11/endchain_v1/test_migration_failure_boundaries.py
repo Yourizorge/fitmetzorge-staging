@@ -28,6 +28,19 @@ CI1_MIGRATION_LAYOUT_SHA = '5de323e909067e5bb45790b844fc4ae90b3dbffba9b9e5037c74
 CI1_CHECKOUT_ONLY = '_offline/phase6e11/ci41/runner.py'
 
 
+def observed_checkout_root():
+    """CI tests run from candidate sources, but the harness stays in checkout."""
+    workspace = os.environ.get('GITHUB_WORKSPACE')
+    if workspace:
+        checkout = pathlib.Path(workspace)
+        if not checkout.is_absolute() or not checkout.is_dir():
+            raise AssertionError('boundary_test_checkout_root')
+        return checkout.resolve()
+    if os.environ.get('GITHUB_ACTIONS') == 'true':
+        raise AssertionError('boundary_test_checkout_required')
+    return m.ROOT.resolve()
+
+
 def metadata(after=False):
     return {**dict.fromkeys(m.COUNTS, 0), 'history': ['v%02d' % i for i in range(1, 46 if after else 45)],
             'm44_function': 'a'*64, 'm45_function': 'b'*64 if after else None,
@@ -193,9 +206,10 @@ class BoundariesTests(unittest.TestCase):
     def composed_checkout_and_candidate(self):
         """Load the current real composed Gate, without constructing/running it."""
         dispatcher=m.rt.PREFIX+'admission_ci.py'
+        checkout=observed_checkout_root()
         old_path=sys.path[:]
         try:
-            spec=importlib.util.spec_from_file_location('boundary_unit_composed_ci',m.ROOT/dispatcher)
+            spec=importlib.util.spec_from_file_location('boundary_unit_composed_ci',checkout/dispatcher)
             app=importlib.util.module_from_spec(spec)
             with patch('subprocess.run',side_effect=AssertionError('unexpected process')), \
                     patch('subprocess.Popen',side_effect=AssertionError('unexpected process')), \
@@ -224,7 +238,7 @@ class BoundariesTests(unittest.TestCase):
                                                    candidate/m.rt.PREFIX/'migration_failure_boundaries.py')
         helper=importlib.util.module_from_spec(spec);spec.loader.exec_module(helper)
         environment={'GITHUB_ACTIONS':'true','GITHUB_REPOSITORY':m.REPOSITORY,'GITHUB_REF':'refs/heads/main',
-                     'GITHUB_SHA':'b'*40,'GITHUB_RUN_ID':'12','GITHUB_WORKSPACE':str(m.ROOT)}
+                     'GITHUB_SHA':'b'*40,'GITHUB_RUN_ID':'12','GITHUB_WORKSPACE':str(checkout)}
         return gate,helper,environment
 
     def test_real_composed_checkout_dispatcher_with_candidate_loaded_helper(self):
@@ -244,13 +258,46 @@ class BoundariesTests(unittest.TestCase):
 
     def test_checkout_harness_uses_existing_pin_and_keeps_raw_hash(self):
         from ci_source_binding import HARNESS
-        result=m.harness_binding(m.ROOT)[CI1_CHECKOUT_ONLY]
-        raw=(m.ROOT/CI1_CHECKOUT_ONLY).read_bytes()
+        checkout=observed_checkout_root()
+        result=m.harness_binding(checkout)[CI1_CHECKOUT_ONLY]
+        raw=(checkout/CI1_CHECKOUT_ONLY).read_bytes()
         self.assertEqual(result['lf_sha256'],HARNESS[CI1_CHECKOUT_ONLY])
         self.assertEqual(result['checkout_sha256'],m.sha(raw))
         with patch.object(pathlib.Path,'read_bytes',return_value=raw+b'\n# changed harness\n'), \
                 self.assertRaisesRegex(m.rt.Blocked,'checkout_harness_changed'):
-            m.harness_binding(m.ROOT)
+            m.harness_binding(checkout)
+
+    def test_ci_requires_explicit_absolute_existing_checkout(self):
+        for workspace in ('', 'relative-checkout', str(self.folder/'missing')):
+            with self.subTest(workspace=workspace), patch.dict(os.environ,
+                    {'GITHUB_ACTIONS':'true','GITHUB_WORKSPACE':workspace}, clear=True), \
+                    self.assertRaises(AssertionError):
+                observed_checkout_root()
+        with patch.dict(os.environ, {}, clear=True):
+            self.assertEqual(observed_checkout_root(),m.ROOT.resolve())
+
+    def test_candidate_test_root_keeps_actual_checkout_harness_separate(self):
+        checkout=observed_checkout_root()
+        source_candidate=self.folder/'source-candidate'
+        names=CI1_HOOK_LAYOUT|{p.relative_to(m.ROOT).as_posix()
+            for p in (m.ROOT/'supabase/migrations').glob('*.sql')}
+        for name in names:
+            target=source_candidate/name;target.parent.mkdir(parents=True,exist_ok=True)
+            shutil.copyfile(m.ROOT/name,target)
+        self.assertFalse((source_candidate/CI1_CHECKOUT_ONLY).exists())
+        self.assertFalse((source_candidate/'_offline/phase6e11/controller_v1/ci.py').exists())
+        with patch.object(m,'ROOT',source_candidate), patch.dict(os.environ,
+                {'GITHUB_ACTIONS':'true','GITHUB_WORKSPACE':str(checkout)}):
+            self.assertEqual(observed_checkout_root(),checkout)
+            gate,helper,environment=self.composed_checkout_and_candidate()
+            with patch.dict(os.environ,environment,clear=True):
+                source,history=helper.binding(gate)
+        self.assertEqual(source['loaded_locations'],
+                         {'dispatcher':'checkout','boundary_helper':'candidate'})
+        self.assertEqual(len(history),45)
+        self.assertNotIn(CI1_CHECKOUT_ONLY,source['sources'])
+        self.assertFalse(source['checkout_harness'][CI1_CHECKOUT_ONLY]['candidate_required'])
+        self.assertFalse((gate.sources/CI1_CHECKOUT_ONLY).exists())
 
     def test_missing_checkout_harness_is_not_replaced_by_candidate(self):
         with self.assertRaisesRegex(m.rt.Blocked,'checkout_harness_missing'):

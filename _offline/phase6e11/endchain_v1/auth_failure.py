@@ -15,6 +15,8 @@ CASES = ('before_dispatch', 'create_lost_reply', 'partial_user', 'partial_sessio
          'login_timeout', 'logout_timeout', 'admin_unknown', 'duplicate_request',
          'cleanup_interrupted', 'missing_mint_barrier', 'duplicate_cleanup')
 OPERATIONS = ('create', 'login', 'logout', 'delete')
+SNAPSHOT_COUNTS = frozenset(('users', 'identities', 'sessions', 'refresh_tokens',
+                             'mfa_amr_claims', 'mfa_factors', 'one_time_tokens', 'flow_state'))
 NATIVE_SLOTS = ('preflight', 'prefix', 'cleanup_before', 'final') + tuple(
     side + '_' + op for op in OPERATIONS for side in ('stats_before', 'stats_after'))
 
@@ -25,6 +27,19 @@ def digest(value):
 
 def canonical(value):
     return json.dumps(value, sort_keys=True, separators=(',', ':'))
+
+
+def validate_snapshot(value):
+    counts, users, sessions = value['counts'], value['users'], value['session_ids']
+    if (not isinstance(counts, dict) or set(counts) != SNAPSHOT_COUNTS
+            or any(type(n) is not int or n < 0 for n in counts.values())
+            or not isinstance(users, list) or not isinstance(sessions, list)
+            or counts['users'] != len(users) or counts['sessions'] != len(sessions)
+            or len(sessions) > 2 or len(set(sessions)) != len(sessions)):
+        raise ValueError('auth_failure_snapshot_bounds')
+    for key in sessions:
+        if not isinstance(key, str) or str(uuid.UUID(key)) != key:
+            raise ValueError('auth_failure_snapshot_session_key')
 
 
 def binding(run_id):
@@ -179,6 +194,7 @@ class Case:
     def snapshot(self, key):
         value = self.native(key, lambda: self.backend.snapshot(
             self.email, self.marker, self.actor, self.session_ids))
+        validate_snapshot(value)
         users = value['users']
         if users:
             if (len(users) != 1 or users[0]['email'] != self.email or users[0]['marker'] != self.marker
@@ -186,7 +202,7 @@ class Case:
                 raise ValueError('auth_failure_ownership_mismatch')
             self.actor = str(uuid.UUID(users[0]['id']))
         self.session_ids = sorted(set(self.session_ids + value['session_ids']))
-        if len(self.session_ids) > 2 or any(type(v) is not int or v < 0 for v in value['counts'].values()):
+        if len(self.session_ids) > 2:
             raise ValueError('auth_failure_snapshot_bounds')
         self.journal.event({'phase': 'snapshot', 'key': key, 'counts': value['counts'],
                             'actor_sha256': digest(self.actor) if self.actor else None,
@@ -477,13 +493,12 @@ def reconcile_retained(case):
 
     def observe(key):
         value = native(key, lambda: case.backend.snapshot(case.email, case.marker, case.actor, case.session_ids))
+        validate_snapshot(value)
         users = value['users']
         if (case.actor is None or original['owned_scope_audit']['actor_sha256'] != digest(case.actor)
                 or len(users) > 1 or any(row != {'id': case.actor, 'email': case.email, 'marker': case.marker}
                                        for row in users)):
             raise ValueError('auth_failure_reconciliation_ownership')
-        if any(type(n) is not int or n < 0 for n in value['counts'].values()):
-            raise ValueError('auth_failure_reconciliation_counts')
         journal.event({'phase': 'snapshot', 'key': key, 'counts': value['counts'],
                        'actor_sha256': digest(case.actor),
                        'session_sha256': [digest(x) for x in value['session_ids']]})
@@ -508,8 +523,8 @@ def reconcile_retained(case):
                 response = case.backend.http('DELETE', '/admin/users/' + case.actor)
                 if response['terminal'] is not True or not 200 <= response['status'] < 300:
                     raise UnknownOutcome()
-                result['delete_confirmed'] = True
                 journal.event({'phase': 'confirmed', 'key': 'delete', 'http_status': response['status']})
+                result['delete_confirmed'] = True
             except Exception as error:
                 result['primary_http_error_class'] = type(error).__name__
                 journal.event({'phase': 'unknown', 'key': 'delete', 'error_class': type(error).__name__})
@@ -518,9 +533,9 @@ def reconcile_retained(case):
                 stats_after = native('stats_after_delete', case.backend.stats)
                 load = case.backend.difference(stats_before, stats_after)
                 result['observed_managed_sql'] = load['commands']
-                measured = load['commands'] <= journal.charges['delete']
                 journal.event({'phase': 'managed_observed', 'key': 'delete', 'load': load,
-                               'within_prepaid': measured})
+                               'within_prepaid': load['commands'] <= journal.charges['delete']})
+                measured = load['commands'] <= journal.charges['delete']
             except Exception as error:
                 result['observer_error_class'] = type(error).__name__
                 journal.event({'phase': 'observer_failed', 'key': 'delete', 'error_class': type(error).__name__})

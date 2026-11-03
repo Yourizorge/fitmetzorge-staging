@@ -1,0 +1,280 @@
+{
+  "app_steps": [
+    {
+      "candidate_sha256_matches_ci4": true,
+      "canonical45_evidence": false,
+      "closure_reserve_inside_cli_cap": 1,
+      "compatibility_additional_charge": 0,
+      "confirmed_sql": 47,
+      "current_hook_subset_matches": true,
+      "graph_replacement": false,
+      "hook_source_count": 5,
+      "hosted_bound_proven": false,
+      "isolation_commands": 8,
+      "migration_source_count": 46,
+      "migration_sources_match_candidate": true,
+      "numeric_calls_minus_reader": 47,
+      "observer_commands": 8,
+      "phase": "local_app_schema",
+      "profile_index": 0,
+      "receipt": {
+        "path": "cli-predispatch-pending-0.json",
+        "sha256": "4af5fec323cf7676c81fb7eefdc37177acbac90a7c73a3d359e80b7ee67863f2"
+      },
+      "receipt_hook_sources_match_candidate": true,
+      "reserved_cli_cap": 64,
+      "source_commit_matches_ci4": true,
+      "sql_dispatches": 47,
+      "temp_written": 0,
+      "tracking": {
+        "after": "top",
+        "before": "top",
+        "nested_server_work_proven": false,
+        "scope": "toplevel_protocol_commands_only",
+        "utility_after": "on",
+        "utility_before": "on",
+        "valid": true
+      },
+      "unknown_consumed": 0
+    },
+    {
+      "candidate_sha256_matches_ci4": true,
+      "canonical45_evidence": false,
+      "closure_reserve_inside_cli_cap": 1,
+      "compatibility_additional_charge": 0,
+      "confirmed_sql": 22,
+      "current_hook_subset_matches": true,
+      "graph_replacement": false,
+      "hook_source_count": 5,
+      "hosted_bound_proven": false,
+      "isolation_commands": 8,
+      "migration_source_count": 47,
+      "migration_sources_match_candidate": true,
+      "numeric_calls_minus_reader": 22,
+      "observer_commands": 8,
+      "phase": "local_app_outbox",
+      "profile_index": 2,
+      "receipt": {
+        "path": "cli-predispatch-pending-2.json",
+        "sha256": "8698b61872f0ad15b8d6a96842152898950a2f9e7d7b19b2c4d2c89f8c668ba1"
+      },
+      "receipt_hook_sources_match_candidate": true,
+      "reserved_cli_cap": 64,
+      "source_commit_matches_ci4": true,
+      "sql_dispatches": 22,
+      "temp_written": 0,
+      "tracking": {
+        "after": "top",
+        "before": "top",
+        "nested_server_work_proven": false,
+        "scope": "toplevel_protocol_commands_only",
+        "utility_after": "on",
+        "utility_before": "on",
+        "valid": true
+      },
+      "unknown_consumed": 0
+    }
+  ],
+  "artifact_manifest_sha256": "fc76b25e7fd2e1eae63111f7c51d1d7938a6b83a8d5bc342c0d68310d2ae7955",
+  "boundary": {
+    "actual_post": 8,
+    "actual_pre": 8,
+    "canonical_instrumented_receipt": false,
+    "maximum_diagnostic": 24,
+    "normal_diagnostic": 16
+  },
+  "candidate_sha256": "80a564afadb3114b061bd5b36c0fd5e2ae9d696885417c8e713540236f5be425",
+  "canonical45_design": {
+    "arithmetic_only_maximum_reserved_branch": 104,
+    "arithmetic_only_normal_reserved_branch": 96,
+    "boundary_maximum": 24,
+    "boundary_normal": 16,
+    "cli_cap": 64,
+    "complete_fault_bound": false,
+    "existing_isolation": 8,
+    "hosted_allowance": false,
+    "observers": 8,
+    "status": "OWNER_REPORTED_CI5_PLAN_NOT_EXECUTION"
+  },
+  "ci_error": "admission-test_migration_failure_boundaries_exit_1",
+  "ci_execution": false,
+  "ci_run_id": "41619169140",
+  "ci_source_commit": "82b51fe167ad74545eb835af3d56268f154ae4e9",
+  "ci_status": "NO_GO",
+  "compiler_file_hashes": {
+    "admission_budget.py": "b68fc28a015ff19931a0a1e49c4543d4392001f60a9e3952c14b6d3e6b6a237f",
+    "admission_budget_graph.py": "af48b02f602e8ff3160315c19612d485b776f66c9f8a69003ce4bb66da821d99",
+    "admission_budget_receipts.py": "7e91e58a84e4b5438961027d784c0eb2c9144ed7f6b7ca442de11e6d5d20eb2c",
+    "admission_budget_receipts_test.py": "50912d29708a8bacd0c81cbb01ad09f1ab4b3bbb364f8cd4d623c479d367dfb6",
+    "admission_budget_register.py": "8c7b7e3bfd089d2f0a9bf98ab720ceed94037d506d8f6b0d9e117ac57316b7ed",
+    "admission_budget_register_test.py": "900f1ae9663ac8f89db864911b9b3a038422a94f91802f1c3ee88b4ab5bcb88f",
+    "admission_budget_test.py": "b2ffd1f9571c925e7962b7c3c5342b332fd40972547c6f50a7d407dd29d5a25f"
+  },
+  "current_model": {
+    "approved_limit_unchanged": 2349,
+    "closing_reserve_unchanged": 731,
+    "current_source_hashes": {
+      "_offline/phase6e_server_v1/ci_profile.py": "3a9ea0af703fa6a9c04ab4eaeb655a5239910751384b47c064c426a1895b2ea1",
+      "_offline/phase6e_server_v1/cli_isolation.py": "93fe1c9a72abd88bc033cfaab03cead8232ada0ff68ccf5342ea2372eb1f114a",
+      "admission_binding.py": "8f141c13126ec702a993b48e1479e17eefb25d426c714b8ed063cdbe669efbb3",
+      "admission_budget.py": "b68fc28a015ff19931a0a1e49c4543d4392001f60a9e3952c14b6d3e6b6a237f",
+      "admission_budget_graph.py": "af48b02f602e8ff3160315c19612d485b776f66c9f8a69003ce4bb66da821d99",
+      "admission_budget_receipts.py": "7e91e58a84e4b5438961027d784c0eb2c9144ed7f6b7ca442de11e6d5d20eb2c",
+      "admission_budget_register.py": "8c7b7e3bfd089d2f0a9bf98ab720ceed94037d506d8f6b0d9e117ac57316b7ed",
+      "admission_ci.py": "1685180513422d9503f294da1d83adc7283c75a53775dd031876055a83962e45",
+      "admission_fixture_context.py": "3fceea1cbed614df6a605822c5e95ff66ffc3064998661708e100b8b06310c96",
+      "admission_journal.py": "5727001cfca0e725e9993546a6455481d4fd17656289aef208f503a340136d86",
+      "auth_failure.py": "e4d58bffaeeae75c0907f2d5749fe0653449342b1ca9e96d7b4f0e981a63fd68",
+      "auth_failure_transport.py": "f082d146838771ee0713f71b84d3faf834292a60d83bab622d2b91acc9b960a3",
+      "cli_envelope.py": "2ddf9046553a2a4da0a9eb2d7eda3674d57068d442e4e2291582b10b28f4ea09",
+      "cli_meter.py": "ae1ccff754aaf9950c4ce85ce584831fd01a6e3a41806ce1ae988bf80edc5855",
+      "cli_predispatch/README.md": "7ffaed4d59f9dfb3ce4650ca700fbd8752db67f7640709d9c79d06e4831e6c13",
+      "cli_predispatch/ci.py": "44822b4f96f1105803e76f7e1bfb6f07b4e6f5107874f4f64996687ecd1aeb6f",
+      "cli_predispatch/entry.mjs": "fcab75fa6eca2d6546190b4c19a76b5b72acd72d19d45307ec685a976cdb131d",
+      "cli_predispatch/hook.cjs": "55d6d14c392f760cff0f7abfd3af9aa1794865823195829efcddcf7323524be9",
+      "cli_predispatch/package.json": "eb03b898bac62dafb722a0ebab2b544f65c6f7427fe638219f69aa86d4977612",
+      "cli_predispatch/pending.py": "e782ebea94b1cc8dfc7dfe91e197e2e202061f341f3ea83275108adbf446eaa0",
+      "cli_predispatch/pnpm-lock.yaml": "d2e830633fa9280203d4958fed9be1f9dd8d45ebe86ed098bca86c3df68f84ec",
+      "cli_predispatch/pnpm-workspace.yaml": "7b555c716162532dda0285c639bec1e6037152900deab277abde03d6b24efba1",
+      "cli_predispatch/policy.cjs": "2ae83a1835db09a644f9042bdd39c19caa941358d183a838e0cc3f418e456ca6",
+      "cli_predispatch/prepare.py": "a95db183de50cb2ea9947a990a32176d28a3249ef3ada965127014816644883a",
+      "cli_predispatch/smoke.py": "0b9345f2603e305fcea1642b9905254d7958dd6e15f9c266dcaf16c4172f37ff",
+      "cli_predispatch/test_ci.py": "2fdc3d8400c526ba8b8a4dcbd2c518dd126565f6b11b67ae4212bbd6895bb191",
+      "cli_predispatch/test_hook.cjs": "d0a10d02ca4e57463aa30d92ffab9740de42f51951e3dcd83606a1d07e617301",
+      "cli_predispatch/test_pending.py": "e88def4425d399be6f9e3915969b0893abd1afbd8e35bac577f76759fda5de6f",
+      "cli_predispatch/test_policy.cjs": "aa0a4c156b453d6c45258724760eeaa316f76c1d36726140606fc496c2b6789d",
+      "cli_stat_reader.py": "2c591cf72f6a5bca86baea81300b541e1e43821796312be3d5b3f8f9ff07ad4a",
+      "complete_register.py": "95809b8f660e56b94f18b4663371a12507eddf365f10d3f89d060655d809cdfe",
+      "fixture_cleanup_evidence.py": "dc35f30665e3e1a8042cc21ad2b00f97076b159ef818835e6f59bc42fd43bb52",
+      "fixture_cleanup_runtime.py": "e8e9fbf9c6c0adc7985fe356e33fbb624f4731b2f9791cf8e4ea7f71339d24f0",
+      "fixture_cleanup_runtime_ci.py": "6721f0e8e6cb2e590c5e965b3aefd0f9a56876aa5c8d06d237a416d37d8f47b4",
+      "fixture_cleanup_runtime_sql.py": "94d50b506d6da8e7f99aa51ffa2dbf7856df3466cf9580f66091c102434b86c4",
+      "integral_ci.py": "5a6b86e9464aabef93f184db86723090f401d25288a664241c82fc4814c1dbe7",
+      "integral_failure_runtime.py": "bd7ec96dadd861c5ca8a827bc0832d177bdc505a896a078d4d5c786ad16c2bb3",
+      "integral_failure_runtime_worker.mjs": "02e2a56f85eb5ebc2019a3a256c3aa18b381f9f7dfd57c70f65b5d0d881776e4",
+      "integral_failure_runtime_workflow.py": "9996088fc752a71d90fdae5050516712ef76f231356e56b5e9d98cc636123816",
+      "integral_io.py": "f3f78e4540931cd1a067f7baba69ef4dc8985a419d285768f7961e4bd27c0de3",
+      "lifecycle_gates.py": "81d394d8641605755f0196067311c0c76e19e7831b67b3357cfb2884a1a65002",
+      "metered_composition.py": "9b1b073fb70ba3647d714890dabbf6b61392678d18f2b63c4fb0cbf0f6930a8e",
+      "migration_failure_boundaries.py": "547a44857b231782d8f72cb414f53a4523640c9af459c4781f94a25ad32515ea",
+      "native_runtime.py": "9d086efe38a5b42b83684754cdc644ed461fbb9ee0311d5ca53fff5445b5ac3a",
+      "registered_lifecycle.py": "5474bfbc4c99b4f25fbb80d3f68eb4a2005ae1786cbc1d2a9bf6c699fe90a3d8",
+      "sql_protocol.py": "e9fed4ad8268e051979fc38c19a63aab1ed9f1ce6f82e06183be577e157cfe74",
+      "test_migration_failure_boundaries.py": "a61207160fc94003077f233ae9a29669e08148695cb1c4b4b7de9e04678217c1"
+    },
+    "current_source_is_ci4_candidate": false,
+    "full_export_generated_in_memory_only": true,
+    "full_register_sha256": "fed4e9d2ca1d6cfad5b8a5d7b3ada7a3a3095c6b8dc1478a48dfdefab8a4d49d",
+    "graph_sha256": "6391223fe66a82b4f8a566107476d5897315301c26c07128e4d145532731ac75",
+    "largest_member_bytes": 1333598,
+    "lossless_roundtrip_verified": true,
+    "normal_reference_capacity": 2338,
+    "normal_rows": 1717,
+    "package_files": 15,
+    "prefix_outcomes": 11724,
+    "source_paths_different_from_ci4_candidate": [
+      "admission_budget_graph.py",
+      "admission_budget_register.py",
+      "admission_ci.py",
+      "auth_failure.py",
+      "test_migration_failure_boundaries.py"
+    ]
+  },
+  "format": "admission-budget-ci4-provenance-v1",
+  "generated_offline": true,
+  "hosted_admitted": false,
+  "minimal_cap": null,
+  "old_exports_overwritten": false,
+  "receipts_directory": "C:\\Users\\Fitme\\OneDrive\\Documenten\\Fit Met Zorge\\Zip github fitmetzorge staging\\fitmetzorge-staging-main\\supabase\\.temp\\phase4fb-staging-deploy\\supabase\\.temp\\phase6e-server-ci-44e0b7a0ebc345138818d08cf603eaca\\verified-41619169140",
+  "scope": "CI4 receipt provenance alongside current offline model, not evidence that CI4 ran this model",
+  "selected_receipts_verified": {
+    "cli-predispatch-pending-0.json": "4af5fec323cf7676c81fb7eefdc37177acbac90a7c73a3d359e80b7ee67863f2",
+    "cli-predispatch-pending-2.json": "8698b61872f0ad15b8d6a96842152898950a2f9e7d7b19b2c4d2c89f8c668ba1",
+    "cli-protocol-0.json": "4ef9629757ebbdb8836220fc2ba4a78ca63f656598fd9979ca8c10125d734ba9",
+    "cli-protocol-2.json": "d3ef9db336261c32a25e422def4b78dd1029ca1620ac8ae73fa7b87cc7d0f3b3",
+    "migration-boundary-claim.json": "5e063129d46b8678cf7207e50e06a61384fbd9ff42df4b9a3a2705bf3053bb0d",
+    "migration-boundary-post.json": "3e91df3cc1f16df5a0a372c96f7df890b61cf56ce81412d12a6ceb48e0bebd94",
+    "migration-boundary-pre.json": "1d0d8bc2e849fa69b96c88a2da96d05c8acfcb1c103ca0b0cbc076de694ff9ed",
+    "result.json": "dd5e75262a146de646e7c8d8730c0ea48c4b7ecb361acc0cbfd5f22aa56476f4"
+  },
+  "status": "NO_GO_INCOMPLETE_BOUND",
+  "unresolved_inputs": [
+    {
+      "id": "normal_source_revalidation",
+      "inputs": [
+        "Retained native SQL/template identity against current executor and fresh disposable binding.",
+        "Current same-source trace including upfront workflow 360 precharge."
+      ],
+      "owner": "Main"
+    },
+    {
+      "id": "cli_predispatch",
+      "inputs": [
+        "Ordered quota/pre_auth/final dispatch rows and exact protocol costs, including failed startup/reconnect.",
+        "Per-dispatch unknown/timeout/duplicate suffix and observer order; reservations are not counts."
+      ],
+      "owner": "Role1"
+    },
+    {
+      "id": "auth_partial_costs",
+      "inputs": [
+        "Source-bound measured create/login/logout/delete costs and stopping-prefix schedules.",
+        "Map partial cleanup to existing issue/verify/getUser/refresh/logout/revoked_denial identities."
+      ],
+      "owner": "Role2"
+    },
+    {
+      "id": "fixture_placement",
+      "inputs": [
+        "Prepare before first fixture write; capture at each owned writer transaction before COMMIT.",
+        "Explicitly additive versus replacement normal cleanup and parent failure ordering.",
+        "Writer/mint barrier and ownership evidence must survive unknown commit."
+      ],
+      "owner": "Role3/Main"
+    },
+    {
+      "id": "recovery_orchestration",
+      "inputs": [
+        "All real phase adapters, with command lists for cleanup/final/closure failures.",
+        "No duplicated rollback, existing safety Auth, or prepaid 130 cleanup slots."
+      ],
+      "owner": "Role4/Main"
+    }
+  ],
+  "next_bound_gaps": [
+    {
+      "id": "canonical45_actual_cost",
+      "kind": "missing_execution_evidence",
+      "known": "Owner-proposed CI5 branch: CLI reserve64 (includes closure1), observers8, existing isolation8, boundary16normal/24cap.",
+      "needed": "Canonical45 named instrumented receipt with exact dispatch/confirmation/unknown counters, candidate and migration-byte binding, compatible view deduplication; app0/app2 do not substitute.",
+      "full_fault_maximum": null
+    },
+    {
+      "id": "canonical45_failure_suffix",
+      "kind": "missing_control_flow_bound",
+      "needed": "Ordered startup, unknown dispatch, cancellation, isolation restore and boundary-close prefixes; prove whether the stated 8 isolation commands cover every suffix. Do not add a second rollback reserve or reuse a failed dispatch.",
+      "full_fault_maximum": null
+    },
+    {
+      "id": "pre_auth_and_final_cli",
+      "kind": "missing_execution_and_fault_evidence",
+      "known": "Current reference reserves36 per slot, each28+8; CI4 lacks cli-predispatch.json.",
+      "needed": "Source-bound empty pre_auth/final ledgers and failure suffixes, not reuse of private-app receipts.",
+      "full_fault_maximum": null
+    },
+    {
+      "id": "auth_release_costs",
+      "kind": "missing_measured_cost_and_placement",
+      "known": "524 per diagnostic case is separate; upfront360 includes130 cleanup reservation.",
+      "needed": "Measured create/login/logout/delete SQL and unknown-consumed bounds plus mapping to actual release operations; no diagnostic128 substitution or duplicate cleanup130.",
+      "full_fault_maximum": null
+    },
+    {
+      "id": "fixture_and_recovery_join",
+      "kind": "missing_ownership_and_ordering_contract",
+      "known": "Fixture prepare4, capture1 per actual writer, cleanup22;74candidate anchors are not proven actual captures.",
+      "needed": "Writer/mint barrier, additive versus replacement rows and unique close/rollback ownership for each failure prefix; local cleanup22 is not whole-run suffix bound.",
+      "full_fault_maximum": null
+    }
+  ]
+}

@@ -209,6 +209,10 @@ def assemble_normal(folder=REFERENCE):
         require(spec["phase"] == row["phase"], "charge_group_phase_drift")
         spec["capacity"] += row["cost"]
         spec["nodes"].append(ident)
+    for group, name in (("remove_0", "observer"), ("remove_1", "guard")):
+        groups[group]["state_after_charge"] = {name + "_remove_attempted": True}
+        groups[group]["accounting_source"] = source("metered_composition.py", "MeteredComposition.before_sql")
+        groups[group]["ordering_source"] = source("registered_lifecycle.py", "close_temporary")
     require(dict(phases) == PHASE_BUDGETS, "assembled_current_phase_mismatch")
     require(kinds["auth_reserved"] == 594 and kinds["cli_reserved"] == 120
             and kinds["observer"] == 24, "assembled_domain_mismatch")
@@ -321,12 +325,57 @@ def auth_component():
                 classification="separate_local_diagnostic_not_release_cost_contract")
 
 
+def normal_events(normal):
+    """Local accounting, transport and validation are distinct boundaries.
+
+    A successful precharge is not an SQL/HTTP confirmation. Workflow identity
+    reservations are local checkpoints here, not 72 upfront HTTP dispatches.
+    """
+    from admission_budget import OUTCOMES
+    events, seen = [], set()
+    for row in normal["rows"]:
+        group = row["charge_group"]
+        spec = normal["charge_groups"][group]
+        workflow = row["action"] == "gotrue_fixture_identity" or row["action"].startswith("gotrue_workflow_identity_")
+        common = dict(owner_node=row["id"], phase=row["phase"], action=row["action"],
+                      kind=row["kind"], charge_group=group, source=row["source"])
+        if group not in seen:
+            state = {k: v for k, v in row.get("state_after", {}).items() if v is True}
+            state.update(spec.get("state_after_charge", {}))
+            if row["action"].startswith("gotrue_") and row["action"].endswith("_issue"):
+                state["auth_maybe_live"] = True
+            binding = spec.get("accounting_source", row["source"])
+            if group.startswith("cli_") or workflow or group in ("guard_install", "metadata_install"):
+                binding = source("metered_composition.py", "workflow" if workflow else
+                                 {"cli_quota": "apply_migration", "cli_pre_auth": "pre_auth_dry_run",
+                                  "cli_final": "finalize"}.get(group, "before_sql"))
+            events.append(dict(common, id="precharge:" + group, stage="precharge",
+                               cost=spec["capacity"], outcomes=("confirmed", "rejected"),
+                               state_after=state, workflow_prepaid=workflow,
+                               source=binding, dispatch_attempted=False))
+            seen.add(group)
+        events.append(dict(common, id=row["id"], stage="normal", cost=0,
+                           event_kind="local_reservation_checkpoint" if workflow else
+                           "opaque_cli_envelope" if row["kind"] == "cli_reserved" else "dispatch",
+                           outcomes=("confirmed", "interrupted") if workflow else OUTCOMES,
+                           state_after={}, dispatch_count_proven=False))
+        release = ({"controls": False} if row["action"] == "control_restored" else
+                   {"guard": False, "observer": False} if row["action"] == "gates_final_post_metadata" else None)
+        if release is not None:
+            events.append(dict(common, id="validate:" + row["id"], stage="validation", cost=0,
+                               outcomes=("confirmed", "rejected", "interrupted"), state_after=release,
+                               source=source("integral_ci.py", "Composition.confirm_controls_restored"
+                                             if "controls" in release else "Composition.final_metadata"),
+                               dispatch_attempted=False))
+    require(len({e["id"] for e in events}) == len(events), "normal_event_identity_collision")
+    return events
+
+
 def prefix_register(normal):
     from complete_register import safety_path
-    from admission_budget import OUTCOMES, UNSENT
     state = dict(guard=False, observer=False, controls=False, claimed=False,
                  auth_maybe_live=False, guard_remove_attempted=False, observer_remove_attempted=False)
-    seen, prefixes, paths = set(), [], {}
+    prefixes, paths = [], {}
     used = 0
     closing = sum(spec["capacity"] for spec in normal["charge_groups"].values()
                   if spec["phase"] in ("cleanup", "final", "closure"))
@@ -343,33 +392,22 @@ def prefix_register(normal):
                               bound_complete=False)
         return key
 
-    prefixes.append(dict(node=None, outcome="entry", consumed_capacity=0,
+    prefixes.append(dict(node=None, owner_node=None, stage="entry", outcome="entry", consumed_capacity=0,
                          normal_closing_unspent=closing, workflow_prepaid_consumed=0,
                          safety_path=path_ref(state), required_total=None, mutation_admitted=False))
-    for row in normal["rows"]:
-        group = row["charge_group"]
-        spec = normal["charge_groups"][group]
-        charge = spec["capacity"] if group not in seen else 0
-        closing_charge = charge if spec["phase"] in ("cleanup", "final", "closure") else 0
-        workflow_charge = charge if row["action"] == "gotrue_fixture_identity" or row["action"].startswith("gotrue_workflow_identity_") else 0
-        attempted = dict(state)
-        for name, value in row.get("state_after", {}).items():
-            if name in attempted and value is True:
-                attempted[name] = True
-        if row["action"].startswith("gotrue_") and row["action"].endswith("_issue"):
-            attempted["auth_maybe_live"] = True
-        confirmed = dict(attempted)
-        if row["action"] == "control_restored":
-            confirmed["controls"] = False
-        if row["action"] == "gates_final_post_metadata":
-            confirmed.update(guard=False, observer=False)
-        for outcome in OUTCOMES:
-            dispatched = outcome not in UNSENT
-            consumed = used + (charge if dispatched else 0)
-            suffix_state = confirmed if outcome == "confirmed" else attempted if dispatched else state
-            prefixes.append(dict(node=row["id"], outcome=outcome, consumed_capacity=consumed,
-                                 normal_closing_unspent=closing - (closing_charge if dispatched else 0),
-                                 workflow_prepaid_consumed=prepaid + (workflow_charge if dispatched else 0),
+    for event in normal_events(normal):
+        charge = event["cost"]
+        closing_charge = charge if event["phase"] in ("cleanup", "final", "closure") else 0
+        workflow_charge = charge if event.get("workflow_prepaid") else 0
+        confirmed = {**state, **event["state_after"]}
+        for outcome in event["outcomes"]:
+            accepted = outcome == "confirmed"
+            suffix_state = confirmed if accepted else state
+            prefixes.append(dict(node=event["id"], owner_node=event["owner_node"], stage=event["stage"],
+                                 outcome=outcome, consumed_capacity=used + (charge if accepted else 0),
+                                 normal_closing_unspent=closing - (closing_charge if accepted else 0),
+                                 workflow_prepaid_consumed=prepaid + (workflow_charge if accepted else 0),
+                                 state=dict(suffix_state),
                                  safety_path=path_ref(suffix_state),
                                  unknown_dispatch_refunded=False, required_total=None,
                                  mutation_admitted=False))
@@ -377,7 +415,6 @@ def prefix_register(normal):
         closing -= closing_charge
         prepaid += workflow_charge
         state = confirmed
-        seen.add(group)
     require(used == normal["normal_capacity"] and closing == 0 and prepaid == 360,
             "prefix_precharge_accounting")
     return prefixes, paths
@@ -617,7 +654,7 @@ def assemble(folder=REFERENCE):
     prefixes, safety_paths = prefix_register(normal)
     sources = {name: digest(HERE / name) for name in (
         "admission_budget.py", "admission_budget_register.py", "admission_binding.py",
-        "complete_register.py", "metered_composition.py", "integral_ci.py", "integral_io.py",
+        "complete_register.py", "metered_composition.py", "registered_lifecycle.py", "integral_ci.py", "integral_io.py",
         "lifecycle_gates.py", "cli_envelope.py", "cli_meter.py", "cli_stat_reader.py", "auth_failure.py",
         "auth_failure_transport.py", "fixture_cleanup_runtime.py", "fixture_cleanup_runtime_sql.py",
         "integral_failure_runtime.py", "integral_failure_runtime_workflow.py",
@@ -668,7 +705,7 @@ def export(report, section="all", phase=None):
     if section == "normal":
         content = [r for r in nodes if r["id"] in selected]
     elif section == "faults":
-        content = [r for r in report["fault_prefixes"] if r["node"] in selected
+        content = [r for r in report["fault_prefixes"] if r["owner_node"] in selected
                    or phase is None and r["node"] is None]
     elif section == "components":
         content = report["components"]
@@ -676,7 +713,7 @@ def export(report, section="all", phase=None):
         content = copy.deepcopy(report["command_graph"])
         if phase is not None:
             content["nodes"] = {k: v for k, v in content["nodes"].items()
-                                if k in selected or v["stage"] != "normal"}
+                                if v.get("owner_node") in selected or v["stage"] not in ("normal", "precharge", "validation")}
             content["external_next_nodes"] = sorted({edge["to"] for n in content["nodes"].values()
                 for edge in n["next"].values() if edge["to"] not in content["nodes"]
                 and edge["to"] not in content["terminals"]})

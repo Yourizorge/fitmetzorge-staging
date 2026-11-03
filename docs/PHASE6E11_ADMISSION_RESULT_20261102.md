@@ -22,7 +22,7 @@ Alleen de coordinator committeert, pusht en start disposable CI.
 | Auth | Elf echte lokale GoTrue-foutgevallen voorbereid, begrensde HTTP-framing, eigendomscontrole, terminalbarriers en afzonderlijke veiligheidsreconciliatie | Geen globale Auth-zero of claimvrijgave zonder bewijs |
 | Fixtures | Dertien-tabelleninventaris, gedeeltelijke objecten, exacte eigendom, insert/update/delete en commit-/afwezigheidsbewijs; verliesloze journals | Nul gevonden rijen is geen bewezen delete; onbekende commit blijft NO-GO |
 | Foutmatrix | Twee read-only migrationgrenshooks en twaalf native/Auth-componentpaden | Geen volledige duurzame 14-fasen-endchain op basis van rollbackcomponenten |
-| Budget | Uitvoerbaar register met 1717 normale knopen, 8586 stop-prefixmodelgevallen, concrete open kosten en verliesloze export | Modelgevallen zijn geen uitgevoerde tests; geen verzonnen nieuwe bovengrens |
+| Budget | Uitvoerbaar register met 1717 referentierijen, 11.724 stop-prefixmodeluitkomsten na de prechargecorrectie, concrete open kosten en verliesloze export | Modelgevallen zijn geen uitgevoerde tests; geen verzonnen nieuwe bovengrens |
 | Runbinding | Nieuwe voorbereidings-ID 11a909f4-7113-424a-aa4b-ce9964720a3e, bronregisters en vervalvalidatie | Geen DB-quota of hosted bevoegdheid |
 | CI | Een same-source disposable PG17/Auth/app12-20-kandidaat, harde stop op onbevestigde componentcleanup en afzonderlijke artifactverificatie | Component-PASS is geen totale toelating |
 
@@ -107,6 +107,51 @@ utility on/on en registreert die instellingen expliciet. Onbekende, uitgeschakel
 of veranderde instellingen blijven geblokkeerd. Dit bewijst geen nested workload.
 Onafhankelijke bronreview: geen P1/P2-blokker voor een nieuwe disposable CI.
 WAL-, IO-, tijd-, Auth- en hosted grenzen zijn niet gewijzigd.
+
+## Vierde disposable CI: 47/47 en appcomponent, nog geen eindtoelating
+
+CI [41619169140](https://github.com/Yourizorge/fitmetzorge-staging/actions/runs/41619169140)
+op `82b51fe167ad74545eb835af3d56268f154ae4e9`, 3 november 2026.
+Candidate SHA-256 `80a564afadb3114b061bd5b36c0fd5e2ae9d696885417c8e713540236f5be425`;
+ZIP SHA-256 `6e2c66fa349e775dc104d8a2ba193ad235dc8f8425bef96f7c7c530ae7d00685`.
+570 bewijsbestanden plus manifest zijn geverifieerd en behouden.
+
+Schone 47/47-opbouw op PG17.6 is PASS. De twee geinstrumenteerde private
+appmigrationstappen hebben respectievelijk 47 en 22 bevestigde dispatches,
+exact gelijke numerieke waarneming en nul eigen tijdelijke writes. Beide
+bewaren top/top, utility on/on en acht afzonderlijke observercommando's.
+De semantiek volgt de [PG17-documentatie](https://www.postgresql.org/docs/17/pgstatstatements.html):
+`toplevel` begrenst deze vergelijking tot rechtstreeks uitgevoerde opdrachten.
+Dit is geen bewijs voor alle geneste serveractiviteiten of fysieke WAL0.
+
+De bestaande appcomponent is op dezelfde kandidaat opnieuw uitgevoerd:
+12/12 SQL-regressies, 74 database- en 46 domeintests, vier echte lokale
+Auth-controles en 209 integratiebrowserchecks. De afzonderlijke browser- en
+release-deelsuites staan in result.json; zij worden niet tot een kunstmatig
+groter totaal opgeteld. Controller- en request-security zijn PASS. Package21
+blijft uit. Dit is uitsluitend disposable CI, niet hosted staging.
+
+Stop: `admission-test_migration_failure_boundaries_exit_1`, vijf fouten in
+26 tests. Deze tests laadden de checkout-harness vanuit de kandidaatwortel;
+checkout-only `controller_v1/ci.py` en de gepinde runner ontbreken daar bewust.
+De daadwerkelijk eerder uitgevoerde migrationgrenshooks waren geslaagd.
+De nieuwe elf Auth-foutgevallen, volledige componentmatrix, fixturecleanup
+en afsluitende instrumented dry-run zijn niet bereikt. NO_GO blijft staan.
+Dit was geen vierde WAL-diagnose en geen hosted poging.
+
+De vijf testfouten zijn gericht hersteld: de testharness komt uit de expliciete
+checkout, de helper uit de kandidaat. 28 tests PASS, inclusief twee regressies
+voor die echte mapopbouw. Geen ontbrekende checkoutcode aan de kandidaat
+toegevoegd en geen bronpin versoepeld.
+
+Aanvullende lokale correcties: Auth-vrijgave volgt pas na duurzame receipts en
+volledige acht-tellernulcontrole (42 tests PASS). De budgetcompiler onderscheidt
+voorafgaande afschrijving, verzending en validatie, behoudt onzekere capaciteit
+en herhaalt een begonnen verwijdergroep niet (92 tests PASS). De huidige grafiek
+bevat 11.724 prefixuitkomsten; die zijn modellen, geen werkelijk uitgevoerde
+foutproeven. Oudere exports blijven onveranderd. De aparte parent-fixturehelper
+is voorbereid en unit-getest, maar wordt zonder bewezen producer-/mintbarriere
+niet aangeroepen. Dit is geen globale cleanup-PASS.
 
 ## Budget en harde grenzen
 

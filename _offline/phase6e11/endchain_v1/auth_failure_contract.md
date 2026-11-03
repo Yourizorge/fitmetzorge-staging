@@ -134,6 +134,13 @@ Auth audit history is not deleted; zero temporary objects does not mean zero
 audit history or zero global Auth objects. Public profile/fixture cleanup is not
 claimed here and belongs to the fixture component.
 
+The snapshot validator requires exactly all eight nonnegative integer counters.
+User/session counters must match their returned lists; session keys must be
+unique canonical UUIDs within the existing bound. Missing counters or a zero
+counter paired with remaining session keys cannot prove absence. The same
+validator is applied before ordinary cleanup and separate reconciliation. It
+adds no SQL, HTTP dispatch or budget allocation.
+
 Mint-barrier scope is deliberately narrow: client dispatch is permanently closed
 and each dispatched upstream HTTP request has completely responded. A lost
 client reply can still have separate relay terminal evidence. An upstream timeout
@@ -223,6 +230,13 @@ in `reconciliation_diagnostic_totals`, separate from original fault-path totals.
 Unavailable capacity, changed ownership, changed rows, uncertain deletion,
 failed observation or overrun leaves reconciliation unconfirmed without refund.
 
+Reconciliation acknowledgement and measurement flags become true only AFTER
+their corresponding durable journal events succeed. A failed delete-confirmation
+or managed-observation receipt cannot leave a stale true flag that confirms
+cleanup. Original case results remain byte-identical; attempted operations stay
+charged even when their receipt fails. This does not turn physical deletion into
+a claim of complete proof when evidence is missing.
+
 Expected local outcome WITH suffix: cleanup_interrupted's one user/session is
 removed; missing_mint_barrier's one user/session remains unresolved. The original
 admin_unknown case remains an unknown-delete claim with observed zero. Without
@@ -235,6 +249,17 @@ all negative-test checks pass. Complete Auth cleanup for every partial path is
 still NOT proven with the available evidence. It needs new independent terminal
 evidence for the missing barrier and separately accountable owned cleanup; this
 agent has not generated that evidence or claimed a full Auth PASS.
+
+Parent coordination checkpoint, 2026-11-03: C owns the separate disposable
+parent-closure helper and its fixture/bootstrap ownership, costs and receipts.
+This component does not sweep those objects, invoke that helper implicitly, or
+change shared files. Per owner's update, the fixture phase leaves four intentional
+rows plus three bootstrap identities/operator context; that is parent-reported,
+not a new database observation by this reviewer. GoTrue stopping may be lifecycle
+evidence but is NEVER evidence that PostgreSQL accounts or sessions were deleted.
+Parent closure must report its own barrier, exact owned cleanup and final scoped
+observations separately; incomplete original claims remain NO_GO. Neither this
+component's observations nor container removal establish global Auth zero.
 
 ## Artifacts And Evidence
 
@@ -250,13 +275,25 @@ binding must also cover the imported existing auth_protocol module and test file
 Earlier checkpoint: 22 tests PASS in 14.601s. After independent F's P1/P2 fixes:
 31 tests PASS in 23.570s. After explicit safety-reconciliation support:
 38 tests PASS in 23.937s. After the failed-unknown-event persistence correction:
-**39 tests PASS in 19.351s**, run with the supplied Python runtime and
+39 tests PASS in 19.351s. Latest cleanup-proof checkpoint, 2026-11-03:
+**42 tests PASS in 33.027s**, run with the supplied Python runtime and
 `-B auth_failure_test.py`. These exercise the state machine with a
 fake Auth backend and actual loopback relay HTTP. They are not real GoTrue/SQL evidence.
+The three newly added regression tests first reproduced five failing subcases:
+failed delete receipt, failed managed receipt, missing final counter in ordinary
+cleanup, missing reconciliation counter and inconsistent zero/session keys.
+All now fail closed. The existing eleven-path matrix and unknown-outcome,
+ownership, no-replay, no-refund and incomplete-mint tests remain passing.
 An initial sandbox attempt failed due temporary-directory and loopback restrictions;
 the authorized outside-sandbox rerun passed. No local Docker command is available
 in this agent session. Actual PG17/GoTrue component execution and parent combined
 CI remain pending. Previous appCI41474475311 does not prove these new files.
+The parent coordinator reports CI3 confirmed 47 protocolcommands within one
+migration apply and numeric zero temp before stopping;
+it did NOT reach Auth. CI4 was announced as pending, not verified here. These
+reports do not upgrade mock/loopback test results to actual GoTrue evidence,
+full Auth cleanup PASS, or end-to-end admission. The 524-per-case local contract,
+separate suffix accounting and hosted 2349 boundary remain unchanged.
 
 Official documentation consulted: [self-hosted Auth API](https://supabase.com/docs/reference/self-hosting-auth/introduction),
 [sessions](https://supabase.com/docs/guides/auth/sessions),

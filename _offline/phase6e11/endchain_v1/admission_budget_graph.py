@@ -27,25 +27,21 @@ def diagnostic_graph(rows, name, cap=None):
 
 
 def assemble_graph(report):
+    from admission_budget_register import normal_events
     normal = report["normal_register"]
-    rows, nodes = normal["rows"], {}
+    events, nodes = normal_events(normal), {}
     prefixes = {(p["node"], p["outcome"]): p for p in report["fault_prefixes"]}
-    seen = set()
-    for index, row in enumerate(rows):
-        group = row["charge_group"]
-        charge = normal["charge_groups"][group]["capacity"] if group not in seen else 0
-        following = rows[index + 1]["id"] if index + 1 < len(rows) else "normal_bound_gap"
+    for index, event in enumerate(events):
+        following = events[index + 1]["id"] if index + 1 < len(events) else "normal_bound_gap"
         edges = {}
-        for outcome in OUTCOMES:
-            prefix = prefixes[row["id"], outcome]
+        for outcome in event["outcomes"]:
+            prefix = prefixes[event["id"], outcome]
             target = following if outcome == "confirmed" else "recovery_gap_" + prefix["safety_path"]
-            edges[outcome] = dict(to=target, charge=0 if outcome in UNSENT else charge,
+            edges[outcome] = dict(to=target, charge=event["cost"] if outcome == "confirmed" else 0,
                                   consumed_capacity=prefix["consumed_capacity"],
                                   normal_closing_unspent=prefix["normal_closing_unspent"], refunds=0)
-        nodes[row["id"]] = dict(id=row["id"], stage="normal", phase=row["phase"],
-            action=row["action"], kind=row["kind"], cost=row["cost"], charge_group=group,
-            source=row["source"], next=edges, execution_ready=False)
-        seen.add(group)
+        nodes[event["id"]] = {k: v for k, v in event.items() if k != "outcomes"}
+        nodes[event["id"]].update(next=edges, execution_ready=False)
     nodes["normal_bound_gap"] = dict(id="normal_bound_gap", stage="unresolved", cost=None,
         reason="Current source identity, component placement and managed costs are not fully bound.",
         required_inputs=[m["id"] for m in report["unresolved_inputs"]],
@@ -106,7 +102,7 @@ def assemble_graph(report):
                                              name, components["auth"]["diagnostic_contract"]["reserved_units"])
     require(all(edge["to"] in nodes or edge["to"] == "NO_GO"
                 for node in nodes.values() for edge in node["next"].values()), "graph_dangling_edge")
-    return dict(format="concrete-admission-accounting-graph-v1", entry=rows[0]["id"], nodes=nodes,
+    return dict(format="concrete-admission-accounting-graph-v2", entry=events[0]["id"], nodes=nodes,
                 terminals={"NO_GO": "NO_GO_INCOMPLETE_BOUND"},
                 reference_recovery_entries=reference_entries, diagnostic_graphs=diagnostics,
                 normal_capacity=normal["normal_capacity"], approved_limit=report["approved_limit"],

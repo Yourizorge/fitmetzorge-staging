@@ -39,9 +39,10 @@ alle foutpaden daarin passen. De referentie omvat 1600 native eenheden,
 24 CLI-observers, 120 CLI-reserveringseenheden en 594 Auth-reserveringseenheden.
 Reserveringen zijn geen gemeten aantallen uitgevoerde SQL-commando's.
 
-Het register bevat **1717 normale knopen en 8586 prefixes**:
-een ingang plus vijf uitkomsten per knoop. Dit zijn modelgevallen, geen 8586
-daadwerkelijk uitgevoerde fouttests. Onbekende dispatches behouden hun verbruik;
+De eerste registerversie bevatte 1717 referentierijen en 8586 prefixes.
+Na de correctie van 3 november zijn precharge, dispatch en validatie afzonderlijke
+overgangen: **1717 referentierijen en 11.724 prefixuitkomsten**. Dit zijn
+modelgevallen, geen daadwerkelijk uitgevoerde fouttests. Onbekende dispatches behouden hun verbruik;
 onopgeloste recovery-overgangen krijgen geen nulprijs of toelating.
 
 ## Bestaande registerbestanden
@@ -89,6 +90,16 @@ reserveringseenheden voor beide hooks samen. Beide staan los van hosted 2349;
 bronplanning is geen bewijs dat deze commando's daadwerkelijk zijn uitgevoerd.
 
 ## Kleinste vervolgstap
+
+De drie gerichte compilerreparaties van 3 november hebben 92 gerichte tests PASS:
+geen restitutie na precharge, verwijdergroep bij eerste charge als begonnen
+markeren en pas vrijgeven na gevalideerde metadata. Onafhankelijke review van
+alle 11.724 modelprefixes: geen nieuwe P1/P2-blokker; unresolved recovery blijft
+NO_GO. Nieuwe lossless exports hebben vijftien begrensde bestanden. Oude exports
+zijn niet vervangen. CI4-provenance staat afzonderlijk in
+`_offline/phase6e11/endchain_v1/admission_budget_ci4_provenance_20261103.json`;
+die koppelt de werkelijk bewezen app-CLI-stappen aan hun bron en promoveert de
+nieuwere compilerbron niet naar een CI4-PASS.
 
 Na CI eerst de benoemde CLI-receipts voor profielindices 0/2 en de dry-run
 brongebonden controleren: dispatchregels, onbekend verbruik, aparte observers,
