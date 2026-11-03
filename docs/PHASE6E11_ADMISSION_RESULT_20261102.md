@@ -344,6 +344,15 @@ binnen 2338. De 11 resterende eenheden bewijzen niet dat de nieuwe samenstelling
 past. `minimal_cap=None`: volledige executor-, managed-Auth-, CLI-fout- en
 recoverykosten zijn nog niet allemaal bewezen. Geen willekeurige verhoging.
 
+Het nieuwe offline planmodel houdt historische SQL apart van dertig actuele
+bronafleidingen (verplaatsingen en gewijzigde afsluitqueries). Het reserveert
+ook het eerder ontbrekende conditionele rollback_setup-commando. De kosten
+van de nieuwe C/B-diagnostiek zijn afzonderlijk uitgewerkt over 286
+parametercombinaties en 66 fysieke suffixvormen. Dit is geen bewijs dat die
+diagnostiek binnen het hosted maximum valt en geen gefabriceerde volledige
+dispatch-DAG. De drie budgettestsuites: 137 PASS, 46,537 seconden. Een werkelijke
+zelfde-bron executortrace en alle integrale foutprefixen blijven vereist.
+
 Zie [WAL-beoordeling](PHASE6E11_ADMISSION_WAL_ASSESSMENT_20261102.md).
 De drie historische pogingen en incomplete intervallen blijven behouden.
 Geen vierde WAL-diagnose. Logisch objectbehoud bewijst niet dezelfde fysieke

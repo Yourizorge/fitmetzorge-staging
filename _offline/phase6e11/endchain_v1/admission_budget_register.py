@@ -29,7 +29,9 @@ def canonical_sha(value):
 
 
 def source(name, symbol):
-    return dict(path=name, sha256=digest(HERE / name), symbol=symbol)
+    path = (HERE / name).resolve()
+    key = path.relative_to(HERE.parents[2]).as_posix() if name.startswith("../") else name
+    return dict(path=key, sha256=digest(path), symbol=symbol)
 
 
 def sql_row(ident, phase, action, text, filename, symbol):
@@ -116,8 +118,9 @@ def final_gate(stage):
               ("io_sample", SNAPSHOT), ("metadata", FINAL), ("io_sample", SNAPSHOT),
               ("io_closing_witness", "EXPLAIN (ANALYZE,BUFFERS,WAL,VERBOSE,COSTS FALSE,FORMAT JSON) " + SNAPSHOT),
               ("rollback", "ROLLBACK")]
-    return [sql_row(prefix + "_" + str(i), "final", prefix + "_" + action,
-                    text, "integral_ci.py", "Composition.final_metadata")
+    return [dict(sql_row(prefix + "_" + str(i), "final", prefix + "_" + action,
+                    text, "integral_ci.py", "Composition.final_metadata"),
+                 action_binding={"kind": "lifecycle", "operation": "remove"})
             for i, (action, text) in enumerate(texts)]
 
 
@@ -645,6 +648,561 @@ def fixture_diagnostic_component(component):
                 source=source("fixture_cleanup_runtime_ci.py", "run"))
 
 
+def opt_in_diagnostics(fixture, diagnostic, auth):
+    """Additional local protocol templates, never an increase to the run limit."""
+    import fixture_db_terminality as db
+    import fixture_parent_closure as parent
+    import fixture_cleanup_runtime_sql as sql
+    require((db.MAX_CONNECTIONS, db.TERMINAL_LIMIT, db.ZERO_LIMIT, db.MAX_ZERO_CASES)
+            == (64, 2, 5, 11), "tracked_db_contract_drift")
+    require(parent.CASE_LIMIT == 22 and parent.REGISTRY_LIMIT == 11, "parent_suffix_contract_drift")
+
+    def rows(prefix, pairs, filename, symbol):
+        return [sql_row(prefix + "_" + label, "diagnostic", label, text, filename, symbol)
+                for label, text in pairs]
+
+    registration = rows("tracked", [("register", db.REGISTER)], "fixture_db_terminality.py", "TrackedRuntime.connect")
+    terminal = rows("tracked", [("observer_identity", db.SESSION), ("backend_absence", db.ACTIVITY)],
+                    "fixture_db_terminality.py", "TrackedRuntime.terminal/_activity")
+    zero = rows("tracked", [("zero_begin", "BEGIN TRANSACTION READ ONLY"), ("zero_session", db.SESSION),
+        ("backend_absence", db.ACTIVITY), ("zero_inventory", sql.INVENTORY), ("zero_rollback", "ROLLBACK")],
+        "fixture_db_terminality.py", "TrackedRuntime.physical_zero/_activity")
+    # Each anchor follows a successful factory connect, before the first business query.
+    connections = [dict(case="setup", before=diagnostic["setup"][0]["id"])]
+    for case in diagnostic["cases"]:
+        for row in case["rows"]:
+            if row["action"] in ("prepare_begin", "begin", "absence_begin", "fault_locker_begin",
+                                 "foreign_row_parent_check_begin", case["case"] + "_writer_begin"):
+                connections.append(dict(case=case["case"], before=row["id"]))
+    connections.append(dict(case="closing", before=diagnostic["closing"][0]["id"]))
+    require(len(connections) == 45, "tracked_fixture_connect_schedule_drift")
+    registry = rows("parent", [("registry_begin", "BEGIN"), ("registry_check", sql.CHECK),
+        ("registry_lock", parent.REGISTRY_LOCK), ("registry_before", parent.REGISTRY),
+        ("registry_delete_operator", parent.DELETE_OPERATOR), ("registry_delete_identities", parent.DELETE_IDENTITIES),
+        ("registry_commit", "COMMIT"), ("registry_absence_begin", "BEGIN TRANSACTION READ ONLY"),
+        ("registry_check_after", sql.CHECK), ("registry_absence", parent.REGISTRY),
+        ("registry_absence_rollback", "ROLLBACK")], "fixture_parent_closure.py", "close_registry")
+    registry[8]["action"] = "registry_check"
+    rollback = rows("parent", [("registry_rollback", "ROLLBACK")], "fixture_parent_closure.py", "close_registry")
+    registry_faults = []
+    for index, row in enumerate(registry):
+        suffix = rollback + registry[7:] if index < 6 else registry[7:] if index == 6 else []
+        registry_faults.append(dict(at=row["id"], outcome="unknown_after_precharge", spent=index + 1,
+            suffix=[r["id"] for r in suffix], total=index + 1 + len(suffix), retry=False))
+    reconciliation = []
+    for case in ("admin_unknown", "cleanup_interrupted", "missing_mint_barrier"):
+        labels = ["observe"] if case != "cleanup_interrupted" else [
+            "observe", "stats_before_delete", "delete", "stats_after_delete", "verify_zero"]
+        commands = [dict(id="reconcile_" + case + "_" + label, action=label,
+            kind="auth_reserved" if label == "delete" else "native", cost=128 if label == "delete" else 1,
+            source=source("auth_failure.py", "ReconciliationJournal/reconcile_retained")) for label in labels]
+        original = next(p for p in auth["diagnostic_paths"] if p["case"] == case)
+        required = sum(r["cost"] for r in commands)
+        require(required <= original["diagnostic_reserved"] - original["diagnostic_prepaid_consumed"],
+                "reconciliation_original_reserve_exceeded")
+        reconciliation.append(dict(case=case, rows=commands, diagnostic_capacity=required,
+            original_reservation=original["diagnostic_reserved"], additional_reservation=0,
+            eligibility="retained eligible receipt, complete measurements and unused original reservation",
+            delete_requires="previously unsent, terminal mint barrier, unchanged owned scope",
+            original_claim_released=False, managed_release_cost=None, journal_durability_verified=False))
+    return dict(separate_local_diagnostic=True, observed_execution=False, hosted_run_capacity_changed=False,
+        command_scope="Explicit top-level SQL only; connection/startup and nested managed SQL not inferred.",
+        native_startup_protocol_bound=None, journal_file_io_sql_commands=0,
+        tracked_db=dict(registration_rows=registration, terminal_rows=terminal, physical_zero_rows=zero,
+            registration_anchors=connections, intended_component_registrations=len(connections),
+            component_additional_protocol_commands=len(connections) + len(terminal),
+            connection_limit=db.MAX_CONNECTIONS, terminal_limit=db.TERMINAL_LIMIT,
+            zero_limit_per_case=db.ZERO_LIMIT, maximum_zero_cases=db.MAX_ZERO_CASES,
+            additional_expression="successful_registration_attempts + terminal_attempts + physical_zero_attempts",
+            registration_before_component_not_counted_twice=True,
+            physical_zero_faults=[dict(at=row["id"], spent=i + 1,
+                suffix=[zero[-1]["id"]] if i < 4 else [], total=i + 2 if i < 4 else 5,
+                retry=False) for i, row in enumerate(zero)],
+            zero_requires="durable tracked terminality and immutable scoped unknown-COMMIT receipt",
+            close_is_not_server_terminality=True, auth_barrier_proven=False,
+            registry_cleanup_admitted=False, original_claims_released=False,
+            source=source("fixture_cleanup_runtime_ci.py", "run/finish/observe_terminal")),
+        parent_closure=dict(case_rows=copy.deepcopy(fixture["groups"]["normal"]),
+            case_faults=copy.deepcopy(fixture["fault_paths"]), registry_rows=registry,
+            registry_failure_only=rollback, registry_faults=registry_faults,
+            per_eligible_case_limit=parent.CASE_LIMIT, registry_limit=parent.REGISTRY_LIMIT,
+            planned_limit_expression="22 * eligible_cases + (11 if no_unresolved_cases else 0)",
+            original_unknown_commit_replayed=False, tracked_factory_used=False,
+            barrier_required=["worker_joined", "writers_closed", "mint_barrier"],
+            registry_requires="every case resolved and exact committed bootstrap ownership",
+            source=source("fixture_parent_closure.py", "run/ownership/close_registry")),
+        auth_reconciliation=reconciliation,
+        auth_transport=dict(source=source("auth_failure_transport.py", "LocalTransport.request/complete_body"),
+            upstream_requests_per_call=1, automatic_retry=False, extra_sql_dispatched_by_relay=0,
+            framing_is_not_managed_sql_bound=True, full_normal_transport_mapping_proven=False),
+        full_bound=None, minimal_cap=None)
+
+
+def normal_dispatch_mapping(normal):
+    """Reusable expected trace keys, not a new replay of a historical executor."""
+    mapping = []
+    for row in normal["rows"]:
+        if row.get("optional_capacity_only", False):
+            stream = "optional_stream_capacity_not_dispatch"
+        elif row["id"].startswith("cli_"):
+            stream = "cli_protocol_slot"
+        elif row["kind"] == "auth_reserved":
+            stream = "workflow_auth_protocol" if row["action"].startswith((
+                "gotrue_workflow_identity_", "gotrue_fixture_identity")) else "auth_protocol_operation"
+        elif row["phase"] == "preflight":
+            stream = "integral_preflight"
+        else:
+            stream = "integral_complete_protocol_trace"
+        key = dict(action=row["action"], action_binding=row.get("action_binding", {}),
+                   sql_sha256=row.get("sql_sha256"))
+        mapping.append(dict(row_id=row["id"], register_ordinal=row["ordinal"], stream=stream,
+            expected=key, phase=row["phase"], charge_group=row["charge_group"],
+            matching_current_dispatch_observed=False))
+    return dict(rows=mapping, source=source("integral_ci.py", "Composition.before_sql/after_sql"),
+        meter_source=source("metered_composition.py", "before_sql/workflow/auth_before/auth_after"),
+        dispatch_sources=[source("session_transport.mjs", "createProtocolSessionTransport/query/invoke/read"),
+            source("integral_workflow.mjs", "execution.fetcher/private SQL IPC"),
+            source("fixture_lifecycle.py", "perform"),
+            source("registered_lifecycle.py", "_dispatch/parent_auth_cleanup/close_temporary")],
+        concrete_gaps=[
+            dict(stream="integral_complete_protocol_trace",
+                 needed="Ordered phase/action/sql_sha256 plus confirmed flags; retain fresh-binding differences, never normalize UUIDs blindly."),
+            dict(stream="workflow_auth_protocol",
+                 needed="72 /user dispatch identities (seed plus steps 0..70) joined to 72 upfront tickets; aggregate 360 is not a dispatch trace."),
+            dict(stream="auth_protocol_operation",
+                 needed="18 role/operation receipts for issue, verify, getUser, refresh, logout, revoked_denial; diagnostic create/login/delete are not substitutes."),
+            dict(stream="cli_protocol_slot",
+                 needed="Quota/pre_auth/final attempt and numeric ledgers joined once to 72/36/36 reservations; app0/2 apply receipts do not fill dry-run slots."),
+            dict(stream="fixture_capture",
+                 needed="Prepare4 before first write; capture1 at every listed commit anchor; choose additive vs replacement of existing 123-delete workflow."),
+            dict(stream="recovery",
+                 needed="Per-connection finally rollback and control recovery, parent Auth, exact removal and final close ordering; no replay of spent cleanup tickets.")],
+        current_source_revalidated=False, complete_dispatch_bound=False)
+
+
+def rollback_dispatch_mapping():
+    """A setup transaction is not the separate identity-lock connection."""
+    from complete_register import safety_path
+    tree = ast.parse((HERE / "integral_ci.py").read_text())
+    workflow = next(n for n in ast.walk(tree) if isinstance(n, ast.FunctionDef) and n.name == "workflow")
+    channels = [ast.literal_eval(n.iter) for n in ast.walk(workflow) if isinstance(n, ast.For)
+                and isinstance(n.target, ast.Name) and n.target.id == "channel" and isinstance(n.iter, ast.Tuple)]
+    require(channels == [("setup", "writer", "reader", "workflow")], "workflow_connection_shape_drift")
+    allowed = {r["action"]: r["sql"] for r in safety_path() if r["action"].startswith("rollback_")}
+    requested = ["rollback_" + channel for channel in channels[0]] + ["rollback_auth_lock"]
+    rows = []
+    for label in requested:
+        row = sql_row(label, "safety", label, "ROLLBACK", "registered_runner.py" if label == "rollback_auth_lock"
+                      else "integral_ci.py", "IdentitySession.close" if label == "rollback_auth_lock"
+                      else "Composition.workflow/finally")
+        row.update(reserved_capacity=allowed.get(label), source_dispatch_cost=1,
+                   status="MAPPED_EXISTING_LABEL" if label in allowed else "MISSING_SAFETY_LABEL_AND_COST",
+                   equivalent_alias=None, condition="connection transaction_status != 0; one attempted rollback")
+        rows.append(row)
+    return dict(rows=rows, missing_labels=[r["action"] for r in rows if r["reserved_capacity"] is None],
+        missing_conditional_commands=sum(r["cost"] for r in rows if r["reserved_capacity"] is None),
+        lifecycle_inner_rollback=source("fixture_lifecycle.py", "perform/except BaseException"),
+        inner_and_finally_deduplicated=False,
+        reason="setup is created separately from IdentitySession; lifecycle_rollback may fail before finally. No alias or replay credit.",
+        runtime_source=source("runtime_budget.py", "RuntimeBudget.safety"),
+        safety_source=source("complete_register.py", "safety_path"),
+        reference_modified=False, approved_limit_changed=False, full_required_capacity=None)
+
+
+def parent_auth_finalizer_component(delete_costs):
+    """Compile B's actual one-shot order; explicit local costs, no HTTP execution."""
+    import auth_failure_parent_finalizer as parent
+    from auth_protocol import STATS
+    plan = parent.plan(delete_costs)
+    tree = ast.parse((HERE / "auth_failure.py").read_text())
+    backend = next(n for n in tree.body if isinstance(n, ast.ClassDef) and n.name == "RealBackend")
+    snapshot = next(n for n in backend.body if isinstance(n, ast.FunctionDef) and n.name == "snapshot")
+    literals = [ast.literal_eval(n.value) for n in snapshot.body if isinstance(n, ast.Assign)
+                and any(isinstance(t, ast.Name) and t.id == "sql" for t in n.targets)]
+    require(len(literals) == 1 and isinstance(literals[0], str), "parent_auth_snapshot_template_drift")
+    rows = []
+    def native(label, text, filename, symbol):
+        rows.append(sql_row("parent_auth_" + label, "diagnostic", label, text, filename, symbol))
+    native("boundary", parent.BOUNDARY, "auth_failure_parent_finalizer.py", "finalize/BOUNDARY")
+    native("fk_before", parent.FK, "auth_failure_parent_finalizer.py", "finalize/fk")
+    for role in parent.ROLES:
+        native(role + ":before", literals[0], "auth_failure.py", "RealBackend.snapshot")
+    for role in parent.ROLES:
+        native(role + ":stats_before_delete", "select " + STATS + " value", "auth_failure.py", "RealBackend.stats")
+        rows.append(dict(id="parent_auth_" + role + ":delete", phase="diagnostic", action=role + ":delete",
+            cost=delete_costs[role], kind="auth_reserved", method="DELETE", path="/admin/users/{owned_subject}",
+            source=source("auth_failure_parent_finalizer.py", "finalize/ledger.before/delete_owned"),
+            transport_source=source("auth_failure_tracked.py", "TrackedAuth.delete_owned/existing_prepaid"),
+            second_transport_charge=0, observed_managed_cost=None, execution_ready=False))
+        native(role + ":stats_after_delete", "select " + STATS + " value", "auth_failure.py", "RealBackend.stats")
+        native(role + ":after", literals[0], "auth_failure.py", "RealBackend.snapshot")
+    native("fk_after", parent.FK, "auth_failure_parent_finalizer.py", "finalize/fk")
+    for role in parent.ROLES:
+        native(role + ":final", literals[0], "auth_failure.py", "RealBackend.snapshot")
+    require([r["action"] for r in rows if r["kind"] == "native"] == list(parent.NATIVE),
+            "parent_auth_native_dispatch_order_drift")
+    require({r["action"]: r["cost"] for r in rows} == plan["charges"], "parent_auth_charge_plan_drift")
+    faults, consumed = [], 0
+    for i, row in enumerate(rows):
+        consumed += row["cost"]
+        suffix = rows[i + 1:i + 3] if row["kind"] == "auth_reserved" else (
+            rows[i + 1:i + 2] if row["action"].endswith(":stats_after_delete") else [])
+        faults.append(dict(at=row["id"], outcome="unknown_after_precharge", consumed_capacity=consumed,
+            suffix=[r["id"] for r in suffix], required_capacity=consumed + sum(r["cost"] for r in suffix),
+            retry=False, refunds=0, later_role_delete_admitted=False))
+    require(consumed == plan["reserved_units"], "parent_auth_total_drift")
+    return dict(rows=rows, fault_paths=faults, plan=plan, native_commands=plan["native_sql_maximum"],
+        http_maximum=plan["http_maximum"], diagnostic_capacity=plan["reserved_units"],
+        preconditions=["same live three-owner registry seal", "sealed scoped C closure and FK absence",
+                       "tracked DB terminality", "durable original ownership and source binding"],
+        separate_local_diagnostic=True, hosted_reference_changed=False, actual_execution_observed=False,
+        full_bound_proven=False, managed_release_costs_proven=False,
+        source=source("auth_failure_parent_finalizer.py", "plan/finalize"))
+
+
+PLAN_VERSION = "admission-current-plan-v2"
+PREVIOUS_CHECKPOINT = {
+    "admission_budget_register.py": "724a390459129affee71cdc938ab45e5b20845d8e68b9baf18ede89eeac30d12",
+    "admission_budget_register_test.py": "f4ab0f8b473135890e15e65c052001732304bec43905c3a580bd2cb0a0aead34",
+    "admission_budget_receipts.py": "3fce0c862b9d54ca82a7a4e563a600a295f7d2247e00c0d1c1f22963783fb13e",
+    "admission_budget_receipts_test.py": "e39ef098a77252d7f2b5e43e6ebf53ad5d9f4c19756cf5a9ebd0dcfa1e26dc71",
+}
+REMOVAL_SOURCES = {"observer": "../auth_metadata_v1/audit.py", "guard": "../controller_guard_v1/guard.py"}
+
+
+def _method(filename, name, cls=None):
+    tree = ast.parse((HERE / filename).read_text())
+    if cls:
+        tree = next(n for n in tree.body if isinstance(n, ast.ClassDef) and n.name == cls)
+    return next(n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == name)
+
+
+def current_final_rows(stage):
+    """Static extraction of the current fresh QueryIO path, never call the executor."""
+    require(stage in ("pre", "post"), "plan_final_stage")
+    from integral_io import SNAPSHOT
+    from lifecycle_gates import FINAL
+    from sql_protocol import statements
+    method = _method("integral_ci.py", "final_metadata", "Composition")
+    monitor_calls = sorted([n for n in ast.walk(method) if isinstance(n, ast.Call)
+        and isinstance(n.func, ast.Attribute) and isinstance(n.func.value, ast.Name)
+        and n.func.value.id == "monitor"], key=lambda n:n.lineno)
+    require([n.func.attr for n in monitor_calls] == ["start", "bind", "executed", "close"],
+            "plan_final_monitor_order_drift")
+    pre = next(n for n in method.body if isinstance(n, ast.If) and ast.unparse(n.test) == "stage == 'pre'")
+    def text(node):
+        if isinstance(node, ast.Constant) and isinstance(node.value, str):
+            return node.value
+        if ast.unparse(node) in ("SNAPSHOT", "sql", "gates.FINAL"):
+            return SNAPSHOT if ast.unparse(node) == "SNAPSHOT" else FINAL
+        if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Add):
+            return text(node.left) + text(node.right)
+        raise ValueError("plan_final_sql_expression_drift")
+    def io_query(name):
+        calls = [n for n in ast.walk(_method("integral_io.py", name, "QueryIO"))
+                 if isinstance(n, ast.Call) and ast.unparse(n.func) == "self.query"]
+        require(len(calls) == 1, "plan_io_query_shape:" + name)
+        return ast.literal_eval(calls[0].args[1]), text(calls[0].args[2])
+    calls = sorted([n for n in ast.walk(method) if isinstance(n, ast.Call)
+        and (ast.unparse(n.func) in ("monitor.start", "monitor.bind", "monitor.close")
+             or ast.unparse(n.func) == "query" and isinstance(n.args[0], ast.BinOp)
+             and isinstance(n.args[0].right, ast.Constant))], key=lambda n:(n.lineno, n.col_offset))
+    require([ast.unparse(n.func) for n in calls] ==
+        ["query", "query", "query", "monitor.start", "monitor.bind", "query", "monitor.close", "query"],
+        "plan_final_call_order_drift")
+    # Validate the expanded fresh-monitor call edges against their actual AST.
+    for method_name, expected in (("start", ["self.query", "self.sample"]),
+                                  ("bind", ["self.query", "self.sample"]),
+                                  ("checkpoint", ["self.sample"]),
+                                  ("close", ["self.checkpoint", "self.query"])):
+        found = sorted([n for n in ast.walk(_method("integral_io.py", method_name, "QueryIO"))
+            if isinstance(n, ast.Call) and ast.unparse(n.func) in
+            ("self.query", "self.sample", "self.checkpoint")], key=lambda n:n.lineno)
+        require([ast.unparse(n.func) for n in found] == expected, "plan_io_call_order_drift:" + method_name)
+    pairs = []
+    for call in calls:
+        if stage == "post" and pre.lineno <= call.lineno <= pre.end_lineno:
+            continue
+        name = ast.unparse(call.func)
+        if name == "query":
+            pairs.append((ast.literal_eval(call.args[0].right).lstrip("_"), text(call.args[1])))
+        elif name == "monitor.start":
+            pairs.extend((io_query("start"), io_query("sample")))
+        elif name == "monitor.bind":
+            require(ast.unparse(call.args[0]) == "gates.FINAL", "plan_final_bind_drift")
+            pairs.extend((io_query("bind"), io_query("sample")))
+        else:
+            pairs.extend((io_query("sample"), io_query("close")))
+    rows = []
+    for i, (label, sql) in enumerate(pairs):
+        parsed = statements(sql)
+        require(len(parsed) == 1, "plan_final_single_dispatch")
+        row = sql_row("gates_final_" + stage + "_" + str(i), "final", "gates_final_" + stage + "_" + label,
+                      parsed[0]["sql"], "integral_ci.py", "Composition.final_metadata")
+        row.update(action_binding={"kind": "lifecycle", "operation": "remove"},
+                   derivation="AST_call_order_and_PG17_statement_parser",
+                   dependencies=[source("integral_io.py", "QueryIO.start/bind/checkpoint/close"),
+                                 source("lifecycle_gates.py", "FINAL")])
+        rows.append(row)
+    require(len(rows) == (11 if stage == "pre" else 9), "plan_final_dispatch_count_drift")
+    return rows
+
+
+def current_removal_rows():
+    """Eight fixed statements and two receipt-bound DO templates, no invented hashes."""
+    from sql_protocol import statements
+    method = _method("registered_lifecycle.py", "close_temporary", "RegisteredLifecycle")
+    loop = next(n for n in method.body if isinstance(n, ast.For))
+    require([n.elts[0].value for n in loop.iter.elts] == ["audit", "guard"], "plan_removal_order_drift")
+    rows = []
+    for owner, filename in REMOVAL_SOURCES.items():
+        remove = _method(filename, "remove")
+        templates = [n.value for n in remove.body if isinstance(n, ast.Return)]
+        require(len(templates) == 1 and isinstance(templates[0], ast.JoinedStr), "plan_removal_template_drift")
+        fields, parts = {}, []
+        for part in templates[0].values:
+            if isinstance(part, ast.Constant):
+                parts.append(part.value)
+            else:
+                require(isinstance(part, ast.FormattedValue) and part.conversion == -1 and part.format_spec is None,
+                        "plan_removal_format_drift")
+                token = "__budget_binding_%d__" % len(fields)
+                fields[token] = ast.unparse(part.value)
+                parts.append(token)
+        parsed = statements("".join(parts))
+        require(len(parsed) == 5 and [r["kind"] for r in parsed] ==
+                ["TransactionStmt", "VariableSetStmt", "VariableSetStmt", "DoStmt", "TransactionStmt"],
+                "plan_removal_statement_shape")
+        for i, statement in enumerate(parsed):
+            row = sql_row("current_remove_" + owner + "_" + str(i), "final", "remove", statement["sql"],
+                          filename, "remove")
+            inputs = {token: expression for token, expression in fields.items() if token in statement["sql"]}
+            row.update(owner=owner, statement_index=i, action_binding={"kind": "lifecycle", "operation": "remove"},
+                template_sha256=statement["sha256"], binding_inputs=inputs, binding_required=bool(inputs),
+                sql_sha256=None if inputs else statement["sha256"],
+                ordering_source=source("registered_lifecycle.py", "close_temporary"))
+            rows.append(row)
+    return rows
+
+
+def current_plan(report):
+    """Executable offline comparison/reservation model, never hosted authority."""
+    normal = copy.deepcopy(report["normal_register"])
+    finals = {r["id"]: r for stage in ("pre", "post") for r in current_final_rows(stage)}
+    removes = iter(current_removal_rows())
+    derived = []
+    for row in normal["rows"]:
+        new = next(removes) if row["action"] == "remove" else finals.get(row["id"])
+        if new is not None:
+            # Keep event/group identities, but never the old receipt-bound SQL hash.
+            row.update({k:v for k,v in new.items() if k not in ("id", "retained_ids")})
+            row["derivation_id"] = new["id"]
+            derived.append(row["id"])
+    require(len(derived) == 30 and next(removes, None) is None, "plan_replacement_shape")
+    paths, mapping = {}, {}
+    setup = next(r for r in report["components"]["rollback_dispatch_mapping"]["rows"]
+                 if r["action"] == "rollback_setup")
+    for old_key, path in report["reference_safety_paths"].items():
+        commands = copy.deepcopy(path["commands"])
+        require(all(r["action"] != "rollback_setup" for r in commands), "plan_setup_already_reserved")
+        commands.insert(0, dict(action="rollback_setup", sql=1, kind="native", retry=False,
+            identity_bound=True, source=setup["source"], sql_sha256=setup["sql_sha256"],
+            dispatch_condition="setup_connection_exists_and_transaction_status_nonzero",
+            precharge_before_attempt=True, unknown_consumed=1, inner_rollback_credit=0))
+        key = canonical_sha(commands)
+        paths[key] = dict(commands=commands, reserved_capacity=sum(r["sql"] for r in commands),
+            reference_path=old_key, reference_capacity=path["reference_capacity"], added_reservation=1,
+            runtime_wired=False, bound_complete=False)
+        mapping[old_key] = key
+    result = dict(version=PLAN_VERSION, previous_file_checkpoint=dict(PREVIOUS_CHECKPOINT),
+        current_source_hashes=copy.deepcopy(report["source_hashes"]),
+        historical_register_sha256=canonical_sha(report["normal_register"]), normal=normal,
+        source_derived_row_ids=derived, remaining_retained_rows_require_revalidation=True,
+        recovery_paths=paths, prefix_bindings=[dict(prefix=i, reference_path=p["safety_path"],
+            recovery_path=mapping[p["safety_path"]]) for i,p in enumerate(report["fault_prefixes"])],
+        fault_prefixes_reference_sha256=canonical_sha(report["fault_prefixes"]),
+        historical_normal=2338, approved_limit=APPROVED, historical_headroom=APPROVED-2338,
+        setup_increment_only_headroom=APPROVED-2338-1, remaining_headroom_is_not_full_bound=True,
+        dynamic_inputs=[
+            dict(id="temporary_object_receipts", owner="Main/normal executor", implementation="IMPLEMENTED_RENDERERS",
+                 needed="Fresh guard run/three ids; validated observer and guard receipts for two DO hashes.",
+                 source=source("registered_lifecycle.py", "close_temporary")),
+            dict(id="full_adapter_fault_position", owner="D", implementation="MISSING_FULL_ENDCHAIN_ADAPTER",
+                 needed="Map each fault to actual precharge/dispatch/confirmation event, not rollback-isolated component boundary.",
+                 source=source("integral_failure_runtime_workflow.py", "WorkflowDriver")),
+            dict(id="full_adapter_recovery_ownership", owner="D/Main", implementation="MISSING_JOIN",
+                 needed="Ordered child termination, connection transaction states, original error, Auth mint barrier and one-shot cleanup ownership; join inner rollback and parent finally without assuming success.",
+                 source=source("registered_runner.py", "execute/finally")),
+            dict(id="full_adapter_fixture_placement", owner="D/C/Main", implementation="MISSING_JOIN",
+                 needed="Exact committed writer/capture prefix and backend terminality before parent cleanup; additive/replacement mapping to prepaid cleanup130 and existing safety rows.",
+                 source=source("fixture_parent_closure.py", "parent closure")),
+            dict(id="managed_cli_runtime_evidence", owner="A/B/Main", implementation="PENDING_SAME_SOURCE_RECEIPTS",
+                 needed="72 per-user dispatch/ticket joins, 18 Auth identities, three CLI slots and unknown-startup/cleanup suffixes. Not supplied by D rollback isolation.")],
+        executable_offline_model=True, runtime_adapter_wired=False, bound_complete=False,
+        minimal_cap=None, hosted_admitted=False)
+    result["plan_sha256"] = canonical_sha(result)
+    return result
+
+
+def bind_current_plan(plan, *, run_id, ids, observer_receipt, guard_receipt):
+    """Pure existing SQL renderers validate caller receipts; no database/HTTP calls."""
+    from admission_binding import OLD_RUN
+    from complete_register import bound_module
+    from sql_protocol import statements
+    require(str(uuid.UUID(run_id)) == run_id and run_id not in (OLD_RUN, NEW_RUN), "plan_fresh_case_binding")
+    require(plan["plan_sha256"] == canonical_sha({k:v for k,v in plan.items() if k != "plan_sha256"}),
+            "plan_digest_changed")
+    result = copy.deepcopy(plan)
+    for owner, receipt in (("observer", observer_receipt), ("guard", guard_receipt)):
+        filename = REMOVAL_SOURCES[owner]
+        module = bound_module("budget_current_" + owner, HERE / filename)
+        parsed = statements(module.remove(run_id, ids, receipt))
+        rows = [r for r in result["normal"]["rows"] if r.get("owner") == owner and r["action"] == "remove"]
+        require(len(rows) == len(parsed) == 5, "plan_bound_removal_shape")
+        for row, actual in zip(rows, parsed):
+            require(row["source"]["sha256"] == digest(HERE / filename), "plan_removal_source_changed")
+            if not row["binding_required"]:
+                require(row["sql_sha256"] == actual["sha256"], "plan_removal_fixed_sql_changed")
+            row.update(sql_sha256=actual["sha256"], binding_required=False,
+                       binding_input_sha256=canonical_sha(dict(run_id=run_id, ids=ids, receipt=receipt)))
+    result["parent_plan_sha256"] = plan["plan_sha256"]
+    result["plan_sha256"] = canonical_sha({k:v for k,v in result.items() if k != "plan_sha256"})
+    return result
+
+
+def recovery_reservations(plan, path_key, attempts):
+    """Run the one-shot reservation model only; an unknown attempt consumes its charge."""
+    require(plan["plan_sha256"] == canonical_sha({k:v for k,v in plan.items() if k != "plan_sha256"}),
+            "plan_digest_changed")
+    path = plan["recovery_paths"][path_key]
+    labels = {r["action"]: r["sql"] for r in path["commands"]}
+    used, seen = 0, set()
+    require(isinstance(attempts, list) and len(attempts) <= len(labels), "plan_recovery_attempts")
+    for attempt in attempts:
+        label = attempt["action"]
+        require(label in labels and label not in seen, "plan_recovery_unknown_or_duplicate")
+        require(attempt["outcome"] in ("confirmed", "unknown", "failed"), "plan_recovery_outcome")
+        seen.add(label)
+        used += labels[label]
+    return dict(consumed_capacity=used, reserved_capacity=path["reserved_capacity"], refunds=0,
+                dispatches_executed=0, hosted_admitted=False, minimal_cap=None)
+
+
+def cleanup_composition_plan(case_count, eligible_count, unknown_count):
+    """Instantiate every added C/B command and stopping suffix; no live objects."""
+    import fixture_producer_scope as producer
+    import fixture_parent_physical_zero as physical
+    import fixture_db_terminality as db
+    import fixture_cleanup_runtime_sql as sql
+    require(all(type(n) is int for n in (case_count, eligible_count, unknown_count)), "cleanup_plan_integer_counts")
+    require(1 <= case_count <= physical.MAX_CASES and 1 <= unknown_count <= case_count
+            and 0 <= eligible_count <= case_count - unknown_count, "cleanup_plan_disjoint_case_sets")
+    method = _method("admission_cleanup_composition.py", "finalize", "Closure")
+    calls = [n for n in ast.walk(method) if isinstance(n, ast.Call) and ast.unparse(n.func) == "auth_parent.finalize"]
+    require(len(calls) == 1, "cleanup_parent_call_drift")
+    costs = [ast.literal_eval(k.value) for k in calls[0].keywords if k.arg == "delete_costs"]
+    require(len(costs) == 1, "cleanup_parent_cost_binding")
+    auth = parent_auth_finalizer_component(costs[0])
+    scope = [("begin", "BEGIN TRANSACTION READ ONLY"), *producer.QUERIES, ("rollback", "ROLLBACK")]
+    zero = [("zero_begin", "BEGIN TRANSACTION READ ONLY"), ("zero_session", db.SESSION),
+            ("backend_absence", db.ACTIVITY), ("zero_inventory", sql.INVENTORY), ("zero_rollback", "ROLLBACK")]
+    suffix = physical.protocol_plan(case_count, eligible_count)
+    require(len(scope) == producer.LIMIT == 10 and len(zero) == db.ZERO_LIMIT == 5,
+            "cleanup_scope_zero_cost_drift")
+    require(len(suffix) == 20 + 2 * case_count + (1 + len(sql.ORDER)) * eligible_count
+            and len(sql.ORDER) == 13 and physical.FIXED_LIMIT == 21, "cleanup_physical_cost_drift")
+    blocks = []
+    for name, pairs, filename, cap, mode in (
+        ("scope_before", scope, "fixture_producer_scope.py", producer.LIMIT, "scope"),
+        ("scope_after", scope, "fixture_producer_scope.py", producer.LIMIT, "scope"),
+        *(("unknown_zero_%d" % i, zero, "fixture_db_terminality.py", db.ZERO_LIMIT, "zero")
+          for i in range(unknown_count)),
+        ("physical_suffix", suffix, "fixture_parent_physical_zero.py", len(suffix) + 1, "physical")):
+        binding = source(filename, "Scope._observe/collect" if mode == "scope" else
+                         "TrackedRuntime.physical_zero" if mode == "zero" else "protocol_plan/run")
+        rows = [dict(id=name + ":" + str(i), phase="safety", action=action, cost=1, kind="native",
+            sql_sha256=hashlib.sha256(text.encode()).hexdigest(), source=binding,
+            precharge_before_send=True, execution_ready=False) for i,(action,text) in enumerate(pairs)]
+        rollback = dict(id=name + ":failure_rollback", phase="safety", action="failure_rollback",
+            cost=1, kind="native", sql_sha256=hashlib.sha256(b"ROLLBACK").hexdigest(), source=binding)
+        faults = []
+        for i,row in enumerate(rows):
+            action = row["action"]
+            # Physical COMMIT uncertainty closes without a second SQL attempt.
+            rollback_eligible = i < len(rows) - 1 and (mode != "physical" or action != "registry_commit")
+            for outcome in ("before_charge_rejected", "charge_storage_failed", "unknown_after_charge", "validation_failed"):
+                charged = 0 if outcome == "before_charge_rejected" else 1
+                suffix_rows = [rollback] if rollback_eligible else []
+                if outcome == "charge_storage_failed" and mode != "zero":
+                    suffix_rows = []  # producer.Meter poisons itself before any dispatch.
+                if mode == "physical" and action == "registry_commit" and outcome == "validation_failed":
+                    suffix_rows = []  # Confirmed commit has began=False before later checks.
+                faults.append(dict(at=row["id"], outcome=outcome, consumed_capacity=i + charged,
+                    suffix=[r["id"] for r in suffix_rows], suffix_capacity=len(suffix_rows),
+                    required_capacity=i + charged + len(suffix_rows), later_blocks_admitted=False,
+                    unknown_commit_reclassified=False, retry=False, refunds=0))
+        blocks.append(dict(id=name, rows=rows, failure_only=[rollback], fault_prefixes=faults,
+            normal_capacity=len(rows), meter_cap=cap, maximum_modeled_path=max([len(rows)]+[
+                f["required_capacity"] for f in faults]), source=binding))
+    blocks.append(dict(id="parent_auth", rows=auth["rows"], fault_prefixes=auth["fault_paths"],
+        normal_capacity=auth["diagnostic_capacity"], meter_cap=auth["diagnostic_capacity"],
+        maximum_modeled_path=auth["diagnostic_capacity"], failure_only=[], source=auth["source"]))
+    prefixes, spent = [], 0
+    for block in blocks:
+        for fault in block["fault_prefixes"]:
+            prefixes.append(dict(fault, block=block["id"],
+                composition_consumed_capacity=spent + fault["consumed_capacity"],
+                composition_required_capacity=spent + fault["required_capacity"],
+                later_blocks_admitted=False))
+        spent += block["normal_capacity"]
+    return dict(format="admission-cleanup-composition-plan-v1",
+        counts=dict(cases=case_count, eligible=eligible_count, unknown=unknown_count),
+        blocks=blocks, fault_prefixes=prefixes, normal_prepaid_capacity=spent,
+        declared_meter_caps=sum(b["meter_cap"] for b in blocks),
+        maximum_modeled_path=max([spent]+[p["composition_required_capacity"] for p in prefixes]),
+        accounting_domain="additional_disposable_diagnostic_not_2349",
+        graph_order=[b["id"] for b in blocks],
+        external_interval=dict(after="scope_before", before="scope_after",
+            existing_component_refs=["parent_bootstrap", "fixture_diagnostic", "opt_in_diagnostics.tracked_db"],
+            counted_here=False, not_zero_cost=True),
+        transport_boundaries=dict(admin_suspend_calls=2, close_attempts=2, reconnect_attempts=2,
+            explicit_new_sql=0, startup_protocol_cost=None,
+            source=source("../../phase6e_server_v1/ci_auth.py", "environment/suspend_admin")),
+        wrapper_final_observers=dict(commands=3, additive=False, already_existing_ci_auth=True,
+            source=source("../../phase6e_server_v1/ci_auth.py", "environment/finally/numeric_final_observers")),
+        scopes_are_not_global_barriers=True, observed_execution=False,
+        original_unknown_claims_released=False, bound_complete=False, minimal_cap=None, hosted_admitted=False)
+
+
+def cleanup_composition_register():
+    """Finite parameter domain plus source-backed template graphs, not one guessed total."""
+    import fixture_parent_physical_zero as physical
+    shapes, cases = {}, []
+    for n in range(1, physical.MAX_CASES + 1):
+        for eligible in range(n):
+            key = "%d:%d" % (n, eligible)
+            exemplar = cleanup_composition_plan(n, eligible, 1)
+            shapes[key] = exemplar["blocks"][-2]
+            for unknown in range(1, n - eligible + 1):
+                normal = exemplar["normal_prepaid_capacity"] + (unknown - 1) * 5
+                cases.append(dict(cases=n, eligible=eligible, unknown=unknown,
+                    physical_shape=key, normal_prepaid_capacity=normal, declared_meter_caps=normal + 1))
+    template = cleanup_composition_plan(1, 0, 1)
+    return dict(format="admission-cleanup-composition-register-v1",
+        compile_api="admission_budget_register.cleanup_composition_plan(N,E,U)",
+        shared_blocks={b["id"]:b for b in template["blocks"] if b["id"] != "physical_suffix"},
+        physical_shapes=shapes, parameter_cases=cases, graph_program=[
+            dict(block="scope_before", repeat=1),
+            dict(external_interval=template["external_interval"]),
+            dict(block="scope_after", repeat=1), dict(block="unknown_zero_0", repeat="U"),
+            dict(block="physical_shapes[N:E]", repeat=1), dict(block="parent_auth", repeat=1)],
+        transport_boundaries=template["transport_boundaries"], wrapper_final_observers=template["wrapper_final_observers"],
+        actual_case_selection_pending=True, complete_parameterized_protocol_model=True,
+        source=source("admission_cleanup_composition.py", "Closure.begin/bind_terminal/finalize"),
+        accounting_domain="additional_disposable_diagnostic_not_2349",
+        not_a_total_for_the_parent_ci_job=True, bound_complete=False, minimal_cap=None, hosted_admitted=False)
+
+
 def assemble(folder=REFERENCE):
     normal = assemble_normal(folder)
     fixture = fixture_component(normal["rows"])
@@ -667,6 +1225,9 @@ def assemble(folder=REFERENCE):
             "All real phase adapters, with command lists for cleanup/final/closure failures.",
             "No duplicated rollback, existing safety Auth, or prepaid 130 cleanup slots.",
             "Auth reconciliation and parent fixture suffix eligibility, barrier and actual receipts remain unbound."]),
+        dict(id="setup_rollback", owner="Main", source_dispatch_cost=1, inputs=[
+            "New plan v2 reserves rollback_setup=1; wire its label into runtime without changing historical safety rows.",
+            "Bind lifecycle_rollback versus workflow.finally with no double dispatch or fictitious alias."]),
     ]
     prefixes, safety_paths = prefix_register(normal)
     sources = {name: digest(HERE / name) for name in (
@@ -679,6 +1240,16 @@ def assemble(folder=REFERENCE):
         "fixture_cleanup_evidence.py", "sql_protocol.py", "native_runtime.py",
         "fixture_control_ownership.py", "test_fixture_control_ownership.py",
         "fixture_parent_closure.py", "test_fixture_parent_closure.py",
+        "fixture_db_terminality.py", "test_fixture_db_terminality.py",
+        "admission_module_binding.py", "auth_protocol.py", "auth_evidence.py", "fixture_lifecycle.py",
+        "runtime_budget.py", "registered_runner.py", "control_recovery.py", "integral_stream.py",
+        "auth_failure_parent_finalizer.py", "auth_failure_parent_finalizer_test.py",
+        "auth_failure_tracked.py", "auth_failure_tracked_test.py",
+        "admission_cleanup_composition.py", "test_admission_cleanup_composition.py",
+        "fixture_producer_scope.py", "test_fixture_producer_scope.py",
+        "fixture_parent_physical_zero.py", "test_fixture_parent_physical_zero.py",
+        "execution_context.mjs", "workflow_composition.mjs", "composed_handler.mjs", "integral_auth.mjs",
+        "session_transport.mjs", "request_transport.mjs", "integral_workflow.mjs",
         "admission_fixture_context.py", "admission_ci.py", "admission_journal.py",
         "admission_budget_graph.py", "admission_budget_receipts.py",
         "migration_failure_boundaries.py", "test_migration_failure_boundaries.py") + CLI_SOURCE_FILES}
@@ -686,6 +1257,10 @@ def assemble(folder=REFERENCE):
         HERE.parents[1] / "phase6e_server_v1" / "cli_isolation.py")
     sources["_offline/phase6e_server_v1/ci_profile.py"] = digest(
         HERE.parents[1] / "phase6e_server_v1" / "ci_profile.py")
+    for filename in REMOVAL_SOURCES.values():
+        binding = source(filename, "remove")
+        sources[binding["path"]] = binding["sha256"]
+    sources["_offline/phase6e_server_v1/ci_auth.py"] = digest(HERE.parents[1] / "phase6e_server_v1" / "ci_auth.py")
     report = dict(status="NO_GO_INCOMPLETE_BOUND", preparation_run_id=NEW_RUN,
                 source_hashes=sources, approved_limit=APPROVED, minimal_cap=None,
                 normal_register=normal, fault_prefixes=prefixes, reference_safety_paths=safety_paths,
@@ -697,6 +1272,14 @@ def assemble(folder=REFERENCE):
                 bound_complete=False, hosted_admitted=False, executable=False,
                 historical_reference_read_only=True, new_component_costs_silently_added=False,
                 scope="Concrete ordered reference reconciliation plus actual component contracts; not full-chain evidence.")
+    report["components"]["opt_in_diagnostics"] = opt_in_diagnostics(
+        fixture, report["components"]["fixture_diagnostic"], auth)
+    report["normal_dispatch_mapping"] = normal_dispatch_mapping(normal)
+    report["components"]["rollback_dispatch_mapping"] = rollback_dispatch_mapping()
+    report["components"]["parent_auth_finalizer"] = parent_auth_finalizer_component(
+        {role: 128 for role in ("a", "trainer", "b")})
+    report["components"]["cleanup_composition"] = cleanup_composition_register()
+    report["current_plan"] = current_plan(report)
     from admission_budget_graph import assemble_graph
     report["command_graph"] = assemble_graph(report)
     def check_bindings(value):

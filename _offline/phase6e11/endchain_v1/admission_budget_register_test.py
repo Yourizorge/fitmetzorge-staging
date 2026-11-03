@@ -22,6 +22,299 @@ class ConcreteRegisterTests(unittest.TestCase):
     def prefix(self, node, outcome="confirmed"):
         return self.prefixes[node, outcome]
 
+    def test_composed_cleanup_all_source_bounded_parameter_shapes_are_registered(self):
+        import fixture_parent_physical_zero as physical
+        model = self.report["components"]["cleanup_composition"]
+        self.assertEqual(len(model["parameter_cases"]), 286)
+        self.assertEqual(len(model["physical_shapes"]), 66)
+        for case in model["parameter_cases"]:
+            n,e,u = case["cases"],case["eligible"],case["unknown"]
+            shape = model["physical_shapes"][case["physical_shape"]]
+            expected = physical.protocol_plan(n,e)
+            self.assertEqual([r["action"] for r in shape["rows"]], [label for label,_ in expected])
+            self.assertEqual([r["sql_sha256"] for r in shape["rows"]],
+                             [register.hashlib.sha256(sql.encode()).hexdigest() for _,sql in expected])
+            self.assertEqual(case["normal_prepaid_capacity"], 20 + len(expected) + 5*u + 402)
+            self.assertEqual(case["declared_meter_caps"], case["normal_prepaid_capacity"] + 1)
+        self.assertFalse(model["bound_complete"])
+        self.assertTrue(model["not_a_total_for_the_parent_ci_job"])
+
+    def test_composed_cleanup_command_order_and_all_fault_prefixes_stop_later_blocks(self):
+        plan = register.cleanup_composition_plan(3,1,1)
+        self.assertEqual(plan["graph_order"], ["scope_before","scope_after","unknown_zero_0","physical_suffix","parent_auth"])
+        self.assertEqual([b["normal_capacity"] for b in plan["blocks"]], [10,10,5,40,402])
+        self.assertEqual(plan["normal_prepaid_capacity"], 467)
+        self.assertEqual(plan["declared_meter_caps"], 468)
+        self.assertTrue(all(p["later_blocks_admitted"] is False for p in plan["fault_prefixes"]))
+        self.assertTrue(all(p["composition_required_capacity"] <= 468 for p in plan["fault_prefixes"]))
+        self.assertFalse(plan["external_interval"]["counted_here"])
+        self.assertTrue(plan["external_interval"]["not_zero_cost"])
+
+    def test_composed_unknown_commit_no_rollback_or_auth_and_no_claim_release(self):
+        plan = register.cleanup_composition_plan(2,0,2)
+        physical = next(b for b in plan["blocks"] if b["id"] == "physical_suffix")
+        commit = next(r["id"] for r in physical["rows"] if r["action"] == "registry_commit")
+        faults = [p for p in physical["fault_prefixes"] if p["at"] == commit]
+        self.assertTrue(all(not p["suffix"] and not p["later_blocks_admitted"] for p in faults))
+        self.assertTrue(all(p["unknown_commit_reclassified"] is False for p in faults))
+        self.assertFalse(plan["original_unknown_claims_released"])
+
+    def test_composed_persistence_failure_distinguishes_producer_poison_from_zero_meter(self):
+        plan = register.cleanup_composition_plan(1,0,1)
+        for block in plan["blocks"][:3]:
+            failure = next(p for p in block["fault_prefixes"] if p["at"] == block["rows"][0]["id"]
+                           and p["outcome"] == "charge_storage_failed")
+            self.assertEqual(failure["consumed_capacity"], 1)
+            self.assertEqual(failure["suffix_capacity"], 1 if block["id"].startswith("unknown_zero") else 0)
+
+    def test_composed_suspend_admin_has_no_invented_startup_cost_or_extra_observer_charge(self):
+        plan = register.cleanup_composition_plan(1,0,1)
+        transport = plan["transport_boundaries"]
+        self.assertEqual(transport["close_attempts"], 2)
+        self.assertEqual(transport["reconnect_attempts"], 2)
+        self.assertEqual(transport["explicit_new_sql"], 0)
+        self.assertIsNone(transport["startup_protocol_cost"])
+        self.assertEqual(plan["wrapper_final_observers"]["commands"], 3)
+        self.assertFalse(plan["wrapper_final_observers"]["additive"])
+        self.assertEqual(self.report["normal_register"]["normal_capacity"], 2338)
+        self.assertEqual(self.report["approved_limit"], 2349)
+
+    def test_composed_case_counts_reject_bool_overlap_zero_unknown_and_excess(self):
+        for args in ((True,0,1),(0,0,1),(12,0,1),(3,2,2),(3,0,0),(3,-1,1)):
+            with self.assertRaises(ValueError):
+                register.cleanup_composition_plan(*args)
+
+    def test_current_v2_reserves_setup_at_every_prefix_without_touching_reference(self):
+        plan = self.report["current_plan"]
+        self.assertEqual(plan["version"], "admission-current-plan-v2")
+        self.assertEqual(plan["previous_file_checkpoint"], register.PREVIOUS_CHECKPOINT)
+        self.assertEqual(plan["historical_register_sha256"], register.canonical_sha(self.normal))
+        self.assertEqual(len(plan["prefix_bindings"]), len(self.report["fault_prefixes"]))
+        for binding in plan["prefix_bindings"]:
+            old = self.report["reference_safety_paths"][binding["reference_path"]]
+            new = plan["recovery_paths"][binding["recovery_path"]]
+            self.assertNotIn("rollback_setup", [r["action"] for r in old["commands"]])
+            self.assertEqual(new["reserved_capacity"], old["reference_capacity"] + 1)
+            self.assertEqual(sum(r["action"] == "rollback_setup" for r in new["commands"]), 1)
+        self.assertEqual(plan["historical_normal"], 2338)
+        self.assertEqual(plan["historical_headroom"], 11)
+        self.assertEqual(plan["setup_increment_only_headroom"], 10)
+        self.assertFalse(plan["bound_complete"])
+        self.assertIsNone(plan["minimal_cap"])
+
+    def test_new_recovery_reservation_is_callable_unknown_consumed_no_retry(self):
+        plan = self.report["current_plan"]
+        key = next(iter(plan["recovery_paths"]))
+        for outcome in ("confirmed", "unknown", "failed"):
+            receipt = register.recovery_reservations(plan, key, [dict(action="rollback_setup", outcome=outcome)])
+            self.assertEqual(receipt["consumed_capacity"], 1)
+            self.assertEqual(receipt["refunds"], 0)
+            self.assertEqual(receipt["dispatches_executed"], 0)
+        with self.assertRaisesRegex(ValueError, "unknown_or_duplicate"):
+            register.recovery_reservations(plan, key, [dict(action="rollback_setup", outcome="unknown")] * 2)
+        with self.assertRaisesRegex(ValueError, "unknown_or_duplicate"):
+            register.recovery_reservations(plan, key, [dict(action="invented", outcome="confirmed")])
+
+    def test_current_thirty_rows_have_source_templates_and_only_two_receipt_inputs(self):
+        plan = self.report["current_plan"]
+        self.assertEqual(len(plan["source_derived_row_ids"]), 30)
+        rows = plan["normal"]["rows"]
+        removals = [r for r in rows if r["action"] == "remove"]
+        self.assertEqual([r["owner"] for r in removals], ["observer"] * 5 + ["guard"] * 5)
+        self.assertEqual([r["statement_index"] for r in removals if r["binding_required"]], [3, 3])
+        self.assertTrue(all(r["sql_sha256"] is None for r in removals if r["binding_required"]))
+        self.assertEqual(sum(r["sql_sha256"] is not None for r in removals), 8)
+        actions = [r["action"] for r in rows]
+        self.assertLess(actions.index("gates_final_pre_begin"), actions.index("cli_final"))
+        self.assertLess(actions.index("cli_final"), actions.index("remove"))
+        self.assertLess(max(i for i,r in enumerate(rows) if r["action"] == "remove"),
+                        actions.index("gates_final_post_begin"))
+        for stage in ("pre", "post"):
+            actual = register.current_final_rows(stage)
+            old = register.final_gate(stage)
+            self.assertEqual([(r["action"],r["sql_sha256"]) for r in actual],
+                             [(r["action"],r["sql_sha256"]) for r in old])
+            self.assertTrue(all(r["derivation"] == "AST_call_order_and_PG17_statement_parser" for r in actual))
+
+    def test_current_plan_rejects_final_source_schedule_drift(self):
+        original = register._method
+        def changed(filename, name, cls=None):
+            node = original(filename, name, cls)
+            if name == "final_metadata":
+                node.body.append(register.ast.parse("query(phase+'_unexpected', 'SELECT 1')").body[0])
+            return node
+        with patch.object(register, "_method", changed), self.assertRaisesRegex(ValueError, "final_call_order_drift"):
+            register.current_final_rows("pre")
+
+    def test_current_removal_binding_uses_existing_pure_renderers_fresh_case_only(self):
+        from complete_register import bound_module
+        audit = bound_module("budget_test_audit", register.HERE / register.REMOVAL_SOURCES["observer"])
+        run_id = str(uuid.uuid4())
+        ids = {r:str(uuid.uuid4()) for r in audit.g.ROLES}
+        schema, deadline = audit.scope(run_id, ids), "2026-11-03T12:00:00+00:00"
+        # Synthetic renderer inputs, not database or CI evidence.
+        observer = dict(schema=schema, lease=dict(run=run_id, expires_at=deadline, version=1),
+            secure_function=True, function_count=1, relations=audit.RELATIONS, dependencies=7,
+            body_sha=register.hashlib.sha256(audit.function_body(schema, ids, deadline).encode()).hexdigest(),
+            function_sha="a"*64, triggers=[dict(name=schema+'_'+str(i),table='auth.'+table,enabled='O',type=29,sha='b'*64)
+                for i,table in enumerate(audit.TABLES)])
+        guard_schema = audit.g.scope(run_id, ids)
+        guard = dict(schema=guard_schema, run=run_id, function_sha='c'*64,
+                     trigger_shas={guard_schema+suffix:'d'*64 for suffix in ('_i','_u','_d')})
+        plan = self.report["current_plan"]
+        before = register.canonical_sha(plan)
+        bound = register.bind_current_plan(plan, run_id=run_id, ids=ids,
+                                           observer_receipt=observer, guard_receipt=guard)
+        self.assertEqual(register.canonical_sha(plan), before)
+        self.assertFalse(any(r.get("binding_required") for r in bound["normal"]["rows"]))
+        self.assertNotEqual(bound["plan_sha256"], plan["plan_sha256"])
+        self.assertFalse(bound["hosted_admitted"])
+        from admission_binding import OLD_RUN, NEW_RUN
+        for forbidden in (OLD_RUN, NEW_RUN):
+            with self.assertRaisesRegex(ValueError, "fresh_case_binding"):
+                register.bind_current_plan(plan, run_id=forbidden, ids=ids,
+                                           observer_receipt=observer, guard_receipt=guard)
+        observer["function_count"] = 2
+        with self.assertRaisesRegex(ValueError, "audit_objects"):
+            register.bind_current_plan(plan, run_id=run_id, ids=ids,
+                                       observer_receipt=observer, guard_receipt=guard)
+
+    def test_setup_rollback_is_explicit_missing_cost_not_identity_lock_alias(self):
+        mapping = self.report["components"]["rollback_dispatch_mapping"]
+        self.assertEqual(mapping["missing_labels"], ["rollback_setup"])
+        self.assertEqual(mapping["missing_conditional_commands"], 1)
+        rows = {r["action"]: r for r in mapping["rows"]}
+        self.assertEqual(rows["rollback_auth_lock"]["reserved_capacity"], 1)
+        self.assertIsNone(rows["rollback_setup"]["reserved_capacity"])
+        self.assertIsNone(rows["rollback_setup"]["equivalent_alias"])
+        self.assertEqual(rows["rollback_setup"]["source_dispatch_cost"], 1)
+        self.assertFalse(mapping["inner_and_finally_deduplicated"])
+        self.assertFalse(mapping["approved_limit_changed"])
+        self.assertIsNone(mapping["full_required_capacity"])
+
+    def test_final_metadata_templates_bind_the_actual_remove_dispatch_context(self):
+        for row in register.final_gate("pre") + register.final_gate("post"):
+            self.assertEqual(row["action_binding"], {"kind": "lifecycle", "operation": "remove"})
+
+    def test_parent_auth_finalizer_has_source_ordered_18_native_and_three_prepaid_deletes(self):
+        import auth_failure_parent_finalizer as parent
+        component = self.report["components"]["parent_auth_finalizer"]
+        rows = component["rows"]
+        self.assertEqual([r["action"] for r in rows if r["kind"] == "native"], list(parent.NATIVE))
+        self.assertEqual(len(rows), 21)
+        self.assertEqual(component["native_commands"], 18)
+        self.assertEqual(component["http_maximum"], 3)
+        self.assertEqual(sum(r["cost"] for r in rows), 402)
+        deletes = [r for r in rows if r["kind"] == "auth_reserved"]
+        self.assertEqual([r["cost"] for r in deletes], [128, 128, 128])
+        self.assertTrue(all(r["second_transport_charge"] == 0 for r in deletes))
+        self.assertTrue(all(r["observed_managed_cost"] is None for r in deletes))
+        self.assertFalse(component["actual_execution_observed"])
+        self.assertFalse(component["hosted_reference_changed"])
+        self.assertEqual(component["source"]["sha256"], self.report["source_hashes"]["auth_failure_parent_finalizer.py"])
+
+    def test_parent_auth_delete_unknown_keeps_measurement_and_absence_but_stops_later_roles(self):
+        component = self.report["components"]["parent_auth_finalizer"]
+        faults = {p["at"]: p for p in component["fault_paths"]}
+        for role, total in (("a", 136), ("trainer", 267), ("b", 398)):
+            prefix = faults["parent_auth_" + role + ":delete"]
+            self.assertEqual(prefix["suffix"], ["parent_auth_" + role + ":stats_after_delete",
+                                                 "parent_auth_" + role + ":after"])
+            self.assertEqual(prefix["required_capacity"], total)
+            self.assertFalse(prefix["later_role_delete_admitted"])
+            self.assertFalse(prefix["retry"])
+            self.assertEqual(prefix["refunds"], 0)
+            self.assertEqual(len(faults["parent_auth_" + role + ":stats_after_delete"]["suffix"]), 1)
+        self.assertEqual(max(p["required_capacity"] for p in faults.values()), 402)
+        self.assertEqual(self.normal["normal_capacity"], 2338)
+        self.assertIsNone(self.report["minimal_cap"])
+
+    def test_parent_auth_costs_are_explicit_not_a_default_or_release_bound(self):
+        from auth_failure_tracked import Blocked
+        for costs in ({}, dict(a=128, trainer=128), dict(a=True, trainer=128, b=128)):
+            with self.assertRaisesRegex(Blocked, "explicit_delete_costs"):
+                register.parent_auth_finalizer_component(costs)
+        self.assertFalse(self.report["components"]["parent_auth_finalizer"]["managed_release_costs_proven"])
+
+    def test_opt_in_registration_anchors_are_exact_business_connection_sites(self):
+        component = self.report["components"]["opt_in_diagnostics"]
+        db = component["tracked_db"]
+        counts = collections.Counter(r["case"] for r in db["registration_anchors"])
+        self.assertEqual(dict(counts), dict(setup=1, full=4, partial=4, parent_only=4,
+            dependent_without_workspace=4, zero=3, lost_writer_commit=4, missing_barrier=2,
+            foreign_row=5, lost_commit=4, interrupted_delete=4, lock_timeout=5, closing=1))
+        self.assertEqual(db["intended_component_registrations"], 45)
+        self.assertEqual(db["component_additional_protocol_commands"], 47)
+        self.assertEqual(len({r["before"] for r in db["registration_anchors"]}), 45)
+        self.assertTrue(db["registration_before_component_not_counted_twice"])
+        self.assertFalse(component["observed_execution"])
+        self.assertIsNone(component["native_startup_protocol_bound"])
+
+    def test_opt_in_sql_templates_and_limits_are_source_bound(self):
+        import fixture_db_terminality as db
+        component = self.report["components"]["opt_in_diagnostics"]["tracked_db"]
+        self.assertEqual(component["registration_rows"][0]["sql_sha256"],
+                         register.hashlib.sha256(db.REGISTER.encode()).hexdigest())
+        self.assertEqual([r["action"] for r in component["terminal_rows"]],
+                         ["observer_identity", "backend_absence"])
+        self.assertEqual([r["action"] for r in component["physical_zero_rows"]],
+                         ["zero_begin", "zero_session", "backend_absence", "zero_inventory", "zero_rollback"])
+        self.assertEqual([p["total"] for p in component["physical_zero_faults"]], [2, 3, 4, 5, 5])
+        self.assertTrue(all(not p["retry"] for p in component["physical_zero_faults"]))
+        self.assertFalse(component["original_claims_released"])
+        self.assertFalse(component["registry_cleanup_admitted"])
+        for name in ("fixture_db_terminality.py", "test_fixture_db_terminality.py"):
+            self.assertEqual(self.report["source_hashes"][name], register.digest(register.HERE / name))
+        with patch.object(db, "ZERO_LIMIT", 6):
+            with self.assertRaisesRegex(ValueError, "tracked_db_contract_drift"):
+                register.opt_in_diagnostics(self.report["components"]["fixture"],
+                    self.report["components"]["fixture_diagnostic"], self.report["components"]["auth"])
+
+    def test_parent_suffix_has_22_case_11_registry_with_no_unknown_commit_replay(self):
+        parent = self.report["components"]["opt_in_diagnostics"]["parent_closure"]
+        self.assertEqual(len(parent["case_rows"]), 22)
+        self.assertEqual(len(parent["registry_rows"]), 11)
+        self.assertEqual([p["total"] for p in parent["registry_faults"]],
+                         [6, 7, 8, 9, 10, 11, 11, 8, 9, 10, 11])
+        self.assertNotIn("parent_registry_rollback", parent["registry_faults"][6]["suffix"])
+        self.assertFalse(parent["original_unknown_commit_replayed"])
+        self.assertFalse(parent["tracked_factory_used"])
+        self.assertIn("mint_barrier", parent["barrier_required"])
+
+    def test_reconciliation_uses_remaining_524_not_a_second_allocation(self):
+        component = self.report["components"]["opt_in_diagnostics"]
+        paths = {p["case"]: p for p in component["auth_reconciliation"]}
+        self.assertEqual({k: p["diagnostic_capacity"] for k, p in paths.items()},
+                         dict(admin_unknown=1, cleanup_interrupted=132, missing_mint_barrier=1))
+        for p in paths.values():
+            self.assertEqual(p["original_reservation"], 524)
+            self.assertEqual(p["additional_reservation"], 0)
+            self.assertFalse(p["original_claim_released"])
+            self.assertFalse(p["journal_durability_verified"])
+            self.assertIsNone(p["managed_release_cost"])
+        self.assertEqual([r["action"] for r in paths["cleanup_interrupted"]["rows"]],
+                         ["observe", "stats_before_delete", "delete", "stats_after_delete", "verify_zero"])
+        self.assertEqual(component["auth_transport"]["extra_sql_dispatched_by_relay"], 0)
+        self.assertFalse(component["auth_transport"]["full_normal_transport_mapping_proven"])
+
+    def test_expected_dispatch_mapping_is_lossless_not_current_execution_proof(self):
+        contract = self.report["normal_dispatch_mapping"]
+        self.assertEqual([r["row_id"] for r in contract["rows"]], [r["id"] for r in self.rows])
+        for mapped, row in zip(contract["rows"], self.rows):
+            self.assertEqual(mapped["expected"]["action_binding"], row.get("action_binding", {}))
+            self.assertEqual(mapped["expected"]["sql_sha256"], row.get("sql_sha256"))
+            self.assertFalse(mapped["matching_current_dispatch_observed"])
+        counts = collections.Counter(r["stream"] for r in contract["rows"])
+        self.assertEqual(counts["workflow_auth_protocol"], 72)
+        self.assertEqual(counts["auth_protocol_operation"], 18)
+        self.assertEqual(counts["cli_protocol_slot"], 27)
+        self.assertEqual(counts["integral_preflight"], 4)
+        self.assertFalse(contract["complete_dispatch_bound"])
+        self.assertEqual(self.normal["normal_capacity"], 2338)
+        self.assertEqual(self.report["approved_limit"], 2349)
+        self.assertIsNone(self.report["minimal_cap"])
+        self.assertEqual(self.report["status"], "NO_GO_INCOMPLETE_BOUND")
+
     def safety_actions(self, prefix):
         return {r["action"] for r in self.report["reference_safety_paths"][prefix["safety_path"]]["commands"]}
 
@@ -371,7 +664,7 @@ class ConcreteRegisterTests(unittest.TestCase):
     def test_component_insertion_and_overlap_stay_explicitly_unresolved(self):
         unresolved = {row["id"] for row in self.report["unresolved_inputs"]}
         self.assertEqual(unresolved, {"normal_source_revalidation", "cli_predispatch",
-                                    "auth_partial_costs", "fixture_placement", "recovery_orchestration"})
+                                    "auth_partial_costs", "fixture_placement", "recovery_orchestration", "setup_rollback"})
         self.assertFalse(self.report["new_component_costs_silently_added"])
         self.assertFalse(self.report["components"]["fixture"]["normal_and_failure_placement_proven"])
 

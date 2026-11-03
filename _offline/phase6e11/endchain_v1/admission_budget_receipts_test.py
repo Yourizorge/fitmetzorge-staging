@@ -24,6 +24,211 @@ class ReceiptTests(unittest.TestCase):
         self.assertEqual(recovered, self.report)
         self.assertEqual(self.index["full_register_sha256"], register.canonical_sha(self.report))
 
+    def normal_records(self):
+        """Synthetic in-memory receipt shapes, never actual CI evidence."""
+        from complete_register import AUTH_CALLS
+        streams = {}
+        by_id = {r["id"]: r for r in self.report["normal_register"]["rows"]}
+        for mapped in self.report["normal_dispatch_mapping"]["rows"]:
+            streams.setdefault(mapped["stream"], []).append(by_id[mapped["row_id"]])
+        records = {"endchain-sources.json": {"sources": {
+            (name if name.startswith("_offline/") else "_offline/phase6e11/endchain_v1/" + name): digest
+            for name, digest in self.report["source_hashes"].items()}},
+            "integral-complete-protocol-trace.json": {"commands": [dict(command=i + 1,
+                phase=r["action"], action=copy.deepcopy(r.get("action_binding", {})),
+                sql_sha256=r["sql_sha256"], confirmed=True)
+                for i, r in enumerate(streams["integral_complete_protocol_trace"])]},
+            "integral-preflight.json": {"commands": [dict(sql_sha256=r["sql_sha256"], confirmed=True)
+                for r in streams["integral_preflight"]]}}
+        def numeric(n):
+            return dict(commands=n, temp_written=0, statements=[dict(queryid="1", calls=n, temp_written=0, temp_read=0)])
+        events = []
+        for r in streams["workflow_auth_protocol"] + streams["auth_protocol_operation"]:
+            events.append(dict(number=len(events) + 1, action=r["action"], phase=r["phase"],
+                commands=r["cost"], kind="managed_auth", confirmed=True))
+        events.append(dict(number=len(events) + 1, action="lifecycle_reader_begin", commands=1, kind="native"))
+        records["runtime-command-meter.json"] = dict(events=events)
+        records["workflow-auth-protocol.json"] = dict(numeric(360), verified_calls=72)
+        for i, r in enumerate(streams["auth_protocol_operation"]):
+            operation = next(op for op in AUTH_CALLS if r["action"].endswith("_" + op))
+            role = r["action"][len("gotrue_"):-len(operation) - 1]
+            records["auth-protocol-%02d.json" % i] = dict(numeric(r["cost"]), role=role, operation=operation)
+        for i, (slot, cap) in enumerate((("quota", 64), ("pre_auth", 28), ("final", 28))):
+            records["cli-protocol-%d.json" % i] = dict(slot=slot, capacity_reserved=cap, charged_commands=cap + 8,
+                complete=True, dry_run=slot != "quota", environment="disposable_ci", protocol_commands=7,
+                numeric_protocol_coverage=True, observer_commands=[dict(confirmed=True) for _ in range(8)])
+            records["cli-numeric-coverage-%d.json" % i] = dict(numeric_calls_minus_reader=7,
+                all_protocol_visible=True, temp_written=0)
+        return records
+
+    def test_exact_native_and_preflight_reconciliation_has_real_rows_not_a_total(self):
+        result = receipts.reconcile_normal(self.report, self.normal_records())
+        self.assertEqual(result["native"]["matched_count"], 1524)
+        self.assertEqual(result["preflight"]["matched_count"], 4)
+        self.assertTrue(result["native"]["ordered_complete"])
+        self.assertEqual(len(result["native"]["rows"]), 1524)
+        self.assertTrue(result["current_source_subset_matches"])
+        self.assertEqual(result["optional_stream_capacity"], 72)
+        self.assertFalse(result["full_bound_proven"])
+        self.assertIsNone(result["minimal_cap"])
+
+    def test_native_mutation_duplicate_and_order_drift_are_not_accepted(self):
+        for mutation in (lambda x: x[5].update(sql_sha256="0" * 64),
+                         lambda x: x.insert(5, copy.deepcopy(x[5])), lambda x: x.reverse(),
+                         lambda x: x[5].update(confirmed=False)):
+            records = self.normal_records()
+            mutation(records["integral-complete-protocol-trace.json"]["commands"])
+            result = receipts.reconcile_normal(self.report, records)
+            self.assertFalse(result["native"]["ordered_complete"])
+        records = self.normal_records()
+        records["integral-preflight.json"]["commands"][0]["confirmed"] = False
+        self.assertFalse(receipts.reconcile_normal(self.report, records)["preflight"]["ordered_complete"])
+
+    def test_moved_commands_are_identified_without_accepting_changed_order(self):
+        expected = [dict(id="a", action="first", sql_sha256="a", action_binding={}),
+                    dict(id="b", action="second", sql_sha256="b", action_binding={})]
+        actual = [dict(command=1, phase="second", sql_sha256="b", confirmed=True),
+                  dict(command=2, phase="first", sql_sha256="a", confirmed=True)]
+        result = receipts._ordered_trace(expected, actual)
+        self.assertEqual(result["matched_count"], 1)
+        self.assertEqual(result["moved_count"], 1)
+        self.assertFalse(result["ordered_complete"])
+        self.assertEqual(result["unexpected"], [])
+
+    def test_receipt_match_and_current_source_match_are_independent(self):
+        records = self.normal_records()
+        records["endchain-sources.json"]["sources"]["_offline/phase6e11/endchain_v1/integral_ci.py"] = "0" * 64
+        result = receipts.reconcile_normal(self.report, records)
+        self.assertEqual(result["native"]["matched_count"], 1524)
+        self.assertFalse(result["source_bindings"]["native"]["all_match"])
+        self.assertFalse(result["current_source_subset_matches"])
+        historical = receipts.reconcile_normal(self.report, self.normal_records(), historical=True)
+        self.assertFalse(historical["current_source_subset_matches"])
+        self.assertTrue(historical["historical_read_only_reference"])
+
+    def test_360_aggregate_never_creates_72_user_dispatches(self):
+        result = receipts.reconcile_normal(self.report, self.normal_records())["workflow"]
+        self.assertEqual(result["matched_tickets"], 72)
+        self.assertTrue(result["upfront_order_matches"])
+        self.assertTrue(result["aggregate_numeric_matches"])
+        self.assertEqual(result["dispatches_joined"], 0)
+        self.assertTrue(all(r["per_call_managed_sql_observed"] is None for r in result["rows"]))
+
+    def test_user_dispatch_join_requires_exact_unique_action_ticket_and_terminal(self):
+        records = self.normal_records()
+        initial = receipts.reconcile_normal(self.report, records)["workflow"]["rows"]
+        dispatches = [dict(action=r["action"], ticket_number=r["ticket_number"], method="GET", path="/user",
+                           confirmed=True, unknown_consumed=0) for r in initial]
+        result = receipts.reconcile_normal(self.report, records, workflow_dispatches=dispatches)["workflow"]
+        self.assertEqual(result["dispatches_joined"], 72)
+        self.assertFalse(result["per_call_managed_bound_proven"])
+        dispatches[1] = copy.deepcopy(dispatches[0])
+        self.assertEqual(receipts.reconcile_normal(self.report, records,
+            workflow_dispatches=dispatches)["workflow"]["dispatches_joined"], 71)
+        dispatches[0]["unknown_consumed"] = True
+        self.assertEqual(receipts.reconcile_normal(self.report, records,
+            workflow_dispatches=dispatches)["workflow"]["dispatches_joined"], 70)
+
+    def test_duplicate_late_and_unknown_user_tickets_do_not_receive_refunds(self):
+        records = self.normal_records()
+        events = records["runtime-command-meter.json"]["events"]
+        events[0]["confirmed"] = False
+        result = receipts.reconcile_normal(self.report, records)["workflow"]
+        self.assertEqual(result["rows"][0]["consumed_capacity"], 5)
+        self.assertFalse(result["rows"][0]["confirmed"])
+        events.append(dict(events[1], number=len(events) + 1))
+        self.assertEqual(receipts.reconcile_normal(self.report, records)["workflow"]["matched_tickets"], 71)
+        records = self.normal_records()
+        records["runtime-command-meter.json"]["events"][0]["action"] = "lifecycle_reader_begin"
+        self.assertFalse(receipts.reconcile_normal(self.report, records)["workflow"]["upfront_order_matches"])
+
+    def test_eighteen_auth_receipts_bind_role_operation_numeric_and_ticket(self):
+        records = self.normal_records()
+        result = receipts.reconcile_normal(self.report, records)["auth"]
+        self.assertEqual(len(result), 18)
+        self.assertTrue(all(r["numeric_matches"] and r["ticket_matches"] for r in result))
+        for field, value in (("role", "foreign"), ("commands", True), ("temp_written", 1)):
+            changed = copy.deepcopy(records)
+            changed["auth-protocol-00.json"][field] = value
+            self.assertFalse(receipts.reconcile_normal(self.report, changed)["auth"][0]["numeric_matches"])
+        records["auth-protocol-00.json"]["statements"][0]["calls"] -= 1
+        self.assertFalse(receipts.reconcile_normal(self.report, records)["auth"][0]["numeric_matches"])
+
+    def test_cli_slots_join_reservations_without_spending_capacity_as_actual(self):
+        records = self.normal_records()
+        cli = receipts.reconcile_normal(self.report, records)["cli"]
+        self.assertEqual([r["reference_capacity"] for r in cli], [72, 36, 36])
+        self.assertEqual([r["actual_protocol_commands"] for r in cli], [7, 7, 7])
+        self.assertTrue(all(r["reservation_matches"] and r["numeric_matches"] for r in cli))
+        records["cli-protocol-2.json"]["slot"] = "app_2"
+        self.assertFalse(receipts.reconcile_normal(self.report, records)["cli"][2]["reservation_matches"])
+        del records["cli-numeric-coverage-1.json"]
+        self.assertFalse(receipts.reconcile_normal(self.report, records)["cli"][1]["numeric_matches"])
+
+    def test_missing_all_receipts_is_honest_and_does_not_infer_zero_actual_cost(self):
+        result = receipts.reconcile_normal(self.report, {})
+        self.assertEqual(result["native"]["matched_count"], 0)
+        for component in ("native", "preflight"):
+            self.assertIsNone(result[component]["actual_count"])
+            self.assertFalse(result[component]["receipt_present"])
+        self.assertFalse(result["native"]["ordered_complete"])
+        self.assertEqual(result["workflow"]["matched_tickets"], 0)
+        self.assertTrue(all(r["consumed_capacity"] is None for r in result["workflow"]["rows"]))
+        self.assertTrue(all(r["actual_protocol_commands"] is None for r in result["cli"]))
+        self.assertFalse(result["current_source_subset_matches"])
+
+    def test_current_plan_unbound_removal_cannot_match_null_or_old_receipt_hash(self):
+        plan = self.report["current_plan"]
+        expected = [r for r in plan["normal"]["rows"] if r.get("binding_required")]
+        actual = [dict(phase="remove", action=r["action_binding"], sql_sha256=None, confirmed=True) for r in expected]
+        result = receipts._ordered_trace(expected, actual)
+        self.assertEqual(result["matched_count"], 0)
+        self.assertTrue(all(r["status"] == "BINDING_REQUIRED" for r in result["rows"]))
+
+    def test_current_folder_api_retains_missing_evidence_and_checks_plan_digest(self):
+        with patch.object(pathlib.Path, "is_file", return_value=False):
+            result = receipts.reconcile_current_folder(self.report, pathlib.Path("memory"))
+        self.assertEqual(result["plan_version"], register.PLAN_VERSION)
+        self.assertEqual(result["source_derived_rows"], 30)
+        self.assertEqual(len(result["unbound_normal_rows"]), 2)
+        self.assertEqual(result["recovery_setup_reservation"], 1)
+        self.assertIsNone(result["native"]["actual_count"])
+        self.assertFalse(result["full_bound_proven"])
+        changed = copy.deepcopy(self.report["current_plan"])
+        changed["normal"]["rows"][0]["cost"] += 1
+        with self.assertRaisesRegex(ValueError, "current_plan_binding"):
+            receipts.reconcile_current_folder(self.report, pathlib.Path("memory"), plan=changed)
+
+    def test_verified_migration_component_keeps_incomplete_terminal(self):
+        result = receipts.migration_boundary_receipt(dict(component_verified=True,
+            terminal_complete=False, execution_status="NO_GO"), dict(path="migration-boundary-post.json"))
+        self.assertTrue(result["component_verified"])
+        self.assertFalse(result["terminal_complete"])
+        self.assertEqual(result["execution_status"], "NO_GO")
+        self.assertFalse(result["full_hosted_bound_proven"])
+
+    def test_new_cleanup_receipt_keeps_diagnostic_counts_without_parent_pass(self):
+        values = dict(status="NO_GO", classification="REGISTRY_CLOSED_WITH_ORIGINAL_COMMIT_UNKNOWN",
+                      protocol_limit=41, admitted_attempts=40, registry_deletion_proven=True,
+                      original_commit_reclassified=False)
+        with patch.object(pathlib.Path, "is_file", lambda p:p.name == "fixture-parent-physical-zero.json"), \
+             patch.object(receipts, "_read", return_value=(values,"a"*64)):
+            result = receipts.actual_receipts(pathlib.Path("memory"))
+        actual = result["physical_suffix"]
+        self.assertEqual(actual["actual_counts"]["admitted_attempts"], 40)
+        self.assertTrue(actual["registry_deletion_proven"])
+        self.assertFalse(actual["original_commit_reclassified"])
+        self.assertFalse(actual["changes_hosted_bound"])
+        self.assertIsNone(result["parent_auth_finalizer"]["actual_counts"])
+
+    def test_folder_reconciliation_rejects_changed_artifact_before_join(self):
+        with patch.object(pathlib.Path, "is_file", lambda p:p.name in (
+                "artifact-manifest.json", "integral-preflight.json")), \
+             patch.object(receipts, "_read", side_effect=[({"integral-preflight.json":"0"*64}, "f"*64),
+                                                        ({"commands":[]}, "1"*64)]):
+            with self.assertRaisesRegex(ValueError, "budget_reconcile_artifact_hash"):
+                receipts.reconcile_folder(self.report, pathlib.Path("memory"))
+
     def test_every_member_bounded_and_total_under_fifty(self):
         self.assertLessEqual(len(self.members), 50)
         self.assertTrue(all(len(receipts.raw(value)) < 2000000 for value in self.members.values()))

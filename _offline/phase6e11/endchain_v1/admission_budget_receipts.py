@@ -1,5 +1,8 @@
 """Parent-callable lossless budget receipts. No SQL, HTTP, CLI or CI dispatch."""
 import base64
+import collections
+import copy
+import difflib
 import hashlib
 import json
 import pathlib
@@ -51,6 +54,10 @@ def actual_receipts(folder):
         "migration_boundary_pre": ("migration-boundary-pre.json",),
         "migration_boundary_post": ("migration-boundary-post.json",),
         "migration_boundary_claim": ("migration-boundary-claim.json",),
+        "producer_scope_before": ("fixture-producer-scope-before-result.json",),
+        "producer_scope_after": ("fixture-producer-scope-after-result.json",),
+        "physical_suffix": ("fixture-parent-physical-zero.json",),
+        "parent_auth_finalizer": ("auth-parent-finalizer.json",),
     }
     for component, candidates in names.items():
         available = [folder / name for name in candidates if (folder / name).is_file()]
@@ -113,6 +120,18 @@ def actual_receipts(folder):
         if component.startswith("migration_boundary_"):
             result[component] = migration_boundary_receipt(value, binding)
             continue
+        if component.startswith("producer_scope_") or component in ("physical_suffix", "parent_auth_finalizer"):
+            result[component] = dict(status=value.get("status", "MISSING_STATUS"), receipt=binding,
+                component_classification=value.get("classification", value.get("suffix_status")),
+                preparation_run=value.get("preparation_run"),
+                actual_counts={k:value.get(k) for k in ("protocol_limit", "admitted_attempts", "emitted_attempts",
+                    "expected_protocol_commands", "prepaid_consumed", "native_dispatches", "http_attempts")},
+                source_binding=value.get("source_binding"),
+                registry_deletion_proven=value.get("registry_deletion_proven"),
+                original_commit_reclassified=value.get("original_commit_reclassified"),
+                receipt_is_not_complete_job_bound=True, changes_hosted_bound=False,
+                full_hosted_bound_proven=False, evidence_class="PARENT_LOCAL_DIAGNOSTIC_RECEIPT")
+            continue
         source_hashes = value.get("source_sha256", value.get("source_hashes", {}))
         counts = {}
         if component == "auth":
@@ -131,6 +150,253 @@ def actual_receipts(folder):
             source_hashes=source_hashes, source_binding_sha256=value.get("source_binding_sha256"),
             actual_counts=counts, evidence_class="PARENT_LOCAL_RECEIPT_NOT_INDEPENDENT_EXECUTION_PROOF",
             changes_hosted_bound=False)
+    return result
+
+
+NORMAL_SOURCE_GROUPS = {
+    "native": ("integral_ci.py", "metered_composition.py", "registered_runner.py", "registered_lifecycle.py",
+        "fixture_lifecycle.py", "session_transport.mjs", "request_transport.mjs", "integral_workflow.mjs",
+        "integral_io.py", "integral_stream.py", "lifecycle_gates.py", "sql_protocol.py", "native_runtime.py",
+        "runtime_budget.py", "complete_register.py", "workflow_composition.mjs", "composed_handler.mjs"),
+    "preflight": ("lifecycle_gates.py", "sql_protocol.py", "native_runtime.py", "metered_composition.py"),
+    "workflow": ("metered_composition.py", "integral_ci.py", "integral_workflow.mjs", "auth_protocol.py",
+                 "execution_context.mjs", "workflow_composition.mjs", "composed_handler.mjs"),
+    "auth": ("metered_composition.py", "auth_evidence.py", "auth_protocol.py", "registered_lifecycle.py",
+             "integral_auth.mjs", "execution_context.mjs"),
+    "cli": ("cli_meter.py", "cli_envelope.py", "cli_stat_reader.py"),
+    "removal": ("_offline/phase6e11/auth_metadata_v1/audit.py",
+                "_offline/phase6e11/controller_guard_v1/guard.py"),
+}
+NORMAL_RECEIPTS = ("integral-complete-protocol-trace.json", "integral-preflight.json",
+    "runtime-command-meter.json", "workflow-auth-protocol.json", "endchain-sources.json",
+    "cli-predispatch-canonical-45.json", "migration-boundary-post.json") + tuple(
+    "auth-protocol-%02d.json" % i for i in range(18)) + tuple(
+    name % i for i in range(3) for name in ("cli-protocol-%d.json", "cli-numeric-coverage-%d.json"))
+
+
+def source_reconciliation(report, recorded):
+    """Compare exact known paths; never accept a basename alias from another root."""
+    result = {}
+    for group, names in NORMAL_SOURCE_GROUPS.items():
+        rows = []
+        for name in names:
+            expected = report["source_hashes"][name]
+            recorded_hash = recorded.get(name if name.startswith("_offline/") else
+                                         "_offline/phase6e11/endchain_v1/" + name)
+            rows.append(dict(path=name, expected_sha256=expected, recorded_sha256=recorded_hash,
+                status="MISSING" if recorded_hash is None else "MATCH" if recorded_hash == expected else "CHANGED"))
+        result[group] = dict(rows=rows, all_match=all(r["status"] == "MATCH" for r in rows),
+                             scope="NAMED_EXECUTOR_SUBSET_NOT_TRANSITIVE_SOURCE_OR_EXECUTION_PROOF")
+    return result
+
+
+def _ordered_trace(expected, actual, *, preflight=False):
+    require(isinstance(actual, list) and len(actual) <= 4096, "budget_reconcile_trace_shape")
+    require(all(isinstance(row, dict) for row in actual), "budget_reconcile_trace_row")
+    def key(row, reference=False):
+        if reference and row.get("binding_required"):
+            return "UNBOUND_CURRENT_TEMPLATE:" + row["id"]
+        if preflight:
+            return row.get("sql_sha256")
+        return canonical_sha(dict(phase=row.get("action") if reference else row.get("phase"),
+            action=row.get("action_binding", {}) if reference else row.get("action") or {},
+            sql_sha256=row.get("sql_sha256")))
+    expected_keys = [key(r, True) for r in expected]
+    actual_keys = [key(r) for r in actual]
+    joins = [dict(row_id=r["id"], status="BINDING_REQUIRED" if r.get("binding_required") else
+                  "MISSING_OR_CHANGED", actual_command=None) for r in expected]
+    used = set()
+    # Ordered matching exposes inserted/deleted/reordered commands without cascading all later mismatches.
+    for a, b, size in difflib.SequenceMatcher(None, expected_keys, actual_keys, autojunk=False).get_matching_blocks():
+        for offset in range(size):
+            i, j = a + offset, b + offset
+            joins[i].update(status="MATCH" if actual[j].get("confirmed") is True else "UNCONFIRMED",
+                            actual_command=actual[j].get("command", j + 1))
+            used.add(j)
+    for i, join in enumerate(joins):
+        if join["status"] != "MISSING_OR_CHANGED":
+            continue
+        candidates = [j for j, value in enumerate(actual_keys) if j not in used and value == expected_keys[i]]
+        if candidates:
+            j = candidates[0]
+            join.update(status="ORDER_CHANGED", actual_command=actual[j].get("command", j + 1))
+            used.add(j)
+    extras = [dict(index=i, phase=r.get("phase"), sql_sha256=r.get("sql_sha256"))
+              for i, r in enumerate(actual) if i not in used]
+    return dict(expected_count=len(expected), actual_count=len(actual), rows=joins,
+        matched_count=sum(r["status"] == "MATCH" for r in joins), unexpected=extras,
+        moved_count=sum(r["status"] == "ORDER_CHANGED" for r in joins),
+        ordered_complete=not extras and all(r["status"] == "MATCH" for r in joins))
+
+
+def _numeric(receipt, expected):
+    if not isinstance(receipt, dict) or type(expected) is not int or expected < 1:
+        return False
+    rows = receipt.get("statements")
+    if not isinstance(rows, list) or not 0 < len(rows) <= 1024:
+        return False
+    if not all(isinstance(r, dict) and isinstance(r.get("queryid"), str)
+               and type(r.get("calls")) is int and r["calls"] >= 0
+               and type(r.get("temp_written")) is int and r["temp_written"] == 0
+               and type(r.get("temp_read")) is int and r["temp_read"] == 0 for r in rows):
+        return False
+    return (len({r["queryid"] for r in rows}) == len(rows)
+        and type(receipt.get("commands")) is int and receipt["commands"] == expected
+        and sum(r["calls"] for r in rows) == expected
+        and type(receipt.get("temp_written")) is int and receipt["temp_written"] == 0)
+
+
+def reconcile_normal(report, records, *, historical=False, workflow_dispatches=None, canonical=None):
+    """Reconcile existing receipt shapes. Optional dispatches are caller-supplied evidence.
+
+    workflow_dispatches, when available: 72 ordered dictionaries with action,
+    ticket_number, method='GET', path='/user', confirmed=True, unknown_consumed=0.
+    No current executor emits that per-call ledger; aggregate 360 never fills it.
+    This API reads data only; even complete joins grant no admission/full bound.
+    """
+    require(type(historical) is bool, "budget_reconcile_history_flag")
+    sources = source_reconciliation(report, records.get("endchain-sources.json", {}).get("sources", {}))
+    normal = report["normal_register"]["rows"]
+    by_id = {r["id"]: r for r in normal}
+    streams = collections.defaultdict(list)
+    for row in report["normal_dispatch_mapping"]["rows"]:
+        streams[row["stream"]].append(by_id[row["row_id"]])
+    from complete_register import BOOTSTRAP
+    trace = records.get("integral-complete-protocol-trace.json", {}).get("commands", [])
+    require(isinstance(trace, list) and len(trace) <= 4096, "budget_reconcile_trace_shape")
+    sequence = all(type(c.get("command")) is int and c["command"] == i + 1 for i, c in enumerate(trace))
+    native = _ordered_trace(streams["integral_complete_protocol_trace"],
+                            [r for r in trace if r.get("phase") not in BOOTSTRAP])
+    native.update(trace_sequence_valid=sequence, ci_bootstrap_excluded=sum(r.get("phase") in BOOTSTRAP for r in trace))
+    native["ordered_complete"] = native["ordered_complete"] and sequence
+    preflight = _ordered_trace(streams["integral_preflight"],
+        records.get("integral-preflight.json", {}).get("commands", []), preflight=True)
+    for result, name in ((native, "integral-complete-protocol-trace.json"),
+                         (preflight, "integral-preflight.json")):
+        result["receipt_present"] = name in records
+        if not result["receipt_present"]:
+            result["actual_count"] = None
+
+    events = records.get("runtime-command-meter.json", {}).get("events", [])
+    require(isinstance(events, list) and len(events) <= 4096, "budget_reconcile_meter_shape")
+    ticket_sequence = all(type(e.get("number")) is int and e["number"] == i + 1 for i, e in enumerate(events))
+    def tickets(row):
+        matches = [e for e in events if e.get("action") == row["action"]]
+        ok = (ticket_sequence and len(matches) == 1 and matches[0].get("kind") == "managed_auth"
+            and type(matches[0].get("commands")) is int and matches[0]["commands"] == row["cost"]
+            and matches[0].get("phase") == row["phase"])
+        return dict(action=row["action"], row_id=row["id"], expected_capacity=row["cost"],
+            ticket_number=matches[0].get("number") if len(matches) == 1 else None,
+            ticket_matches=ok, confirmed=ok and matches[0].get("confirmed") is True,
+            consumed_capacity=matches[0]["commands"] if ok else None,
+            unknown_dispatch_refunded=False)
+    user_rows = [tickets(row) for row in streams["workflow_auth_protocol"]]
+    anchors = [e["number"] for e in events if e.get("action") == "lifecycle_reader_begin"]
+    upfront = bool(anchors) and all(r["ticket_matches"] and r["ticket_number"] < min(anchors) for r in user_rows)
+    aggregate = records.get("workflow-auth-protocol.json", {})
+    aggregate_ok = _numeric(aggregate, 360) and type(aggregate.get("verified_calls")) is int and aggregate["verified_calls"] == 72
+    require(workflow_dispatches is None or isinstance(workflow_dispatches, list) and len(workflow_dispatches) <= 72,
+            "budget_reconcile_user_dispatch_shape")
+    calls = workflow_dispatches if workflow_dispatches is not None else []
+    for i, row in enumerate(user_rows):
+        call = calls[i] if i < len(calls) else {}
+        row["dispatch_joined"] = (row["ticket_matches"] and call.get("action") == row["action"]
+            and type(call.get("ticket_number")) is int and call["ticket_number"] == row["ticket_number"]
+            and call.get("method") == "GET" and call.get("path") == "/user" and call.get("confirmed") is True
+            and type(call.get("unknown_consumed")) is int and call["unknown_consumed"] == 0)
+        row["per_call_managed_sql_observed"] = None
+    workflow = dict(rows=user_rows, expected_calls=72, expected_prepaid=360, upfront_order_matches=upfront,
+        matched_tickets=sum(r["ticket_matches"] for r in user_rows), aggregate_numeric_matches=aggregate_ok,
+        dispatches_joined=sum(r["dispatch_joined"] for r in user_rows),
+        aggregate_is_not_dispatch_ledger=True, per_call_managed_bound_proven=False)
+
+    auth = []
+    for i, row in enumerate(streams["auth_protocol_operation"]):
+        name = "auth-protocol-%02d.json" % i
+        value = records.get(name, {})
+        identity = "gotrue_" + str(value.get("role")) + "_" + str(value.get("operation"))
+        auth.append(dict(tickets(row), receipt=name, identity_matches=identity == row["action"],
+                         numeric_matches=identity == row["action"] and _numeric(value, row["cost"])))
+    cli = []
+    from cli_envelope import charged
+    for i, (slot, capacity) in enumerate((("quota", 64), ("pre_auth", 28), ("final", 28))):
+        name = "cli-protocol-%d.json" % i
+        value = records.get(name, {})
+        entry = dict(slot=slot, receipt=name, reference_capacity=capacity + 8, actual_protocol_commands=None,
+                     slot_matches=value.get("slot") == slot, reservation_matches=False, numeric_matches=False,
+                     post_migration_confirmed=False)
+        if slot == "quota" and canonical is not None and canonical.get("receipt"):
+            entry.update(receipt=canonical["receipt"]["path"], slot_matches=canonical.get("slot") == "quota",
+                actual_protocol_commands=canonical.get("actual_counts", {}).get("sql_dispatches"),
+                reservation_matches=canonical.get("reserved_cap") == capacity,
+                numeric_matches=canonical.get("numeric_confirmation", {}).get("counters_consistent") is True,
+                raw_references_verified=all(canonical.get("raw_references", {}).get(k, {}).get("verified") is True
+                                            for k in ("ledger", "policy", "isolation")),
+                post_migration_confirmed=canonical.get("canonical_references_complete") is True)
+        elif value:
+            try:
+                entry["reservation_matches"] = charged(value) == capacity + 8 and entry["slot_matches"]
+            except (ValueError, TypeError, KeyError):
+                pass
+            n = value.get("protocol_commands")
+            numeric = records.get("cli-numeric-coverage-%d.json" % i, {})
+            entry["actual_protocol_commands"] = n
+            entry["numeric_matches"] = (type(n) is int and 0 < n <= capacity
+                and type(numeric.get("numeric_calls_minus_reader")) is int and numeric["numeric_calls_minus_reader"] == n
+                and numeric.get("all_protocol_visible") is True
+                and type(numeric.get("temp_written")) is int and numeric["temp_written"] == 0)
+        cli.append(entry)
+    return dict(status="NO_GO_RECONCILIATION_ONLY", historical_read_only_reference=historical,
+        source_bindings=sources, native=native, preflight=preflight, workflow=workflow, auth=auth, cli=cli,
+        optional_stream_capacity=sum(r["cost"] for r in streams["optional_stream_capacity_not_dispatch"]),
+        optional_slots_not_promoted_to_observed_dispatches=True,
+        current_source_subset_matches=not historical and all(s["all_match"] for s in sources.values()),
+        full_bound_proven=False, minimal_cap=None, hosted_admitted=False)
+
+
+def reconcile_folder(report, folder, *, historical=False, workflow_dispatches=None):
+    """Named offline ingestion only. Returns data; never creates or overwrites exports."""
+    folder = pathlib.Path(folder)
+    records, bindings = {}, {}
+    manifest = _read(folder / "artifact-manifest.json")[0] if (folder / "artifact-manifest.json").is_file() else None
+    for name in NORMAL_RECEIPTS:
+        if (folder / name).is_file():
+            value, digest = _read(folder / name)
+            if manifest is not None:
+                require(manifest.get(name) == digest, "budget_reconcile_artifact_hash:" + name)
+            records[name] = value
+            bindings[name] = dict(sha256=digest, artifact_manifest_match=True if manifest is not None else None)
+    canonical = None
+    name = "cli-predispatch-canonical-45.json"
+    if name in records:
+        binding = dict(path=name, sha256=bindings[name]["sha256"])
+        post = "migration-boundary-post.json"
+        selected = {"migration_boundary_post": (records[post], dict(path=post, sha256=bindings[post]["sha256"]))} if post in records else {}
+        canonical = cli_receipt(records[name], binding)
+        canonical.update(canonical_references(folder, records[name], binding, selected))
+    result = reconcile_normal(report, records, historical=historical,
+                              workflow_dispatches=workflow_dispatches, canonical=canonical)
+    result["receipt_bindings"] = bindings
+    result["missing_receipts"] = [name for name in NORMAL_RECEIPTS if name not in records]
+    return result
+
+
+def reconcile_current_folder(report, folder, *, plan=None, historical=False, workflow_dispatches=None):
+    """Compare new CI to v2 without mutating the retained normal register or receipts."""
+    from admission_budget_register import PLAN_VERSION
+    plan = report["current_plan"] if plan is None else plan
+    require(plan["version"] == PLAN_VERSION and plan["plan_sha256"] ==
+            canonical_sha({k:v for k,v in plan.items() if k != "plan_sha256"}), "budget_current_plan_binding")
+    require(plan["historical_register_sha256"] == canonical_sha(report["normal_register"]),
+            "budget_current_plan_reference")
+    require(plan["current_source_hashes"] == report["source_hashes"], "budget_current_plan_sources")
+    view = dict(report, normal_register=copy.deepcopy(plan["normal"]))
+    result = reconcile_folder(view, folder, historical=historical, workflow_dispatches=workflow_dispatches)
+    result.update(plan_version=plan["version"], plan_sha256=plan["plan_sha256"],
+        source_derived_rows=len(plan["source_derived_row_ids"]),
+        unbound_normal_rows=[r["id"] for r in plan["normal"]["rows"] if r.get("binding_required")],
+        recovery_prefixes=len(plan["prefix_bindings"]), recovery_setup_reservation=1,
+        runtime_recovery_wiring_proven=False, remaining_retained_rows_require_revalidation=True)
     return result
 
 
@@ -251,6 +517,7 @@ def migration_boundary_receipt(value, binding):
         "migration_failure_boundaries.py", "test_migration_failure_boundaries.py")}
     return dict(status="PARENT_LOCAL_BOUNDARY_RECEIPT", receipt=binding,
         component_verified=value.get("component_verified"), execution_status=value.get("execution_status"),
+        terminal_complete=value.get("terminal_complete"),
         source_commit=source_binding.get("source_commit"), candidate_sha256=source_binding.get("candidate_sha256"),
         source_binding_sha256=value.get("source_binding_sha256"),
         source_hashes={name: h for name, h in subset.items() if h is not None},
@@ -337,6 +604,8 @@ def run(gate):
     """
     report = assemble()
     report["actual_component_evidence"] = actual_receipts(gate.out)
+    report["normal_reconciliation"] = reconcile_folder(report, gate.out)
+    report["current_plan_reconciliation"] = reconcile_current_folder(report, gate.out)
     for evidence in report["actual_component_evidence"].values():
         hashes = evidence.get("source_hashes", {})
         evidence["source_hashes_match_current"] = (all(report["source_hashes"].get(k) == v
