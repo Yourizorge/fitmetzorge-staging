@@ -47,6 +47,7 @@ def actual_receipts(folder):
         "cli_predispatch": ("cli-predispatch.json",),
         "cli_pending_0": ("cli-predispatch-pending-0.json",),
         "cli_pending_2": ("cli-predispatch-pending-2.json",),
+        "cli_canonical_45": ("cli-predispatch-canonical-45.json",),
         "migration_boundary_pre": ("migration-boundary-pre.json",),
         "migration_boundary_post": ("migration-boundary-post.json",),
         "migration_boundary_claim": ("migration-boundary-claim.json",),
@@ -86,6 +87,10 @@ def actual_receipts(folder):
         value, binding = selected[component]
         if component.startswith("cli_"):
             result[component] = cli_receipt(value, binding)
+            if component == "cli_canonical_45":
+                result[component].update(canonical_references(folder, value, binding, selected))
+                if not result[component]["canonical_references_complete"]:
+                    result[component]["status"] = "NO_GO_CANONICAL_RECEIPT_INCOMPLETE"
             if component in ("cli_pending_0", "cli_pending_2"):
                 index = int(component.rsplit("_", 1)[1])
                 result[component]["expected_app_profile_index"] = index
@@ -170,6 +175,75 @@ def cli_receipt(value, binding):
         full_hosted_bound_proven=False, changes_hosted_bound=False)
 
 
+def raw_reference(folder, ref, name, limit):
+    """Verify fixed-name original bytes, including incomplete ledgers; never replay."""
+    result = dict(path=name, additional_sql=0, verified=False)
+    if ref is None:
+        return dict(result, status="MISSING_REFERENCE")
+    if (not isinstance(ref, dict) or set(ref) != {"path", "sha256"} or ref["path"] != name
+            or not isinstance(ref["sha256"], str) or not re.fullmatch("[a-f0-9]{64}", ref["sha256"])):
+        return dict(result, status="INVALID_REFERENCE")
+    result["expected_sha256"] = ref["sha256"]
+    path = pathlib.Path(folder) / name
+    try:
+        if path.is_symlink() or (hasattr(path, "is_junction") and path.is_junction()):
+            return dict(result, status="UNSAFE_REFERENCE")
+        with path.open("rb") as stream:
+            data = stream.read(limit + 1)
+        if len(data) > limit:
+            return dict(result, status="OVERSIZED_REFERENCE")
+    except OSError:
+        return dict(result, status="UNAVAILABLE_REFERENCE")
+    result.update(sha256=sha(data), raw_bytes=len(data))
+    matches = result["sha256"] == ref["sha256"]
+    return dict(result, status="RAW_BYTES_VERIFIED" if matches else "HASH_MISMATCH", verified=matches)
+
+
+def canonical_references(folder, value, binding, selected):
+    refs = {
+        "ledger": raw_reference(folder, value.get("ledger_ref"), "cli-predispatch-canonical-45.ledger.txt", 262144),
+        "policy": raw_reference(folder, value.get("policy_ref"), "cli-predispatch-canonical-45.policy.json", 16384),
+        "isolation": raw_reference(folder, dict(path=value.get("isolation_receipt"),
+            sha256=value.get("isolation_receipt_sha256")),
+            "canonical-45-cli-predispatch-cli-isolation-0.json", 16384),
+    }
+    terminal, numeric = value.get("terminal", {}), value.get("numeric_coverage", {})
+    count = terminal.get("sql_dispatches")
+    numeric_consistent = (type(count) is int and 0 < count <= 64
+        and type(terminal.get("confirmed_sql")) is int and terminal["confirmed_sql"] == count
+        and type(terminal.get("unknown_consumed")) is int and terminal["unknown_consumed"] == 0
+        and type(numeric.get("numeric_calls_minus_reader")) is int and numeric["numeric_calls_minus_reader"] == count
+        and type(numeric.get("protocol_commands")) is int and numeric["protocol_commands"] == count
+        and numeric.get("all_protocol_visible") is True
+        and type(numeric.get("temp_written")) is int and numeric["temp_written"] == 0)
+    confirmation = dict(status="PENDING_BOUNDARY_CONFIRMATION", references_match=False, additional_charge=0)
+    if "migration_boundary_post" in selected:
+        post, post_ref = selected["migration_boundary_post"]
+        actual = post.get("actual_migration_result", {})
+        matches = (post.get("component_verified") is True
+            and actual.get("receipt") == binding["path"] and actual.get("receipt_sha256") == binding["sha256"]
+            and all(refs[key]["verified"] and actual.get(field) == refs[key].get("sha256")
+                    for key, field in (("ledger", "ledger_sha256"), ("policy", "policy_file_sha256"),
+                                       ("isolation", "isolation_receipt_sha256")))
+            and actual.get("protocol_commands") == count and actual.get("observer_commands") == 8
+            and actual.get("isolation_commands") == value.get("ci_bootstrap_sql_commands"))
+        confirmation.update(status="PARENT_BOUNDARY_CONFIRMATION", receipt=post_ref,
+                            references_match=matches, component_verified=post.get("component_verified"))
+    complete = (value.get("complete") is True and value.get("profile") == "canonical_45"
+        and value.get("phase") == "migration_45" and value.get("actual_migration_execution") is True
+        and numeric_consistent and all(ref["verified"] for ref in refs.values())
+        and confirmation["references_match"])
+    return dict(profile=value.get("profile"), expected_migration=value.get("expected_migration"),
+        expected_migration_sha256=value.get("expected_migration_sha256"), raw_references=refs,
+        numeric_confirmation=dict(receipt=binding, field="numeric_coverage",
+                                  counters_consistent=numeric_consistent, independent_execution_proof=False),
+        boundary_confirmation=confirmation, canonical_references_complete=complete,
+        confirmation_scope="BYTE_REFERENCES_AND_REPORTED_COUNTERS_NOT_INDEPENDENT_CLI_REPLAY",
+        reference_charge_group="cli_quota", reference_capacity=72, additional_reference_charge=0,
+        isolation_accounting="SEPARATE_LOCAL_DIAGNOSTIC_NOT_HOSTED_REFERENCE",
+        runtime_recovery_bound_complete=False, full_hosted_bound_proven=False)
+
+
 def migration_boundary_receipt(value, binding):
     source_binding = value.get("source_binding", {})
     prefix = "_offline/phase6e11/endchain_v1/"
@@ -187,6 +261,10 @@ def migration_boundary_receipt(value, binding):
             "normal_diagnostic_sql_commands", "maximum_diagnostic_sql_commands")},
         accounting_scope=value.get("accounting_scope"), unknown_outcome=value.get("unknown_outcome"),
         reader_connections_closed=value.get("reader_connections_closed"),
+        actual_migration_result={k: value.get("actual_migration_result", {}).get(k) for k in (
+            "receipt", "receipt_sha256", "execution_mode", "invocation_id", "protocol_commands",
+            "observer_commands", "isolation_commands", "ledger_sha256", "policy_file_sha256",
+            "isolation_receipt_sha256")},
         evidence_class="PARENT_LOCAL_RECEIPT_NOT_INDEPENDENT_EXECUTION_PROOF",
         full_hosted_bound_proven=False, changes_hosted_bound=False)
 

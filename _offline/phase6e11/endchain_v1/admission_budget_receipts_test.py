@@ -1,6 +1,7 @@
 """Offline packaging and concrete graph checks, no real transport execution."""
 import copy
 import base64
+import io
 import pathlib
 import unittest
 from types import SimpleNamespace
@@ -121,6 +122,119 @@ class ReceiptTests(unittest.TestCase):
         self.assertTrue(evidence["failure_ledger_unverifiable"])
         self.assertEqual(evidence["migration_evidence_status"], "PENDING_ACTUAL_MIGRATION_EVIDENCE")
 
+    def canonical_inputs(self):
+        raw = {"cli-predispatch-canonical-45.ledger.txt": b'{"event":"dispatch"}\r\n{"truncated":',
+               "cli-predispatch-canonical-45.policy.json": b'{ "schema": 1 }\r\n',
+               "canonical-45-cli-predispatch-cli-isolation-0.json": b'{"commands":8}'}
+        refs = {name: dict(path=name, sha256=receipts.sha(data)) for name, data in raw.items()}
+        value = dict(scope="DISPOSABLE_CI_ONLY", hosted_admission=False, complete=True,
+            phase="migration_45", profile="canonical_45", actual_migration_execution=True,
+            source_commit="a" * 40, candidate_sha256="b" * 64,
+            header=dict(slot="quota", cap=64), observer_commands=8, ci_bootstrap_sql_commands=8,
+            terminal=dict(sql_dispatches=12, confirmed_sql=12, unknown_consumed=0),
+            numeric_coverage=dict(protocol_commands=12, numeric_calls_minus_reader=12,
+                                  all_protocol_visible=True, temp_written=0),
+            ledger_ref=refs["cli-predispatch-canonical-45.ledger.txt"],
+            policy_ref=refs["cli-predispatch-canonical-45.policy.json"],
+            isolation_receipt="canonical-45-cli-predispatch-cli-isolation-0.json",
+            isolation_receipt_sha256=refs["canonical-45-cli-predispatch-cli-isolation-0.json"]["sha256"])
+        post = dict(component_verified=True, actual_migration_result=dict(
+            receipt="cli-predispatch-canonical-45.json", receipt_sha256="c" * 64,
+            protocol_commands=12, observer_commands=8, isolation_commands=8,
+            ledger_sha256=value["ledger_ref"]["sha256"], policy_file_sha256=value["policy_ref"]["sha256"],
+            isolation_receipt_sha256=value["isolation_receipt_sha256"]))
+        return value, post, raw
+
+    def canonical_evidence(self, value, post, raw):
+        files = {"cli-predispatch-canonical-45.json": (value, "c" * 64)}
+        if post is not None:
+            files["migration-boundary-post.json"] = (post, "d" * 64)
+
+        def opened(path, *args, **kwargs):
+            if path.name not in raw:
+                raise FileNotFoundError(path.name)
+            return io.BytesIO(raw[path.name])
+
+        with patch.object(pathlib.Path, "is_file", lambda p: p.name in files), \
+             patch.object(pathlib.Path, "is_symlink", return_value=False), \
+             patch.object(pathlib.Path, "open", opened), \
+             patch.object(receipts, "_read", lambda p: files[p.name]):
+            return receipts.actual_receipts(pathlib.Path("memory"))
+
+    def test_canonical_selection_binds_original_sidecars_and_post_confirmation(self):
+        value, post, raw = self.canonical_inputs()
+        result = self.canonical_evidence(value, post, raw)
+        e = result["cli_canonical_45"]
+        self.assertTrue(e["canonical_references_complete"])
+        self.assertTrue(e["numeric_confirmation"]["counters_consistent"])
+        self.assertTrue(e["boundary_confirmation"]["references_match"])
+        self.assertTrue(all(r["verified"] and r["additional_sql"] == 0 for r in e["raw_references"].values()))
+        self.assertEqual(e["raw_references"]["ledger"]["raw_bytes"], len(raw[value["ledger_ref"]["path"]]))
+        self.assertEqual(e["additional_reference_charge"], 0)
+        self.assertEqual(e["reference_capacity"], 72)
+        self.assertEqual(e["actual_counts"]["sql_dispatches"], 12)
+        self.assertEqual(result["cli_pending_0"]["status"], "PENDING_NAMED_RECEIPT")
+        self.assertEqual(result["migration_boundary_post"]["actual_migration_result"]["ledger_sha256"],
+                         value["ledger_ref"]["sha256"])
+        self.assertFalse(e["full_hosted_bound_proven"])
+        self.assertFalse(e["runtime_recovery_bound_complete"])
+
+    def test_canonical_unknown_failure_keeps_consumed64_and_missing_sidecars(self):
+        value = dict(complete=False, reserved_sql_consumed_on_failure=64,
+                     failure_ledger=dict(header=dict(slot="quota", cap=64),
+                         terminal=dict(sql_dispatches=3, confirmed_sql=2, unknown_consumed=1)))
+        e = self.canonical_evidence(value, None, {})["cli_canonical_45"]
+        self.assertFalse(e["canonical_references_complete"])
+        self.assertEqual(e["status"], "NO_GO_CANONICAL_RECEIPT_INCOMPLETE")
+        self.assertEqual(e["actual_counts"]["reserved_sql_consumed_on_failure"], 64)
+        self.assertEqual(e["actual_counts"]["unknown_consumed"], 1)
+        self.assertEqual(e["boundary_confirmation"]["status"], "PENDING_BOUNDARY_CONFIRMATION")
+
+    def test_canonical_raw_bytes_are_not_reencoded_or_repaired(self):
+        value, post, raw = self.canonical_inputs()
+        raw[value["policy_ref"]["path"]] = b'{"schema":1}'
+        e = self.canonical_evidence(value, post, raw)["cli_canonical_45"]
+        self.assertEqual(e["raw_references"]["policy"]["status"], "HASH_MISMATCH")
+        self.assertFalse(e["canonical_references_complete"])
+
+    def test_canonical_missing_and_oversized_sidecars_remain_bounded_failures(self):
+        for mode in ("missing", "oversized"):
+            value, post, raw = self.canonical_inputs()
+            name = value["ledger_ref"]["path"]
+            if mode == "missing":
+                del raw[name]
+            else:
+                raw[name] = b'x' * 262145
+            e = self.canonical_evidence(value, post, raw)["cli_canonical_45"]
+            self.assertEqual(e["raw_references"]["ledger"]["status"],
+                             "UNAVAILABLE_REFERENCE" if mode == "missing" else "OVERSIZED_REFERENCE")
+            self.assertFalse(e["canonical_references_complete"])
+
+    def test_canonical_unsafe_reference_never_opens_another_path(self):
+        for name in ("../ledger.txt", "C:/outside.txt", "cli-predispatch-canonical-45.policy.json"):
+            with patch.object(pathlib.Path, "open", side_effect=AssertionError("must not read")):
+                e = receipts.raw_reference(pathlib.Path("memory"), dict(path=name, sha256="a" * 64),
+                                           "cli-predispatch-canonical-45.ledger.txt", 262144)
+            self.assertEqual(e["status"], "INVALID_REFERENCE")
+
+    def test_canonical_symlink_is_not_followed(self):
+        with patch.object(pathlib.Path, "is_symlink", return_value=True), \
+             patch.object(pathlib.Path, "open", side_effect=AssertionError("must not read")):
+            e = receipts.raw_reference(pathlib.Path("memory"), dict(path="ledger", sha256="a" * 64), "ledger", 1)
+        self.assertEqual(e["status"], "UNSAFE_REFERENCE")
+
+    def test_canonical_wrong_numeric_or_post_reference_cannot_confirm(self):
+        for mode in ("numeric", "post_hash", "unknown", "boolean_count", "missing_post"):
+            value, post, raw = self.canonical_inputs()
+            if mode == "numeric": value["numeric_coverage"]["numeric_calls_minus_reader"] = 11
+            elif mode == "post_hash": post["actual_migration_result"]["receipt_sha256"] = "e" * 64
+            elif mode == "unknown": value["terminal"]["unknown_consumed"] = 1
+            elif mode == "boolean_count": value["terminal"]["sql_dispatches"] = True
+            else: post = None
+            e = self.canonical_evidence(value, post, raw)["cli_canonical_45"]
+            self.assertFalse(e["canonical_references_complete"], mode)
+            self.assertFalse(e["full_hosted_bound_proven"])
+
     def test_cli_future_migration_receipt_cannot_promote_full_bound(self):
         evidence = self.cli_evidence({"scope": "DISPOSABLE_CI_ONLY", "hosted_admission": False,
                                      "complete": True, "actual_migration_execution": True})
@@ -131,9 +245,11 @@ class ReceiptTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "hook_source_names"):
             self.cli_evidence({"build": {"hook_sources": {"../outside": "a" * 64}}})
 
-    def test_cli_dependency_hash_inventory_includes_all_fifteen_sources(self):
-        self.assertEqual(len(register.CLI_SOURCE_FILES), 15)
+    def test_cli_dependency_hash_inventory_includes_current_canonical_and_fixture_sources(self):
+        self.assertEqual(len(register.CLI_SOURCE_FILES), 16)
         for name in (*register.CLI_SOURCE_FILES, "cli_meter.py", "cli_stat_reader.py", "native_runtime.py",
+                     "fixture_control_ownership.py", "test_fixture_control_ownership.py",
+                     "fixture_parent_closure.py", "test_fixture_parent_closure.py",
                      "_offline/phase6e_server_v1/cli_isolation.py", "_offline/phase6e_server_v1/ci_profile.py"):
             self.assertRegex(self.report["source_hashes"][name], "^[a-f0-9]{64}$")
 
@@ -310,9 +426,9 @@ class ReceiptTests(unittest.TestCase):
         component = self.report["components"]["fixture_diagnostic"]
         counts = {p["case"]: p["intended_native_commands"] for p in component["cases"]}
         self.assertEqual(counts, dict(full=42, partial=32, parent_only=30, dependent_without_workspace=31,
-            zero=26, lost_writer_commit=42, missing_barrier=20, foreign_row=28, lost_commit=42,
+            zero=26, lost_writer_commit=42, missing_barrier=20, foreign_row=33, lost_commit=42,
             interrupted_delete=31, lock_timeout=31))
-        self.assertEqual(component["intended_protocol_commands"], 359)
+        self.assertEqual(component["intended_protocol_commands"], 364)
         self.assertFalse(component["includes_parent_bootstrap"])
         self.assertIsNone(component["full_bound"])
 

@@ -21,7 +21,7 @@ REFERENCE_SHA = "5061786166c8bd153fdc333a708636a1d0f7c538e6b7a5d3aea2f359f9778da
 CLI_SOURCE_FILES = tuple("cli_predispatch/" + name for name in (
     "ci.py", "entry.mjs", "hook.cjs", "package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml",
     "policy.cjs", "prepare.py", "README.md", "smoke.py", "test_ci.py", "test_hook.cjs", "test_policy.cjs",
-    "pending.py", "test_pending.py"))
+    "pending.py", "test_pending.py", "test_canonical.py"))
 
 
 def canonical_sha(value):
@@ -575,6 +575,8 @@ def fixture_diagnostic_component(component):
     """Enumerate the CI driver's setup/writer/cleanup SQL, without running it."""
     import fixture_cleanup_runtime_ci as ci
     import fixture_cleanup_runtime_sql as sql
+    import fixture_control_ownership as control
+    require(control.CONTROL_LIMIT == 5, "negative_control_cost_contract_drift")
     context = {key: str(uuid.uuid4()) for key in ("window", "a", "b")}
     ids = {key: str(uuid.uuid4()) for key in ci.ROLES}
     templates = ci.inserts(context, ids)
@@ -582,6 +584,10 @@ def fixture_diagnostic_component(component):
     def row(label, text):
         return sql_row("fixture_diagnostic_" + label, "diagnostic", label, text,
                        "fixture_cleanup_runtime_ci.py", "run/inserts")
+
+    def witness(label, text):
+        return sql_row("negative_control_" + label, "diagnostic", label, text,
+                       "fixture_control_ownership.py", "NegativeControl.capture/check_after_case")
 
     setup = [row("prerequisite", sql.CHECK), row("identity_registry", ci.REGISTRY),
              row("protected_before", ci.PROTECTED)]
@@ -603,6 +609,8 @@ def fixture_diagnostic_component(component):
             rows += [row(name + "_insert_" + table, text) for table, text, _ in selected]
             if name != "foreign_row":
                 rows += groups["per_writer_transaction"]
+            else:
+                rows += [witness("foreign_row_parent_ownership", sql.INVENTORY)]
             rows += [row(name + "_writer_commit", "COMMIT")]
         if name == "lock_timeout":
             rows += [row("fault_locker_begin", "BEGIN"),
@@ -615,6 +623,12 @@ def fixture_diagnostic_component(component):
             rows += cleanup[:stop + 1] + groups["failure_only"] + cleanup[absence:]
         else:
             rows += cleanup
+        if name == "foreign_row":
+            rows += [witness(label, text) for label, text in (
+                ("foreign_row_parent_check_begin", "BEGIN TRANSACTION READ ONLY"),
+                ("foreign_row_parent_check_limits", sql.CHECK),
+                ("foreign_row_parent_check_inventory", sql.INVENTORY),
+                ("foreign_row_parent_check_rollback", "ROLLBACK"))]
         if name == "lock_timeout":
             rows += [row("fault_locker_rollback", "ROLLBACK")]
         rows = copy.deepcopy(rows)
@@ -625,6 +639,8 @@ def fixture_diagnostic_component(component):
     return dict(setup=setup, cases=cases, closing=closing,
                 intended_protocol_commands=len(setup) + sum(len(c["rows"]) for c in cases) + len(closing),
                 includes_parent_bootstrap=False, includes_parent_auth_environment=False,
+                negative_control_additional_commands=control.CONTROL_LIMIT,
+                negative_control_original_claim_promoted=False,
                 separate_local_diagnostic=True, full_bound=None,
                 source=source("fixture_cleanup_runtime_ci.py", "run"))
 
@@ -649,7 +665,8 @@ def assemble(folder=REFERENCE):
             "Writer/mint barrier and ownership evidence must survive unknown commit."]),
         dict(id="recovery_orchestration", owner="Role4/Main", inputs=[
             "All real phase adapters, with command lists for cleanup/final/closure failures.",
-            "No duplicated rollback, existing safety Auth, or prepaid 130 cleanup slots."]),
+            "No duplicated rollback, existing safety Auth, or prepaid 130 cleanup slots.",
+            "Auth reconciliation and parent fixture suffix eligibility, barrier and actual receipts remain unbound."]),
     ]
     prefixes, safety_paths = prefix_register(normal)
     sources = {name: digest(HERE / name) for name in (
@@ -660,6 +677,8 @@ def assemble(folder=REFERENCE):
         "integral_failure_runtime.py", "integral_failure_runtime_workflow.py",
         "integral_failure_runtime_worker.mjs", "fixture_cleanup_runtime_ci.py",
         "fixture_cleanup_evidence.py", "sql_protocol.py", "native_runtime.py",
+        "fixture_control_ownership.py", "test_fixture_control_ownership.py",
+        "fixture_parent_closure.py", "test_fixture_parent_closure.py",
         "admission_fixture_context.py", "admission_ci.py", "admission_journal.py",
         "admission_budget_graph.py", "admission_budget_receipts.py",
         "migration_failure_boundaries.py", "test_migration_failure_boundaries.py") + CLI_SOURCE_FILES}

@@ -444,14 +444,8 @@ class InstrumentedConfirmationTests(unittest.TestCase):
         self.gate.save=lambda n,v:self.saved.update({n:copy.deepcopy(v)})
         self.modules=m.instrumented_modules(self.gate,self.token)
         self.pending,prepare,reader,protocol,isolation,manifest=self.modules
-        def clean(v):
-            if isinstance(v,list):return [clean(x) for x in v]
-            if isinstance(v,dict):return {k:clean(v[k]) for k in sorted(v)
-                if k not in ('location','stmt_location','stmt_len')}
-            return v
-        tree=json.loads(protocol.parser().parser.parse_sql_json((m.ROOT/m.M45).read_text()))
-        self.asts=[m.sha(json.dumps(clean(s['stmt']),separators=(',', ':'),ensure_ascii=False).encode())
-                   for s in tree['stmts']]
+        # Use the independently recorded Node-policy hashes, not the verifier's parser.
+        self.asts=list(RealMigrationASTTests.EXPECTED)
         self.policy=dict(version=1,environment='disposable_ci',upstream_commit=prepare.UPSTREAM,
             source_commit='b'*40,candidate_sha256='c'*64,invocation_id='90c00000-0000-4000-8000-000000000009',
             slot='quota',cap=64,closure_reserve=1,dry_run=False,host='127.0.0.1',port=54322,
@@ -681,6 +675,42 @@ class InstrumentedConfirmationTests(unittest.TestCase):
         native.assert_not_called();self.assertTrue(self.token.consumed)
         self.assertFalse(self.saved[m.NAMES[2]]['component_verified'])
         with self.assertRaises(m.rt.Blocked):m.after(self.gate,self.token,result)
+
+
+class RealMigrationASTTests(unittest.TestCase):
+    # Original policy bytes from CI41628119054, not a successful boundary receipt.
+    EXPECTED = (
+        'cf42ac1cd33d26233b52381753828b18e958da999940f2c3fd6aa07f05a982b2',
+        '64a6a28f94caec1c70526bb9683ae0285153f9ab834c2a79e1cf02b335ea9e89',
+        '136c59fb570535087dc0d55833c3883b2834912d8b46592ef5f3b6cc6dc9b12b',
+        '3e2fb2c591919f629a6cb9c44770047da4f5bc69a4263eb9b6461db527e6962e',
+        '9bd5738ada9607a7c80d7f683161a95e5d307bd4dfba8cdcbfd8c7056700de0a',
+        '9fcc459403602b52bbdbecd7a0d953e5986654d74da6ff1ab05d6bdd5b3e0ec8',
+        'bd833a3db029af6c6156451a99a3a444c312f86a918a01e66df0f76a89836ffd',
+        'e70a01f9c1b94496486bd83473e7d35fd70631d085749be2978b3c58e579eb31',
+        '11bdafe32146b29da55ccec779205b347d07ca916a713d6a241f3ec5af2cbf1b')
+
+    def test_real_pinned_m45_matches_original_node_policy(self):
+        import sql_protocol
+        raw = (m.ROOT / m.M45).read_bytes()
+        self.assertEqual(m.sha(raw), m.PRESERVED[m.M45])
+        tree = json.loads(sql_protocol.parser().parser.parse_sql_json(raw.decode()))
+        actual = tuple(m.sha(json.dumps(m.canonical_ast(row['stmt']),
+                       separators=(',', ':'), ensure_ascii=False).encode())
+                       for row in tree['stmts'])
+        self.assertEqual(actual, self.EXPECTED)
+
+    def test_only_defelem_integer_offset_is_ignored(self):
+        base = {'DefElem': {'defname': 'as', 'arg': {'String': {'sval': 'body'}}, 'arg_location': 23}}
+        moved = copy.deepcopy(base); moved['DefElem']['arg_location'] = 144
+        self.assertEqual(m.canonical_ast(base), m.canonical_ast(moved))
+        changed = copy.deepcopy(base); changed['DefElem']['arg']['String']['sval'] = 'different'
+        self.assertNotEqual(m.canonical_ast(base), m.canonical_ast(changed))
+        self.assertEqual(m.canonical_ast({'OtherNode': {'arg_location': 23}}),
+                         {'OtherNode': {'arg_location': 23}})
+        for value in (True, '23', None):
+            changed['DefElem']['arg_location'] = value
+            with self.assertRaises(m.rt.Blocked): m.canonical_ast(changed)
 
 
 if __name__=='__main__':unittest.main()

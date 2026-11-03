@@ -312,6 +312,25 @@ CANONICAL_RECEIPT = 'cli-predispatch-canonical-45.json'
 INSTRUMENTED_PREFIX = rt.PREFIX + 'cli_predispatch/'
 
 
+def canonical_ast(value, node_kind=None):
+    """PG17 parser compatibility: discard source offsets, never SQL semantics."""
+    if isinstance(value, list):
+        return [canonical_ast(item) for item in value]
+    if isinstance(value, dict):
+        result = {}
+        for key in sorted(value):
+            if key in ('location', 'stmt_location', 'stmt_len'):
+                continue
+            # pglast v7.20 emits this offset; the pinned Node PG17 parser does not.
+            if node_kind == 'DefElem' and key == 'arg_location':
+                if type(value[key]) is not int:
+                    raise rt.Blocked('migration_boundary_ast_offset_shape')
+                continue
+            result[key] = canonical_ast(value[key], key)
+        return result
+    return value
+
+
 def instrumented_artifact(gate, reference, *, name=None, limit=262144):
     if type(reference) is not dict or set(reference) != {'path', 'sha256'}:
         raise rt.Blocked('migration_boundary_instrumented_reference')
@@ -438,15 +457,8 @@ def instrumented_confirmation(gate, token, result):
     migration_raw = (pathlib.Path(gate.sources)/M45).read_bytes()
     if sha(migration_raw) != PRESERVED[M45]:
         raise rt.Blocked('migration_boundary_instrumented_m45')
-    def clean(value):
-        if isinstance(value, list):
-            return [clean(v) for v in value]
-        if isinstance(value, dict):
-            return {k:clean(value[k]) for k in sorted(value)
-                    if k not in ('location','stmt_location','stmt_len')}
-        return value
     tree = json.loads(protocol.parser().parser.parse_sql_json(migration_raw.decode('utf-8')))
-    ast = [sha(json.dumps(clean(row['stmt']),separators=(',', ':'),ensure_ascii=False).encode())
+    ast = [sha(json.dumps(canonical_ast(row['stmt']),separators=(',', ':'),ensure_ascii=False).encode())
            for row in tree['stmts']]
     target = dict(version=VERSION, name=pathlib.PurePosixPath(M45).stem.split('_',1)[1],
                   sha256=PRESERVED[M45], ast_hashes=ast)

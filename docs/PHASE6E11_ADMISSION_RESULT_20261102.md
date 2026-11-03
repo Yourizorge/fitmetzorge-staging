@@ -153,6 +153,57 @@ foutproeven. Oudere exports blijven onveranderd. De aparte parent-fixturehelper
 is voorbereid en unit-getest, maar wordt zonder bewezen producer-/mintbarriere
 niet aangeroepen. Dit is geen globale cleanup-PASS.
 
+## Vijfde kandidaat en aanvullende lokale aansluiting
+
+Commit `b00a2a5f59b116023d28716eb1bb80c19756653d` bindt de canonical
+M45-uitvoering aan dezelfde pre-dispatchmeter. De parent voert precies eenmaal
+`before -> run_canonical -> after` uit. De oorspronkelijke ledger en policy
+blijven als begrensde, exclusief geschreven en gehashte bytebestanden bewaard;
+ook een gedeeltelijke ledger wordt niet gereconstrueerd. Onzekere uitvoering
+blijft 64 gereserveerde eenheden verbruiken. Observer- en isolatiecommando's
+blijven afzonderlijk zichtbaar. Dit is geen verhoging van hosted capaciteit.
+
+Lokale verificatie: 78 CLI/protocoltests PASS en 171 gerichte
+admission-/fixture-/migrationgrenscontroles PASS. Deze suites en eerdere
+deelcontroles worden niet als een nieuw totaal opgeteld. De onafhankelijke
+review gaf source-only akkoord voor disposable CI, niet voor hosted uitvoering.
+
+De negatieve fixturecontrole heeft nu een afzonderlijk, vooraf opgeslagen
+parent-eigendomsbewijs. Exacte rowversions moeten na de negatieve test gelijk
+zijn; gewijzigde, extra of ontbrekende rijen blokkeren de latere cleanup.
+Het negatieve testresultaat zelf blijft NO_GO. De witness heeft maximaal vijf
+vooraf getelde commando's, inclusief de gereserveerde rollback. Dit is nog geen
+bewijs dat alle parent-fixtures en Auth-objecten daadwerkelijk zijn verwijderd.
+
+CI [41628119054](https://github.com/Yourizorge/fitmetzorge-staging/actions/runs/41628119054)
+is eenmaal gestart op deze bron, met 535 bronbestanden en candidate SHA-256
+`4f6b22aff6b07fde31f4ba76aaac707745be0132a1dff6e7310f01db89fc0834`.
+De artifact-ZIP is geverifieerd: SHA-256
+`d0a41f81b1fe6d49af7ae6dc3205b434beac50aca5dca0da080395805867bcb1`,
+109 bewijsbestanden plus manifest. De canonical CLI voerde 14 bevestigde
+protocolcommando's uit, met 14 overeenkomende numerieke waarnemingen, nul eigen
+temp writes, acht observercommando's en acht isolatiecommando's. Cron is aantoonbaar
+hersteld. Ledger-SHA-256
+`9d4b18d7a2ff12bf2bc80f6bbf1700e72ec787f07fd803b9ab6aa670c7404494`;
+oorspronkelijke policy-SHA-256
+`fee70f3d1a1af4ecc3aaed7013022c0c002d84ef6e3a0675e0795c3bbaeaa96f`.
+
+De onafhankelijke nameting werd geblokkeerd door
+`migration_boundary_instrumented_m45_ast`; de run blijft NO_GO. Migration45 is
+door de CLI uitgevoerd, maar de parent heeft de stap niet als bevestigd opgenomen:
+`migrations_applied=44`. Geen clean45/47- of Auth-/fixture-PASS op deze run.
+
+De oorzaak is offline gereproduceerd met de exacte migrationbytes. De gepinde
+Node-parser `@libpg-query/parser@17.6.10` rapporteert PG170004; de onafhankelijke
+Python-parser pglast v7.20 rapporteert PG170007. Alleen bij de functiedefinitie
+voegt Python `DefElem.arg_location` toe: een bronpositie, geen SQL-inhoud. De
+gerichte normalisatie verwijdert uitsluitend dit integerpositieveld binnen
+DefElem. Daarna komen alle negen AST-hashes overeen met de oorspronkelijke
+Node-policy. Andere velden en de volledige migration-SHA blijven verplicht.
+44 boundarytests PASS, inclusief een regressie tegen de echte gepinde migration
+en tests dat inhoudswijzigingen of ongeldige positievelden worden geweigerd.
+Dit lokale herstel promoveert CI5 niet naar PASS.
+
 ## Budget en harde grenzen
 
 De veertien matrixfasen zijn niet als veertien volledige keten-PASS-resultaten

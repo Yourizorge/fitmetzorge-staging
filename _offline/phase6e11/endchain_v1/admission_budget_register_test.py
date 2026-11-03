@@ -323,6 +323,35 @@ class ConcreteRegisterTests(unittest.TestCase):
         self.assertEqual(component["capture_hook_count"], 74)
         self.assertTrue(all(p["cost"] == 1 for p in component["candidate_capture_anchors"]))
 
+    def test_negative_control_five_commands_are_ordered_and_only_diagnostic(self):
+        component = self.report["components"]["fixture_diagnostic"]
+        case = next(c for c in component["cases"] if c["case"] == "foreign_row")
+        rows = case["rows"]
+        witness = [r for r in rows if r["source"]["path"] == "fixture_control_ownership.py"]
+        self.assertEqual([r["action"] for r in witness], ["foreign_row_parent_ownership",
+            "foreign_row_parent_check_begin", "foreign_row_parent_check_limits",
+            "foreign_row_parent_check_inventory", "foreign_row_parent_check_rollback"])
+        self.assertEqual(sum(r["cost"] for r in witness), 5)
+        actions = [r["action"] for r in rows]
+        self.assertLess(actions.index("foreign_row_parent_ownership"), actions.index("foreign_row_writer_commit"))
+        self.assertLess(actions.index("rollback"), actions.index("foreign_row_parent_check_begin"))
+        self.assertFalse(any(a.startswith("delete_") for a in actions))
+        self.assertEqual(case["intended_native_commands"], 33)
+        self.assertEqual(component["intended_protocol_commands"], 364)
+        self.assertFalse(component["negative_control_original_claim_promoted"])
+        self.assertFalse(case["full_unexpected_fault_bound"])
+        self.assertEqual(self.normal["normal_capacity"], 2338)
+        self.assertEqual(self.normal["charge_groups"]["cli_quota"]["capacity"], 72)
+        graph = self.report["command_graph"]["diagnostic_graphs"]["fixture_ci_foreign_row"]
+        self.assertEqual(graph["intended_consumed_capacity"], 33)
+        self.assertFalse(graph["full_fault_bound"])
+
+    def test_negative_control_cost_drift_fails_closed(self):
+        import fixture_control_ownership
+        with patch.object(fixture_control_ownership, "CONTROL_LIMIT", 6):
+            with self.assertRaisesRegex(ValueError, "negative_control_cost_contract_drift"):
+                register.fixture_diagnostic_component(self.report["components"]["fixture"])
+
     def test_fixture_rollback_is_not_replayed_after_unknown_commit(self):
         component = self.report["components"]["fixture"]
         commit = next(p for p in component["fault_paths"] if p["at"] == "fixture_commit")
