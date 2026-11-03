@@ -1,8 +1,10 @@
 """Actual PG17 cleanup cases on an existing disposable clean47 Gate.
 
-run(gate) requires gate.fixture_cleanup_ids (three already registered synthetic
+run(gate, runtime=None) requires gate.fixture_cleanup_ids (three already registered synthetic
 identities). It never creates Auth accounts, changes config or activates a quota.
 All fixture UUIDs are fresh; failure-case rows remain in the disposable database.
+Only an explicitly injected, source-bound TrackedRuntime adds DB terminality.
+The default NativeRuntime path and existing cleanup command caps are unchanged.
 """
 import copy
 from collections import Counter
@@ -93,13 +95,76 @@ class ResponseFault:
         return Connection()
 
 
-def run(gate):
+def bind_runtime(gate, runtime):
+    """Select actual project modules, including the new helper's imports."""
+    import sys
+    import admission_module_binding as binding
+    import admission_binding
+    import admission_journal
+    import fixture_db_terminality as tracked
+    import fixture_parent_closure
+    import fixture_control_ownership
+    import fixture_cleanup_runtime
+    import fixture_cleanup_evidence
+    import native_runtime
+    import sql_protocol
+    if type(runtime) is not tracked.TrackedRuntime:
+        raise Blocked('cleanup_explicit_tracked_runtime_required')
+    modules = [sys.modules[__name__], binding, admission_binding, admission_journal,
+               tracked, fixture_parent_closure, fixture_control_ownership,
+               fixture_cleanup_runtime, fixture_cleanup_evidence, native_runtime, sql_protocol, sql]
+    proof = binding.verify(gate, modules)
+    return {'source_binding': proof, **runtime.component_binding(gate)}
+
+
+def run(gate, *, runtime=None):
     result = {'status': 'BLOCKED', 'component': 'fixture_cleanup', 'preparation_run': NEW_RUN,
               'hosted_admitted': False, 'full_endchain_pass': False,
               'global_2349_proven': False, 'wal_classification': 'NOT_MEASURED',
               'cases': [], 'local_diagnostic_dispatches': [], 'fixture_mutation_attempted': False}
-    runtime = None
+    injected = runtime is not None
+    runtime_bound = False
+    runtime_closed = False
+    terminal_attempted = False
+    def closure_error(error, phase):
+        result[phase+'_error_class'] = type(error).__name__
+        result.setdefault('reason', str(error) if isinstance(error, Blocked) else 'cleanup_'+phase+'_error')
+        result.setdefault('error_class', type(error).__name__)
+        result['status'] = 'NO_GO' if result['fixture_mutation_attempted'] or result['status'] == 'COMPONENT_PASS' else 'BLOCKED'
+    def close_runtime():
+        nonlocal runtime_closed
+        if runtime_closed or runtime is None: return
+        runtime_closed = True
+        if not injected:
+            runtime.clear()
+        elif runtime_bound:
+            try: runtime.clear()
+            except BaseException as error: closure_error(error, 'tracked_clear')
+    def observe_terminal():
+        nonlocal terminal_attempted
+        if not injected or not runtime_bound or terminal_attempted: return
+        terminal_attempted = True
+        result['tracked_db_terminality_proven'] = False
+        if 'tracked_clear_error_class' in result: return
+        try:
+            terminal = runtime.terminal()
+            result['tracked_runtime_terminal'] = terminal
+            result['tracked_db_terminality_proven'] = terminal['db_terminality_proven'] is True
+            result['tracked_runtime_additional_sql_count'] = (
+                terminal['registration_commands'] - result['tracked_runtime_binding']['registration_commands_before_component']
+                + terminal['terminal_commands'])
+            gate.save('fixture-cleanup-db-terminal.json', {
+                'preparation_run': NEW_RUN, 'status': 'NO_GO', 'terminal': terminal,
+                'fixture_case_ids': sorted(getattr(gate, 'fixture_parent_contexts', {})),
+                'component_status': result['status'], 'full_cleanup_proven': False,
+                'server_global_quiescence': False, 'registry_cleanup_admitted': False,
+                'tracked_runtime_binding': result['tracked_runtime_binding']})
+        except BaseException as error:
+            result['tracked_db_terminality_proven'] = False
+            closure_error(error, 'tracked_terminal')
     def finish():
+        close_runtime()
+        observe_terminal()
         result['local_diagnostic_sql_count'] = len(result['local_diagnostic_dispatches'])
         result['planned_cleanup_protocol_count'] = len(sql.plan()['normal'])
         result['planned_capture_per_writer_transaction'] = 1
@@ -120,8 +185,22 @@ def run(gate):
                     retained_fault_fixtures=result.get('fault_case_fixtures_retained', False),
                     detail_receipt='fixture-cleanup-component-detail.json',
                     reason=result.get('reason'), error_class=result.get('error_class'))
+        if injected:
+            flat.update(tracked_db_terminality_proven=result.get('tracked_db_terminality_proven', False),
+                        tracked_runtime_additional_sql_count=result.get('tracked_runtime_additional_sql_count'),
+                        tracked_runtime_terminal_receipt='fixture-cleanup-db-terminal.json'
+                            if result.get('tracked_db_terminality_proven') else None,
+                        server_global_quiescence=False, registry_cleanup_admitted=False)
         gate.save('fixture-cleanup-component.json', flat)
         return flat
+    if injected:
+        try:
+            result['tracked_runtime_binding'] = bind_runtime(gate, runtime)
+            runtime_bound = True
+            gate.save('fixture-cleanup-runtime-binding.json', result['tracked_runtime_binding'])
+        except BaseException as error:
+            closure_error(error, 'tracked_binding')
+            return finish()
     ids = getattr(gate, 'fixture_cleanup_ids', None)
     if not isinstance(ids, dict) or set(ids) != set(ROLES):
         result['reason'] = 'cleanup_main_registered_fixture_ids_required'
@@ -150,7 +229,7 @@ def run(gate):
     def execute(connection, label, text, args=()):
         return setup.execute(connection, 'local_setup_' + label, text, args)
     try:
-        runtime = NativeRuntime.disposable(gate)
+        if runtime is None: runtime = NativeRuntime.disposable(gate)
         connection = runtime.connect()
         try:
             check = execute(connection, 'prerequisite', sql.CHECK)[0]
@@ -271,5 +350,5 @@ def run(gate):
         result['error_class'] = type(error).__name__
     finally:
         result['local_setup_protocol'] = setup.events
-        if runtime is not None: runtime.clear()
+        close_runtime()
     return finish()

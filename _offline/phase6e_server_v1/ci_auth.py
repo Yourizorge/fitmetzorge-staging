@@ -10,9 +10,11 @@ IMAGE='supabase/gotrue:v2.197.0'
 NAME='fmz-integration-auth-ci'
 
 @contextlib.contextmanager
-def environment(gate,roles=('a','trainer','b','owner','outsider'),*,include_test_admin=False):
+def environment(gate,roles=('a','trainer','b','owner','outsider'),*,include_test_admin=False,tracked_auth_factory=None):
     if os.environ.get('GITHUB_REPOSITORY')!='Yourizorge/fitmetzorge-staging':raise RuntimeError('ci_only')
     if type(include_test_admin) is not bool:raise ValueError('ci_admin_option')
+    if tracked_auth_factory is not None and (not callable(tracked_auth_factory) or roles!=('a','trainer','b')):
+        raise ValueError('ci_tracked_auth_scope')
     def private(args,**kw):
         p=subprocess.run(args,capture_output=True,text=True,timeout=30,**kw)
         if p.returncode:raise RuntimeError('local_auth_container')
@@ -40,7 +42,7 @@ def environment(gate,roles=('a','trainer','b','owner','outsider'),*,include_test
         'GOTRUE_EXTERNAL_EMAIL_ENABLED':'true','GOTRUE_MAILER_AUTOCONFIRM':'true','GOTRUE_DISABLE_SIGNUP':'true',
         'GOTRUE_SECURITY_REFRESH_TOKEN_ROTATION_ENABLED':'true','GOTRUE_LOG_LEVEL':'panic'}
     for k,v in config.items():args+=['-e',k+'='+v]
-    args.append(IMAGE);started=False
+    args.append(IMAGE);started=False;auth=None;tracked_finalized=False
     try:
         private(args,env=env);started=True;env.clear();password=None
         healthy=False
@@ -51,7 +53,9 @@ def environment(gate,roles=('a','trainer','b','owner','outsider'),*,include_test
             except OSError:pass
             time.sleep(1)
         if not healthy:raise RuntimeError('local_auth_health')
-        auth=LocalAuth('http://127.0.0.1:59999');tokens={};claims={};accounts={};admin_token=jwt('service_role')
+        tokens={};claims={};accounts={};admin_token=jwt('service_role')
+        auth=(LocalAuth('http://127.0.0.1:59999') if tracked_auth_factory is None else
+              tracked_auth_factory('http://127.0.0.1:59999',LocalAuth,admin_token,Denied))
         with psycopg.connect(dsn,autocommit=True,prepare_threshold=None,row_factory=dict_row) as connection:
             events=[];admin=Session(connection,events.append,'fixture_admin')
             from auth_protocol import STATS,difference
@@ -66,13 +70,32 @@ def environment(gate,roles=('a','trainer','b','owner','outsider'),*,include_test
                 issued=auth.call('/token?grant_type=password',data={'email':email,'password':pw})
                 tokens[role]=issued['access_token'];claims[role]=auth.verify(tokens[role]);accounts[role]={'email':email,'password':pw}
                 if claims[role]['sub']!=user['id']:raise RuntimeError('local_auth_subject')
+                if tracked_auth_factory is not None:auth.bind_owner(role,user['id'])
             ctx={'dsn':dsn,'auth':auth,'tokens':tokens,'claims':claims,'admin':admin,'accounts':accounts,'image':IMAGE,'digests':digests}
             # Private disposable test capability; never serialize ctx or this value.
             if include_test_admin:ctx['test_admin_token']=admin_token
+            if tracked_auth_factory is not None:ctx['auth_request_registry']=auth.registry
             try:yield ctx
             finally:
+                primary=sys.exception();tracking_error=None
+                if tracked_auth_factory is not None:
+                    tracked_finalized=True
+                    try:
+                        proof=auth.close_and_drain()
+                        auth.finalize(ctx,proof)
+                    except BaseException as error:
+                        if primary is None:tracking_error=error
+                        else:primary.add_note('secondary_auth_close_failure:'+type(error).__name__)
+                        try:gate.save('integration-auth-close-stop.json',{'class':type(error).__name__,
+                            'primary_class':type(primary).__name__ if primary else None,'cleanup_admitted':False})
+                        except BaseException as save_error:
+                            (primary or error).add_note('secondary_auth_receipt_failure:'+type(save_error).__name__)
+                    primary=primary or tracking_error
+                    try:gate.save('integration-auth-tracked-protocol.json',auth.evidence())
+                    except BaseException as error:
+                        if primary is None:tracking_error=error;primary=error
+                        else:primary.add_note('secondary_tracked_artifact_failure:'+type(error).__name__)
                 ctx.pop('test_admin_token',None)
-                primary=sys.exception()
                 try:
                     admin.operation='numeric_final_observers'
                     after=admin.execute('select '+STATS+' value').fetchone()['value']
@@ -95,9 +118,25 @@ def environment(gate,roles=('a','trainer','b','owner','outsider'),*,include_test
                         'primary_class':type(primary).__name__ if primary else None,'hosted':False})
                     if primary is None:raise
                     primary.add_note('secondary_io_failure:'+type(error).__name__)
+                if tracking_error is not None:raise tracking_error
     finally:
+        close_error=None
+        if tracked_auth_factory is not None and auth is not None and not tracked_finalized:
+            primary=sys.exception()
+            try:
+                auth.close_and_drain()
+                gate.save('integration-auth-bootstrap-partial.json',{
+                    'bootstrap_complete':False,'cleanup_admitted':False,'registered_requests_drained':True})
+            except BaseException as error:
+                if primary is None:close_error=error
+                else:primary.add_note('secondary_bootstrap_close_failure:'+type(error).__name__)
+            try:gate.save('integration-auth-tracked-protocol.json',auth.evidence())
+            except BaseException as error:
+                if primary is None and close_error is None:close_error=error
+                else:(primary or close_error).add_note('secondary_tracked_artifact_failure:'+type(error).__name__)
         env.clear()
         if started:private(['docker','rm','-f',NAME])
+        if close_error is not None:raise close_error
 
 def auth_checks(ctx):
     auth=ctx['auth'];roles=ctx['accounts'];old=ctx['tokens']['a'];subject=ctx['claims']['a']['sub'];checks=[]
@@ -105,9 +144,12 @@ def auth_checks(ctx):
     if auth.verify(second)['sub']!=subject:raise RuntimeError('relogin_subject')
     checks.append('real_password_relogin_same_subject')
     # /logout may have an empty body. Read no payload and retain no token.
-    req=urllib.request.Request(auth.url+'/logout?scope=global',headers={'Authorization':'Bearer '+second},data=b'')
-    with urllib.request.urlopen(req,timeout=5) as response:
-        if response.status!=204:raise RuntimeError('logout_status')
+    if 'auth_request_registry' in ctx:
+        auth.call('/logout?scope=global',second,{},method='POST')
+    else:
+        req=urllib.request.Request(auth.url+'/logout?scope=global',headers={'Authorization':'Bearer '+second},data=b'')
+        with urllib.request.urlopen(req,timeout=5) as response:
+            if response.status!=204:raise RuntimeError('logout_status')
     ctx['admin'].operation='revocation_session_check'
     row=ctx['admin'].execute('select count(*) n from auth.sessions where user_id=%s',[subject]).fetchone()
     if row['n']!=0:raise RuntimeError('logout_sessions')

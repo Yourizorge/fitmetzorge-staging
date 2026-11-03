@@ -78,6 +78,26 @@ class DeadlineBackend:
         self.remaining(15)
         return self.backend.http(*args, **kwargs)
 
+    @property
+    def transport(self):
+        return self.backend.transport
+
+    def guarded_factory(self, factory):
+        if factory is None:
+            return None
+        backend = self
+        def create(owner, ledger, upstream):
+            if upstream is not backend.transport:
+                raise rt.Blocked('failure_auth_transport_identity')
+            adapter = factory(owner, ledger, upstream)
+            class Guarded:
+                def request(self, *args, **kwargs):
+                    # Keep the original per-dispatch deadline, including suffixes.
+                    backend.remaining(15)
+                    return adapter.request(*args, **kwargs)
+            return Guarded()
+        return create
+
     def difference(self, before, after):
         return self.backend.difference(before, after)
 
@@ -95,8 +115,11 @@ def dollar(text, args):
 
 
 class WorkflowDriver:
-    def __init__(self, gate, *, local_component_authorized=False):
+    def __init__(self, gate, *, local_component_authorized=False, transport_factory=None):
+        if transport_factory is not None and not callable(transport_factory):
+            raise ValueError('failure_auth_transport_factory')
         self.gate = gate
+        self.transport_factory = transport_factory
         self.local_component_authorized = local_component_authorized is True
         self.config = getattr(gate, 'auth_failure_context', None)
         self.actors, self.auth_results = {}, []
@@ -162,7 +185,8 @@ class WorkflowDriver:
         # Existing aliases or unknown markers are refused, never adopted/deleted.
         for role, email in ALIASES.items():
             case = Case(self.backend, folder / role, str(uuid.uuid4()), 'partial_session',
-                        self.config['managed_costs'])
+                        self.config['managed_costs'],
+                        transport_factory=self.backend.guarded_factory(self.transport_factory))
             self.actors[role] = case
             case.email = email
             baseline = case.snapshot('preflight')
@@ -431,7 +455,9 @@ class WorkflowDriver:
 
     def delegated_auth(self, session, name):
         from auth_failure import Case, contract
-        case = Case(self.backend, self.folder / session.case, session.case_id, name, self.config['managed_costs'])
+        case = Case(self.backend, self.folder / session.case, session.case_id, name,
+                    self.config['managed_costs'],
+                    transport_factory=self.backend.guarded_factory(self.transport_factory))
         result = case.execute()
         self.auth_results.append(result)
         session.delegated_auth = result

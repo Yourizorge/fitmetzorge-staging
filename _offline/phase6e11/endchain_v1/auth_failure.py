@@ -164,10 +164,11 @@ class RealBackend:
 
 
 class Case:
-    def __init__(self, backend, folder, run_id, name, costs):
+    def __init__(self, backend, folder, run_id, name, costs, transport_factory=None):
         if name not in CASES:
             raise ValueError('auth_failure_case')
         self.backend, self.name = backend, name
+        self.transport_factory = transport_factory
         self.run_id = binding(run_id)
         self.email = 'fmz-af-' + uuid.uuid5(uuid.UUID(run_id), name).hex + '@example.invalid'
         self.marker = digest(run_id + ':' + name)
@@ -180,6 +181,11 @@ class Case:
         self.journal_failures = []
         self.raised_failure = None
         self.injected = False
+
+    def request(self, ledger):
+        if self.transport_factory is None:
+            return self.backend.http
+        return self.transport_factory(self.run_id, ledger, self.backend.transport).request
 
     def native(self, key, call):
         self.journal.before(key)
@@ -226,16 +232,16 @@ class Case:
         http_failure = None
         try:
             if op == 'create':
-                result = self.backend.http('POST', '/admin/users', {
+                result = self.request(self.journal)('POST', '/admin/users', {
                     'email': self.email, 'password': self.password, 'email_confirm': True,
                     'app_metadata': {'auth_failure_claim': self.marker}}, fault=fault)
             elif op == 'login':
-                result = self.backend.http('POST', '/token?grant_type=password',
+                result = self.request(self.journal)('POST', '/token?grant_type=password',
                                            {'email': self.email, 'password': self.password}, fault=fault)
             elif op == 'logout':
-                result = self.backend.http('POST', '/logout?scope=global', {}, token=self.token, fault=fault)
+                result = self.request(self.journal)('POST', '/logout?scope=global', {}, token=self.token, fault=fault)
             elif op == 'delete':
-                result = self.backend.http('DELETE', '/admin/users/' + self.actor, fault=fault)
+                result = self.request(self.journal)('DELETE', '/admin/users/' + self.actor, fault=fault)
             http_phase = 'http_response_validation'
             self.terminals[op] = result['terminal'] is True
             if not 200 <= result['status'] < 300:
@@ -520,7 +526,7 @@ def reconcile_retained(case):
             stats_before = native('stats_before_delete', case.backend.stats)
             journal.before('delete')
             try:
-                response = case.backend.http('DELETE', '/admin/users/' + case.actor)
+                response = case.request(journal)('DELETE', '/admin/users/' + case.actor)
                 if response['terminal'] is not True or not 200 <= response['status'] < 300:
                     raise UnknownOutcome()
                 journal.event({'phase': 'confirmed', 'key': 'delete', 'http_status': response['status']})
@@ -584,8 +590,10 @@ def context_from_ci(ctx, *, run_id, managed_costs, exclusive_local_auth):
             'exclusive_local_auth': exclusive_local_auth}
 
 
-def run(gate, *, safety_reconciliation=False):
+def run(gate, *, safety_reconciliation=False, transport_factory=None):
     """Parent provides private gate.auth_failure_context; no bootstrap/CI dispatch."""
+    if transport_factory is not None and not callable(transport_factory):
+        raise ValueError('auth_failure_transport_factory')
     config = getattr(gate, 'auth_failure_context', None)
     if type(safety_reconciliation) is not bool:
         raise ValueError('auth_failure_explicit_reconciliation_option')
@@ -611,7 +619,7 @@ def run(gate, *, safety_reconciliation=False):
         return report
     try:
         folder.mkdir()
-        cases = [Case(backend, folder / name, str(uuid.uuid4()), name, config['managed_costs']) for name in CASES]
+        cases = [Case(backend, folder / name, str(uuid.uuid4()), name, config['managed_costs'], transport_factory=transport_factory) for name in CASES]
         reports = [case.execute() for case in cases]
         reconciliations = [reconcile_retained(case) for case, report in zip(cases, reports)
                            if not report['claim_released']] if safety_reconciliation else []

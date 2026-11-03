@@ -204,6 +204,32 @@ Node-policy. Andere velden en de volledige migration-SHA blijven verplicht.
 en tests dat inhoudswijzigingen of ongeldige positievelden worden geweigerd.
 Dit lokale herstel promoveert CI5 niet naar PASS.
 
+## CI6: onafhankelijke migrationcontrole hersteld
+
+CI [41630541810](https://github.com/Yourizorge/fitmetzorge-staging/actions/runs/41630541810)
+op commit `5bdcdfd451c768d5c61d1a5b31b73111a543bc92` heeft een schone
+47/47-opbouw bewezen. Candidate SHA-256:
+`d921593e766deab6708d6b063a018447fce3ec9e224737b0a8ce64b165f335a8`.
+De geverifieerde ZIP bevat 565 bewijsbestanden; SHA-256:
+`d8896fc3aa77377a2ac942845e0eab585ab8372073f4756e0130957fef6dc48d`.
+
+De echte canonical CLI-dispatch en onafhankelijke migration-nameting sluiten nu
+aan: 14 bevestigde protocolcommando's, 14 numerieke waarnemingen, nul onbekende
+dispatches en nul eigen temp writes. Acht observer- en acht lokale
+isolatiecommando's zijn afzonderlijk verantwoord. Dit is disposable CI-bewijs,
+geen hosted uitvoering of bewijs van volledige fysieke WAL0.
+Oorspronkelijke ledger-SHA-256:
+`422017bf1dcfc5769f664f85b36fc79f60c03ba51f208131cba05ed4ed34c0cb`;
+policy-SHA-256:
+`3167bcad54ee465d44bfbd5646582d8500d2a70571b546428e067bbc8a2bd8f0`.
+
+De app-integratie bereikte opnieuw 209 browsercontroles, 46 domeintests en
+12/12 SQL-regressies. Deze overlappende resultaten worden niet bij eerdere
+CI-totalen opgeteld. De run stopte daarna op `offline_shell_browser`.
+De nieuwe Auth-, integrale foutpad- en fixturecomponenten zijn op deze bron dus
+nog niet uitgevoerd. Status blijft NO_GO; geen automatische herhaling en geen
+hosted toegang. De browserfout wordt afzonderlijk onderzocht.
+
 ## Budget en harde grenzen
 
 De veertien matrixfasen zijn niet als veertien volledige keten-PASS-resultaten

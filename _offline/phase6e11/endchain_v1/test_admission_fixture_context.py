@@ -42,6 +42,40 @@ class Runtime:
 
 
 class Tests(unittest.TestCase):
+    def test_injected_factory_is_bound_before_first_dispatch_and_not_cleared(self):
+        runtime = Runtime()
+        gate = types.SimpleNamespace(save=lambda *args: None)
+        def check(actual_gate, actual_runtime):
+            self.assertIs(actual_gate, gate)
+            self.assertIs(actual_runtime, runtime)
+            self.assertEqual(runtime.commands, [])
+            return {'unit_only': True}
+        with patch('fixture_cleanup_runtime_ci.bind_runtime', side_effect=check) as bind:
+            result = b.run(gate, {'claims': {k:{'sub':v} for k,v in IDS.items()}}, runtime=runtime)
+        bind.assert_called_once()
+        self.assertEqual(result['status'], 'DISPOSABLE_BOOTSTRAP_PASS')
+        self.assertFalse(hasattr(runtime, 'cleared'))
+        self.assertEqual(runtime.closed, 2)
+
+    def test_rejected_injected_source_has_no_dispatch(self):
+        runtime = Runtime()
+        gate = types.SimpleNamespace(save=lambda *args: None)
+        with patch('fixture_cleanup_runtime_ci.bind_runtime', side_effect=ValueError('source_binding')):
+            with self.assertRaisesRegex(ValueError, 'source_binding'):
+                b.run(gate, {'claims': {k:{'sub':v} for k,v in IDS.items()}}, runtime=runtime)
+        self.assertEqual(runtime.commands, [])
+
+    def test_injected_failure_retains_parent_closure_ownership(self):
+        runtime = Runtime(lost=True)
+        receipts = {}
+        gate = types.SimpleNamespace(save=lambda name, value: receipts.setdefault(name, copy.deepcopy(value)))
+        with patch('fixture_cleanup_runtime_ci.bind_runtime', return_value={'unit_only': True}):
+            with self.assertRaises(ConnectionError):
+                b.run(gate, {'claims': {k:{'sub':v} for k,v in IDS.items()}}, runtime=runtime)
+        self.assertFalse(hasattr(runtime, 'cleared'))
+        self.assertFalse(receipts['admission-fixture-bootstrap.json']['commit_confirmed'])
+        self.assertEqual(runtime.commands.count('COMMIT'), 1)
+
     def execute(self, runtime):
         self.receipts = {}
         def save(name, value):

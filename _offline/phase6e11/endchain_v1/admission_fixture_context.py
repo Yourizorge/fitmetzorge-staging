@@ -20,9 +20,15 @@ def identities(ctx):
     return result
 
 
-def run(gate, ctx):
+def run(gate, ctx, *, runtime=None):
     ids = identities(ctx)
-    runtime = NativeRuntime.disposable(gate)
+    injected = runtime is not None
+    if injected:
+        from fixture_cleanup_runtime_ci import bind_runtime
+        binding = bind_runtime(gate, runtime)
+        gate.save('admission-fixture-runtime-binding.json', binding)
+    else:
+        runtime = NativeRuntime.disposable(gate)
     if runtime.environment != 'disposable_ci':
         raise ValueError('admission_fixture_disposable_only')
     receipt = {'status': 'NO_GO', 'limit': LIMIT, 'dispatches': [], 'hosted_calls': 0,
@@ -98,10 +104,12 @@ def run(gate, ctx):
             except Exception as error:
                 receipt['close_error_class'] = type(error).__name__
                 closure_failed = True
-        try: runtime.clear()
-        except Exception as error:
-            receipt['clear_error_class'] = type(error).__name__
-            closure_failed = True
+        # The parent owns an injected factory across bootstrap and fixture tests.
+        if not injected:
+            try: runtime.clear()
+            except Exception as error:
+                receipt['clear_error_class'] = type(error).__name__
+                closure_failed = True
         if closure_failed:
             receipt['status'] = 'NO_GO'
             if hasattr(gate, 'fixture_cleanup_ids'): del gate.fixture_cleanup_ids
