@@ -699,3 +699,69 @@ levering. Raw SHA-256 van `case_stack_v1/ci.py`:
 `case_stack_v1/test_ci.py`:
 `ea28e946074249e3ea8b8ed26446463821b8acd4b622b3c72e914e753ed82168`.
 Geen PG-, GoTrue-, volledige-keten- of hosted-PASS uit deze tests afgeleid.
+
+### 4 november: gedeeltelijke Auth-start en originele bewijsbestanden
+
+De bestaande opt-in lokale Auth-helper bewaart nu de bevestigde synthetische
+accountidentiteit voor de login begint. Bij een fout voor het teruggeven van
+de context kan alleen de daadwerkelijk geregistreerde subset worden opgeruimd.
+Een onbekend createantwoord, onvolledige writerbarrier of ontbrekend
+eigenaarschapsbewijs blijft NO-GO. Dezelfde parent-delete-engine wordt gebruikt;
+geen automatische retry, refund, globale nulclaim of nieuwe hosted bevoegdheid.
+Een secundaire opslag- of containerafsluitfout vervangt de oorspronkelijke
+fout niet. De standaard app-Auth-route blijft ongewijzigd; de uitbreiding is
+expliciet opt-in voor de lokale bewijsroute.
+
+Na integratie: 29 gerichte regressies PASS, 183,974 s. Dit zijn filesystem- en
+lokale HTTP-tests met gesimuleerde PG/Dockergrenzen, geen echte GoTrue/PG- of
+hosted-PASS. De onafhankelijke gerichte hercontrole van de vier aanvullende
+foutbehoudcorrecties voerde drie tests uit (60,783 s); de vierde wijziging is
+bronmatig beoordeeld. Deze overlappende aantallen worden niet opgeteld.
+De bestaande parent-finalizerregressies blijven behouden: 46 PASS, 132,009 s.
+
+De nieuwe case-afsluiting gebruikt originele bewijsbestanden in submappen.
+De bestaande CI-upload neemt uitsluitend flat bestanden mee. Daarom is een
+expliciete, verliesvrije verpakking toegevoegd: alleen vooraf genoemde
+bestanden, originele paden en hashes, begrensde fragmenten, exclusieve opslag
+en onafhankelijke readback. Geen recursieve export. Een ontbrekend fragment,
+gewijzigde bron, dubbel record, afgebroken index of tegenstrijdige flat kopie
+blokkeert. Windows-padaliassen met afsluitende punten en device-namen worden
+geweigerd na een onafhankelijk gereproduceerde reviewbevinding.
+
+De lokale combinatie archive/matrix/bootstrap: 80 tests, 79 PASS en een
+Windows-symlinktest overgeslagen wegens ontbrekend symlinkrecht, 50,180 s.
+Dit is transport- en orchestrationbewijs. De oorspronkelijke journals moeten
+daarnaast inhoudelijk opnieuw worden gecontroleerd. De collector geeft daarom
+geen complete matrixstatus op basis van alleen CASE_PASS en isolatievelden.
+Zolang de onafhankelijke terminalcontrole ontbreekt, blijft de betreffende
+case expliciet `terminal_semantics_unverified`.
+
+De application-job van de nieuwe matrix is afzonderlijk gemaakt: dezelfde
+app-regressies, advisors, dry-run en lokale contracttests blijven verplicht.
+De read-only bridgeoverride blijft behouden; de oude quota-DML wordt niet
+opnieuw geintroduceerd. De vijftien geisoleerde echte cases vervangen de oude
+componentuitvoering alleen in deze nieuwe matrix. Oude CI-fouten blijven
+ongewijzigd historische fouten. `CLEAN_CI_PASS` voor de application-job is
+geen volledige toelating; de overige cases en onafhankelijke beoordeling
+blijven vereist. Deze nieuwe samenstelling is nog niet als CI gestart.
+
+Laatste geverifieerde publicatie: bron
+`f0ed6b2136edd283cbef3c989b65aceb3704f153`, Pages-run `41856131067`, artifact
+`13336933092`, SHA-256
+`cd8ffbe04629075de677ced32336f55f30a57f5731b524546950926e6525e375`.
+152 runtime-assets byte-identiek, 817 entries, private bronroots afwezig en
+zeven private HTTP-paden 404. Deze publicatie bewijst niet de latere lokale
+wijzigingen. De laatste lokale behoudcontrole bevat 1376 bestanden: 1372
+exact gelijk en vier eerder toegestane bronverschillen ongewijzigd; nul
+onverwachte verschillen. Dit is geen meting van hosted ledengegevens.
+
+Actief: volledige platform-/Auth-startbegroting, native-querybinding,
+echte vijftien-case-samenstelling en inhoudelijke terminalcontrole.
+Hosted blijft gesloten; de onafhankelijke WAL-blokkade blijft staan.
+Geen Supabase-, JIT-, migration-, Auth- of fixturehandeling uitgevoerd.
+
+Onafhankelijke checkpointreview: geen resterende P1/P2 in de archive- en
+matrixdelta; negen gerichte regressies PASS, 0,096 s. De review bevestigt
+uitsluitend deze bron-/orchestrationvoorbereiding, niet C-closeout,
+D-terminalsemantiek, een echte PG-keten of hosted toelating.
+Aanvullende gerichte CI-/verpakkingscontrole: 20 tests PASS, 42,240 s.

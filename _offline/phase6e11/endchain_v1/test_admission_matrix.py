@@ -6,6 +6,7 @@ import hashlib
 import io
 import json
 import pathlib
+import tempfile
 import types
 import unittest
 import uuid
@@ -14,6 +15,7 @@ from unittest.mock import patch
 
 import admission_matrix_ci as ci
 import admission_matrix_ops as ops
+import admission_case_archive as case_archive
 
 HEAD, CANDIDATE, RUN = 'a'*40, 'b'*64, '12345'
 SOURCES = {'_offline/test.py': hashlib.sha256(b'synthetic source').hexdigest()}
@@ -24,7 +26,7 @@ def encoded(value): return json.dumps(value, sort_keys=True).encode()
 
 def fixture(name='normal', *, change=None):
     result = {'commit': HEAD, 'run_id': RUN, 'candidate_sha256': CANDIDATE,
-              'case_name': name, 'status': 'CASE_PASS', 'hosted_admitted': False,
+              'case_name': name, 'status': 'NO_GO', 'hosted_admitted': False,
               'full_chain_admission': False}
     case = {'source_commit': HEAD, 'ci_run': RUN, 'candidate_sha256': CANDIDATE,
             'case_name': name, 'status': 'CASE_PASS'}
@@ -63,6 +65,36 @@ class ArchiveTests(unittest.TestCase):
         raw = fixture(); result = self.verify(raw)
         self.assertEqual(result['archive_sha256'], hashlib.sha256(raw).hexdigest())
         self.assertIn('artifact-manifest.json', result['payloads'])
+
+    def test_claimed_case_pass_without_originals_is_rejected(self):
+        def change(files):
+            value = json.loads(files['result.json'])
+            value['status'] = 'CASE_PASS'
+            files['result.json'] = encoded(value)
+        with self.assertRaisesRegex(ValueError, 'terminal_contract'):
+            self.verify(fixture(change=change))
+
+    def test_lossless_original_readback_is_not_semantic_admission(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = pathlib.Path(folder)
+            original = b'{"synthetic":true}\n'
+            (root/'evidence').mkdir()
+            (root/'evidence'/'original.json').write_bytes(original)
+            refs = [{'path': 'evidence/original.json', 'sha256': case_archive.sha(original)}]
+            ref = case_archive.pack(types.SimpleNamespace(out=root), refs)
+            def change(files):
+                value = json.loads(files['result.json'])
+                value['status'] = 'CASE_PASS'
+                files['result.json'] = encoded(value)
+                case = json.loads(files['case-execution.json'])
+                case.update(format='disposable-case-terminal-v1', case_pass=True,
+                    matrix_aggregation_required=True, full_chain_admission=False,
+                    hosted_admitted=False, original_refs=refs, original_archive_ref=ref)
+                files['case-execution.json'] = encoded(case)
+                files.update({p.name: p.read_bytes() for p in root.glob('case-original-*')})
+            result = self.verify(fixture(change=change))
+            self.assertEqual(result['originals'], {'evidence/original.json': original})
+            self.assertIsNone(result['terminal_verified'])
 
     def test_other_commit_run_and_candidate_rejected_even_if_zip_resealed(self):
         for key, value in (('commit','c'*40), ('run_id','54321'), ('candidate_sha256','c'*64)):
@@ -121,8 +153,12 @@ class AggregateTests(unittest.TestCase):
         for i,name in enumerate(ci.NAMES):
             self.values[name]={'source_manifest_sha256':'a'*64,'archive_sha256':str(i).zfill(64),
                 'manifest_sha256':'b'*64,'files':3,
-                'result':{'status':'PASS' if name=='application' else 'CASE_PASS'},
-                'case':{'status':'CASE_PASS','isolation':{'pg_system_identifier':str(i+1),
+                'case_sha256':'c'*64,
+                'terminal_verified':{'status':'CASE_TERMINAL_VERIFIED', 'case_name':name,
+                    'run_id':str(uuid.UUID(int=i+1)), 'case_sha256':'c'*64},
+                'result':{'status':'CLEAN_CI_PASS' if name=='application' else 'CASE_PASS'},
+                'case':{'status':'CASE_PASS','run_id':str(uuid.UUID(int=i+1)),
+                    'isolation':{'pg_system_identifier':str(i+1),
                     'database_oid':5,'pg_container':str(i).zfill(64),'auth_container':str(100+i).zfill(64),
                     'run_id':str(uuid.UUID(int=i+1)),'db_target_sha256':'d'*64,'auth_target_sha256':'d'*64,
                     'reused':False,'auth_database_bound':True}}}
@@ -158,6 +194,17 @@ class AggregateTests(unittest.TestCase):
         result=ops.aggregate(self.values, run_conclusion='success')
         self.assertEqual(result['status'],'LOCAL_MATRIX_VERIFIED_PENDING_REVIEW')
         self.assertFalse(result['hosted_admitted']);self.assertFalse(result['owner_window_allowed'])
+
+    def test_case_status_and_isolation_without_semantic_proof_never_pass(self):
+        self.values['normal'].pop('terminal_verified')
+        result = ops.aggregate(self.values, run_conclusion='success')
+        self.assertEqual(result['status'], 'NO_GO')
+        self.assertIn('normal:terminal_semantics_unverified', result['blockers'])
+
+    def test_semantic_proof_must_bind_exact_original_case_bytes(self):
+        self.values['normal']['terminal_verified']['case_sha256'] = 'd'*64
+        result = ops.aggregate(self.values, run_conclusion='success')
+        self.assertIn('normal:terminal_semantics_unverified', result['blockers'])
 
     def test_missing_case_is_not_optional(self):
         self.values.pop('closure_failure')
@@ -206,6 +253,37 @@ class AggregateTests(unittest.TestCase):
 
 
 class EntryTests(unittest.TestCase):
+    def test_application_keeps_read_only_bridge_override(self):
+        self.assertIs(ci.ApplicationGate.check_bridge, ci.admission_ci.Gate.check_bridge)
+        self.assertIs(ci.ApplicationGate.cli, ci.admission_ci.Gate.cli)
+
+    def test_application_runs_units_then_app_without_old_component_runtime(self):
+        gate = object.__new__(ci.ApplicationGate)
+        gate.sources = pathlib.Path('/synthetic')
+        events = []
+        gate.command = lambda name, args: events.append(name)
+        with patch.object(ci.admission_ci.Gate, 'admission_units', side_effect=lambda: events.append('units')), \
+                patch.object(ci.admission_ci.Gate, 'run_components', side_effect=AssertionError('old_components')), \
+                patch.object(ci.admission_ci.app.Gate, 'regressions', side_effect=lambda _: events.append('app')):
+            gate.regressions()
+        self.assertEqual(events, ['units', 'matrix-test_admission_matrix',
+                                  'matrix-test_admission_matrix_bootstrap', 'app'])
+
+    def test_application_advisors_do_not_claim_case_or_hosted_admission(self):
+        gate = object.__new__(ci.ApplicationGate)
+        gate.result = {'candidate_sha256': CANDIDATE}
+        saved = {}
+        gate.save = lambda name, value: saved.update({name: value})
+        with patch.object(ci.admission_ci.app.Gate, 'advisors') as advisors, \
+                patch.dict(ci.os.environ, {'GITHUB_SHA': HEAD, 'GITHUB_RUN_ID': RUN}):
+            gate.advisors()
+        advisors.assert_called_once_with(gate)
+        proof = saved['matrix-application-terminal.json']
+        self.assertEqual(proof['required_isolated_cases'], list(ci.NAMES[1:]))
+        self.assertEqual(proof['status'], 'APPLICATION_ONLY')
+        self.assertFalse(proof['hosted_admitted'])
+        self.assertFalse(proof['historical_component_failures_reclassified'])
+
     def test_storage_failure_never_leaks_primary_exception_context(self):
         for method in ('mkdir', 'open'):
             output = io.StringIO()

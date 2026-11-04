@@ -17,7 +17,9 @@ observations/source bindings, native terminal/zero protocols and C.protocol_plan
 Neither C route admits the before-fixture/partial-bootstrap case without C proof.
 The explicit pre_fixture_proof keyword instead accepts only a live, issued,
 one-use auth_pre_fixture_closure.Prerequisite with no C receipt. It uses this
-same observer/delete engine; partial bootstrap remains inadmissible.
+same observer/delete engine. A separate live auth_partial_bootstrap.Prerequisite
+admits only the source-journal-owned subset before bootstrap returns; no caller
+subset/boolean grants authority. Its plan is 3 + 5*N observer slots plus N deletes.
 
 At explicitly preregistered 128/delete, the separate maximum is402: 3 deletes,
 18 observers (boundary1, scoped FK2, ownership3, stats6, per-delete absence3,
@@ -63,20 +65,24 @@ def require(condition, reason):
         raise tracked.Blocked('parent_auth_' + reason)
 
 
-def plan(delete_costs):
-    require(isinstance(delete_costs, dict) and set(delete_costs) == set(ROLES)
+def plan(delete_costs, *, roles=ROLES):
+    require(tuple(r for r in ROLES if r in roles) == tuple(roles), 'subset_role_order')
+    native = ('boundary', 'fk_before') + tuple(r + ':before' for r in roles) + tuple(
+        r + ':' + op for r in roles for op in ('stats_before_delete', 'stats_after_delete', 'after')) + (
+        'fk_after',) + tuple(r + ':final' for r in roles)
+    require(isinstance(delete_costs, dict) and set(delete_costs) == set(roles)
             and all(type(v) is int and v > 0 for v in delete_costs.values()), 'explicit_delete_costs')
-    charges = {**dict.fromkeys(NATIVE, 1), **{r + ':delete': delete_costs[r] for r in ROLES}}
+    charges = {**dict.fromkeys(native, 1), **{r + ':delete': delete_costs[r] for r in roles}}
     return {'charges': charges, 'reserved_units': sum(charges.values()),
-            'native_sql_maximum': len(NATIVE), 'http_maximum': 3,
+            'native_sql_maximum': len(native), 'http_maximum': len(roles),
             'budget_domain': 'additional_disposable_diagnostic_not_2349',
             'observed_cost_bound': False, 'refunds': False, 'retries': False}
 
 
 class Ledger(af.Journal):
     """Existing before/event interface, with immutable verified durable bytes."""
-    def __init__(self, folder, delete_costs):
-        self.plan = plan(delete_costs)
+    def __init__(self, folder, delete_costs, *, roles=ROLES):
+        self.plan = plan(delete_costs, roles=roles)
         self.charges = self.plan['charges']
         self.entries, self.spent, self.dispatched = [], 0, set()
         self.storage = durable.Journal(folder, lambda *_: None, PREFIX)
@@ -412,13 +418,19 @@ class PhysicalCProof(CProof):
         return value
 
 
-def finalize(gate, ctx, auth, seal, c_receipt_ref, *, delete_costs, pre_fixture_proof=None):
+def finalize(gate, ctx, auth, seal, c_receipt_ref, *, delete_costs, pre_fixture_proof=None, partial_bootstrap_proof=None):
     """Return scoped confirmation; on ANY failure persist NO_GO then raise primary."""
     require(os.environ.get('GITHUB_ACTIONS') == 'true'
             and os.environ.get('GITHUB_REPOSITORY') == 'Yourizorge/fitmetzorge-staging'
             and os.environ.get('GITHUB_REF') == 'refs/heads/main'
             and getattr(gate, 'container', None) == 'supabase_db_fmz-db41-ci', 'disposable_only')
-    ledger = Ledger(pathlib.Path(gate.out) / (PREFIX + '-private'), delete_costs)
+    roles, prefix = ROLES, PREFIX
+    if partial_bootstrap_proof is not None:
+        import auth_partial_bootstrap as partial
+        require(type(partial_bootstrap_proof) is partial.Prerequisite
+                and c_receipt_ref is None and pre_fixture_proof is None, 'exclusive_partial_proof')
+        roles, prefix = partial_bootstrap_proof.roles, 'auth-partial-bootstrap-engine'
+    ledger = Ledger(pathlib.Path(gate.out) / (prefix + '-private'), delete_costs, roles=roles)
     result = {'status': 'NO_GO', 'suffix_status': 'BLOCKED', 'preparation_run': NEW_RUN,
         'full_auth_cleanup_proven': False, 'full_chain_admission': False, 'global_auth_zero_claim': False,
         'server_quiescence_proven': False, 'original_claims_released': False, 'refunds': 0,
@@ -444,13 +456,16 @@ def finalize(gate, ctx, auth, seal, c_receipt_ref, *, delete_costs, pre_fixture_
     def snapshot(role, label, *, absent):
         item = owned[role]
         value = native(role + ':' + label, lambda: backend.snapshot(
-            item['email'], None, item['actor'], item['session_ids']))
+            item['email'], None, item['actor'], item['session_ids'] or []))
         af.validate_snapshot(value)
         result['snapshots'][role + ':' + label] = {'counts': value['counts'],
             'session_hashes': [tracked.sha(s.encode()) for s in value['session_ids']]}
         if absent:
             require(not any(value['counts'].values()), 'scoped_auth_residual')
         else:
+            if partial_bootstrap_proof is not None:
+                partial_bootstrap_proof.bind_snapshot(role, value)
+                item['session_ids'] = list(value['session_ids'])
             require(value['users'] == [{'id': item['actor'], 'email': item['email'], 'marker': None}]
                     and sorted(value['session_ids']) == sorted(item['session_ids']), 'observed_owner_or_session_changed')
         return value
@@ -461,10 +476,16 @@ def finalize(gate, ctx, auth, seal, c_receipt_ref, *, delete_costs, pre_fixture_
         require(observed == {'identities': 0, 'operators': 0}, 'parent_fixture_fk_remains')
 
     try:
-        owned = owners(ctx, auth, seal)
+        owned = (partial_bootstrap_proof.consume(gate, ctx, auth, seal)
+                 if partial_bootstrap_proof is not None else owners(ctx, auth, seal))
         result['owner_hashes'] = {r: {'subject': tracked.sha(v['actor'].encode()),
                                     'email': tracked.sha(v['email'].encode())} for r, v in owned.items()}
-        if pre_fixture_proof is not None:
+        if partial_bootstrap_proof is not None:
+            proof = partial_bootstrap_proof
+            result['prerequisite_kind'] = 'LIVE_PARTIAL_BOOTSTRAP'
+            result['original_component_error_class'] = proof.original_error_class
+            binding_name = 'partial-bootstrap-binding.json'
+        elif pre_fixture_proof is not None:
             phase = 'pre_fixture_prerequisite'
             import auth_pre_fixture_closure as pre_fixture
             require(c_receipt_ref is None and type(pre_fixture_proof) is pre_fixture.Prerequisite,
@@ -493,17 +514,19 @@ def finalize(gate, ctx, auth, seal, c_receipt_ref, *, delete_costs, pre_fixture_
                 and all(v is True for v in boundary.values()),
                 'observer_boundary')
         fk('fk_before')
-        for role in ROLES:
+        for role in roles:
             snapshot(role, 'before', absent=False)
-        for role in ROLES:
+        for role in roles:
             phase = role + ':delete'
             proof.unchanged()
-            require(owners(ctx, auth, seal) == owned, 'context_owner_changed')
+            require((proof.owners() if partial_bootstrap_proof is not None else owners(ctx, auth, seal)) == owned,
+                    'context_owner_changed')
             before = native(role + ':stats_before_delete', backend.stats)
             ledger.before(role + ':delete')
             delete_error = None
             try:
-                response = auth.delete_owned(seal, owned[role]['actor'], ledger, role + ':delete')
+                response = (proof.delete(role, ledger) if partial_bootstrap_proof is not None else
+                            auth.delete_owned(seal, owned[role]['actor'], ledger, role + ':delete'))
                 require(response['terminal'] is True and 200 <= response['status'] < 300, 'delete_unconfirmed')
                 ledger.event({'phase': 'confirmed', 'key': role + ':delete'})
                 result['deletes'][role] = {'acknowledged': True}
@@ -528,7 +551,7 @@ def finalize(gate, ctx, auth, seal, c_receipt_ref, *, delete_costs, pre_fixture_
                 raise delete_error
         phase = 'final_scoped_absence'
         fk('fk_after')
-        for role in ROLES:
+        for role in roles:
             snapshot(role, 'final', absent=True)
         proof.unchanged()
         ledger.validate()
@@ -556,7 +579,7 @@ def finalize(gate, ctx, auth, seal, c_receipt_ref, *, delete_costs, pre_fixture_
         try:
             ledger.write('result.json', result)
             result['retained_journal'] = ledger.receipt()
-            gate.save(PREFIX + '.json', result)
+            gate.save(prefix + '.json', result)
         except BaseException as error:
             if primary is None: primary = error
             else: secondary('final_receipt', error)

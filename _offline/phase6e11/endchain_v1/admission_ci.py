@@ -19,9 +19,11 @@ LOCAL_SOURCES = ('admission_ci.py', 'admission_ops.py', 'admission_binding.py',
     'auth_failure_tracked.py', 'auth_failure_tracked_test.py',
     'auth_failure_parent_finalizer.py', 'auth_failure_parent_finalizer_test.py',
     'auth_pre_fixture_closure.py', 'auth_pre_fixture_closure_test.py',
+    'auth_partial_bootstrap.py', 'test_auth_partial_bootstrap.py',
     'admission_cleanup_composition.py', 'test_admission_cleanup_composition.py',
     'admission_fixture_context.py', 'test_admission_fixture_context.py',
     'admission_journal.py', 'test_admission_journal.py',
+    'admission_case_archive.py', 'test_admission_case_archive.py',
     'admission_failure.py', 'test_admission_failure.py',
     'admission_tools.py', 'test_admission_tools.py',
     'admission_module_binding.py', 'test_admission_module_binding.py',
@@ -134,6 +136,9 @@ class Gate(app.Gate):
         self.command('admission-auth-tracked-unit', ['python3', '-B', str(folder/'auth_failure_tracked_test.py')])
         self.command('admission-auth-parent-unit', ['python3', '-B', str(folder/'auth_failure_parent_finalizer_test.py')])
         self.command('admission-auth-prefixture-unit', ['python3', '-B', str(folder/'auth_pre_fixture_closure_test.py')])
+        # Measured locally at 184s; filesystem/localhost-only, not a SQL timeout.
+        self.command('admission-auth-partial-unit', ['python3', '-B', str(folder/'test_auth_partial_bootstrap.py')], timeout=300)
+        self.command('admission-case-archive-unit', ['python3', '-B', str(folder/'test_admission_case_archive.py')])
         self.command('admission-fixture-bootstrap-unit', ['python3', '-B', str(folder/'test_admission_fixture_context.py')])
         self.command('admission-journal-unit', ['python3', '-B', str(folder/'test_admission_journal.py')])
         self.command('admission-fixture-unit', ['python3', '-B', str(folder/'fixture_cleanup_runtime_test.py')])

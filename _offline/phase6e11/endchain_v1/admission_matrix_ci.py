@@ -18,6 +18,28 @@ SELF_SOURCES = ('_offline/phase6e11/endchain_v1/admission_matrix_ci.py',
     '.github/workflows/' + WORKFLOW)
 
 
+class ApplicationGate(admission_ci.Gate):
+    """Application proof only; the fifteen isolated cases replace old components."""
+    def regressions(self):
+        self.admission_units()
+        folder = self.sources/'_offline/phase6e11/endchain_v1'
+        for name in ('test_admission_matrix.py', 'test_admission_matrix_bootstrap.py'):
+            self.command('matrix-' + name[:-3], ['python3', '-B', str(folder/name)])
+        admission_ci.app.Gate.regressions(self)
+
+    def advisors(self):
+        admission_ci.app.Gate.advisors(self)
+        self.result.update(application_component='CLEAN_CI_PASS',
+            full_chain_admission=False, hosted_admitted=False, package21_released=False)
+        self.save('matrix-application-terminal.json', {
+            'source_commit': os.environ['GITHUB_SHA'], 'ci_run': os.environ['GITHUB_RUN_ID'],
+            'candidate_sha256': self.result['candidate_sha256'],
+            'status': 'APPLICATION_ONLY', 'required_isolated_cases': list(NAMES[1:]),
+            'historical_component_failures_reclassified': False,
+            'strict_wal': 'BLOCKED_RETAINED_INCOMPLETE_EVIDENCE',
+            'hosted_calls': 0, 'hosted_admitted': False, 'full_chain_admission': False})
+
+
 def source_contract():
     adapter = importlib.import_module('quota_candidate_v1.case_ci')
     if (getattr(adapter, 'READY', False) is not True
@@ -43,7 +65,7 @@ def main():
         if name not in NAMES:
             raise ValueError('matrix_case_name')
         if name == 'application':
-            return admission_ci.Gate().run()
+            return ApplicationGate().run()
         from case_stack_v1.ci import main as case_main
         return case_main([])
     except Exception as error:

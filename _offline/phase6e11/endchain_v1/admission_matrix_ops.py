@@ -9,6 +9,7 @@ import sys
 import zipfile
 
 import admission_matrix_ci as matrix
+import admission_case_archive as case_archive
 import admission_ops as single
 
 MAX_ARCHIVE = 30000000
@@ -97,7 +98,14 @@ def verify_archive(raw, *, name, head, candidate, run, expected_sources, trusted
         require(result.get('hosted_admitted') is not True and result.get('full_chain_admission') is not True,
                 'matrix_unreviewed_admission')
         payloads['artifact-manifest.json'] = archive.read('artifact-manifest.json')
-        bootstrap = None
+        bootstrap, originals = None, None
+        if name != 'application' and result.get('status') == 'CASE_PASS':
+            require(case is not None and case.get('format') == 'disposable-case-terminal-v1'
+                    and case.get('case_pass') is True and case.get('matrix_aggregation_required') is True
+                    and case.get('full_chain_admission') is False and case.get('hosted_admitted') is False,
+                    'matrix_terminal_contract')
+            originals = case_archive.verify(payloads, case.get('original_archive_ref'),
+                                            case.get('original_refs'))
         if name in ('pre_migration', 'post_migration') and result.get('status') == 'CASE_PASS':
             require(trusted_root is not None, 'matrix_bootstrap_trusted_sources_required')
             from admission_matrix_bootstrap import verify_bootstrap_case
@@ -105,6 +113,8 @@ def verify_archive(raw, *, name, head, candidate, run, expected_sources, trusted
                 ci_run=str(run), candidate_sha256=candidate, expected_sources=expected_sources,
                 trusted_root=trusted_root)
         return {'result': result, 'case': case, 'payloads': payloads, 'bootstrap_verified': bootstrap,
+            'originals': originals, 'terminal_verified': None,
+            'case_sha256': hashlib.sha256(payloads['case-execution.json']).hexdigest() if case else None,
             'manifest_sha256': hashlib.sha256(archive.read('artifact-manifest.json')).hexdigest(),
             'source_manifest_sha256': hashlib.sha256(payloads['candidate.json']).hexdigest(),
             'archive_sha256': hashlib.sha256(raw).hexdigest(), 'files': len(manifest)}
@@ -118,7 +128,7 @@ def aggregate(verified, *, run_conclusion):
     if run_conclusion != 'success':
         blockers.append('ci_execution_not_successful')
     app = verified['application']['result']
-    if app.get('status') != 'PASS':
+    if app.get('status') != 'CLEAN_CI_PASS':
         blockers.append('application_or_combined_admission_incomplete')
     databases, clusters, containers, auth_containers, identities = set(), set(), set(), set(), set()
     for name in matrix.NAMES[1:]:
@@ -127,6 +137,14 @@ def aggregate(verified, *, run_conclusion):
         if value['result'].get('status') != 'CASE_PASS' or not case or case.get('status') != 'CASE_PASS':
             blockers.append(name + ':actual_case_incomplete')
             continue
+        terminal = value.get('terminal_verified')
+        if not (type(terminal) is dict and terminal.get('status') == 'CASE_TERMINAL_VERIFIED'
+                and terminal.get('case_name') == name
+                and terminal.get('run_id') == case.get('run_id')
+                and terminal.get('case_sha256') == value.get('case_sha256')
+                and isinstance(value.get('case_sha256'), str)
+                and re.fullmatch('[a-f0-9]{64}', value['case_sha256'])):
+            blockers.append(name + ':terminal_semantics_unverified')
         isolation = case.get('isolation')
         if not isinstance(isolation, dict):
             blockers.append(name + ':isolation_evidence_missing')
