@@ -765,3 +765,43 @@ matrixdelta; negen gerichte regressies PASS, 0,096 s. De review bevestigt
 uitsluitend deze bron-/orchestrationvoorbereiding, niet C-closeout,
 D-terminalsemantiek, een echte PG-keten of hosted toelating.
 Aanvullende gerichte CI-/verpakkingscontrole: 20 tests PASS, 42,240 s.
+
+### Gepubliceerde checkpoint en verplichte Auth-dekking
+
+Checkpoint `582e051e7e5b098f66162e174725ccd66bce220d` is gepusht. Pages-run
+`41862460770` had eerst een geslaagde build en een wachtende deploy. Daarbij
+is uitsluitend read-only status bekeken; geen omgevingsregel, approval of
+runnerinstelling is gewijzigd. Een afzonderlijke build-only receipt claimt
+uitdrukkelijk geen publicatie. Daarna is de voltooide publicatie onafhankelijk
+geverifieerd: artifact `13340696554`, SHA-256
+`5f5b188d5e97b5996156315f6277ff33b5658c8eda020d1586c7ae8b175bb547`.
+817 entries, alle 152 runtime-assets byte-identiek, private bronroots afwezig
+en zeven private HTTP-paden 404. Geen Supabase-calls.
+
+Een verdere collectorcontrole weigert ook Windows-devicenamen in flat
+ZIP-entries en bindt de volledige terminal-broninventaris aan de onafhankelijk
+voorbereide kandidaat. De vijftien fasecases vervangen niet de elf bestaande
+Auth-foutprobes. De matrix blijft daarom ook geblokkeerd zolang onafhankelijk
+geverifieerde Auth-dekking ontbreekt of niet aan hetzelfde originele artifact
+en bronmanifest is gebonden. De actuele lokale matrixsuite: 38 PASS, 0,514 s;
+geen uitvoering van echte Auth of PostgreSQL in die suite.
+
+In de nog niet geintegreerde root-ledger vond onafhankelijke review een P2:
+een preread-fout in `_save` zette de permanente foutblokkering niet. Een
+herhaalde settlement kon daardoor dezelfde waarneming 17 naar 34 tellen.
+De oude snapshot blijft fout; haar hash is
+`a30774a116adfde69dd60099ce0f37fd909c6afb87b23c0eee4c5c12ba33a134`.
+De gecorrigeerde snapshot omvat preread en serialisatie in dezelfde blijvende
+foutafhandeling als append/fsync. Hash:
+`d10a9910efb127fa6b805c5eee1aa16b939a95ccecf1267cea64605a5634a809`.
+Onafhankelijke hercontrole: 68 tests PASS, 1,548 s, plus een afzonderlijke
+vierpadreproducer. Herhaling en close worden geweigerd, dezelfde oorspronkelijke
+exception en journalbytes blijven behouden, geen refund. Dit sluit die ene
+P2, niet de volledige commandobegroting of matrix.
+
+De onafhankelijke review van de daaropvolgende matrixdelta vond geen P1/P2:
+tien geselecteerde tests PASS (0,051 s) en 32 aanvullende negatieve controles.
+Deze controleren Windows-devicepaden, exacte terminal-bronmappen en alle elf
+afzonderlijke Auth-probes. Beide onafhankelijke verifiervelden blijven `None`
+tot de oorspronkelijke journals semantisch zijn gecontroleerd; aangeleverde
+PASS-labels of gelijkvormige JSON-objecten zijn daarvoor niet voldoende.

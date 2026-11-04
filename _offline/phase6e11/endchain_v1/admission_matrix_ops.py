@@ -10,6 +10,7 @@ import zipfile
 
 import admission_matrix_ci as matrix
 import admission_case_archive as case_archive
+from auth_failure import CASES as AUTH_CASES
 import admission_ops as single
 
 MAX_ARCHIVE = 30000000
@@ -69,6 +70,8 @@ def verify_archive(raw, *, name, head, candidate, run, expected_sources, trusted
         require(1 <= len(names) <= MAX_FILES and len(set(names)) == len(names)
                 and len({n.casefold() for n in names}) == len(names), 'matrix_archive_members')
         require(all(re.fullmatch(r'[A-Za-z0-9_.-]+\.(json|txt|png)', n) for n in names), 'matrix_archive_paths')
+        require(all(not re.fullmatch(r'(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(?:\..*)?',
+                                     n, re.IGNORECASE) for n in names), 'matrix_archive_device_path')
         require(sum(i.file_size for i in infos) <= MAX_ARCHIVE
                 and all(0 <= i.file_size <= MAX_MEMBER and not i.flag_bits & 1
                         and (i.external_attr >> 16) & 0o170000 != 0o120000 for i in infos),
@@ -104,6 +107,8 @@ def verify_archive(raw, *, name, head, candidate, run, expected_sources, trusted
                     and case.get('case_pass') is True and case.get('matrix_aggregation_required') is True
                     and case.get('full_chain_admission') is False and case.get('hosted_admitted') is False,
                     'matrix_terminal_contract')
+            require(source_map(case.get('terminal_source_hashes')) == expected_sources,
+                    'matrix_terminal_source_binding')
             originals = case_archive.verify(payloads, case.get('original_archive_ref'),
                                             case.get('original_refs'))
         if name in ('pre_migration', 'post_migration') and result.get('status') == 'CASE_PASS':
@@ -113,7 +118,7 @@ def verify_archive(raw, *, name, head, candidate, run, expected_sources, trusted
                 ci_run=str(run), candidate_sha256=candidate, expected_sources=expected_sources,
                 trusted_root=trusted_root)
         return {'result': result, 'case': case, 'payloads': payloads, 'bootstrap_verified': bootstrap,
-            'originals': originals, 'terminal_verified': None,
+            'originals': originals, 'terminal_verified': None, 'auth_verified': None,
             'case_sha256': hashlib.sha256(payloads['case-execution.json']).hexdigest() if case else None,
             'manifest_sha256': hashlib.sha256(archive.read('artifact-manifest.json')).hexdigest(),
             'source_manifest_sha256': hashlib.sha256(payloads['candidate.json']).hexdigest(),
@@ -130,6 +135,13 @@ def aggregate(verified, *, run_conclusion):
     app = verified['application']['result']
     if app.get('status') != 'CLEAN_CI_PASS':
         blockers.append('application_or_combined_admission_incomplete')
+    app_value = verified['application']
+    auth = app_value.get('auth_verified')
+    if not (type(auth) is dict and auth.get('status') == 'AUTH_FAILURE_COVERAGE_VERIFIED'
+            and auth.get('case_names') == list(AUTH_CASES)
+            and auth.get('source_manifest_sha256') == app_value['source_manifest_sha256']
+            and auth.get('archive_sha256') == app_value['archive_sha256']):
+        blockers.append('auth_failure_coverage_unverified')
     databases, clusters, containers, auth_containers, identities = set(), set(), set(), set(), set()
     for name in matrix.NAMES[1:]:
         value = verified[name]

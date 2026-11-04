@@ -89,12 +89,26 @@ class ArchiveTests(unittest.TestCase):
                 case = json.loads(files['case-execution.json'])
                 case.update(format='disposable-case-terminal-v1', case_pass=True,
                     matrix_aggregation_required=True, full_chain_admission=False,
-                    hosted_admitted=False, original_refs=refs, original_archive_ref=ref)
+                    hosted_admitted=False, original_refs=refs, original_archive_ref=ref,
+                    terminal_source_hashes=SOURCES)
                 files['case-execution.json'] = encoded(case)
                 files.update({p.name: p.read_bytes() for p in root.glob('case-original-*')})
             result = self.verify(fixture(change=change))
             self.assertEqual(result['originals'], {'evidence/original.json': original})
             self.assertIsNone(result['terminal_verified'])
+
+    def test_terminal_cannot_claim_another_source_composition(self):
+        def change(files):
+            value = json.loads(files['result.json'])
+            value['status'] = 'CASE_PASS'
+            files['result.json'] = encoded(value)
+            case = json.loads(files['case-execution.json'])
+            case.update(format='disposable-case-terminal-v1', case_pass=True,
+                matrix_aggregation_required=True, full_chain_admission=False,
+                hosted_admitted=False, terminal_source_hashes={'_offline/test.py': 'c'*64})
+            files['case-execution.json'] = encoded(case)
+        with self.assertRaisesRegex(ValueError, 'terminal_source_binding'):
+            self.verify(fixture(change=change))
 
     def test_other_commit_run_and_candidate_rejected_even_if_zip_resealed(self):
         for key, value in (('commit','c'*40), ('run_id','54321'), ('candidate_sha256','c'*64)):
@@ -116,7 +130,7 @@ class ArchiveTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,'unreviewed_admission'): self.verify(fixture(change=change))
 
     def test_path_escape_and_case_alias_are_rejected(self):
-        for name in ('../escape.json','folder/file.json','RESULT.JSON'):
+        for name in ('../escape.json','folder/file.json','RESULT.JSON', 'NUL.json', 'aux.png', 'COM1.txt'):
             with self.subTest(name=name):
                 with self.assertRaises(ValueError):
                     self.verify(fixture(change=lambda f:f.update({name:b'{}'})))
@@ -172,6 +186,27 @@ class AggregateTests(unittest.TestCase):
             item['bootstrap_verified'].update(status='BOOTSTRAP_ABSENCE_VERIFIED', case_name=name,
                 isolation_sha256=hashlib.sha256(json.dumps(isolation,sort_keys=True,
                     separators=(',', ':'),allow_nan=False).encode()).hexdigest())
+        app = self.values['application']
+        app['auth_verified'] = {'status': 'AUTH_FAILURE_COVERAGE_VERIFIED',
+            'case_names': list(ops.AUTH_CASES), 'archive_sha256': app['archive_sha256'],
+            'source_manifest_sha256': app['source_manifest_sha256']}
+
+    def test_fifteen_phase_cases_cannot_replace_eleven_auth_fault_probes(self):
+        self.values['application'].pop('auth_verified')
+        result = ops.aggregate(self.values, run_conclusion='success')
+        self.assertEqual(result['status'], 'NO_GO')
+        self.assertIn('auth_failure_coverage_unverified', result['blockers'])
+
+    def test_auth_coverage_requires_every_case_and_original_archive_binding(self):
+        for key, value in (('case_names', list(ops.AUTH_CASES[:-1])),
+                           ('case_names', list(ci.NAMES[1:])),
+                           ('archive_sha256', 'f'*64),
+                           ('source_manifest_sha256', 'f'*64)):
+            values = copy.deepcopy(self.values)
+            values['application']['auth_verified'][key] = value
+            with self.subTest(key=key):
+                result = ops.aggregate(values, run_conclusion='success')
+                self.assertIn('auth_failure_coverage_unverified', result['blockers'])
 
     def test_early_no_auth_requires_independent_verified_witness(self):
         for name in ('pre_migration', 'post_migration'):
