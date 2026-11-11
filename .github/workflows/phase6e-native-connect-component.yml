@@ -1,0 +1,85 @@
+name: Isolated synthetic native-connect component
+run-name: Native-connect component ${{ inputs.source_manifest_sha256 }}
+on:
+  workflow_dispatch:
+    inputs:
+      source_manifest_sha256:
+        description: Reviewed source-manifest.json SHA256
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: phase6e-native-connect-component
+  cancel-in-progress: false
+jobs:
+  component:
+    if: github.repository == 'Yourizorge/fitmetzorge-staging' && github.ref == 'refs/heads/main' && github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify reviewed sources and CPython target
+        env:
+          EXPECTED: ${{ inputs.source_manifest_sha256 }}
+          SOURCE_COMMIT: ${{ github.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$SOURCE_COMMIT"
+          /usr/bin/python3 -I -c 'import sys,platform; assert sys.version_info[:2]==(3,12) and platform.machine()=="x86_64"'
+          /usr/bin/python3 -I -B _offline/phase6e11/endchain_v1/native_connect_component/native_connect_ci.py verify \
+            --root "$GITHUB_WORKSPACE" --expected "$EXPECTED" --output "$RUNNER_TEMP/native-connect-evidence"
+      - name: Install exact public binary wheels without inherited pip settings
+        shell: bash
+        run: |
+          set -euo pipefail
+          private="$RUNNER_TEMP/native-connect-private"
+          mkdir -m 700 "$private"
+          env -i PATH=/usr/bin:/bin HOME="$private" LANG=C.UTF-8 /usr/bin/python3 -I -m venv "$private/venv"
+          timeout --kill-after=5s 150s env -i PATH=/usr/bin:/bin HOME="$private" LANG=C.UTF-8 \
+            "$private/venv/bin/python" -I -m pip --isolated install --disable-pip-version-check \
+            --no-cache-dir --no-deps --only-binary=:all: --require-hashes --retries 0 --timeout 15 \
+            -r "$GITHUB_WORKSPACE/_offline/phase6e11/endchain_v1/native_connect_component/requirements-linux-cp312.lock"
+          env -i PATH=/usr/bin:/bin HOME="$private" LANG=C.UTF-8 "$private/venv/bin/python" -I -m pip check
+      - name: Run only inside a fresh loopback network namespace
+        env:
+          EXPECTED: ${{ inputs.source_manifest_sha256 }}
+          SOURCE_COMMIT: ${{ github.sha }}
+          CI_RUN: ${{ github.run_id }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          private="$RUNNER_TEMP/native-connect-private"
+          host_network=$(readlink /proc/self/ns/net)
+          # Only namespace setup is privileged. The Python supervisor and every
+          # child run as the runner UID, no groups/capabilities/new privileges.
+          timeout --kill-after=5s 340s sudo -n /usr/bin/unshare --net /usr/bin/env -i PATH=/usr/bin:/usr/sbin:/bin \
+            /bin/bash -c '
+              set -euo pipefail
+              /usr/sbin/ip link set dev lo up
+              uid=$1; gid=$2; shift 2
+              exec /usr/bin/setpriv --reuid="$uid" --regid="$gid" --clear-groups \
+                --bounding-set=-all --inh-caps=-all --ambient-caps=-all --no-new-privs "$@"
+            ' -- "$(id -u)" "$(id -g)" /usr/bin/env -i PATH=/usr/bin:/bin HOME="$private" TMPDIR="$private" LANG=C.UTF-8 \
+            "$private/venv/bin/python" -I -B "$GITHUB_WORKSPACE/_offline/phase6e11/endchain_v1/native_connect_component/native_connect_ci.py" run \
+            --root "$GITHUB_WORKSPACE" --output "$RUNNER_TEMP/native-connect-evidence" --private "$private" \
+            --expected "$EXPECTED" --commit "$SOURCE_COMMIT" --ci-run "$CI_RUN" --host-network "$host_network"
+      - name: Seal technical JSON only, including incomplete evidence
+        id: seal
+        if: always()
+        shell: bash
+        run: |
+          /usr/bin/python3 -I -B _offline/phase6e11/endchain_v1/native_connect_component/native_connect_ci.py seal \
+            --output "$RUNNER_TEMP/native-connect-evidence" --artifact "$RUNNER_TEMP/native-connect-artifact"
+      - name: Preserve component evidence, never private work or PEM
+        if: always() && steps.seal.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-connect-${{ github.run_id }}-1
+          path: ${{ runner.temp }}/native-connect-artifact/*.json
+          retention-days: 1
+          if-no-files-found: error
