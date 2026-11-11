@@ -14,6 +14,8 @@ spec.loader.exec_module(app)
 
 # Explicit source list; never ship unrelated dirty or historical evidence files.
 LOCAL_SOURCES = ('admission_ci.py', 'admission_ops.py', 'admission_binding.py',
+    'admission_budget_bootstrap_prefix.py', 'admission_budget_prefix_originals.py',
+    'test_admission_source_bytes.py', 'assembly_checks/byte_pairs_20261111.json',
     'test_admission_binding.py', 'test_admission_ci.py', 'test_admission_packaging.py', 'auth_failure.py',
     'auth_failure_transport.py', 'auth_failure_test.py', 'auth_failure_contract.md',
     'auth_failure_tracked.py', 'auth_failure_tracked_test.py',

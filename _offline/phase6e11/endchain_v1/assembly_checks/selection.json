@@ -1,0 +1,49 @@
+{
+  "format": "pure-assembly-selection-v1",
+  "full": [
+    "quota_candidate_v1.test_runtime_case_entry",
+    "quota_candidate_v1.test_runtime_case_terminal",
+    "quota_candidate_v1.test_runtime_recovery",
+    "quota_candidate_v1.test_runtime_exported_terminal",
+    "quota_candidate_v1.test_runtime_exported_http",
+    "quota_candidate_v1.test_runtime_terminal",
+    "quota_candidate_v1.test_runtime_worker_evidence.RunnerTests",
+    "quota_candidate_v1.test_runtime_worker_evidence.MetadataTests",
+    "quota_candidate_v1.test_runtime_worker_evidence.ExportTests",
+    "quota_candidate_v1.test_runtime_worker_evidence.DurableSaveTests",
+    "quota_candidate_v1.test_runtime_worker_evidence.SourceBindingTests",
+    "quota_candidate_v1.test_runtime_worker_evidence.WatchdogRaceTests",
+    "test_admission_budget_root_replay",
+    "test_admission_budget_recovery_program",
+    "test_admission_budget_prefix_originals",
+    "test_admission_budget_bootstrap_prefix",
+    "test_admission_budget_bootstrap_checkpoint",
+    "test_admission_auth_runtime_profile",
+    "test_runtime_registered_fixture_closeout.CloseoutTests",
+    "test_runtime_registered_costs",
+    "test_runtime_registered_validation",
+    "test_runtime_registered_pinning_tls",
+    "test_runtime_registered_readiness"
+  ],
+  "full_expected_tests": 452,
+  "portable": [
+    "assembly_checks.test_runner",
+    "test_admission_budget_bootstrap_prefix",
+    "test_admission_budget_bootstrap_checkpoint",
+    "test_admission_budget_recovery_program.RecoveryTests.test_actual_four_rollbacks_then_compare_restore"
+  ],
+  "separate_external_suites": [
+    {
+      "name": "quota_candidate_v1.test_runtime_worker_evidence.ActualLocalProcessTests",
+      "allowed_in_pure_runner": false,
+      "scope": "tiny local Python only",
+      "cleanup_wait_seconds": 5
+    },
+    {
+      "name": "test_runtime_registered_bootstrap.ContextTests",
+      "allowed_in_pure_runner": false,
+      "scope": "synthetic loopback HTTP only; separate bounded harness required"
+    }
+  ],
+  "real_PG_Auth_CI_or_hosted_authority": false
+}

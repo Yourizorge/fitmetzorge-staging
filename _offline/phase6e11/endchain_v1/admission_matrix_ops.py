@@ -16,6 +16,10 @@ import admission_ops as single
 MAX_ARCHIVE = 30000000
 MAX_FILES = 1100
 MAX_MEMBER = 2000000
+TERMINAL_MODULE = 'quota_candidate_v1.runtime_exported_terminal'
+TERMINAL_SOURCE = '_offline/phase6e11/endchain_v1/quota_candidate_v1/runtime_exported_terminal.py'
+TERMINAL_PACKAGE = '_offline/phase6e11/endchain_v1/quota_candidate_v1/__init__.py'
+TERMINAL_PROCESS = '_offline/phase6e11/endchain_v1/admission_terminal_process.py'
 
 
 def require(value, reason):
@@ -61,6 +65,37 @@ def prepared_sources(raw, candidate):
     return source_map(expected)
 
 
+def inspect_terminal(payloads, case, originals, *, head, candidate, run,
+                     expected_sources, trusted_root):
+    """Use a fresh bounded reader process; never clear the parent's import cache."""
+    root = pathlib.Path(trusted_root).absolute()
+    file = root/TERMINAL_PROCESS
+    expected = expected_sources.get(TERMINAL_PROCESS)
+    require(type(expected) is str and re.fullmatch('[a-f0-9]{64}', expected),
+            'matrix_terminal_process_missing')
+    require(file.resolve(strict=True).is_relative_to(root)
+            and all(not p.is_symlink() and not getattr(p, 'is_junction', lambda: False)()
+                    for p in (file, *file.parents)), 'matrix_terminal_process_path')
+    require(file.is_file() and file.stat().st_size <= MAX_MEMBER, 'matrix_terminal_process_size')
+    raw = file.read_bytes()
+    require(len(raw) <= MAX_MEMBER and hashlib.sha256(raw).hexdigest() == expected,
+            'matrix_terminal_process_hash')
+    namespace = {'__name__': '_installed_terminal_parent', '__file__': str(file)}
+    exec(compile(raw, str(file), 'exec', dont_inherit=True), namespace)
+    result = namespace['inspect_terminal'](payloads, case, originals, head=head,
+        candidate=candidate, run=run, expected_sources=expected_sources, trusted_root=root)
+    require(type(result) is dict and result.get('status') == 'CASE_TERMINAL_UNVERIFIED'
+            and result.get('case_name') == case.get('case_name')
+            and result.get('run_id') == case.get('run_id')
+            and result.get('case_sha256') == hashlib.sha256(payloads['case-execution.json']).hexdigest()
+            and result.get('full_chain_admission') is False
+            and result.get('hosted_admitted') is False,
+            'matrix_terminal_reader_unreviewed_admission')
+    # This reader currently has explicit missing domains. Do not promote a
+    # producer label or a truthy inspection object to semantic admission.
+    return result
+
+
 def verify_archive(raw, *, name, head, candidate, run, expected_sources, trusted_root=None):
     source_map(expected_sources)
     require(name in matrix.NAMES and len(raw) <= MAX_ARCHIVE, 'matrix_archive_scope')
@@ -101,7 +136,7 @@ def verify_archive(raw, *, name, head, candidate, run, expected_sources, trusted
         require(result.get('hosted_admitted') is not True and result.get('full_chain_admission') is not True,
                 'matrix_unreviewed_admission')
         payloads['artifact-manifest.json'] = archive.read('artifact-manifest.json')
-        bootstrap, originals = None, None
+        bootstrap, originals, terminal = None, None, None
         if name != 'application' and result.get('status') == 'CASE_PASS':
             require(case is not None and case.get('format') == 'disposable-case-terminal-v1'
                     and case.get('case_pass') is True and case.get('matrix_aggregation_required') is True
@@ -117,8 +152,12 @@ def verify_archive(raw, *, name, head, candidate, run, expected_sources, trusted
             bootstrap = verify_bootstrap_case(payloads, case_name=name, source_commit=head,
                 ci_run=str(run), candidate_sha256=candidate, expected_sources=expected_sources,
                 trusted_root=trusted_root)
+        if originals is not None and trusted_root is not None:
+            terminal = inspect_terminal(payloads, case, originals, head=head,
+                candidate=candidate, run=run, expected_sources=expected_sources,
+                trusted_root=trusted_root)
         return {'result': result, 'case': case, 'payloads': payloads, 'bootstrap_verified': bootstrap,
-            'originals': originals, 'terminal_verified': None, 'auth_verified': None,
+            'originals': originals, 'terminal_verified': terminal, 'auth_verified': None,
             'case_sha256': hashlib.sha256(payloads['case-execution.json']).hexdigest() if case else None,
             'manifest_sha256': hashlib.sha256(archive.read('artifact-manifest.json')).hexdigest(),
             'source_manifest_sha256': hashlib.sha256(payloads['candidate.json']).hexdigest(),

@@ -886,6 +886,20 @@ P1/P2 binnen deze twee correcties. A's reader/source-controles: 45 PASS,
 Deze review betreft originele referentievolledigheid en vroege run-ID-weigering,
 niet de volledige numerieke replay, driverkosten of volledige CI-toelating.
 
+De volledige case-stack-suite is daarna op de gecorrigeerde bron herhaald:
+77 PASS in 145,211 s. De eerder vastgelegde 76/77-uitkomst blijft historisch
+behouden. Geen andere applicatie- of hosted suite is hiermee vervangen.
+
+Checkpoint `56f61add8f5e55bfa52ee1c6ac306fcf98a0d3c9` is gepusht;
+remote main is gelijk. De push omvat alleen offline bronnen en documentatie,
+inclusief de eerdere lokale matrixcheckpoint `483785b4bd27525c7d0f808f24df7e399f27ce96`.
+Pages-run `43036148450` is geslaagd; artifact `13861579974`, SHA-256
+`5f32a592f85584ee759cd2216675f2a29100d81168471978db9e37426c54ed3c`.
+Alle 152 runtime-assets zijn byte-identiek, 817 artifactentries, private roots
+afwezig en alle zeven gecontroleerde private HTTP-paden 404. Supabase-calls: 0.
+Oudere ongecommitteerde bron- en bewijsbestanden blijven in de werkboom staan;
+de werkboom wordt niet ten onrechte schoon genoemd.
+
 De 44 lokale bestanden bevatten 1552 body-statements; hun afzonderlijke
 CLI-reserveringen tellen op tot 2256. Dit is niet het volledige lokale of
 hosted register: observers, isolatie, provisioning, startup, drivers en latere
@@ -904,3 +918,199 @@ Auth- en afsluitmetingen. Daarna pas kan een nieuwe volledige brongebonden CI
 worden toegelaten. De bestaande WAL-beperking blijft afzonderlijk staan;
 geen vierde diagnose volgens de uitgeputte methode. Hosted en ownertelefoontest
 blijven NO-GO. Geen owneracceptatie, freeze of overdracht aan JARVIS.
+
+### 11 november: samengestelde broncontrole en onafhankelijke archieflezer
+
+De eerst samengestelde A004/worker05-bronset (`a04`) bevat 688 bestanden,
+met bronmanifest SHA-256
+`e4ae1051391384ec71b4395701b2a1e138d700cb4021571b39dd7d647012831f`.
+De ongewijzigde secret-scan accepteerde 111 betrokken bronbestanden; 49
+productie-imports en 16 interfaces waren controleerbaar. De gezamenlijke
+pure selectie was echter niet groen: 446 tests in 170,672 s, acht failures
+en 47 errors. Deze oorspronkelijke uitkomst en assembly blijven behouden.
+Oorzaken omvatten verouderde isolatiefixtures, niet-portabele historische
+bronpaden, een ontbrekend dependency-pad en drie imports buiten de canonical
+testboom. Dit is geen integrale CI- of hosted-PASS. De correcties worden in
+een nieuwe assembly getest, zonder de bestaande validators te versoepelen.
+
+De Main-archiefcollector sluit nu, wanneer een vertrouwde lokale bronboom
+beschikbaar is, aan op de inhoudelijke original-reference-lezer. Voor import
+worden zowel de package als de reader aan de kandidaatbytes en hun echte
+importlocatie gebonden. De lezer krijgt de eerder gecontroleerde ZIP-members,
+oorspronkelijke meetbestanden, commit, kandidaat en run-ID. Ontbrekende of
+ongeldige oorspronkelijke bewijzen worden niet weggefilterd. De nieuwe koppeling
+accepteert uitsluitend `CASE_TERMINAL_UNVERIFIED`: de huidige lezer heeft nog
+open bewijsdomeinen. Een leesbaar archief, truthy resultaat of producer-PASS
+geeft daarmee geen volledige toelating.
+
+Gerichte lokale verificatie van deze koppeling: 46 matrix-tests PASS. De
+daaropvolgende selectie matrix/bootstrap/original-archive telt 91 tests:
+90 PASS en een overgeslagen symlinktest wegens ontbrekend Windows-symlinkrecht,
+37,802 s. De overlap wordt niet opgeteld. De symlinkgrens moet op Linux opnieuw
+worden getest; de skip is geen geslaagde beveiligingscontrole. Dit zijn offline
+filesystem-/contracttests, geen nieuwe PG-, Auth-, CI- of hosted-uitvoering.
+
+### 11 november: uitvoeringsbytes en Linux-component apart bewezen
+
+Onafhankelijke review vond een P2 in de nieuwe archieflezerkoppeling: een juiste
+bestandshash en importlocatie sluiten eerder gecachte modulecode of oude
+timestamp-bytecode niet uit. Twee echte importreproducties bevestigden dit.
+Dit maakte geen hosted-PASS mogelijk (de UNVERIFIED-grens bleef staan), maar
+de claim dat exact de gecontroleerde bron werd uitgevoerd was onvoldoende.
+De koppeling is daarom nog niet als gecontroleerde release gecommitteerd.
+De correctie bindt uitvoeringsbytes afzonderlijk en moet ook indirecte imports
+en een schone collectorcontext afdekken. Geen caches van andere onderdelen
+worden gewist om een test groen te maken.
+
+De latere A05-samenstelling lost de eerdere a04-fixture- en importproblemen op:
+452 pure tests PASS in 116,11 s, zonder skips. Bronmanifest:
+`23029e6c67e560037fc65b0f1886554afb02cdbeaac2e78fd173dd3632a56dcf`.
+Dit is het bewaarde agentresultaat, geen integrale CI of hosted uitvoering.
+De 96 geselecteerde integratiebestanden zijn exact met deze levering vergeleken.
+De draagbare testselectie heeft vier byte-exacte historische bronfixtures,
+48 actuele beleidsreferenties en 19 expliciete extra bronafhankelijkheden.
+Een eerste Main-start stopte voor imports op een Windows-langepadfout. Die
+wordt met padvalidatie behouden hersteld, niet door de broncontrole over te slaan.
+De gerichte nieuwe import-/langepadselectie: 22 PASS in 2,767 s. Een eerdere
+start in de niet-schrijfbare standaard-sandboxtemp was een omgevingsfout;
+de geslaagde herhaling gebruikt uitsluitend een toegestane eigen testdirectory.
+Deze uitslag vervangt nog niet de volledige samengestelde testselectie.
+
+De afzonderlijke Linux-nativecomponent op broncommit
+`644775f890224c56808e4faf4b4570d857955887` heeft CI-PASS, run `43047774041`.
+Zie `PHASE6E11_NATIVE_COMPONENT_20261111.md` voor bronhashes, 41 unitcontroles,
+15 synthetische transportobservaties en de onafhankelijke artifactcontrole.
+De werkelijke libpq-versie is 170005; er wordt geen Windows- of andere Linux-
+versie gelijkgesteld. De incomplete startup-EOF-capture blijft incompleet.
+Geen echte PostgreSQL/Auth-verbinding, WAL-meting of hosted toelating volgt
+uit deze component. Het volledige register blijft ongesloten en de cap blijft
+2349. Geen gebruikte poging is heropend; Supabase-calls in deze vervolgstap: 0.
+
+### 11 november: schone archiefinspectie en aangescherpte testtoelating
+
+De broncollector voert de vertrouwde reader nu in een afzonderlijk, gewacht
+Python-proces uit. Parent-, reader-, loader- en helperbytes zijn vooraf gebonden;
+gecachete modules en oude bytecode gelden niet als uitvoeringsbewijs. Indirecte
+imports blijven aan de geverifieerde broninventaris gebonden. Een gevangen
+import- of auditfout blijft een fout en kan niet alsnog INSPECTED opleveren.
+Een niet bevestigd beeindigd childproces houdt zijn eigen inputbestanden vast;
+er volgt geen automatische verwijdering of nieuwe poging. De collector kan
+nog steeds uitsluitend UNVERIFIED teruggeven, nooit volledige toelating.
+AST-subsetreplay in deze childreader blijft expliciet niet ondersteund.
+
+De gerichte Main-selectie matrix, gewachte childprocessen en trusted loader:
+95 uitgevoerd in 13,064 s; 94 PASS en een expliciete Windows-symlinkskip.
+Deze selectie overlapt eerdere 65- en 29-testuitslagen en wordt niet daarbij
+opgeteld. De losse loaderselectie: 29 uitgevoerd, 28 PASS, dezelfde skip,
+1,581 s. Een eerdere vastgelopen lokale test is op exact proces-ID en
+commandoregel gestopt; geen bestanden zijn daarbij verwijderd. Na verplaatsing
+van alleen de tijdelijke synthetische testdirectory buiten het lange
+OneDrive-pad en correctie van een testfixturepad liep de selectie door.
+Daaruit volgt geen bewezen diepere OneDrive-oorzaak.
+
+De vier nieuwe helper-/testbronnen staan expliciet in de CI-broninventaris;
+de CI-regressie-aanroep bevat beide nieuwe suites. Dit is nog geen nieuwe
+integrale CI-PASS. READY blijft false.
+
+De D10 pure assembly is door de tweede agent opnieuw onafhankelijk bekeken:
+33 importintegriteitstests PASS, 701 bronhashes gecontroleerd; de opgeslagen
+volledige selectie heeft 452/452 PASS zonder skips in 119,063 s. Review vond
+wel een aparte P2: de runner kon een volledig overgeslagen testklasse als
+PASS beschouwen. De reparatie moet zowel exact het geselecteerde aantal
+uitgevoerde tests als nul skips vereisen. De bestaande werkelijk uitgevoerde
+452-testuitslag wordt hierdoor niet achteraf ongeldig of vollediger gemaakt.
+
+Voor reproduceerbaarheid tussen checkoutvormen zijn uitsluitend zestien
+historische CRLF/LF-bronparen apart geinventariseerd met Git-blobidentiteit,
+rauwe hash en lengte. Er is geen algemene normalisatie toegestaan. De vier
+historische fixturekopieen blijven byte-exact. Een nieuwe manifestversie en
+herhaling op de definitieve samenstelling zijn nog nodig voordat een schone
+checkout als reproduceerbaar wordt gerapporteerd.
+
+Actuele bevestigde lokale en remote HEAD op dit checkpoint:
+`320ef27c08781330289b93118cd313f2bc1fbb47`. Geen hosted Supabase-handeling,
+JIT, migrationtoepassing, fixturecleanup of ownertelefoontest is gestart.
+Het volledige commandoregister, oorspronkelijke domeinreplay, werkelijke
+PG/Auth-foutpaden en same-source eindtoelating blijven open. De bestaande
+WAL-blokkade en grens 2349 zijn niet gewijzigd. Hosted blijft NO-GO.
+
+### 11 november: volledige Main-selectie en checkoutverschillen
+
+Nieuw, apart bewaard manifest `assembly_checks/sources-current.json`:
+`9eb7b0a9e7d97870317c8423fc7f1b435c9632b8b149c7713b9362beaacd01ac`,
+712 bestanden. De D11-controles slagen in Main: 69 tests, nul skips of fouten,
+65,003 s; onafhankelijk 69 PASS in 42,130 s. De skip-P2 is gesloten: zowel
+rapportstatus als exitstatus vereisen exact het geselecteerde testtal en nul
+overgeslagen tests. De vier historische fixtures en oorspronkelijke manifests
+zijn niet veranderd.
+
+De eerste volledige Main-run op die bronset is FAIL: 452 uitgevoerd, geen
+assertion failures, elf errors, nul skips; tests 305,815 s, rapport 309,64 s.
+Alle elf errors treden op in dezelfde PrefixTests.setUp: gewone pathlib-I/O
+kon het lange historische Windows-pad niet openen. De runner had de bytes
+eerder via extended-path-I/O wel gecontroleerd. Een gerichte testbootstrap-
+correctie gebruikt nu uitsluitend voor die absolute Windows-fixtureboom het
+extended-path-formaat. Dezelfde elf tests slagen daarna in 2,027 s. De
+oorspronkelijke mislukte volledige run blijft bestaan; dit is nog geen nieuwe
+volledige PASS.
+
+De onafhankelijke checkoutreview vond twee aanvullende downstream-pins die
+de Git-LF-vorm nog niet accepteren: de actuele bootstrapproducer en negen
+historische migrations in de beleidsinventaris. De generieke v2-manifestcheck
+alleen is daarom onvoldoende. De gerichte reparatie moet dezelfde zestien
+onafhankelijk vastgelegde byteparen gebruiken, daadwerkelijke rauwe hashes in
+bewijzen behouden en frozen hashes, migrationbytes en vier historische kopieen
+ongemoeid laten. Deze punten blokkeren de fresh-checkoutclaim tot verificatie.
+
+Vijf nieuwe exact gepinde bestanden zouden door Git-autocrlf kunnen wijzigen.
+De geplande selectieve staging en verse indexextractie gebruiken daarom
+uitsluitend commandogebonden `core.autocrlf=false`, zonder globale instelling
+te veranderen. Voor commit moeten de werkelijke indexbytes worden vergeleken
+met alle nieuwe bronrecords. Een gewone Windows-checkout met andere
+conversie-instellingen wordt niet zonder bewijs gelijkgesteld.
+
+### 11 november: gecontroleerde verse indexcheckout PASS
+
+De downstream-correctie is onafhankelijk beoordeeld zonder resterende P1/P2
+binnen de zeven gewijzigde bestanden. Gerichte verificatie: Main 65 PASS in
+74,773 s, onafhankelijk 65 PASS in 74,876 s, nul fouten/skips. De bestaande
+producer-, policy- en frozen pins blijven staan; alleen exact dezelfde
+onafhankelijk gepinde representatieparen worden herkend. Bewijsregistraties
+bevatten de werkelijk gelezen rauwe hashes, niet een vervangende canonical hash.
+
+Definitieve offline bronset van dit checkpoint:
+`assembly_checks/sources-current-r2.json`, 715 bestanden, SHA-256
+`2e37fd99d6cbcb3593d158aed115ae66ead48a188bdb86e9bc90b2a263efdbe2`.
+De indexcontrole vergeleek elk bronrecord rechtstreeks met Git-blobs. Inclusief
+manifest en digest zijn 717 bestanden vervolgens opnieuw exact vergeleken met
+een nieuwe indexextractie. De tweede reviewer bevestigde 715/715 bronnen,
+717/717 extracties, zestien byteparen, vier historische kopieen en 48 policy-
+bindings. Indexrapport SHA-256:
+`6773f7959e18f968d4ed8286d135a6321ff26b71886ddda9ceb59fb21ced70af`.
+Dit is een verse gerichte Git-indexcheckout, geen volledige kloon of serverrun.
+
+De volledige pure selectie is daarna op precies die extractie uitgevoerd:
+452 geselecteerd, 452 uitgevoerd, nul failures/errors/skips, 142,984 s.
+Bron-scan: 715 bestanden. Oorspronkelijk resultaat SHA-256:
+`ce121439d0395827861727a76a634fcbef5e5bdacf99e0b62531b26fa42d1acd`.
+Het resultaat staat byte-exact in
+`assembly_checks/pure-result-20261111-r2.json`. De eerdere FAIL met elf
+paderrors en alle oudere receipts blijven historisch FAIL/incompleet.
+De gerichte suites overlappen de pure selectie en worden niet opgeteld tot
+een kunstmatig totaal of aantal echte workflowpaden.
+
+Er zijn uitsluitend offline bronnen, hun noodzakelijke bronafhankelijkheden en
+dit rapport geselecteerd. Geen bestaande runtime, migration, workflow,
+AGENTS of oudere ongecontroleerde app/statuswijziging gaat mee. De normale
+whitespacecontrole meldt de bewust behouden CRLF-bytes en lege eindregels;
+de commandogebonden controle met `cr-at-eol,-blank-at-eof` is schoon. Er zijn
+geen globale Git-instellingen gewijzigd en geen historische bytes genormaliseerd.
+
+**Grenzen blijven NO-GO:** volledige inhoudelijke childreader-replay, gesloten
+commandobegroting en native/recovery/platformdekking, echte gecombineerde
+PG17/GoTrue/app/foutpad-CI op een broncommit en het bestaande WAL-bewijsgat.
+De aparte Linux-component en deze pure452-PASS vervangen die controles niet.
+READY blijft false; geen nieuwe run is toegelaten en geen heldere bovengrens
+onder 2349 wordt geclaimd. De concrete vervolgstap is de inhoudelijke replay
+en resterende driver-/herstelkosten sluiten, daarna pas de volledige same-source
+toelating. Geen hosted start, JIT, ownerwindow, freeze of package21-vrijgave.

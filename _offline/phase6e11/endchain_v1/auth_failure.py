@@ -1,5 +1,6 @@
 """Local-only Auth failure component. Not a hosted admission or shared runner."""
 import argparse
+import copy
 import hashlib
 import json
 import os
@@ -164,11 +165,12 @@ class RealBackend:
 
 
 class Case:
-    def __init__(self, backend, folder, run_id, name, costs, transport_factory=None):
+    def __init__(self, backend, folder, run_id, name, costs, transport_factory=None, read_witness=None):
         if name not in CASES:
             raise ValueError('auth_failure_case')
         self.backend, self.name = backend, name
         self.transport_factory = transport_factory
+        self.read_witness = read_witness
         self.run_id = binding(run_id)
         self.email = 'fmz-af-' + uuid.uuid5(uuid.UUID(run_id), name).hex + '@example.invalid'
         self.marker = digest(run_id + ':' + name)
@@ -195,6 +197,8 @@ class Case:
             self.journal.event({'phase': 'unknown', 'key': key, 'error_class': type(error).__name__})
             raise
         self.journal.event({'phase': 'confirmed', 'key': key})
+        if self.read_witness is not None:
+            self.read_witness(self.run_id, self.name, 'case', key, copy.deepcopy(result))
         return result
 
     def snapshot(self, key):
@@ -491,6 +495,8 @@ def reconcile_retained(case):
         journal.before(key)
         try:
             value = call()
+            if case.read_witness is not None:
+                case.read_witness(case.run_id, case.name, 'reconciliation', key, copy.deepcopy(value))
         except Exception as error:
             journal.event({'phase': 'unknown', 'key': key, 'error_class': type(error).__name__})
             raise
@@ -590,10 +596,12 @@ def context_from_ci(ctx, *, run_id, managed_costs, exclusive_local_auth):
             'exclusive_local_auth': exclusive_local_auth}
 
 
-def run(gate, *, safety_reconciliation=False, transport_factory=None):
+def run(gate, *, safety_reconciliation=False, transport_factory=None, read_witness=None):
     """Parent provides private gate.auth_failure_context; no bootstrap/CI dispatch."""
     if transport_factory is not None and not callable(transport_factory):
         raise ValueError('auth_failure_transport_factory')
+    if read_witness is not None and not callable(read_witness):
+        raise ValueError('auth_failure_read_witness')
     config = getattr(gate, 'auth_failure_context', None)
     if type(safety_reconciliation) is not bool:
         raise ValueError('auth_failure_explicit_reconciliation_option')
@@ -619,7 +627,8 @@ def run(gate, *, safety_reconciliation=False, transport_factory=None):
         return report
     try:
         folder.mkdir()
-        cases = [Case(backend, folder / name, str(uuid.uuid4()), name, config['managed_costs'], transport_factory=transport_factory) for name in CASES]
+        cases = [Case(backend, folder / name, str(uuid.uuid4()), name, config['managed_costs'],
+                      transport_factory=transport_factory, read_witness=read_witness) for name in CASES]
         reports = [case.execute() for case in cases]
         reconciliations = [reconcile_retained(case) for case, report in zip(cases, reports)
                            if not report['claim_released']] if safety_reconciliation else []

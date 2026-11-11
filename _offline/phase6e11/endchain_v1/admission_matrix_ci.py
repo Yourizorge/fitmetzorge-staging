@@ -12,6 +12,10 @@ NAMES = ('application', 'normal', *CASES)
 WORKFLOW = 'phase6e-admission-matrix-local-ci.yml'
 SELF_SOURCES = ('_offline/phase6e11/endchain_v1/admission_matrix_ci.py',
     '_offline/phase6e11/endchain_v1/admission_matrix_ops.py',
+    '_offline/phase6e11/endchain_v1/admission_terminal_process.py',
+    '_offline/phase6e11/endchain_v1/admission_trusted_loader.py',
+    '_offline/phase6e11/endchain_v1/test_admission_terminal_process.py',
+    '_offline/phase6e11/endchain_v1/test_admission_trusted_loader.py',
     '_offline/phase6e11/endchain_v1/test_admission_matrix.py',
     '_offline/phase6e11/endchain_v1/admission_matrix_bootstrap.py',
     '_offline/phase6e11/endchain_v1/test_admission_matrix_bootstrap.py',
@@ -23,7 +27,8 @@ class ApplicationGate(admission_ci.Gate):
     def regressions(self):
         self.admission_units()
         folder = self.sources/'_offline/phase6e11/endchain_v1'
-        for name in ('test_admission_matrix.py', 'test_admission_matrix_bootstrap.py'):
+        for name in ('test_admission_matrix.py', 'test_admission_matrix_bootstrap.py',
+                     'test_admission_terminal_process.py', 'test_admission_trusted_loader.py'):
             self.command('matrix-' + name[:-3], ['python3', '-B', str(folder/name)])
         admission_ci.app.Gate.regressions(self)
 

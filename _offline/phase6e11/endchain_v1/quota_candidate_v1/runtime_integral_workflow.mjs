@@ -1,0 +1,72 @@
+// Disposable CI orchestration: real GoTrue HTTP and real PostgreSQL sessions.
+// SQL travels over private local IPC; no hosted network or credential support.
+import readline from 'node:readline';
+import {runBoundWorkflow as runWorkflow} from './runtime_workflow.mjs';
+import {validateQuota} from './runtime_node.mjs';
+import {createProtocolSessionTransport} from '../session_transport.mjs';
+import {executionContext,AUTH_ORIGIN} from '../execution_context.mjs';
+import {completeResponse} from './runtime_http.mjs';
+const lines=readline.createInterface({input:process.stdin,terminal:false})[Symbol.asyncIterator]();
+const read=async()=>JSON.parse((await lines.next()).value);
+const p=await read();validateQuota(p.controllerContext?.quota);
+if(p.environment!=='disposable_ci')throw Error('quota_disposable_only');
+const startedAt=performance.now(),cpuStart=process.cpuUsage();
+const execution=executionContext(p);
+let count=p.commandCount,open=false,result,activeStep=0;
+const events=[];
+const sql=async(channel,phase,q,args=[])=>{
+ process.stdout.write(JSON.stringify({op:'sql',channel,phase,q,args,scenario_step:activeStep})+'\n');
+ const r=await read();count=r.commandCount;if(r.error)throw Error(r.error);return r.rows;
+};
+let phase='identity';
+const transport=createProtocolSessionTransport({sql:{
+ unsafe:(q,args=[])=>sql('workflow',phase,q,args),end:async()=>{}},
+ onCommand:async name=>{phase=name;}});
+const query=(q,args=[])=>sql('writer','controller_evidence',q,args);
+const measureQuery=(q,args=[])=>sql('reader','measurement',q,args);
+const closeCollector=async()=>{if(open){await measureQuery('ROLLBACK');open=false;}};
+const roleMap={member:'a_member',trainer:'a_trainer',b:'b_member'};
+const authDispatch=async(stage,index,status)=>{
+ process.stdout.write(JSON.stringify({op:'workflow_auth',stage,index,...(status===undefined?{}:{status})})+'\n');
+ const reply=await read();if(reply.error)throw Error(reply.error);
+};
+const sessions={};
+for(const [role,key] of Object.entries(roleMap)){
+ const token=p.tokens[key];
+ const claims=JSON.parse(Buffer.from(token.split('.')[1],'base64url').toString());
+ if(claims.sub!==p.ids[role]||typeof claims.session_id!=='string')throw Error('ci_identity_mismatch');
+ sessions[role]=claims.session_id;
+}
+try{
+ await measureQuery('BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED READ ONLY');open=true;
+ const rows=await measureQuery("select current_setting('transaction_read_only')='on' readonly,current_setting('transaction_isolation')='read committed' fresh,pg_backend_pid() backend");
+ if(rows[0]?.readonly!==true||rows[0]?.fresh!==true)throw Error('ci_collector_guard');
+ result=await runWorkflow({...p,sessions,query,measureQuery,transport,collectorBackend:rows[0].backend,
+  closeCollector,commandCount:()=>count,includeCleanup:true,persist:async e=>{
+   events.push(e);process.stdout.write(JSON.stringify({op:'persist',event:e})+'\n');
+   const r=await read();if(r.error)throw Error(r.error);
+   if(e.phase==='pair_validated')activeStep=e.step+1;
+  },auth:{withToken:(role,callback)=>callback(p.tokens[roleMap[role]]),fetcher:async(url,options)=>{
+   const u=new URL(url);
+   if(u.origin!==AUTH_ORIGIN||u.pathname!=='/auth/v1/user')throw Error('ci_auth_route');
+   const index=activeStep+1;await authDispatch('before',index);
+   let response;
+   try{response=await completeResponse(await execution.fetcher(url,{...options,
+    headers:{...options.headers,'accept-encoding':'identity'}}));}
+   catch(error){try{await authDispatch('lost_response',index);}catch{}throw error;}
+   await authDispatch('response_received',index,response.status);return response;
+  }}});
+}catch(e){
+ result={status:'NO_GO',phase:/^[a-z0-9_]+$/.test(e.phase)?e.phase:'integral_workflow',
+  code:/^[a-z0-9_]+$/.test(e.code||e.message)?e.code||e.message:'ci_workflow_failed'};
+ process.exitCode=2;
+}finally{
+ try{await closeCollector();}catch{result={...result,status:'NO_GO',close_failed:true};process.exitCode=2;}
+ await transport.close();
+ const cpu=process.cpuUsage(cpuStart),cpuMs=(cpu.user+cpu.system)/1000,wallMs=performance.now()-startedAt;
+ if(cpuMs>=2000||wallMs>=120000){result={...result,status:'NO_GO',code:'ci_worker_lifetime'};process.exitCode=2;}
+ for(const key of Object.keys(p.tokens))p.tokens[key]=null;
+ process.stdout.write(JSON.stringify({op:'complete',result:{...result,real_local_auth:execution.local,commandCount:count,
+  worker_cpu_ms:cpuMs,worker_wall_ms:wallMs,worker_cpu_limit_ms:2000,worker_wall_limit_ms:120000}})+'\n');
+ process.stdin.destroy();
+}

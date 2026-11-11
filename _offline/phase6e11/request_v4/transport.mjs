@@ -1,4 +1,4 @@
-import {connectionOptions} from '../edge_bridge_v2/transport.mjs';
+import {connectionOptions} from './connection_options.mjs';
 const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 export function createRequestTransport({postgres,connectionUrl,ca,sessionHost}) {
   let busy=false;

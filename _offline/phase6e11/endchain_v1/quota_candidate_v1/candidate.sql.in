@@ -1,0 +1,143 @@
+-- OFFLINE candidate only. Not canonical migration history or clean47 evidence.
+-- Parent @@PARENT@@; purpose @@PURPOSE@@; manifest SHA256 @@MANIFEST_SHA@@.
+-- Main must validate the source-bound bundle and disposable strict-TLS target.
+begin;
+set local lock_timeout='1s';
+set local statement_timeout='5s';
+lock table fmz6e11_controller_private.runs,
+ fmz6e11_controller_private.steps, fmz6e11_controller_private.evidence
+ in access exclusive mode;
+do $qc_guard$
+begin
+ if current_setting('server_version_num')::int/10000<>17
+    or current_database()<>'postgres' or current_user<>'postgres'
+    or current_setting('session_replication_role')<>'origin'
+    or not exists(select 1 from pg_catalog.pg_stat_ssl
+                  where pid=pg_backend_pid() and ssl is true) then
+  raise exception using errcode='42501',message='quota_candidate_target';
+ end if;
+ if clock_timestamp()<'@@START@@'::timestamptz
+    or clock_timestamp()>='@@END@@'::timestamptz then
+  raise exception using errcode='42501',message='quota_candidate_expired';
+ end if;
+ if exists(select 1 from fmz6e11_controller_private.runs)
+    or exists(select 1 from fmz6e11_controller_private.steps)
+    or exists(select 1 from fmz6e11_controller_private.evidence) then
+  raise exception using errcode='42501',message='quota_candidate_registry_not_empty';
+ end if;
+ if (select count(*) from pg_catalog.pg_constraint
+     where conrelid='fmz6e11_controller_private.runs'::regclass
+      and conname='runs_command_count_check' and contype='c'
+      and convalidated and conislocal and coninhcount=0 and not connoinherit
+      and not condeferrable and not condeferred
+      and pg_get_expr(conbin,conrelid,false)=@@BASELINE_EXPRESSION@@)<>1 then
+  raise exception using errcode='42501',message='quota_candidate_baseline_changed';
+ end if;
+ if (select count(*) from pg_catalog.pg_proc
+     where oid='fmz6e11_controller_private.recovery_run_receipt()'::regprocedure
+      and prosrc=@@M45_BODY@@ and not prosecdef)<>1
+    or not exists(select 1 from pg_catalog.pg_trigger
+      where tgrelid='fmz6e11_controller_private.runs'::regclass
+       and tgname='recovery_run_receipt' and tgenabled='O'
+       and tgfoid='fmz6e11_controller_private.recovery_run_receipt()'::regprocedure) then
+  raise exception using errcode='42501',message='quota_candidate_legacy_guard_changed';
+ end if;
+end $qc_guard$;
+create table fmz6e11_controller_private.quota_candidate_v1_cases (
+ run_id uuid primary key,
+ purpose text not null check(purpose='@@PURPOSE@@'),
+ cap integer not null check(cap between 1 and 2349),
+ parent_id uuid not null check(parent_id='@@PARENT@@'::uuid),
+ source_commit text not null check(source_commit ~ '^[0-9a-f]{40}$'),
+ candidate_sha text not null check(candidate_sha ~ '^[0-9a-f]{64}$'),
+ ci_run bigint not null check(ci_run>0),
+ starts_at timestamptz not null,
+ expiry timestamptz not null check(expiry>starts_at and expiry<=starts_at+interval '10 minutes'),
+ binding_sha text not null check(binding_sha ~ '^[0-9a-f]{64}$')
+);
+revoke all on fmz6e11_controller_private.quota_candidate_v1_cases
+ from public,anon,authenticated,service_role;
+alter table fmz6e11_controller_private.quota_candidate_v1_cases enable row level security;
+insert into fmz6e11_controller_private.quota_candidate_v1_cases
+ (run_id,purpose,cap,parent_id,source_commit,candidate_sha,ci_run,starts_at,expiry,binding_sha)
+ values @@CATALOG_ROWS@@;
+alter table fmz6e11_controller_private.runs drop constraint runs_command_count_check;
+alter table fmz6e11_controller_private.runs add constraint runs_command_count_check
+ check(@@CHECK@@);
+create function fmz6e11_controller_private.quota_candidate_v1_receipt()
+returns trigger language plpgsql security invoker
+set search_path=pg_catalog,pg_temp as $qc_receipt$
+-- Parent @@PARENT@@; purpose @@PURPOSE@@; manifest @@MANIFEST_SHA@@.
+declare
+ lease record;
+begin
+ if TG_TABLE_SCHEMA='fmz6e11_controller_private' and TG_TABLE_NAME='quota_candidate_v1_cases' then
+  raise exception using errcode='42501',message='quota_candidate_catalog_immutable';
+ end if;
+ if TG_OP='TRUNCATE' then
+  if exists(select 1 from fmz6e11_controller_private.runs where id=any(@@CASES@@)) then
+   raise exception using errcode='42501',message='quota_candidate_receipt_retained';
+  end if;
+  return null;
+ end if;
+ if TG_OP='DELETE' then
+  if OLD.id=any(@@CASES@@) then
+   raise exception using errcode='42501',message='quota_candidate_receipt_retained';
+  end if;
+  return OLD;
+ end if;
+ if TG_OP='INSERT' then
+  if NEW.id=any(@@CASES@@) then
+   select * into strict lease from fmz6e11_controller_private.quota_candidate_v1_cases
+    where run_id=NEW.id;
+   if NEW.github_run<>lease.ci_run or NEW.head_sha<>lease.source_commit
+      or NEW.manifest_sha<>lease.binding_sha
+      or NEW.created_at<lease.starts_at
+      or NEW.created_at>clock_timestamp()
+      or NEW.expires_at<>lease.expiry
+      or clock_timestamp()<lease.starts_at
+      or clock_timestamp()>=lease.expiry
+      or NEW.state<>'running' or NEW.next_step<>0 or NEW.command_count<>0
+      or NEW.closed_at is not null then
+    raise exception using errcode='42501',message='quota_candidate_claim_binding';
+   end if;
+  end if;
+  return NEW;
+ end if;
+ if OLD.id=any(@@CASES@@) or NEW.id=any(@@CASES@@) then
+  if (OLD.id,OLD.github_run,OLD.head_sha,OLD.manifest_sha,OLD.created_at,OLD.expires_at)
+     is distinct from
+     (NEW.id,NEW.github_run,NEW.head_sha,NEW.manifest_sha,NEW.created_at,NEW.expires_at)
+     or NEW.command_count<OLD.command_count or NEW.next_step<OLD.next_step
+     or (OLD.state='stopped' and NEW.state not in ('stopped','closed'))
+     or (OLD.state='complete' and NEW.state not in ('complete','closed'))
+     or (OLD.state='closed' and NEW.state<>'closed')
+     or (OLD.state<>'running' and NEW.next_step<>OLD.next_step)
+     or (OLD.closed_at is not null and NEW.closed_at is distinct from OLD.closed_at) then
+   raise exception using errcode='42501',message='quota_candidate_identity_immutable';
+  end if;
+  select * into strict lease from fmz6e11_controller_private.quota_candidate_v1_cases
+   where run_id=OLD.id;
+  if NEW.command_count>lease.cap then
+   raise exception using errcode='42501',message='quota_candidate_cap';
+  end if;
+  -- Expiry denies progression/PASS, but retains bounded stop/close safety writes.
+  if clock_timestamp()>=lease.expiry and
+     (NEW.next_step is distinct from OLD.next_step or NEW.state in ('running','complete')) then
+   raise exception using errcode='42501',message='quota_candidate_expired';
+  end if;
+ end if;
+ return NEW;
+end $qc_receipt$;
+revoke all on function fmz6e11_controller_private.quota_candidate_v1_receipt()
+ from public,anon,authenticated,service_role;
+create trigger quota_candidate_v1_receipt before insert or update or delete
+ on fmz6e11_controller_private.runs for each row
+ execute function fmz6e11_controller_private.quota_candidate_v1_receipt();
+create trigger quota_candidate_v1_truncate before truncate
+ on fmz6e11_controller_private.runs for each statement
+ execute function fmz6e11_controller_private.quota_candidate_v1_receipt();
+create trigger quota_candidate_v1_catalog_immutable before insert or update or delete or truncate
+ on fmz6e11_controller_private.quota_candidate_v1_cases for each statement
+ execute function fmz6e11_controller_private.quota_candidate_v1_receipt();
+commit;

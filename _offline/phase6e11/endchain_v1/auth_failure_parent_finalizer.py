@@ -418,18 +418,27 @@ class PhysicalCProof(CProof):
         return value
 
 
-def finalize(gate, ctx, auth, seal, c_receipt_ref, *, delete_costs, pre_fixture_proof=None, partial_bootstrap_proof=None):
+def finalize(gate, ctx, auth, seal, c_receipt_ref, *, delete_costs, pre_fixture_proof=None, partial_bootstrap_proof=None, registered_bootstrap_proof=None):
     """Return scoped confirmation; on ANY failure persist NO_GO then raise primary."""
     require(os.environ.get('GITHUB_ACTIONS') == 'true'
             and os.environ.get('GITHUB_REPOSITORY') == 'Yourizorge/fitmetzorge-staging'
             and os.environ.get('GITHUB_REF') == 'refs/heads/main'
             and getattr(gate, 'container', None) == 'supabase_db_fmz-db41-ci', 'disposable_only')
     roles, prefix = ROLES, PREFIX
+    if registered_bootstrap_proof is not None:
+        from quota_candidate_v1 import runtime_registered_cleanup as registered
+        require(type(registered_bootstrap_proof) is registered.Prerequisite
+                and partial_bootstrap_proof is None and pre_fixture_proof is None
+                and c_receipt_ref is None, 'exclusive_registered_proof')
+        partial_bootstrap_proof = registered_bootstrap_proof
     if partial_bootstrap_proof is not None:
-        import auth_partial_bootstrap as partial
-        require(type(partial_bootstrap_proof) is partial.Prerequisite
-                and c_receipt_ref is None and pre_fixture_proof is None, 'exclusive_partial_proof')
+        if registered_bootstrap_proof is None:
+            import auth_partial_bootstrap as partial
+            require(type(partial_bootstrap_proof) is partial.Prerequisite
+                    and c_receipt_ref is None and pre_fixture_proof is None, 'exclusive_partial_proof')
         roles, prefix = partial_bootstrap_proof.roles, 'auth-partial-bootstrap-engine'
+    if registered_bootstrap_proof is not None:
+        prefix = 'auth-registered-bootstrap-engine'
     ledger = Ledger(pathlib.Path(gate.out) / (prefix + '-private'), delete_costs, roles=roles)
     result = {'status': 'NO_GO', 'suffix_status': 'BLOCKED', 'preparation_run': NEW_RUN,
         'full_auth_cleanup_proven': False, 'full_chain_admission': False, 'global_auth_zero_claim': False,
@@ -445,7 +454,8 @@ def finalize(gate, ctx, auth, seal, c_receipt_ref, *, delete_costs, pre_fixture_
     def native(key, call):
         ledger.before(key)
         try:
-            value = call()
+            value = (registered_bootstrap_proof.native(key, call)
+                     if registered_bootstrap_proof is not None else call())
             ledger.event({'phase': 'confirmed', 'key': key})
             return value
         except BaseException as error:
@@ -482,7 +492,8 @@ def finalize(gate, ctx, auth, seal, c_receipt_ref, *, delete_costs, pre_fixture_
                                     'email': tracked.sha(v['email'].encode())} for r, v in owned.items()}
         if partial_bootstrap_proof is not None:
             proof = partial_bootstrap_proof
-            result['prerequisite_kind'] = 'LIVE_PARTIAL_BOOTSTRAP'
+            result['prerequisite_kind'] = (proof.kind
+                if registered_bootstrap_proof is not None else 'LIVE_PARTIAL_BOOTSTRAP')
             result['original_component_error_class'] = proof.original_error_class
             binding_name = 'partial-bootstrap-binding.json'
         elif pre_fixture_proof is not None:
@@ -506,7 +517,9 @@ def finalize(gate, ctx, auth, seal, c_receipt_ref, *, delete_costs, pre_fixture_
         ledger.write(binding_name, {'original_hashes': proof.hashes, 'owners': result['owner_hashes']})
         phase = 'local_observer'
         require(ctx.get('test_admin_token') and auth.url in af.ORIGINS, 'private_local_context')
-        backend = af.RealBackend({'dsn': ctx['dsn'], 'auth_url': auth.url, 'admin_token': ctx['test_admin_token']})
+        config = {'dsn': ctx['dsn'], 'auth_url': auth.url, 'admin_token': ctx['test_admin_token']}
+        backend = (registered_bootstrap_proof.connect(config)
+                   if registered_bootstrap_proof is not None else af.RealBackend(config))
         require(backend.db.autocommit is True, 'autocommit_observer_required')
         boundary = native('boundary', lambda: backend.db.execute(BOUNDARY).fetchone()['value'])
         require(isinstance(boundary, dict)
@@ -562,7 +575,9 @@ def finalize(gate, ctx, auth, seal, c_receipt_ref, *, delete_costs, pre_fixture_
         if isinstance(error, tracked.Blocked): result['reason'] = str(error)
     finally:
         if backend is not None:
-            try: backend.close()
+            try:
+                if registered_bootstrap_proof is not None: registered_bootstrap_proof.close_backend(backend)
+                else: backend.close()
             except BaseException as error:
                 if primary is None: primary = error
                 else: secondary('observer_close', error)

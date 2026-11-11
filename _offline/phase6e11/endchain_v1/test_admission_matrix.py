@@ -13,8 +13,8 @@ import uuid
 import zipfile
 from unittest.mock import patch
 
-import admission_matrix_ci as ci
 import admission_matrix_ops as ops
+import admission_matrix_ci as ci
 import admission_case_archive as case_archive
 
 HEAD, CANDIDATE, RUN = 'a'*40, 'b'*64, '12345'
@@ -96,6 +96,18 @@ class ArchiveTests(unittest.TestCase):
             result = self.verify(fixture(change=change))
             self.assertEqual(result['originals'], {'evidence/original.json': original})
             self.assertIsNone(result['terminal_verified'])
+            raw = fixture(change=change)
+            inspected = {'status': 'CASE_TERMINAL_UNVERIFIED', 'missing': ['driver_numeric_originals']}
+            with patch.object(ops, 'inspect_terminal', return_value=inspected) as reader:
+                checked = ops.verify_archive(raw, name='normal', head=HEAD, candidate=CANDIDATE,
+                    run=RUN, expected_sources=SOURCES, trusted_root=root)
+            self.assertIs(checked['terminal_verified'], inspected)
+            self.assertEqual(reader.call_args.args[2], {'evidence/original.json': original})
+            self.assertEqual(reader.call_args.kwargs['trusted_root'], root)
+            with patch.object(ops, 'inspect_terminal', side_effect=ValueError('original_incomplete')):
+                with self.assertRaisesRegex(ValueError, 'original_incomplete'):
+                    ops.verify_archive(raw, name='normal', head=HEAD, candidate=CANDIDATE,
+                        run=RUN, expected_sources=SOURCES, trusted_root=root)
 
     def test_terminal_cannot_claim_another_source_composition(self):
         def change(files):
@@ -159,6 +171,10 @@ class ArchiveTests(unittest.TestCase):
             value=json.loads(files['result.json']);value['status']='NO_GO';files['result.json']=encoded(value)
         result=self.verify(fixture(change=change))
         self.assertIsNone(result['case']);self.assertEqual(result['result']['status'],'NO_GO')
+
+
+# Real fresh-child tests replace mocked find_spec/import_module observations.
+from test_admission_terminal_process import TerminalInspectionTests
 
 
 class AggregateTests(unittest.TestCase):
@@ -302,7 +318,16 @@ class EntryTests(unittest.TestCase):
                 patch.object(ci.admission_ci.app.Gate, 'regressions', side_effect=lambda _: events.append('app')):
             gate.regressions()
         self.assertEqual(events, ['units', 'matrix-test_admission_matrix',
-                                  'matrix-test_admission_matrix_bootstrap', 'app'])
+                                  'matrix-test_admission_matrix_bootstrap',
+                                  'matrix-test_admission_terminal_process',
+                                  'matrix-test_admission_trusted_loader', 'app'])
+
+    def test_terminal_child_and_loader_are_in_source_inventory(self):
+        prefix = '_offline/phase6e11/endchain_v1/'
+        for name in ('admission_terminal_process.py', 'admission_trusted_loader.py',
+                     'test_admission_terminal_process.py', 'test_admission_trusted_loader.py'):
+            self.assertIn(prefix + name, ci.SELF_SOURCES)
+        self.assertEqual(len(ci.SELF_SOURCES), len(set(ci.SELF_SOURCES)))
 
     def test_application_advisors_do_not_claim_case_or_hosted_admission(self):
         gate = object.__new__(ci.ApplicationGate)
@@ -346,7 +371,7 @@ class EntryTests(unittest.TestCase):
         self.assertTrue(set(ci.STACK_SOURCES)<=source)
 
     def test_exact_serial_matrix_without_secrets_retries_or_paid_runner(self):
-        root=pathlib.Path(__file__).resolve().parents[3]
+        root=pathlib.Path(ci.__file__).resolve().parents[3]
         text=(root/'.github/workflows'/ci.WORKFLOW).read_text()
         for item in ('max-parallel: 1','fail-fast: false','github.run_attempt == 1',
                      'runs-on: ubuntu-24.04','timeout-minutes: 25','contents: read','persist-credentials: false'):
