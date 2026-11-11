@@ -14,7 +14,7 @@ import unittest
 
 PREFIX = '_offline/phase6e11/endchain_v1/'
 HERE = PREFIX + 'linux_import_component/'
-MANIFEST = HERE + 'sources-r4.json'
+MANIFEST = HERE + 'sources-r5.json'
 WORKFLOW = '.github/workflows/phase6e-linux-import-component.yml'
 PATHS = (HERE + 'check.py', HERE + 'test_check.py', WORKFLOW,
          PREFIX + 'admission_trusted_loader.py',
