@@ -6,6 +6,7 @@ import json
 import os
 from pathlib import Path
 import re
+import socket
 import sys
 import time
 import types
@@ -13,6 +14,7 @@ import unittest
 
 PREFIX = '_offline/phase6e11/endchain_v1/'
 HERE = PREFIX + 'linux_import_component/'
+MANIFEST = HERE + 'sources-r2.json'
 WORKFLOW = '.github/workflows/phase6e-linux-import-component.yml'
 PATHS = (HERE + 'check.py', HERE + 'test_check.py', WORKFLOW,
          PREFIX + 'admission_trusted_loader.py',
@@ -40,7 +42,7 @@ def read(root, name):
 
 def verify(root, expected):
     need(re.fullmatch('[a-f0-9]{64}', expected), 'manifest_pin')
-    raw = read(root, HERE + 'sources.json')
+    raw = read(root, MANIFEST)
     need(digest(raw) == expected, 'manifest_hash')
     manifest = json.loads(raw)
     need(manifest.get('format') == 1 and set(manifest['files']) == set(PATHS), 'source_set')
@@ -50,7 +52,14 @@ def verify(root, expected):
 
 
 def complete(result, selected):
-    return result.wasSuccessful() and result.testsRun == selected and not result.skipped
+    return (result.wasSuccessful() and result.testsRun == selected
+            and not result.skipped and not result.expectedFailures)
+
+
+def interfaces():
+    names = [name for _, name in socket.if_nameindex()]
+    need(names == ['lo'], 'external_interface')
+    return names
 
 
 def install(name, path, raw):
@@ -78,7 +87,7 @@ def main():
     need(re.fullmatch('[a-f0-9]{40}', args.commit) and re.fullmatch('[1-9][0-9]*', args.run), 'ci_binding')
     need(os.geteuid() != 0, 'unprivileged_required')
     need(os.readlink('/proc/self/ns/net') != args.host_network, 'network_namespace_required')
-    need(set(os.listdir('/sys/class/net')) <= {'lo'}, 'external_interface')
+    interface_names = interfaces()
     need(not args.report.exists(), 'report_exists')
     manifest, buffers = verify(root, args.expected)
     started = time.monotonic()
@@ -95,7 +104,7 @@ def main():
         commit=args.commit, ci_run=args.run, manifest_sha256=args.expected, sources=manifest['files'],
         python=sys.version, selected=selected, executed=result.testsRun, failures=len(result.failures),
         errors=len(result.errors), skips=len(result.skipped), seconds=round(time.monotonic()-started, 3),
-        network_isolated=True, log=log.getvalue(), hosted_calls=0, database_calls=0,
+        network_isolated=True, interface_names=interface_names, log=log.getvalue(), hosted_calls=0, database_calls=0,
         full_chain_admission=False, READY=False)
     args.report.parent.mkdir(parents=True, exist_ok=True)
     with args.report.open('x', encoding='utf-8') as stream:

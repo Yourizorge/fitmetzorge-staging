@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
 spec = importlib.util.spec_from_file_location('linux_import_check', Path(__file__).with_name('check.py'))
 check = importlib.util.module_from_spec(spec)
@@ -11,6 +12,14 @@ spec.loader.exec_module(check)
 
 
 class CheckTests(unittest.TestCase):
+    def test_interfaces_are_read_from_active_namespace_not_sysfs_mount(self):
+        with patch.object(check.socket, 'if_nameindex', return_value=[(1, 'lo')]):
+            self.assertEqual(check.interfaces(), ['lo'])
+        for actual in ([], [(1, 'lo'), (2, 'eth0')], [(2, 'eth0')]):
+            with patch.object(check.socket, 'if_nameindex', return_value=actual):
+                with self.assertRaisesRegex(ValueError, 'external_interface'):
+                    check.interfaces()
+
     def test_skip_failure_or_missing_execution_cannot_pass(self):
         result = unittest.TestResult()
         result.testsRun = 29
@@ -20,6 +29,9 @@ class CheckTests(unittest.TestCase):
         self.assertFalse(check.complete(result, 29))
         result.skipped.clear()
         result.failures.append(('case', 'failure'))
+        self.assertFalse(check.complete(result, 29))
+        result.failures.clear()
+        result.expectedFailures.append(('case', 'expected'))
         self.assertFalse(check.complete(result, 29))
 
     def test_changed_source_and_manifest_are_rejected(self):
@@ -32,7 +44,7 @@ class CheckTests(unittest.TestCase):
                 path.write_bytes(b'fixture\n')
                 files[name] = hashlib.sha256(b'fixture\n').hexdigest()
             raw = json.dumps({'format':1, 'files':files}).encode()
-            (root / check.HERE / 'sources.json').write_bytes(raw)
+            (root / check.MANIFEST).write_bytes(raw)
             pin = hashlib.sha256(raw).hexdigest()
             self.assertEqual(check.verify(root, pin)[0]['files'], files)
             with self.assertRaisesRegex(ValueError, 'manifest_hash'):
