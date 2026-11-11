@@ -1,0 +1,110 @@
+{
+  "actual_postgres_test": false,
+  "artifact_sha256": "37aee24c83cebf7a85c55b13d4abcdb75b56732ce17663ef3aa612de7764b8d6",
+  "ci_run": "43047774041",
+  "client_before_after_identical": true,
+  "driver_implicit_sql_bound": null,
+  "full_admission": false,
+  "hosted_admitted": false,
+  "libpq_runtime": 170005,
+  "members_verified": 25,
+  "source_commit": "644775f890224c56808e4faf4b4570d857955887",
+  "source_manifest_sha256": "6e515f0f5394634db4221f558ca874f4548d52b4af2cdb4e4518d58dcc50d871",
+  "sources_verified": 9,
+  "status": "SYNTHETIC_COMPONENT_ARTIFACT_VERIFIED",
+  "supabase_calls": 0,
+  "unit_tests": 41,
+  "wal_observed": false,
+  "wire_cases": [
+    {
+      "capture_complete": true,
+      "case": "ordinary",
+      "error_class": null,
+      "sql_messages": 0
+    },
+    {
+      "capture_complete": true,
+      "case": "ordinary_missing_status",
+      "error_class": null,
+      "sql_messages": 0
+    },
+    {
+      "capture_complete": true,
+      "case": "ambient_readwrite_probe",
+      "error_class": null,
+      "sql_messages": 1
+    },
+    {
+      "capture_complete": true,
+      "case": "ambient_primary_probe",
+      "error_class": null,
+      "sql_messages": 1
+    },
+    {
+      "capture_complete": true,
+      "case": "reported_pg17_status",
+      "error_class": null,
+      "sql_messages": 0
+    },
+    {
+      "capture_complete": true,
+      "case": "explicit_any_overrides",
+      "error_class": null,
+      "sql_messages": 0
+    },
+    {
+      "capture_complete": true,
+      "case": "auth_rejection",
+      "error_class": "OperationalError",
+      "sql_messages": 0
+    },
+    {
+      "capture_complete": false,
+      "case": "startup_eof",
+      "error_class": "OperationalError",
+      "sql_messages": 0
+    },
+    {
+      "capture_complete": true,
+      "case": "startup_timeout_5s",
+      "error_class": "ConnectionTimeout",
+      "sql_messages": 0
+    },
+    {
+      "capture_complete": true,
+      "case": "autocommit_select",
+      "error_class": null,
+      "sql_messages": 1
+    },
+    {
+      "capture_complete": true,
+      "case": "no_prepare_after_threshold",
+      "error_class": null,
+      "sql_messages": 7
+    },
+    {
+      "capture_complete": true,
+      "case": "close_active",
+      "error_class": null,
+      "sql_messages": 1
+    },
+    {
+      "capture_complete": true,
+      "case": "context_idle",
+      "error_class": null,
+      "sql_messages": 0
+    },
+    {
+      "capture_complete": true,
+      "case": "context_commit",
+      "error_class": null,
+      "sql_messages": 2
+    },
+    {
+      "capture_complete": true,
+      "case": "context_rollback",
+      "error_class": null,
+      "sql_messages": 2
+    }
+  ]
+}

@@ -1,0 +1,492 @@
+{
+  "binary_package": "3.2.10",
+  "build_attestation_proven": false,
+  "files": [
+    {
+      "path": "psycopg/__init__.py",
+      "sha256": "5f1607a193cb63e60a0c5687209d2bd0e3029760b9559e9968f31d6b5d82c778"
+    },
+    {
+      "path": "psycopg/_acompat.py",
+      "sha256": "2ef0152b55633e375239c13ba8da3d81a0855283ba3b142c8a1dedb34118ae5b"
+    },
+    {
+      "path": "psycopg/_adapters_map.py",
+      "sha256": "8d4caebb82a89e5b662449119aefca5c015aede7a0286d70d2220aa52533f4b9"
+    },
+    {
+      "path": "psycopg/_capabilities.py",
+      "sha256": "7783aa72a7ff260d8bd876da3d70c4cf6be2fb273fabe64442cd316e2dfd8603"
+    },
+    {
+      "path": "psycopg/_cmodule.py",
+      "sha256": "d7bb5516799ff9ace28653ae3b4ff51dd3c3b578d435fedbf56a27cda7b40011"
+    },
+    {
+      "path": "psycopg/_column.py",
+      "sha256": "c26f09f2ce367fa6bdf97f412d1e6fb1decb0d2e3d33efff068e2dd7f0ac66dd"
+    },
+    {
+      "path": "psycopg/_compat.py",
+      "sha256": "a7241a481cd2ff9a853906ba73d25e91ebd7da98ef2aa229b51d313444d5d656"
+    },
+    {
+      "path": "psycopg/_connection_base.py",
+      "sha256": "047afac6019de9f1d3313e1c35ac1d76d6a985b50d9dd96144814bfcb8cf645b"
+    },
+    {
+      "path": "psycopg/_connection_info.py",
+      "sha256": "168cadc0bd2b9fa51b331ee1727a46d2f6cd73f65f1fb2fadfb1bb005331048d"
+    },
+    {
+      "path": "psycopg/_conninfo_attempts.py",
+      "sha256": "d4302f31e6a38c2b0b254721119dfe106bb490e2beb15d8e9744d6c83af0767a"
+    },
+    {
+      "path": "psycopg/_conninfo_attempts_async.py",
+      "sha256": "79ce86a33e7597326fb4b158eeac6b46a1b58c13ec93048aa661ed1a4a72e153"
+    },
+    {
+      "path": "psycopg/_conninfo_utils.py",
+      "sha256": "008bda02cdd0a7c7b029fcfced01ba9fdbbd67da0e862f1089306c799b013575"
+    },
+    {
+      "path": "psycopg/_copy.py",
+      "sha256": "6122bc11cb0f9ab4f4606c02c619dcd3c413b888dd02194602a85a3dac13f8a6"
+    },
+    {
+      "path": "psycopg/_copy_async.py",
+      "sha256": "4f145d41157f3d25645454dba102773ce7f2412f78773f761849a2a5de8a59a9"
+    },
+    {
+      "path": "psycopg/_copy_base.py",
+      "sha256": "ff70717a6dddbb70bc70de2f0ffc76479e05479c721a9ccf64e54b9fa50ea3d2"
+    },
+    {
+      "path": "psycopg/_cursor_base.py",
+      "sha256": "8ee5ab1a96a461d6ede54db71d880799656f5fc9167d23de4f71aef320e65913"
+    },
+    {
+      "path": "psycopg/_dns.py",
+      "sha256": "2bfd13d52d9c8d19110988681388b62d0a4010db41464f803dae761cb1e898ad"
+    },
+    {
+      "path": "psycopg/_encodings.py",
+      "sha256": "3d137de3957cb2e874a22983c2cccc1a185b9be3fd2b3b82e95458a3f7d38bf7"
+    },
+    {
+      "path": "psycopg/_enums.py",
+      "sha256": "e6009e7ffb187bd51d684e27fd198359e1784df40ec1015e8a48eb933f588af2"
+    },
+    {
+      "path": "psycopg/_oids.py",
+      "sha256": "98923c1db46b4ec6cad0b2209e71b9c4f1fede1c4d51c968b6a52eae6ca8dacd"
+    },
+    {
+      "path": "psycopg/_pipeline.py",
+      "sha256": "1448864658cefa7aee20a61bb7255f6fc49b832c1c377b520789e46cb70e9f1a"
+    },
+    {
+      "path": "psycopg/_pipeline_async.py",
+      "sha256": "af9c9a8670382419329b1f5352ac1af75994959ca7c0b32a5385fdfa5037c25f"
+    },
+    {
+      "path": "psycopg/_pipeline_base.py",
+      "sha256": "8f892873645f2d083b55171bff5eb2c8ec5f07012cb7c69715c960b7320139e0"
+    },
+    {
+      "path": "psycopg/_preparing.py",
+      "sha256": "b867a5615337a04d21d2f7260e0f2ad7c8fa04efda4e1bb0600539c86e2266c2"
+    },
+    {
+      "path": "psycopg/_py_transformer.py",
+      "sha256": "574aac3451e08edbd55392179ae9b6d8a7055edf505311a49ec7ebf6c4b69e11"
+    },
+    {
+      "path": "psycopg/_queries.py",
+      "sha256": "2e12182b0246bc3d848cd67c3da7e43a9e28a5ffd30c5f7db1487ee079237201"
+    },
+    {
+      "path": "psycopg/_server_cursor.py",
+      "sha256": "beb5f2bfccef57c912d9e9a4af1d9a41af172e73c99d51d3cec68d419eca3402"
+    },
+    {
+      "path": "psycopg/_server_cursor_async.py",
+      "sha256": "b906dd7888968793e4f1fa77b6a57d9b69bf3a4740a47f9893d4fd959892476e"
+    },
+    {
+      "path": "psycopg/_server_cursor_base.py",
+      "sha256": "77c4a736f8187ade24e6e7e238a2ffa679e82f53ed7605603d41a0c9d034964b"
+    },
+    {
+      "path": "psycopg/_struct.py",
+      "sha256": "84ffa93e65bd9a395f808509d2dfa1757c57e334a80bf95582aa4f2c13aa0103"
+    },
+    {
+      "path": "psycopg/_tpc.py",
+      "sha256": "34b89f229756a6121bc1a04fbcb3d2699ffe0e8b5eebbc94ebb7bd53402891e4"
+    },
+    {
+      "path": "psycopg/_transformer.py",
+      "sha256": "9839012ee4b16d70c6d537243e0232649c74d329f951753c0e5b8e1a61d68c06"
+    },
+    {
+      "path": "psycopg/_typeinfo.py",
+      "sha256": "df3b400ebec2794344384d4b834dcb29c5a189a85b595a8acfe48dd66aada3cb"
+    },
+    {
+      "path": "psycopg/_typemod.py",
+      "sha256": "519c0715f9d66d7ab167d508541ac9877eb9f7da686406998fae6ff04b1b209b"
+    },
+    {
+      "path": "psycopg/_tz.py",
+      "sha256": "9886b76e5a555677cb544bb4bf4435f9366b27407df80f9db45b8307e3e58a45"
+    },
+    {
+      "path": "psycopg/_wrappers.py",
+      "sha256": "c0a66dfdaafc42e46010a0bab6ec1a9985c2c01d4fec8650b268187553a50215"
+    },
+    {
+      "path": "psycopg/abc.py",
+      "sha256": "f6923bfe99e7b1323fe27ea7e0b4fff406cec5fb059cc4ae5b99bef958fd6baf"
+    },
+    {
+      "path": "psycopg/adapt.py",
+      "sha256": "7d957b9c6a6a57650ac22c4bbb9d24d5f6ffb20d2e9ba4ae575ac21959f5dfa3"
+    },
+    {
+      "path": "psycopg/client_cursor.py",
+      "sha256": "9d1a376dc91c2a3de764601c5f3aec3cfe3984431f6b195e8159def7031d6b3f"
+    },
+    {
+      "path": "psycopg/connection.py",
+      "sha256": "026f05838e6198b52a2f7fb2d72e60029fee4937f2fa80d4d2b6400387729ecf"
+    },
+    {
+      "path": "psycopg/connection_async.py",
+      "sha256": "ed9fee131fc0b5682d7cd71640230517b4bbab0d1a87cf1361ed2ef8665ccd9b"
+    },
+    {
+      "path": "psycopg/conninfo.py",
+      "sha256": "f59c7138b3d6001b8d069e0c52697f48a40dd8b395ca20a6f6cef35c5bed6a36"
+    },
+    {
+      "path": "psycopg/copy.py",
+      "sha256": "fd5ef68e9d835ebd931ecaa8f52e9c6a1bde328d10b819777e78a0b74ac699b7"
+    },
+    {
+      "path": "psycopg/crdb/__init__.py",
+      "sha256": "674c11bec482fc2a5a38159f5828a5c0fd2c37a037f88561403e5c95d826fdd1"
+    },
+    {
+      "path": "psycopg/crdb/_types.py",
+      "sha256": "113a0c8556624f6e8ade6d46552e6bd0510c3bcf2d0cb8c0ad94421b2382577a"
+    },
+    {
+      "path": "psycopg/crdb/connection.py",
+      "sha256": "32cfafe6e10e7d23962af75c671edddd54d75df8b9a13cbf1a14c22350a0d704"
+    },
+    {
+      "path": "psycopg/cursor.py",
+      "sha256": "476099f0636dc2dd358a7ae390d6150f2ee9cae958dc4ab2640d1069cc152548"
+    },
+    {
+      "path": "psycopg/cursor_async.py",
+      "sha256": "561e47de80e03598dcacce3d861b9dc2fc7422d2f04bc30e5da96a88b3700445"
+    },
+    {
+      "path": "psycopg/dbapi20.py",
+      "sha256": "17abbdaa086a73345fc43cba4621999e6c25400c476af96b58cbb4cbadd6c78c"
+    },
+    {
+      "path": "psycopg/errors.py",
+      "sha256": "9a76aac329cbfd7220a3572f2bf8988712e4dd1b6e5b7a7bcd42d4ee66f9b493"
+    },
+    {
+      "path": "psycopg/generators.py",
+      "sha256": "9ff3f4e458f13dd6c9597ce78d15f8a9fc32a90c2a76bdc9ea4981123b4f8f63"
+    },
+    {
+      "path": "psycopg/postgres.py",
+      "sha256": "133982b2b02c0dfc6e0b28f6d28f870d8c39d6de7707fcce96439ca46c0a9137"
+    },
+    {
+      "path": "psycopg/pq/__init__.py",
+      "sha256": "7edacc4f10fda3bd11c5f90f3fc5378a8939f3e8b624bd97a258ff3ad0b9d1c7"
+    },
+    {
+      "path": "psycopg/pq/_debug.py",
+      "sha256": "f1e39c20d6883bd4d7051a4979832f23deeaa703cab556fb86575221448deed0"
+    },
+    {
+      "path": "psycopg/pq/_enums.py",
+      "sha256": "fa1a16d893690911b3dfc89a2fd0f44eb740b541c869fb96170252b264722216"
+    },
+    {
+      "path": "psycopg/pq/_pq_ctypes.py",
+      "sha256": "f616f9400cfc8143ebc8a3290510e071ab9a95b2f8ce2fcfdb7a23f9a16bbaa5"
+    },
+    {
+      "path": "psycopg/pq/abc.py",
+      "sha256": "d49ea4a6bcfa44981f6da087a6c2ea161d4d9ddfd10db1232a47d60ac19f823d"
+    },
+    {
+      "path": "psycopg/pq/misc.py",
+      "sha256": "d90ebc90e2745c556cb1419a1417db05c2acc4c3bd69435534f31177bc113615"
+    },
+    {
+      "path": "psycopg/pq/pq_ctypes.py",
+      "sha256": "0f26299f75e1c183045f67408db4d2b2e2b2f4d04e97f90d266a0c4759564910"
+    },
+    {
+      "path": "psycopg/raw_cursor.py",
+      "sha256": "f00ede45a5898b16d0b7877f5cf2507097bd5436a81165817a2352acf6ec08b9"
+    },
+    {
+      "path": "psycopg/rows.py",
+      "sha256": "72e0a87d32ceb93a7a1599a00efd4e643311f9d5f38306e4a0ece0717439e919"
+    },
+    {
+      "path": "psycopg/sql.py",
+      "sha256": "06e6e5567c2c8ac3fe80a473db123695b54c43d2609fb10631065feda5c7bb01"
+    },
+    {
+      "path": "psycopg/transaction.py",
+      "sha256": "f6bb34a1d997fb274a9f2219d1b9ed028f925df9b341dda9fd0766305272b8af"
+    },
+    {
+      "path": "psycopg/types/__init__.py",
+      "sha256": "24f02457811f917c1db2befafd4d43b10575f5cf1a40d481ea482e7786e15de3"
+    },
+    {
+      "path": "psycopg/types/array.py",
+      "sha256": "0d6171b0e3c8af0674653d06a0b99d49b783d438c628b8a74d2b4d7d2e395b91"
+    },
+    {
+      "path": "psycopg/types/bool.py",
+      "sha256": "d062501be0a6e4fe4d807f137cb363f67fdee5c930e365e7b110629d7d24e39c"
+    },
+    {
+      "path": "psycopg/types/composite.py",
+      "sha256": "5143d402b791d94f882afe1330f6ed40a7561433f913b9817ce14b6b3dfebb52"
+    },
+    {
+      "path": "psycopg/types/datetime.py",
+      "sha256": "5d8c3bbedabe59bd2fe57a13aab464536f2bf3ffc9b63fc9f5f8707c1b949a20"
+    },
+    {
+      "path": "psycopg/types/enum.py",
+      "sha256": "a3445f8c13c24413a76d6faff1ebc3c7b84f19fa5db1f8359b9603ffbd99302e"
+    },
+    {
+      "path": "psycopg/types/hstore.py",
+      "sha256": "e88321c8b02fc8e6c89d9daff0e50f5ac72d4eda4d48a4b7abd4e31849a69970"
+    },
+    {
+      "path": "psycopg/types/json.py",
+      "sha256": "8b032d74f79db9bf13578c677a2a0fe0fb773c5707bcb2e4940ae6945d5450a7"
+    },
+    {
+      "path": "psycopg/types/multirange.py",
+      "sha256": "ea0dc70c9f1a6cf861bd64291f07d5c66fb123965b0a69a782b4d9f8ecc6834d"
+    },
+    {
+      "path": "psycopg/types/net.py",
+      "sha256": "48d0af8091f0c40bb32944b19e99dc7fa2bda21a4819e8f0ddc8309a04ce50de"
+    },
+    {
+      "path": "psycopg/types/none.py",
+      "sha256": "832fce26a13562c949d91222c7412adf1d01f083dfa07f8671cdac40c20ed12c"
+    },
+    {
+      "path": "psycopg/types/numeric.py",
+      "sha256": "110e118bf8938f1fb3415a904121807f2f34121a2ae58c640a1a60a439dfcbff"
+    },
+    {
+      "path": "psycopg/types/numpy.py",
+      "sha256": "34f2d46c31723632af3533fa761a14bb5abcd2ddde41d1ebae77ad28083c95b8"
+    },
+    {
+      "path": "psycopg/types/range.py",
+      "sha256": "b4c8fb149e2ba434d7e4389c895003d6b1afa28001c7cb9a11d076b0b315e86c"
+    },
+    {
+      "path": "psycopg/types/shapely.py",
+      "sha256": "47abeddbbee2a4e3392c761aa740e72a681f2525ff6ee859386bd1cbf29083d6"
+    },
+    {
+      "path": "psycopg/types/string.py",
+      "sha256": "911acad422939a9e2574720ca638e897fda4b1801bfa9c0cbdc6fafd9677fc00"
+    },
+    {
+      "path": "psycopg/types/uuid.py",
+      "sha256": "92587fff76aa78ec25edf1a113fa1869f63dccaf4165794099cf3854a6af443b"
+    },
+    {
+      "path": "psycopg/version.py",
+      "sha256": "24b5a8a6b22c0b91d5725ca19fb2f355f56936d65853e5282d0c0018c1019587"
+    },
+    {
+      "path": "psycopg/waiting.py",
+      "sha256": "005a7603c2402c2433a3f7c50a5017c7a8236eb4dbd2b5cb53be70f7d8a1da95"
+    },
+    {
+      "path": "psycopg_binary/__init__.py",
+      "sha256": "e64c70f50767f2e6c88b88a4f769b164eb23af950ed2fc2ae53e52d018425868"
+    },
+    {
+      "path": "psycopg_binary/_psycopg.cpython-312-x86_64-linux-gnu.so",
+      "sha256": "40f2831db284e1fb4d1585a9f56682109c83dcf4e40c4fa4fda1ec02566b6e17"
+    },
+    {
+      "path": "psycopg_binary/_uuid.py",
+      "sha256": "daa982484eb58e49f9a3a1c5aa24baa3b6bf62d423d7d65ea2050efb8615b86d"
+    },
+    {
+      "path": "psycopg_binary/pq.cpython-312-x86_64-linux-gnu.so",
+      "sha256": "3543addcb780da0b71731de46da3c4746fe5edaec1826def583538f4cfaf0130"
+    },
+    {
+      "path": "psycopg_binary/version.py",
+      "sha256": "01c85c2d67e86b2f74da6acfde3d50cb79d0d85e503b3348bfc632d0d77016b7"
+    },
+    {
+      "path": "psycopg_binary.libs/libcom_err-2abe824b.so.2.1",
+      "sha256": "5426dcb54dd01c9eedda05e2179f0e47114e8b48a534ffe9e94916e79471b257"
+    },
+    {
+      "path": "psycopg_binary.libs/libcrypto-d18e4b18.so.3",
+      "sha256": "a665db00cc7af51b41157bd9d92d6d09706b146732dc486e9ce875bbbc659014"
+    },
+    {
+      "path": "psycopg_binary.libs/libgssapi_krb5-497db0c6.so.2.2",
+      "sha256": "2a74b0330ee973281b26f8ebe4acef0ebf9ee99c6b68497cf9151fff6c4c34e1"
+    },
+    {
+      "path": "psycopg_binary.libs/libk5crypto-b1f99d5c.so.3.1",
+      "sha256": "9844e5009e70a6ad2fb22b587306810fe2a7b1b9f6b9922daa1c78ba3466de27"
+    },
+    {
+      "path": "psycopg_binary.libs/libkeyutils-dfe70bd6.so.1.5",
+      "sha256": "c29e41b03cf4b2dffbfb4960946e2b42f82c0ca5d53d231d3f0fc597ba274488"
+    },
+    {
+      "path": "psycopg_binary.libs/libkrb5-fcafa220.so.3.3",
+      "sha256": "b2aab528ff4cab2144e5ce01b246ac09f574a072a53ff63ea81d6bb29b26b8f1"
+    },
+    {
+      "path": "psycopg_binary.libs/libkrb5support-d0bcff84.so.0.1",
+      "sha256": "6a71f57d748fef79b4e736d5348875545d0a224fa8928b5d62a3cf2647fc109f"
+    },
+    {
+      "path": "psycopg_binary.libs/liblber-b2a4ca0f.so.2.0.200",
+      "sha256": "ad745fc72766e5b0bf0cf834f5f943e584bede5d6310dadee26793b7c23d52e9"
+    },
+    {
+      "path": "psycopg_binary.libs/libldap-7ba8ecde.so.2.0.200",
+      "sha256": "19161ced35bd7218ef273fe130291f2c4a1fef0a430baa9380aa54eb6f229e5b"
+    },
+    {
+      "path": "psycopg_binary.libs/libpcre-9513aab5.so.1.2.0",
+      "sha256": "02eda850e04931656d8af81f5171bff74d8bec1553d3d85c3d32d7fc5efe8864"
+    },
+    {
+      "path": "psycopg_binary.libs/libpq-6a0c3ecd.so.5.17",
+      "sha256": "ad092cd9ab53bfb1fe8e132fad9540f218293330450af2b0faef6908304e59b7"
+    },
+    {
+      "path": "psycopg_binary.libs/libsasl2-883649fd.so.3.0.0",
+      "sha256": "182f02d5e474db227cda83abac7413d431d487c6c01afd0cd741e140cedc0f3a"
+    },
+    {
+      "path": "psycopg_binary.libs/libselinux-0922c95c.so.1",
+      "sha256": "d4fa8e7fb3add960a68325a59c9694244aea3213fd739a50815cb067c4965654"
+    },
+    {
+      "path": "psycopg_binary.libs/libssl-c434c5f0.so.3",
+      "sha256": "696c5a58e377808719e0a250a0f737e109c78d0236a34ddafd92cbd600d9c97b"
+    },
+    {
+      "path": "native_runtime.py",
+      "sha256": "9d086efe38a5b42b83684754cdc644ed461fbb9ee0311d5ca53fff5445b5ac3a"
+    }
+  ],
+  "implementation": "binary",
+  "libpq_build": 170005,
+  "libpq_runtime": 170005,
+  "loaded_binaries": [
+    {
+      "bytes": 348856,
+      "mapped_inode_matches": true,
+      "name": "_cffi_backend.cpython-312-x86_64-linux-gnu.so",
+      "sha256": "9bc1d08072255a5ec2db10fc75df1dd9e73097a75cd9150cfe875ebd6712f17c"
+    },
+    {
+      "bytes": 14343432,
+      "mapped_inode_matches": true,
+      "name": "_rust.abi3.so",
+      "sha256": "a9d379995757480a31a7eebbfb2228af93becdedd205e3af0f60ba9648650404"
+    },
+    {
+      "bytes": 791761,
+      "mapped_inode_matches": true,
+      "name": "_psycopg.cpython-312-x86_64-linux-gnu.so",
+      "sha256": "40f2831db284e1fb4d1585a9f56682109c83dcf4e40c4fa4fda1ec02566b6e17"
+    },
+    {
+      "bytes": 349569,
+      "mapped_inode_matches": true,
+      "name": "pq.cpython-312-x86_64-linux-gnu.so",
+      "sha256": "3543addcb780da0b71731de46da3c4746fe5edaec1826def583538f4cfaf0130"
+    },
+    {
+      "bytes": 6477577,
+      "mapped_inode_matches": true,
+      "name": "libcrypto-d18e4b18.so.3",
+      "sha256": "a665db00cc7af51b41157bd9d92d6d09706b146732dc486e9ce875bbbc659014"
+    },
+    {
+      "bytes": 387497,
+      "mapped_inode_matches": true,
+      "name": "libpq-6a0c3ecd.so.5.17",
+      "sha256": "ad092cd9ab53bfb1fe8e132fad9540f218293330450af2b0faef6908304e59b7"
+    },
+    {
+      "bytes": 1134929,
+      "mapped_inode_matches": true,
+      "name": "libssl-c434c5f0.so.3",
+      "sha256": "696c5a58e377808719e0a250a0f737e109c78d0236a34ddafd92cbd600d9c97b"
+    },
+    {
+      "bytes": 221360,
+      "mapped_inode_matches": true,
+      "name": "_ssl.cpython-312-x86_64-linux-gnu.so",
+      "sha256": "80c755c80688b92e0f32af9168a605f1283256077f35d30f6cf518252f2a6660"
+    },
+    {
+      "bytes": 5309400,
+      "mapped_inode_matches": true,
+      "name": "libcrypto.so.3",
+      "sha256": "6866ed711dab8927e1bf82bf1cd30e828bdfc34f3cc1e83b1c9eb01ce6c37d9a"
+    },
+    {
+      "bytes": 696512,
+      "mapped_inode_matches": true,
+      "name": "libssl.so.3",
+      "sha256": "a40e7b67489bbd257e432c700ff8f6a1ad796425b5eccecdc2930127fdd86624"
+    }
+  ],
+  "matches_C_reviewed_libpq_version": false,
+  "platform": "posix",
+  "psycopg": "3.2.10",
+  "python_executable_sha256": "e50d468e8b0adfb05733f5b87b3cff34829c4a8c1aea50c865aa8bdfe4bb150f",
+  "python_openssl": "OpenSSL 3.0.13 30 Jan 2024",
+  "python_version": "3.12.3",
+  "reviewed_windows_libpq_version": 160009,
+  "support_packages": {
+    "cffi": "2.1.1",
+    "cryptography": "50.0.2",
+    "pycparser": "3.11",
+    "typing_extensions": "4.16.0"
+  }
+}

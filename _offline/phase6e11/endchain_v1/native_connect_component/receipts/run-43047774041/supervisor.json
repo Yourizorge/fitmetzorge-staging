@@ -1,0 +1,20 @@
+{
+  "actual_postgres_test": false,
+  "ci_run": "43047774041",
+  "full_admission": false,
+  "hosted_admitted": false,
+  "isolation": {
+    "capabilities_zero": true,
+    "interface_names": [
+      "lo"
+    ],
+    "network_namespace": "net:[4026532270]",
+    "no_new_privileges": true,
+    "unprivileged": true
+  },
+  "phase": "terminal",
+  "source_commit": "644775f890224c56808e4faf4b4570d857955887",
+  "source_manifest_sha256": "6e515f0f5394634db4221f558ca874f4548d52b4af2cdb4e4518d58dcc50d871",
+  "status": "SYNTHETIC_COMPONENT_OBSERVED",
+  "wal_observed": false
+}

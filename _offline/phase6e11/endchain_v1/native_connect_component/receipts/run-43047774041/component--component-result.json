@@ -1,0 +1,131 @@
+{
+  "actual_postgres_test": false,
+  "authentication": "synthetic_AuthenticationOk_not_SCRAM_or_GoTrue",
+  "binding": {
+    "candidate_sha": "6e515f0f5394634db4221f558ca874f4548d52b4af2cdb4e4518d58dcc50d871",
+    "ci_run": "43047774041",
+    "run_id": "e42b593b-c948-425f-ac8c-9e7402852c9e",
+    "source_commit": "644775f890224c56808e4faf4b4570d857955887"
+  },
+  "driver_implicit_sql_bound": null,
+  "error_class": null,
+  "format": "linux-native-connect-component-v1",
+  "full_admission": false,
+  "hosted_admitted": false,
+  "isolation": {
+    "capabilities_zero": true,
+    "interface_names": [
+      "lo"
+    ],
+    "network_namespace": "net:[4026532270]",
+    "no_new_privileges": true,
+    "unprivileged": true
+  },
+  "limits": {
+    "case_alarm_seconds": 15,
+    "cases": 15,
+    "connect_dispatches_per_case": 1,
+    "libpq_internal_attempts": null,
+    "peer_accepts_per_case": 1
+  },
+  "phase": "terminal",
+  "refs": [
+    {
+      "bytes": 1107,
+      "path": "component-start.json",
+      "sha256": "9e2acd8357a73599e8c19d88005a85f134e5dae9b30a2d8ac3e0a8bbdc596de6"
+    },
+    {
+      "bytes": 16852,
+      "path": "client-before.json",
+      "sha256": "ba00d88641033e8a1e6de9f3e2539a1bdbc7df9cb0eda61f1fd99091cc64a5ab"
+    },
+    {
+      "bytes": 1765,
+      "path": "case-00.json",
+      "sha256": "15fb76d0cc77c83bbcd86a8521b98f3f1a7d26b8099399f3e7bcc63f1d95b0fe"
+    },
+    {
+      "bytes": 1795,
+      "path": "case-01.json",
+      "sha256": "a12462cd8ded271a3b3ded8c4042d980c9c920890e846bbb256f6fb80162b4dc"
+    },
+    {
+      "bytes": 1860,
+      "path": "case-02.json",
+      "sha256": "469f4a768045a7de70d4e09bfd2163eae75acb3c267ca91b612ac77f8eccb7c6"
+    },
+    {
+      "bytes": 1861,
+      "path": "case-03.json",
+      "sha256": "a1208b2cf61d970fdf22f297f258b26af12df3d213adc46fe11dcb68baf29be5"
+    },
+    {
+      "bytes": 1803,
+      "path": "case-04.json",
+      "sha256": "93efe8899796692441cf61a075b249a6b3f80abb58b11316004d2bcf5e084cfa"
+    },
+    {
+      "bytes": 1832,
+      "path": "case-05.json",
+      "sha256": "da8bdd44fd4362f17c635d78220b32448eee828797326714799852c4474eec89"
+    },
+    {
+      "bytes": 1428,
+      "path": "case-06.json",
+      "sha256": "6a2a762cd618b5cec85466b30f1f127b9725fd555207f594e56fdca72931f993"
+    },
+    {
+      "bytes": 1423,
+      "path": "case-07.json",
+      "sha256": "9b83f1442fa94aa364930bb2f2f9bfc953f577666df1148a71bb484250e7ecba"
+    },
+    {
+      "bytes": 1438,
+      "path": "case-08.json",
+      "sha256": "4bb007a92eca32ae0e2e5ecb3df4fc6b21d8c259050512e4fd82365c9d8dc4a7"
+    },
+    {
+      "bytes": 1816,
+      "path": "case-09.json",
+      "sha256": "c2a6ae449f1e6b18edb14a497d19651578f6e35e11238336cb0a1cd1f12c2bfa"
+    },
+    {
+      "bytes": 2008,
+      "path": "case-10.json",
+      "sha256": "6d63c90a22d48e1529ea49bb3de1451a8fd727043ef0a62538a661da9d1a46d2"
+    },
+    {
+      "bytes": 1802,
+      "path": "case-11.json",
+      "sha256": "fe5f50dc83ab943e8d5e7eb1d678f1253422174207622772b3387af03d0e38ca"
+    },
+    {
+      "bytes": 1773,
+      "path": "case-12.json",
+      "sha256": "fb2923002cbadb45fd995c86c66f0d76de35704dbf3616cc9db0ee44dffccf2a"
+    },
+    {
+      "bytes": 1833,
+      "path": "case-13.json",
+      "sha256": "6f630d7481420f3b97161938d3922a26803487098ccae98306a99694458cd268"
+    },
+    {
+      "bytes": 1840,
+      "path": "case-14.json",
+      "sha256": "1965a8130f4056d8b72bd185845b4161fcb95ce07eda72a1e1513f607c4fad14"
+    },
+    {
+      "bytes": 16852,
+      "path": "client-after.json",
+      "sha256": "ba00d88641033e8a1e6de9f3e2539a1bdbc7df9cb0eda61f1fd99091cc64a5ab"
+    }
+  ],
+  "source_hashes": {
+    "native_connect_component.py": "ee1164876a60e1bb56aa9e8d6e270c073335cc3afa1cc1a2b30f24ee2e130b54",
+    "native_connect_probe.py": "715a5ca9335a68e346f010d122b13652703926cd03b2d67604af3bfb34176daf",
+    "native_runtime.py": "9d086efe38a5b42b83684754cdc644ed461fbb9ee0311d5ca53fff5445b5ac3a"
+  },
+  "status": "SYNTHETIC_COMPONENT_OBSERVED",
+  "wal_observed": false
+}

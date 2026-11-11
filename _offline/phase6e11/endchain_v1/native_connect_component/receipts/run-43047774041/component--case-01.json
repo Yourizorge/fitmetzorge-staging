@@ -1,0 +1,59 @@
+{
+  "attempts": [
+    {
+      "ambient_PG_scrubbed": true,
+      "autocommit": true,
+      "controlled_target_session_attrs": "any",
+      "driver_returned_connection": true,
+      "effective": {
+        "connect_timeout": "5",
+        "dbname": "postgres",
+        "gssencmode": "disable",
+        "host": "127.0.0.1",
+        "hostaddr": "127.0.0.1",
+        "options": "-c statement_timeout=5000 -c lock_timeout=1000",
+        "port": "45951",
+        "sslmode": "verify-full",
+        "target_session_attrs": "any",
+        "user": "synthetic_probe"
+      },
+      "error_class": null,
+      "prepare_threshold": null,
+      "requested": {
+        "connect_timeout": "5",
+        "dbname": "postgres",
+        "gssencmode": "disable",
+        "host": "127.0.0.1",
+        "hostaddr": "127.0.0.1",
+        "options": "-c statement_timeout=5000 -c lock_timeout=1000",
+        "port": "45951",
+        "sslmode": "verify-full",
+        "user": "synthetic_probe"
+      },
+      "row_factory": "psycopg.rows.dict_row"
+    }
+  ],
+  "binding": {
+    "candidate_sha": "6e515f0f5394634db4221f558ca874f4548d52b4af2cdb4e4518d58dcc50d871",
+    "ci_run": "43047774041",
+    "run_id": "e42b593b-c948-425f-ac8c-9e7402852c9e",
+    "source_commit": "644775f890224c56808e4faf4b4570d857955887"
+  },
+  "case": "ordinary_missing_status",
+  "wire": {
+    "authentication": "synthetic_AuthenticationOk_not_SCRAM_or_GoTrue",
+    "capture_to_client_termination": true,
+    "case": "ordinary_missing_status",
+    "client_frames": [
+      "X"
+    ],
+    "connect_elapsed_seconds": 0.098527,
+    "database_contacted": false,
+    "error_class": null,
+    "peer_terminal": true,
+    "sql": [],
+    "sql_messages": 0,
+    "startup_options": "-c statement_timeout=5000 -c lock_timeout=1000",
+    "tls": "verify-full"
+  }
+}

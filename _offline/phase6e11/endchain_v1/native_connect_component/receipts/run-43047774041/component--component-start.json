@@ -1,0 +1,31 @@
+{
+  "actual_postgres_test": false,
+  "authentication": "synthetic_AuthenticationOk_not_SCRAM_or_GoTrue",
+  "binding": {
+    "candidate_sha": "6e515f0f5394634db4221f558ca874f4548d52b4af2cdb4e4518d58dcc50d871",
+    "ci_run": "43047774041",
+    "run_id": "e42b593b-c948-425f-ac8c-9e7402852c9e",
+    "source_commit": "644775f890224c56808e4faf4b4570d857955887"
+  },
+  "driver_implicit_sql_bound": null,
+  "error_class": null,
+  "format": "linux-native-connect-component-v1",
+  "full_admission": false,
+  "hosted_admitted": false,
+  "limits": {
+    "case_alarm_seconds": 15,
+    "cases": 15,
+    "connect_dispatches_per_case": 1,
+    "libpq_internal_attempts": null,
+    "peer_accepts_per_case": 1
+  },
+  "phase": "preflight",
+  "refs": [],
+  "source_hashes": {
+    "native_connect_component.py": "ee1164876a60e1bb56aa9e8d6e270c073335cc3afa1cc1a2b30f24ee2e130b54",
+    "native_connect_probe.py": "715a5ca9335a68e346f010d122b13652703926cd03b2d67604af3bfb34176daf",
+    "native_runtime.py": "9d086efe38a5b42b83684754cdc644ed461fbb9ee0311d5ca53fff5445b5ac3a"
+  },
+  "status": "INCOMPLETE",
+  "wal_observed": false
+}
