@@ -597,6 +597,8 @@ def verify_exported_terminal(payloads,case,*,originals,source_commit,ci_run,
         and binding['environment']=='disposable_ci' and binding['execution_admitted'] is False
         and binding['hosted_permission'] is False,'root_binding_scope')
     root = check('root_original',lambda:root_original(evidence,binding))
+    check('canonical_originals',lambda:trusted.module('admission_canonical_replay').replay(
+        evidence,trusted,binding))
     if root is not None:
         register = root['register']
         report['checks']['root_original'] = {'status':'ROOT_ORIGINAL_BYTES_RECONSTRUCTED',

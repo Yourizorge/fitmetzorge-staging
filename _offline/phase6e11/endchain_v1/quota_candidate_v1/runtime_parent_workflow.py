@@ -2,6 +2,18 @@
 import hashlib,json,os,pathlib,re,subprocess,sys,threading,time,uuid
 from integral_ci import bind_parameters,capture
 
+def dispatch_reply(process, reply, primary=None):
+    """A rejected dispatch is terminal, including when its error reply is lost."""
+    try:
+        process.stdin.write(json.dumps(reply,default=str)+'\n')
+        process.stdin.flush()
+    except BaseException as secondary:
+        if primary is None:
+            raise
+        primary.add_note('workflow_error_reply_secondary:'+type(secondary).__name__)
+    if primary is not None:
+        raise primary
+
 class WorkflowBridge:
     def workflow(self,gate,request,outer_sql,ids,run_id):
         import auth_failure_transport
@@ -155,11 +167,13 @@ class WorkflowBridge:
             process.stdin.write(json.dumps(payload)+'\n');process.stdin.flush();payload=None
             for line in process.stdout:
                 message=json.loads(line)
+                if not isinstance(message,dict) or message.get('op') not in ('complete','sql','workflow_auth','persist'):
+                    raise RuntimeError('ci_operation')
                 if message['op']=='complete':
                     result=validate_result(message['result'],'workflow')
                     save(gate,'case-workflow-worker-result.json',result)
                     break
-                reply={}
+                reply={};dispatch_failure=None
                 try:
                     if message['op']=='sql':
                         self.action={'kind':'workflow','step':message['scenario_step']}
@@ -193,9 +207,13 @@ class WorkflowBridge:
                             if faults is not None:faults.pair_confirmed(message['event'])
                     else:raise RuntimeError('ci_operation')
                 except Exception as error:
-                    reply={'error':str(error) if re.fullmatch('[a-zA-Z0-9_]+',str(error)) else 'ci_query_failed',
+                    dispatch_failure=error
+                    try:self.abort('workflow_dispatch_failed')
+                    except BaseException as secondary:
+                        error.add_note('workflow_abort_secondary:'+type(secondary).__name__)
+                    reply={'error':'ci_query_failed',
                         'commandCount':len(self.commands)-offset}
-                process.stdin.write(json.dumps(reply,default=str)+'\n');process.stdin.flush()
+                dispatch_reply(process,reply,dispatch_failure)
             worker_evidence.wait()
             worker_evidence.stop_timer(timer)
             if (not worker_evidence.known or worker_evidence.returncode or not result

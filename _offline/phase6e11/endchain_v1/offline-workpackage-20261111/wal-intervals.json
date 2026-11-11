@@ -1,0 +1,500 @@
+{
+  "version": 1,
+  "scope": "read-only reduction of three pinned originals",
+  "new_sql_commands": 0,
+  "new_diagnostic_runs": 0,
+  "intervals": [
+    {
+      "ci_run": "41466921367",
+      "original_path": "_offline/phase6e11/endchain_v1/receipts/ci-41466921367-fixed-wal/ci-wal-diagnostic.json",
+      "original_sha256": "4e9e275a45f3bb4bd825e8ae824d3a5d887ec3df37b8bc32bc5bb99b27c4b53f",
+      "family": "access",
+      "source_sha256": "ad5ff4effb3cdfc8647f1bfa24815040cf3b1b20537b36d4f163ee36ccc8cb23",
+      "delta": {
+        "calls": 1,
+        "temp_read": 0,
+        "temp_written": 0,
+        "wal_bytes": 192,
+        "wal_fpi": 0,
+        "wal_records": 3
+      },
+      "span_bytes": 192,
+      "coverage_complete": false,
+      "classification_complete": false,
+      "outcome": "INCOMPLETE",
+      "limitations": [
+        "wal_not_flushed_through_fixed_end"
+      ],
+      "continuous_background_observation": false,
+      "statistics_scope": "same_database_user_toplevel_query_fingerprint_not_backend",
+      "record_owner_attribution": null,
+      "wal_zero_pass": false,
+      "full_chain_admission": false
+    },
+    {
+      "ci_run": "41466921367",
+      "original_path": "_offline/phase6e11/endchain_v1/receipts/ci-41466921367-fixed-wal/ci-wal-diagnostic.json",
+      "original_sha256": "4e9e275a45f3bb4bd825e8ae824d3a5d887ec3df37b8bc32bc5bb99b27c4b53f",
+      "family": "migrations",
+      "source_sha256": "c1b191e76b2023233a8ef5feef5da7cc838116790669bb55e5db23cce0b36ffd",
+      "delta": {
+        "calls": 1,
+        "temp_read": 0,
+        "temp_written": 0,
+        "wal_bytes": 0,
+        "wal_fpi": 0,
+        "wal_records": 0
+      },
+      "span_bytes": 0,
+      "coverage_complete": false,
+      "classification_complete": false,
+      "outcome": "INCOMPLETE",
+      "limitations": [
+        "wal_not_flushed_through_fixed_end"
+      ],
+      "continuous_background_observation": false,
+      "statistics_scope": "same_database_user_toplevel_query_fingerprint_not_backend",
+      "record_owner_attribution": null,
+      "wal_zero_pass": false,
+      "full_chain_admission": false
+    },
+    {
+      "ci_run": "41466921367",
+      "original_path": "_offline/phase6e11/endchain_v1/receipts/ci-41466921367-fixed-wal/ci-wal-diagnostic.json",
+      "original_sha256": "4e9e275a45f3bb4bd825e8ae824d3a5d887ec3df37b8bc32bc5bb99b27c4b53f",
+      "family": "catalog",
+      "source_sha256": "5e3cce093162da75aa5133f845bcb11396d67126a4ddec3b0345711dedb950ec",
+      "delta": {
+        "calls": 1,
+        "temp_read": 0,
+        "temp_written": 0,
+        "wal_bytes": 972,
+        "wal_fpi": 0,
+        "wal_records": 15
+      },
+      "span_bytes": 1024,
+      "coverage_complete": false,
+      "classification_complete": false,
+      "outcome": "INCOMPLETE",
+      "limitations": [
+        "wal_not_flushed_through_fixed_end"
+      ],
+      "continuous_background_observation": false,
+      "statistics_scope": "same_database_user_toplevel_query_fingerprint_not_backend",
+      "record_owner_attribution": null,
+      "wal_zero_pass": false,
+      "full_chain_admission": false
+    },
+    {
+      "ci_run": "41466921367",
+      "original_path": "_offline/phase6e11/endchain_v1/receipts/ci-41466921367-fixed-wal/ci-wal-diagnostic.json",
+      "original_sha256": "4e9e275a45f3bb4bd825e8ae824d3a5d887ec3df37b8bc32bc5bb99b27c4b53f",
+      "family": "absence",
+      "source_sha256": "8941af7a96d93dfd60aaad325f075dbab6565fef1f8f316914a18b528786f769",
+      "delta": {
+        "calls": 1,
+        "temp_read": 0,
+        "temp_written": 0,
+        "wal_bytes": 0,
+        "wal_fpi": 0,
+        "wal_records": 0
+      },
+      "span_bytes": 0,
+      "coverage_complete": false,
+      "classification_complete": false,
+      "outcome": "INCOMPLETE",
+      "limitations": [
+        "wal_not_flushed_through_fixed_end"
+      ],
+      "continuous_background_observation": false,
+      "statistics_scope": "same_database_user_toplevel_query_fingerprint_not_backend",
+      "record_owner_attribution": null,
+      "wal_zero_pass": false,
+      "full_chain_admission": false
+    },
+    {
+      "ci_run": "41466921367",
+      "original_path": "_offline/phase6e11/endchain_v1/receipts/ci-41466921367-fixed-wal/ci-wal-diagnostic.json",
+      "original_sha256": "4e9e275a45f3bb4bd825e8ae824d3a5d887ec3df37b8bc32bc5bb99b27c4b53f",
+      "family": "snapshot",
+      "source_sha256": "3d8a5a0790efdcdf086ba95dd4bd28daca3ac5de148856b5c2b63f89f1191cdf",
+      "delta": {
+        "calls": 1,
+        "temp_read": 0,
+        "temp_written": 0,
+        "wal_bytes": 0,
+        "wal_fpi": 0,
+        "wal_records": 0
+      },
+      "span_bytes": 0,
+      "coverage_complete": false,
+      "classification_complete": false,
+      "outcome": "INCOMPLETE",
+      "limitations": [
+        "wal_not_flushed_through_fixed_end"
+      ],
+      "continuous_background_observation": false,
+      "statistics_scope": "same_database_user_toplevel_query_fingerprint_not_backend",
+      "record_owner_attribution": null,
+      "wal_zero_pass": false,
+      "full_chain_admission": false
+    },
+    {
+      "ci_run": "41466921367",
+      "original_path": "_offline/phase6e11/endchain_v1/receipts/ci-41466921367-fixed-wal/ci-wal-diagnostic.json",
+      "original_sha256": "4e9e275a45f3bb4bd825e8ae824d3a5d887ec3df37b8bc32bc5bb99b27c4b53f",
+      "family": "rowhash",
+      "source_sha256": "bf4bcb6c3f269c6f41bd5f8ee08cf5e5c5ef5437462f4b5baa7446c665a04ac7",
+      "delta": {
+        "calls": 1,
+        "temp_read": 0,
+        "temp_written": 0,
+        "wal_bytes": 0,
+        "wal_fpi": 0,
+        "wal_records": 0
+      },
+      "span_bytes": 0,
+      "coverage_complete": true,
+      "classification_complete": true,
+      "outcome": "WAL_ZERO",
+      "limitations": [],
+      "continuous_background_observation": false,
+      "statistics_scope": "same_database_user_toplevel_query_fingerprint_not_backend",
+      "record_owner_attribution": false,
+      "wal_zero_pass": false,
+      "full_chain_admission": false
+    },
+    {
+      "ci_run": "41467755577",
+      "original_path": "_offline/phase6e11/endchain_v1/receipts/ci-41467755577-fixed-wal/ci-wal-diagnostic.json",
+      "original_sha256": "1feb6a95ddd3d955468c5ae109cbae05500fd7037c6874c3e3832c11a699eada",
+      "family": "access",
+      "source_sha256": "ad5ff4effb3cdfc8647f1bfa24815040cf3b1b20537b36d4f163ee36ccc8cb23",
+      "delta": {
+        "calls": 1,
+        "temp_read": 0,
+        "temp_written": 0,
+        "wal_bytes": 246,
+        "wal_fpi": 0,
+        "wal_records": 4
+      },
+      "span_bytes": 248,
+      "coverage_complete": false,
+      "classification_complete": false,
+      "outcome": "INCOMPLETE",
+      "limitations": [
+        "wal_not_flushed_through_fixed_end"
+      ],
+      "continuous_background_observation": false,
+      "statistics_scope": "same_database_user_toplevel_query_fingerprint_not_backend",
+      "record_owner_attribution": null,
+      "wal_zero_pass": false,
+      "full_chain_admission": false
+    },
+    {
+      "ci_run": "41467755577",
+      "original_path": "_offline/phase6e11/endchain_v1/receipts/ci-41467755577-fixed-wal/ci-wal-diagnostic.json",
+      "original_sha256": "1feb6a95ddd3d955468c5ae109cbae05500fd7037c6874c3e3832c11a699eada",
+      "family": "migrations",
+      "source_sha256": "c1b191e76b2023233a8ef5feef5da7cc838116790669bb55e5db23cce0b36ffd",
+      "delta": {
+        "calls": 1,
+        "temp_read": 0,
+        "temp_written": 0,
+        "wal_bytes": 0,
+        "wal_fpi": 0,
+        "wal_records": 0
+      },
+      "span_bytes": 0,
+      "coverage_complete": false,
+      "classification_complete": false,
+      "outcome": "INCOMPLETE",
+      "limitations": [
+        "wal_not_flushed_through_fixed_end"
+      ],
+      "continuous_background_observation": false,
+      "statistics_scope": "same_database_user_toplevel_query_fingerprint_not_backend",
+      "record_owner_attribution": null,
+      "wal_zero_pass": false,
+      "full_chain_admission": false
+    },
+    {
+      "ci_run": "41467755577",
+      "original_path": "_offline/phase6e11/endchain_v1/receipts/ci-41467755577-fixed-wal/ci-wal-diagnostic.json",
+      "original_sha256": "1feb6a95ddd3d955468c5ae109cbae05500fd7037c6874c3e3832c11a699eada",
+      "family": "catalog",
+      "source_sha256": "5e3cce093162da75aa5133f845bcb11396d67126a4ddec3b0345711dedb950ec",
+      "delta": {
+        "calls": 1,
+        "temp_read": 0,
+        "temp_written": 0,
+        "wal_bytes": 1110,
+        "wal_fpi": 0,
+        "wal_records": 19
+      },
+      "span_bytes": 1192,
+      "coverage_complete": false,
+      "classification_complete": false,
+      "outcome": "INCOMPLETE",
+      "limitations": [
+        "wal_not_flushed_through_fixed_end"
+      ],
+      "continuous_background_observation": false,
+      "statistics_scope": "same_database_user_toplevel_query_fingerprint_not_backend",
+      "record_owner_attribution": null,
+      "wal_zero_pass": false,
+      "full_chain_admission": false
+    },
+    {
+      "ci_run": "41467755577",
+      "original_path": "_offline/phase6e11/endchain_v1/receipts/ci-41467755577-fixed-wal/ci-wal-diagnostic.json",
+      "original_sha256": "1feb6a95ddd3d955468c5ae109cbae05500fd7037c6874c3e3832c11a699eada",
+      "family": "absence",
+      "source_sha256": "8941af7a96d93dfd60aaad325f075dbab6565fef1f8f316914a18b528786f769",
+      "delta": {
+        "calls": 1,
+        "temp_read": 0,
+        "temp_written": 0,
+        "wal_bytes": 0,
+        "wal_fpi": 0,
+        "wal_records": 0
+      },
+      "span_bytes": 0,
+      "coverage_complete": false,
+      "classification_complete": false,
+      "outcome": "INCOMPLETE",
+      "limitations": [
+        "wal_not_flushed_through_fixed_end"
+      ],
+      "continuous_background_observation": false,
+      "statistics_scope": "same_database_user_toplevel_query_fingerprint_not_backend",
+      "record_owner_attribution": null,
+      "wal_zero_pass": false,
+      "full_chain_admission": false
+    },
+    {
+      "ci_run": "41467755577",
+      "original_path": "_offline/phase6e11/endchain_v1/receipts/ci-41467755577-fixed-wal/ci-wal-diagnostic.json",
+      "original_sha256": "1feb6a95ddd3d955468c5ae109cbae05500fd7037c6874c3e3832c11a699eada",
+      "family": "snapshot",
+      "source_sha256": "3d8a5a0790efdcdf086ba95dd4bd28daca3ac5de148856b5c2b63f89f1191cdf",
+      "delta": {
+        "calls": 1,
+        "temp_read": 0,
+        "temp_written": 0,
+        "wal_bytes": 0,
+        "wal_fpi": 0,
+        "wal_records": 0
+      },
+      "span_bytes": 0,
+      "coverage_complete": false,
+      "classification_complete": false,
+      "outcome": "INCOMPLETE",
+      "limitations": [
+        "wal_not_flushed_through_fixed_end"
+      ],
+      "continuous_background_observation": false,
+      "statistics_scope": "same_database_user_toplevel_query_fingerprint_not_backend",
+      "record_owner_attribution": null,
+      "wal_zero_pass": false,
+      "full_chain_admission": false
+    },
+    {
+      "ci_run": "41467755577",
+      "original_path": "_offline/phase6e11/endchain_v1/receipts/ci-41467755577-fixed-wal/ci-wal-diagnostic.json",
+      "original_sha256": "1feb6a95ddd3d955468c5ae109cbae05500fd7037c6874c3e3832c11a699eada",
+      "family": "rowhash",
+      "source_sha256": "bf4bcb6c3f269c6f41bd5f8ee08cf5e5c5ef5437462f4b5baa7446c665a04ac7",
+      "delta": {
+        "calls": 1,
+        "temp_read": 0,
+        "temp_written": 0,
+        "wal_bytes": 0,
+        "wal_fpi": 0,
+        "wal_records": 0
+      },
+      "span_bytes": 0,
+      "coverage_complete": false,
+      "classification_complete": false,
+      "outcome": "INCOMPLETE",
+      "limitations": [
+        "wal_not_flushed_through_fixed_end"
+      ],
+      "continuous_background_observation": false,
+      "statistics_scope": "same_database_user_toplevel_query_fingerprint_not_backend",
+      "record_owner_attribution": null,
+      "wal_zero_pass": false,
+      "full_chain_admission": false
+    },
+    {
+      "ci_run": "41471760365",
+      "original_path": "_offline/phase6e11/endchain_v1/receipts/ci-41471760365-fixed-wal/ci-wal-diagnostic.json",
+      "original_sha256": "f59dd3abbe6f57b7140d4d4c60acbd75c8b1c3ef864a24e84cd29ba2a27f5b9c",
+      "family": "access",
+      "source_sha256": "ad5ff4effb3cdfc8647f1bfa24815040cf3b1b20537b36d4f163ee36ccc8cb23",
+      "delta": {
+        "calls": 1,
+        "temp_read": 0,
+        "temp_written": 0,
+        "wal_bytes": 192,
+        "wal_fpi": 0,
+        "wal_records": 3
+      },
+      "span_bytes": 192,
+      "coverage_complete": true,
+      "classification_complete": true,
+      "outcome": "INCOMPLETE",
+      "limitations": [
+        "record_owner_attribution_unproven"
+      ],
+      "continuous_background_observation": false,
+      "statistics_scope": "same_database_user_toplevel_query_fingerprint_not_backend",
+      "record_owner_attribution": false,
+      "wal_zero_pass": false,
+      "full_chain_admission": false
+    },
+    {
+      "ci_run": "41471760365",
+      "original_path": "_offline/phase6e11/endchain_v1/receipts/ci-41471760365-fixed-wal/ci-wal-diagnostic.json",
+      "original_sha256": "f59dd3abbe6f57b7140d4d4c60acbd75c8b1c3ef864a24e84cd29ba2a27f5b9c",
+      "family": "migrations",
+      "source_sha256": "c1b191e76b2023233a8ef5feef5da7cc838116790669bb55e5db23cce0b36ffd",
+      "delta": {
+        "calls": 1,
+        "temp_read": 0,
+        "temp_written": 0,
+        "wal_bytes": 0,
+        "wal_fpi": 0,
+        "wal_records": 0
+      },
+      "span_bytes": 0,
+      "coverage_complete": true,
+      "classification_complete": true,
+      "outcome": "WAL_ZERO",
+      "limitations": [],
+      "continuous_background_observation": false,
+      "statistics_scope": "same_database_user_toplevel_query_fingerprint_not_backend",
+      "record_owner_attribution": false,
+      "wal_zero_pass": false,
+      "full_chain_admission": false
+    },
+    {
+      "ci_run": "41471760365",
+      "original_path": "_offline/phase6e11/endchain_v1/receipts/ci-41471760365-fixed-wal/ci-wal-diagnostic.json",
+      "original_sha256": "f59dd3abbe6f57b7140d4d4c60acbd75c8b1c3ef864a24e84cd29ba2a27f5b9c",
+      "family": "catalog",
+      "source_sha256": "5e3cce093162da75aa5133f845bcb11396d67126a4ddec3b0345711dedb950ec",
+      "delta": {
+        "calls": 1,
+        "temp_read": 0,
+        "temp_written": 0,
+        "wal_bytes": 284,
+        "wal_fpi": 0,
+        "wal_records": 5
+      },
+      "span_bytes": 296,
+      "coverage_complete": false,
+      "classification_complete": false,
+      "outcome": "INCOMPLETE",
+      "limitations": [
+        "wal_not_flushed_through_fixed_end"
+      ],
+      "continuous_background_observation": false,
+      "statistics_scope": "same_database_user_toplevel_query_fingerprint_not_backend",
+      "record_owner_attribution": null,
+      "wal_zero_pass": false,
+      "full_chain_admission": false
+    },
+    {
+      "ci_run": "41471760365",
+      "original_path": "_offline/phase6e11/endchain_v1/receipts/ci-41471760365-fixed-wal/ci-wal-diagnostic.json",
+      "original_sha256": "f59dd3abbe6f57b7140d4d4c60acbd75c8b1c3ef864a24e84cd29ba2a27f5b9c",
+      "family": "absence",
+      "source_sha256": "8941af7a96d93dfd60aaad325f075dbab6565fef1f8f316914a18b528786f769",
+      "delta": {
+        "calls": 1,
+        "temp_read": 0,
+        "temp_written": 0,
+        "wal_bytes": 0,
+        "wal_fpi": 0,
+        "wal_records": 0
+      },
+      "span_bytes": 0,
+      "coverage_complete": false,
+      "classification_complete": false,
+      "outcome": "INCOMPLETE",
+      "limitations": [
+        "wal_not_flushed_through_fixed_end"
+      ],
+      "continuous_background_observation": false,
+      "statistics_scope": "same_database_user_toplevel_query_fingerprint_not_backend",
+      "record_owner_attribution": null,
+      "wal_zero_pass": false,
+      "full_chain_admission": false
+    },
+    {
+      "ci_run": "41471760365",
+      "original_path": "_offline/phase6e11/endchain_v1/receipts/ci-41471760365-fixed-wal/ci-wal-diagnostic.json",
+      "original_sha256": "f59dd3abbe6f57b7140d4d4c60acbd75c8b1c3ef864a24e84cd29ba2a27f5b9c",
+      "family": "snapshot",
+      "source_sha256": "3d8a5a0790efdcdf086ba95dd4bd28daca3ac5de148856b5c2b63f89f1191cdf",
+      "delta": {
+        "calls": 1,
+        "temp_read": 0,
+        "temp_written": 0,
+        "wal_bytes": 0,
+        "wal_fpi": 0,
+        "wal_records": 0
+      },
+      "span_bytes": 0,
+      "coverage_complete": false,
+      "classification_complete": false,
+      "outcome": "INCOMPLETE",
+      "limitations": [
+        "wal_not_flushed_through_fixed_end"
+      ],
+      "continuous_background_observation": false,
+      "statistics_scope": "same_database_user_toplevel_query_fingerprint_not_backend",
+      "record_owner_attribution": null,
+      "wal_zero_pass": false,
+      "full_chain_admission": false
+    },
+    {
+      "ci_run": "41471760365",
+      "original_path": "_offline/phase6e11/endchain_v1/receipts/ci-41471760365-fixed-wal/ci-wal-diagnostic.json",
+      "original_sha256": "f59dd3abbe6f57b7140d4d4c60acbd75c8b1c3ef864a24e84cd29ba2a27f5b9c",
+      "family": "rowhash",
+      "source_sha256": "bf4bcb6c3f269c6f41bd5f8ee08cf5e5c5ef5437462f4b5baa7446c665a04ac7",
+      "delta": {
+        "calls": 1,
+        "temp_read": 0,
+        "temp_written": 0,
+        "wal_bytes": 0,
+        "wal_fpi": 0,
+        "wal_records": 0
+      },
+      "span_bytes": 0,
+      "coverage_complete": false,
+      "classification_complete": false,
+      "outcome": "INCOMPLETE",
+      "limitations": [
+        "wal_not_flushed_through_fixed_end"
+      ],
+      "continuous_background_observation": false,
+      "statistics_scope": "same_database_user_toplevel_query_fingerprint_not_backend",
+      "record_owner_attribution": null,
+      "wal_zero_pass": false,
+      "full_chain_admission": false
+    }
+  ],
+  "unmeasured_chain_intervals": [
+    "canonical migration dispatch",
+    "Auth mint and lost commit",
+    "controller and Route A/B",
+    "restore",
+    "fixture/Auth cleanup",
+    "terminal closeout"
+  ],
+  "unmeasured_note": "These three family diagnostics do not prove these full-chain intervals.",
+  "full_chain_admission": false
+}

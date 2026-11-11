@@ -1,0 +1,17 @@
+{
+  "selection": [
+    "pg_auth_component.test_runner",
+    "pg_auth_component.test_worker",
+    "quota_candidate_v1.test_workflow_dispatch_terminal",
+    "quota_candidate_v1.test_runtime_worker_evidence",
+    "quota_candidate_v1.test_runtime_recovery"
+  ],
+  "tests_run": 107,
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "seconds": 8.234,
+  "log_sha256": "92bac56a1f91476b8c2bd88ea06397698fabe4f49bdd711913262f20488a7bc6",
+  "actual_pg": false,
+  "actual_auth": false
+}

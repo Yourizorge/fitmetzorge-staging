@@ -1,4 +1,5 @@
 """Bounded, fresh-process installed terminal reader; never artifact execution."""
+import ast
 import base64
 import hashlib
 import importlib.machinery
@@ -23,6 +24,17 @@ MAX_REQUEST = 64 * 1024 * 1024
 MAX_RESPONSE = 2_000_000
 WAIT_SECONDS = 60
 REAP_SECONDS = 5
+RECOVERY_FRAGMENTS = {
+    PREFIX + 'control_recovery.py': (
+        '28489db090803bb1df868570c87a9f2a3dbc5c842fbbb81faa5ea837b55520eb',
+        (('replace_setup', 'recover'),)),
+    PREFIX + 'quota_candidate_v1/runtime_worker_evidence.py': (
+        '57c4737921d87abc1bfe9cc62bfc67236359c79e0d66fdd109fae2f422bf6e5d',
+        (('WaitEvidence',), ('save',))),
+    PREFIX + 'quota_candidate_v1/runtime_recovery.py': (
+        '44d315a22a782871f3c1cc4a825537814b80f266f1bfb114ccb0b14234d189a9',
+        (('finish',),)),
+}
 DENIED = {"subprocess.Popen", "os.system", "os.spawn", "os.posix_spawn", "os.fork",
           "os.exec", "socket.connect", "socket.connect_ex", "socket.bind",
           "socket.getaddrinfo", "socket.gethostbyname", "socket.gethostbyaddr"}
@@ -266,6 +278,27 @@ def enable_legacy(loader):
     loader.file_spec = types.MethodType(file_spec, loader)
 
 
+def recovery_fragment(loader, path, code):
+    name = path.relative_to(loader.root).as_posix()
+    entry = RECOVERY_FRAGMENTS.get(name)
+    if entry is None:
+        return False
+    expected_hash, selections = entry
+    raw = loader.raw(name)
+    need(sha(raw) == expected_hash, 'recovery_fragment_source')
+    tree = ast.parse(raw)
+    for names in selections:
+        found = [node for node in tree.body
+                 if isinstance(node, (ast.FunctionDef, ast.ClassDef)) and node.name in names]
+        need(len(found) == len(names) and {node.name for node in found} == set(names),
+             'recovery_fragment_definition')
+        expected = compile(ast.Module(body=found, type_ignores=[]), str(path), 'exec',
+                           dont_inherit=True, optimize=sys.flags.optimize)
+        if code == expected:
+            return True
+    return False
+
+
 def install_audit(loader, private):
     def checked_audit(event, values):
         if event in DENIED:
@@ -279,7 +312,8 @@ def install_audit(loader, private):
                     relative = path.relative_to(loader.root).as_posix()
                     raw = loader.raw(relative)
                     need(code == compile(raw, str(path), "exec", dont_inherit=True,
-                                         optimize=sys.flags.optimize), "execution_not_exact_source")
+                                         optimize=sys.flags.optimize)
+                         or recovery_fragment(loader, path, code), "execution_not_exact_source")
         paths = ()
         if event == "open" and values and isinstance(values[0], (str, bytes, os.PathLike)):
             mode, flags = values[1], values[2]
@@ -323,6 +357,7 @@ def child(root, own_sha, request_path, request_sha, response_path):
         raw = source(root, LOADER, sources)
         namespace = {"__name__": "_installed_loader_bootstrap", "__file__": str(root / LOADER)}
         exec(compile(raw, str(root / LOADER), "exec", dont_inherit=True), namespace)
+        stdlib_bootstrap = namespace['bootstrap_reader_stdlib']()
         loader = namespace["TrustedImports"](root, sources)
         enable_legacy(loader)
         private = request_path.parent.resolve(strict=True)
@@ -333,6 +368,7 @@ def child(root, own_sha, request_path, request_sha, response_path):
             report = reader.verify_exported_terminal(payloads, request["case"], originals=originals,
                 source_commit=request["head"], ci_run=request["run"], candidate_sha256=request["candidate"],
                 expected_sources=sources, trusted_root=root)
+            report['reader_stdlib'] = stdlib_bootstrap
             report_ok(report, identity)
         envelope.update(status="INSPECTED_UNVERIFIED", reason=None, report=report, phase="terminal")
     except BaseException as error:
