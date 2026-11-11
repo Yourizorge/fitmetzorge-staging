@@ -10,11 +10,14 @@ import os
 import pathlib
 import re
 import sys
+import uuid
+
+from . import prefix_receipt
 
 PREFIX = '_offline/phase6e11/endchain_v1/case_stack_v1/'
 SOURCES = tuple(PREFIX + name for name in (
     '__init__.py', '__main__.py', 'bootstrap.py', 'test_bootstrap.py', 'README.txt',
-    'ci.py', 'test_ci.py'))
+    'ci.py', 'test_ci.py', 'prefix_receipt.py', 'test_prefix_receipt.py'))
 CONTAINER = 'supabase_db_fmz-db41-ci'
 IMAGE_ID = 'sha256:66089200353d90686fe9b252a47d17d078364bf47c50190852c33dc850a0191f'
 IMAGE = 'supabase/postgres:17.6.1.167'
@@ -296,25 +299,79 @@ def _boundary_module(gate):
 
 
 class _CanonicalView:
-    """Intercept exactly M45; leave the actual Gate dispatcher and serial intact."""
+    """Preserve ordered prefix originals before either M45 failure boundary."""
     def __init__(self, gate, hooks, source):
         self.gate, self.hooks, self.source = gate, hooks, source
         self.attempted = False
+        self.prefix_invocations = []
+        self.prefix_ref = None
 
     def __getattr__(self, name):
         return getattr(self.gate, name)
 
     def notify(self, stage, count, refs):
         value = {key: self.source[key] for key in ('source_commit', 'ci_run', 'candidate_sha256')}
-        value.update(stage=stage, history_count=count, evidence_refs=refs,
+        value.update(stage=stage, history_count=count, evidence_refs=[self.prefix_ref, *refs],
                      full_chain_admission=False, hosted_admission=False)
         self.gate.result['case_stack_boundary'] = stage
         self.gate.save('case-stack-boundary-' + stage + '.json', value)
         getattr(self.hooks, stage)(json.loads(json.dumps(value)))
 
+    def catalog(self):
+        gate = self.gate
+        stage = 'before41' if gate.result.get('phase') == 'migration_41' else 'after45'
+        expected = 40 if stage == 'before41' else 45
+        require(gate.result.get('migrations_applied') == expected, 'case_stack_catalog_order')
+        method = getattr(gate.catalog, '__func__', None)
+        require(method is not None, 'case_stack_catalog_dispatcher')
+        reservation = _reserve(gate, 'catalog', stage, ('catalog',))
+        record = {key: self.source[key] for key in ('source_commit', 'ci_run', 'candidate_sha256', 'run_id')}
+        record.update(migrations_applied=expected, attempted=False, confirmed=False,
+            reservation_ref=reservation, implicit_driver_sql_commands=None)
+        class Reader:
+            def rows(_, sql):
+                require(not record['attempted'], 'case_stack_catalog_multiple_dispatch')
+                wire_sql = "select coalesce(json_agg(q),'[]') from (" + sql + ') q;'
+                record.update(attempted=True, sql_sha256=sha(wire_sql.encode()),
+                    command_serial_before=gate.serial)
+                _durable(gate, 'case-stack-catalog-' + stage + '-intent.json', record)
+                rows = gate.rows(sql)
+                record.update(confirmed=True, command_serial_after=gate.serial)
+                require(gate.serial == record['command_serial_before'] + 1,
+                    'case_stack_catalog_dispatch_count')
+                record['command_ref'] = _receipt_ref(gate, '%03d-psql.json' % gate.serial)
+                return rows
+        try:
+            result = method(Reader())
+            require(record['confirmed'], 'case_stack_catalog_missing_dispatch')
+            return result
+        except Exception as error:
+            record['failure_class'] = type(error).__name__
+            raise
+        finally:
+            primary = sys.exc_info()[1]
+            try:
+                _durable(gate, 'case-stack-catalog-' + stage + '.json', record)
+            except Exception as error:
+                if primary is None:
+                    raise
+                _secondary(gate, 'catalog_receipt', error)
+
     def cli(self, *args, timeout=120):
         gate = self.gate
+        phase = gate.result.get('phase', '')
+        if re.fullmatch(r'migration_([1-9]|[1-3][0-9]|4[0-4])', phase):
+            ordinal = int(phase.split('_')[1])
+            require(ordinal == len(self.prefix_invocations) + 1, 'case_stack_prefix_order')
+            result = gate.instrumented_cli().run_prefix(gate, args)
+            path = sorted(n for n in self.source['migration_sources'] if n.startswith('supabase/migrations/'))[ordinal-1]
+            self.prefix_invocations.append(prefix_receipt.invocation(gate, self.source, ordinal, path))
+            return result
         if gate.result.get('phase') != 'migration_45':
+            return gate.cli(*args, timeout=timeout)
+        require(self.prefix_ref is None, 'case_stack_prefix_reuse')
+        self.prefix_ref = prefix_receipt.publish(gate, self.source, self.prefix_invocations)
+        if self.hooks is None:
             return gate.cli(*args, timeout=timeout)
         require(not self.attempted and args == ('migration', 'up', '--local'),
                 'case_stack_boundary_reuse_or_command')
@@ -334,7 +391,7 @@ class _CanonicalView:
         return result
 
 
-def bootstrap(gate, canonical_migrations, *, hooks=None):
+def bootstrap(gate, canonical_migrations, *, hooks=None, run_id=None):
     """One clean47 bootstrap; quota/app-suite/full-chain authority is excluded."""
     require(gate.container == CONTAINER and getattr(gate, 'cli_profile', None) == 'local_app'
             and getattr(gate, 'cli_namespace', '') == '',
@@ -348,8 +405,17 @@ def bootstrap(gate, canonical_migrations, *, hooks=None):
     dest = gate.work / 'supabase/migrations'
     require(not dest.is_symlink() and
             (not dest.exists() or not list(dest.iterdir())), 'case_stack_migration_directory')
+    run_id = str(uuid.uuid4()) if run_id is None else run_id
+    require(isinstance(run_id, str) and str(uuid.UUID(run_id)) == run_id
+            and uuid.UUID(run_id).version == 4
+            and run_id not in ('6f8c8909-9b79-4011-a9d1-db5e23c6b6c1',
+                               '11a909f4-7113-424a-aa4b-ce9964720a3e'), 'case_stack_run_id')
     app, profile, meter, binding, runtime_type = _dependencies(gate)
     source = _source(gate, canonical_migrations, profile, meter, binding)
+    source['run_id'] = run_id
+    require(not hasattr(gate, '_case_stack_run_id'), 'case_stack_run_id_reuse')
+    gate._case_stack_run_id = run_id
+    gate.bind_modules(prefix_receipt)
     _bind_hooks(gate, hooks)
     gate._case_stack_attempted = True
     _durable(gate, 'case-stack-attempt.json', {**source, 'scope': 'FRESH_DISPOSABLE_CI_BOOTSTRAP',
@@ -370,7 +436,8 @@ def bootstrap(gate, canonical_migrations, *, hooks=None):
         ca = _file(gate.work, 'fmz-ci-ca.crt').read_bytes()
         require(ca.startswith(b'-----BEGIN CERTIFICATE-----'), 'case_stack_ca')
         stage = 'canonical45'
-        view = gate if hooks is None else _CanonicalView(gate, hooks, source)
+        # Prefix accounting is mandatory even when no injected boundary is used.
+        view = _CanonicalView(gate, hooks, source)
         app.base.Gate.rebuild(view, canonical_migrations)
         require(gate.result.get('migrations_applied') == 45 and
                 not getattr(gate, 'cli_protocol', []), 'case_stack_canonical_profile')
@@ -424,6 +491,7 @@ def bootstrap(gate, canonical_migrations, *, hooks=None):
                   binding.verify_all(pathlib.Path(os.environ['GITHUB_WORKSPACE']), gate.sources, files))
         refs = [_receipt_ref(gate, name) for name in (
             'candidate.json', 'platform.json', 'integral-local-tls.json',
+            'case-stack-canonical-prefix.json', 'case-stack-catalog-after45.json',
             'cli-predispatch-canonical-45.json', 'migration-boundary-post.json',
             'cli-protocol-0.json', 'cli-protocol-1.json', 'cli-protocol-2.json', 'cli-protocol-3.json',
             'case-stack-history-canonical.json', 'case-stack-history-minimal.json',
@@ -448,7 +516,7 @@ def bootstrap(gate, canonical_migrations, *, hooks=None):
             'admin_reservation_ref': admin_ref,
             'admin_sql_reserved': admin_reserved, 'admin_sql_confirmed': admin_confirmed,
             'bootstrap_total_sql_commands': None,
-            'canonical_1_44_sql_count': 'NOT_MEASURED_BY_THIS_HELPER',
+            'canonical_1_44_sql_count': 'ORIGINALS_RETAINED_INDEPENDENT_VALIDATION_REQUIRED',
             'cli_profile': 'local_app', 'cli_slots': [r['slot'] for r in gate.cli_protocol]}
         gate.save('case-stack-bootstrap.json', receipt)
         gate.result['migrations_applied'] = 47

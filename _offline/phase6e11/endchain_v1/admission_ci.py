@@ -46,7 +46,7 @@ EXTRA = {'_offline/phase6e11/endchain_v1/' + name for name in LOCAL_SOURCES}
 EXTRA |= {'_offline/phase6e11/endchain_v1/cli_predispatch/'+name for name in (
     'ci.py','entry.mjs','hook.cjs','package.json','pnpm-lock.yaml','pnpm-workspace.yaml',
     'policy.cjs','prepare.py','README.md','smoke.py','test_ci.py','test_canonical.py','test_hook.cjs','test_policy.cjs')}
-EXTRA |= {'_offline/phase6e11/endchain_v1/cli_predispatch/'+name for name in ('pending.py','test_pending.py')}
+EXTRA |= {'_offline/phase6e11/endchain_v1/cli_predispatch/'+name for name in ('pending.py','test_pending.py','prefix.py','test_prefix.py')}
 EXTRA.add('.github/workflows/phase6e-admission-local-ci.yml')
 EXTRA.add('_offline/phase6e_server_v1/ops.py')
 EXTRA.add('_offline/phase6e_server_v1/offline_shell_browser.test.cjs')

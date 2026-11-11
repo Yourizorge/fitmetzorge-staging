@@ -36,6 +36,14 @@ def run_canonical(gate, args, expected_file):
     return pending.run_canonical(gate, args, expected_file)
 
 
+def run_prefix(gate, args):
+    spec = importlib.util.spec_from_file_location('fmz_cli_predispatch_prefix', HERE / 'prefix.py')
+    prefix = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(prefix)
+    gate.bind_modules(prefix, prefix.pending, prefix.pending.common)
+    return prefix.run(gate, args)
+
+
 def sha(raw):
     return hashlib.sha256(raw).hexdigest()
 
@@ -123,9 +131,9 @@ def bounded(args, *, cwd, env, limit=8192, seconds=45):
     return code, bytes(output)
 
 
-def replay(file, *, allow_incomplete=False):
+def replay(file, *, allow_incomplete=False, prefix_policy=None):
     raw = pathlib.Path(file).read_bytes()
-    if len(raw) > 262144 or not raw.endswith(b'\n'):
+    if len(raw) > (2000000 if prefix_policy is not None else 262144) or not raw.endswith(b'\n'):
         raise ValueError('cli_predispatch_journal_bound')
     previous = '0' * 64
     dispatches = []
@@ -181,11 +189,39 @@ def replay(file, *, allow_incomplete=False):
             terminal['connection_attempts'] != connection_attempts:
         raise ValueError('cli_predispatch_totals')
     header = events[0]
+    prefix = prefix_policy is not None
+    if prefix:
+        p = prefix_policy
+        if (p.get('slot') != 'ci_prefix' or p.get('local_bootstrap_only') is not True
+                or type(p.get('prefix_index')) is not int or not 1 <= p['prefix_index'] <= 44
+                or len(p.get('migrations', [])) != 1
+                or p.get('environment') != 'disposable_ci' or p.get('version') != 1
+                or p.get('upstream_commit') != UPSTREAM
+                or not isinstance(p.get('run_id'), str)
+                or not re.fullmatch(r'[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}', p['run_id'])
+                or not isinstance(p.get('ci_run'), str) or not re.fullmatch('[1-9][0-9]{0,18}', p['ci_run'])
+                or p.get('host') != '127.0.0.1' or p.get('database') != 'postgres'
+                or p.get('user') != 'postgres' or type(p.get('port')) is not int
+                or not 1024 <= p['port'] <= 65535 or p.get('dry_run') is not False
+                or type(p.get('closure_reserve')) is not int or p['closure_reserve'] != 1
+                or type(p.get('sql_bytes')) is not int or not 8192 <= p['sql_bytes'] <= 131072
+                or not isinstance(p.get('expected_history_versions'), list)
+                or len(p['expected_history_versions']) != p['prefix_index'] - 1):
+            raise ValueError('cli_predispatch_prefix_policy')
+        count = len(p['migrations'][0]['ast_hashes'])
+        if (not 1 <= count <= 2048 or p['cap'] != count + 16
+                or p['frame_cap'] != p['cap'] * 8 + 16
+                or header.get('policy_sha256') != sha(json.dumps(p, separators=(',', ':')).encode())
+                or any(header.get(k) != p.get(k) for k in
+                    ('slot','cap','frame_cap','sql_bytes','prefix_index','local_bootstrap_only',
+                     'source_commit','candidate_sha256','invocation_id','upstream_commit','run_id','ci_run'))
+                or header.get('migration_statements') != count):
+            raise ValueError('cli_predispatch_prefix_binding')
     if header['environment'] != 'disposable_ci' or header['hosted_admission'] is not False or \
             terminal['hosted_admission'] is not False or len(dispatches) > header['cap'] or \
-            header['cap'] != {'quota': 64, 'pre_auth': 28, 'final': 28}.get(header['slot']) or \
-            header['dry_run'] is not (header['slot'] != 'quota') or \
-            sum(frames.values()) > 512 or (terminal['complete'] and len(outcomes) != len(dispatches)):
+            (not prefix and header['cap'] != {'quota': 64, 'pre_auth': 28, 'final': 28}.get(header['slot'])) or \
+            header['dry_run'] is not (not prefix and header['slot'] != 'quota') or \
+            sum(frames.values()) > (prefix_policy['frame_cap'] if prefix else 512) or (terminal['complete'] and len(outcomes) != len(dispatches)):
         raise ValueError('cli_predispatch_scope_or_capacity')
     return {'header': header, 'terminal': terminal, 'events': events,
             'terminal_recorded': terminal_recorded,

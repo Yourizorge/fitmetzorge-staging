@@ -67,7 +67,7 @@ class PendingTests(unittest.TestCase):
         return pending.plan_pending(self.gate, ('migration','up','--local'), self.gate.sources/pending.APP/pending.FILES[n])
 
     def policy(self, plan):
-        return dict(expected_history_versions=plan['expected_history_versions'], migrations=[dict(
+        return dict(slot='quota', cap=64, expected_history_versions=plan['expected_history_versions'], migrations=[dict(
             sha256=plan['target_sha256'], version=plan['target'].name.split('_')[0], ast_hashes=['1'*64,'2'*64])])
 
     def test_schema_uses_45_history_and_one_existing_pending_file(self):

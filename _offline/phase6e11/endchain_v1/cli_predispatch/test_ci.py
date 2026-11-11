@@ -15,6 +15,52 @@ ci = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(ci)
 
 
+class PrefixReplayTests(unittest.TestCase):
+    def setUp(self):
+        ReceiptTests.setUp(self)
+        self.policy = dict(version=1, environment='disposable_ci', upstream_commit=ci.UPSTREAM,
+            source_commit='a'*40, candidate_sha256='b'*64,
+            invocation_id='98fb7851-7cae-4120-89cb-7a6f540e650a',
+            run_id='129c55a7-748c-4f07-96b2-e198e08b8e04', ci_run='123',
+            slot='ci_prefix', local_bootstrap_only=True, prefix_index=1,
+            cap=17, frame_cap=152, sql_bytes=8192, closure_reserve=1,
+            host='127.0.0.1', port=54322, database='postgres', user='postgres', dry_run=False,
+            expected_history_versions=[], migrations=[{'ast_hashes':['c'*64]}])
+        self.events[0].update({k: self.policy[k] for k in ('slot','cap','frame_cap','sql_bytes',
+            'prefix_index','local_bootstrap_only','source_commit','candidate_sha256',
+            'invocation_id','upstream_commit','dry_run','run_id','ci_run')})
+        self.events[0].update(migration_statements=1,
+            policy_sha256=ci.sha(json.dumps(self.policy,separators=(',', ':')).encode()))
+
+    def write(self):
+        return ReceiptTests.write(self)
+
+    def test_prefix_requires_explicit_bound_policy_not_only_larger_cap(self):
+        file=self.write()
+        self.assertEqual(ci.replay(file,prefix_policy=self.policy)['terminal']['sql_dispatches'],1)
+        with self.assertRaisesRegex(ValueError,'scope_or_capacity'): ci.replay(file)
+
+    def test_changed_policy_or_source_binding_rejected(self):
+        self.events[0]['source_commit']='d'*40
+        with self.assertRaisesRegex(ValueError,'prefix_binding'):
+            ci.replay(self.write(),prefix_policy=self.policy)
+
+    def test_nonlocal_or_increased_limits_rejected(self):
+        for change in ({'host':'example.com'},{'user':'other'},{'port':543},
+                       {'environment':'hosted'},{'sql_bytes':131073},{'prefix_index':45},
+                       {'cap':18},{'frame_cap':153}):
+            with self.subTest(change=change), self.assertRaisesRegex(ValueError,'prefix_'):
+                ci.replay(self.write(),prefix_policy={**self.policy,**change})
+
+    def test_unknown_dispatch_stays_consumed_in_prefix(self):
+        self.events.pop(5)
+        self.events[-1].update(confirmed_sql=0,unknown_consumed=1,complete=False)
+        result=ci.replay(self.write(),prefix_policy=self.policy)
+        self.assertEqual(result['terminal']['sql_dispatches'],1)
+        self.assertEqual(result['terminal']['unknown_consumed'],1)
+        self.assertFalse(result['terminal']['complete'])
+
+
 class ReceiptTests(unittest.TestCase):
     def test_stable_top_and_all_have_same_toplevel_protocol_scope(self):
         for mode in ('top', 'all'):

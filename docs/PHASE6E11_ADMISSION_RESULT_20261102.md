@@ -805,3 +805,102 @@ Deze controleren Windows-devicepaden, exacte terminal-bronmappen en alle elf
 afzonderlijke Auth-probes. Beide onafhankelijke verifiervelden blijven `None`
 tot de oorspronkelijke journals semantisch zijn gecontroleerd; aangeleverde
 PASS-labels of gelijkvormige JSON-objecten zijn daarvoor niet voldoende.
+
+### 11 november: originele canonical-prefix en foutbehoud
+
+Werk hervat met maximaal twee bestaande agents: A voor onafhankelijke
+bron-/budgetreplay en D voor originele worker-/afsluitbewijzen. Geen nieuwe
+agent, hosted poging, Supabase-verbinding, JIT, Auth, migration, fixturecleanup,
+ownerwindow of package21-handeling. Start-HEAD lokaal
+`483785b4bd27525c7d0f808f24df7e399f27ce96`; remote read-only bevestigd op
+`582e051e7e5b098f66162e174725ccd66bce220d`. Oudere werkboomwijzigingen blijven
+behouden. Deze paragraaf is geen volledige toelating of afrondingsclaim.
+
+De lokale schone-opbouwadapter bewaart nu voor ieder van de oorspronkelijke
+44 migrations de originele policy, dispatchledger, preregistratie, numerieke
+voor-/nameting en isolatiereceipt. Een unieke case-UUID en de echte CI-run-ID
+lopen door tot de onderliggende policy en ledgerheader. De compiler weigert
+hergebruik, verkeerde bronbytes, andere migrationvolgorde en niet-lokale
+doelen. De nieuwe prefix is uitsluitend voor de disposable lokale CI-opbouw;
+de bestaande hosted-equivalente CLI-grenzen blijven ongewijzigd.
+
+Een exclusief geschreven, fsync/readback-gecontroleerd prefixmanifest verbindt
+alle 44 originele meetsets met kandidaat, bronnen en case. Het wordt opgeslagen
+voordat de M45-foutcallback kan starten. De bestaande catalogusmeting na M40
+heeft een eigen vooraf opgeslagen reservering, intent en oorspronkelijke
+commandoreceipt. De lege lokale migrationregistratietabel wordt eenmaal
+voorbereid met zeven normale commando's en een vooraf gereserveerde rollback.
+Er wordt daarbij geen migrationversie geregistreerd. Een verloren commitantwoord
+blijft onbekend; ontbrekende bewijsbestanden worden niet gereconstrueerd.
+
+Tijdens gerichte review is een dubbel foutpad gereproduceerd: een fout in de
+nameting kon de eerdere uitvoeringsfout vervangen. Drie nieuwe tests faalden
+eerst (een assertion en twee ontbrekende fasevelden). De adapter bewaart nu
+de oorspronkelijke fout, de afzonderlijke meetfase/foutklasse en de reeds
+beschikbare voormeting. Een ontbrekende nameting blijft NO-GO. Een fout bij
+runtime-afsluiting verhindert niet langer het bewaren van de oorspronkelijke
+ledger; een mislukte runtimeconstructie bij provisioning krijgt eveneens een
+duurzame mislukte receipt. Geen exceptioninhoud of credential wordt toegevoegd.
+
+Actuele lokale bewijzen, niet kunstmatig opgeteld:
+
+- CLI Python-regressies: 100 PASS, 30,226 s. De gerichte 46 PASS in 27,173 s
+  zijn hierin opgenomen en worden niet als extra tests geteld.
+- Node hook/policy: 40 PASS, 7,454 s; waaronder parsing van alle 44 werkelijke
+  migrationbronnen met de vastgelegde PG17-parser.
+- Case-stack/original-reference-suite: 71 PASS, 112,761 s.
+- Behoudscontrole: 1376 beschermde bestanden, 1372 byte-identiek en dezelfde
+  vier eerder toegestane verschillen; nul onverwachte verschillen. De
+  oorspronkelijke baseline blijft ongewijzigd, SHA-256
+  `213673e2a04f04b715f247efe3f27263c0dc998859d5d7e54685a356412f8fef`.
+
+Dit zijn lokale parser-, protocol-, filesystem- en fake-transporttests. Zij
+bewijzen geen nieuwe echte PG/GoTrue-uitvoering, volledige foutpadmatrix,
+hosted databehoud of publicatie van deze delta. Het prefixmanifest vermeldt
+daarom expliciet `independent_numeric_validation=false`, onbekende impliciete
+driverkosten en een onbekend volledig SQL-totaal.
+
+Onafhankelijke bronreview vond daarna twee P2's: niet-transitief gecontroleerde
+catalogusreferenties en een directe bootstraproute die twee gereserveerde
+UUID's niet expliciet weigerde. De producer controleert nu ook de originele
+command-, reserve- en intentbestanden en de volledige catalogusidentiteit.
+Zowel bootstrap als prefix-plan weigeren de oktober- en preparation-UUID.
+De run-ID-controle staat voor het schrijven van de bronreceipt, zodat een
+afgewezen ID geen volgende testaanroep met een bestaand bewijsbestand blokkeert.
+
+De uitgebreide case-suite telde 77 tests: 76 geslaagd, een fout in de tweede
+gereserveerde-UUID-controle door die te late bronreceipt. Na vervroeging van de
+controle slagen alle 18 gerichte identiteit-/catalogusregressies (59,966 s).
+De afzonderlijke prefix-ID-test slaagt ook (0,578 s). Eerdere rode uitkomsten
+blijven historische fouten; deze overlappende tests worden niet opgeteld of
+gepresenteerd als een nieuwe volledige CI-run.
+
+Onafhankelijke herreview sluit beide P2's voor de huidige bron: geen resterende
+P1/P2 binnen deze twee correcties. A's reader/source-controles: 45 PASS,
+67,091 s, uitsluitend synthetisch/brongebonden. Gebonden SHA-256:
+
+- bootstrap.py: `6e3f2b1ecaa1945a0bd20256c4fec91f9c25310153ae499eebcc6e4c986b3c33`.
+- prefix_receipt.py: `aaa3e8991d4b3f3914a7f461dd93c28ceeb513de5317b9b570df8bc80f72c8d3`.
+- prefix.py: `a4d20abb8a583dab4f9c683d3d515efc86e32c8e23a5298194e72048f4706546`.
+
+Deze review betreft originele referentievolledigheid en vroege run-ID-weigering,
+niet de volledige numerieke replay, driverkosten of volledige CI-toelating.
+
+De 44 lokale bestanden bevatten 1552 body-statements; hun afzonderlijke
+CLI-reserveringen tellen op tot 2256. Dit is niet het volledige lokale of
+hosted register: observers, isolatie, provisioning, startup, drivers en latere
+fasen zijn daarin niet inbegrepen. De onafhankelijke rootkandidaat heeft
+evenmin een bewezen volledige bovengrens: een eerdere onvolledige
+bronberekening gaf normale broncapaciteit 2340 en meterondergrens 2352.
+Dit is geen opnieuw berekend maximum voor D's latere bronwijzigingen.
+Dispatch-/herstelverbindingen en platform- en managed-Auth-kosten ontbreken
+nog. Historisch 2338/731 en de geautoriseerde hostedgrens
+2349 blijven ongewijzigd. Er wordt geen nieuwe willekeurige grens gevraagd.
+
+Nog actief: onafhankelijke inhoudelijke replay van deze oorspronkelijke
+prefixbestanden; originele gewachte worker-exit/result/exportregistraties;
+volledige native-/recoverydekking, platform/resetepochs, Linux-driverbinding,
+Auth- en afsluitmetingen. Daarna pas kan een nieuwe volledige brongebonden CI
+worden toegelaten. De bestaande WAL-beperking blijft afzonderlijk staan;
+geen vierde diagnose volgens de uitgeputte methode. Hosted en ownertelefoontest
+blijven NO-GO. Geen owneracceptatie, freeze of overdracht aan JARVIS.

@@ -67,6 +67,12 @@ class FakeGate:
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes((HERE / pathlib.PurePosixPath(name).name).read_bytes())
             files[name] = b.sha(path.read_bytes())
+        for relative in b.prefix_receipt.PRODUCERS:
+            name = b.prefix_receipt.PREFIX + relative
+            path = self.sources / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes((ROOT / name).read_bytes())
+            files[name] = b.sha(path.read_bytes())
         for name in MIGRATIONS + ['_offline/phase6e_server_v1/supabase/migrations/' + name
                                   for name in (profile.M45, profile.M46)]:
             path = self.sources / name
@@ -80,9 +86,16 @@ class FakeGate:
             json.dump(value, stream, sort_keys=True)
 
     def rows(self, text):
+        if text == 'select synthetic_catalog':
+            self.serial += 1
+            self.save('%03d-psql.json' % self.serial, {'exitcode': 0})
+            return []
         if text != b.HISTORY:
             raise AssertionError('unregistered query')
         return [{'version': v} for v in sorted(self.history)]
+
+    def catalog(self):
+        return self.rows('select synthetic_catalog')
 
     def command(self, label, args, **kwargs):
         self.serial += 1
@@ -133,6 +146,15 @@ class FakeGate:
     def bind_modules(self, *modules):
         if not all(isinstance(module, types.ModuleType) for module in modules):
             raise AssertionError('bound modules required')
+
+    def instrumented_cli(self):
+        def prefix(gate, args):
+            self.calls.append(('prefix_adapter', self.result['phase']))
+            result = self.cli(*args, timeout=120)
+            from case_stack_v1.test_prefix_receipt import emit
+            emit(self, int(self.result['phase'].split('_')[1]))
+            return result
+        return types.SimpleNamespace(run_prefix=prefix)
 
 
 class BootstrapTests(unittest.TestCase):
@@ -189,11 +211,15 @@ class BootstrapTests(unittest.TestCase):
             @staticmethod
             def rebuild(gate, migrations):
                 for index, name in enumerate(migrations, 1):
+                    gate.result['phase'] = 'migration_' + str(index)
+                    if index == 41:
+                        gate.catalog()
                     (gate.work / 'supabase/migrations' / pathlib.PurePosixPath(name).name).write_bytes(
                         (gate.sources / name).read_bytes())
                     gate.result['phase'] = 'migration_' + str(index)
                     gate.cli('migration', 'up', '--local', timeout=120)
                     gate.result['migrations_applied'] = index
+                gate.catalog()
 
         self.bindings = []
         def verify(*args):
@@ -452,8 +478,14 @@ class BootstrapTests(unittest.TestCase):
     def test_history_and_admin_reservations_exist_before_transport(self):
         rows, command = self.g.rows, self.g.command
         def observed_rows(text):
-            stage = {45: 'canonical', 46: 'minimal', 47: 'complete'}[len(self.g.history)]
-            value = json.loads((self.g.out / ('case-stack-reserve-history-' + stage + '.json')).read_bytes())
+            if text == 'select synthetic_catalog':
+                stage = 'before41' if len(self.g.history) == 40 else 'after45'
+                name = 'case-stack-reserve-catalog-' + stage + '.json'
+                self.assertTrue((self.g.out / ('case-stack-catalog-' + stage + '-intent.json')).is_file())
+            else:
+                stage = {45: 'canonical', 46: 'minimal', 47: 'complete'}[len(self.g.history)]
+                name = 'case-stack-reserve-history-' + stage + '.json'
+            value = json.loads((self.g.out / name).read_bytes())
             self.assertEqual(value['reserved'], 1)
             return rows(text)
         def observed_command(label, *args, **kwargs):
@@ -613,7 +645,8 @@ class BootstrapTests(unittest.TestCase):
             return report
         patch.object(b, '_boundary_module', return_value=types.SimpleNamespace(
             before=before, after=after, M45=MIGRATIONS[-1])).start()
-        g.instrumented_cli = lambda: types.SimpleNamespace(run_canonical=dispatch)
+        prefix = g.instrumented_cli().run_prefix
+        g.instrumented_cli = lambda: types.SimpleNamespace(run_canonical=dispatch, run_prefix=prefix)
         return Hooks(), events
 
     def test_optional_boundaries_surround_one_real_dispatch_without_gate_patch(self):
@@ -625,6 +658,7 @@ class BootstrapTests(unittest.TestCase):
         self.assertIs(self.g.cli.__func__, original_cli)
         self.assertEqual(len(self.g.history), 47)
         self.assertEqual(result['status'], 'CLEAN47_BOOTSTRAP_PASS')
+        self.assertEqual(len([row for row in self.g.calls if row[0] == 'prefix_adapter']), 44)
         for stage, count, snapshot in (events[1], events[-1]):
             self.assertEqual(snapshot['history_count'], count)
             self.assertEqual(snapshot['stage'], stage)
@@ -642,6 +676,47 @@ class BootstrapTests(unittest.TestCase):
         self.assertFalse((self.g.out / 'cli-predispatch-canonical-45.json').exists())
         self.assertTrue((self.g.out / 'case-stack-boundary-before45.json').exists())
         self.assertTrue((self.g.out / 'case-stack-failure.json').exists())
+        prefix = json.loads((self.g.out / 'case-stack-canonical-prefix.json').read_bytes())
+        self.assertEqual(len(prefix['invocations']), 44)
+        self.assertIsNone(prefix['total_sql_commands'])
+        self.assertFalse(prefix['independent_numeric_validation'])
+
+    def test_catalog_failure_preserves_intent_and_prevents_m41(self):
+        rows = self.g.rows
+        original = TimeoutError('PRIVATE_CATALOG_TIMEOUT')
+        def fail(sql):
+            if sql == 'select synthetic_catalog': raise original
+            return rows(sql)
+        self.g.rows = fail
+        with self.assertRaises(TimeoutError) as caught: self.run_stack()
+        self.assertIs(caught.exception, original)
+        receipt = json.loads((self.g.out / 'case-stack-catalog-before41.json').read_bytes())
+        self.assertTrue(receipt['attempted'])
+        self.assertFalse(receipt['confirmed'])
+        self.assertNotIn('PRIVATE', json.dumps(receipt))
+        self.assertEqual(len(self.g.history), 40)
+        self.assertFalse((self.g.out / 'case-stack-canonical-prefix.json').exists())
+
+    def test_bound_case_uuid_reaches_original_summary(self):
+        run_id = '129c55a7-748c-4f07-96b2-e198e08b8e04'
+        result = b.bootstrap(self.g, MIGRATIONS, run_id=run_id)
+        prefix = json.loads((self.g.out / 'case-stack-canonical-prefix.json').read_bytes())
+        self.assertEqual(prefix['run_id'], run_id)
+        self.assertEqual(result['run_id'], run_id)
+
+    def test_bad_run_uuid_stops_before_database_or_cli(self):
+        with self.assertRaises(ValueError): b.bootstrap(self.g, MIGRATIONS, run_id='not-a-uuid')
+        self.assertFalse(self.g.calls)
+        self.assertFalse(self.g.native)
+
+    def test_reserved_run_uuids_stop_before_binding_or_dispatch(self):
+        for run_id in ('6f8c8909-9b79-4011-a9d1-db5e23c6b6c1','11a909f4-7113-424a-aa4b-ce9964720a3e'):
+            with self.subTest(run_id=run_id), self.assertRaisesRegex(b.StackStop,'case_stack_run_id'):
+                b.bootstrap(self.g,MIGRATIONS,run_id=run_id)
+            self.assertFalse(hasattr(self.g,'_case_stack_run_id'))
+            self.assertFalse((self.g.out/'case-stack-attempt.json').exists())
+        self.assertFalse(self.g.calls)
+        self.assertFalse(self.g.native)
 
     def test_after45_fault_retains45_confirmation_and_does_not_apply_app46(self):
         hooks, events = self.boundary_hooks('after45')

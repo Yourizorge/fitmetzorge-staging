@@ -18,8 +18,9 @@ const cleanAst = value => Array.isArray(value) ? value.map(cleanAst) :
     .filter(k => !['location', 'stmt_location', 'stmt_len'].includes(k))
     .map(k => [k, cleanAst(value[k])])) : value;
 
-function statements(sql) {
-  if (typeof sql !== 'string' || Buffer.byteLength(sql) > 8192) fail('sql_bound');
+function statements(sql, limit = 8192) {
+  if (!Number.isInteger(limit) || limit < 8192 || limit > 131072 ||
+      typeof sql !== 'string' || Buffer.byteLength(sql) > limit) fail('sql_bound');
   let tree;
   try { tree = parser.parseSync(sql); } catch { fail('parse'); }
   if (Math.floor(tree.version / 10000) !== 17 || !tree.stmts?.length) fail('pg17');
@@ -33,17 +34,30 @@ const METADATA = [
   'SELECT version FROM supabase_migrations.schema_migrations ORDER BY version',
   "SELECT count(*) = 3 AS provisioned FROM pg_catalog.pg_attribute a JOIN pg_catalog.pg_class c ON c.oid = a.attrelid WHERE a.attrelid = pg_catalog.to_regclass('supabase_migrations.schema_migrations') AND c.relkind IN ('r', 'p') AND NOT a.attisdropped AND a.attname IN ('version', 'name', 'statements')",
 ];
+function prefixPolicy(p) {
+  return p.slot === 'ci_prefix' && p.local_bootstrap_only === true &&
+    typeof p.run_id === 'string' && /^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/.test(p.run_id) &&
+    typeof p.ci_run === 'string' && /^[1-9][0-9]{0,18}$/.test(p.ci_run) &&
+    Number.isInteger(p.prefix_index) && p.prefix_index >= 1 && p.prefix_index <= 44 &&
+    Array.isArray(p.migrations) && p.migrations.length === 1 &&
+    Array.isArray(p.migrations[0].ast_hashes) && p.migrations[0].ast_hashes.length <= 2048 &&
+    p.cap === p.migrations[0].ast_hashes.length + 16 &&
+    p.frame_cap === p.cap * 8 + 16 && Number.isInteger(p.sql_bytes) &&
+    p.sql_bytes >= 8192 && p.sql_bytes <= 131072 &&
+    Array.isArray(p.expected_history_versions) && p.expected_history_versions.length === p.prefix_index - 1;
+}
 
 function validatePolicy(p) {
+  const prefix = p && prefixPolicy(p);
   if (!p || p.version !== 1 || p.environment !== 'disposable_ci' || p.upstream_commit !== UPSTREAM ||
-      !Object.hasOwn(CAPS, p.slot) || p.cap !== CAPS[p.slot] || p.closure_reserve !== (p.dry_run ? 0 : 1) ||
+      (!prefix && (!Object.hasOwn(CAPS, p.slot) || p.cap !== CAPS[p.slot])) || p.closure_reserve !== (p.dry_run ? 0 : 1) ||
       !/^[a-f0-9]{40}$/.test(p.source_commit) || !/^[a-f0-9]{64}$/.test(p.candidate_sha256) ||
-      !/^[a-f0-9-]{36}$/.test(p.invocation_id) || p.dry_run !== (p.slot !== 'quota') ||
+      !/^[a-f0-9-]{36}$/.test(p.invocation_id) || p.dry_run !== (!prefix && p.slot !== 'quota') ||
       p.host !== '127.0.0.1' || !Number.isInteger(p.port) || p.port < 1024 || p.port > 65535 ||
       p.database !== 'postgres' || p.user !== 'postgres' || !/^[a-f0-9]{64}$/.test(p.ca_sha256) ||
       !Array.isArray(p.migrations) || p.migrations.length > 1 || (p.dry_run && p.migrations.length)) fail('policy');
   for (const m of p.migrations) {
-    if (!/^[0-9]{14}$/.test(m.version) || !/^[a-z0-9_]+$/.test(m.name) ||
+    if (!(prefix ? historyVersion(m.version) : /^[0-9]{14}$/.test(m.version)) || !/^[a-z0-9_]+$/.test(m.name) ||
         !/^[a-f0-9]{64}$/.test(m.sha256) || !Array.isArray(m.ast_hashes) || !m.ast_hashes.length ||
         m.ast_hashes.some(h => !/^[a-f0-9]{64}$/.test(h))) fail('migration_policy');
   }
@@ -66,8 +80,12 @@ class Ledger {
       candidate_sha256: policy.candidate_sha256, invocation_id: policy.invocation_id,
       environment: policy.environment, slot: policy.slot, cap: policy.cap,
       closure_reserve: policy.closure_reserve, observer_commands_reserved: 8, dry_run: policy.dry_run,
+      ...(policy.slot === 'ci_prefix' ? {local_bootstrap_only: true,
+        run_id: policy.run_id, ci_run: policy.ci_run,
+        prefix_index: policy.prefix_index, frame_cap: policy.frame_cap, sql_bytes: policy.sql_bytes,
+        migration_statements: policy.migrations[0].ast_hashes.length} : {}),
       hosted_admission: false, schema: 1 });
-    this.metadata = new Set(METADATA.flatMap(statements).map(s => s.ast_sha256));
+    this.metadata = new Set(METADATA.flatMap(s => statements(s)).map(s => s.ast_sha256));
     this.history = statements(HISTORY)[0].ast_sha256;
     this.historyRead = statements(METADATA[1])[0].ast_sha256;
     this.historyValidated = false;
@@ -84,7 +102,7 @@ class Ledger {
     } catch { this.stopped = true; fail('journal'); }
   }
   describe(sql) {
-    return statements(sql).map(s => {
+    return statements(sql, this.policy.slot === 'ci_prefix' ? this.policy.sql_bytes : 8192).map(s => {
       let category;
       if (s.transaction === 'TRANS_STMT_ROLLBACK') category = 'closure';
       else if (['TRANS_STMT_BEGIN', 'TRANS_STMT_COMMIT'].includes(s.transaction)) category = 'transaction';
@@ -119,7 +137,8 @@ class Ledger {
   }
   frame(type, ids = []) {
     this.frames[type] = (this.frames[type] || 0) + 1;
-    if (Object.values(this.frames).reduce((a, b) => a + b, 0) > 512) fail('frame_cap');
+    if (Object.values(this.frames).reduce((a, b) => a + b, 0) >
+        (this.policy.slot === 'ci_prefix' ? this.policy.frame_cap : 512)) fail('frame_cap');
     this.append({ event: 'frontend_frame', type, sql_ids: ids });
   }
   stop() { this.stopped = true; }
@@ -205,7 +224,8 @@ function attach(connection, ledger) {
       // The pinned CLI batch encodes text[] before it reaches node-postgres.
       const parts = typeof values[2] === 'string' ? require('pg').types.getTypeParser(1009)(values[2]) : values[2];
       if (!m || values.length !== 3 || values[0] !== m.version || values[1] !== m.name ||
-          !Array.isArray(parts) || JSON.stringify(parts.flatMap(statements).map(s => s.ast_sha256)) !==
+          !Array.isArray(parts) || JSON.stringify(parts.flatMap(s => statements(s,
+            ledger.policy.slot === 'ci_prefix' ? ledger.policy.sql_bytes : 8192)).map(s => s.ast_sha256)) !==
           JSON.stringify(m.ast_hashes)) fail('history_binding');
       ledger.append({event: 'history_bind', migration_sha256: m.sha256,
         version: m.version, statement_count: m.ast_hashes.length});

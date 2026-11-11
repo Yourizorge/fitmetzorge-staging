@@ -50,27 +50,30 @@ def exclusive_raw(root, name, raw, limit):
     return dict(path=name, sha256=common.sha(raw))
 
 
-def save_canonical(gate, receipt, policy_file, policy_raw, ledger_file, primary):
+def save_canonical(gate, receipt, policy_file, policy_raw, ledger_file, primary, *, prefix=None):
+    tag = 'cli-predispatch-prefix-' + str(prefix) if prefix is not None else 'cli-predispatch-canonical-45'
+    policy_limit = 262144 if prefix is not None else 16384
+    ledger_limit = 2000000 if prefix is not None else 262144
     errors = []
     for artifact in ('policy', 'ledger'):
         try:
             if artifact == 'policy':
-                receipt['policy_ref'] = exclusive_raw(gate.out, CANONICAL_POLICY, policy_raw, 16384)
-                receipt['policy_file_unchanged'] = bounded_raw(policy_file, 16384) == policy_raw
+                receipt['policy_ref'] = exclusive_raw(gate.out, tag + '.policy.json', policy_raw, policy_limit)
+                receipt['policy_file_unchanged'] = bounded_raw(policy_file, policy_limit) == policy_raw
                 if not receipt['policy_file_unchanged']:
                     raise ValueError('cli_predispatch_raw_policy_changed')
             else:
-                raw = bounded_raw(ledger_file, 262144)
-                receipt['ledger_ref'] = exclusive_raw(gate.out, CANONICAL_LEDGER, raw, 262144)
+                raw = bounded_raw(ledger_file, ledger_limit)
+                receipt['ledger_ref'] = exclusive_raw(gate.out, tag + '.ledger.txt', raw, ledger_limit)
         except Exception as error:
             errors.append(dict(artifact=artifact, error_class=type(error).__name__))
     if getattr(gate, 'cli_protocol', []):
         errors.append(dict(artifact='app_profile', error_class='ValueError'))
     if errors:
-        receipt.update(complete=False, reserved_sql_consumed_on_failure=64, durability_errors=errors)
+        receipt.update(complete=False, reserved_sql_consumed_on_failure=receipt.get('policy', {}).get('cap', 64), durability_errors=errors)
     try:
         raw = json.dumps(receipt, sort_keys=True, indent=2).encode('utf-8')
-        exclusive_raw(gate.out, CANONICAL_RECEIPT, raw, 524288)
+        exclusive_raw(gate.out, tag + '.json', raw, 2000000 if prefix is not None else 524288)
     except Exception as error:
         errors.append(dict(artifact='receipt', error_class=type(error).__name__))
     if errors:
@@ -80,6 +83,23 @@ def save_canonical(gate, receipt, policy_file, policy_raw, ledger_file, primary)
                              ','.join(row['artifact'] for row in errors))
         else:
             raise ValueError('cli_predispatch_canonical_evidence_durability') from None
+
+
+def finish_canonical(runtime, gate, receipt, policy_file, policy_raw, ledger_file, primary, *, prefix=None):
+    # A teardown error must not skip the original dispatch ledger or replace
+    # an earlier execution error. Keep both failures visible, never retry.
+    secondary = None
+    try:
+        runtime.clear()
+    except Exception as error:
+        secondary = error
+        receipt.update(complete=False, runtime_clear_error_class=type(error).__name__)
+        if primary is not None:
+            primary.add_note('cli_predispatch_runtime_clear:' + type(error).__name__)
+    save_canonical(gate, receipt, policy_file, policy_raw, ledger_file,
+        primary if primary is not None else secondary, prefix=prefix)
+    if primary is None and secondary is not None:
+        raise secondary
 
 
 def plan_pending(gate, args, expected_file):
@@ -149,15 +169,22 @@ def plan_apply(gate, args, expected_file, *, canonical_apply):
 
 def prove_execution(evidence, policy):
     header, terminal = evidence['header'], evidence['terminal']
+    prefix = policy.get('slot') == 'ci_prefix'
+    if type(policy.get('cap')) is not int or policy.get('slot') not in ('quota', 'ci_prefix'):
+        raise ValueError('cli_predispatch_pending_terminal')
     if evidence.get('terminal_recorded') is not True or terminal['complete'] is not True or \
-            terminal['unknown_consumed'] or not 0 < terminal['sql_dispatches'] <= 64 or \
-            header['slot'] != 'quota' or header['dry_run'] is not False or header['cap'] != 64 or \
+            terminal['unknown_consumed'] or not 0 < terminal['sql_dispatches'] <= policy['cap'] or \
+            header['slot'] != policy['slot'] or header['dry_run'] is not False or header['cap'] != policy['cap'] or \
+            (not prefix and policy['cap'] != 64) or \
             header['policy_sha256'] != common.sha(json.dumps(policy, separators=(',', ':')).encode()):
         raise ValueError('cli_predispatch_pending_terminal')
     migration = policy['migrations'][0]
     events = evidence['events']
     dispatches = [e for e in events if e['event'] == 'dispatch']
-    body = [e['ast_sha256'] for e in dispatches if e['category'] in ('migration', 'transaction')]
+    # Only the migration body after the unique history snapshot can match SQL.
+    snapshot_ids = [e.get('command_id') for e in events if e['event'] == 'history_snapshot']
+    body = [e['ast_sha256'] for e in dispatches if e['category'] in ('migration', 'transaction')
+            and (not prefix or len(snapshot_ids) == 1 and e['id'] > snapshot_ids[0])]
     inserts = [e for e in dispatches if e['category'] == 'migration_history']
     binds = [e for e in events if e['event'] == 'history_bind']
     snapshots = [e for e in events if e['event'] == 'history_snapshot']
@@ -216,7 +243,9 @@ def run_apply(gate, args, plan):
     import ci_profile
     index = plan['index']
     canonical_apply = plan['canonical_apply']
-    tag = 'canonical-45' if canonical_apply else 'pending-' + str(index)
+    prefix = plan.get('prefix_index')
+    tag = 'prefix-' + str(prefix) if prefix is not None else 'canonical-45' if canonical_apply else 'pending-' + str(index)
+    isolation_name = tag + '-cli-predispatch-cli-isolation-0.json'
     receipt_name = 'cli-predispatch-' + tag + '.json'
     upstream = pathlib.Path(os.environ['FMZ_CLI_PREDISPATCH_UPSTREAM']).resolve()
     build = common.source_binding(upstream)
@@ -251,10 +280,14 @@ def run_apply(gate, args, plan):
         host='127.0.0.1', port=port, database='postgres', user='postgres', ca_sha256=common.sha(ca.read_bytes()),
         expected_history_versions=plan['expected_history_versions'],
         migration_paths=[str(work / 'supabase/migrations' / plan['target'].name)])
+    if prefix is not None:
+        input_policy.update(slot='ci_prefix', prefix_index=prefix, local_bootstrap_only=True,
+            run_id=plan['run_id'], ci_run=plan['ci_run'])
     input_file = work / 'policy-input.json'
     input_file.write_text(json.dumps(input_policy))
     code, output = common.bounded([bun, str(HERE / 'policy.cjs'), str(input_file)],
-                                 cwd=work, env=os.environ.copy(), seconds=5)
+                                 cwd=work, env=os.environ.copy(), seconds=5,
+                                 **({'limit':262144} if prefix is not None else {}))
     if code:
         raise ValueError('cli_predispatch_pending_policy')
     policy = json.loads(output)
@@ -262,20 +295,23 @@ def run_apply(gate, args, plan):
         raise ValueError('cli_predispatch_pending_policy_binding')
     policy_file = work / 'policy.json'
     policy_file.write_text(json.dumps(policy))
-    policy_raw = bounded_raw(policy_file, 16384) if canonical_apply else None
+    policy_raw = bounded_raw(policy_file, 262144 if prefix is not None else 16384) if canonical_apply else None
     ledger_file = work / 'ledger.jsonl'
     receipt = dict(scope='DISPOSABLE_CI_ONLY', hosted_admission=False, complete=False,
         source_commit=plan['source_commit'], candidate_sha256=plan['candidate_sha256'], build=build,
         phase=plan['phase'], app_index=index, migration_sources=plan['migration_sources'], policy=policy,
         actual_migration_execution=False, query_ms=5000, cli_seconds=45, output_max_bytes=8192)
     if canonical_apply:
-        receipt.update(profile='canonical_45', invocation_id=policy['invocation_id'],
-            expected_migration=CANONICAL, expected_migration_sha256=CANONICAL_SHA,
+        receipt.update(profile='canonical_prefix' if prefix is not None else 'canonical_45', invocation_id=policy['invocation_id'],
+            expected_migration=plan['target'].relative_to(gate.sources).as_posix(), expected_migration_sha256=plan['target_sha256'],
             requested_arguments=list(args), execution_mode='source_instrumented_db_url',
             executed_argument_shape=['db', 'push', '--db-url', '<private-loopback-verify-full>',
                 '--skip-vault', '--yes', '--include-all', '--output-format', 'json'],
             app_profile_mutated=False, application_run_started=False,
-            isolation_receipt=CANONICAL_ISOLATION)
+            isolation_receipt=isolation_name)
+        if prefix is not None:
+            receipt.update(prefix_index=prefix, local_bootstrap_only=True, hosted_budget_changed=False,
+                run_id=plan['run_id'], ci_run=plan['ci_run'])
     gate.save('cli-predispatch-' + tag + '-preregister.json', receipt)
     password = private(['docker', 'exec', gate.container, 'sh', '-c', 'printf %s "$POSTGRES_PASSWORD"'])
     if not password or password.startswith('sbp_'):
@@ -295,19 +331,44 @@ def run_apply(gate, args, plan):
         def command(self, label, *a, **kw): return gate.command(tag + '-' + label, *a, **kw)
         def save(self, name, value): return gate.save(tag + '-' + name, value)
     def measure():
-        before, first = snapshot(runtime)
+        receipt['after_measurement_complete'] = False
+        try:
+            before, first = snapshot(runtime)
+        except Exception as error:
+            receipt['failure_phase'] = 'before'
+            receipt['measurement_failures'] = [dict(phase='before', error_class=type(error).__name__)]
+            raise
+        receipt['observer_before_commands'] = len(first)
+        receipt['observer_trace'] = first
+        if prefix is not None:
+            receipt['numeric_before'] = before
+        execution_error = None
         try:
             code, output = common.bounded([bun, str(upstream / 'apps/cli/src/main.ts'), 'db', 'push',
                 '--db-url', url, '--skip-vault', '--yes', '--include-all', '--output-format', 'json'], cwd=work, env=env)
+        except Exception as error:
+            execution_error = error
+            receipt['failure_phase'] = 'execution'
+            raise
         finally:
-            after, last = snapshot(runtime)
-            receipt['observer_trace'] = first + last
-            receipt['observer_commands'] = len(first) + len(last)
+            try:
+                after, last = snapshot(runtime)
+                receipt['observer_trace'] = first + last
+                receipt['observer_commands'] = len(first) + len(last)
+                receipt['after_measurement_complete'] = True
+                if prefix is not None:
+                    receipt['numeric_after'] = after
+            except Exception as error:
+                receipt['measurement_failures'] = [dict(phase='after', error_class=type(error).__name__)]
+                if execution_error is None:
+                    receipt['failure_phase'] = 'after'
+                    raise
+                execution_error.add_note('cli_predispatch_after_measurement:' + type(error).__name__)
         if password.encode() in output:
             raise ValueError('cli_predispatch_private_output')
         receipt['tracking'] = common.tracking_evidence(before, after)
         common.check_invocation(receipt, code, output, ledger_file)
-        evidence = common.replay(ledger_file)
+        evidence = common.replay(ledger_file, **({'prefix_policy':policy} if prefix is not None else {}))
         receipt.update(evidence)
         rows = prove_execution(evidence, policy)
         receipt['actual_migration_execution'] = True
@@ -322,7 +383,7 @@ def run_apply(gate, args, plan):
     try:
         common.isolated(View(), receipt, measure)
         if canonical_apply:
-            raw = (gate.out / CANONICAL_ISOLATION).read_bytes()
+            raw = (gate.out / isolation_name).read_bytes()
             isolation = json.loads(raw)
             if isolation['restored'] is not True or isolation['commands'] != receipt['ci_bootstrap_sql_commands'] or \
                     isolation['commands'] not in (4, 8) or len(isolation['protocol']) != isolation['commands'] or \
@@ -333,17 +394,18 @@ def run_apply(gate, args, plan):
             ci_profile.cli_receipt(app_receipt(plan, receipt), index)
     except Exception as error:
         primary = error
-        receipt.update(complete=False, failure_class=type(error).__name__, reserved_sql_consumed_on_failure=64)
-        try: receipt['failure_ledger'] = common.replay(ledger_file, allow_incomplete=True)
+        receipt.update(complete=False, failure_class=type(error).__name__, reserved_sql_consumed_on_failure=policy['cap'])
+        try: receipt['failure_ledger'] = common.replay(ledger_file, allow_incomplete=True,
+            **({'prefix_policy':policy} if prefix is not None else {}))
         except (OSError, ValueError, KeyError, TypeError): receipt['failure_ledger_unverifiable'] = True
         raise
     finally:
         env.pop('PGPASSWORD', None)
         password = None
-        runtime.clear()
         if canonical_apply:
-            save_canonical(gate, receipt, policy_file, policy_raw, ledger_file, primary)
+            finish_canonical(runtime, gate, receipt, policy_file, policy_raw, ledger_file, primary, prefix=prefix)
         else:
+            runtime.clear()
             if not hasattr(gate, 'cli_protocol'): gate.cli_protocol = []
             if len(gate.cli_protocol) != index:
                 raise ValueError('cli_predispatch_concurrent_profile')

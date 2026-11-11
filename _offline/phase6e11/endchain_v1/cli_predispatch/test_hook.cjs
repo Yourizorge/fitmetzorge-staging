@@ -246,3 +246,54 @@ test('oversized SQL is denied without allocating a command', t => {
   const {conn,ledger}=setup(t); assert.throws(()=>conn.query(' '.repeat(8193)),/dispatch_denied/);
   assert.equal(ledger.rows.length,0);
 });
+
+function prefixPolicy(sql, extra = {}) {
+  const hashes = statements(sql, 131072).map(row => row.ast_sha256);
+  const cap = hashes.length + 16;
+  return policy({slot: 'ci_prefix', local_bootstrap_only: true, prefix_index: 1,
+    run_id:'129c55a7-748c-4f07-96b2-e198e08b8e04',ci_run:'123',
+    cap, frame_cap: cap * 8 + 16, sql_bytes: Math.max(8192, Buffer.byteLength(sql)),
+    expected_history_versions: [], migrations: [{version: '20260813', name: 'probe',
+      sha256: sha(sql), ast_hashes: hashes}], ...extra});
+}
+
+test('local prefix retains large registered SQL and requires history before dispatch', t => {
+  const sql = 'SELECT ' + "'" + 'x'.repeat(9000) + "'";
+  const {conn, ledger, writes, file} = setup(t, prefixPolicy(sql));
+  assert.throws(() => conn.query(sql), /dispatch_denied/);
+  assert.equal(writes.length, 0);
+  assert.equal(ledger.rows.length, 0);
+  assert(!fs.readFileSync(file, 'utf8').includes('x'.repeat(100)));
+});
+
+test('local prefix permits only its registered large statement after history validation', t => {
+  const sql = "SELECT '" + 'x'.repeat(9000) + "'";
+  const {conn, ledger} = setup(t, prefixPolicy(sql));
+  conn.query(METADATA[1]); complete(conn);
+  conn.query(sql); complete(conn);
+  assert.equal(ledger.rows.length, 2);
+  assert.equal(ledger.rows[1].category, 'migration');
+  assert.throws(() => conn.query("SELECT '" + 'y'.repeat(9000) + "'"), /dispatch_denied/);
+  assert.equal(ledger.rows.length, 2);
+});
+
+test('local prefix cannot increase cap, alter sequence or admit remote scope', t => {
+  const p = prefixPolicy('SELECT 872619');
+  for (const change of [{cap: p.cap + 1}, {frame_cap: p.frame_cap + 1},
+    {prefix_index: 45}, {prefix_index: 2}, {local_bootstrap_only: false}, {run_id:null}, {ci_run:'bad'},
+    {sql_bytes: 131073}, {environment: 'hosted'}, {host: 'example.com'}]) {
+    assert.throws(() => setup(t, {...p, ...change}), /policy/);
+  }
+});
+
+test('local prefix consumes the actual cap and retains one rollback slot', t => {
+  const p = prefixPolicy('SELECT 872619');
+  const {conn, ledger, writes} = setup(t, p);
+  conn.query(METADATA[1]); complete(conn);
+  for (let i = 1; i < p.cap - 1; i++) {conn.query('select 1'); complete(conn);}
+  assert.throws(() => conn.query('select 1'), /dispatch_denied/);
+  assert.equal(writes.length, p.cap - 1);
+  conn.query('ROLLBACK'); complete(conn);
+  assert.equal(ledger.rows.length, p.cap);
+  assert.throws(() => conn.query('ROLLBACK'), /dispatch_denied/);
+});

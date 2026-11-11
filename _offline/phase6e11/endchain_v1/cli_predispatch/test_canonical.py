@@ -104,7 +104,7 @@ class CanonicalTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'canonical_reuse'): self.plan()
 
     def exercise(self, *, fail=False, numeric=True, restore=True, compile_ok=True,
-                 ledger_raw=b'{"z":1,"a":2}\n', corrupt_policy=False):
+                 ledger_raw=b'{"z":1,"a":2}\n', corrupt_policy=False, snapshot_failure=None):
         calls = []; compiled = {}; state = {'cleared':False}
         def bounded(argv, **kwargs):
             if argv[-1]=='--version': return 0, b'1.4.1'
@@ -133,10 +133,15 @@ class CanonicalTests(unittest.TestCase):
                 receipt['ci_cron_restored'] = restore
                 view.save('cli-predispatch-cli-isolation-0.json', dict(commands=8,restored=restore,
                     protocol=[dict(statement_sha256='f'*64,confirmed=True)]*8))
+        snapshots = []
+        def snapshot(runtime):
+            phase = 'before' if not snapshots else 'after'
+            snapshots.append(phase)
+            if snapshot_failure == phase: raise ValueError('synthetic_' + phase)
+            return ({'track':'top','track_utility':'on'}, [dict(confirmed=True,protocol_commands=1)]*4)
         runtime = SimpleNamespace(clear=lambda:state.update(cleared=True))
         patch.dict(sys.modules, native_runtime=SimpleNamespace(NativeRuntime=SimpleNamespace(disposable=lambda g:runtime)),
-            cli_stat_reader=SimpleNamespace(snapshot=lambda r:({'track':'top','track_utility':'on'},
-                [dict(confirmed=True,protocol_commands=1)]*4),
+            cli_stat_reader=SimpleNamespace(snapshot=snapshot,
                 compare=lambda *a,**kw:dict(all_protocol_visible=numeric,temp_written=0))).start()
         patch.dict(os.environ,GITHUB_ACTIONS='true',GITHUB_REF='refs/heads/main',GITHUB_RUN_ATTEMPT='1',
             GITHUB_REPOSITORY='Yourizorge/fitmetzorge-staging',GITHUB_SHA='a'*40,
@@ -147,8 +152,10 @@ class CanonicalTests(unittest.TestCase):
         patch.object(pending.common,'replay',side_effect=lambda *a,**kw:evidence(compiled)).start()
         patch.object(pending.common,'isolated',side_effect=isolated).start()
         target = self.gate.sources/pending.CANONICAL
-        if fail or not numeric or not restore or not compile_ok or corrupt_policy:
-            expected = ('synthetic_timeout' if fail else 'synthetic_compile_failure' if not compile_ok
+        if fail or not numeric or not restore or not compile_ok or corrupt_policy or snapshot_failure:
+            expected = ('synthetic_before' if snapshot_failure == 'before' else
+                        'synthetic_timeout' if fail else 'synthetic_' + snapshot_failure if snapshot_failure else
+                        'synthetic_compile_failure' if not compile_ok
                         else 'pending_numeric' if not numeric else 'canonical_isolation' if not restore
                         else 'canonical_evidence_durability')
             with self.assertRaisesRegex(ValueError,expected) as caught:
@@ -163,7 +170,7 @@ class CanonicalTests(unittest.TestCase):
         self.assertEqual(self.gate.serial, 123)  # Adapter does not forge a legacy dispatch.
         self.assertEqual(self.gate.result['phase'],'migration_45')
         self.assertEqual(self.gate.result['migrations_applied'],44)
-        self.assertEqual(len(calls), 1 if compile_ok else 0)
+        self.assertEqual(len(calls), 1 if compile_ok and snapshot_failure != 'before' else 0)
         self.assertFalse(any(name.startswith('cli-protocol-') for name in self.saved))
         self.assertNotIn('synthetic-private-password',json.dumps(self.saved))
         self.assertNotIn('synthetic-private-password',json.dumps(calls))
@@ -226,6 +233,30 @@ class CanonicalTests(unittest.TestCase):
         self.assertFalse(r['complete'])
         self.assertEqual(r['reserved_sql_consumed_on_failure'],64)
 
+    def test_execution_and_after_failure_keep_both_causes_without_retry(self):
+        self.exercise(fail=True, snapshot_failure='after')
+        r = self.saved[pending.CANONICAL_RECEIPT]
+        self.assertFalse(r['complete'])
+        self.assertEqual(r['failure_phase'], 'execution')
+        self.assertEqual(r['measurement_failures'], [dict(phase='after', error_class='ValueError')])
+        self.assertEqual(r['observer_before_commands'], 4)
+        self.assertFalse(r['after_measurement_complete'])
+        self.assertIn('after_measurement:ValueError', self.failure.__notes__[0])
+
+    def test_after_failure_is_not_promoted_to_execution_success(self):
+        self.exercise(snapshot_failure='after')
+        r = self.saved[pending.CANONICAL_RECEIPT]
+        self.assertFalse(r['complete'])
+        self.assertEqual(r['failure_phase'], 'after')
+        self.assertFalse(r['after_measurement_complete'])
+
+    def test_before_failure_stops_before_dispatch(self):
+        self.exercise(snapshot_failure='before')
+        r = self.saved[pending.CANONICAL_RECEIPT]
+        self.assertFalse(r['complete'])
+        self.assertEqual(r['failure_phase'], 'before')
+        self.assertNotIn('observer_before_commands', r)
+
     def test_failed_isolation_restore_cannot_return_success(self):
         self.exercise(restore=False)
         self.assertFalse(self.saved[pending.CANONICAL_RECEIPT]['complete'])
@@ -260,6 +291,34 @@ class RawArtifactTests(unittest.TestCase):
 
     def persist(self, primary=None):
         return pending.save_canonical(self.gate,self.receipt,self.policy,self.policy_raw,self.ledger,primary)
+
+    def test_runtime_clear_failure_still_preserves_original_ledger(self):
+        failure = OSError('PRIVATE_CLEAR')
+        runtime = SimpleNamespace(clear=lambda: (_ for _ in ()).throw(failure))
+        with self.assertRaises(OSError) as caught:
+            pending.finish_canonical(runtime,self.gate,self.receipt,self.policy,self.policy_raw,self.ledger,None)
+        self.assertIs(caught.exception,failure)
+        self.assertEqual((self.out/pending.CANONICAL_LEDGER).read_bytes(),self.ledger_raw)
+        saved = (self.out/pending.CANONICAL_RECEIPT).read_text()
+        self.assertFalse(json.loads(saved)['complete'])
+        self.assertNotIn('PRIVATE',saved)
+
+    def test_clear_and_storage_errors_preserve_original_execution_failure(self):
+        primary = TimeoutError('PRIVATE_EXECUTION')
+        runtime = SimpleNamespace(clear=lambda: (_ for _ in ()).throw(OSError('PRIVATE_CLEAR')))
+        with patch.object(pending.os,'fsync',side_effect=OSError('PRIVATE_STORAGE')):
+            pending.finish_canonical(runtime,self.gate,self.receipt,self.policy,self.policy_raw,self.ledger,primary)
+        self.assertIn('runtime_clear:OSError',primary.__notes__[0])
+        self.assertIn('durability_secondary',primary.__notes__[1])
+        self.assertFalse(self.receipt['complete'])
+
+    def test_prefix_teardown_failure_uses_prefix_original_names(self):
+        primary = TimeoutError('PRIVATE_EXECUTION')
+        runtime = SimpleNamespace(clear=lambda: (_ for _ in ()).throw(OSError('PRIVATE_CLEAR')))
+        pending.finish_canonical(runtime,self.gate,self.receipt,self.policy,self.policy_raw,self.ledger,primary,prefix=3)
+        self.assertEqual((self.out/'cli-predispatch-prefix-3.ledger.txt').read_bytes(),self.ledger_raw)
+        self.assertFalse((self.out/pending.CANONICAL_LEDGER).exists())
+        self.assertFalse(json.loads((self.out/'cli-predispatch-prefix-3.json').read_bytes())['complete'])
 
     def test_raw_copy_is_exact_hash_bound_and_fsynced(self):
         with patch.object(pending.os,'fsync',wraps=os.fsync) as fsync:

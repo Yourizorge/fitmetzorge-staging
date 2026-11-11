@@ -24,13 +24,16 @@ BOOTSTRAP_ONLY_PASS is not a case result or app/full-chain admission. For the
 actual matrix, Main's entry must invoke the public function in-process and keep
 the Gate for D's subsequent adapter; do not instantiate a second Gate afterward.
 
-Optional actual M45 boundaries: bootstrap(gate, migrations, hooks=case_hooks).
+Optional actual M45 boundaries: bootstrap(gate, migrations, hooks=case_hooks,
+run_id=case_uuid). A supplied case UUID must be canonical UUIDv4; standalone
+bootstrap creates a fresh UUID. This is never the hosted owner authorization.
 case_hooks must expose source-bound instance methods before45(snapshot) and
 after45(snapshot); default None keeps the original Gate dispatcher unchanged.
 The local rebuild view calls the existing migration_failure_boundaries.before
 on the ACTUAL gate, then before45, then exactly one existing instrumented
-run_canonical, then existing boundary.after, then after45. Other 44 migrations
-delegate to the original Gate.cli. The Gate.cli method/serial are never patched.
+run_canonical, then existing boundary.after, then after45. The preceding44
+migrations use the separate local-only ci_prefix pre-dispatch profile. The
+Gate.cli method/serial are never patched. Canonical migration bytes are retained.
 Snapshots contain stage, source_commit, ci_run, candidate_sha256, observed
 history_count and raw-hash evidence_refs, without SQL/credentials. They are
 saved before callbacks. Callback exceptions immediately stop bootstrap and
@@ -93,8 +96,23 @@ Accounting:
   operations were attempted. No SQL or credentials enter these receipts.
 - Existing CLI, observer, cron-isolation, canonical setup and TLS receipts
   remain separate CI-bootstrap work, NOT debited/credited as case/hosted2349.
-- Exact bootstrap SQL total is deliberately null: legacy canonical1..44 CLI
-  invocations do not provide a complete SQL protocol count through this helper.
+- Canonical1..44 now preserve per-invocation policy, append-only ledger,
+  numeric-before/after, observer trace and cron-isolation originals. A durable
+  case-stack-canonical-prefix.json is saved BEFORE either M45 fault callback;
+  callbacks also receive its immutable reference. A separately prepaid catalog
+  dispatch after40/before41 preserves its exact SQL hash and command receipt.
+- The empty local migration ledger is provisioned once with8 native commands
+  reserved (7 normal plus one rollback). Every intent precedes dispatch; a lost
+  commit stays unknown. Provisioning does not register any migration version.
+- Local prefix CLI reserves derive from each file's PG17 statement count plus16,
+  with a separate frame/statement-size bound. Hosted-equivalent64/28 CLI slots,
+  query timeouts and hosted2349 authority remain unchanged. Frozen1..44 contain
+  1552 body statements; the sum of prefix CLI reserves is2256, EXCLUDING numeric
+  observers, isolation, provisioning, driver/startup and later steps. This is not
+  a full-run budget or a measured execution count.
+- Exact bootstrap SQL total stays null until independent original-ledger replay,
+  numeric reconciliation AND native driver/startup accounting are complete.
+  original_refs_complete never implies independent_numeric_validation or PASS.
 - Setup isolation/runner disposal never substitutes for measured case cleanup.
 
 Local tests (no DB, CLI, Auth, browser or container execution):
