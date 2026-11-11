@@ -1,0 +1,24 @@
+test_changed_source_denied (test_plan_only.PlanTests.test_changed_source_denied) ... ok
+test_child_counters_are_not_summed (test_plan_only.PlanTests.test_child_counters_are_not_summed) ... ok
+test_missing_metric_is_unknown_not_zero (test_plan_only.PlanTests.test_missing_metric_is_unknown_not_zero) ... ok
+test_multiple_statements_denied (test_plan_only.PlanTests.test_multiple_statements_denied) ... ok
+test_noninteger_negative_boolean_denied (test_plan_only.PlanTests.test_noninteger_negative_boolean_denied) ... ok
+test_plan_text_private_fields_not_exported (test_plan_only.PlanTests.test_plan_text_private_fields_not_exported) ... ok
+test_select_into_denied (test_plan_only.PlanTests.test_select_into_denied) ... FAIL
+test_select_with_parameter (test_plan_only.PlanTests.test_select_with_parameter) ... ok
+test_unknown_child_counter_denied (test_plan_only.PlanTests.test_unknown_child_counter_denied) ... ok
+test_writable_cte_denied (test_plan_only.PlanTests.test_writable_cte_denied) ... ok
+
+======================================================================
+FAIL: test_select_into_denied (test_plan_only.PlanTests.test_select_into_denied)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Fitme\.codex\visualizations\2026\09\04\01a06c9a-4691-7720-b276-562e17d82ef7\agent-d-wal-feasibility-20261111\test_plan_only.py", line 14, in test_select_into_denied
+    with self.assertRaisesRegex(ValueError,'write_shape'):self.compile('select 1 into tmp')
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.009s
+
+FAILED (failures=1)

@@ -1,0 +1,57 @@
+{
+  "scope": "offline syntax and sanitized projection; not a runtime probe",
+  "sources": {
+    "supabase/.temp/phase6e11-pg17-parser/pglast/enums/pg_am.py": "cb28d3e3eab9d124a21fe8ec31508ab389dd062d37d374112a8256f944c4de74",
+    "supabase/.temp/phase6e11-pg17-parser/pglast/enums/pg_attribute.py": "07c93ebba572e0059225ce3cb0832e99380dffc60a3ecce3a8c80e3c156eed2d",
+    "supabase/.temp/phase6e11-pg17-parser/pglast/enums/pg_class.py": "dc50d8edd0aafa4b964b6a1b0f67a73bae71ff9ea0d60e21772450560482101e",
+    "supabase/.temp/phase6e11-pg17-parser/pglast/enums/pg_trigger.py": "f588e69921dd2d3814f6cedf0b07c1e38e27f32b757612e722e548b97d70120d",
+    "supabase/.temp/phase6e11-pg17-parser/pglast/enums/lockoptions.py": "b6d961ff03a81e996c97b91b9df06453cc697f2862841ff27e407e6d4af5177e",
+    "supabase/.temp/phase6e11-pg17-parser/pglast/enums/nodes.py": "8253e91aa134235cc729d74c4cce230e28a7a7d89f4c62036a05c3781b96e472",
+    "supabase/.temp/phase6e11-pg17-parser/pglast/enums/parsenodes.py": "46e48803a955aec748eb18fa12e412ceab6da3baa7c4d194b5895476116245ec",
+    "supabase/.temp/phase6e11-pg17-parser/pglast/enums/primnodes.py": "5daaa9f24e5839c84acb5a0631cce634f37a54d9c00aeaee6d9940c392f76fac",
+    "supabase/.temp/phase6e11-pg17-parser/pglast/enums/lockdefs.py": "1873e01d6d65bae7a2aec7c6be5bd7ace354847ee8445c3dcb4fd384b62805ba",
+    "supabase/.temp/phase6e11-pg17-parser/pglast/enums/xml.py": "c667fdf127cd3a069b77694bdfce052fac118ee209d176ff5d073eb656935dd2",
+    "supabase/.temp/phase6e11-pg17-parser/pglast/enums/__init__.py": "4e5c7bb0968cc5686d2d438b7749ee2f7bb15dc9497b07722196202530be9bdc",
+    "supabase/.temp/phase6e11-pg17-parser/pglast/error.py": "8d3955792109e8a42bc0859e66b167d167d21e31b47677df68f8bde6de969480",
+    "supabase/.temp/phase6e11-pg17-parser/pglast/ast.py": "32cb73e9ce69680183df771017314bedb6ca430719ddf3dae40d71267a105aab",
+    "supabase/.temp/phase6e11-pg17-parser/pglast/parser.cp312-win_amd64.pyd": "44abf6caf0b4b3cb423cbe433b6067063eed7c624a79e13bde51a1b0c0c451d5",
+    "supabase/.temp/phase6e11-pg17-parser/pglast/__init__.py": "872e1c682a228930f079a96c88de896123c789fbd73179a596b05984472be28a",
+    "_offline/phase6e11/endchain_v1/migration_boundary.py": "9ad465bfb7a45a82253c823b4594f5278787a00a1e3af73159ee70d4e14816c2",
+    "_offline/phase6e11/endchain_v1/quota_boundary.py": "5c57a4092dc64fa4c8d6ec073872d98afe1d05b6948abf31f30e9ad17c100042",
+    "_offline/phase6e11/endchain_v1/lifecycle_gates.py": "81d394d8641605755f0196067311c0c76e19e7831b67b3357cfb2884a1a65002"
+  },
+  "queries": {
+    "ACCESS": {
+      "query_sha256": "ad5ff4effb3cdfc8647f1bfa24815040cf3b1b20537b36d4f163ee36ccc8cb23",
+      "explain_sha256": "0f2b108ff48fdeab89f8e44415655f9b870f97f4f9cff927d63c3a61f5bfac5f",
+      "pg17_parse_ok": true,
+      "parameter_values_bound": false,
+      "actual_execution": false,
+      "full_chain_admission": false
+    },
+    "CATALOG": {
+      "query_sha256": "5e3cce093162da75aa5133f845bcb11396d67126a4ddec3b0345711dedb950ec",
+      "explain_sha256": "c4e375d2ec0539b142f211e264168967dcba110c48afd0387f905c87863e31c6",
+      "pg17_parse_ok": true,
+      "parameter_values_bound": false,
+      "actual_execution": false,
+      "full_chain_admission": false
+    }
+  },
+  "selected": 10,
+  "run": 10,
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "seconds": 0.06199999991804361,
+  "log_sha256": "37f8f98546fb9104e8623721a5e1a2f2b4a37f5fa30ea492e89f9a18d93fb6a3",
+  "passed": true,
+  "proposed_explicit_sql_commands": 5,
+  "proposed_statement_timeout_ms": 5000,
+  "connection_implicit_sql_bound": null,
+  "actual_sql_commands": 0,
+  "actual_pg": false,
+  "fixture_equivalence_proven": false,
+  "hosted_calls": 0,
+  "full_chain_admission": false
+}

@@ -1,0 +1,15 @@
+test_changed_source_denied (test_plan_only.PlanTests.test_changed_source_denied) ... ok
+test_child_counters_are_not_summed (test_plan_only.PlanTests.test_child_counters_are_not_summed) ... ok
+test_missing_metric_is_unknown_not_zero (test_plan_only.PlanTests.test_missing_metric_is_unknown_not_zero) ... ok
+test_multiple_statements_denied (test_plan_only.PlanTests.test_multiple_statements_denied) ... ok
+test_noninteger_negative_boolean_denied (test_plan_only.PlanTests.test_noninteger_negative_boolean_denied) ... ok
+test_plan_text_private_fields_not_exported (test_plan_only.PlanTests.test_plan_text_private_fields_not_exported) ... ok
+test_select_into_denied (test_plan_only.PlanTests.test_select_into_denied) ... ok
+test_select_with_parameter (test_plan_only.PlanTests.test_select_with_parameter) ... ok
+test_unknown_child_counter_denied (test_plan_only.PlanTests.test_unknown_child_counter_denied) ... ok
+test_writable_cte_denied (test_plan_only.PlanTests.test_writable_cte_denied) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.007s
+
+OK

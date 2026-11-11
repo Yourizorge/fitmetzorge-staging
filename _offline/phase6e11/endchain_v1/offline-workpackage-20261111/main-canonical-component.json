@@ -1,0 +1,20 @@
+{
+  "tests": 14,
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "seconds": 106.312,
+  "source_hashes": {
+    "admission_canonical_component.py": "e81f617aa88bc08fe4a2d3660d20a54e45aea2fc78a71694dd75c1927cf7bc38",
+    "test_admission_canonical_component.py": "78f10386e0a8919bbd6eb390e5b7eb201622c45fae832f684060cb2e6655e4cd",
+    "admission_terminal_process.py": "959149a64c35c4c28c551ab2638157c6bab59e334e426877bdc186ca2c11aeec",
+    "admission_trusted_loader.py": "044aee41ad8bbc7b21f30427ce66eb13205001066b36b2d39478409b59e989c5",
+    "admission_canonical_replay.py": "fa8ec7b385295b883719209a195e41fee87b777c6f1bb68fefd43cf4ebe98ace",
+    "quota_candidate_v1/runtime_exported_terminal.py": "cbf01a6183941d6fa2a76621ad1c94503c5676bd37039629b141b6578866b24b"
+  },
+  "sources_unchanged": true,
+  "log_sha256": "4d6c7e597eb84af82b3d4bd27dc6f298872feb45e005830693f7f3b3d3ca85bc",
+  "actual_historical_replay": false,
+  "actual_pg_auth": false,
+  "READY": false
+}

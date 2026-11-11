@@ -1,0 +1,24 @@
+{
+  "READY": false,
+  "actual_pg_auth": false,
+  "artifacts": [],
+  "candidate_blob": "e0f64b01937920b61db7c17437984a01795fb833",
+  "candidate_sha256": "dcef0b70eb67341256239e15e5c4bdcb3e9a94531d542e4908d290f0f4854f10",
+  "format": "pg-auth-component-startup-failure-v1",
+  "github_request_id": "5f31158b-de0f-11f1-8b55-7e40a64363cb",
+  "hosted_supabase_calls": 0,
+  "jobs": [],
+  "redispatched": false,
+  "run": {
+    "conclusion": "startup_failure",
+    "created_at": "2026-11-11T20:21:01Z",
+    "event": "workflow_dispatch",
+    "head_sha": "71d9fd1ecab8fdaade784266acbb0363d72fcdc6",
+    "html_url": "https://github.com/Yourizorge/fitmetzorge-staging/actions/runs/43095501354",
+    "id": 43095501354,
+    "run_attempt": 1,
+    "status": "completed",
+    "updated_at": "2026-11-11T20:35:04Z"
+  },
+  "visible_annotation": "An unexpected error has occurred and we have been automatically notified."
+}
