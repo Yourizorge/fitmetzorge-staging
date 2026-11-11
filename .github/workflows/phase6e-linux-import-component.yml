@@ -1,0 +1,54 @@
+name: Isolated Linux import boundary
+run-name: Linux import boundary ${{ inputs.source_manifest_sha256 }}
+on:
+  workflow_dispatch:
+    inputs:
+      source_manifest_sha256:
+        description: Reviewed Linux import component source manifest SHA256
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: phase6e-linux-import-component
+  cancel-in-progress: false
+jobs:
+  component:
+    if: github.repository == 'Yourizorge/fitmetzorge-staging' && github.ref == 'refs/heads/main' && github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Run exact-source import tests without external networking
+        env:
+          EXPECTED: ${{ inputs.source_manifest_sha256 }}
+          SOURCE_COMMIT: ${{ github.sha }}
+          CI_RUN: ${{ github.run_id }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$SOURCE_COMMIT"
+          private="$RUNNER_TEMP/linux-import-private"
+          mkdir -m 700 "$private"
+          host_network=$(readlink /proc/self/ns/net)
+          timeout --kill-after=5s 120s sudo -n /usr/bin/unshare --net /usr/bin/env -i PATH=/usr/bin:/usr/sbin:/bin \
+            /bin/bash -c '
+              set -euo pipefail
+              uid=$1; gid=$2; shift 2
+              exec /usr/bin/setpriv --reuid="$uid" --regid="$gid" --clear-groups \
+                --bounding-set=-all --inh-caps=-all --ambient-caps=-all --no-new-privs "$@"
+            ' -- "$(id -u)" "$(id -g)" /usr/bin/env -i PATH=/usr/bin:/bin HOME="$private" TMPDIR="$private" LANG=C.UTF-8 \
+            /usr/bin/python3 -I -S -B "$GITHUB_WORKSPACE/_offline/phase6e11/endchain_v1/linux_import_component/check.py" \
+            --root "$GITHUB_WORKSPACE" --expected "$EXPECTED" --commit "$SOURCE_COMMIT" --run "$CI_RUN" \
+            --host-network "$host_network" --report "$RUNNER_TEMP/linux-import-result/result.json"
+      - name: Preserve only technical component result
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: linux-import-${{ github.run_id }}-1
+          path: ${{ runner.temp }}/linux-import-result/result.json
+          retention-days: 1
+          if-no-files-found: error
