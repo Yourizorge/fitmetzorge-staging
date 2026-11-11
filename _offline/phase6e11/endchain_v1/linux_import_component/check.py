@@ -14,12 +14,13 @@ import unittest
 
 PREFIX = '_offline/phase6e11/endchain_v1/'
 HERE = PREFIX + 'linux_import_component/'
-MANIFEST = HERE + 'sources-r3.json'
+MANIFEST = HERE + 'sources-r4.json'
 WORKFLOW = '.github/workflows/phase6e-linux-import-component.yml'
 PATHS = (HERE + 'check.py', HERE + 'test_check.py', WORKFLOW,
          PREFIX + 'admission_trusted_loader.py',
          PREFIX + 'test_admission_trusted_loader.py',
          PREFIX + 'test_admission_trusted_loader_reentrant.py',
+         PREFIX + 'test_admission_stdlib_bootstrap.py',
          PREFIX + 'quota_candidate_v1/runtime_exported_terminal.py')
 
 
@@ -99,20 +100,27 @@ def main():
     need(not args.report.exists(), 'report_exists')
     manifest, buffers = verify(root, args.expected)
     started = time.monotonic()
-    for name in ('admission_trusted_loader', 'test_admission_trusted_loader',
-                 'test_admission_trusted_loader_reentrant'):
+    name = 'admission_trusted_loader'
+    relative = PREFIX + name + '.py'
+    loader = install(name, root / relative, buffers[relative])
+    bootstrap = loader.bootstrap_reader_stdlib()
+    for name in ('test_admission_trusted_loader',
+                 'test_admission_trusted_loader_reentrant',
+                 'test_admission_stdlib_bootstrap'):
         relative = PREFIX + name + '.py'
         install(name, root / relative, buffers[relative])
     suite = unittest.defaultTestLoader.loadTestsFromNames(
-        ('test_admission_trusted_loader', 'test_admission_trusted_loader_reentrant'))
+        ('test_admission_trusted_loader', 'test_admission_trusted_loader_reentrant',
+         'test_admission_stdlib_bootstrap'))
     selected = suite.countTestCases()
-    need(selected == 34, 'selection_count')
+    need(selected == 41, 'selection_count')
     log = io.StringIO()
     result = unittest.TextTestRunner(stream=log, verbosity=2).run(suite)
     verify(root, args.expected)
     receipt = dict(format='linux-import-component-v1', status='PASS' if complete(result, selected) else 'FAIL',
         commit=args.commit, ci_run=args.run, manifest_sha256=args.expected, sources=manifest['files'],
-        python=sys.version, selected=selected, executed=result.testsRun, failures=len(result.failures),
+        python=sys.version, stdlib_bootstrap=bootstrap,
+        selected=selected, executed=result.testsRun, failures=len(result.failures),
         errors=len(result.errors), skips=len(result.skipped), seconds=round(time.monotonic()-started, 3),
         network_isolated=True, interface_names=interface_names, **bounded_log(log.getvalue()), hosted_calls=0, database_calls=0,
         full_chain_admission=False, READY=False)

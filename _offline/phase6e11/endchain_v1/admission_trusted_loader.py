@@ -24,6 +24,7 @@ _ABSENT = object()
 _STDLIB = tuple({pathlib.Path(sysconfig.get_path(key)).resolve()
                  for key in ("stdlib", "platstdlib")} | {pathlib.Path(sys.base_prefix).resolve() / "DLLs"})
 _STDLIB_PATHS = tuple(os.path.normcase(str(path)) for path in _STDLIB)
+_BOOTSTRAP_ATTEMPTED = False
 
 
 def _within(path, root):
@@ -31,6 +32,96 @@ def _within(path, root):
         return os.path.commonpath((path, root)) == root
     except ValueError:
         return False
+
+
+def bootstrap_reader_stdlib():
+    """Fresh -I -S caller only; optional OS imports never enter project guards.
+
+The interpreter's standard library remains an external trust prerequisite.
+No artifact/sys.path code, stale uuid/platform cache, or .pyc is executed here.
+"""
+    global _BOOTSTRAP_ATTEMPTED
+
+    def require(value, reason):
+        if not value:
+            raise TrustedImportError('stdlib_bootstrap_' + reason)
+
+    require(not _BOOTSTRAP_ATTEMPTED and _ACTIVE is None, 'reuse_or_active')
+    _BOOTSTRAP_ATTEMPTED = True
+    require(sys.flags.isolated and sys.flags.no_site and threading.active_count() == 1,
+            'fresh_isolated_interpreter')
+    require(type(builtins.__import__) is types.BuiltinFunctionType
+            and tuple(sys.meta_path) == (importlib.machinery.BuiltinImporter,
+                importlib.machinery.FrozenImporter, importlib.machinery.PathFinder), 'import_hooks')
+    require(all(name not in sys.modules for name in ('platform', 'uuid')), 'preexisting_target')
+    roots = _STDLIB_PATHS
+    base = os.path.normcase(os.path.realpath(sys.base_prefix))
+    stdlib = os.path.normcase(os.path.realpath(sysconfig.get_path('stdlib')))
+    zipname = 'python%d%d.zip' % sys.version_info[:2]
+    absent_zips = {os.path.join(base, zipname), os.path.join(os.path.dirname(stdlib), zipname)}
+    config_name = (sysconfig._get_sysconfigdata_name() if os.name == 'posix' else None)
+
+    def allowed(path):
+        return (any(_within(path, root) for root in roots)
+                and not any(p in ('site-packages', 'dist-packages')
+                            for p in path.replace('\\', '/').split('/')))
+
+    for entry in sys.path:
+        require(type(entry) is str and os.path.isabs(entry), 'search_path')
+        path = os.path.normcase(os.path.realpath(entry))
+        require(allowed(path) or os.name == 'nt' and path == base
+                or path in absent_zips and not os.path.lexists(entry), 'search_origin')
+        finder = sys.path_importer_cache.get(entry)
+        require(finder is None or type(finder) is importlib.machinery.FileFinder
+                and os.path.normcase(os.path.realpath(finder.path)) == path, 'cached_finder')
+
+    def cache_check():
+        for name, module in tuple(sys.modules.items()):
+            if name == '__main__' or getattr(module, '__dict__', None) is globals():
+                continue
+            require(name.split('.')[0] in sys.stdlib_module_names or name == config_name, 'external_cache')
+            spec = getattr(module, '__spec__', None)
+            require(spec is not None and spec.loader is getattr(module, '__loader__', None), 'cache_spec')
+            if spec.origin == 'built-in':
+                require(spec.loader is importlib.machinery.BuiltinImporter, 'builtin_origin')
+            elif spec.origin == 'frozen':
+                require(spec.loader is importlib.machinery.FrozenImporter, 'frozen_origin')
+            else:
+                require(type(spec.origin) is str and allowed(os.path.normcase(os.path.realpath(spec.origin)))
+                        and type(spec.loader) in (importlib.machinery.SourceFileLoader,
+                                                  importlib.machinery.ExtensionFileLoader)
+                        and getattr(module, '__file__', None) == spec.origin, 'cache_origin')
+                if name == config_name:
+                    require(os.path.normcase(os.path.realpath(spec.origin)) ==
+                            os.path.join(stdlib, config_name + '.py'), 'sysconfig_origin')
+
+    cache_check()
+    receipt = []
+    for name in ('platform', 'uuid'):
+        spec = importlib.machinery.PathFinder.find_spec(name, [stdlib])
+        expected = os.path.join(stdlib, name + '.py')
+        require(spec is not None and type(spec.loader) is importlib.machinery.SourceFileLoader
+                and os.path.normcase(os.path.realpath(spec.origin)) == expected, 'target_origin')
+        path = pathlib.Path(spec.origin)
+        require(_plain(path) and path.stat().st_size <= 1_000_000, 'target_source')
+        raw = path.read_bytes()
+        require(0 < len(raw) <= 1_000_000, 'target_size')
+        module = importlib.util.module_from_spec(spec)
+        require(name not in sys.modules, 'target_race')
+        sys.modules[name] = module
+        try:
+            exec(compile(raw, spec.origin, 'exec', dont_inherit=True), module.__dict__)
+            require(sys.modules.get(name) is module and path.read_bytes() == raw, 'source_or_cache_changed')
+            cache_check()
+        except BaseException:
+            if sys.modules.get(name) is module:
+                del sys.modules[name]
+            raise
+        receipt.append(dict(module=name, origin='stdlib/' + name + '.py',
+                            sha256=hashlib.sha256(raw).hexdigest(), bytes=len(raw)))
+    return dict(status='STDLIB_SOURCE_BOOTSTRAPPED', python=list(sys.version_info[:3]),
+                modules=receipt, project_import_rules_unchanged=True)
+
 
 
 class TrustedImportError(ValueError):
