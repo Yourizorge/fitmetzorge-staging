@@ -1,0 +1,21 @@
+{
+  "tests": 37,
+  "errors": 0,
+  "failures": 0,
+  "skips": 0,
+  "seconds": 31.016000000061467,
+  "source_hashes": {
+    "lifecycle.py": "ac20d50cede8e8412ab1cbb31d05279eb4e5da2787e2b47d16c8396e18d57ec5",
+    "scope.py": "657b361103ef8c6594fb2af0bd55e6913310efbf0d4155c4aa951e728a8eec1a",
+    "context.py": "b3e28d97590ed4ee05806f70883db0ff247d137949eaca80b0981e1bf5539d4b",
+    "test_lifecycle.py": "da7628603de446fa2b9e05b5fdf614ab5a0d6ffc168f2d1f2bdbcb46e7709a82",
+    "test_scope.py": "4d6c25591903d2fcb77690460d895cf9fc7db9e03c4473b186e60996e6e2917b",
+    "test_parent.py": "ee080f3f2a0414f5ce29956fbf79cd6db3f4a5835ccbfe71155baf8425d06a83"
+  },
+  "sources_unchanged": true,
+  "log_sha256": "de6b97ad4c2b32485befb59850fb7854c449b30b969a1fc92b2b2a129468cb76",
+  "actual_pg": false,
+  "actual_auth": false,
+  "full_admission": false,
+  "scope": "Three P2 corrections only; successful repro is not a fix"
+}

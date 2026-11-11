@@ -1,0 +1,221 @@
+{
+  "READY": false,
+  "actual_gotrue": false,
+  "actual_pg17": false,
+  "baseline_observed_head": "10149af4cbfe4818ceeea78c5dac2e8a064b7610",
+  "baseline_read_only": true,
+  "candidate_bytes": 11758180,
+  "candidate_files": 601,
+  "candidate_sha256": "dcef0b70eb67341256239e15e5c4bdcb3e9a94531d542e4908d290f0f4854f10",
+  "ci_dispatches": 0,
+  "counts_overlap": true,
+  "entry_receipt_sha256": "066ca0007bdf779057355e22ed45aac1c3bcd4c081c4b6d1c681a49c8d6a07b1",
+  "format": "pg-auth-component-D3-review-v1",
+  "full_chain_admission": false,
+  "hosted_calls": 0,
+  "known_gaps": [
+    "actual disposable execution not performed",
+    "managed/native total bound not established",
+    "full-chain WAL intervals not proven; no fourth diagnostic",
+    "partial PG install has no adopted cleanup authority",
+    "PostgreSQL volume retained, not global cleanup",
+    "missing immutable authority denies stop; missing original stop denies removal",
+    "final same-source Main composition must be tested independently"
+  ],
+  "patch_sha256": "a93bf76b505e4e4844143e72226bc90077d581631032ddd6b1359c545914d630",
+  "reserve_receipt_sha256": "47594ee3f95a82784e3029d5128ad57256aef4c4eaaf08e3680f4ce5c6fa248b",
+  "review_status": "AWAITING_A_TARGETED_REREVIEW_AND_MAIN_INTEGRATION",
+  "source_inventory_sha256": "1ee82fdf04069d547902ec993bf9b105f5f651c997ab0bd50b8591ad7a15d543",
+  "supplemental_entry_tests": {
+    "actual_gotrue": false,
+    "actual_linux_venv_execution": false,
+    "actual_pg17": false,
+    "errors": 0,
+    "failures": 0,
+    "full_chain_admission": false,
+    "hosted_calls": 0,
+    "log_sha256": "8ed1b65cfb15f465e0d22be41b0ae58b4b773e8cba032e4ca126390a28e8d1f2",
+    "passed": true,
+    "run": 11,
+    "seconds": 0.578999999910593,
+    "selected": 11,
+    "skips": 0
+  },
+  "supplemental_reserve_tests": {
+    "actual_docker": false,
+    "actual_gotrue": false,
+    "actual_pg17": false,
+    "errors": 0,
+    "failures": 0,
+    "full_chain_admission": false,
+    "log_sha256": "cdfac9d30a19253539f172a41630a07e7e3951930505c41012b255e20364e13d",
+    "passed": true,
+    "run": 3,
+    "seconds": 12.688000000081956,
+    "selected": 3,
+    "skips": 0
+  },
+  "target_count": 14,
+  "targets": [
+    {
+      "after_sha256": "634451d386ab5c487d51b472c373f8621ce3da6382f856b503013e1bff748fdb",
+      "before_sha256": null,
+      "bytes": 3477,
+      "delivery_path": "root/.github/workflows/phase6e-pg-auth-component.yml",
+      "path": ".github/workflows/phase6e-pg-auth-component.yml"
+    },
+    {
+      "after_sha256": "aaf05cb794739df87893517464822bb50ad084adedcda6c3cbe4117e16541842",
+      "before_sha256": null,
+      "bytes": 14418,
+      "delivery_path": "root/_offline/phase6e11/endchain_v1/pg_auth_component/context.py",
+      "path": "_offline/phase6e11/endchain_v1/pg_auth_component/context.py"
+    },
+    {
+      "after_sha256": "13fbb65ebfe8608dca83ddfcf9c74f3ec779f3deec611ec8261ae93fab053cde",
+      "before_sha256": null,
+      "bytes": 5849,
+      "delivery_path": "root/_offline/phase6e11/endchain_v1/pg_auth_component/entry.py",
+      "path": "_offline/phase6e11/endchain_v1/pg_auth_component/entry.py"
+    },
+    {
+      "after_sha256": "32fe8c12eab7b7a9ceb03d88f87ea1a4f173de4339707cb77b010ca6e8d49346",
+      "before_sha256": null,
+      "bytes": 1786,
+      "delivery_path": "root/_offline/phase6e11/endchain_v1/pg_auth_component/inventory.py",
+      "path": "_offline/phase6e11/endchain_v1/pg_auth_component/inventory.py"
+    },
+    {
+      "after_sha256": "28849ecf7d948ea0bcdd77100e3337e9dfd9073305a475367c5393e6f296f5d6",
+      "before_sha256": null,
+      "bytes": 22912,
+      "delivery_path": "root/_offline/phase6e11/endchain_v1/pg_auth_component/lifecycle.py",
+      "path": "_offline/phase6e11/endchain_v1/pg_auth_component/lifecycle.py"
+    },
+    {
+      "after_sha256": "bef6e5961835b94db0b867913ae915a7b03801844f7208db635fe79721d3bb68",
+      "before_sha256": null,
+      "bytes": 6104,
+      "delivery_path": "root/_offline/phase6e11/endchain_v1/pg_auth_component/parent.py",
+      "path": "_offline/phase6e11/endchain_v1/pg_auth_component/parent.py"
+    },
+    {
+      "after_sha256": "3b49ced41f8e45b5a16c75c7e7bd21ee3463c11cd4d921c2a4e8f43c82333cbd",
+      "before_sha256": null,
+      "bytes": 2381,
+      "delivery_path": "root/_offline/phase6e11/endchain_v1/pg_auth_component/prepare.py",
+      "path": "_offline/phase6e11/endchain_v1/pg_auth_component/prepare.py"
+    },
+    {
+      "after_sha256": "657b361103ef8c6594fb2af0bd55e6913310efbf0d4155c4aa951e728a8eec1a",
+      "before_sha256": null,
+      "bytes": 9322,
+      "delivery_path": "root/_offline/phase6e11/endchain_v1/pg_auth_component/scope.py",
+      "path": "_offline/phase6e11/endchain_v1/pg_auth_component/scope.py"
+    },
+    {
+      "after_sha256": "ed5f695c35296468e5114a22630ae645f3407a5c45806f1b71d375f974e1da2b",
+      "before_sha256": null,
+      "bytes": 8985,
+      "delivery_path": "root/_offline/phase6e11/endchain_v1/pg_auth_component/subset.py",
+      "path": "_offline/phase6e11/endchain_v1/pg_auth_component/subset.py"
+    },
+    {
+      "after_sha256": "ee491f4e55b573558d74c7952570d47f1adc0210ebe8f2e4d51d893cc5ed93af",
+      "before_sha256": null,
+      "bytes": 4239,
+      "delivery_path": "root/_offline/phase6e11/endchain_v1/pg_auth_component/test_entry.py",
+      "path": "_offline/phase6e11/endchain_v1/pg_auth_component/test_entry.py"
+    },
+    {
+      "after_sha256": "814e058ad81c0371c8985be6d2c051ce3a0ad64c73fc30129b9023269e0ac577",
+      "before_sha256": null,
+      "bytes": 23187,
+      "delivery_path": "root/_offline/phase6e11/endchain_v1/pg_auth_component/test_lifecycle.py",
+      "path": "_offline/phase6e11/endchain_v1/pg_auth_component/test_lifecycle.py"
+    },
+    {
+      "after_sha256": "ee080f3f2a0414f5ce29956fbf79cd6db3f4a5835ccbfe71155baf8425d06a83",
+      "before_sha256": null,
+      "bytes": 9021,
+      "delivery_path": "root/_offline/phase6e11/endchain_v1/pg_auth_component/test_parent.py",
+      "path": "_offline/phase6e11/endchain_v1/pg_auth_component/test_parent.py"
+    },
+    {
+      "after_sha256": "4d6c25591903d2fcb77690460d895cf9fc7db9e03c4473b186e60996e6e2917b",
+      "before_sha256": null,
+      "bytes": 8679,
+      "delivery_path": "root/_offline/phase6e11/endchain_v1/pg_auth_component/test_scope.py",
+      "path": "_offline/phase6e11/endchain_v1/pg_auth_component/test_scope.py"
+    },
+    {
+      "after_sha256": "a71af8fc271a96b1f04e8a5f446a67cac6a31e356e8152a17bd6b4beb2fcaf86",
+      "before_sha256": null,
+      "bytes": 9740,
+      "delivery_path": "root/_offline/phase6e11/endchain_v1/pg_auth_component/test_subset.py",
+      "path": "_offline/phase6e11/endchain_v1/pg_auth_component/test_subset.py"
+    }
+  ],
+  "test_receipt_sha256": "df3efb0fca87a87853b6549a07446a82911f3fecb76241e7671e4896904d7eaa",
+  "test_tree_vs_candidate_reference_differences": [],
+  "tests": {
+    "actual_gotrue": false,
+    "actual_pg17": false,
+    "errors": 0,
+    "failures": 0,
+    "full_chain_admission": false,
+    "hosted_calls": 0,
+    "log_sha256": "82136637c40a5b6ddb50d69a73c9f1c739e2ca2e4615c5959101dbdbe7ab77d8",
+    "passed": true,
+    "run": 211,
+    "scope": "offline units with explicit HTTP/SQL/Docker doubles and existing local process regressions",
+    "seconds": 194.1720000000205,
+    "selected": 211,
+    "selected_modules": [
+      "pg_auth_component.test_runner",
+      "pg_auth_component.test_worker",
+      "pg_auth_component.test_lifecycle",
+      "pg_auth_component.test_scope",
+      "pg_auth_component.test_subset",
+      "pg_auth_component.test_parent",
+      "pg_auth_component.test_entry",
+      "quota_candidate_v1.test_workflow_dispatch_terminal",
+      "quota_candidate_v1.test_runtime_worker_evidence",
+      "quota_candidate_v1.test_runtime_recovery"
+    ],
+    "skips": 0
+  },
+  "unchanged_D1_D2_references": [
+    {
+      "path": "_offline/phase6e11/endchain_v1/pg_auth_component/__init__.py",
+      "sha256": "3e475d82fb815830653bbfe665cf4ec6532e1c102df56af79cc2a13ed9efeb56",
+      "unchanged": true
+    },
+    {
+      "path": "_offline/phase6e11/endchain_v1/pg_auth_component/pg_worker.py",
+      "sha256": "48a66248a6306884fa29d215830d3013ef241f3007738cada70af202fa11ecb9",
+      "unchanged": true
+    },
+    {
+      "path": "_offline/phase6e11/endchain_v1/pg_auth_component/runner.py",
+      "sha256": "9139031029f754367d6b10135742e029a7cf474c32266caea010faa23d1baff7",
+      "unchanged": true
+    },
+    {
+      "path": "_offline/phase6e11/endchain_v1/pg_auth_component/test_runner.py",
+      "sha256": "cae4253cb2fc32821523371db5933c0aa2a45c04b56c04c94a0553fd8c700e3d",
+      "unchanged": true
+    },
+    {
+      "path": "_offline/phase6e11/endchain_v1/pg_auth_component/test_worker.py",
+      "sha256": "7e210b74843615a59380e1c372b4afae636e546d059befc59977fe92f47b262a",
+      "unchanged": true
+    },
+    {
+      "path": "_offline/phase6e11/endchain_v1/pg_auth_component/worker.py",
+      "sha256": "bb0894b8026ba72035279aa672a1ee8ec3447869c0cc072fa2ff2e8a15ee4269",
+      "unchanged": true
+    }
+  ],
+  "wal_interval_matrix_sha256": "3092962ee779216f50f86eb29983cfdfb3118575af7e0678ccf79ec094fcb6a5"
+}

@@ -1,0 +1,36 @@
+{
+  "source_hashes": {
+    "lifecycle.py": "6ec1950966adabe8a0477bb01291db7fbfe12d2f131fad4093636b11f9aaa075",
+    "test_lifecycle.py": "927a56eb228b4ed369b8a20d584e2ade74c0c931dbfd8a2364c2c8fa5d8fbea2",
+    "context.py": "aaf05cb794739df87893517464822bb50ad084adedcda6c3cbe4117e16541842"
+  },
+  "sources_unchanged": true,
+  "tests": 18,
+  "errors": 0,
+  "failures": 0,
+  "skips": 0,
+  "seconds": 50.04700000002049,
+  "log_sha256": "3b6f1a923f166d3c4da1b5194039976471d1c167d6070252e6b5f417b441a914",
+  "actual_pg_auth_docker": false,
+  "full_admission": false,
+  "selected_tests": [
+    "poisoned_safety_journal_stops_but_never_terminal_pass",
+    "safety_before_append_failure_still_physical_stop",
+    "safety_after_append_failure_still_physical_stop",
+    "safety_fsync_failure_still_physical_stop_without_terminal",
+    "safety_append_failure_does_not_waive_fresh_ownership",
+    "safety_append_failure_does_not_waive_source_pin",
+    "changed_original_safety_authority_denies_every_closing_command",
+    "exhausted_command_reserve_never_dispatches_fallback",
+    "audit_failure_remains_primary_when_physical_stop_reply_lost",
+    "fallback_cannot_create_start_retry_force_or_prune",
+    "stop_audit_before_timeout_remains_primary",
+    "stop_timeout_before_audit_remains_primary",
+    "remove_audit_before_timeout_remains_primary",
+    "remove_timeout_before_audit_remains_primary",
+    "exact_remove_and_absence_within_original_sixteen",
+    "second_stop_denied",
+    "remove_without_original_stop_denied",
+    "poisoned_normal_journal_still_stops_and_removes_exact_owned"
+  ]
+}

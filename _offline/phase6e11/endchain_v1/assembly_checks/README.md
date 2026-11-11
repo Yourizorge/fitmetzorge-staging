@@ -4,12 +4,15 @@ This is an installed, reviewed repository test runner, not an artifact-Python ex
 
 ## Current Composition And Historical Manifests
 
-The original `sources.json`/`sources.sha256` and the first
-`sources-current.json`/`sources-current.sha256` are retained historical inputs.
+The original `sources.json`/`sources.sha256`, the first
+`sources-current.json`/`sources-current.sha256`, and the r2 pair are retained historical inputs.
 They do not automatically describe later edited source files. Use an explicitly
 reviewed composition and its exact digest; do not regenerate pins just to obtain
-a green run. The reviewed follow-up uses `sources-current-r2.json` and
-`sources-current-r2.sha256` with `--manifest` explicitly supplied.
+a green run. The reviewed endchain follow-up uses `sources-current-r4.json` and
+`sources-current-r4.sha256` with `--manifest` explicitly supplied. Its receipt
+must be read independently of the retained r2 PASS. Neither grants admission.
+The r3 attempt stopped before test selection: its excluded-path list had one
+joined string instead of two entries. That original manifest remains unchanged.
 
 The v2 manifest permits only the sixteen independently pinned raw LF/CRLF pairs.
 It verifies raw size and hash before canonical equality and returns the actual
@@ -26,8 +29,8 @@ child-process and platform-specific symlink tests.
 
 ```powershell
 $checks = '_offline/phase6e11/endchain_v1/assembly_checks'
-$pin = (Get-Content "$checks/sources-current-r2.sha256" -Raw).Trim()
-python -B "$checks/run.py" --manifest "$checks/sources-current-r2.json" --manifest-sha256 $pin --scope full --report <new-report-path.json>
+$pin = (Get-Content "$checks/sources-current-r4.sha256" -Raw).Trim()
+python -B "$checks/run.py" --manifest "$checks/sources-current-r4.json" --manifest-sha256 $pin --scope full --report <new-report-path.json>
 ```
 
 The commands below describe the preserved original composition, not a fallback

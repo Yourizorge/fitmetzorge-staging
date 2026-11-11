@@ -1,0 +1,12 @@
+{
+  "status": "REJECTED_BEFORE_TEST_SELECTION",
+  "manifest_sha256": "b826509edcb6654d3ef0a82bc1b51f5f97790ecbef9001ae3bb06f25bc1219ae",
+  "error_class": "ValueError",
+  "reason": "manifest_excluded",
+  "cause": "PowerShell array expression joined two excluded paths into one string",
+  "tests_executed": 0,
+  "original_manifest_preserved": true,
+  "replacement_manifest_sha256": "81f2564b00c9c19ecc19de619accffbd3ee3de34cebfa9950dd80e5402b87c73",
+  "hosted_calls": 0,
+  "READY": false
+}

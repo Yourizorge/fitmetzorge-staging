@@ -1,0 +1,70 @@
+name: Independent disposable PG17 Auth component
+run-name: "6E PG Auth component ${{ inputs.candidate_sha256 }}"
+on:
+  workflow_dispatch:
+    inputs:
+      candidate_blob:
+        required: true
+        type: string
+      candidate_sha256:
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: phase6e-composed-closure
+  cancel-in-progress: false
+jobs:
+  component:
+    if: github.repository == 'Yourizorge/fitmetzorge-staging' && github.ref == 'refs/heads/main' && github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Pinned local Python driver for isolated child
+        run: |
+          python3 -I -c 'import sys; assert sys.version_info[:2] == (3,12)'
+          python3 -m venv "$RUNNER_TEMP/fmz-pg-auth-component-venv"
+          "$RUNNER_TEMP/fmz-pg-auth-component-venv/bin/python" -I -m pip install --disable-pip-version-check --only-binary=:all: 'psycopg[binary]==3.2.10' 'pglast==7.20'
+      - name: Targeted pure component regressions
+        working-directory: _offline/phase6e11/endchain_v1
+        run: '"$RUNNER_TEMP/fmz-pg-auth-component-venv/bin/python" -B -m unittest pg_auth_component.test_runner pg_auth_component.test_worker pg_auth_component.test_lifecycle pg_auth_component.test_scope pg_auth_component.test_subset pg_auth_component.test_parent pg_auth_component.test_entry'
+      - name: Exact-source clean47 and separate real components
+        env:
+          CANDIDATE_BLOB: ${{ inputs.candidate_blob }}
+          CANDIDATE_SHA256: ${{ inputs.candidate_sha256 }}
+          GH_READ_TOKEN: ${{ github.token }}
+        run: '"$RUNNER_TEMP/fmz-pg-auth-component-venv/bin/python" -B _offline/phase6e11/endchain_v1/pg_auth_component/entry.py'
+      - name: Preserve bounded sanitized originals even on failure
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,pathlib
+          root=pathlib.Path(os.environ['RUNNER_TEMP'])/'fmz-db41-evidence'
+          root.mkdir(exist_ok=True)
+          manifest={};total=0
+          for path in sorted(root.iterdir()):
+              if path.is_symlink():raise SystemExit('artifact_link')
+              if path.is_file() and path.suffix in ('.json','.txt','.png'):
+                  raw=path.read_bytes();total+=len(raw)
+                  if len(raw)>2000000:raise SystemExit('artifact_member_size')
+                  manifest[path.name]=hashlib.sha256(raw).hexdigest()
+          if len(manifest)>2199 or total>80000000:raise SystemExit('artifact_total_limit')
+          with (root/'artifact-manifest.json').open('x') as stream:
+              json.dump(manifest,stream,sort_keys=True);stream.flush();os.fsync(stream.fileno())
+          print(json.dumps({'files':len(manifest),'bytes':total,'full_chain_admission':False}))
+          PY
+      - name: Component originals, not full admission
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: phase6e-pg-auth-component-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/fmz-db41-evidence/*.json
+            ${{ runner.temp }}/fmz-db41-evidence/*.txt
+            ${{ runner.temp }}/fmz-db41-evidence/*.png
+          retention-days: 1
+          if-no-files-found: error
