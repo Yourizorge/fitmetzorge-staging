@@ -10,6 +10,7 @@ import hashlib
 import importlib
 import importlib.machinery
 import importlib.util
+import os
 import pathlib
 import re
 import sys
@@ -22,6 +23,14 @@ _ACTIVE = None
 _ABSENT = object()
 _STDLIB = tuple({pathlib.Path(sysconfig.get_path(key)).resolve()
                  for key in ("stdlib", "platstdlib")} | {pathlib.Path(sys.base_prefix).resolve() / "DLLs"})
+_STDLIB_PATHS = tuple(os.path.normcase(str(path)) for path in _STDLIB)
+
+
+def _within(path, root):
+    try:
+        return os.path.commonpath((path, root)) == root
+    except ValueError:
+        return False
 
 
 class TrustedImportError(ValueError):
@@ -47,6 +56,8 @@ class TrustedImports:
         if type(sources) is not dict or not 0 < len(sources) <= 4096:
             raise TrustedImportError("trusted_sources")
         self.root = root.resolve(strict=True)
+        self.root_path = os.path.normcase(str(self.root))
+        self.project_tree = os.path.join(str(self.root), *PREFIX.rstrip("/").split("/"))
         self.sources = dict(sources)
         self.index = {}
         folded = set()
@@ -102,9 +113,12 @@ class TrustedImports:
         if not _name(name):
             self.deny("trusted_module_name")
         top = name.split(".")[0]
-        tree = self.root / PREFIX
+        # Import guards must not construct Path objects: Python 3.12 pathlib
+        # itself imports ntpath during construction, reentering this guard.
+        tree = self.project_tree
         return (name in self.index or any(n.split(".")[0] == top for n in self.index)
-                or (tree / top).exists() or (tree / (top + ".py")).exists())
+                or os.path.exists(os.path.join(tree, top))
+                or os.path.exists(os.path.join(tree, top + ".py")))
 
     def check(self, name):
         self.live()
@@ -148,9 +162,13 @@ class TrustedImports:
             return
         if not isinstance(spec.origin, str):
             self.deny("trusted_external_origin:" + name)
-        path = pathlib.Path(spec.origin).resolve()
-        if (path.is_relative_to(self.root) or not any(path.is_relative_to(p) for p in _STDLIB)
-                or any(p in ("site-packages", "dist-packages") for p in path.parts)):
+        try:
+            path = os.path.normcase(os.path.realpath(spec.origin))
+        except (OSError, ValueError):
+            self.deny("trusted_external_origin:" + name)
+        if (_within(path, self.root_path) or not any(_within(path, p) for p in _STDLIB_PATHS)
+                or any(p in ("site-packages", "dist-packages")
+                       for p in path.replace("\\", "/").split("/"))):
             self.deny("trusted_external_origin:" + name)
 
     def absolute(self, name, globals, level):

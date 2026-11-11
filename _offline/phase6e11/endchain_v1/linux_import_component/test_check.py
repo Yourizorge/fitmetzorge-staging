@@ -12,6 +12,15 @@ spec.loader.exec_module(check)
 
 
 class CheckTests(unittest.TestCase):
+    def test_large_log_is_bounded_but_original_digest_and_size_retained(self):
+        value = check.bounded_log('x' * 100_000 + 'terminal')
+        self.assertTrue(value['log_truncated'])
+        self.assertLess(len(value['log']), 57_000)
+        self.assertTrue(value['log'].endswith('terminal'))
+        self.assertEqual(value['log_bytes'], 100_008)
+        self.assertEqual(value['log_sha256'], hashlib.sha256(('x'*100_000+'terminal').encode()).hexdigest())
+        self.assertEqual(check.bounded_log('short')['log'], 'short')
+
     def test_interfaces_are_read_from_active_namespace_not_sysfs_mount(self):
         with patch.object(check.socket, 'if_nameindex', return_value=[(1, 'lo')]):
             self.assertEqual(check.interfaces(), ['lo'])
