@@ -156,8 +156,35 @@ of ruimere IO-grens gebruikt.
 | Gecombineerde CI | Pas na bovenstaande poorten; geen samengestelde PASS op basis van losse componenttests |
 | Hosted en ownertelefoontest | Niet geactiveerd; ongebruikte hosted poging behouden |
 
-De publicatiecontrole wordt als afzonderlijk nieuw ontvangstbewijs toegevoegd.
-HTTP 503 telt nooit als afscherming.
+## Commit en publicatie
+
+De gecontroleerde bronwijziging en oorspronkelijke bewijzen zijn gecommit en
+gepusht als `57557ea43fd42ba41130e7b8ad3fe81cb2a985e1`.
+[Pages-run 43202424725](https://github.com/Yourizorge/fitmetzorge-staging/actions/runs/43202424725)
+is SUCCESS op exact die commit.
+
+Alle 152 live runtime-assets zijn opnieuw via HTTPS opgehaald:
+10.394.229 bytes, alle hashes identiek aan de behouden inventaris.
+Het gecontroleerde Pages-artefact bevat 823 entries, alle 152 juiste
+runtime-assets en geen private roots `_offline`, `supabase` of `.github`.
+De Git-indexcontrole koppelde 747 geteste bronbestanden en de 30 gecontroleerde
+staged bestanden: 773 unieke bestanden, 757 raw byte-matches en de zestien
+reeds vastgelegde CRLF/LF-paren. Geen nieuwe uitzonderingen.
+
+De afzonderlijke private HTTP-probes blijven **INCOMPLETE**: ui.js,
+cost_posts_v1/cost_post_closure.py en de workflow gaven 404; store.py,
+pg_auth_component/entry.py en het migrationpad gaven 503. HTTP 503 telt niet
+als afscherming. Het originele publicatiebewijs staat in
+`offline-workpackage-20261112/publication-57557ea.json`.
+De kleinste volgende actie is deze drie HTTP-uitkomsten opnieuw read-only
+controleren wanneer de endpointrespons betrouwbaar beschikbaar is; geen
+toegangsverruiming of publicatie van private bronnen.
+
+Deze afsluitende documentatie/receipt verandert de applicatieruntime niet.
+De definitieve remote HEAD en de laatste Pages-status worden in het
+eindbericht afzonderlijk vermeld; het bovenstaande originele bewijs blijft
+aan de daadwerkelijk gecontroleerde commit gekoppeld.
+
 Technische tests geven geen owneracceptatie, freeze of medische validatie.
 
 Package 21 en real-member AI blijven uit.
