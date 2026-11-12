@@ -1,0 +1,54 @@
+{
+  "format": "main-local-preservation-v1",
+  "original_receipt": "parallel-preservation-0b9f976834e648fb8a53c59432a2b753.json",
+  "original_sha256": "c94894f46e015a962660eb1ca34106b81fb05921ef4406d853b8b43889de894c",
+  "preservation": {
+    "authorized": [
+      {
+        "after": "2dbcd9bec317d35c5d9739f4095b97ee3c2179533b856faaec0caae25faf09a2",
+        "before": "7233977761104437fc68d1d2c7e9512dcf48df323bfc7ea6f12ac8141059e279",
+        "path": ".gitattributes",
+        "prior_content_preserved": true,
+        "scope": "four exact LF rules appended"
+      },
+      {
+        "after": "18830f2f615171b5c2501714f560fe5c8c9cc9c39aa7e013dbe467881fc3eec1",
+        "before": "70925cdfd1ee789efda51b33c3ac55524e257bafb260cc2fdc09c064158339ed",
+        "path": "docs/ARCHITECTURE.md",
+        "prior_content_preserved": true,
+        "scope": "existing current-status prefix and historical heading"
+      },
+      {
+        "after": "2c65427c4d2467669dc8e11b5a840e82207aa4e188f76ac6d9e9469bd433b4f3",
+        "before": "04cc628b489db1d654230887b803b36b9e35a76c8705b8536097c601e220eff2",
+        "path": "docs/MASTER_BUILD_PLAN.md",
+        "prior_content_preserved": true,
+        "scope": "existing current-status prefix and historical heading"
+      },
+      {
+        "after": "88796ec46edf63f96c1d318f985a4fb366cf94a6741acc995bb6d9463dad4094",
+        "before": "d22abddfa4787417531d080b6ed517b95b720d1ca039749a22b6ab34022e0b8e",
+        "path": "docs/TEST_MATRIX.md",
+        "prior_content_preserved": true,
+        "scope": "existing current-status prefix and historical heading"
+      }
+    ],
+    "baseline_rewritten": false,
+    "baseline_sha256": "213673e2a04f04b715f247efe3f27263c0dc998859d5d7e54685a356412f8fef",
+    "byte_identical": 1372,
+    "does_not_prove_hosted_data_preservation": true,
+    "historical_checks_unchanged": true,
+    "status": "PASS_SCOPED_PRESERVATION",
+    "total": 1376,
+    "unexpected": []
+  },
+  "original_five_dirty": {
+    "AGENTS.md": "c1d200dff44fc0de583c3ee04c3689085163158d71ca4c0029081f4ebaee6a27",
+    "app.js": "e908babe7ea9a671dcc5b02278a695c8c4a9550465f8d23653bf4a8f54fa8595",
+    "docs/BUILD_STATUS.md": "6e890778586b1f3f6a785e59e7c326b7afcdde2c235894434e6c152524050d1d",
+    "docs/PHASE6E11_PROPOSAL.md": "a6f4a4e70e055ee18799883a1649b3cb9520e6c58f09d94db1ea175c3045b9ca",
+    "index.html": "fb466fef15c002c2c51dff29d893b5f15abc53ad7c47ac515e0eb8001d16862a"
+  },
+  "original_five_unchanged": true,
+  "hosted_data_claim": false
+}

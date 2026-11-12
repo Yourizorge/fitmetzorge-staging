@@ -1,0 +1,38 @@
+{
+  "format": "main-pg-component-targeted-v1",
+  "tests_run": 32,
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "seconds": 34.831,
+  "source_hashes": [
+    {
+      "path": "_offline/phase6e11/endchain_v1/pg_auth_component/inventory.py",
+      "sha256": "fb61fbddfc8b5b38939a7971e82c6e32cffd9bb607358f27acf675d66cf443f6",
+      "bytes": 1861
+    },
+    {
+      "path": "_offline/phase6e11/endchain_v1/pg_auth_component/entry.py",
+      "sha256": "d07780477362b12ec261914c42ff6c7f54a2d9b905f040b63cdaafe5f5417c29",
+      "bytes": 9546
+    },
+    {
+      "path": "_offline/phase6e11/endchain_v1/pg_auth_component/test_entry.py",
+      "sha256": "08ed20d1000e7dcc2b9d743465db5f353871f1422ad4194ce311b5bf362e4620",
+      "bytes": 4276
+    },
+    {
+      "path": "_offline/phase6e11/endchain_v1/pg_auth_component/test_resume.py",
+      "sha256": "b6052fd2761f5fa504020648a2a3b965a1e52aa186bdb6c61d28997a27cbeb5e",
+      "bytes": 8902
+    }
+  ],
+  "execution": "local Windows Python fresh-process pure regressions",
+  "actual_pg": false,
+  "ci_dispatches": 0,
+  "READY": false,
+  "not_additive_to_452": true,
+  "corrected_candidate_sha256": "fe1726169b44dc9470bf5011a91f6daf9b7204fd45bac3086c4c9b0d29ca358c",
+  "candidate_files": 603,
+  "candidate_ci_executed": false
+}

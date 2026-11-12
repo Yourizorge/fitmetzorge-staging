@@ -7,7 +7,7 @@ OWN = tuple(PREFIX + 'pg_auth_component/' + name for name in (
     '__init__.py', 'runner.py', 'test_runner.py', 'worker.py', 'pg_worker.py',
     'test_worker.py', 'parent.py', 'entry.py', 'inventory.py', 'prepare.py',
     'lifecycle.py','scope.py','subset.py','context.py','test_lifecycle.py',
-    'test_scope.py','test_subset.py','test_parent.py','test_entry.py'))
+    'test_scope.py','test_subset.py','test_parent.py','test_entry.py','test_resume.py'))
 
 
 def additions():
@@ -15,6 +15,7 @@ def additions():
     from case_stack_v1 import SOURCES
     dependencies = ('admission_auth_runtime_profile.py','fixture_cleanup_runtime.py',
         'quota_candidate_v1/runtime_registered_startup.py',
+        'quota_candidate_v1/runtime_registered_costs.py',
         'fixture_producer_scope.py','native_runtime.py','auth_failure_tracked.py',
         'admission_journal.py','test_admission_auth_runtime_profile.py','test_fixture_producer_scope.py',
         'fixture_cleanup_runtime_test.py','test_fixture_parent_closure.py')

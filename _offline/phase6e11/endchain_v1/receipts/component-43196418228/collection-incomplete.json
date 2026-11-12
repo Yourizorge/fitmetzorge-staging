@@ -1,0 +1,109 @@
+{
+  "READY": false,
+  "archive_sha256": "e8ee231f9ab7a43ec583e397b56d6607025ee2f205db3fdaf154a1b0119cb41d",
+  "artifact_id": 13931959305,
+  "artifact_manifest_sha256": "048ad7ffbb60d13b9035fc5a7ff84159c825b88f6946c309987dca0bc3101333",
+  "artifact_name": "phase6e-pg-auth-component-43196418228-1",
+  "auth_faultmatrix": "UNVERIFIED",
+  "automatic_retry": false,
+  "candidate_sha256": "dcef0b70eb67341256239e15e5c4bdcb3e9a94531d542e4908d290f0f4854f10",
+  "canonical44": "UNVERIFIED",
+  "database_install": "UNVERIFIED",
+  "error_class_from_sanitized_log": "ImportError",
+  "exact_failing_import_from_originals": "UNKNOWN",
+  "executed_new_component_attempts": 1,
+  "format": "pg-auth-incomplete-original-collection-v1",
+  "head": "32c7d89127b9785de489640a9adaf297277c9c22",
+  "hosted_calls": 0,
+  "job_id": 131108460722,
+  "note": "Original archive has handoff but no result. This is a collection receipt, not a replacement worker or result receipt.",
+  "original_members": {
+    "candidate.json": "5fa391109d9a9d15405a410e5e79820a211c762b44d67558c257f2c94952d60e",
+    "endchain-sources.json": "43d8e7cad9449458e9205bb1590b2b7f781912415d348da55be554832510855b",
+    "guard-composition.json": "11ffa7c7d387fd7094263f182e6bb3ea97b8a905672bc72815120f8541144b9a",
+    "historical-migration-preservation.json": "b0f64f9f0661257f91c9dc7051887d5ff5999c883ff134902c7d2968b262a10b",
+    "loaded-source-preflight.json": "09a5e8dbf70d828b2b76b51806754150d9c612baf03fd21e3914d343b6570a31",
+    "pg-component-checkout-source.json": "09a5e8dbf70d828b2b76b51806754150d9c612baf03fd21e3914d343b6570a31",
+    "pg-component-entry-handoff.json": "516ab2862f5fac361e663cbdc27d55d989fd26cf27a06c63f92c9e9342034dce"
+  },
+  "outer_run_source_and_archive_binding": "VERIFIED",
+  "producer_stop_cleanup_independent_after": "UNVERIFIED",
+  "result_receipt": "MISSING",
+  "run_conclusion": "failure",
+  "run_id": 43196418228,
+  "steps": [
+    {
+      "completed_at": "2026-11-12T10:00:14Z",
+      "conclusion": "success",
+      "name": "Set up job",
+      "number": 1,
+      "started_at": "2026-11-12T10:00:13Z",
+      "status": "completed"
+    },
+    {
+      "completed_at": "2026-11-12T10:00:18Z",
+      "conclusion": "success",
+      "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+      "number": 2,
+      "started_at": "2026-11-12T10:00:14Z",
+      "status": "completed"
+    },
+    {
+      "completed_at": "2026-11-12T10:00:22Z",
+      "conclusion": "success",
+      "name": "Pinned local Python driver for isolated child",
+      "number": 3,
+      "started_at": "2026-11-12T10:00:18Z",
+      "status": "completed"
+    },
+    {
+      "completed_at": "2026-11-12T10:00:25Z",
+      "conclusion": "success",
+      "name": "Targeted pure component regressions",
+      "number": 4,
+      "started_at": "2026-11-12T10:00:22Z",
+      "status": "completed"
+    },
+    {
+      "completed_at": "2026-11-12T10:00:28Z",
+      "conclusion": "failure",
+      "name": "Exact-source clean47 and separate real components",
+      "number": 5,
+      "started_at": "2026-11-12T10:00:25Z",
+      "status": "completed"
+    },
+    {
+      "completed_at": "2026-11-12T10:00:28Z",
+      "conclusion": "success",
+      "name": "Preserve bounded sanitized originals even on failure",
+      "number": 6,
+      "started_at": "2026-11-12T10:00:28Z",
+      "status": "completed"
+    },
+    {
+      "completed_at": "2026-11-12T10:00:29Z",
+      "conclusion": "success",
+      "name": "Component originals, not full admission",
+      "number": 7,
+      "started_at": "2026-11-12T10:00:28Z",
+      "status": "completed"
+    },
+    {
+      "completed_at": "2026-11-12T10:00:29Z",
+      "conclusion": "success",
+      "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+      "number": 14,
+      "started_at": "2026-11-12T10:00:29Z",
+      "status": "completed"
+    },
+    {
+      "completed_at": "2026-11-12T10:00:29Z",
+      "conclusion": "success",
+      "name": "Complete job",
+      "number": 15,
+      "started_at": "2026-11-12T10:00:29Z",
+      "status": "completed"
+    }
+  ],
+  "worker_exit_result_export": "UNVERIFIED"
+}

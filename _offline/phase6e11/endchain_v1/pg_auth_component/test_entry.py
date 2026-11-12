@@ -3,6 +3,7 @@ from pathlib import Path
 import unittest
 from unittest.mock import patch
 from . import entry as m, inventory, prepare
+from .test_resume import ResumeTests
 
 ENV={'GITHUB_ACTIONS':'true','GITHUB_REPOSITORY':'Yourizorge/fitmetzorge-staging',
      'GITHUB_SHA':'a'*40,'GITHUB_RUN_ID':'123','GITHUB_REF':'refs/heads/main',
